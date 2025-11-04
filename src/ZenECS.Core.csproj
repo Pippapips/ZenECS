@@ -42,6 +42,9 @@
         <Compile Update="..\Packages\com.zenecs.core\Runtime\Binding\Implementations\ContextRegistry.cs">
           <Link>Binding\Implementations\ContextRegistry.cs</Link>
         </Compile>
+        <Compile Update="..\Packages\com.zenecs.core\Runtime\Systems\Internal\ISystemRunner.cs">
+          <Link>Systems\Internal\ISystemRunner.cs</Link>
+        </Compile>
     </ItemGroup>
     <!-- 선택적으로 플랫폼별 Define 추가 -->
     <PropertyGroup>
