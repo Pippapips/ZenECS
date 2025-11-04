@@ -54,7 +54,7 @@ namespace ZenEcsCoreSamples.CommandBuffer
     {
         private bool _done;
 
-        public void Run(World w)
+        public void Run(WorldOld w)
         {
             if (_done) return;
 
@@ -84,7 +84,7 @@ namespace ZenEcsCoreSamples.CommandBuffer
             Console.WriteLine($"After apply (deferred): e1 Health={w.Read<Health>(e1).Value}, e2 Health={w.Read<Health>(e2).Value}, Has<Stunned>(e2)={w.Has<Stunned>(e2)}");
 
             // 2) Immediate apply via EndWrite
-            using (var cb2 = w.BeginWrite(World.ApplyMode.Immediate))
+            using (var cb2 = w.BeginWrite(WorldOld.ApplyMode.Immediate))
             {
                 cb2.Replace(e1, new Health(42));
             }
@@ -100,7 +100,7 @@ namespace ZenEcsCoreSamples.CommandBuffer
     [PresentationGroup]
     public sealed class PrintStatusSystem : IPresentationSystem
     {
-        public void Run(World w, float alpha)
+        public void Run(WorldOld w, float alpha)
         {
             Console.WriteLine($"-- Frame {w.FrameCount} (alpha={alpha:0.00}) --");
             foreach (var e in w.Query<Health>())

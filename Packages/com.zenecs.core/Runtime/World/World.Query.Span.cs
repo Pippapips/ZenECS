@@ -16,7 +16,7 @@ using System;
 
 namespace ZenECS.Core
 {
-    public sealed partial class World
+    public sealed partial class WorldOld
     {
         /*
          Example:

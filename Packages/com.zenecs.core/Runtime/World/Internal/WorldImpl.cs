@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using ZenECS.Core.DI;
 using ZenECS.Core.Internal.Bootstrap;
 
 namespace ZenECS.Core.Internal

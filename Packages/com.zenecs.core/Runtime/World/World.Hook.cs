@@ -17,7 +17,7 @@ using System.Runtime.CompilerServices;
 
 namespace ZenECS.Core
 {
-    public sealed partial class World
+    public sealed partial class WorldOld
     {
         // ===== Per-World Hooks =====
 
@@ -28,9 +28,9 @@ namespace ZenECS.Core
         /// </summary>
         /// <remarks>
         /// This delegate is evaluated in addition to list-based permissions managed via
-        /// <see cref="AddWritePermission(Func{World, Entity, Type, bool})"/>. All active hooks must allow the write.
+        /// <see cref="AddWritePermission(Func{WorldOld, Entity, Type, bool})"/>. All active hooks must allow the write.
         /// </remarks>
-        public volatile Func<World, Entity, Type, bool>? WritePermissionHook;
+        public volatile Func<WorldOld, Entity, Type, bool>? WritePermissionHook;
 
         /// <summary>
         /// World-scoped read-permission hook.
@@ -39,10 +39,10 @@ namespace ZenECS.Core
         /// </summary>
         /// <remarks>
         /// This delegate is evaluated in addition to list-based permissions managed via
-        /// <see cref="AddReadPermission(Func{World, Entity, Type, bool})"/>. All active hooks must allow the read.
+        /// <see cref="AddReadPermission(Func{WorldOld, Entity, Type, bool})"/>. All active hooks must allow the read.
         /// Note that read permissions are not applied to <c>Has&lt;T&gt;</c> checks for performance reasons.
         /// </remarks>
-        public volatile Func<World, Entity, Type, bool>? ReadPermissionHook;
+        public volatile Func<WorldOld, Entity, Type, bool>? ReadPermissionHook;
 
         /// <summary>
         /// World-scoped object-level value validator.
@@ -55,8 +55,8 @@ namespace ZenECS.Core
         public volatile Func<object, bool>? ValidateHook;
 
         // ===== Hook storage (list-based) =====
-        private readonly List<Func<World, Entity, Type, bool>> _writePerms = new(2);
-        private readonly List<Func<World, Entity, Type, bool>> _readPerms  = new(1);
+        private readonly List<Func<WorldOld, Entity, Type, bool>> _writePerms = new(2);
+        private readonly List<Func<WorldOld, Entity, Type, bool>> _readPerms  = new(1);
         private readonly List<Func<object, bool>> _objValidators           = new(2);
 
         // ===== Write permissions =====
@@ -65,7 +65,7 @@ namespace ZenECS.Core
         /// Adds a write-permission predicate evaluated for every structural write in this world.
         /// </summary>
         /// <param name="hook">Predicate that must return <see langword="true"/> to allow the write.</param>
-        public void AddWritePermission(Func<World, Entity, Type, bool> hook)
+        public void AddWritePermission(Func<WorldOld, Entity, Type, bool> hook)
         {
             if (hook != null) _writePerms.Add(hook);
         }
@@ -75,7 +75,7 @@ namespace ZenECS.Core
         /// </summary>
         /// <param name="hook">The predicate to remove.</param>
         /// <returns><see langword="true"/> if the predicate was removed; otherwise <see langword="false"/>.</returns>
-        public bool RemoveWritePermission(Func<World, Entity, Type, bool> hook)
+        public bool RemoveWritePermission(Func<WorldOld, Entity, Type, bool> hook)
             => _writePerms.Remove(hook);
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace ZenECS.Core
         /// Adds a read-permission predicate evaluated for component reads in this world.
         /// </summary>
         /// <param name="hook">Predicate that must return <see langword="true"/> to allow the read.</param>
-        public void AddReadPermission(Func<World, Entity, Type, bool> hook)
+        public void AddReadPermission(Func<WorldOld, Entity, Type, bool> hook)
         {
             if (hook != null) _readPerms.Add(hook);
         }
@@ -99,7 +99,7 @@ namespace ZenECS.Core
         /// </summary>
         /// <param name="hook">The predicate to remove.</param>
         /// <returns><see langword="true"/> if the predicate was removed; otherwise <see langword="false"/>.</returns>
-        public bool RemoveReadPermission(Func<World, Entity, Type, bool> hook)
+        public bool RemoveReadPermission(Func<WorldOld, Entity, Type, bool> hook)
             => _readPerms.Remove(hook);
 
         /// <summary>
@@ -132,9 +132,9 @@ namespace ZenECS.Core
         public void ClearValidators() => _objValidators.Clear();
 
         // ===== Hook Combinators =====
-        private static Func<World, Entity, Type, bool> ChainAnd(
-            Func<World, Entity, Type, bool>? a,
-            Func<World, Entity, Type, bool> b)
+        private static Func<WorldOld, Entity, Type, bool> ChainAnd(
+            Func<WorldOld, Entity, Type, bool>? a,
+            Func<WorldOld, Entity, Type, bool> b)
             => (w, e, t) => (a?.Invoke(w, e, t) ?? true) && b(w, e, t);
 
         private static Func<object, bool> ChainValidate(

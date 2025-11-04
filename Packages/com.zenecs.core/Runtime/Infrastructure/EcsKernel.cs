@@ -73,7 +73,7 @@ namespace ZenECS.Core.Infrastructure
         /// </param>
         /// <param name="systemRunnerLog">Optional logger callback for runner messages.</param>
         /// <param name="configure">
-        /// Optional callback invoked after the host constructs the <see cref="World"/> and <see cref="MessageBus"/>,
+        /// Optional callback invoked after the host constructs the <see cref="WorldOld"/> and <see cref="MessageBus"/>,
         /// allowing additional configuration.
         /// </param>
         /// <param name="throwIfRunning">
@@ -152,7 +152,7 @@ namespace ZenECS.Core.Infrastructure
         /// Shuts down the underlying host and clears the default instance.
         /// </summary>
         /// <remarks>
-        /// Safe to call multiple times. After shutdown, <see cref="World"/> and <see cref="Bus"/> are inaccessible
+        /// Safe to call multiple times. After shutdown, <see cref="WorldOld"/> and <see cref="Bus"/> are inaccessible
         /// until <see cref="Start"/> is invoked again.
         /// </remarks>
         public static void Shutdown()
@@ -165,10 +165,10 @@ namespace ZenECS.Core.Infrastructure
         }
 
         /// <summary>
-        /// Gets the active <see cref="World"/> from the underlying host.
+        /// Gets the active <see cref="WorldOld"/> from the underlying host.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the kernel has not been started.</exception>
-        public static World World => SnapshotHostOrThrow().World;
+        public static WorldOld WorldOld => SnapshotHostOrThrow().WorldOld;
 
         /// <summary>
         /// Gets the global <see cref="MessageBus"/> from the underlying host.

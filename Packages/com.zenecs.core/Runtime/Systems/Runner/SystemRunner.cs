@@ -55,7 +55,7 @@ namespace ZenECS.Core.Systems
         /// </summary>
         public SystemRunnerOptions Options { get; }
 
-        private readonly World _w;
+        private readonly WorldOld _w;
         private readonly IMessageBus _bus;
         private readonly SystemPlanner.Plan? _plan;
 
@@ -63,7 +63,7 @@ namespace ZenECS.Core.Systems
         private bool _stopped;
 
         public SystemRunner(
-            World w,
+            WorldOld w,
             IMessageBus? bus = null,
             IEnumerable<ISystem>? systems = null,
             SystemRunnerOptions? opt = null,
@@ -161,9 +161,9 @@ namespace ZenECS.Core.Systems
         /// <summary>
         /// Temporarily disables write operations during presentation (Add/Replace/Remove).
         /// </summary>
-        private static IDisposable DenyWrites(World w)
+        private static IDisposable DenyWrites(WorldOld w)
         {
-            Func<World, Entity, Type, bool> token = static (_, _, __) => false;
+            Func<WorldOld, Entity, Type, bool> token = static (_, _, __) => false;
             w.AddWritePermission(token);
             return new DisposableAction(() => w.RemoveWritePermission(token));
         }

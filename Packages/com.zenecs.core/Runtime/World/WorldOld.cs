@@ -27,7 +27,7 @@ namespace ZenECS.Core
     /// configuration, and (optionally) hooks/snapshotting. All game/system operations
     /// happen against a single World instance (simulation context).
     /// </summary>
-    public sealed partial class World
+    public sealed partial class WorldOld
     {
         private readonly WorldConfig _cfg;
 
@@ -62,7 +62,7 @@ namespace ZenECS.Core
         /// Initializes liveness bitset, generation array, free-id stack, and the type→pool map.
         /// </summary>
         /// <param name="config">Optional world configuration; if null, defaults are used.</param>
-        public World(WorldConfig? config = null)
+        public WorldOld(WorldConfig? config = null)
         {
             _cfg        = config ?? new WorldConfig();
 

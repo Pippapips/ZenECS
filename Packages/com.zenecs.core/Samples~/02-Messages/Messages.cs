@@ -63,7 +63,7 @@ namespace ZenEcsCoreSamples.Messages
         private IMessageBus? _bus;
         private IDisposable? _sub;
 
-        public void Initialize(World w)
+        public void Initialize(WorldOld w)
         {
             _bus = EcsKernel.Bus;
 
@@ -80,12 +80,12 @@ namespace ZenEcsCoreSamples.Messages
                 Console.WriteLine($"[Logic] e:{m.Entity} took {m.Amount} → {updated}");
             });
         }
-        public void Shutdown(World w)
+        public void Shutdown(WorldOld w)
         {
             _sub?.Dispose();
         }
 
-        public void Run(World w)
+        public void Run(WorldOld w)
         {
         }
     }
@@ -96,7 +96,7 @@ namespace ZenEcsCoreSamples.Messages
     [PresentationGroup]
     public sealed class PrintHealthSystem : IPresentationSystem
     {
-        public void Run(World w, float alpha)
+        public void Run(WorldOld w, float alpha)
         {
             Console.WriteLine($"-- Frame {w.FrameCount} (alpha={alpha:0.00}) --");
             foreach (var e in w.Query<Health>())
@@ -112,7 +112,7 @@ namespace ZenEcsCoreSamples.Messages
     // ──────────────────────────────────────────────────────────────────────────
     public static class Program
     {
-        private static World? _w;
+        private static WorldOld? _w;
         private static Entity _e1;
         private static Entity _e2;
         
@@ -132,7 +132,7 @@ namespace ZenEcsCoreSamples.Messages
                 systemRunnerLog: Console.WriteLine,
                 onComplete: () =>
                 {
-                    var world = EcsKernel.World;
+                    var world = EcsKernel.WorldOld;
                     
                     // Seed entities with Health data
                     var e1 = world.CreateEntity();

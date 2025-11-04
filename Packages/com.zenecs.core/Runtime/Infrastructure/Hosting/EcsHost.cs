@@ -26,7 +26,7 @@ namespace ZenECS.Core.Infrastructure.Hosting
 {
     /// <summary>
     /// Default implementation of <see cref="IEcsHost"/> providing a managed runtime environment
-    /// for the ECS <see cref="World"/>, <see cref="MessageBus"/>, and <see cref="SystemRunner"/>.
+    /// for the ECS <see cref="WorldOld"/>, <see cref="MessageBus"/>, and <see cref="SystemRunner"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -43,7 +43,7 @@ namespace ZenECS.Core.Infrastructure.Hosting
     {
         private readonly object _gate = new();
 
-        private World? _world;
+        private WorldOld? _world;
         private IMessageBus? _bus;
         private IBindingRouter? _bindingRouter;
         private IContextRegistry? _contextRegistry;
@@ -51,10 +51,10 @@ namespace ZenECS.Core.Infrastructure.Hosting
         private float _accumulator;
 
         /// <summary>
-        /// Gets the active <see cref="World"/> instance owned by this host.
+        /// Gets the active <see cref="WorldOld"/> instance owned by this host.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the host has not been started.</exception>
-        public World World => _world ?? throw new InvalidOperationException("ECS host not started.");
+        public WorldOld WorldOld => _world ?? throw new InvalidOperationException("ECS host not started.");
 
         /// <summary>
         /// Gets the global <see cref="MessageBus"/> instance owned by this host.
@@ -70,7 +70,7 @@ namespace ZenECS.Core.Infrastructure.Hosting
         public bool IsRunning { get; private set; }
 
         /// <summary>
-        /// Starts the ECS host, constructing a new <see cref="World"/> and <see cref="MessageBus"/>,
+        /// Starts the ECS host, constructing a new <see cref="WorldOld"/> and <see cref="MessageBus"/>,
         /// and registering all provided systems into a <see cref="SystemRunner"/>.
         /// </summary>
         /// <param name="config">Configuration for the world.</param>
@@ -94,7 +94,7 @@ namespace ZenECS.Core.Infrastructure.Hosting
             lock (_gate)
             {
                 if (IsRunning) return;
-                _world = new World(config);
+                _world = new WorldOld(config);
                 _bus = new MessageBus();
                 _contextRegistry = new ContextRegistry();
                 _bindingRouter = new BindingRouter(_world, _contextRegistry);
@@ -120,7 +120,7 @@ namespace ZenECS.Core.Infrastructure.Hosting
                 if (_runner != null) return;
 
                 var list = systems is List<ISystem> l ? new List<ISystem>(l) : new List<ISystem>(systems);
-                _runner = new SystemRunner(World, Bus, list, options ?? new SystemRunnerOptions(), log);
+                _runner = new SystemRunner(WorldOld, Bus, list, options ?? new SystemRunnerOptions(), log);
                 _runner.InitializeSystems();
             }
         }

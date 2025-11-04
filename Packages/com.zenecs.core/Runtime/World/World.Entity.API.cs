@@ -19,7 +19,7 @@ using ZenECS.Core.Events;
 
 namespace ZenECS.Core
 {
-    public partial class World
+    public partial class WorldOld
     {
         /// <summary>
         /// Creates a new entity.

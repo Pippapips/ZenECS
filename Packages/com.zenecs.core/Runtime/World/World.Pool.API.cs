@@ -19,7 +19,7 @@ using ZenECS.Core.Internal;
 
 namespace ZenECS.Core
 {
-    public partial class World
+    public partial class WorldOld
     {
         /// <summary>
         /// Enumerates all component pools currently registered in this world.
@@ -62,7 +62,7 @@ namespace ZenECS.Core
         /// <param name="t">The component type.</param>
         /// <returns>The corresponding <see cref="IComponentPool"/> instance.</returns>
         /// <remarks>
-        /// - Uses a pre-built thread-safe factory delegate from <see cref="World.GetOrBuildPoolFactory"/>.<br/>
+        /// - Uses a pre-built thread-safe factory delegate from <see cref="WorldOld.GetOrBuildPoolFactory"/>.<br/>
         /// - Ensures the pool is initialized with a minimal capacity (0).<br/>
         /// - Safe for AOT/IL2CPP environments and concurrent access.
         /// </remarks>

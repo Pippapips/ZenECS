@@ -37,10 +37,10 @@ namespace ZenEcsCoreSamples.WorldHooks
         private bool _done;
 
         // Keep references to remove later
-        private Func<World, Entity, Type, bool>? _writePerm;
+        private Func<WorldOld, Entity, Type, bool>? _writePerm;
         private Func<Mana, bool>? _validator;
 
-        public void Run(World w)
+        public void Run(WorldOld w)
         {
             if (_done) return;
 
@@ -86,7 +86,7 @@ namespace ZenEcsCoreSamples.WorldHooks
             _done = true;
         }
 
-        private static void TryAdd(World w, Entity e, in Mana v)
+        private static void TryAdd(WorldOld w, Entity e, in Mana v)
         {
             try { w.Add(e, v); Console.WriteLine($"Add<Mana> OK on e:{e.Id} -> {v}"); }
             catch (Exception ex) { Console.WriteLine($"Add<Mana> FAIL on e:{e.Id} :: {ex.Message}"); }
@@ -97,7 +97,7 @@ namespace ZenEcsCoreSamples.WorldHooks
     [PresentationGroup]
     public sealed class PrintSummarySystem : IPresentationSystem
     {
-        public void Run(World w, float alpha)
+        public void Run(WorldOld w, float alpha)
         {
             Console.WriteLine($"[Late] Frame {w.FrameCount}, alive={w.AliveCount}");
             foreach (var e in w.Query<Mana>())

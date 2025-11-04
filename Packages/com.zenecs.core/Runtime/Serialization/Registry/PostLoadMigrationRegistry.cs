@@ -59,7 +59,7 @@ namespace ZenECS.Core.Serialization
         /// <summary>
         /// Runs all registered migrations ordered by Order and type name (for deterministic execution).
         /// </summary>
-        public static void RunAll(World world)
+        public static void RunAll(WorldOld worldOld)
         {
             if (_migs.Count == 0) return;
 
@@ -67,7 +67,7 @@ namespace ZenECS.Core.Serialization
                          .OrderBy(m => m.Order)
                          .ThenBy(m => m.GetType().FullName, StringComparer.Ordinal))
             {
-                m.Run(world);
+                m.Run(worldOld);
             }
         }
 

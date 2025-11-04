@@ -35,7 +35,7 @@ namespace ZenECS.Core.Infrastructure.Hosting
     /// </remarks>
     public interface IEcsHost : IDisposable
     {
-        World World { get; }
+        WorldOld WorldOld { get; }
         IMessageBus Bus { get; }
         IBindingRouter BindingRouter { get; }
         IContextRegistry ContextRegistry { get; }

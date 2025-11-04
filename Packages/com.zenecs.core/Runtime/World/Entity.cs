@@ -19,7 +19,7 @@ namespace ZenECS.Core
     /// Packed 64-bit entity handle:
     /// <code>[ Gen (32 bits) | Id (32 bits) ]</code>
     /// <para>
-    /// Value-type identifier used to address entities inside a <see cref="World"/>.
+    /// Value-type identifier used to address entities inside a <see cref="WorldOld"/>.
     /// All data access should go through the world to validate liveness/generation.
     /// </para>
     /// </summary>

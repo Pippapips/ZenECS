@@ -9,14 +9,14 @@ namespace ZenECS.Core.Binding
     /// <summary>Manages binders per entity, dispatches deltas, calls Apply() once per frame.</summary>
     public sealed class BindingRouter : IBindingRouter 
     {
-        private readonly World _world;
+        private readonly WorldOld _worldOld;
         private readonly IContextRegistry _ctx;
         private readonly Dictionary<int, List<IBinder>> _byEntity = new(1024);
         private int _attachSeq = 0;
 
-        public BindingRouter(World world, IContextRegistry registry)
+        public BindingRouter(WorldOld worldOld, IContextRegistry registry)
         {
-            _world = world ?? throw new ArgumentNullException(nameof(world));
+            _worldOld = worldOld ?? throw new ArgumentNullException(nameof(worldOld));
             _ctx   = registry ?? throw new ArgumentNullException(nameof(registry));
         }
 
@@ -24,7 +24,7 @@ namespace ZenECS.Core.Binding
         {
             if (binder == null) throw new ArgumentNullException(nameof(binder));
             ValidateRequiredContexts(binder, e, options);
-            binder.Bind(_world, e);
+            binder.Bind(_worldOld, e);
             if (!_byEntity.TryGetValue(e.Id, out var list))
                 _byEntity[e.Id] = list = new List<IBinder>(4);
             InsertOrdered(list, binder);
@@ -49,7 +49,7 @@ namespace ZenECS.Core.Binding
         public void OnEntityDestroyed(Entity e)
         {
             DetachAll(e);
-            _ctx.Clear(_world, e);
+            _ctx.Clear(_worldOld, e);
         }
 
         public void ApplyAll()
@@ -116,10 +116,10 @@ namespace ZenECS.Core.Binding
             var mHas = _ctx.GetType().GetMethods()
                 .FirstOrDefault(mi => mi.IsGenericMethodDefinition && mi.Name == "Has"
                                       && mi.GetParameters().Length == 2
-                                      && mi.GetParameters()[0].ParameterType == typeof(World)
+                                      && mi.GetParameters()[0].ParameterType == typeof(WorldOld)
                                       && mi.GetParameters()[1].ParameterType == typeof(Entity));
             if (mHas != null)
-                return (bool)mHas.MakeGenericMethod(ctxType).Invoke(_ctx, new object[] { _world, e });
+                return (bool)mHas.MakeGenericMethod(ctxType).Invoke(_ctx, new object[] { _worldOld, e });
 
             mHas = _ctx.GetType().GetMethods()
                 .FirstOrDefault(mi => mi.IsGenericMethodDefinition && mi.Name == "Has"
@@ -131,12 +131,12 @@ namespace ZenECS.Core.Binding
             var mTry = _ctx.GetType().GetMethods()
                 .FirstOrDefault(mi => mi.IsGenericMethodDefinition && mi.Name == "TryGet"
                                       && mi.GetParameters().Length == 3
-                                      && mi.GetParameters()[0].ParameterType == typeof(World)
+                                      && mi.GetParameters()[0].ParameterType == typeof(WorldOld)
                                       && mi.GetParameters()[1].ParameterType == typeof(Entity)
                                       && mi.GetParameters()[2].IsOut);
             if (mTry != null)
             {
-                var args = new object[] { _world, e, null! };
+                var args = new object[] { _worldOld, e, null! };
                 return (bool)mTry.MakeGenericMethod(ctxType).Invoke(_ctx, args);
             }
 

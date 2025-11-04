@@ -16,7 +16,7 @@ using ZenECS.Core.Binding;
 
 namespace ZenECS.Core
 {
-    public sealed partial class World
+    public sealed partial class WorldOld
     {
         // Multithreaded command buffer + scheduling example:
         // var cb = world.BeginWrite();
@@ -56,7 +56,7 @@ namespace ZenECS.Core
         /// <para>
         /// When the buffer is disposed, it is either scheduled or immediately applied depending on the
         /// <see cref="ApplyMode"/> it was created with. You can also explicitly call
-        /// <see cref="World.EndWrite(CommandBuffer)"/> or <see cref="World.Schedule(CommandBuffer?)"/>.
+        /// <see cref="WorldOld.EndWrite(CommandBuffer)"/> or <see cref="WorldOld.Schedule(CommandBuffer?)"/>.
         /// </para>
         /// </remarks>
         public sealed class CommandBuffer : IJob, System.IDisposable
@@ -64,7 +64,7 @@ namespace ZenECS.Core
             internal readonly ConcurrentQueue<IOp> q = new();
 
             // Bound in BeginWrite
-            private World? _boundWorld;
+            private WorldOld? _boundWorld;
             private ApplyMode _mode;
             private bool _disposed;
 
@@ -72,13 +72,13 @@ namespace ZenECS.Core
             /// The world this buffer is currently bound to (set by <see cref="BeginWrite(ApplyMode)"/>).
             /// May be <see langword="null"/> after <see cref="Dispose"/> is called.
             /// </summary>
-            public World? WorldRef => _boundWorld;
+            public WorldOld? WorldRef => _boundWorld;
 
             /// <summary>
-            /// Binds this buffer to a specific <see cref="World"/> and applies the given <see cref="ApplyMode"/>.
-            /// Intended for internal use by <see cref="World.BeginWrite(ApplyMode)"/>.
+            /// Binds this buffer to a specific <see cref="WorldOld"/> and applies the given <see cref="ApplyMode"/>.
+            /// Intended for internal use by <see cref="WorldOld.BeginWrite(ApplyMode)"/>.
             /// </summary>
-            internal void Bind(World w, ApplyMode mode)
+            internal void Bind(WorldOld w, ApplyMode mode)
             {
                 _boundWorld = w;
                 _mode = mode;
@@ -90,9 +90,9 @@ namespace ZenECS.Core
             /// <see cref="ApplyMode"/> that was used at creation time.
             /// </summary>
             /// <remarks>
-            /// Buffers created via <see cref="World.BeginWrite(ApplyMode)"/> are auto-applied on dispose.
-            /// Buffers created manually should be applied via <see cref="World.EndWrite(CommandBuffer)"/> or
-            /// <see cref="World.Schedule(CommandBuffer?)"/>.
+            /// Buffers created via <see cref="WorldOld.BeginWrite(ApplyMode)"/> are auto-applied on dispose.
+            /// Buffers created manually should be applied via <see cref="WorldOld.EndWrite(CommandBuffer)"/> or
+            /// <see cref="WorldOld.Schedule(CommandBuffer?)"/>.
             /// </remarks>
             public void Dispose()
             {
@@ -117,10 +117,10 @@ namespace ZenECS.Core
             internal interface IOp
             {
                 /// <summary>
-                /// Applies the operation against the provided <see cref="World"/>.
+                /// Applies the operation against the provided <see cref="WorldOld"/>.
                 /// Implementations should guard against dead entities.
                 /// </summary>
-                void Apply(World w);
+                void Apply(WorldOld w);
             }
 
             /// <summary>
@@ -153,7 +153,7 @@ namespace ZenECS.Core
             public void Destroy(Entity e) => q.Enqueue(new DestroyOp(e));
 
             // IJob: integration with the world's scheduler
-            void World.IJob.Execute(World w)
+            void WorldOld.IJob.Execute(WorldOld w)
             {
                 while (q.TryDequeue(out var op)) op.Apply(w);
             }
@@ -169,7 +169,7 @@ namespace ZenECS.Core
                     this.e = e;
                     this.v = v;
                 }
-                public void Apply(World w)
+                public void Apply(WorldOld w)
                 {
                     if (!w.IsAlive(e))
                     {
@@ -190,7 +190,7 @@ namespace ZenECS.Core
                     this.e = e;
                     this.v = v;
                 }
-                public void Apply(World w)
+                public void Apply(WorldOld w)
                 {
                     if (!w.IsAlive(e))
                     {
@@ -207,7 +207,7 @@ namespace ZenECS.Core
             {
                 readonly Entity e;
                 public RemoveOp(Entity e) { this.e = e; }
-                public void Apply(World w)
+                public void Apply(WorldOld w)
                 {
                     if (!w.IsAlive(e))
                     {
@@ -226,7 +226,7 @@ namespace ZenECS.Core
                 readonly Entity e;
                 public DestroyOp(Entity e) { this.e = e; }
 
-                public void Apply(World w)
+                public void Apply(WorldOld w)
                 {
                     if (!w.IsAlive(e))
                     {
@@ -303,7 +303,7 @@ namespace ZenECS.Core
         }
 
         /// <summary>
-        /// Hook executed before <see cref="World.Reset(bool)"/>. When capacity will be rebuilt,
+        /// Hook executed before <see cref="WorldOld.Reset(bool)"/>. When capacity will be rebuilt,
         /// this flushes scheduled jobs to avoid dropping queued operations.
         /// </summary>
         /// <param name="keepCapacity">

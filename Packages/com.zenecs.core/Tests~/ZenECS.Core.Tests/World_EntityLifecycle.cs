@@ -6,7 +6,7 @@ public sealed class World_EntityLifecycle
     [Fact]
     public void Destroy_Recycle_Generation_Increments()
     {
-        var w = new World();
+        var w = new WorldOld();
         var e1 = w.CreateEntity();
         int id  = e1.Id;
         int gen1 = e1.Gen;

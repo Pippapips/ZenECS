@@ -99,7 +99,7 @@ namespace ZenECS.Binding.ConsoleSample
             Console.WriteLine($"[Apply]     e={Entity} Health={_h}");
         }
         
-        protected override void OnBind(World w, Entity e)
+        protected override void OnBind(WorldOld w, Entity e)
         {
             Console.WriteLine($"[Bind]      e={e}");
         }
@@ -120,7 +120,7 @@ namespace ZenECS.Binding.ConsoleSample
     /// </summary>
     internal static class Program
     {
-        private static World? _w;
+        private static WorldOld? _w;
         private static Entity _e;
         private static ConsoleViewBinder? _view;
         
@@ -138,7 +138,7 @@ namespace ZenECS.Binding.ConsoleSample
                     var ecsLogger = new EcsLogger();
                     EcsRuntimeOptions.Log = ecsLogger;
 
-                    var world = EcsKernel.World;
+                    var world = EcsKernel.WorldOld;
                     
                     // Create entity and associate with a console view
                     var e = world.CreateEntity();

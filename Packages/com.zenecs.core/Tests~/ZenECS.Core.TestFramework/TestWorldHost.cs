@@ -11,14 +11,14 @@ namespace ZenECS.Core.Testing
     /// </summary>
     public sealed class TestWorldHost : IDisposable
     {
-        public World World { get; }
+        public WorldOld WorldOld { get; }
         public IMessageBus Bus { get; }
 
         private ISystem[]? _orderedSystems = Array.Empty<ISystem>();
 
-        public TestWorldHost(World? world = null, IMessageBus? bus = null)
+        public TestWorldHost(WorldOld? world = null, IMessageBus? bus = null)
         {
-            World = world ?? new World();
+            WorldOld = world ?? new WorldOld();
             Bus = bus ?? new ZenECS.Core.Messaging.MessageBus();
         }
 
@@ -30,7 +30,7 @@ namespace ZenECS.Core.Testing
             if (_orderedSystems == null || _orderedSystems.Length == 0) return;
 
             foreach (var s in _orderedSystems)
-                (s as ISystemLifecycle)?.Initialize(World);
+                (s as ISystemLifecycle)?.Initialize(WorldOld);
         }
 
         /// <summary>Simulate one frame: FrameSetup → Fixed(n) → Update → LateFrame.</summary>
@@ -39,17 +39,17 @@ namespace ZenECS.Core.Testing
             if (_orderedSystems == null || _orderedSystems.Length == 0) return;
 
             foreach (var s in _orderedSystems)
-                (s as IFrameSetupSystem)?.Run(World);
+                (s as IFrameSetupSystem)?.Run(WorldOld);
 
             for (int i = 0; i < fixedSteps; i++)
                 foreach (var s in _orderedSystems)
-                    (s as IFixedRunSystem)?.Run(World);
+                    (s as IFixedRunSystem)?.Run(WorldOld);
 
             foreach (var s in _orderedSystems)
-                (s as IVariableRunSystem)?.Run(World);
+                (s as IVariableRunSystem)?.Run(WorldOld);
 
             foreach (var s in _orderedSystems)
-                (s as IPresentationSystem)?.Run(World);
+                (s as IPresentationSystem)?.Run(WorldOld);
 
             // Deliver queued bus messages once per frame
             Bus.PumpAll();
@@ -60,7 +60,7 @@ namespace ZenECS.Core.Testing
             if (_orderedSystems == null || _orderedSystems.Length == 0) return;
 
             foreach (var s in _orderedSystems)
-                (s as ISystemLifecycle)?.Shutdown(World);
+                (s as ISystemLifecycle)?.Shutdown(WorldOld);
         }
     }
 }

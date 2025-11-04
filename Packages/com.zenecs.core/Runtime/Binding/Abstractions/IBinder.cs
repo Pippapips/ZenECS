@@ -7,7 +7,7 @@ namespace ZenECS.Core.Binding
     {
         Entity Entity { get; }
         int Priority { get; }
-        void Bind(World world, Entity e);
+        void Bind(WorldOld worldOld, Entity e);
         void Unbind();
         void Apply(); // 프레임 말(프리젠테이션 끝)에 항상 1회
     }
@@ -19,13 +19,13 @@ namespace ZenECS.Core.Binding
 
     public abstract class BaseBinder : IBinder, IAttachOrderMarker
     {
-        protected World? World { get; private set; }
+        protected WorldOld? World { get; private set; }
         public Entity Entity { get; private set; }
         public virtual int Priority { get; set; }
         int IAttachOrderMarker.AttachOrder { get; set; }
         private bool _bound, _disposed;
 
-        public void Bind(World w, Entity e)
+        public void Bind(WorldOld w, Entity e)
         {
             if (_disposed || _bound) throw new Exception();
             World = w;
@@ -59,7 +59,7 @@ namespace ZenECS.Core.Binding
             OnDispose();
         }
         
-        protected virtual void OnBind(World w, Entity e) { }
+        protected virtual void OnBind(WorldOld w, Entity e) { }
         protected virtual void OnUnbind() { }
         protected virtual void OnDispose() { }
     }

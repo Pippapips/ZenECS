@@ -15,7 +15,7 @@
 
 namespace ZenECS.Core
 {
-    public sealed partial class World
+    public sealed partial class WorldOld
     {
         /// <summary>Current frame index (incremented externally by the runner).</summary>
         public int FrameCount { get; set; }
@@ -25,7 +25,7 @@ namespace ZenECS.Core
 
         /// <summary>
         /// Resets timing counters to zero.
-        /// Called during <see cref="World.ResetSubsystems"/> or when starting a new simulation.
+        /// Called during <see cref="WorldOld.ResetSubsystems"/> or when starting a new simulation.
         /// </summary>
         private void ResetTimingCounters()
         {

@@ -13,11 +13,11 @@ namespace ZenECS.Core.Binding
     public interface IContextInitialize
     {
         /// <remarks>Called once when the context is first registered for the entity. Lookup can be used to access other contexts.</remarks>
-        void Initialize(World world, Entity entity, IContextLookup lookup);
+        void Initialize(WorldOld worldOld, Entity entity, IContextLookup lookup);
 
 
         /// <remarks>Called when the context is removed or the entity/world is being destroyed.</remarks>
-        void Deinitialize(World world, Entity entity);
+        void Deinitialize(WorldOld worldOld, Entity entity);
     }
 
     /// <summary>
@@ -25,6 +25,6 @@ namespace ZenECS.Core.Binding
     /// </summary>
     public interface IContextReinitialize : IContextInitialize
     {
-        void Reinitialize(World world, Entity entity, IContextLookup lookup);
+        void Reinitialize(WorldOld worldOld, Entity entity, IContextLookup lookup);
     }
 }

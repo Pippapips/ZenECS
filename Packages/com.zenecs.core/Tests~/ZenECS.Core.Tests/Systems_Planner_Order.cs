@@ -9,13 +9,13 @@ public sealed class SysA : IVariableRunSystem, ISystemLifecycle
 {
     public bool Began, Ran, Ended;
 
-    public void BeginFrame(World w) => Began = true;
-    public void Run(World w) => Ran = true;
-    public void LateFrame(World w) { }
-    public void Initialize(World w)
+    public void BeginFrame(WorldOld w) => Began = true;
+    public void Run(WorldOld w) => Ran = true;
+    public void LateFrame(WorldOld w) { }
+    public void Initialize(WorldOld w)
     {
     }
-    public void Shutdown(World w) => Ended = true;
+    public void Shutdown(WorldOld w) => Ended = true;
 }
 
 [SimulationGroup, OrderAfter(typeof(SysA))]
@@ -23,13 +23,13 @@ public sealed class SysB : IVariableRunSystem, ISystemLifecycle
 {
     public bool Began, Ran, Ended;
 
-    public void BeginFrame(World w) => Began = true;
-    public void Run(World w) => Ran = true;
-    public void LateFrame(World w) { }
-    public void Initialize(World w)
+    public void BeginFrame(WorldOld w) => Began = true;
+    public void Run(WorldOld w) => Ran = true;
+    public void LateFrame(WorldOld w) { }
+    public void Initialize(WorldOld w)
     {
     }
-    public void Shutdown(World w) => Ended = true;
+    public void Shutdown(WorldOld w) => Ended = true;
 }
 
 public sealed class Systems_Planner_Order

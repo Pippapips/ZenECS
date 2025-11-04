@@ -8,7 +8,7 @@ public sealed class World_Basics
     [Fact]
     public void Add_Read_Replace_Remove()
     {
-        var w = new World();
+        var w = new WorldOld();
         var e = w.CreateEntity();
 
         w.Add(e, new Position(1, 2));
@@ -33,7 +33,7 @@ public sealed class World_Basics
     [Fact]
     public void TryRead_And_GetOrAdd()
     {
-        var w = new World();
+        var w = new WorldOld();
         var e = w.CreateEntity();
 
         Assert.False(w.TryRead<Position>(e, out var missing));

@@ -40,14 +40,14 @@ namespace ZenECS.Core.Infrastructure
         public static bool PreferDeferredAdds = false;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static bool CanRead<T>(World w, Entity e) where T : struct
+        private static bool CanRead<T>(WorldOld w, Entity e) where T : struct
             => w.EvaluateReadPermission(e, typeof(T));
 
         // ---------------------------------------------------------------------
         // Add
         // ---------------------------------------------------------------------
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void Add<T>(World w, Entity e, in T value, World.CommandBuffer? cb = null) where T : struct
+        internal static void Add<T>(WorldOld w, Entity e, in T value, WorldOld.CommandBuffer? cb = null) where T : struct
         {
             if (!w.EvaluateWritePermission(e, typeof(T)))
             {
@@ -84,7 +84,7 @@ namespace ZenECS.Core.Infrastructure
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void Replace<T>(World w, Entity e, in T value) where T : struct
+        internal static void Replace<T>(WorldOld w, Entity e, in T value) where T : struct
         {
             if (!w.EvaluateWritePermission(e, typeof(T)))
             {
@@ -110,7 +110,7 @@ namespace ZenECS.Core.Infrastructure
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void Remove<T>(World w, Entity e) where T : struct
+        internal static void Remove<T>(WorldOld w, Entity e) where T : struct
         {
             if (!w.EvaluateWritePermission(e, typeof(T)))
             {
@@ -125,11 +125,11 @@ namespace ZenECS.Core.Infrastructure
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static bool Has<T>(World w, Entity e) where T : struct
+        internal static bool Has<T>(WorldOld w, Entity e) where T : struct
             => w.HasComponentInternal<T>(e);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static ref readonly T Read<T>(World w, Entity e) where T : struct
+        internal static ref readonly T Read<T>(WorldOld w, Entity e) where T : struct
             => ref w.RefComponentInternal<T>(e);
     }
 }

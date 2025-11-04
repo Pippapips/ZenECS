@@ -18,18 +18,18 @@ namespace ZenECS.Core.Events
 {
     internal static class EntityEvents
     {
-        internal static event Action<World, Entity>? EntityCreated;
-        internal static event Action<World, Entity>? EntityDestroyRequested;
-        internal static event Action<World, Entity>? EntityDestroyed;
+        internal static event Action<WorldOld, Entity>? EntityCreated;
+        internal static event Action<WorldOld, Entity>? EntityDestroyRequested;
+        internal static event Action<WorldOld, Entity>? EntityDestroyed;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void RaiseCreated(World w, Entity e) => EntityCreated?.Invoke(w, e);
+        internal static void RaiseCreated(WorldOld w, Entity e) => EntityCreated?.Invoke(w, e);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void RaiseDestroyRequested(World w, Entity e) => EntityDestroyRequested?.Invoke(w, e);
+        internal static void RaiseDestroyRequested(WorldOld w, Entity e) => EntityDestroyRequested?.Invoke(w, e);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void RaiseDestroyed(World w, Entity e) => EntityDestroyed?.Invoke(w, e);
+        internal static void RaiseDestroyed(WorldOld w, Entity e) => EntityDestroyed?.Invoke(w, e);
 
         /// <summary>
         /// Clears all subscribers to prevent leaks during domain reloads or runtime restarts.

@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit" Version="2.9.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+  </ItemGroup>
+
+  <!-- Pull in Core runtime sources directly from the package path -->
+  <ItemGroup>
+    <Compile Include="..\..\core\Runtime\**\*.cs" Exclude="..\..\core\Samples~\**\*.*" />
+    <Compile Include="*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\src\ZenECS.Core.csproj" />
+    <ProjectReference Include="..\ZenECS.Core.TestFramework\ZenECS.Core.TestFramework.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="README.md" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <!-- Avoid duplicate compile of global usings if present in the package -->
+    <EnableDefaultItems>false</EnableDefaultItems>
+  </PropertyGroup>
+
+</Project>

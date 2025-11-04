@@ -34,7 +34,7 @@ namespace ZenECS.Core
     }
 
     /// <summary>
-    /// Configuration struct for <see cref="World"/>.
+    /// Configuration struct for <see cref="WorldOld"/>.
     /// Controls initial memory capacities and growth behavior of entity arrays and component pools.
     /// </summary>
     public readonly struct WorldConfig

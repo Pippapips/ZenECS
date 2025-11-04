@@ -17,7 +17,7 @@ using ZenECS.Core.Internal;
 
 namespace ZenECS.Core
 {
-    public sealed partial class World
+    public sealed partial class WorldOld
     {
         /// <summary>
         /// Selects a seed pool — the smallest non-empty pool among the given ones.
@@ -114,10 +114,10 @@ namespace ZenECS.Core
         /// <typeparam name="T1">Component value type.</typeparam>
         public struct QueryEnumerable<T1> where T1 : struct
         {
-            private readonly World _w;
+            private readonly WorldOld _w;
             private readonly Filter _f;
 
-            internal QueryEnumerable(World w, Filter f) { this._w = w; this._f = f; }
+            internal QueryEnumerable(WorldOld w, Filter f) { this._w = w; this._f = f; }
 
             /// <summary>Gets the value-type enumerator.</summary>
             public Enumerator GetEnumerator() => new(_w, _f);
@@ -127,7 +127,7 @@ namespace ZenECS.Core
             /// </summary>
             public struct Enumerator
             {
-                private readonly World _w;
+                private readonly WorldOld _w;
                 private readonly IComponentPool? _a;
                 private readonly ResolvedFilter _rf;
                 private readonly IEnumerator<(int id, object boxed)> _it;
@@ -138,7 +138,7 @@ namespace ZenECS.Core
                 /// </summary>
                 /// <param name="w">Target world.</param>
                 /// <param name="f">Filter to apply.</param>
-                public Enumerator(World w, Filter f)
+                public Enumerator(WorldOld w, Filter f)
                 {
                     this._w = w;
                     _a = w.TryGetPoolInternal<T1>();
@@ -180,10 +180,10 @@ namespace ZenECS.Core
         public struct QueryEnumerable<T1, T2>
             where T1 : struct where T2 : struct
         {
-            private readonly World _w;
+            private readonly WorldOld _w;
             private readonly Filter _f;
 
-            internal QueryEnumerable(World w, Filter f) { this._w = w; this._f = f; }
+            internal QueryEnumerable(WorldOld w, Filter f) { this._w = w; this._f = f; }
 
             /// <summary>Gets the value-type enumerator.</summary>
             public Enumerator GetEnumerator() => new(_w, _f);
@@ -191,14 +191,14 @@ namespace ZenECS.Core
             /// <summary>Value-type enumerator for entities with <typeparamref name="T1"/> and <typeparamref name="T2"/>.</summary>
             public struct Enumerator
             {
-                private readonly World _w;
+                private readonly WorldOld _w;
                 private readonly IComponentPool? _a, _b;
                 private readonly ResolvedFilter _rf;
                 private readonly IEnumerator<(int id, object boxed)> it;
                 private Entity _cur;
 
                 /// <summary>Initializes the enumerator for a given world and filter.</summary>
-                public Enumerator(World w, Filter f)
+                public Enumerator(WorldOld w, Filter f)
                 {
                     this._w = w;
                     _a = w.TryGetPoolInternal<T1>();
@@ -233,22 +233,22 @@ namespace ZenECS.Core
         public struct QueryEnumerable<T1, T2, T3>
             where T1 : struct where T2 : struct where T3 : struct
         {
-            private readonly World _w;
+            private readonly WorldOld _w;
             private readonly Filter _f;
 
-            internal QueryEnumerable(World w, Filter f) { this._w = w; this._f = f; }
+            internal QueryEnumerable(WorldOld w, Filter f) { this._w = w; this._f = f; }
             /// <summary>Gets the value-type enumerator.</summary>
             public Enumerator GetEnumerator() => new(_w, _f);
 
             /// <summary>Value-type enumerator for entities with the required components.</summary>
             public struct Enumerator
             {
-                private readonly World _w;
+                private readonly WorldOld _w;
                 private readonly IComponentPool? _a, _b, _c; private readonly ResolvedFilter _rf;
                 private readonly IEnumerator<(int id, object boxed)> it; private Entity _cur;
 
                 /// <summary>Initializes the enumerator for a given world and filter.</summary>
-                public Enumerator(World w, Filter f)
+                public Enumerator(WorldOld w, Filter f)
                 {
                     this._w = w;
                     _a = w.TryGetPoolInternal<T1>(); _b = w.TryGetPoolInternal<T2>(); _c = w.TryGetPoolInternal<T3>(); _rf = w.ResolveFilter(f);
@@ -278,20 +278,20 @@ namespace ZenECS.Core
         public struct QueryEnumerable<T1, T2, T3, T4>
             where T1 : struct where T2 : struct where T3 : struct where T4 : struct
         {
-            private readonly World _w; private readonly Filter _f;
-            internal QueryEnumerable(World w, Filter f) { this._w = w; this._f = f; }
+            private readonly WorldOld _w; private readonly Filter _f;
+            internal QueryEnumerable(WorldOld w, Filter f) { this._w = w; this._f = f; }
             /// <summary>Gets the value-type enumerator.</summary>
             public Enumerator GetEnumerator() => new(_w, _f);
 
             /// <summary>Value-type enumerator for entities with the required components.</summary>
             public struct Enumerator
             {
-                private readonly World _w;
+                private readonly WorldOld _w;
                 private readonly IComponentPool? _a, _b, _c, _d; private readonly ResolvedFilter _rf;
                 private readonly IEnumerator<(int id, object boxed)> it; private Entity _cur;
 
                 /// <summary>Initializes the enumerator for a given world and filter.</summary>
-                public Enumerator(World w, Filter f)
+                public Enumerator(WorldOld w, Filter f)
                 {
                     this._w = w;
                     _a = w.TryGetPoolInternal<T1>(); _b = w.TryGetPoolInternal<T2>(); _c = w.TryGetPoolInternal<T3>(); _d = w.TryGetPoolInternal<T4>(); _rf = w.ResolveFilter(f);
@@ -322,20 +322,20 @@ namespace ZenECS.Core
         public struct QueryEnumerable<T1, T2, T3, T4, T5>
             where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct
         {
-            private readonly World _w; private readonly Filter _f;
-            internal QueryEnumerable(World w, Filter f) { this._w = w; this._f = f; }
+            private readonly WorldOld _w; private readonly Filter _f;
+            internal QueryEnumerable(WorldOld w, Filter f) { this._w = w; this._f = f; }
             /// <summary>Gets the value-type enumerator.</summary>
             public Enumerator GetEnumerator() => new(_w, _f);
 
             /// <summary>Value-type enumerator for entities with the required components.</summary>
             public struct Enumerator
             {
-                private readonly World _w;
+                private readonly WorldOld _w;
                 private readonly IComponentPool? _a, _b, _c, _d, _e; private readonly ResolvedFilter _rf;
                 private readonly IEnumerator<(int id, object boxed)> it; private Entity _cur;
 
                 /// <summary>Initializes the enumerator for a given world and filter.</summary>
-                public Enumerator(World w, Filter f)
+                public Enumerator(WorldOld w, Filter f)
                 {
                     this._w = w;
                     _a = w.TryGetPoolInternal<T1>(); _b = w.TryGetPoolInternal<T2>(); _c = w.TryGetPoolInternal<T3>();
@@ -368,20 +368,20 @@ namespace ZenECS.Core
         public struct QueryEnumerable<T1, T2, T3, T4, T5, T6>
             where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct where T6 : struct
         {
-            private readonly World _w; private readonly Filter _f;
-            internal QueryEnumerable(World w, Filter f) { this._w = w; this._f = f; }
+            private readonly WorldOld _w; private readonly Filter _f;
+            internal QueryEnumerable(WorldOld w, Filter f) { this._w = w; this._f = f; }
             /// <summary>Gets the value-type enumerator.</summary>
             public Enumerator GetEnumerator() => new(_w, _f);
 
             /// <summary>Value-type enumerator for entities with the required components.</summary>
             public struct Enumerator
             {
-                private readonly World _w;
+                private readonly WorldOld _w;
                 private readonly IComponentPool? _a, _b, _c, _d, _e, _f6; private readonly ResolvedFilter _rf;
                 private readonly IEnumerator<(int id, object boxed)> it; private Entity _cur;
 
                 /// <summary>Initializes the enumerator for a given world and filter.</summary>
-                public Enumerator(World w, Filter f)
+                public Enumerator(WorldOld w, Filter f)
                 {
                     this._w = w;
                     _a = w.TryGetPoolInternal<T1>(); _b = w.TryGetPoolInternal<T2>(); _c = w.TryGetPoolInternal<T3>();
@@ -414,20 +414,20 @@ namespace ZenECS.Core
         public struct QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>
             where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct where T6 : struct where T7 : struct
         {
-            private readonly World _w; private readonly Filter _f;
-            internal QueryEnumerable(World w, Filter f) { this._w = w; this._f = f; }
+            private readonly WorldOld _w; private readonly Filter _f;
+            internal QueryEnumerable(WorldOld w, Filter f) { this._w = w; this._f = f; }
             /// <summary>Gets the value-type enumerator.</summary>
             public Enumerator GetEnumerator() => new(_w, _f);
 
             /// <summary>Value-type enumerator for entities with the required components.</summary>
             public struct Enumerator
             {
-                private readonly World _w;
+                private readonly WorldOld _w;
                 private readonly IComponentPool? _a, _b, _c, _d, _e, _f6, _g; private readonly ResolvedFilter _rf;
                 private readonly IEnumerator<(int id, object boxed)> it; private Entity _cur;
 
                 /// <summary>Initializes the enumerator for a given world and filter.</summary>
-                public Enumerator(World w, Filter f)
+                public Enumerator(WorldOld w, Filter f)
                 {
                     this._w = w;
                     _a = w.TryGetPoolInternal<T1>(); _b = w.TryGetPoolInternal<T2>(); _c = w.TryGetPoolInternal<T3>();
@@ -461,20 +461,20 @@ namespace ZenECS.Core
         public struct QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>
             where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct where T6 : struct where T7 : struct where T8 : struct
         {
-            private readonly World _w; private readonly Filter _f;
-            internal QueryEnumerable(World w, Filter f) { this._w = w; this._f = f; }
+            private readonly WorldOld _w; private readonly Filter _f;
+            internal QueryEnumerable(WorldOld w, Filter f) { this._w = w; this._f = f; }
             /// <summary>Gets the value-type enumerator.</summary>
             public Enumerator GetEnumerator() => new(_w, _f);
 
             /// <summary>Value-type enumerator for entities with the required components.</summary>
             public struct Enumerator
             {
-                private readonly World _w;
+                private readonly WorldOld _w;
                 private readonly IComponentPool? _a, _b, _c, _d, _e, _f6, _g, _h; private readonly ResolvedFilter _rf;
                 private readonly IEnumerator<(int id, object boxed)> it; private Entity _cur;
 
                 /// <summary>Initializes the enumerator for a given world and filter.</summary>
-                public Enumerator(World w, Filter f)
+                public Enumerator(WorldOld w, Filter f)
                 {
                     this._w = w;
                     _a = w.TryGetPoolInternal<T1>(); _b = w.TryGetPoolInternal<T2>(); _c = w.TryGetPoolInternal<T3>(); _d = w.TryGetPoolInternal<T4>();

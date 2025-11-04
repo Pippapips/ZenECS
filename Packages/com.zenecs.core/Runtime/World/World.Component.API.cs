@@ -19,7 +19,7 @@ using ZenECS.Core.Internal;
 
 namespace ZenECS.Core
 {
-    public partial class World
+    public partial class WorldOld
     {
         /// <summary>
         /// Removes all components of the specified entity while keeping the entity itself alive.

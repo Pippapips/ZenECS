@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using ZenECS.Core.DI;
 
 namespace ZenECS.Core.Internal.Bootstrap
 {

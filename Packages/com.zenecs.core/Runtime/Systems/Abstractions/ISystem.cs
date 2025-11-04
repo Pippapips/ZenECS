@@ -35,9 +35,9 @@ namespace ZenECS.Core.Systems
     public interface ISystem
     {
         /// <summary>
-        /// Executes the system logic against the given <see cref="World"/>.
+        /// Executes the system logic against the given <see cref="WorldOld"/>.
         /// </summary>
         /// <param name="w">The ECS world instance.</param>
-        void Run(World w);
+        void Run(WorldOld w);
     }
 }

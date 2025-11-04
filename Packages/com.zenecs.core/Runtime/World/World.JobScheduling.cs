@@ -16,11 +16,11 @@ using System.Collections.Concurrent;
 
 namespace ZenECS.Core
 {
-    public sealed partial class World
+    public sealed partial class WorldOld
     {
         /// <summary>
         /// Minimal job contract for the world's scheduler.
-        /// Implementors encapsulate a unit of work that can run later against a <see cref="World"/>.
+        /// Implementors encapsulate a unit of work that can run later against a <see cref="WorldOld"/>.
         /// </summary>
         /// <remarks>
         /// Jobs are executed on the thread that calls <see cref="RunScheduledJobs"/>.
@@ -60,8 +60,8 @@ namespace ZenECS.Core
         /// </example>
         public interface IJob
         {
-            /// <summary>Executes the job against the provided <see cref="World"/>.</summary>
-            void Execute(World w);
+            /// <summary>Executes the job against the provided <see cref="WorldOld"/>.</summary>
+            void Execute(WorldOld w);
         }
 
         /// <summary>

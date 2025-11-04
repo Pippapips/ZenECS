@@ -3,6 +3,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using ZenECS.Core.DI;
 
 namespace ZenECS.Core
 {
@@ -48,7 +49,7 @@ namespace ZenECS.Core
         public event Action<IWorld, float>? OnLateFrame;
         
         // --- Internal root services (DI/bootstrap), not exposed -------------
-        private readonly Internal.Bootstrap.ServiceHost _root;
+        private readonly ServiceHost _root;
 
         // --- Ctor ------------------------------------------------------------
 
@@ -129,7 +130,7 @@ namespace ZenECS.Core
                     CurrentWorldChanged?.Invoke(null);
                 }
 
-                world.Dispose();
+                //world.Dispose();
                 WorldDestroyed?.Invoke(world);
             }
         }

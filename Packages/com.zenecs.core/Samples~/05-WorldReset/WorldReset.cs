@@ -46,7 +46,7 @@ namespace ZenEcsCoreSamples.WorldReset
     {
         private bool _done;
 
-        public void Run(World w)
+        public void Run(WorldOld w)
         {
             if (_done) return;
 
@@ -83,7 +83,7 @@ namespace ZenEcsCoreSamples.WorldReset
     [PresentationGroup]
     public sealed class PrintSummarySystem : IPresentationSystem
     {
-        public void Run(World w, float alpha)
+        public void Run(WorldOld w, float alpha)
         {
             // Pure read-only logging for demonstration
             Console.WriteLine($"[Late] Frame {w.FrameCount}, alive={w.AliveCount}");

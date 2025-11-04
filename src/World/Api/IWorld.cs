@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace ZenECS.Core
 {
     /// <summary>Internal world instance (implementation hidden). External code should use <see cref="IWorldAPI"/>.</summary>
-    public interface IWorld : IDisposable
+    public interface IWorld
     {
         WorldId Id { get; }
         string  Name { get; set; }

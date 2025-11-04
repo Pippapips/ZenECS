@@ -24,7 +24,7 @@ using ZenECS.Core.Serialization;
 
 namespace ZenECS.Core
 {
-    public sealed partial class World
+    public sealed partial class WorldOld
     {
         /// <summary>
         /// An immutable snapshot of world metadata (no component data).

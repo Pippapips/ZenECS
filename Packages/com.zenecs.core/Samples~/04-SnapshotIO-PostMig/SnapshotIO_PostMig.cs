@@ -79,13 +79,13 @@ namespace ZenEcsCoreSamples.Snapshot
     {
         public int Order => 0;
 
-        public void Run(World world)
+        public void Run(WorldOld worldOld)
         {
-            foreach (var e in world.Query<PositionV1>())
+            foreach (var e in worldOld.Query<PositionV1>())
             {
-                var old = world.Read<PositionV1>(e);
-                world.Replace(e, new PositionV2(old.X, old.Y, layer: 1));
-                world.Remove<PositionV1>(e);
+                var old = worldOld.Read<PositionV1>(e);
+                worldOld.Replace(e, new PositionV2(old.X, old.Y, layer: 1));
+                worldOld.Remove<PositionV1>(e);
             }
         }
     }
@@ -103,7 +103,7 @@ namespace ZenEcsCoreSamples.Snapshot
     {
         private bool _done;
 
-        public void Run(World w)
+        public void Run(WorldOld w)
         {
             if (_done) return;
             Console.WriteLine("=== Snapshot I/O + Post-Migration Demo ===");
@@ -124,7 +124,7 @@ namespace ZenEcsCoreSamples.Snapshot
             Console.WriteLine($"Saved snapshot bytes: {ms.Length}");
 
             // Load snapshot into a NEW world
-            var world2 = new World(new WorldConfig(initialEntityCapacity: 8));
+            var world2 = new WorldOld(new WorldConfig(initialEntityCapacity: 8));
             ComponentRegistry.Register("com.zenecs.samples.position.v1", typeof(PositionV1));
             ComponentRegistry.Register("com.zenecs.samples.position.v2", typeof(PositionV2));
             ComponentRegistry.RegisterFormatter(new PositionV1Formatter(), "com.zenecs.samples.position.v1");
@@ -150,7 +150,7 @@ namespace ZenEcsCoreSamples.Snapshot
     [PresentationGroup]
     public sealed class PrintSummarySystem : IPresentationSystem
     {
-        public void Run(World w, float alpha)
+        public void Run(WorldOld w, float alpha)
         {
             // read-only logging for demonstration
             foreach (var e in w.Query<PositionV2>())

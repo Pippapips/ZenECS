@@ -18,7 +18,7 @@ using ZenECS.Core.Internal;
 
 namespace ZenECS.Core
 {
-    public sealed partial class World
+    public sealed partial class WorldOld
     {
         /// <summary>
         /// Mapping of component <see cref="Type"/> to its corresponding <see cref="IComponentPool"/>.

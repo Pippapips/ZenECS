@@ -54,7 +54,7 @@ namespace ZenEcsCoreSamples.Basic
     [SimulationGroup]
     public sealed class MoveSystem : IVariableRunSystem
     {
-        public void Run(World w)
+        public void Run(WorldOld w)
         {
             var dt = w.DeltaTime;
             foreach (var e in w.Query<Position, Velocity>())
@@ -72,7 +72,7 @@ namespace ZenEcsCoreSamples.Basic
     [PresentationGroup]
     public sealed class PrintPositionsSystem : IPresentationSystem
     {
-        public void Run(World w, float alpha)
+        public void Run(WorldOld w, float alpha)
         {
             Console.WriteLine($"-- FrameCount: {w.FrameCount} (alpha={alpha:0.00}) --");
             foreach (var e in w.Query<Position>())
@@ -107,7 +107,7 @@ namespace ZenEcsCoreSamples.Basic
                     var ecsLogger = new EcsLogger();
                     EcsRuntimeOptions.Log = ecsLogger;
 
-                    var world = EcsKernel.World;
+                    var world = EcsKernel.WorldOld;
                     
                     // Create sample entities with Position and Velocity
                     var e1 = world.CreateEntity();

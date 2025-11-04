@@ -19,7 +19,7 @@ using ZenECS.Core.Infrastructure;
 namespace ZenECS.Core
 {
     /// <summary>
-    /// Provides strongly-typed component operations as <see langword="extension"/> methods for <see cref="World"/>.
+    /// Provides strongly-typed component operations as <see langword="extension"/> methods for <see cref="WorldOld"/>.
     /// These are thin delegations to <see cref="EcsActions"/> to keep a single point of validation,
     /// policy checks, hooks/event dispatch, and metrics.
     /// </summary>
@@ -44,7 +44,7 @@ namespace ZenECS.Core
         /// <exception cref="InvalidOperationException">Propagated from <see cref="EcsActions"/> when disallowed.</exception>
         /// <remarks>Validation, hooks, and write-permission checks are performed by <see cref="EcsActions"/>.</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Add<T>(this World w, Entity e, in T value) where T : struct
+        public static void Add<T>(this WorldOld w, Entity e, in T value) where T : struct
             => EcsActions.Add(w, e, in value, null);
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace ZenECS.Core
         /// <param name="value">New component value.</param>
         /// <exception cref="InvalidOperationException">Propagated if replacement is disallowed by policy.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Replace<T>(this World w, Entity e, in T value) where T : struct
+        public static void Replace<T>(this WorldOld w, Entity e, in T value) where T : struct
             => EcsActions.Replace(w, e, in value);
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace ZenECS.Core
         /// <param name="e">Target entity.</param>
         /// <exception cref="InvalidOperationException">Propagated when removal is disallowed or component missing (per policy).</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Remove<T>(this World w, Entity e) where T : struct
+        public static void Remove<T>(this WorldOld w, Entity e) where T : struct
             => EcsActions.Remove<T>(w, e);
 
         // ---------------------------------------------------------------------
@@ -82,9 +82,9 @@ namespace ZenECS.Core
         /// <param name="e">Target entity.</param>
         /// <param name="value">Component value to add.</param>
         /// <returns><see langword="true"/> if the component was added; otherwise <see langword="false"/>.</returns>
-        /// <remarks>All exceptions from <see cref="EcsActions.Add{T}(World, Entity, in T, object?)"/> are swallowed.</remarks>
+        /// <remarks>All exceptions from <see cref="EcsActions.Add{T}(WorldOld, Entity, in T, object?)"/> are swallowed.</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool TryAdd<T>(this World w, Entity e, in T value) where T : struct
+        public static bool TryAdd<T>(this WorldOld w, Entity e, in T value) where T : struct
         {
             try { EcsActions.Add(w, e, in value, null); return true; }
             catch { return false; }
@@ -99,7 +99,7 @@ namespace ZenECS.Core
         /// <param name="value">New component value.</param>
         /// <returns><see langword="true"/> if the replacement succeeded; otherwise <see langword="false"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool TryReplace<T>(this World w, Entity e, in T value) where T : struct
+        public static bool TryReplace<T>(this WorldOld w, Entity e, in T value) where T : struct
         {
             try { EcsActions.Replace(w, e, in value); return true; }
             catch { return false; }
@@ -113,7 +113,7 @@ namespace ZenECS.Core
         /// <param name="e">Target entity.</param>
         /// <returns><see langword="true"/> if the component was removed; otherwise <see langword="false"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool TryRemove<T>(this World w, Entity e) where T : struct
+        public static bool TryRemove<T>(this WorldOld w, Entity e) where T : struct
         {
             try { EcsActions.Remove<T>(w, e); return true; }
             catch { return false; }
@@ -131,7 +131,7 @@ namespace ZenECS.Core
         /// <param name="e">Target entity.</param>
         /// <returns><see langword="true"/> if present; otherwise <see langword="false"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool Has<T>(this World w, Entity e) where T : struct
+        public static bool Has<T>(this WorldOld w, Entity e) where T : struct
             => EcsActions.Has<T>(w, e);
 
         /// <summary>
@@ -144,10 +144,10 @@ namespace ZenECS.Core
         /// <exception cref="InvalidOperationException">Propagated if the component is missing or access is denied by policy.</exception>
         /// <remarks>
         /// The reference is only valid while the underlying pool is stable. Do not capture beyond its immediate use.
-        /// For safe value copies, use <see cref="TryRead{T}(World, Entity, out T)"/>.
+        /// For safe value copies, use <see cref="TryRead{T}(WorldOld, Entity, out T)"/>.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ref readonly T Read<T>(this World w, Entity e) where T : struct
+        public static ref readonly T Read<T>(this WorldOld w, Entity e) where T : struct
             => ref EcsActions.Read<T>(w, e);
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace ZenECS.Core
         /// <param name="value">When this method returns, contains the component value if found; otherwise default.</param>
         /// <returns><see langword="true"/> if the component exists and was copied; otherwise <see langword="false"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool TryRead<T>(this World w, Entity e, out T value) where T : struct
+        public static bool TryRead<T>(this WorldOld w, Entity e, out T value) where T : struct
         {
             if (!w.Has<T>(e)) { value = default; return false; }
             value = EcsActions.Read<T>(w, e);
@@ -182,10 +182,10 @@ namespace ZenECS.Core
         /// </returns>
         /// <remarks>
         /// This is convenient for idempotent initialization. If you need to control the initial value,
-        /// use the <see cref="GetOrAdd{T}(World, Entity, in T)"/> overload.
+        /// use the <see cref="GetOrAdd{T}(WorldOld, Entity, in T)"/> overload.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ref readonly T GetOrAdd<T>(this World w, Entity e) where T : struct
+        public static ref readonly T GetOrAdd<T>(this WorldOld w, Entity e) where T : struct
         {
             if (!w.Has<T>(e))
                 w.Add(e, default(T));
@@ -204,7 +204,7 @@ namespace ZenECS.Core
         /// A <see langword="ref readonly"/> reference to the existing or newly-added component.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ref readonly T GetOrAdd<T>(this World w, Entity e, in T initial) where T : struct
+        public static ref readonly T GetOrAdd<T>(this WorldOld w, Entity e, in T initial) where T : struct
         {
             if (!w.Has<T>(e))
                 w.Add(e, in initial);
