@@ -45,9 +45,6 @@ namespace ZenECS.Core.Infrastructure.Hosting
 
         private WorldOld? _world;
         private IMessageBus? _bus;
-        private IBindingRouter? _bindingRouter;
-        private IContextRegistry? _contextRegistry;
-        private SystemRunner? _runner;
         private float _accumulator;
 
         /// <summary>
@@ -61,9 +58,6 @@ namespace ZenECS.Core.Infrastructure.Hosting
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the host has not been started.</exception>
         public IMessageBus Bus => _bus ?? throw new InvalidOperationException("ECS host not started.");
-        public IBindingRouter BindingRouter => _bindingRouter ?? throw new InvalidOperationException("ECS host not started.");
-        public IContextRegistry ContextRegistry => _contextRegistry ?? throw new InvalidOperationException("ECS host not started.");
-
         /// <summary>
         /// Indicates whether the ECS host is currently running.
         /// </summary>
@@ -87,7 +81,6 @@ namespace ZenECS.Core.Infrastructure.Hosting
         public void Start(
             WorldConfig config,
             IEnumerable<ISystem> systems,
-            SystemRunnerOptions? options = null,
             Action<string>? systemRunnerLog = null,
             Action? onComplete = null)
         {
@@ -96,12 +89,9 @@ namespace ZenECS.Core.Infrastructure.Hosting
                 if (IsRunning) return;
                 _world = new WorldOld(config);
                 _bus = new MessageBus();
-                _contextRegistry = new ContextRegistry();
-                _bindingRouter = new BindingRouter(_world, _contextRegistry);
-                _world.SetRouter(_bindingRouter);
-                _world.SetContextRegistry(_contextRegistry);
+                // _world.SetRouter(_bindingRouter);
+                // _world.SetContextRegistry(_contextRegistry);
                 IsRunning = true;
-                initializeSystems(systems, options, systemRunnerLog);
                 onComplete?.Invoke();
             }
         }
@@ -111,28 +101,17 @@ namespace ZenECS.Core.Infrastructure.Hosting
         /// </summary>
         private void initializeSystems(
             IEnumerable<ISystem> systems,
-            SystemRunnerOptions? options = null,
             Action<string>? log = null)
         {
             lock (_gate)
             {
                 if (!IsRunning) throw new InvalidOperationException("Host not started.");
-                if (_runner != null) return;
-
-                var list = systems is List<ISystem> l ? new List<ISystem>(l) : new List<ISystem>(systems);
-                _runner = new SystemRunner(WorldOld, Bus, list, options ?? new SystemRunnerOptions(), log);
-                _runner.InitializeSystems();
+                // if (_runner != null) return;
+                //
+                // var list = systems is List<ISystem> l ? new List<ISystem>(l) : new List<ISystem>(systems);
+                // _runner.InitializeSystems();
             }
         }
-
-        /// <summary>
-        /// Gets the current <see cref="SystemRunnerOptions"/> used by this host.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the runner has not been initialized.</exception>
-        public SystemRunnerOptions RunnerOptions =>
-            _runner == null
-                ? throw new InvalidOperationException("Runner not initialized. Call Start() first.")
-                : _runner.Options;
 
         /// <summary>
         /// Begins a new frame and advances all systems scheduled for the Update phase.
@@ -141,8 +120,8 @@ namespace ZenECS.Core.Infrastructure.Hosting
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void BeginFrame(float dt)
         {
-            if (_runner is null) throw new InvalidOperationException("Runner not initialized.");
-            _runner.BeginFrame(dt);
+            // if (_runner is null) throw new InvalidOperationException("Runner not initialized.");
+            // _runner.BeginFrame(dt);
         }
 
         /// <summary>
@@ -152,8 +131,8 @@ namespace ZenECS.Core.Infrastructure.Hosting
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void FixedStep(float fixedDelta)
         {
-            if (_runner is null) throw new InvalidOperationException("Runner not initialized.");
-            _runner.FixedStep(fixedDelta);
+            // if (_runner is null) throw new InvalidOperationException("Runner not initialized.");
+            // _runner.FixedStep(fixedDelta);
         }
 
         /// <summary>
@@ -165,8 +144,8 @@ namespace ZenECS.Core.Infrastructure.Hosting
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void LateFrame(float alpha = 1.0f)
         {
-            if (_runner is null) throw new InvalidOperationException("Runner not initialized.");
-            _runner.LateFrame(alpha);
+            // if (_runner is null) throw new InvalidOperationException("Runner not initialized.");
+            // _runner.LateFrame(alpha);
         }
 
         /// <summary>
@@ -183,7 +162,7 @@ namespace ZenECS.Core.Infrastructure.Hosting
         /// </remarks>
         public int Pump(float dt, float fixedDelta, int maxSubSteps, out float alpha)
         {
-            if (_runner is null) throw new InvalidOperationException("Runner not initialized.");
+            //if (_runner is null) throw new InvalidOperationException("Runner not initialized.");
             BeginFrame(dt);
             _accumulator += dt;
             int sub = 0;
@@ -204,8 +183,8 @@ namespace ZenECS.Core.Infrastructure.Hosting
         {
             lock (_gate)
             {
-                _runner?.ShutdownSystems();
-                _runner = null;
+                // _runner?.ShutdownSystems();
+                // _runner = null;
                 _accumulator = 0f;
             }
         }
@@ -222,7 +201,7 @@ namespace ZenECS.Core.Infrastructure.Hosting
 
                 shutdownSystems();
 
-                _contextRegistry?.ClearAll();
+                //_contextRegistry?.ClearAll();
                 _bus?.Clear();
                 EntityEvents.Reset();
                 _world?.Reset(false);

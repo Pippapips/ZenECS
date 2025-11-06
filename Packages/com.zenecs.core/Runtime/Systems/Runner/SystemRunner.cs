@@ -17,68 +17,46 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ZenECS.Core.Infrastructure;
+using ZenECS.Core.Internal.Binding;
+using ZenECS.Core.Internal.Hooking;
+using ZenECS.Core.Internal.Scheduling;
 using ZenECS.Core.Messaging;
+using ZenECS.Core.Systems;
 
-namespace ZenECS.Core.Systems
+namespace ZenECS.Core.Internal
 {
-    /// <summary>
-    /// Configuration for <see cref="SystemRunner"/> behavior.
-    /// </summary>
-    public sealed class SystemRunnerOptions
-    {
-        /// <summary>Whether to enable write guards during the Presentation stage (read-only enforcement).</summary>
-        public bool GuardWritesInPresentation { get; set; } = true;
-
-        /// <summary>Default constructor using standard behavior.</summary>
-        public SystemRunnerOptions() { }
-
-        /// <summary>
-        /// Initializes the options directly with custom parameters.
-        /// </summary>
-        public SystemRunnerOptions(bool guardWritesInPresentation = true)
-        {
-            GuardWritesInPresentation = guardWritesInPresentation;
-        }
-
-        /// <summary>Convenient default instance.</summary>
-        public static readonly SystemRunnerOptions Default = new();
-    }
-
     /// <summary>
     /// Coordinates system execution per phase (FrameSetup, Simulation, Presentation)
     /// and manages lifecycle (Initialize / Shutdown).
     /// </summary>
-    internal sealed class SystemRunner
+    internal sealed class SystemRunner : ISystemRunner
     {
-        /// <summary>
-        /// Configuration for <see cref="SystemRunner"/> behavior.
-        /// </summary>
-        public SystemRunnerOptions Options { get; }
-
-        private readonly WorldOld _w;
-        private readonly IMessageBus _bus;
-        private readonly SystemPlanner.Plan? _plan;
-
         private bool _started;
         private bool _stopped;
+        private SystemPlanner.Plan? _plan;
+        
+        private readonly IMessageBus _bus;
+        private readonly IWorker _worker;
+        private readonly IBindingRouter _router;
+        private IPermissionHook _permissionHook;
 
-        public SystemRunner(
-            WorldOld w,
-            IMessageBus? bus = null,
-            IEnumerable<ISystem>? systems = null,
-            SystemRunnerOptions? opt = null,
-            Action<string>? warn = null)
+        public SystemRunner(IMessageBus bus, IWorker worker, IBindingRouter router, IPermissionHook permissionHook)
         {
-            _w = w ?? throw new ArgumentNullException(nameof(w));
-            _bus = bus ?? new MessageBus();
+            _permissionHook = permissionHook;
+            _router = router;
+            _worker = worker;
+            _bus = bus;
+        }
+
+        public void Build(IEnumerable<ISystem>? systems, Action<string>? warn)
+        {
             _plan = SystemPlanner.Build(systems, warn);
-            Options = opt ?? new SystemRunnerOptions();
         }
 
         /// <summary>
         /// Initializes all systems once before the first frame.
         /// </summary>
-        public void InitializeSystems()
+        public void Initialize(IWorld w)
         {
             if (_started) return;
             _started = true;
@@ -86,16 +64,16 @@ namespace ZenECS.Core.Systems
             if (_plan != null)
             {
                 foreach (ISystemLifecycle s in _plan.LifecycleInitializeOrder)
-                    s.Initialize(_w);
+                    s.Initialize(w);
             }
 
-            _w.RunScheduledJobs();
+            _worker.RunScheduledJobs(w);
         }
 
         /// <summary>
         /// Shuts down all systems in reverse order (Presentation → Simulation → Setup).
         /// </summary>
-        public void ShutdownSystems()
+        public void Shutdown(IWorld w)
         {
             if (!_started || _stopped) return;
             _stopped = true;
@@ -103,69 +81,58 @@ namespace ZenECS.Core.Systems
             if (_plan != null)
             {
                 foreach (ISystemLifecycle s in _plan.LifecycleShutdownOrder)
-                    s.Shutdown(_w);
+                    s.Shutdown(w);
             }
-        }
-
-        /// <summary>
-        /// Corresponds to Unity's FixedUpdate phase (fixed timestep).
-        /// Structural changes are queued, not applied immediately.
-        /// </summary>
-        public void FixedStep(float fixedDelta)
-        {
-            // Optional pre-step setup (no DeltaTime use)
-            RunFixedGroup(SystemGroup.FrameSetup);
-
-            // Inject fixed delta
-            _w.DeltaTime = fixedDelta;
-
-            RunFixedGroup(SystemGroup.Simulation);
-            // NOTE: Do not flush jobs here; handled at frame barrier (BeginFrame).
         }
 
         /// <summary>
         /// Corresponds to Unity's Update phase (variable timestep + barrier management).
         /// </summary>
-        public void BeginFrame(float deltaTime)
+        public void BeginFrame(IWorld w, float dt)
         {
             // Consume all queued messages
             _bus.PumpAll();
 
             // Frame setup phase (no DeltaTime use)
-            RunGroup(SystemGroup.FrameSetup);
+            RunGroup(SystemGroup.FrameSetup, w, dt);
+            _worker.RunScheduledJobs(w);
 
-            _w.RunScheduledJobs();
-
-            // Inject variable timestep
-            _w.DeltaTime = deltaTime;
-
-            RunGroup(SystemGroup.Simulation);
-
+            RunGroup(SystemGroup.Simulation, w, dt);
             // Barrier handling based on flush policy
-            _w.RunScheduledJobs();
+            _worker.RunScheduledJobs(w);
+        }
+        
+        /// <summary>
+        /// Corresponds to Unity's FixedUpdate phase (fixed timestep).
+        /// Structural changes are queued, not applied immediately.
+        /// </summary>
+        public void FixedStep(IWorld w, float fixedDelta)
+        {
+            // Optional pre-step setup (no DeltaTime use)
+            RunFixedGroup(SystemGroup.FrameSetup, w, fixedDelta);
+            RunFixedGroup(SystemGroup.Simulation, w, fixedDelta);
+            // NOTE: Do not flush jobs here; handled at frame barrier (BeginFrame).
         }
 
         /// <summary>
         /// Corresponds to Unity's LateUpdate phase (Presentation stage, read-only).
         /// </summary>
-        public void LateFrame(float interpolationAlpha = 1f)
+        public void LateFrame(IWorld w, float dt, float interpolationAlpha = 1f)
         {
-            _w.BindingRouter?.ApplyAll();
+            _router.ApplyAll();
             
-            using IDisposable? guard = Options.GuardWritesInPresentation ? DenyWrites(_w) : null;
-            RunLateGroup(SystemGroup.Presentation);
-
-            _w.FrameCount++;
+            using IDisposable? guard = DenyWrites(_permissionHook);
+            RunLateGroup(SystemGroup.Presentation, w, dt, interpolationAlpha);
         }
 
         /// <summary>
         /// Temporarily disables write operations during presentation (Add/Replace/Remove).
         /// </summary>
-        private static IDisposable DenyWrites(WorldOld w)
+        private static IDisposable DenyWrites(IPermissionHook hook)
         {
-            Func<WorldOld, Entity, Type, bool> token = static (_, _, __) => false;
-            w.AddWritePermission(token);
-            return new DisposableAction(() => w.RemoveWritePermission(token));
+            Func<IWorld, Entity, Type, bool> token = static (_, _, __) => false;
+            hook.AddWritePermission(token);
+            return new DisposableAction(() => hook.RemoveWritePermission(token));
         }
 
         private sealed class DisposableAction : IDisposable
@@ -175,7 +142,7 @@ namespace ZenECS.Core.Systems
             public void Dispose() => _onDispose();
         }
 
-        private void RunFixedGroup(SystemGroup g)
+        private void RunFixedGroup(SystemGroup g, IWorld w, float dt)
         {
             if (_plan == null) return;
 
@@ -183,17 +150,17 @@ namespace ZenECS.Core.Systems
             {
                 case SystemGroup.FrameSetup:
                     foreach (IFixedSetupSystem s in _plan.FrameSetup.OfType<IFixedSetupSystem>())
-                        s.Run(_w);
+                        s.Run(w, dt);
                     break;
 
                 case SystemGroup.Simulation:
                     foreach (IFixedRunSystem s in _plan.Simulation.OfType<IFixedRunSystem>())
-                        s.Run(_w);
+                        s.Run(w, dt);
                     break;
             }
         }
 
-        private void RunGroup(SystemGroup g)
+        private void RunGroup(SystemGroup g, IWorld w, float dt)
         {
             if (_plan == null) return;
 
@@ -201,24 +168,24 @@ namespace ZenECS.Core.Systems
             {
                 case SystemGroup.FrameSetup:
                     foreach (IFrameSetupSystem s in _plan.FrameSetup.OfType<IFrameSetupSystem>())
-                        s.Run(_w);
+                        s.Run(w, dt);
                     break;
 
                 case SystemGroup.Simulation:
                     foreach (IVariableRunSystem s in _plan.Simulation.OfType<IVariableRunSystem>())
-                        s.Run(_w);
+                        s.Run(w, dt);
                     break;
             }
         }
 
-        private void RunLateGroup(SystemGroup g, float interpolationAlpha = 1.0f)
+        private void RunLateGroup(SystemGroup g, IWorld w, float dt, float interpolationAlpha = 1.0f)
         {
             if (_plan == null) return;
 
             if (g == SystemGroup.Presentation)
             {
                 foreach (IPresentationSystem s in _plan.Presentation.OfType<IPresentationSystem>())
-                    s.Run(_w, interpolationAlpha);
+                    s.Run(w, dt, interpolationAlpha);
             }
         }
     }

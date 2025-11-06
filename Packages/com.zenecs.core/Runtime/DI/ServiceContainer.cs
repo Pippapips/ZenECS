@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,15 +13,15 @@ namespace ZenECS.Core.DI
     /// - Deterministic dispose in reverse registration order
     /// - Freeze() to lock registrations after composition
     /// - TryGet(Type) / GetRequired(Type) non-generic overloads
-    /// - Optional multi-registration support + GetAll<T>()
+    /// - Optional multi-registration support + GetAll&lt;T&gt;()
     /// </summary>
-    public sealed class ServiceHost : IDisposable
+    public sealed class ServiceContainer : IDisposable
     {
         private readonly object _gate = new();
         private bool _disposed;
-        private bool _frozen;
+        private bool _sealed;
 
-        private readonly ServiceHost? _parent;
+        private readonly ServiceContainer? _parent;
 
         // Multi-registration friendly: lists per service type
         private readonly Dictionary<Type, List<object>> _singletons = new();
@@ -29,11 +30,11 @@ namespace ZenECS.Core.DI
         // Ownership tracking in registration order (reverse-dispose)
         private readonly List<IDisposable> _owned = new();
 
-        private readonly List<ServiceHost> _children = new();
+        private readonly List<ServiceContainer> _children = new();
 
         private sealed class FactoryEntry
         {
-            public Func<ServiceHost, object> Factory = default!;
+            public Func<ServiceContainer, object> Factory = default!;
             public bool AsSingleton;
             public bool TakeOwnership;
             // Lazy cache only when AsSingleton == true
@@ -41,55 +42,55 @@ namespace ZenECS.Core.DI
             public object? Cache;
         }
 
-        public ServiceHost(ServiceHost? parent = null)
+        public ServiceContainer(ServiceContainer? parent = null)
         {
             _parent = parent;
             _parent?._children.Add(this);
         }
 
-        public ServiceHost CreateChildScope() => new(this);
+        public ServiceContainer CreateChildScope() => new(this);
 
         // ---------------------------
         // Registration
         // ---------------------------
         private void EnsureWritable()
         {
-            if (_disposed) throw new ObjectDisposedException(nameof(ServiceHost));
-            if (_frozen) throw new InvalidOperationException("ServiceHost is frozen (no further registrations).");
+            if (_disposed) throw new ObjectDisposedException(nameof(ServiceContainer));
+            if (_sealed) throw new InvalidOperationException("ServiceHost is frozen (no further registrations).");
         }
 
-        public ServiceHost Freeze()
+        public ServiceContainer Seal()
         {
             lock (_gate)
             {
-                _frozen = true;
+                _sealed = true;
             }
             return this;
         }
 
-        public ServiceHost RegisterSingleton<T>(T instance, bool takeOwnership = true) where T : class
+        public ServiceContainer RegisterSingleton<T>(T instance, bool takeOwnership = true) where T : class
             => AppendSingleton(typeof(T), instance!, takeOwnership);
 
-        public ServiceHost AppendSingleton<T>(T instance, bool takeOwnership = true) where T : class
+        public ServiceContainer AppendSingleton<T>(T instance, bool takeOwnership = true) where T : class
             => AppendSingleton(typeof(T), instance!, takeOwnership);
 
-        public ServiceHost RegisterFactory<T>(
-            Func<ServiceHost, T> factory,
+        public ServiceContainer RegisterFactory<T>(
+            Func<ServiceContainer, T> factory,
             bool asSingleton = false,
             bool takeOwnership = true) where T : class
             => AppendFactory(typeof(T), h => factory(h)!, asSingleton, takeOwnership);
 
         // Non generic registrations (optional)
-        public ServiceHost RegisterSingleton(Type serviceType, object instance, bool takeOwnership = true)
+        public ServiceContainer RegisterSingleton(Type serviceType, object instance, bool takeOwnership = true)
             => AppendSingleton(serviceType, instance, takeOwnership);
 
-        public ServiceHost RegisterFactory(Type serviceType,
-            Func<ServiceHost, object> factory,
+        public ServiceContainer RegisterFactory(Type serviceType,
+            Func<ServiceContainer, object> factory,
             bool asSingleton = false,
             bool takeOwnership = true)
             => AppendFactory(serviceType, factory, asSingleton, takeOwnership);
 
-        private ServiceHost AppendSingleton(Type t, object instance, bool takeOwnership)
+        private ServiceContainer AppendSingleton(Type t, object instance, bool takeOwnership)
         {
             if (instance is null) throw new ArgumentNullException(nameof(instance));
             lock (_gate)
@@ -107,7 +108,7 @@ namespace ZenECS.Core.DI
             return this;
         }
 
-        private ServiceHost AppendFactory(Type t, Func<ServiceHost, object> factory, bool asSingleton, bool takeOwnership)
+        private ServiceContainer AppendFactory(Type t, Func<ServiceContainer, object> factory, bool asSingleton, bool takeOwnership)
         {
             if (factory is null) throw new ArgumentNullException(nameof(factory));
             lock (_gate)
@@ -133,8 +134,7 @@ namespace ZenECS.Core.DI
         // ---------------------------
         // Resolve (single)
         // ---------------------------
-        public T GetRequired<T>() where T : class
-            => (T)GetRequired(typeof(T));
+        public T GetRequired<T>() where T : class => (T)GetRequired(typeof(T));
 
         public object GetRequired(Type t)
         {
@@ -247,8 +247,7 @@ namespace ZenECS.Core.DI
             lock (_gate) return (_singletons.ContainsKey(t) || _factories.ContainsKey(t));
         }
 
-        public bool Contains<T>() where T : class
-            => TryGet(typeof(T), out _);
+        public bool Contains<T>() where T : class => TryGet(typeof(T), out _);
 
         public void Verify(params Type[] required)
         {
@@ -261,7 +260,7 @@ namespace ZenECS.Core.DI
             var sb = new StringBuilder();
             lock (_gate)
             {
-                sb.AppendLine($"ServiceHost (frozen={_frozen}, disposed={_disposed})");
+                sb.AppendLine($"ServiceHost (frozen={_sealed}, disposed={_disposed})");
                 foreach (var kv in _singletons)
                     sb.AppendLine($"  [S] {kv.Key.FullName} x{kv.Value.Count}");
                 foreach (var kv in _factories)
@@ -281,13 +280,13 @@ namespace ZenECS.Core.DI
         public void Dispose()
         {
             List<IDisposable> ownedSnapshot;
-            List<ServiceHost> childrenSnapshot;
+            List<ServiceContainer> childrenSnapshot;
             lock (_gate)
             {
                 if (_disposed) return;
                 _disposed = true;
                 ownedSnapshot = new List<IDisposable>(_owned);
-                childrenSnapshot = new List<ServiceHost>(_children);
+                childrenSnapshot = new List<ServiceContainer>(_children);
                 _owned.Clear();
                 _children.Clear();
                 _singletons.Clear();

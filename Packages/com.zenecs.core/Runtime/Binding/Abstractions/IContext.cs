@@ -1,5 +1,7 @@
 ﻿#nullable enable
 
+using ZenECS.Core.Internal.Contexts;
+
 namespace ZenECS.Core.Binding
 {
     /// <summary>
@@ -13,11 +15,11 @@ namespace ZenECS.Core.Binding
     public interface IContextInitialize
     {
         /// <remarks>Called once when the context is first registered for the entity. Lookup can be used to access other contexts.</remarks>
-        void Initialize(WorldOld worldOld, Entity entity, IContextLookup lookup);
+        void Initialize(IWorld w, Entity e, IContextLookup l);
 
 
         /// <remarks>Called when the context is removed or the entity/world is being destroyed.</remarks>
-        void Deinitialize(WorldOld worldOld, Entity entity);
+        void Deinitialize(IWorld w, Entity e);
     }
 
     /// <summary>
@@ -25,6 +27,6 @@ namespace ZenECS.Core.Binding
     /// </summary>
     public interface IContextReinitialize : IContextInitialize
     {
-        void Reinitialize(WorldOld worldOld, Entity entity, IContextLookup lookup);
+        void Reinitialize(IWorld w, Entity e, IContextLookup l);
     }
 }

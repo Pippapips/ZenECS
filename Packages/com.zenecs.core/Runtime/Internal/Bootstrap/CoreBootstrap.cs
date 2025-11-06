@@ -1,6 +1,11 @@
 #nullable enable
 using System;
 using ZenECS.Core.DI;
+using ZenECS.Core.Internal.Binding;
+using ZenECS.Core.Internal.Contexts;
+using ZenECS.Core.Internal.Hooking;
+using ZenECS.Core.Internal.Scheduling;
+using ZenECS.Core.Messaging;
 
 namespace ZenECS.Core.Internal.Bootstrap
 {
@@ -14,9 +19,9 @@ namespace ZenECS.Core.Internal.Bootstrap
         /// Build the process-wide root container.
         /// Register global, long-lived singletons here (e.g., KernelOptions).
         /// </summary>
-        internal static ServiceHost BuildRoot(KernelOptions? options = null)
+        internal static ServiceContainer BuildRoot(KernelOptions? options = null)
         {
-            var root = new ServiceHost();
+            var root = new ServiceContainer();
 
             // KernelOptions as a configurable singleton
             root.RegisterSingleton(options ?? new KernelOptions(), takeOwnership: false);
@@ -29,17 +34,24 @@ namespace ZenECS.Core.Internal.Bootstrap
         /// Build a per-world child scope. WorldImpl can optionally resolve services from here.
         /// Keep it lean; per-world resources should be owned and disposed with the world lifetime.
         /// </summary>
-        internal static ServiceHost BuildWorldScope(ServiceHost root)
+        internal static ServiceContainer BuildWorldScope(ServiceContainer root)
         {
             if (root is null) throw new ArgumentNullException(nameof(root));
             var world = root.CreateChildScope();
 
             // Example registrations (commented — WorldImpl currently constructs these directly):
-            // world.RegisterFactory<EntityStore>(_ => new EntityStore(), asSingleton: true);
-            // world.RegisterFactory<MessageBus>(_ => new MessageBus(), asSingleton: true);
-            // world.RegisterFactory<EventHub>(_ => new EventHub(), asSingleton: true);
-            // world.RegisterFactory<QueryGateway>(h => new QueryGateway(h.GetRequired<EntityStore>()), asSingleton: true);
-            world.RegisterFactory<ISystemRunner>(_ => new DefaultSystemRunner(), asSingleton: true);
+            world.RegisterFactory<IWorker>(_ => new Worker(), asSingleton: true);
+            world.RegisterFactory<IMessageBus>(_ => new MessageBus(), asSingleton: true);
+            world.RegisterFactory<IContextRegistry>(_ => new ContextRegistry(), asSingleton: true);
+            world.RegisterFactory<IBindingRouter>(h => new BindingRouter(h.GetRequired<IContextRegistry>()),
+                asSingleton: true);
+            world.RegisterFactory<IPermissionHook>(_ => new PermissionHook(), asSingleton: true);
+            world.RegisterFactory<ISystemRunner>(
+                h => new SystemRunner(
+                    h.GetRequired<IMessageBus>(),
+                    h.GetRequired<IWorker>(),
+                    h.GetRequired<IBindingRouter>(),
+                    h.GetRequired<IPermissionHook>()), asSingleton: true);
 
             return world;
         }

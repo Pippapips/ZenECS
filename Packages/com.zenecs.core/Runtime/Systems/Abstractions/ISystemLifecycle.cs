@@ -23,12 +23,12 @@ namespace ZenECS.Core.Systems
         /// Called once when the system runner initializes all systems.
         /// </summary>
         /// <param name="w">The ECS world instance.</param>
-        void Initialize(WorldOld w);
+        void Initialize(IWorld w);
 
         /// <summary>
         /// Called once when the system runner shuts down all systems.
         /// </summary>
         /// <param name="w">The ECS world instance.</param>
-        void Shutdown(WorldOld w);
+        void Shutdown(IWorld w);
     }
 }

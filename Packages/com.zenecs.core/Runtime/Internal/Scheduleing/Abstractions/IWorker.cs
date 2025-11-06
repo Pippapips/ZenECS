@@ -1,24 +1,30 @@
 ﻿// ──────────────────────────────────────────────────────────────────────────────
-// ZenECS Core — World subsystem
-// File: World.Pool.cs
-// Purpose: Pool creation/get helpers and internal wiring of component storage.
+// ZenECS Core
+// File: IMessageBus.cs
+// Purpose: Defines a minimal message-passing interface for ECS systems.
 // Key concepts:
-//   • Ensures pool existence and capacity before operations.
-//   • Centralizes pool management details.
-//
+//   • Lightweight publish/subscribe model for struct-based messages.
+//   • PumpAll() delivers all queued messages to subscribers once per frame.
+//   • Thread-safe by design for cross-system communication.
+// 
 // Copyright (c) 2025 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using ZenECS.Core.Internal;
 
-namespace ZenECS.Core
+namespace ZenECS.Core.Internal.Scheduling
 {
-    public sealed partial class WorldOld
+    internal interface IJob
     {
+        void Execute(IWorld w);
+    }
+    
+    internal interface IWorker
+    {
+        void Schedule(IJob? job);
+        int RunScheduledJobs(IWorld w);
+        void ClearAllScheduledJobs();
     }
 }

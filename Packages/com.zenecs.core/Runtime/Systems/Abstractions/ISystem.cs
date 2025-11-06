@@ -38,6 +38,6 @@ namespace ZenECS.Core.Systems
         /// Executes the system logic against the given <see cref="WorldOld"/>.
         /// </summary>
         /// <param name="w">The ECS world instance.</param>
-        void Run(WorldOld w);
+        void Run(IWorld w, float dt);
     }
 }

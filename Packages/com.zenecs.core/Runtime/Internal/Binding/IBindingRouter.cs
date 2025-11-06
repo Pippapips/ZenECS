@@ -1,4 +1,6 @@
-﻿namespace ZenECS.Core.Binding
+﻿using ZenECS.Core.Binding;
+
+namespace ZenECS.Core.Internal.Binding
 {
     public enum AttachOptions
     {
@@ -7,12 +9,12 @@
         WarnOnly = 2 // log warning and skip attach
     }
     
-    public interface IBindingRouter
+    internal interface IBindingRouter
     {
-        void Attach(Entity e, IBinder binder, AttachOptions options = AttachOptions.Default);
+        void Attach(IWorld w, Entity e, IBinder binder, AttachOptions options = AttachOptions.Strict);
         void Detach(Entity e, IBinder binder);
         void DetachAll(Entity e);
-        void OnEntityDestroyed(Entity e);
+        void OnEntityDestroyed(IWorld w, Entity e);
         void ApplyAll();
         void Dispatch<T>(in ComponentDelta<T> d) where T : struct;
     }

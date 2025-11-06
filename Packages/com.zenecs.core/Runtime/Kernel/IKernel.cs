@@ -13,15 +13,21 @@ namespace ZenECS.Core
     {
         /// <summary>Whether the kernel has been started and not yet shut down.</summary>
         bool IsRunning { get; }
+        bool IsPaused { get; }
 
         /// <summary>Total uptime (seconds) accumulated while running.</summary>
-        float UptimeSeconds { get; }
+        float SimulationTimeSeconds { get; }
+        float TotalTimeSeconds { get; }
+
+        long FrameCount { get; }
+        long FixedFrameCount { get; }
+        int FixedFrameIndexInFrame { get; }
 
         /// <summary>The currently selected world, if any.</summary>
         IWorld? CurrentWorld { get; }
 
         /// <summary>Behavioral options for world creation and ticking.</summary>
-        KernelOptions Options { get; }
+        KernelOptions? Options { get; }
 
         /// <summary>Raised when a world is created and registered.</summary>
         event Action<IWorld>? WorldCreated;
@@ -31,12 +37,6 @@ namespace ZenECS.Core
 
         /// <summary>Raised when <see cref="CurrentWorld"/> changes (may be null).</summary>
         event Action<IWorld?>? CurrentWorldChanged;
-
-        /// <summary>Initialize kernel state. Idempotent.</summary>
-        void Start();
-
-        /// <summary>Shut down the kernel, destroying all worlds. Idempotent.</summary>
-        void Shutdown();
 
         /// <summary>
         /// Create a new world.
@@ -58,6 +58,8 @@ namespace ZenECS.Core
             IEnumerable<string>? tags = null,
             bool setAsCurrent = false);
 
+        IWorld CreateWorld(bool setAsCurrent = false);
+
         /// <summary>Destroy a previously created world. No-op if not registered.</summary>
         void DestroyWorld(IWorld world);
 
@@ -70,6 +72,8 @@ namespace ZenECS.Core
         /// <summary>Find worlds which contain the given tag.</summary>
         IEnumerable<IWorld> FindByTag(string tag);
 
+        void SetCurrentWorld(IWorld world);
+        
         /// <summary>Set the current world using a safe handle (resolves or throws).</summary>
         void SetCurrentWorld(WorldHandle handle);
 
@@ -82,8 +86,12 @@ namespace ZenECS.Core
         
         event Action<IWorld, float>? OnBeginFrame;
         event Action<IWorld, float>? OnFixedStep;
-        event Action<IWorld, float>? OnLateFrame;
+        event Action<IWorld, float, float>? OnLateFrame;
         
         int Pump(float dt, float fixedDelta, int maxSubSteps, out float alpha);
+        
+        void Pause();
+        void Resume();
+        void TogglePause();
     }
 }

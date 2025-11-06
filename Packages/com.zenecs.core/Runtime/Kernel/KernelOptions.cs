@@ -13,8 +13,7 @@ namespace ZenECS.Core
         /// Factory used when generating a new <see cref="WorldId"/> for created worlds.
         /// Defaults to a Guid-based id.
         /// </summary>
-        public Func<WorldId> NewWorldIdFactory { get; set; } =
-            () => new WorldId(Guid.NewGuid());
+        public Func<WorldId> NewWorldIdFactory { get; set; } = () => new WorldId(Guid.NewGuid());
 
         /// <summary>
         /// Prefix used when auto-naming worlds that omit an explicit name.
@@ -35,28 +34,8 @@ namespace ZenECS.Core
         public bool AutoSelectNewWorld { get; set; } = false;
 
         /// <summary>
-        /// Clamp very large delta seconds values to avoid simulation spikes (e.g., after pause).
-        /// </summary>
-        public bool ClampDeltaSeconds { get; set; } = true;
-
-        /// <summary>
-        /// Maximum delta seconds used when <see cref="ClampDeltaSeconds"/> is enabled.
-        /// </summary>
-        public double DeltaClampMaxSeconds { get; set; } = 0.25; // 250ms
-
-        /// <summary>
         /// Generate a new world id using <see cref="NewWorldIdFactory"/>.
         /// </summary>
         public WorldId NewWorldId() => NewWorldIdFactory();
-
-        /// <summary>
-        /// Sanitize a delta value according to clamping &amp; validity rules.
-        /// </summary>
-        public double SanitizeDelta(double dt)
-        {
-            if (double.IsNaN(dt) || double.IsInfinity(dt) || dt < 0) return 0;
-            if (ClampDeltaSeconds && dt > DeltaClampMaxSeconds) return DeltaClampMaxSeconds;
-            return dt;
-        }
     }
 }

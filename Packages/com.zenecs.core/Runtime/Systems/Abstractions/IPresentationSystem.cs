@@ -26,12 +26,12 @@ namespace ZenECS.Core.Systems
         /// </summary>
         /// <param name="w">The ECS world.</param>
         /// <param name="alpha">Interpolation factor (1 = current frame, 0 = previous frame).</param>
-        void Run(WorldOld w, float alpha);
+        void Run(IWorld w, float dt, float alpha);
 
         /// <summary>
         /// Default implementation for compatibility with <see cref="ISystem"/>.
         /// Calls <see cref="Run(WorldOld, float)"/> with <c>alpha = 1f</c>.
         /// </summary>
-        void ISystem.Run(WorldOld w) => Run(w, 1f);
+        void ISystem.Run(IWorld w, float dt) => Run(w, dt, 1f);
     }
 }

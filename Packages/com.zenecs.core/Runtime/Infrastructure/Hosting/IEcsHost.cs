@@ -37,19 +37,19 @@ namespace ZenECS.Core.Infrastructure.Hosting
     {
         WorldOld WorldOld { get; }
         IMessageBus Bus { get; }
-        IBindingRouter BindingRouter { get; }
-        IContextRegistry ContextRegistry { get; }
+        // IBindingRouter BindingRouter { get; }
+        // IContextRegistry ContextRegistry { get; }
         bool IsRunning { get; }
 
-        void Start(WorldConfig config,
-            IEnumerable<ISystem> systems,
-            SystemRunnerOptions? options = null,
-            Action<string>? systemRunnerLog = null,
-            Action? onComplete = null);
-        void Shutdown();
-
-        // ---- Runner lifecycle / forwarding ----
-        SystemRunnerOptions RunnerOptions { get; }
+        // void Start(WorldConfig config,
+        //     IEnumerable<ISystem> systems,
+        //     SystemRunnerOptions? options = null,
+        //     Action<string>? systemRunnerLog = null,
+        //     Action? onComplete = null);
+        // void Shutdown();
+        //
+        // // ---- Runner lifecycle / forwarding ----
+        // SystemRunnerOptions RunnerOptions { get; }
         void BeginFrame(float dt);
         void FixedStep(float fixedDelta);
         void LateFrame(float alpha = 1.0f);

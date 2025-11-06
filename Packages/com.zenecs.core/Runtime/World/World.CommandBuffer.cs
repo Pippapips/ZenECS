@@ -59,7 +59,7 @@ namespace ZenECS.Core
         /// <see cref="WorldOld.EndWrite(CommandBuffer)"/> or <see cref="WorldOld.Schedule(CommandBuffer?)"/>.
         /// </para>
         /// </remarks>
-        public sealed class CommandBuffer : IJob, System.IDisposable
+        public sealed class CommandBuffer : IJobOld, System.IDisposable
         {
             internal readonly ConcurrentQueue<IOp> q = new();
 
@@ -153,7 +153,7 @@ namespace ZenECS.Core
             public void Destroy(Entity e) => q.Enqueue(new DestroyOp(e));
 
             // IJob: integration with the world's scheduler
-            void WorldOld.IJob.Execute(WorldOld w)
+            void WorldOld.IJobOld.Execute(WorldOld w)
             {
                 while (q.TryDequeue(out var op)) op.Apply(w);
             }
@@ -177,7 +177,7 @@ namespace ZenECS.Core
                         return;
                     }
                     w.AddComponentInternal(e, in v);
-                    w.BindingRouter?.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Added, v));
+                    //w.BindingRouter?.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Added, v));
                 }
             }
 
@@ -199,7 +199,7 @@ namespace ZenECS.Core
                     }
                     // Route through World.Replace to align with hooks/validation/events.
                     w.Replace(e, in v);
-                    w.BindingRouter?.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Changed, v));
+                    //w.BindingRouter?.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Changed, v));
                 }
             }
 
@@ -216,7 +216,7 @@ namespace ZenECS.Core
                     }
                     if (w.RemoveComponentInternal<T>(e))
                     {
-                        w.BindingRouter?.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Removed));
+                        //w.BindingRouter?.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Removed));
                     }
                 }
             }
@@ -290,7 +290,7 @@ namespace ZenECS.Core
         {
             if (cb != null)
             {
-                Schedule((IJob)cb);
+                Schedule((IJobOld)cb);
             }
         }
 

@@ -19,15 +19,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using ZenECS.Core.Systems;
 
-namespace ZenECS.Core.Systems
+namespace ZenECS.Core.Internal
 {
     /// <summary>
     /// Provides deterministic planning and ordering for ECS systems.
     /// Groups systems by execution phase (FrameSetup, Simulation, Presentation),
     /// performs topological sorting within each group, and validates phase markers.
     /// </summary>
-    public static class SystemPlanner
+    internal static class SystemPlanner
     {
         /// <summary>
         /// Represents an immutable result of system planning,

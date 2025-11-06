@@ -84,7 +84,6 @@ namespace ZenECS.Core.Infrastructure
         public static void Start(
             WorldConfig? config = null,
             IEnumerable<ISystem>? systems = null,
-            SystemRunnerOptions? options = null,
             Action<string>? systemRunnerLog = null,
             bool throwIfRunning = false,
             Action? onComplete = null)
@@ -97,20 +96,13 @@ namespace ZenECS.Core.Infrastructure
                     if (throwIfRunning) throw new InvalidOperationException("Kernel already started.");
                     return;
                 }
-                _defaultHost.Start(
-                    config ?? new WorldConfig(),
-                    systems ?? Array.Empty<ISystem>(),
-                    options,
-                    systemRunnerLog,
-                    onComplete);
+                // _defaultHost.Start(
+                //     config ?? new WorldConfig(),
+                //     systems ?? Array.Empty<ISystem>(),
+                //     systemRunnerLog,
+                //     onComplete);
             }
         }
-
-        /// <summary>
-        /// Gets the active <see cref="SystemRunnerOptions"/> from the underlying host.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the kernel has not been started.</exception>
-        public static Core.Systems.SystemRunnerOptions RunnerOptions => SnapshotHostOrThrow().RunnerOptions;
 
         /// <summary>
         /// Begins a new frame and runs Update-phase systems with the provided delta time.
@@ -159,7 +151,7 @@ namespace ZenECS.Core.Infrastructure
         {
             lock (_gate)
             {
-                _defaultHost?.Shutdown();
+                //_defaultHost?.Shutdown();
                 _defaultHost = null;
             }
         }
@@ -176,8 +168,8 @@ namespace ZenECS.Core.Infrastructure
         /// <exception cref="InvalidOperationException">Thrown when the kernel has not been started.</exception>
         public static IMessageBus Bus => SnapshotHostOrThrow().Bus;
         
-        public static IBindingRouter BindingRouter => SnapshotHostOrThrow().BindingRouter;
-        public static IContextRegistry ContextRegistry => SnapshotHostOrThrow().ContextRegistry;
+        // public static IBindingRouter BindingRouter => SnapshotHostOrThrow().BindingRouter;
+        // public static IContextRegistry ContextRegistry => SnapshotHostOrThrow().ContextRegistry;
 
         /// <summary>
         /// Replaces the current default host implementation.
@@ -190,7 +182,7 @@ namespace ZenECS.Core.Infrastructure
         {
             lock (_gate)
             {
-                if (takeover && _defaultHost?.IsRunning == true) _defaultHost.Shutdown();
+                //if (takeover && _defaultHost?.IsRunning == true) _defaultHost.Shutdown();
                 _defaultHost = host;
             }
         }

@@ -58,7 +58,7 @@ namespace ZenECS.Core
         /// }
         /// </code>
         /// </example>
-        public interface IJob
+        public interface IJobOld
         {
             /// <summary>Executes the job against the provided <see cref="WorldOld"/>.</summary>
             void Execute(WorldOld w);
@@ -67,13 +67,13 @@ namespace ZenECS.Core
         /// <summary>
         /// Thread-safe queue that stores scheduled jobs until they are executed.
         /// </summary>
-        private readonly ConcurrentQueue<IJob> jobQueue = new();
+        private readonly ConcurrentQueue<IJobOld> jobQueue = new();
 
         /// <summary>
         /// Enqueues a job for later execution. A null reference is ignored.
         /// </summary>
         /// <param name="job">The job instance to enqueue.</param>
-        private void Schedule(IJob? job)
+        private void Schedule(IJobOld? job)
         {
             if (job != null)
             {

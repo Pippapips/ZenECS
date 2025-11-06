@@ -1,29 +1,16 @@
-﻿// ──────────────────────────────────────────────────────────────────────────────
-// ZenECS Core — World subsystem
-// File: World.Hook.cs
-// Purpose: Read/Write permission hooks and value validation hooks (per-World).
-// Key concepts:
-//   • Fine-grained guards for safety and debugging.
-//   • Can layer over global EcsActions if present.
-//
-// Copyright (c) 2025 Pippapips Limited
-// License: MIT (https://opensource.org/licenses/MIT)
-// SPDX-License-Identifier: MIT
-// ─────────────────────────────────────────────────────────────────────────────-
-#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace ZenECS.Core
+namespace ZenECS.Core.Internal.Hooking
 {
-    public sealed partial class WorldOld
+    internal class PermissionHook : IPermissionHook
     {
         // ===== Per-World Hooks =====
 
         // ===== Hook storage (list-based) =====
-        private readonly List<Func<WorldOld, Entity, Type, bool>> _writePerms = new(2);
-        private readonly List<Func<WorldOld, Entity, Type, bool>> _readPerms  = new(1);
+        private readonly List<Func<IWorld, Entity, Type, bool>> _writePerms = new(2);
+        private readonly List<Func<IWorld, Entity, Type, bool>> _readPerms  = new(1);
         private readonly List<Func<object, bool>> _objValidators           = new(2);
 
         // ===== Write permissions =====
@@ -32,7 +19,7 @@ namespace ZenECS.Core
         /// Adds a write-permission predicate evaluated for every structural write in this world.
         /// </summary>
         /// <param name="hook">Predicate that must return <see langword="true"/> to allow the write.</param>
-        public void AddWritePermission(Func<WorldOld, Entity, Type, bool> hook)
+        public void AddWritePermission(Func<IWorld, Entity, Type, bool> hook)
         {
             if (hook != null) _writePerms.Add(hook);
         }
@@ -42,7 +29,7 @@ namespace ZenECS.Core
         /// </summary>
         /// <param name="hook">The predicate to remove.</param>
         /// <returns><see langword="true"/> if the predicate was removed; otherwise <see langword="false"/>.</returns>
-        public bool RemoveWritePermission(Func<WorldOld, Entity, Type, bool> hook)
+        public bool RemoveWritePermission(Func<IWorld, Entity, Type, bool> hook)
             => _writePerms.Remove(hook);
 
         /// <summary>
@@ -56,7 +43,7 @@ namespace ZenECS.Core
         /// Adds a read-permission predicate evaluated for component reads in this world.
         /// </summary>
         /// <param name="hook">Predicate that must return <see langword="true"/> to allow the read.</param>
-        public void AddReadPermission(Func<WorldOld, Entity, Type, bool> hook)
+        public void AddReadPermission(Func<IWorld, Entity, Type, bool> hook)
         {
             if (hook != null) _readPerms.Add(hook);
         }
@@ -66,7 +53,7 @@ namespace ZenECS.Core
         /// </summary>
         /// <param name="hook">The predicate to remove.</param>
         /// <returns><see langword="true"/> if the predicate was removed; otherwise <see langword="false"/>.</returns>
-        public bool RemoveReadPermission(Func<WorldOld, Entity, Type, bool> hook)
+        public bool RemoveReadPermission(Func<IWorld, Entity, Type, bool> hook)
             => _readPerms.Remove(hook);
 
         /// <summary>
@@ -164,11 +151,11 @@ namespace ZenECS.Core
         /// or if none are registered; otherwise <see langword="false"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal bool EvaluateWritePermission(Entity e, Type t)
+        public bool EvaluateWritePermission(IWorld w, Entity e, Type t)
         {
             // All hooks must return true to allow; if no hooks, allow.
             for (int i = 0; i < _writePerms.Count; i++)
-                if (!_writePerms[i](this, e, t)) return false;
+                if (!_writePerms[i](w, e, t)) return false;
             return true;
         }
 
@@ -182,10 +169,10 @@ namespace ZenECS.Core
         /// or if none are registered; otherwise <see langword="false"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool EvaluateReadPermission(Entity e, Type t)
+        public bool EvaluateReadPermission(IWorld w, Entity e, Type t)
         {
             for (int i = 0; i < _readPerms.Count; i++)
-                if (!_readPerms[i](this, e, t)) return false;
+                if (!_readPerms[i](w, e, t)) return false;
             return true;
         }
 

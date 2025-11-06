@@ -32,13 +32,27 @@ namespace ZenECS.Core
 
         // --- State -----------------------------------------------------------
 
+        private float _delta;
+        private float _simulationTime;
+        private float _totalTime;
+        private long _frameCount;
+        private long _fixedFrameCount;
+        private int _fixedFrameIndexInFrame;
+        private bool _frameHasBegun;
+        private bool _firstFixedStepThisFrame;
         private IWorld? _current;
-        private float _uptime;
-
+        private KernelOptions? _options;
+        
         public bool IsRunning { get; private set; }
-        public float UptimeSeconds => _uptime;
+        public bool IsPaused { get; private set; }
+        public float SimulationTimeSeconds => _simulationTime;
+        public float TotalTimeSeconds => _totalTime;
+        public long FrameCount => _frameCount;
+        public long FixedFrameCount => _fixedFrameCount;
+        public int FixedFrameIndexInFrame => _fixedFrameIndexInFrame;
+        
         public IWorld? CurrentWorld => _current;
-        public KernelOptions Options { get; }
+        public KernelOptions? Options => _options;
 
         public event Action<IWorld>? WorldCreated;
         public event Action<IWorld>? WorldDestroyed;
@@ -46,29 +60,25 @@ namespace ZenECS.Core
 
         public event Action<IWorld, float>? OnBeginFrame;
         public event Action<IWorld, float>? OnFixedStep;
-        public event Action<IWorld, float>? OnLateFrame;
+        public event Action<IWorld, float, float>? OnLateFrame;
         
         // --- Internal root services (DI/bootstrap), not exposed -------------
-        private readonly ServiceHost _root;
+        private readonly ServiceContainer? _root;
 
         // --- Ctor ------------------------------------------------------------
 
         public Kernel(KernelOptions? options = null)
         {
-            Options = options ?? new KernelOptions();
-            _root = Internal.Bootstrap.CoreBootstrap.BuildRoot();
-        }
-
-        // --- Lifecycle -------------------------------------------------------
-
-        public void Start()
-        {
             if (IsRunning) return;
             IsRunning = true;
-            _uptime = 0;
+            IsPaused = false;
+            _simulationTime = 0;
+            
+            _options = options ?? new KernelOptions();
+            _root = Internal.Bootstrap.CoreBootstrap.BuildRoot(_options);
         }
 
-        public void Shutdown()
+        public void Dispose()
         {
             if (!IsRunning) return;
 
@@ -76,8 +86,11 @@ namespace ZenECS.Core
             foreach (var w in _byId.Values.ToArray())
                 DestroyWorld(w);
 
+            _root?.Dispose();
+            _options = null;
             _current = null;
             IsRunning = false;
+            IsPaused = false;
         }
 
         // --- World Management ------------------------------------------------
@@ -97,10 +110,10 @@ namespace ZenECS.Core
         {
             var id = presetId ?? Options.NewWorldId();
             var finalName = name ?? $"{Options.AutoNamePrefix}{id.Value.ToString("N")[..6]}";
-            var finalTags = (tags ?? Array.Empty<string>()).ToArray();
+            var finalTags = (tags ?? new []{""}).ToArray();
 
             var scope = Internal.Bootstrap.CoreBootstrap.BuildWorldScope(_root);
-            var world = new Internal.WorldImpl(id, finalName, finalTags, this, scope);
+            var world = new Internal.World(id, finalName, finalTags, this, scope);
 
             if (!_byId.TryAdd(id, world))
                 throw new InvalidOperationException($"World with id {id} already exists.");
@@ -110,9 +123,8 @@ namespace ZenECS.Core
 
             WorldCreated?.Invoke(world);
 
-            // ★ 새 옵션: 생성 직후 현재 월드로 자동 지정
-            if (setAsCurrent)
-                SetCurrentWorld(new WorldHandle(this, world.Id));
+            if (Options.AutoSelectNewWorld || setAsCurrent)
+                SetCurrentWorld(world);
 
             return world;
         }
@@ -126,11 +138,10 @@ namespace ZenECS.Core
 
                 if (ReferenceEquals(_current, world))
                 {
-                    _current = null;
-                    CurrentWorldChanged?.Invoke(null);
+                    ClearCurrentWorld();
                 }
 
-                //world.Dispose();
+                world.Dispose();
                 WorldDestroyed?.Invoke(world);
             }
         }
@@ -154,6 +165,11 @@ namespace ZenECS.Core
                     yield return w;
         }
 
+        public void SetCurrentWorld(IWorld world)
+        {
+            SetCurrentWorld(new WorldHandle(this, world.Id));
+        }
+        
         public void SetCurrentWorld(WorldHandle handle)
         {
             var w = handle.ResolveOrThrow();
@@ -175,10 +191,16 @@ namespace ZenECS.Core
 
         public void BeginFrame(float dt)
         {
-            if (!IsRunning) return;
             if (dt < 0) dt = 0;
+            _totalTime += dt;
+            
+            if (!IsRunning || IsPaused) return;
 
-            _uptime += dt;
+            _delta = dt;
+            _frameHasBegun = true;
+            _firstFixedStepThisFrame = false;
+            _simulationTime += dt;
+            _frameCount++;
 
             if (Options.StepOnlyCurrentWhenSelected && _current is not null)
             {
@@ -200,8 +222,17 @@ namespace ZenECS.Core
 
         public void FixedStep(float fixedDelta)
         {
-            if (!IsRunning) return;
+            if (!IsRunning || IsPaused) return;
 
+            if (!_firstFixedStepThisFrame)
+            {
+                _fixedFrameIndexInFrame = 0;
+                _firstFixedStepThisFrame = true;
+            }
+
+            _fixedFrameCount++;
+            _fixedFrameIndexInFrame++;
+            
             if (Options.StepOnlyCurrentWhenSelected && _current is not null)
             {
                 if (!_current.IsPaused)
@@ -222,13 +253,15 @@ namespace ZenECS.Core
 
         public void LateFrame(float alpha = 1)
         {
-            if (!IsRunning) return;
+            if (!IsRunning || IsPaused) return;
+
+            _frameHasBegun = false;
 
             if (Options.StepOnlyCurrentWhenSelected && _current is not null)
             {
                 if (!_current.IsPaused)
                 {
-                    OnLateFrame?.Invoke(_current, alpha);
+                    OnLateFrame?.Invoke(_current, _delta, alpha);
                 }
                 return;
             }
@@ -237,14 +270,14 @@ namespace ZenECS.Core
             {
                 if (!w.IsPaused)
                 {
-                    OnLateFrame?.Invoke(w, alpha);
+                    OnLateFrame?.Invoke(w, _delta, alpha);
                 }
             }
         }
 
         public int Pump(float dt, float fixedDelta, int maxSubSteps, out float alpha)
         {
-            if (!IsRunning)
+            if (!IsRunning || IsPaused)
             {
                 alpha = 1;
                 return 0;
@@ -252,16 +285,31 @@ namespace ZenECS.Core
 
             BeginFrame(dt);
             int sub = 0;
-            while (_uptime >= fixedDelta && sub < maxSubSteps)
+            while (_simulationTime >= fixedDelta && sub < maxSubSteps)
             {
                 FixedStep(fixedDelta);
-                _uptime -= fixedDelta;
+                _simulationTime -= fixedDelta;
                 sub++;
             }
-            alpha = fixedDelta > 0f ? Math.Clamp(_uptime / fixedDelta, 0f, 1f) : 1f;
+            alpha = fixedDelta > 0f ? Math.Clamp(_simulationTime / fixedDelta, 0f, 1f) : 1f;
             return sub;
         }
-        
+
+        public void Pause()
+        {
+            IsPaused = true;
+        }
+
+        public void Resume()
+        {
+            IsPaused = false;
+        }
+
+        public void TogglePause()
+        {
+            IsPaused = !IsPaused;
+        }
+
         // --- Index maintenance ----------------------------------------------
 
         private void IndexName(IWorld w)
@@ -315,21 +363,5 @@ namespace ZenECS.Core
                 }
             }
         }
-
-        // --- IDisposable -----------------------------------------------------
-
-        public void Dispose()
-        {
-            Shutdown();
-        }
     }
 }
-
-// ------------------------
-// Internal namespace notes
-// ------------------------
-// - ZenECS.Core.Internal.Bootstrap.CoreBootstrap.BuildRoot(): builds process-wide service root.
-// - ZenECS.Core.Internal.Bootstrap.CoreBootstrap.BuildWorldScope(ServiceHost root): builds per-world scope.
-// - ZenECS.Core.Internal.WorldImpl : IWorld
-//
-// These are intentionally internal and are implemented under Runtime/Internal/*.

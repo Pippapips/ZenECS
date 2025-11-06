@@ -3,8 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ZenECS.Core;
+using ZenECS.Core.Binding;
 
-namespace ZenECS.Core.Binding
+namespace ZenECS.Core.Internal.Contexts
 {
     public sealed class ContextRegistry : IContextRegistry
     {
@@ -20,16 +21,16 @@ namespace ZenECS.Core.Binding
         }
 
         // World → EntityId → (KeyType → Entry)
-        private readonly Dictionary<WorldOld, Dictionary<Entity, Dictionary<Type, Entry>>> _map
-            = new(ReferenceEqualityComparer<WorldOld>.Instance);
+        private readonly Dictionary<IWorld, Dictionary<Entity, Dictionary<Type, Entry>>> _map
+            = new(ReferenceEqualityComparer<IWorld>.Instance);
 
-        private Dictionary<Entity, Dictionary<Type, Entry>> Bag(WorldOld w)
+        private Dictionary<Entity, Dictionary<Type, Entry>> Bag(IWorld w)
             => _map.TryGetValue(w, out var d) ? d : (_map[w] = new());
-        private Dictionary<Type, Entry> Bag(WorldOld w, Entity e)
+        private Dictionary<Type, Entry> Bag(IWorld w, Entity e)
             => Bag(w).TryGetValue(e, out var d) ? d : (Bag(w)[e] = new());
 
         // ── Lookup ───────────────────────────────────────────────────────
-        public bool TryGet<T>(WorldOld w, Entity e, out T ctx) where T : class, IContext
+        public bool TryGet<T>(IWorld w, Entity e, out T ctx) where T : class, IContext
         {
             ctx = null!;
             if (!Bag(w).TryGetValue(e, out var dict)) return false;
@@ -51,23 +52,23 @@ namespace ZenECS.Core.Binding
             return ctx != null;
         }
 
-        bool TryGet(WorldOld w, Entity e, out IContext ctx)
+        bool TryGet(IWorld w, Entity e, out IContext ctx)
         {
             return TryGet(w, e, out ctx);
         }
 
-        public T Get<T>(WorldOld w, Entity e) where T : class, IContext
+        public T Get<T>(IWorld w, Entity e) where T : class, IContext
             => TryGet<T>(w, e, out var v) ? v :
                throw new KeyNotFoundException($"Context {typeof(T).Name} not found for {e}.");
 
-        public bool Has<T>(WorldOld w, Entity e) where T : class, IContext
+        public bool Has<T>(IWorld w, Entity e) where T : class, IContext
             => TryGet<T>(w, e, out _);
 
-        public bool Has(WorldOld w, Entity e, IContext ctx)
+        public bool Has(IWorld w, Entity e, IContext ctx)
             => TryGet(w, e, out _);
 
         // ── Register / Remove ────────────────────────────────────────────
-        public void Register(WorldOld w, Entity e, IContext ctx)
+        public void Register(IWorld w, Entity e, IContext ctx)
         {
             if (ctx == null) throw new ArgumentNullException(nameof(ctx));
             var key = ctx.GetType();
@@ -97,7 +98,7 @@ namespace ZenECS.Core.Binding
             }
         }
 
-        public bool Remove(WorldOld w, Entity e, IContext ctx)
+        public bool Remove(IWorld w, Entity e, IContext ctx)
         {
             if (ctx == null) return false;
             if (!Bag(w).TryGetValue(e, out var dict)) return false;
@@ -117,11 +118,11 @@ namespace ZenECS.Core.Binding
             return true;
         }
 
-        public bool Remove<T>(WorldOld w, Entity e) where T : class, IContext
+        public bool Remove<T>(IWorld w, Entity e) where T : class, IContext
             => TryGet<T>(w, e, out var ctx) && Remove(w, e, ctx);
 
         // ── Reinitialize ─────────────────────────────────────────────────
-        public bool Reinitialize(WorldOld w, Entity e, IContext ctx)
+        public bool Reinitialize(IWorld w, Entity e, IContext ctx)
         {
             if (!Bag(w).TryGetValue(e, out var dict)) return false;
             var key = dict.Keys.FirstOrDefault(t => ReferenceEquals(dict[t].Ctx, ctx)) ??
@@ -150,11 +151,11 @@ namespace ZenECS.Core.Binding
             return true;
         }
 
-        public bool Reinitialize<T>(WorldOld w, Entity e) where T : class, IContext
+        public bool Reinitialize<T>(IWorld w, Entity e) where T : class, IContext
             => TryGet<T>(w, e, out var ctx) && Reinitialize(w, e, ctx);
 
         // ── State / Clear ────────────────────────────────────────────────
-        public bool IsInitialized(WorldOld w, Entity e, IContext ctx)
+        public bool IsInitialized(IWorld w, Entity e, IContext ctx)
         {
             if (!Bag(w).TryGetValue(e, out var dict)) return false;
             foreach (var kv in dict)
@@ -162,10 +163,10 @@ namespace ZenECS.Core.Binding
             return false;
         }
 
-        public bool IsInitialized<T>(WorldOld w, Entity e) where T : class, IContext
+        public bool IsInitialized<T>(IWorld w, Entity e) where T : class, IContext
             => TryGet<T>(w, e, out var ctx) && IsInitialized(w, e, ctx);
 
-        public void Clear(WorldOld w, Entity e)
+        public void Clear(IWorld w, Entity e)
         {
             if (!Bag(w).TryGetValue(e, out var dict)) return;
             foreach (var entry in dict.Values.ToArray())
