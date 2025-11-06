@@ -17,10 +17,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using ZenECS.Core.Internal;
+using ZenECS.Core.Internal.ComponentPooling;
 
-namespace ZenECS.Core
+namespace ZenECS.Core.Internal
 {
-    public sealed partial class WorldOld
+    internal sealed partial class World
     {
         /*
          Example:

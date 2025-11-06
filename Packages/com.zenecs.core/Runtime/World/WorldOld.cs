@@ -69,7 +69,7 @@ namespace ZenECS.Core
             _alive      = new BitSet(_cfg.InitialEntityCapacity);                         // Bitmap of occupied entity slots
             _generation = new int[_cfg.InitialEntityCapacity];                            // Per-slot generation counters (start at 0)
             _freeIds    = new Stack<int>(_cfg.InitialFreeIdCapacity);                     // Recycled IDs storage for destroyed entities
-            _pools       = new Dictionary<Type, IComponentPool>(_cfg.InitialPoolBuckets); // Type→pool map
+            //_pools       = new Dictionary<Type, IComponentPool>(_cfg.InitialPoolBuckets); // Type→pool map
             _nextId     = 1;                                                              // New entities start from 1
         }
 

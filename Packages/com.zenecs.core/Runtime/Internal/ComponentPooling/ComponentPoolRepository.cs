@@ -29,13 +29,18 @@ namespace ZenECS.Core.Internal.ComponentPooling
         /// <summary>
         /// Mapping of component <see cref="Type"/> to its corresponding <see cref="IComponentPool"/>.
         /// </summary>
-        private readonly Dictionary<Type, IComponentPool> _pools;
+        private Dictionary<Type, IComponentPool> _pools;
 
         /// <summary>
         /// Cache of factory delegates that create new component pools by type.
         /// Used to avoid repeated reflection calls.
         /// </summary>
         private static readonly ConcurrentDictionary<Type, Func<IComponentPool>> _poolFactories = new();
+
+        public void Initialize(int poolSize)
+        {
+            _pools = new Dictionary<Type, IComponentPool>(poolSize);
+        }
         
         public IComponentPool GetPool<T>() where T : struct
         {
@@ -68,7 +73,12 @@ namespace ZenECS.Core.Internal.ComponentPooling
 
             return pool;
         }
-        
+        public void RemoveEntity(Entity e)
+        {
+            foreach (var kv in _pools)
+                kv.Value.Remove(e.Id);
+        }
+
         /// <summary>
         /// Retrieves an existing factory for a given component type, or builds a new one if missing.
         /// </summary>

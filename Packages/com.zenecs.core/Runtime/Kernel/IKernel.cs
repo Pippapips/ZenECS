@@ -47,18 +47,8 @@ namespace ZenECS.Core
         /// <param name="presetId">Optional preassigned id; otherwise generated via <see cref="KernelOptions.NewWorldId"/>.</param>
         /// <param name="setAsCurrent">If true, select the created world as current immediately.</param>
         /// <returns>The created world instance.</returns>
-        IWorld CreateWorld(
-            string? name = null,
-            IEnumerable<string>? tags = null,
-            WorldId? presetId = null,
+        IWorld CreateWorld(WorldConfig? cfg = null, string? name = null, IEnumerable<string>? tags = null, WorldId? presetId = null,
             bool setAsCurrent = false);
-
-        IWorld CreateWorld(
-            string? name = null,
-            IEnumerable<string>? tags = null,
-            bool setAsCurrent = false);
-
-        IWorld CreateWorld(bool setAsCurrent = false);
 
         /// <summary>Destroy a previously created world. No-op if not registered.</summary>
         void DestroyWorld(IWorld world);

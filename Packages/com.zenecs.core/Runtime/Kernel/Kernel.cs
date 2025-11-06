@@ -95,17 +95,7 @@ namespace ZenECS.Core
 
         // --- World Management ------------------------------------------------
 
-        public IWorld CreateWorld(bool setAsCurrent = false)
-        {
-            return CreateWorld(null, null, null, setAsCurrent);
-        }
-        
-        public IWorld CreateWorld(string? name = null, IEnumerable<string>? tags = null, bool setAsCurrent = false)
-        {
-            return CreateWorld(name, tags, null, setAsCurrent);
-        }
-
-        public IWorld CreateWorld(string? name = null, IEnumerable<string>? tags = null, WorldId? presetId = null,
+        public IWorld CreateWorld(WorldConfig? cfg = null, string? name = null, IEnumerable<string>? tags = null, WorldId? presetId = null,
             bool setAsCurrent = false)
         {
             var id = presetId ?? Options.NewWorldId();
@@ -113,7 +103,7 @@ namespace ZenECS.Core
             var finalTags = (tags ?? new []{""}).ToArray();
 
             var scope = Internal.Bootstrap.CoreBootstrap.BuildWorldScope(_root);
-            var world = new Internal.World(id, finalName, finalTags, this, scope);
+            var world = new Internal.World(cfg, id, finalName, finalTags, this, scope);
 
             if (!_byId.TryAdd(id, world))
                 throw new InvalidOperationException($"World with id {id} already exists.");

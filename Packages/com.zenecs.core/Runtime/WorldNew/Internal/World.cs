@@ -1,10 +1,16 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using ZenECS.Core.Binding;
 using ZenECS.Core.DI;
+using ZenECS.Core.Infrastructure;
 using ZenECS.Core.Internal;
+using ZenECS.Core.Internal.Binding;
 using ZenECS.Core.Internal.Bootstrap;
 using ZenECS.Core.Internal.ComponentPooling;
+using ZenECS.Core.Internal.Contexts;
+using ZenECS.Core.Internal.Hooking;
 using ZenECS.Core.Systems;
 
 namespace ZenECS.Core.Internal
@@ -26,6 +32,9 @@ namespace ZenECS.Core.Internal
         // private readonly EventHub      _events;
         // private readonly QueryGateway  _query;
         private readonly ISystemRunner _runner;
+        private readonly IPermissionHook _permissionHook;
+        private readonly IBindingRouter _bindingRouter;
+        private readonly IContextRegistry _contextRegistry;
         private readonly IComponentPoolRepository _componentPoolRepository;
 
         // // Read-only view + binding host are composed here (need this world context)
@@ -39,27 +48,65 @@ namespace ZenECS.Core.Internal
 
         private bool _pause;
 
-        public World(WorldId id, string name, IReadOnlyCollection<string> tags, IKernel kernel, ServiceContainer scope)
+        private readonly WorldConfig _cfg;
+
+        /// <summary>
+        /// Bitset of occupied entity slots (alive flags).
+        /// </summary>
+        private BitSet _alive;
+
+        /// <summary>
+        /// Next id to issue for newly created entities.
+        /// Starts at 1 to reserve 0 for "null"/invalid semantics.
+        /// </summary>
+        private int _nextId = 1;
+
+        /// <summary>
+        /// Recycled IDs of destroyed entities (LIFO). When creating a new entity,
+        /// the world prefers reusing a freed id from this stack before growing.
+        /// </summary>
+        private Stack<int> _freeIds;
+
+        /// <summary>
+        /// Generation array: per-slot generation counter used to prevent zombie handles.
+        /// Increments when an id is destroyed and reused, so stale handles no longer match.
+        /// </summary>
+        private int[] _generation; // 세대(Generation) 배열: slot별 현재 세대 카운터 → Generation array: per-slot current generation
+        
+        public World(WorldConfig? cfg, WorldId id, string name, IReadOnlyCollection<string> tags, IKernel kernel, ServiceContainer scope)
         {
+            _cfg = cfg ?? new WorldConfig();
+            
+            _alive      = new BitSet(_cfg.InitialEntityCapacity);                         // Bitmap of occupied entity slots
+            _generation = new int[_cfg.InitialEntityCapacity];                            // Per-slot generation counters (start at 0)
+            _freeIds    = new Stack<int>(_cfg.InitialFreeIdCapacity);                     // Recycled IDs storage for destroyed entities
+            _nextId     = 1;                                                              // New entities start from 1
+            _pause      = false;
+            
             Id = id;
             Name = name;
             Tags = tags.Count == 0 ? Array.Empty<string>() : tags;
 
-            _pause = false;
-
             _kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
-            _kernel.OnBeginFrame += BeginFrame;
-            _kernel.OnFixedStep += FixedStep;
-            _kernel.OnLateFrame += LateFrame;
-
             _scope = scope ?? throw new ArgumentNullException(nameof(scope));
+
             // _store  = _scope.GetRequired<EntityStore>();
             // _bus    = _scope.GetRequired<MessageBus>();
             // _events = _scope.GetRequired<EventHub>();
             // _query  = _scope.GetRequired<QueryGateway>();
+            _contextRegistry = _scope.GetRequired<IContextRegistry>();
+            _bindingRouter = _scope.GetRequired<IBindingRouter>();
+            _permissionHook = _scope.GetRequired<IPermissionHook>();
             _runner = _scope.GetRequired<ISystemRunner>();
             _componentPoolRepository = _scope.GetRequired<IComponentPoolRepository>();
+            _componentPoolRepository.Initialize(_cfg.InitialPoolBuckets);
 
+            // attach
+            
+            _kernel.OnBeginFrame += BeginFrame;
+            _kernel.OnFixedStep += FixedStep;
+            _kernel.OnLateFrame += LateFrame;
+            
             // // Compose read-only view & addon host (world-scoped)
             // _readOnlyView = new ReadOnlyView(_query, _events);
             // _addons       = new AddonHost(_readOnlyView);
@@ -87,27 +134,146 @@ namespace ZenECS.Core.Internal
             // Dispose DI scope (owned singletons/factories)
             _scope.Dispose();
         }
+        public bool IsAlive(Entity e) => _alive.Get(e.Id) && _generation[e.Id] == e.Gen;
+        private void EnsureEntityCapacity(int id)
+        {
+            // BitSet expansion and preservation are handled internally by Set().
+            if (!_alive.Get(id)) _alive.Set(id, false);
 
+            // Expand the generation array based on the configured growth policy.
+            if (id >= _generation.Length)
+            {
+                int required = id + 1;
+                int newLen = ComputeNewCapacity(_generation.Length, required);
+                Array.Resize(ref _generation, newLen);
+            }
+        }
+
+        private int ComputeNewCapacity(int current, int required)
+        {
+            if (_cfg.GrowthPolicy == GrowthPolicy.Step)
+            {
+                int step = _cfg.GrowthStep;
+                // Round up to the nearest multiple of step.
+                int blocks = (required + step - 1) / step;
+                return Math.Max(required, blocks * step);
+            }
+            else // Doubling
+            {
+                int cap = Math.Max(16, current);
+                while (cap < required)
+                {
+                    int next = cap * 2;
+                    // Guarantee at least +256 to avoid too small incremental growth.
+                    if (next - cap < 256) next = cap + 256;
+                    cap = next;
+                }
+                return cap;
+            }
+        }
+
+        public Entity SpawnEntity(int? fixedId = null)
+        {
+            int id;
+            if (fixedId.HasValue)
+            {
+                id = fixedId.Value;
+                EnsureEntityCapacity(id);
+                _alive.Set(id, true);
+            }
+            else if (_freeIds.Count > 0)
+            {
+                id = _freeIds.Pop();
+                EnsureEntityCapacity(id);
+                _alive.Set(id, true);
+            }
+            else
+            {
+                id = _nextId++;
+                EnsureEntityCapacity(id);
+                _alive.Set(id, true);
+            }
+
+            // The current slot's generation is embedded into the handle.
+            var e = new Entity(id, _generation[id]);
+            //EntityEvents.RaiseCreated(this, e);
+            return e;
+        }
+        
+        public void DespawnEntity(Entity e)
+        {
+            if (!IsAlive(e)) return;
+
+            //EntityEvents.RaiseDestroyRequested(this, e);
+            _bindingRouter.OnEntityDestroyed(this, e);
+            _contextRegistry.Clear(this, e);
+            
+            _componentPoolRepository.RemoveEntity(e);
+
+            _alive.Set(e.Id, false);
+
+            // Increment generation: ensures that even if the same id is reused, the handle differs.
+            _generation[e.Id]++;
+            _freeIds.Push(e.Id);
+
+            //EntityEvents.RaiseDestroyed(this, e);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool HandleDenied(string reason)
+        {
+            switch (EcsRuntimeOptions.WritePolicy)
+            {
+                case EcsRuntimeOptions.WriteFailurePolicy.Throw:
+                    throw new InvalidOperationException(reason);
+                case EcsRuntimeOptions.WriteFailurePolicy.Log:
+                    EcsRuntimeOptions.Log.Warn(reason);
+                    return false;
+                default:
+                    return false;
+            }
+        }
+        
         public void AddComponent<T>(Entity e, in T value) where T : struct
         {
-            if (!.EvaluateWritePermission(e, typeof(T)))
+            if (!_permissionHook.EvaluateWritePermission(this, e, typeof(T)))
             {
                 if (!HandleDenied($"[Denied] Add<{typeof(T).Name}> e={e.Id} reason=WritePermission"))
                     return;
             }
 
-            bool valid = w.ValidateTyped(in value);
+            bool valid = _permissionHook.ValidateTyped(in value);
             if (!valid)
             {
                 if (!HandleDenied($"[Denied] Add<{typeof(T).Name}> e={e.Id} reason=ValidateFailed value={value}"))
                     return;
             }
-            else if (!w.ValidateObject(value!))
+            else if (!_permissionHook.ValidateObject(value!))
             {
                 if (!HandleDenied($"[Denied] Add<{typeof(T).Name}> e={e.Id} reason=ValidateFailed(value-hook) value={value}"))
                     return;
             }
+
+            if (HasComponent<T>(e)) return;
+            
+            ref var r = ref RefComponent<T>(e);
+            r = value;
+            _bindingRouter.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Added, value));
         }
+        
+        public ref T RefComponent<T>(Entity e) where T : struct
+        {
+            var pool = (ComponentPool<T>)_componentPoolRepository.GetPool<T>();
+            return ref pool.Ref(e.Id);
+        }
+ 
+         public ref T RefComponentExisting<T>(Entity e) where T : struct
+         {
+             var pool = _componentPoolRepository.TryGetPool<T>();
+             if (pool == null || !pool.Has(e.Id))
+                 throw new InvalidOperationException($"RefExisting<{typeof(T).Name}> missing on {e.Id}");
+             return ref ((ComponentPool<T>)pool).Ref(e.Id);
+         }
         
         public bool HasComponent<T>(Entity e) where T : struct
         {

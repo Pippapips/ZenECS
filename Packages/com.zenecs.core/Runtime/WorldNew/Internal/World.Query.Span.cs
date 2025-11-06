@@ -14,9 +14,9 @@
 #nullable enable
 using System;
 
-namespace ZenECS.Core
+namespace ZenECS.Core.Internal
 {
-    public sealed partial class WorldOld
+    internal sealed partial class World
     {
         /*
          Example:
@@ -75,8 +75,8 @@ namespace ZenECS.Core
             {
                 var e = ents[i];
                 if (!IsAlive(e)) continue;
-                if (!HasComponentInternal<T>(e)) continue;
-                action(ref RefComponentExistingInternal<T>(e));
+                if (!HasComponent<T>(e)) continue;
+                action(ref RefComponentExisting<T>(e));
             }
         }
     }

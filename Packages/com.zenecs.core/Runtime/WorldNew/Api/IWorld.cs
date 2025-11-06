@@ -19,7 +19,14 @@ namespace ZenECS.Core
         void Initialize(IEnumerable<ISystem>? systems = null, Action<string>? warn = null);
         void Shutdown();
 
+        bool IsAlive(Entity e);
+        Entity SpawnEntity(int? fixedId = null);
+        void DespawnEntity(Entity e);
+        //void DespawnAllEntities(bool fireEvents = false);
+        
         void AddComponent<T>(Entity e, in T value) where T : struct;
         bool HasComponent<T>(Entity e) where T : struct;
+        ref T RefComponent<T>(Entity e) where T : struct;
+        ref T RefComponentExisting<T>(Entity e) where T : struct;
     }
 }

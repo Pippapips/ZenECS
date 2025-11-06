@@ -2,6 +2,7 @@
 using System;
 using ZenECS.Core.DI;
 using ZenECS.Core.Internal.Binding;
+using ZenECS.Core.Internal.ComponentPooling;
 using ZenECS.Core.Internal.Contexts;
 using ZenECS.Core.Internal.Hooking;
 using ZenECS.Core.Internal.Scheduling;
@@ -39,20 +40,21 @@ namespace ZenECS.Core.Internal.Bootstrap
             if (root is null) throw new ArgumentNullException(nameof(root));
             var world = root.CreateChildScope();
 
-            // Example registrations (commented — WorldImpl currently constructs these directly):
+            // Composition Root
             world.RegisterFactory<IWorker>(_ => new Worker(), asSingleton: true);
             world.RegisterFactory<IMessageBus>(_ => new MessageBus(), asSingleton: true);
             world.RegisterFactory<IContextRegistry>(_ => new ContextRegistry(), asSingleton: true);
-            world.RegisterFactory<IBindingRouter>(h => new BindingRouter(h.GetRequired<IContextRegistry>()),
-                asSingleton: true);
+            world.RegisterFactory<IComponentPoolRepository>(_ => new ComponentPoolRepository(), asSingleton: true);
+            world.RegisterFactory<IBindingRouter>(sp => new BindingRouter(
+                    sp.GetRequired<IContextRegistry>()), asSingleton: true);
             world.RegisterFactory<IPermissionHook>(_ => new PermissionHook(), asSingleton: true);
-            world.RegisterFactory<ISystemRunner>(
-                h => new SystemRunner(
-                    h.GetRequired<IMessageBus>(),
-                    h.GetRequired<IWorker>(),
-                    h.GetRequired<IBindingRouter>(),
-                    h.GetRequired<IPermissionHook>()), asSingleton: true);
+            world.RegisterFactory<ISystemRunner>(sp => new SystemRunner(
+                    sp.GetRequired<IMessageBus>(),
+                    sp.GetRequired<IWorker>(),
+                    sp.GetRequired<IBindingRouter>(),
+                    sp.GetRequired<IPermissionHook>()), asSingleton: true);
 
+            world.Seal();
             return world;
         }
     }

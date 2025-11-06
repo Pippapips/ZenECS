@@ -14,10 +14,11 @@
 using System;
 using System.Collections.Generic;
 using ZenECS.Core.Internal;
+using ZenECS.Core.Internal.ComponentPooling;
 
-namespace ZenECS.Core
+namespace ZenECS.Core.Internal
 {
-    public sealed partial class WorldOld
+    internal sealed partial class World : IWorld
     {
         /// <summary>
         /// Selects a seed pool — the smallest non-empty pool among the given ones.
@@ -180,30 +181,33 @@ namespace ZenECS.Core
         public struct QueryEnumerable<T1, T2>
             where T1 : struct where T2 : struct
         {
-            private readonly WorldOld _w;
+            private readonly IWorld _w;
+            private readonly IComponentPoolRepository _poolRepository;
             private readonly Filter _f;
 
-            internal QueryEnumerable(WorldOld w, Filter f) { this._w = w; this._f = f; }
+            internal QueryEnumerable(IWorld w, IComponentPoolRepository poolRepository, Filter f) { this._w = w; this._poolRepository = poolRepository; this._f = f; }
 
             /// <summary>Gets the value-type enumerator.</summary>
-            public Enumerator GetEnumerator() => new(_w, _f);
+            public Enumerator GetEnumerator() => new(_w, _poolRepository, _f);
 
             /// <summary>Value-type enumerator for entities with <typeparamref name="T1"/> and <typeparamref name="T2"/>.</summary>
             public struct Enumerator
             {
-                private readonly WorldOld _w;
+                private readonly IWorld _w;
+                private readonly IComponentPoolRepository _poolRepository;
                 private readonly IComponentPool? _a, _b;
                 private readonly ResolvedFilter _rf;
                 private readonly IEnumerator<(int id, object boxed)> it;
                 private Entity _cur;
 
                 /// <summary>Initializes the enumerator for a given world and filter.</summary>
-                public Enumerator(WorldOld w, Filter f)
+                public Enumerator(IWorld w, IComponentPoolRepository poolRepository, Filter f)
                 {
                     this._w = w;
-                    _a = w.TryGetPoolInternal<T1>();
-                    _b = w.TryGetPoolInternal<T2>();
-                    _rf = w.ResolveFilter(f);
+                    this._poolRepository = poolRepository;
+                    _a = _poolRepository.TryGetPool<T1>();
+                    _b = _poolRepository.TryGetPool<T2>();
+                    _rf = ResolveFilter(f);
                     var seed = Seed(_a, _b);
                     it = (seed != null ? seed.EnumerateAll().GetEnumerator() : Empty().GetEnumerator());
                     _cur = default;
