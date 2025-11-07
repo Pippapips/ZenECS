@@ -14,6 +14,7 @@ namespace ZenECS.Core.Internal.ComponentPooling
         IComponentPool GetPool<T>() where T : struct;
         ComponentPool<T>? TryGetPool<T>() where T : struct;
         IComponentPool GetOrCreatePoolByType(Type t);
+        IComponentPool? GetPool(Type t);
         void RemoveEntity(Entity e);
     }
 }

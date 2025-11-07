@@ -16,12 +16,16 @@ namespace ZenECS.Core
         bool IsPaused { get; }
 
         /// <summary>Total uptime (seconds) accumulated while running.</summary>
-        float SimulationTimeSeconds { get; }
+        float SimulationAccumulatorSeconds { get; }
         float TotalTimeSeconds { get; }
 
         long FrameCount { get; }
         long FixedFrameCount { get; }
         int FixedFrameIndexInFrame { get; }
+        
+        /// <summary>커널이 실제로 '고정 스텝'을 실행한 누적 시뮬레이션 시간(초). 
+        /// 프레임 누적 경과 시간이 아니라, 고정 스텝으로 처리된 총합만 집계합니다.</summary>
+        double TotalSimulatedSeconds { get; }
 
         /// <summary>The currently selected world, if any.</summary>
         IWorld? CurrentWorld { get; }
@@ -62,6 +66,12 @@ namespace ZenECS.Core
         /// <summary>Find worlds which contain the given tag.</summary>
         IEnumerable<IWorld> FindByTag(string tag);
 
+        /// <summary>여러 태그 중 하나라도 일치하는 월드들을 반환.</summary>
+        IEnumerable<IWorld> FindByAnyTag(params string[] tags);
+
+        /// <summary>이름 prefix로 월드 검색(대소문자 무시 권장).</summary>
+        IEnumerable<IWorld> FindByNamePrefix(string prefix);
+        
         void SetCurrentWorld(IWorld world);
         
         /// <summary>Set the current world using a safe handle (resolves or throws).</summary>
@@ -78,7 +88,7 @@ namespace ZenECS.Core
         event Action<IWorld, float>? OnFixedStep;
         event Action<IWorld, float, float>? OnLateFrame;
         
-        int Pump(float dt, float fixedDelta, int maxSubSteps, out float alpha);
+        int PumpAndLateFrame(float dt, float fixedDelta, int maxSubSteps);
         
         void Pause();
         void Resume();

@@ -47,6 +47,7 @@ namespace ZenECS.Core.Internal
         public bool IsPaused => _pause;
 
         private bool _pause;
+        private bool _disposed;
 
         private readonly WorldConfig _cfg;
 
@@ -72,17 +73,20 @@ namespace ZenECS.Core.Internal
         /// Increments when an id is destroyed and reused, so stale handles no longer match.
         /// </summary>
         private int[] _generation; // 세대(Generation) 배열: slot별 현재 세대 카운터 → Generation array: per-slot current generation
-        
-        public World(WorldConfig? cfg, WorldId id, string name, IReadOnlyCollection<string> tags, IKernel kernel, ServiceContainer scope)
+
+        public int GenerationOf(int id) => _generation[id];
+
+        public World(WorldConfig? cfg, WorldId id, string name, IReadOnlyCollection<string> tags, IKernel kernel,
+            ServiceContainer scope)
         {
             _cfg = cfg ?? new WorldConfig();
-            
-            _alive      = new BitSet(_cfg.InitialEntityCapacity);                         // Bitmap of occupied entity slots
-            _generation = new int[_cfg.InitialEntityCapacity];                            // Per-slot generation counters (start at 0)
-            _freeIds    = new Stack<int>(_cfg.InitialFreeIdCapacity);                     // Recycled IDs storage for destroyed entities
-            _nextId     = 1;                                                              // New entities start from 1
-            _pause      = false;
-            
+
+            _alive = new BitSet(_cfg.InitialEntityCapacity); // Bitmap of occupied entity slots
+            _generation = new int[_cfg.InitialEntityCapacity]; // Per-slot generation counters (start at 0)
+            _freeIds = new Stack<int>(_cfg.InitialFreeIdCapacity); // Recycled IDs storage for destroyed entities
+            _nextId = 1; // New entities start from 1
+            _pause = false;
+
             Id = id;
             Name = name;
             Tags = tags.Count == 0 ? Array.Empty<string>() : tags;
@@ -102,11 +106,11 @@ namespace ZenECS.Core.Internal
             _componentPoolRepository.Initialize(_cfg.InitialPoolBuckets);
 
             // attach
-            
+
             _kernel.OnBeginFrame += BeginFrame;
             _kernel.OnFixedStep += FixedStep;
             _kernel.OnLateFrame += LateFrame;
-            
+
             // // Compose read-only view & addon host (world-scoped)
             // _readOnlyView = new ReadOnlyView(_query, _events);
             // _addons       = new AddonHost(_readOnlyView);
@@ -114,19 +118,11 @@ namespace ZenECS.Core.Internal
 
         public void Dispose()
         {
-            Shutdown();
-        }
-        
-        public void Initialize(IEnumerable<ISystem>? systems = null, Action<string>? warn = null)
-        {
-            _runner.Build(systems, warn);
-            _runner.Initialize(this);
-        }
-
-        public void Shutdown()
-        {
-            _runner.Shutdown(this);
+            if (_disposed) return;
+            _disposed = true;
             
+            _runner.Shutdown(this);
+
             _kernel.OnBeginFrame -= BeginFrame;
             _kernel.OnFixedStep -= FixedStep;
             _kernel.OnLateFrame -= LateFrame;
@@ -134,7 +130,15 @@ namespace ZenECS.Core.Internal
             // Dispose DI scope (owned singletons/factories)
             _scope.Dispose();
         }
+
+        public void Initialize(IEnumerable<ISystem>? systems = null, Action<string>? warn = null)
+        {
+            _runner.Build(systems, warn);
+            _runner.Initialize(this);
+        }
+
         public bool IsAlive(Entity e) => _alive.Get(e.Id) && _generation[e.Id] == e.Gen;
+
         private void EnsureEntityCapacity(int id)
         {
             // BitSet expansion and preservation are handled internally by Set().
@@ -168,6 +172,7 @@ namespace ZenECS.Core.Internal
                     if (next - cap < 256) next = cap + 256;
                     cap = next;
                 }
+
                 return cap;
             }
         }
@@ -199,7 +204,7 @@ namespace ZenECS.Core.Internal
             //EntityEvents.RaiseCreated(this, e);
             return e;
         }
-        
+
         public void DespawnEntity(Entity e)
         {
             if (!IsAlive(e)) return;
@@ -207,7 +212,7 @@ namespace ZenECS.Core.Internal
             //EntityEvents.RaiseDestroyRequested(this, e);
             _bindingRouter.OnEntityDestroyed(this, e);
             _contextRegistry.Clear(this, e);
-            
+
             _componentPoolRepository.RemoveEntity(e);
 
             _alive.Set(e.Id, false);
@@ -217,68 +222,6 @@ namespace ZenECS.Core.Internal
             _freeIds.Push(e.Id);
 
             //EntityEvents.RaiseDestroyed(this, e);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static bool HandleDenied(string reason)
-        {
-            switch (EcsRuntimeOptions.WritePolicy)
-            {
-                case EcsRuntimeOptions.WriteFailurePolicy.Throw:
-                    throw new InvalidOperationException(reason);
-                case EcsRuntimeOptions.WriteFailurePolicy.Log:
-                    EcsRuntimeOptions.Log.Warn(reason);
-                    return false;
-                default:
-                    return false;
-            }
-        }
-        
-        public void AddComponent<T>(Entity e, in T value) where T : struct
-        {
-            if (!_permissionHook.EvaluateWritePermission(this, e, typeof(T)))
-            {
-                if (!HandleDenied($"[Denied] Add<{typeof(T).Name}> e={e.Id} reason=WritePermission"))
-                    return;
-            }
-
-            bool valid = _permissionHook.ValidateTyped(in value);
-            if (!valid)
-            {
-                if (!HandleDenied($"[Denied] Add<{typeof(T).Name}> e={e.Id} reason=ValidateFailed value={value}"))
-                    return;
-            }
-            else if (!_permissionHook.ValidateObject(value!))
-            {
-                if (!HandleDenied($"[Denied] Add<{typeof(T).Name}> e={e.Id} reason=ValidateFailed(value-hook) value={value}"))
-                    return;
-            }
-
-            if (HasComponent<T>(e)) return;
-            
-            ref var r = ref RefComponent<T>(e);
-            r = value;
-            _bindingRouter.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Added, value));
-        }
-        
-        public ref T RefComponent<T>(Entity e) where T : struct
-        {
-            var pool = (ComponentPool<T>)_componentPoolRepository.GetPool<T>();
-            return ref pool.Ref(e.Id);
-        }
- 
-         public ref T RefComponentExisting<T>(Entity e) where T : struct
-         {
-             var pool = _componentPoolRepository.TryGetPool<T>();
-             if (pool == null || !pool.Has(e.Id))
-                 throw new InvalidOperationException($"RefExisting<{typeof(T).Name}> missing on {e.Id}");
-             return ref ((ComponentPool<T>)pool).Ref(e.Id);
-         }
-        
-        public bool HasComponent<T>(Entity e) where T : struct
-        {
-            var pool = _componentPoolRepository.TryGetPool<T>();
-            return pool != null && pool.Has(e.Id);
         }
 
         public void Pause()

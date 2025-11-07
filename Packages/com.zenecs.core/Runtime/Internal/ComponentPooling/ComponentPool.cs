@@ -166,20 +166,17 @@ namespace ZenECS.Core.Internal.ComponentPooling
                 _data[entityId] = default;
         }
 
-        /// <summary>
-        /// Enumerates all active components with their corresponding entity IDs.
-        /// Uses a simple for-loop with bit checks (optimized for JIT).
-        /// </summary>
-        public IEnumerable<(int id, object boxed)> EnumerateAll()
-        {
-            var data = _data;
-            int len = data.Length;
-            for (int i = 0; i < len; i++)
-            {
-                if (_present.Get(i))
-                    yield return (i, (object)data[i]);
-            }
-        }
+        // 상한: 내부 배열 길이(=스캔 범위)
+        public int Capacity => _data?.Length ?? 0;
+
+        // 스파스 구조: denseIndex == entityId
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int EntityIdAt(int index) => index;
+
+        // 🔁 기존의 iterator(yield return) 제거하고 값타입 열거자 반환
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PoolEnumerator EnumerateAll()
+            => new PoolEnumerator(this);        
 
         /// <summary>
         /// Returns the component as a boxed object (null if missing).

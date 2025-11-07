@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using ZenECS.Core.DI;
+using ZenECS.Core.Internal;
 
 namespace ZenECS.Core
 {
@@ -33,24 +34,27 @@ namespace ZenECS.Core
         // --- State -----------------------------------------------------------
 
         private float _delta;
-        private float _simulationTime;
+        private float _simulationAccumulatorSeconds;
         private float _totalTime;
         private long _frameCount;
         private long _fixedFrameCount;
         private int _fixedFrameIndexInFrame;
         private bool _frameHasBegun;
         private bool _firstFixedStepThisFrame;
-        private IWorld? _current;
+        private double _totalSimulatedSeconds; // 누적 시뮬레이션 시간(초)
         private KernelOptions? _options;
-        
+
         public bool IsRunning { get; private set; }
         public bool IsPaused { get; private set; }
-        public float SimulationTimeSeconds => _simulationTime;
+        public float SimulationAccumulatorSeconds => _simulationAccumulatorSeconds;
         public float TotalTimeSeconds => _totalTime;
         public long FrameCount => _frameCount;
         public long FixedFrameCount => _fixedFrameCount;
         public int FixedFrameIndexInFrame => _fixedFrameIndexInFrame;
-        
+        public double TotalSimulatedSeconds => _totalSimulatedSeconds;
+
+        private IWorld? _current;
+
         public IWorld? CurrentWorld => _current;
         public KernelOptions? Options => _options;
 
@@ -61,7 +65,7 @@ namespace ZenECS.Core
         public event Action<IWorld, float>? OnBeginFrame;
         public event Action<IWorld, float>? OnFixedStep;
         public event Action<IWorld, float, float>? OnLateFrame;
-        
+
         // --- Internal root services (DI/bootstrap), not exposed -------------
         private readonly ServiceContainer? _root;
 
@@ -72,8 +76,8 @@ namespace ZenECS.Core
             if (IsRunning) return;
             IsRunning = true;
             IsPaused = false;
-            _simulationTime = 0;
-            
+            _simulationAccumulatorSeconds = 0;
+
             _options = options ?? new KernelOptions();
             _root = Internal.Bootstrap.CoreBootstrap.BuildRoot(_options);
         }
@@ -91,16 +95,18 @@ namespace ZenECS.Core
             _current = null;
             IsRunning = false;
             IsPaused = false;
+            _totalSimulatedSeconds = 0;
         }
 
         // --- World Management ------------------------------------------------
 
-        public IWorld CreateWorld(WorldConfig? cfg = null, string? name = null, IEnumerable<string>? tags = null, WorldId? presetId = null,
+        public IWorld CreateWorld(WorldConfig? cfg = null, string? name = null, IEnumerable<string>? tags = null,
+            WorldId? presetId = null,
             bool setAsCurrent = false)
         {
             var id = presetId ?? Options.NewWorldId();
             var finalName = name ?? $"{Options.AutoNamePrefix}{id.Value.ToString("N")[..6]}";
-            var finalTags = (tags ?? new []{""}).ToArray();
+            var finalTags = (tags ?? Array.Empty<string>()).ToArray();
 
             var scope = Internal.Bootstrap.CoreBootstrap.BuildWorldScope(_root);
             var world = new Internal.World(cfg, id, finalName, finalTags, this, scope);
@@ -131,8 +137,8 @@ namespace ZenECS.Core
                     ClearCurrentWorld();
                 }
 
-                world.Dispose();
                 WorldDestroyed?.Invoke(world);
+                world.Dispose();
             }
         }
 
@@ -155,11 +161,74 @@ namespace ZenECS.Core
                     yield return w;
         }
 
+        public IEnumerable<IWorld> FindByAnyTag(params string[] tags)
+        {
+            if (tags == null || tags.Length == 0)
+                yield break;
+
+            // 태그 정규화(공백 제거 + 대소문자 무시 Distinct)
+            var allowed = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var t in tags)
+                if (!string.IsNullOrWhiteSpace(t))
+                    allowed.Add(t.Trim());
+            if (allowed.Count == 0)
+                yield break;
+
+            // 같은 WorldId 중복 방지
+            var seen = new HashSet<WorldId>(); // WorldId가 struct면 기본 Equality로 충분(필요시 IEqualityComparer 제공)
+
+            // ConcurrentDictionary는 ToArray()로 '키-값 쌍' 스냅샷을 안전하게 얻을 수 있다.
+            foreach (var kv in _byTag.ToArray()) // KeyValuePair<string, HashSet<WorldId>>
+            {
+                var tag = kv.Key;
+                if (!allowed.Contains(tag))
+                    continue;
+
+                // 값(HashSet<WorldId>)은 스레드 세이프가 아니므로 반드시 한 번 더 스냅샷
+                WorldId[] ids = kv.Value.ToArray();
+
+                foreach (var id in ids)
+                {
+                    if (!seen.Add(id)) // 이미 반환한 월드면 skip
+                        continue;
+
+                    if (_byId.TryGetValue(id, out var world) && world != null)
+                        yield return world;
+                }
+            }
+        }
+
+        public IEnumerable<IWorld> FindByNamePrefix(string prefix)
+        {
+            if (string.IsNullOrWhiteSpace(prefix))
+                yield break;
+
+            var p = prefix.Trim();
+            var seen = new HashSet<WorldId>(); // 같은 월드가 여러 이름에 걸려도 중복 방지
+
+            // _byName: ConcurrentDictionary<string, HashSet<WorldId>>  가정
+            foreach (var kv in _byName.ToArray()) // 스냅샷
+            {
+                var name   = kv.Key;
+                var idSet  = kv.Value;                 // HashSet<WorldId>
+                if (name == null || !name.StartsWith(p, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                // HashSet은 스레드세이프가 아니므로 스냅샷을 떠서 순회
+                foreach (var wid in idSet.ToArray())
+                {
+                    if (!seen.Add(wid)) continue;
+                    if (_byId.TryGetValue(wid, out var world) && world != null)
+                        yield return world;
+                }
+            }
+        }
+
         public void SetCurrentWorld(IWorld world)
         {
             SetCurrentWorld(new WorldHandle(this, world.Id));
         }
-        
+
         public void SetCurrentWorld(WorldHandle handle)
         {
             var w = handle.ResolveOrThrow();
@@ -183,13 +252,13 @@ namespace ZenECS.Core
         {
             if (dt < 0) dt = 0;
             _totalTime += dt;
-            
+
             if (!IsRunning || IsPaused) return;
 
             _delta = dt;
             _frameHasBegun = true;
             _firstFixedStepThisFrame = false;
-            _simulationTime += dt;
+            _simulationAccumulatorSeconds += dt;
             _frameCount++;
 
             if (Options.StepOnlyCurrentWhenSelected && _current is not null)
@@ -198,6 +267,7 @@ namespace ZenECS.Core
                 {
                     OnBeginFrame?.Invoke(_current, dt);
                 }
+
                 return;
             }
 
@@ -222,6 +292,7 @@ namespace ZenECS.Core
 
             _fixedFrameCount++;
             _fixedFrameIndexInFrame++;
+            _totalSimulatedSeconds += fixedDelta;
             
             if (Options.StepOnlyCurrentWhenSelected && _current is not null)
             {
@@ -229,6 +300,7 @@ namespace ZenECS.Core
                 {
                     OnFixedStep?.Invoke(_current, fixedDelta);
                 }
+
                 return;
             }
 
@@ -253,6 +325,7 @@ namespace ZenECS.Core
                 {
                     OnLateFrame?.Invoke(_current, _delta, alpha);
                 }
+
                 return;
             }
 
@@ -265,23 +338,25 @@ namespace ZenECS.Core
             }
         }
 
-        public int Pump(float dt, float fixedDelta, int maxSubSteps, out float alpha)
+        public int PumpAndLateFrame(float dt, float fixedDelta, int maxSubSteps)
         {
             if (!IsRunning || IsPaused)
             {
-                alpha = 1;
+                LateFrame(1);
                 return 0;
             }
 
             BeginFrame(dt);
             int sub = 0;
-            while (_simulationTime >= fixedDelta && sub < maxSubSteps)
+            while (_simulationAccumulatorSeconds >= fixedDelta && sub < maxSubSteps)
             {
                 FixedStep(fixedDelta);
-                _simulationTime -= fixedDelta;
+                _simulationAccumulatorSeconds -= fixedDelta;
                 sub++;
             }
-            alpha = fixedDelta > 0f ? Math.Clamp(_simulationTime / fixedDelta, 0f, 1f) : 1f;
+
+            var alpha = fixedDelta > 0f ? Math.Clamp(_simulationAccumulatorSeconds / fixedDelta, 0f, 1f) : 1f;
+            LateFrame(alpha);
             return sub;
         }
 

@@ -57,6 +57,11 @@ namespace ZenECS.Core.Internal.ComponentPooling
         public ComponentPool<T>? TryGetPool<T>() where T : struct =>
             _pools.TryGetValue(typeof(T), out var p) ? (ComponentPool<T>)p : null;
 
+        public IComponentPool? GetPool(Type t)
+        {
+            return _pools.GetValueOrDefault(t);
+        } 
+
         public IComponentPool GetOrCreatePoolByType(Type t)
         {
             if (!_pools.TryGetValue(t, out var pool))

@@ -24,7 +24,7 @@ namespace ZenECS.Core.Internal.Binding
         {
             if (binder == null) throw new ArgumentNullException(nameof(binder));
             ValidateRequiredContexts(binder, w, e, options);
-            binder.Bind(w, e);
+            binder.Bind(w, e, _ctx);
             if (!_byEntity.TryGetValue(e, out var list))
                 _byEntity[e] = list = new List<IBinder>(4);
             InsertOrdered(list, binder);
