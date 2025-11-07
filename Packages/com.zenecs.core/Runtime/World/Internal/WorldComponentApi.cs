@@ -110,5 +110,12 @@ namespace ZenECS.Core.Internal
             r = value;
             _bindingRouter.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Changed, value));
         }
+        
+         public IEnumerable<(Type type, object? boxed)> GetAllComponents(Entity e)
+         {
+             foreach (var kv in _componentPoolRepository.Pools)
+                 if (kv.Value.Has(e.Id))
+                     yield return (kv.Key, kv.Value.GetBoxed(e.Id));
+         }
     }
 }

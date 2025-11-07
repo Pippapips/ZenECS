@@ -139,6 +139,18 @@ namespace ZenECS.Core.Internal
 
         public bool IsAlive(Entity e) => _alive.Get(e.Id) && _generation[e.Id] == e.Gen;
 
+         /// <summary>
+         /// Returns a list of all currently alive entities.
+         /// </summary>
+         public List<Entity> GetAllEntities()
+         {
+             var list = new List<Entity>(_nextId);
+             for (int id = 1; id < _nextId; id++)
+                 if (_alive.Get(id))
+                     list.Add(new Entity(id, _generation[id]));
+             return list;
+         }
+        
         private void EnsureEntityCapacity(int id)
         {
             // BitSet expansion and preservation are handled internally by Set().

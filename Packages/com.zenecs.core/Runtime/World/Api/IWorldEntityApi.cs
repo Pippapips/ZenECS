@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace ZenECS.Core
 {
@@ -8,5 +9,6 @@ namespace ZenECS.Core
         Entity SpawnEntity(int? fixedId = null);
         void DespawnEntity(Entity e);
         //void DespawnAllEntities(bool fireEvents = false);
+        List<Entity> GetAllEntities();
     }
 }

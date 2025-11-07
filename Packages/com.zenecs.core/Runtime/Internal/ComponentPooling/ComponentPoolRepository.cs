@@ -37,6 +37,8 @@ namespace ZenECS.Core.Internal.ComponentPooling
         /// </summary>
         private static readonly ConcurrentDictionary<Type, Func<IComponentPool>> _poolFactories = new();
 
+        public Dictionary<Type, IComponentPool> Pools => _pools;
+
         public void Initialize(int poolSize)
         {
             _pools = new Dictionary<Type, IComponentPool>(poolSize);
