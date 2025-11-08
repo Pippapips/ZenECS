@@ -18,7 +18,6 @@ using System.Diagnostics;
 using System.Threading;
 using ZenECS;              // Kernel
 using ZenECS.Core;
-using ZenECS.Core.Infrastructure; // World, WorldConfig
 using ZenECS.Core.Systems;        // IVariableRunSystem, IPresentationSystem
 
 namespace ZenEcsCoreSamples.WorldReset
@@ -46,28 +45,28 @@ namespace ZenEcsCoreSamples.WorldReset
     {
         private bool _done;
 
-        public void Run(WorldOld w)
+        public void Run(IWorld w, float dt)
         {
             if (_done) return;
 
             Console.WriteLine("=== World.Reset demo (keepCapacity vs hard reset) ===");
 
             // Seed a few entities
-            var e1 = w.CreateEntity();
-            var e2 = w.CreateEntity();
-            w.Add(e1, new Health(100));
-            w.Add(e2, new Health(50));
+            var e1 = w.SpawnEntity();
+            var e2 = w.SpawnEntity();
+            w.AddComponent(e1, new Health(100));
+            w.AddComponent(e2, new Health(50));
 
-            Console.WriteLine($"Before reset: alive={w.AliveCount}, e1.Has(Health)={w.Has<Health>(e1)}");
+            Console.WriteLine($"Before reset: alive={w.AliveCount}, e1.Has(Health)={w.HasComponent<Health>(e1)}");
 
             // Option A: Keep capacity (fast clear). Preserves internal arrays/pools.
             w.Reset(keepCapacity: true);
             Console.WriteLine($"After Reset(keepCapacity:true): alive={w.AliveCount}");
 
             // Re-seed to verify the world still works and reuses capacity
-            var e3 = w.CreateEntity();
-            w.Add(e3, new Health(77));
-            Console.WriteLine($"Re-seed: alive={w.AliveCount}, e3.Has(Health)={w.Has<Health>(e3)}");
+            var e3 = w.SpawnEntity();
+            w.AddComponent(e3, new Health(77));
+            Console.WriteLine($"Re-seed: alive={w.AliveCount}, e3.Has(Health)={w.HasComponent<Health>(e3)}");
 
             // Option B: Hard reset — rebuild internal structures from initial config
             w.Reset(keepCapacity: false);
@@ -83,10 +82,8 @@ namespace ZenEcsCoreSamples.WorldReset
     [PresentationGroup]
     public sealed class PrintSummarySystem : IPresentationSystem
     {
-        public void Run(WorldOld w, float alpha)
+        public void Run(IWorld w, float dt, float alpha)
         {
-            // Pure read-only logging for demonstration
-            Console.WriteLine($"[Late] Frame {w.FrameCount}, alive={w.AliveCount}");
         }
     }
 
@@ -99,17 +96,15 @@ namespace ZenEcsCoreSamples.WorldReset
         {
             Console.WriteLine("=== ZenECS Core Sample — World Reset (Kernel) ===");
 
-            EcsKernel.Start(
-                new WorldConfig(initialEntityCapacity: 8, initialFreeIdCapacity: 8),
-                new ISystem[]
-                {
-                    new WorldResetDemoSystem(), // Simulation (writes)
-                    new PrintSummarySystem(),   // Presentation (read-only)
-                },
-                options: null,
-                systemRunnerLog: Console.WriteLine,
-                onComplete: () => { /* optional setup */ }
-            );
+            var kernel = new Kernel();
+            var world = kernel.CreateWorld();
+            kernel.SetCurrentWorld(world);
+            
+            world.Initialize(new ISystem[]
+            {
+                new WorldResetDemoSystem(),
+                new PrintSummarySystem()
+            });
 
             const float fixedDelta = 1f / 60f;   // 60Hz simulation
             const int   maxSubSteps = 4;
@@ -132,14 +127,13 @@ namespace ZenEcsCoreSamples.WorldReset
                 float dt = (float)(now - prev);
                 prev = now;
 
-                EcsKernel.Pump(dt, fixedDelta, maxSubSteps, out var alpha);
-                EcsKernel.LateFrame(alpha);
+                kernel.PumpAndLateFrame(dt, fixedDelta, maxSubSteps);
 
                 Thread.Sleep(10); // be gentle to CPU
             }
 
             Console.WriteLine("Shutting down...");
-            EcsKernel.Shutdown();
+            kernel.Dispose();
             Console.WriteLine("Done.");
         }
     }

@@ -18,7 +18,6 @@ using System.Diagnostics;
 using System.Threading;
 using ZenECS;
 using ZenECS.Core;
-using ZenECS.Core.Infrastructure;
 using ZenECS.Core.Serialization;
 using ZenECS.Core.Serialization.Formats.Binary;
 using ZenECS.Core.Systems;
@@ -79,13 +78,13 @@ namespace ZenEcsCoreSamples.Snapshot
     {
         public int Order => 0;
 
-        public void Run(WorldOld worldOld)
+        public void Run(IWorld world)
         {
-            foreach (var e in worldOld.Query<PositionV1>())
+            foreach (var e in world.Query<PositionV1>())
             {
-                var old = worldOld.Read<PositionV1>(e);
-                worldOld.Replace(e, new PositionV2(old.X, old.Y, layer: 1));
-                worldOld.Remove<PositionV1>(e);
+                var old = world.ReadComponent<PositionV1>(e);
+                world.ReplaceComponent(e, new PositionV2(old.X, old.Y, layer: 1));
+                world.RemoveComponent<PositionV1>(e);
             }
         }
     }
@@ -94,19 +93,38 @@ namespace ZenEcsCoreSamples.Snapshot
     // Systems
     // ──────────────────────────────────────────────────────────────────────────
 
-    /// <summary>
-    /// Creates a snapshot in memory, reloads it into a new world, performs
-    /// migration (V1 → V2), and logs results.
-    /// </summary>
-    [SimulationGroup]
-    public sealed class SnapshotDemoSystem : IVariableRunSystem
+    [PresentationGroup]
+    public sealed class PrintSummarySystem : IPresentationSystem
     {
-        private bool _done;
-
-        public void Run(WorldOld w)
+        public void Run(WorldOld w, float alpha)
         {
-            if (_done) return;
-            Console.WriteLine("=== Snapshot I/O + Post-Migration Demo ===");
+        }
+        public void Run(IWorld w, float dt, float alpha)
+        {
+            // read-only logging for demonstration
+            foreach (var e in w.Query<PositionV2>())
+            {
+                var p = w.ReadComponent<PositionV2>(e);
+                Console.WriteLine($"Entity {e.Id}: PositionV2={p}");
+            }
+        }
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // Program Entry
+    // ──────────────────────────────────────────────────────────────────────────
+    public static class Program
+    {
+        public static void Main()
+        {
+            Console.WriteLine("=== ZenECS Core Sample - SnapshotIO + PostMigration (Kernel) ===");
+
+            IKernel kernel = new Kernel();
+            var world = kernel.CreateWorld(new WorldConfig(initialEntityCapacity: 8));
+            world.Initialize(new ISystem[]
+            {
+                new PrintSummarySystem()
+            });
 
             // Register StableIds & formatters at runtime
             ComponentRegistry.Register("com.zenecs.samples.position.v1", typeof(PositionV1));
@@ -115,16 +133,19 @@ namespace ZenEcsCoreSamples.Snapshot
             ComponentRegistry.RegisterFormatter(new PositionV2Formatter(), "com.zenecs.samples.position.v2");
 
             // Create data in V1
-            var e = w.CreateEntity();
-            w.Add(e, new PositionV1(3, 7));
+            var e = world.SpawnEntity();
+            world.AddComponent(e, new PositionV1(3, 7));
 
             // Save snapshot (binary) into memory stream
             using var ms = new MemoryStream();
-            w.SaveFullSnapshotBinary(ms);
+            world.SaveFullSnapshotBinary(ms);
             Console.WriteLine($"Saved snapshot bytes: {ms.Length}");
-
+            
+            world.ReplaceComponent(e, new PositionV1(103, 107));
+            
+            
             // Load snapshot into a NEW world
-            var world2 = new WorldOld(new WorldConfig(initialEntityCapacity: 8));
+            var world2 = kernel.CreateWorld(new WorldConfig(initialEntityCapacity: 8));
             ComponentRegistry.Register("com.zenecs.samples.position.v1", typeof(PositionV1));
             ComponentRegistry.Register("com.zenecs.samples.position.v2", typeof(PositionV2));
             ComponentRegistry.RegisterFormatter(new PositionV1Formatter(), "com.zenecs.samples.position.v1");
@@ -139,49 +160,11 @@ namespace ZenEcsCoreSamples.Snapshot
             // Verify results
             foreach (var e2 in world2.Query<PositionV2>())
             {
-                var p = world2.Read<PositionV2>(e2);
+                var p = world2.ReadComponent<PositionV2>(e2);
                 Console.WriteLine($"Migrated entity {e2.Id} → {p}");
             }
-
-            _done = true;
-        }
-    }
-
-    [PresentationGroup]
-    public sealed class PrintSummarySystem : IPresentationSystem
-    {
-        public void Run(WorldOld w, float alpha)
-        {
-            // read-only logging for demonstration
-            foreach (var e in w.Query<PositionV2>())
-            {
-                var p = w.Read<PositionV2>(e);
-                Console.WriteLine($"Frame {w.FrameCount} Entity {e.Id}: PositionV2={p}");
-            }
-        }
-    }
-
-    // ──────────────────────────────────────────────────────────────────────────
-    // Program Entry
-    // ──────────────────────────────────────────────────────────────────────────
-    public static class Program
-    {
-        public static void Main()
-        {
-            Console.WriteLine("=== ZenECS Core Sample - SnapshotIO + PostMigration (Kernel) ===");
-
-            EcsKernel.Start(
-                new WorldConfig(initialEntityCapacity: 8),
-                new ISystem[]
-                {
-                    new SnapshotDemoSystem(),  // Simulation system that performs IO + migration
-                    new PrintSummarySystem(),  // Presentation system (read-only)
-                },
-                options: null,
-                systemRunnerLog: Console.WriteLine,
-                onComplete: () => { }
-            );
-
+            
+            
             const float fixedDelta = 1f / 60f;
             const int maxSubSteps = 4;
 
@@ -203,14 +186,13 @@ namespace ZenEcsCoreSamples.Snapshot
                 float dt = (float)(now - prev);
                 prev = now;
 
-                EcsKernel.Pump(dt, fixedDelta, maxSubSteps, out var alpha);
-                EcsKernel.LateFrame(alpha);
+                kernel.PumpAndLateFrame(dt, fixedDelta, maxSubSteps);
 
                 Thread.Sleep(10);
             }
 
             Console.WriteLine("Shutting down...");
-            EcsKernel.Shutdown();
+            kernel.Dispose();
             Console.WriteLine("Done.");
         }
     }

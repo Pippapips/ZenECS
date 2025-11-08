@@ -18,7 +18,7 @@ using System.Diagnostics;
 using System.Threading;
 using ZenECS;              // Kernel
 using ZenECS.Core;
-using ZenECS.Core.Infrastructure; // World, WorldConfig
+using ZenECS.Core.Abstractions.Diagnostics;
 using ZenECS.Core.Systems;        // IVariableRunSystem, IPresentationSystem
 
 namespace ZenEcsCoreSamples.CommandBuffer
@@ -54,41 +54,41 @@ namespace ZenEcsCoreSamples.CommandBuffer
     {
         private bool _done;
 
-        public void Run(WorldOld w)
+        public void Run(IWorld w, float dt)
         {
             if (_done) return;
 
             Console.WriteLine("=== CommandBuffer demo (deferred + immediate) ===");
 
             // Create two entities
-            var e1 = w.CreateEntity();
-            var e2 = w.CreateEntity();
+            var e1 = w.SpawnEntity();
+            var e2 = w.SpawnEntity();
 
             // 1) Build a CB (thread-safe collection of ops)
             var cb = w.BeginWrite();
-            cb.Add(e1, new Health(100));
-            cb.Add(e2, new Health(80));
-            cb.Add(e2, new Stunned(1.5f));
+            cb.AddComponent(e1, new Health(100));
+            cb.AddComponent(e2, new Health(80));
+            cb.AddComponent(e2, new Stunned(1.5f));
 
             // Replace and Remove are supported in CB
-            cb.Replace(e2, new Health(75));
-            cb.Remove<Stunned>(e2);
+            cb.ReplaceComponent(e2, new Health(75));
+            cb.RemoveComponent<Stunned>(e2);
 
             // Defer application: schedule now, apply later at a safe point
             w.Schedule(cb);
-            Console.WriteLine("Scheduled ops. Before apply, Has<Health>(e1): " + w.Has<Health>(e1));
+            Console.WriteLine("Scheduled ops. Before apply, Has<Health>(e1): " + w.HasComponent<Health>(e1));
 
             // Apply scheduled jobs explicitly (can also be done by your frame barrier)
             w.RunScheduledJobs();
 
-            Console.WriteLine($"After apply (deferred): e1 Health={w.Read<Health>(e1).Value}, e2 Health={w.Read<Health>(e2).Value}, Has<Stunned>(e2)={w.Has<Stunned>(e2)}");
+            Console.WriteLine($"After apply (deferred): e1 Health={w.ReadComponent<Health>(e1).Value}, e2 Health={w.ReadComponent<Health>(e2).Value}, Has<Stunned>(e2)={w.HasComponent<Stunned>(e2)}");
 
             // 2) Immediate apply via EndWrite
-            using (var cb2 = w.BeginWrite(WorldOld.ApplyMode.Immediate))
+            using (var cb2 = w.BeginWrite(CommandBufferApplyMode.Immediate))
             {
-                cb2.Replace(e1, new Health(42));
+                cb2.ReplaceComponent(e1, new Health(42));
             }
-            Console.WriteLine($"After immediate EndWrite: e1 Health={w.Read<Health>(e1).Value}");
+            Console.WriteLine($"After immediate EndWrite: e1 Health={w.ReadComponent<Health>(e1).Value}");
 
             _done = true;
         }
@@ -100,13 +100,12 @@ namespace ZenEcsCoreSamples.CommandBuffer
     [PresentationGroup]
     public sealed class PrintStatusSystem : IPresentationSystem
     {
-        public void Run(WorldOld w, float alpha)
+        public void Run(IWorld w, float dt, float alpha)
         {
-            Console.WriteLine($"-- Frame {w.FrameCount} (alpha={alpha:0.00}) --");
             foreach (var e in w.Query<Health>())
             {
-                var h = w.Read<Health>(e);
-                var stunned = w.Has<Stunned>(e) ? w.Read<Stunned>(e).ToString() : "no";
+                var h = w.ReadComponent<Health>(e);
+                var stunned = w.HasComponent<Stunned>(e) ? w.ReadComponent<Stunned>(e).ToString() : "no";
                 Console.WriteLine($"Entity {e.Id,2}: Health={h.Value}, Stunned={stunned}");
             }
         }
@@ -121,21 +120,15 @@ namespace ZenEcsCoreSamples.CommandBuffer
         {
             Console.WriteLine("=== ZenECS Core Sample - CommandBuffer (Kernel) ===");
 
-            // Boot: register systems at startup (Kernel style)
-            EcsKernel.Start(
-                new WorldConfig(initialEntityCapacity: 32),
-                new ISystem[]
-                {
-                    new CommandBufferDemoSystem(), // Simulation (writes)
-                    new PrintStatusSystem(),       // Presentation (read-only)
-                },
-                options: null,
-                systemRunnerLog: Console.WriteLine,
-                onComplete: () =>
-                {
-                    // (Optional) additional setup goes here
-                }
-            );
+            var kernel = new Kernel(null, logger: new EcsLogger());
+            var world = kernel.CreateWorld();
+            kernel.SetCurrentWorld(world);
+            
+            world.Initialize(new ISystem[]
+            {
+                new CommandBufferDemoSystem(),
+                new PrintStatusSystem()
+            });
 
             // Main loop (same timing pattern as Basic.cs)
             const float fixedDelta = 1f / 60f; // 60Hz simulation
@@ -159,15 +152,24 @@ namespace ZenEcsCoreSamples.CommandBuffer
                 float dt = (float)(now - prev);
                 prev = now;
 
-                EcsKernel.Pump(dt, fixedDelta, maxSubStepsPerFrame, out var alpha);
-                EcsKernel.LateFrame(alpha);
+                kernel.PumpAndLateFrame(dt, fixedDelta, maxSubStepsPerFrame);
 
                 Thread.Sleep(10); // be gentle to CPU
             }
 
             Console.WriteLine("Shutting down...");
-            EcsKernel.Shutdown();
+            kernel.Dispose();
             Console.WriteLine("Done.");
+        }
+        
+        /// <summary>
+        /// Simple logger implementation forwarding ECS messages to console.
+        /// </summary>
+        class EcsLogger : IEcsLogger
+        {
+            public void Info(string msg)  => Console.WriteLine(msg);
+            public void Warn(string msg)  => Console.Error.WriteLine(msg);
+            public void Error(string msg) => Console.Error.Write(msg);
         }
     }
 }

@@ -16,11 +16,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ZenECS.Core.Infrastructure;
 using ZenECS.Core.Internal.Binding;
 using ZenECS.Core.Internal.Hooking;
+using ZenECS.Core.Internal.Messaging;
 using ZenECS.Core.Internal.Scheduling;
-using ZenECS.Core.Messaging;
 using ZenECS.Core.Systems;
 
 namespace ZenECS.Core.Internal
@@ -130,7 +129,7 @@ namespace ZenECS.Core.Internal
         /// </summary>
         private static IDisposable DenyWrites(IPermissionHook hook)
         {
-            Func<IWorld, Entity, Type, bool> token = static (_, _, __) => false;
+            Func<Entity, Type, bool> token = static (_, __) => false;
             hook.AddWritePermission(token);
             return new DisposableAction(() => hook.RemoveWritePermission(token));
         }

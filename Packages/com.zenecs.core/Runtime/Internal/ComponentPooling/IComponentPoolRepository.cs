@@ -11,10 +11,10 @@ namespace ZenECS.Core.Internal.ComponentPooling
     internal interface IComponentPoolRepository
     {
         Dictionary<Type, IComponentPool> Pools { get; }
-        void Initialize(int poolSize);
         IComponentPool GetPool<T>() where T : struct;
         ComponentPool<T>? TryGetPool<T>() where T : struct;
         IComponentPool GetOrCreatePoolByType(Type t);
+        Func<IComponentPool> GetOrBuildPoolFactory(Type compType);
         IComponentPool? GetPool(Type t);
         void RemoveEntity(Entity e);
     }

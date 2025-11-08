@@ -2,8 +2,6 @@
 using System;
 using UnityEngine;
 using ZenECS.Core;
-using ZenECS.Core.Infrastructure;
-using ZenECS.Core.Messaging;
 
 namespace ZenECS.Adapter.Unity
 {
@@ -13,7 +11,7 @@ namespace ZenECS.Adapter.Unity
     [DefaultExecutionOrder(-10000)]
     public sealed class EcsDriver : MonoBehaviour
     {
-        public IKernel Kernel { get; private set; }
+        public IKernel? Kernel { get; private set; }
 
         private void Awake()
         {

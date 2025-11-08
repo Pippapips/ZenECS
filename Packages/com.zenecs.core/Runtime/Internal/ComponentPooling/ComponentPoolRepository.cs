@@ -31,6 +31,10 @@ namespace ZenECS.Core.Internal.ComponentPooling
         /// </summary>
         private Dictionary<Type, IComponentPool> _pools;
 
+        public ComponentPoolRepository(int poolSize = 256) {
+            _pools = new Dictionary<Type, IComponentPool>(poolSize);
+        }
+
         /// <summary>
         /// Cache of factory delegates that create new component pools by type.
         /// Used to avoid repeated reflection calls.
@@ -39,11 +43,6 @@ namespace ZenECS.Core.Internal.ComponentPooling
 
         public Dictionary<Type, IComponentPool> Pools => _pools;
 
-        public void Initialize(int poolSize)
-        {
-            _pools = new Dictionary<Type, IComponentPool>(poolSize);
-        }
-        
         public IComponentPool GetPool<T>() where T : struct
         {
             var t = typeof(T);
@@ -96,7 +95,7 @@ namespace ZenECS.Core.Internal.ComponentPooling
         /// - The factory is cached in a concurrent dictionary and reused across all worlds.<br/>
         /// - When multiple threads race to add a factory, the first inserted instance wins.
         /// </remarks>
-        private Func<IComponentPool> GetOrBuildPoolFactory(Type compType)
+        public Func<IComponentPool> GetOrBuildPoolFactory(Type compType)
         {
             if (_poolFactories.TryGetValue(compType, out var existing))
                 return existing;

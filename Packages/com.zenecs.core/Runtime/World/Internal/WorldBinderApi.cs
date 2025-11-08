@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using ZenECS.Core.Binding;
 using ZenECS.Core.DI;
-using ZenECS.Core.Infrastructure;
 using ZenECS.Core.Internal;
 using ZenECS.Core.Internal.Binding;
 using ZenECS.Core.Internal.Bootstrap;

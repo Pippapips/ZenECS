@@ -8,7 +8,6 @@ using UnityEngine;
 using ZenECS.Adapter.Unity;
 using ZenECS.Adapter.Unity.Attributes;
 using ZenECS.Core;
-using ZenECS.Core.Infrastructure;
 using ZenECS.EditorUtils;
 using ZenECS.EditorCommon;
 using Object = UnityEngine.Object; // ZenFoldoutHeader / ZenComponentFormGUI

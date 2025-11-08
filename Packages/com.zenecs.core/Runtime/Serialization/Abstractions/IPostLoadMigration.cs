@@ -29,6 +29,6 @@ namespace ZenECS.Core.Serialization
         /// <summary>
         /// Executes the migration over the entire world (e.g., re-binding, index rebuild, data corrections).
         /// </summary>
-        void Run(WorldOld worldOld);
+        void Run(IWorld world);
     }
 }

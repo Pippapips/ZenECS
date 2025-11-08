@@ -180,7 +180,7 @@ namespace ZenECS.Core
                 _a  = ctx.A;
                 _rf = ctx.RF;
                 var seed = _a;
-                _it  = seed != null ? seed.EnumerateAll() : PoolEnumerator.Empty;
+                _it  = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
                 _cur = default;
             }
 
@@ -238,7 +238,7 @@ namespace ZenECS.Core
                 _b  = ctx.B;
                 _rf = ctx.RF;
                 var seed = QuerySeed.Pick(_a, _b);
-                _it  = seed != null ? seed.EnumerateAll() : PoolEnumerator.Empty;
+                _it  = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
                 _cur = default;
             }
 
@@ -297,7 +297,7 @@ namespace ZenECS.Core
                 _a  = ctx.A; _b = ctx.B; _c = ctx.C;
                 _rf = ctx.RF;
                 var seed = QuerySeed.Pick(_a, _b, _c);
-                _it  = seed != null ? seed.EnumerateAll() : PoolEnumerator.Empty;
+                _it  = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
                 _cur = default;
             }
 
@@ -357,7 +357,7 @@ namespace ZenECS.Core
                 _a  = ctx.A; _b = ctx.B; _c = ctx.C; _d = ctx.D;
                 _rf = ctx.RF;
                 var seed = QuerySeed.Pick(_a, _b, _c, _d);
-                _it  = seed != null ? seed.EnumerateAll() : PoolEnumerator.Empty;
+                _it  = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
                 _cur = default;
             }
 
@@ -418,7 +418,7 @@ namespace ZenECS.Core
                 _a  = ctx.A; _b = ctx.B; _c = ctx.C; _d = ctx.D; _e = ctx.E;
                 _rf = ctx.RF;
                 var seed = QuerySeed.Pick(_a, _b, _c, _d, _e);
-                _it  = seed != null ? seed.EnumerateAll() : PoolEnumerator.Empty;
+                _it  = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
                 _cur = default;
             }
 
@@ -480,7 +480,7 @@ namespace ZenECS.Core
                 _a  = ctx.A; _b = ctx.B; _c = ctx.C; _d = ctx.D; _e = ctx.E; _f = ctx.F;
                 _rf = ctx.RF;
                 var seed = QuerySeed.Pick(_a, _b, _c, _d, _e, _f);
-                _it  = seed != null ? seed.EnumerateAll() : PoolEnumerator.Empty;
+                _it  = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
                 _cur = default;
             }
 
@@ -543,7 +543,7 @@ namespace ZenECS.Core
                 _a  = ctx.A; _b = ctx.B; _c = ctx.C; _d = ctx.D; _e = ctx.E; _f = ctx.F; _g = ctx.G;
                 _rf = ctx.RF;
                 var seed = QuerySeed.Pick(_a, _b, _c, _d, _e, _f, _g);
-                _it  = seed != null ? seed.EnumerateAll() : PoolEnumerator.Empty;
+                _it  = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
                 _cur = default;
             }
 
@@ -611,7 +611,7 @@ namespace ZenECS.Core
                 _a  = ctx.A; _b = ctx.B; _c = ctx.C; _d = ctx.D; _e = ctx.E; _f = ctx.F; _g = ctx.G; _h = ctx.H;
                 _rf = ctx.RF;
                 var seed = QuerySeed.Pick(_a, _b, _c, _d, _e, _f, _g, _h);
-                _it  = seed != null ? seed.EnumerateAll() : PoolEnumerator.Empty;
+                _it  = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
                 _cur = default;
             }
 

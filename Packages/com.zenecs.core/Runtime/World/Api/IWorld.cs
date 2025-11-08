@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.IO;
 using ZenECS.Core.Binding;
 using ZenECS.Core.Internal.Binding;
 using ZenECS.Core.Systems;
@@ -14,7 +15,12 @@ namespace ZenECS.Core
         IWorldEntityApi,
         IWorldComponentApi,
         IWorldContextApi,
-        IWorldBinderApi
+        IWorldBinderApi,
+        IWorldSnapshot,
+        IWorldMessages,
+        IWorldHookApi,
+        IWorldCommandBufferApi,
+        IWorldWorkerApi
     {
         WorldId Id { get; }
         string  Name { get; set; }
@@ -23,7 +29,8 @@ namespace ZenECS.Core
 
         void Pause();
         void Resume();
-
+        void Reset(bool keepCapacity);
+        
         int GenerationOf(int id);
         
         void Initialize(IEnumerable<ISystem>? systems = null, Action<string>? warn = null);

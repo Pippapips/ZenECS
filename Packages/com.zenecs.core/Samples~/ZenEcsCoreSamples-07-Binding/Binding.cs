@@ -15,8 +15,8 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using ZenECS.Core;
-using ZenECS.Core.Infrastructure;
-using ZenECS.Core.Messaging;
+using ZenECS.Core.Abstractions.Config;
+using ZenECS.Core.Abstractions.Diagnostics;
 using ZenECS.Core.Systems;
 using ZenECS.Core.Binding;
 
@@ -98,8 +98,8 @@ namespace ZenECS.Binding.ConsoleSample
             Console.WriteLine($"[Apply]     e={Entity} Position={_p}");
             Console.WriteLine($"[Apply]     e={Entity} Health={_h}");
         }
-        
-        protected override void OnBind(WorldOld w, Entity e)
+
+        protected override void OnBind(Entity e)
         {
             Console.WriteLine($"[Bind]      e={e}");
         }
@@ -108,11 +108,6 @@ namespace ZenECS.Binding.ConsoleSample
         {
             Console.WriteLine($"[Unbind]    e={Entity}");
         }
-
-        protected override void OnDispose()
-        {
-            Console.WriteLine($"[Disposed]  e={Entity}");
-        }
     }
 
     /// <summary>
@@ -120,42 +115,22 @@ namespace ZenECS.Binding.ConsoleSample
     /// </summary>
     internal static class Program
     {
-        private static WorldOld? _w;
-        private static Entity _e;
-        private static ConsoleViewBinder? _view;
-        
         static void Main()
         {
-            // --- Booting ECS ---
-            EcsKernel.Start(
-                new WorldConfig(initialEntityCapacity: 256),
-                null,
-                null, 
-                Console.WriteLine,
-                false,
-                () =>
-                {
-                    var ecsLogger = new EcsLogger();
-                    EcsRuntimeOptions.Log = ecsLogger;
+            var kernel = new Kernel(null, logger: new EcsLogger());
+            var world = kernel.CreateWorld();
+            kernel.SetCurrentWorld(world);
 
-                    var world = EcsKernel.WorldOld;
+            // Create entity and associate with a console view
+            var e = world.SpawnEntity();
+            var view = new ConsoleViewBinder();
+            world.AttachBinder(e, view);
+
+            // Add and modify Position component
+            world.AddComponent(e, new Position(1, 1));
+            world.ReplaceComponent(e, new Position(2.5f, 4));
                     
-                    // Create entity and associate with a console view
-                    var e = world.CreateEntity();
-                    var view = new ConsoleViewBinder();
-                    world.BindingRouter?.Attach(e, view);
-
-                    // Add and modify Position component
-                    world.Add(e, new Position(1, 1));
-                    world.Replace(e, new Position(2.5f, 4));
-                    
-                    world.Add(e, new Health(10, 100));
-
-                    _w = world;
-                    _e = e;
-                    _view = view;
-                }
-            );
+            world.AddComponent(e, new Health(10, 100));
             
             const float fixedDelta = 1f / 60f;   // 60Hz
             var sw = Stopwatch.StartNew();
@@ -170,14 +145,11 @@ namespace ZenECS.Binding.ConsoleSample
                 if (exitStep == 1)
                 {
                     Console.WriteLine("Exiting... step 1");
-                    if (_view != null && _w != null && _w.IsAlive(_e))
+                    if (view != null && world != null && world.IsAlive(e))
                     {
-                        // Two-kind of unbind view
-                        //_w.ComponentDeltaDispatcher.Detach(_e, _view);
-                        _w.DestroyEntity(_e);
-                        
-                        _view.Dispose();
-                        _view = null;
+                        world.DespawnEntity(e);
+                        world.DetachBinder(e, view);
+                        view = null;
                     }
                     loop = false;
                 }
@@ -185,9 +157,9 @@ namespace ZenECS.Binding.ConsoleSample
                 if (exitStep == 0 && Console.KeyAvailable)
                 {
                     _ = Console.ReadKey(intercept: true);
-                    if (_view != null && _w != null && _w.IsAlive(_e))
+                    if (view != null && world != null && world.IsAlive(e))
                     {
-                        _w.Remove<Position>(_e);
+                        world.RemoveComponent<Position>(e);
                         exitStep++;
                     }
                 }
@@ -198,8 +170,7 @@ namespace ZenECS.Binding.ConsoleSample
 
                 // Performs variable-step Begin + multiple Fixed steps + alpha calculation in one call
                 const int maxSubStepsPerFrame = 4;
-                EcsKernel.Pump(dt, fixedDelta, maxSubStepsPerFrame, out var alpha);
-                EcsKernel.LateFrame(alpha);
+                kernel.PumpAndLateFrame(dt, fixedDelta, maxSubStepsPerFrame);
 
                 if (!loop)
                     break;
@@ -208,14 +179,14 @@ namespace ZenECS.Binding.ConsoleSample
             }
 
             Console.WriteLine("Shutting down...");
-            EcsKernel.Shutdown();
+            kernel.Dispose();
             Console.WriteLine("Done.");
         }
         
         /// <summary>
         /// Simple logger implementation forwarding ECS messages to console.
         /// </summary>
-        class EcsLogger : EcsRuntimeOptions.ILogger
+        class EcsLogger : IEcsLogger
         {
             public void Info(string msg)  => Console.WriteLine(msg);
             public void Warn(string msg)  => Console.Error.WriteLine(msg);

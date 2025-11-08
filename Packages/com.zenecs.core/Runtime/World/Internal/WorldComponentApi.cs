@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using ZenECS.Core.Abstractions.Config;
 using ZenECS.Core.Binding;
 using ZenECS.Core.DI;
-using ZenECS.Core.Infrastructure;
 using ZenECS.Core.Internal;
 using ZenECS.Core.Internal.Binding;
 using ZenECS.Core.Internal.Bootstrap;
@@ -34,7 +34,7 @@ namespace ZenECS.Core.Internal
 
         public void AddComponent<T>(Entity e, in T value) where T : struct
         {
-            if (!_permissionHook.EvaluateWritePermission(this, e, typeof(T)))
+            if (!_permissionHook.EvaluateWritePermission(e, typeof(T)))
             {
                 if (!HandleDenied($"[Denied] Add<{typeof(T).Name}> e={e.Id} reason=WritePermission"))
                     return;
@@ -87,7 +87,7 @@ namespace ZenECS.Core.Internal
 
         public void ReplaceComponent<T>(Entity e, in T value) where T : struct
         {
-            if (!_permissionHook.EvaluateWritePermission(this, e, typeof(T)))
+            if (!_permissionHook.EvaluateWritePermission(e, typeof(T)))
             {
                 if (!HandleDenied($"[Denied] Replace<{typeof(T).Name}> e={e.Id} reason=WritePermission"))
                     return;
@@ -111,6 +111,27 @@ namespace ZenECS.Core.Internal
             _bindingRouter.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Changed, value));
         }
         
+         public void RemoveComponent<T>(Entity e) where T : struct
+         {
+             if (!_permissionHook.EvaluateWritePermission(e, typeof(T)))
+             {
+                 if (!HandleDenied($"[Denied] Remove<{typeof(T).Name}> e={e.Id} reason=WritePermission"))
+                     return;
+             }
+
+             var pool = _componentPoolRepository.TryGetPool<T>();
+             if (pool == null) return;
+             pool.Remove(e.Id);
+             _bindingRouter.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Removed));
+         }
+
+         public bool TryRead<T>(Entity e, out T value) where T : struct
+         {
+             if (!HasComponent<T>(e)) { value = default; return false; }
+             value = ReadComponent<T>(e);
+             return true;
+         }
+
          public IEnumerable<(Type type, object? boxed)> GetAllComponents(Entity e)
          {
              foreach (var kv in _componentPoolRepository.Pools)

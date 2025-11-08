@@ -5,8 +5,8 @@ using ZenECS.Core.Internal.Binding;
 using ZenECS.Core.Internal.ComponentPooling;
 using ZenECS.Core.Internal.Contexts;
 using ZenECS.Core.Internal.Hooking;
+using ZenECS.Core.Internal.Messaging;
 using ZenECS.Core.Internal.Scheduling;
-using ZenECS.Core.Messaging;
 
 namespace ZenECS.Core.Internal.Bootstrap
 {

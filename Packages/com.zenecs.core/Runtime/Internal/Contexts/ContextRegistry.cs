@@ -40,7 +40,7 @@ namespace ZenECS.Core.Internal.Contexts
             { ctx = exactCtx; return true; }
 
             // Most-specific assignable type
-            Entry best = null;
+            Entry? best = null;
             foreach (var kv in dict)
             {
                 var t = kv.Key; var entry = kv.Value;

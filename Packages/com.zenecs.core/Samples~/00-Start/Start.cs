@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using ZenECS.Core;
-using ZenECS.Core.Infrastructure;
 
 namespace ZenEcsCoreSamples.Start
 {
@@ -36,7 +35,7 @@ namespace ZenEcsCoreSamples.Start
         public override int GetHashCode() => HashCode.Combine(Hp, MaxHp);
         public override string ToString() => $"({Hp}, {MaxHp})";
     }
-    
+
     /// <summary>
     /// Entry point demonstrating ZenECS kernel-driven loop.
     /// </summary>
@@ -45,11 +44,11 @@ namespace ZenEcsCoreSamples.Start
         private static void Main()
         {
             Console.WriteLine("=== ZenECS Core Sample ===");
-            
+
             var kernel = new Kernel();
-            kernel.Start();
-            var world = kernel.CreateWorld(true);
-            
+            var world = kernel.CreateWorld();
+            kernel.SetCurrentWorld(world);
+
             const float fixedDelta = 1f / 60f; // 60Hz simulation
             var sw = Stopwatch.StartNew();
             double prev = sw.Elapsed.TotalSeconds;
@@ -70,14 +69,13 @@ namespace ZenEcsCoreSamples.Start
 
                 // Perform variable-step Begin + multiple Fixed steps + alpha calculation
                 const int maxSubStepsPerFrame = 4;
-                kernel.Pump(dt, fixedDelta, maxSubStepsPerFrame, out var alpha);
-                kernel.LateFrame(alpha);
+                kernel.PumpAndLateFrame(dt, fixedDelta, maxSubStepsPerFrame);
 
                 Thread.Sleep(1); // Reduce CPU load
             }
 
             Console.WriteLine("Shutting down...");
-            kernel.Shutdown();
+            kernel.Dispose();
             Console.WriteLine("Done.");
         }
     }

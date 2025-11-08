@@ -175,9 +175,21 @@ namespace ZenECS.Core.Internal.ComponentPooling
 
         // 🔁 기존의 iterator(yield return) 제거하고 값타입 열거자 반환
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public PoolEnumerator EnumerateAll()
+        public PoolEnumerator EnumerateIds()
             => new PoolEnumerator(this);        
 
+        public IEnumerable<(int id, object boxed)> EnumerateAll()
+        {
+            var it = new PoolEnumerator(this);
+            while (it.MoveNext())
+            {
+                int id = it.CurrentId;
+                var boxed = GetBoxed(id);          // struct면 여기서 boxing
+                if (boxed != null)
+                    yield return (id, boxed);
+            }
+        }
+        
         /// <summary>
         /// Returns the component as a boxed object (null if missing).
         /// Used primarily by reflection or snapshot tools.

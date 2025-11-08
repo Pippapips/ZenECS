@@ -1,3 +1,4 @@
+#nullable enable
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -91,7 +92,8 @@ namespace ZenECS.Core
         /// <summary>
         /// Enumerates all active components in the pool as (entityId, boxed value) pairs.
         /// </summary>
-        PoolEnumerator EnumerateAll();
+        PoolEnumerator EnumerateIds();
+        IEnumerable<(int id, object boxed)> EnumerateAll();
 
         // 스파스 구조이므로 denseIndex == entityId 로 취급
         // (필요하면 나중에 진짜 dense 테이블로 교체 가능)

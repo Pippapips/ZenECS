@@ -16,7 +16,8 @@
 using System.Diagnostics;
 using ZenECS; // Kernel
 using ZenECS.Core;
-using ZenECS.Core.Infrastructure;
+using ZenECS.Core.Abstractions.Config;
+using ZenECS.Core.Abstractions.Diagnostics;
 using ZenECS.Core.Systems;
 
 namespace ZenEcsCoreSamples.Basic
@@ -54,14 +55,13 @@ namespace ZenEcsCoreSamples.Basic
     [SimulationGroup]
     public sealed class MoveSystem : IVariableRunSystem
     {
-        public void Run(WorldOld w)
+        public void Run(IWorld w, float dt)
         {
-            var dt = w.DeltaTime;
             foreach (var e in w.Query<Position, Velocity>())
             {
-                var p = w.Read<Position>(e);
-                var v = w.Read<Velocity>(e);
-                w.Replace(e, new Position(p.X + v.X * dt, p.Y + v.Y * dt));
+                var p = w.ReadComponent<Position>(e);
+                var v = w.ReadComponent<Velocity>(e);
+                w.ReplaceComponent(e, new Position(p.X + v.X * dt, p.Y + v.Y * dt));
             }
         }
     }
@@ -72,12 +72,11 @@ namespace ZenEcsCoreSamples.Basic
     [PresentationGroup]
     public sealed class PrintPositionsSystem : IPresentationSystem
     {
-        public void Run(WorldOld w, float alpha)
+        public void Run(IWorld w, float dt, float alpha)
         {
-            Console.WriteLine($"-- FrameCount: {w.FrameCount} (alpha={alpha:0.00}) --");
             foreach (var e in w.Query<Position>())
             {
-                var p = w.Read<Position>(e); // read-only access
+                var p = w.ReadComponent<Position>(e); // read-only access
                 Console.WriteLine($"Entity {e.Id,3}: pos={p}");
             }
         }
@@ -92,38 +91,31 @@ namespace ZenEcsCoreSamples.Basic
         {
             Console.WriteLine("=== ZenECS Core Sample - Basic (Kernel) ===");
 
-            // Boot: configure world and entities in setup callback
-            EcsKernel.Start(
-                new WorldConfig(initialEntityCapacity: 256),
-                new ISystem[]
-                {
-                    new MoveSystem(),          // Simulation
-                    new PrintPositionsSystem() // Presentation (read-only)
-                },
-                options: null,
-                systemRunnerLog: Console.WriteLine,
-                onComplete: () =>
-                {
-                    var ecsLogger = new EcsLogger();
-                    EcsRuntimeOptions.Log = ecsLogger;
+            var kernel = new Kernel(null, logger: new EcsLogger());
+            var world = kernel.CreateWorld();
+            kernel.SetCurrentWorld(world);
 
-                    var world = EcsKernel.WorldOld;
-                    
-                    // Create sample entities with Position and Velocity
-                    var e1 = world.CreateEntity();
-                    world.Add(e1, new Position(0, 0));
-                    world.Add(e1, new Velocity(1, 0)); // moves +X / sec
+            world.Initialize(new ISystem[]
+            {
+                new MoveSystem(),
+                new PrintPositionsSystem(),
+            });
 
-                    var e2 = world.CreateEntity();
-                    world.Add(e2, new Position(2, 1));
-                    world.Add(e2, new Velocity(0, -0.5f)); // moves -Y / sec
-                }
-            );
+            // Create sample entities with Position and Velocity
+            var e1 = world.SpawnEntity();
+            world.AddComponent(e1, new Position(0, 0));
+            world.AddComponent(e1, new Velocity(1, 0)); // moves +X / sec
+
+            var e2 = world.SpawnEntity();
+            world.AddComponent(e2, new Position(2, 1));
+            world.AddComponent(e2, new Velocity(0, -0.5f)); // moves -Y / sec
 
             const float fixedDelta = 1f / 60f; // 60Hz simulation
             var sw = Stopwatch.StartNew();
             double prev = sw.Elapsed.TotalSeconds;
 
+            EcsRuntimeOptions.Log.Info("Hello World!");
+            
             Console.WriteLine("Running... press any key to exit.");
 
             while (true)
@@ -140,21 +132,20 @@ namespace ZenEcsCoreSamples.Basic
 
                 // Perform variable-step Begin + multiple Fixed steps + alpha calculation
                 const int maxSubStepsPerFrame = 4;
-                EcsKernel.Pump(dt, fixedDelta, maxSubStepsPerFrame, out var alpha);
-                EcsKernel.LateFrame(alpha);
+                kernel.PumpAndLateFrame(dt, fixedDelta, maxSubStepsPerFrame);
 
                 Thread.Sleep(1); // Reduce CPU load
             }
 
             Console.WriteLine("Shutting down...");
-            EcsKernel.Shutdown();
+            kernel.Dispose();
             Console.WriteLine("Done.");
         }
 
         /// <summary>
         /// Simple logger implementation that routes ECS messages to the console.
         /// </summary>
-        class EcsLogger : EcsRuntimeOptions.ILogger
+        class EcsLogger : IEcsLogger
         {
             public void Info(string msg) => Console.WriteLine(msg);
             public void Warn(string msg) => Console.Error.WriteLine(msg);

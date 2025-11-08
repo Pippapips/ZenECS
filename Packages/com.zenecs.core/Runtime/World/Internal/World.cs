@@ -1,16 +1,21 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text;
+using ZenECS.Core.Abstractions.Config;
 using ZenECS.Core.Binding;
 using ZenECS.Core.DI;
-using ZenECS.Core.Infrastructure;
 using ZenECS.Core.Internal;
 using ZenECS.Core.Internal.Binding;
 using ZenECS.Core.Internal.Bootstrap;
 using ZenECS.Core.Internal.ComponentPooling;
 using ZenECS.Core.Internal.Contexts;
 using ZenECS.Core.Internal.Hooking;
+using ZenECS.Core.Internal.Messaging;
+using ZenECS.Core.Internal.Scheduling;
+using ZenECS.Core.Serialization;
 using ZenECS.Core.Systems;
 
 namespace ZenECS.Core.Internal
@@ -28,7 +33,6 @@ namespace ZenECS.Core.Internal
 
         // Per-world services (resolved from _scope)
         // private readonly EntityStore   _store;
-        // private readonly MessageBus    _bus;
         // private readonly EventHub      _events;
         // private readonly QueryGateway  _query;
         private readonly ISystemRunner _runner;
@@ -36,6 +40,8 @@ namespace ZenECS.Core.Internal
         private readonly IBindingRouter _bindingRouter;
         private readonly IContextRegistry _contextRegistry;
         private readonly IComponentPoolRepository _componentPoolRepository;
+        private readonly IMessageBus _bus;
+        private readonly IWorker _worker;
 
         // // Read-only view + binding host are composed here (need this world context)
         // private readonly IReadWorld _readOnlyView;
@@ -81,10 +87,10 @@ namespace ZenECS.Core.Internal
         {
             _cfg = cfg ?? new WorldConfig();
 
-            _alive = new BitSet(_cfg.InitialEntityCapacity); // Bitmap of occupied entity slots
-            _generation = new int[_cfg.InitialEntityCapacity]; // Per-slot generation counters (start at 0)
+            _alive = new BitSet(_cfg.InitialEntityCapacity);       // Bitmap of occupied entity slots
+            _generation = new int[_cfg.InitialEntityCapacity];     // Per-slot generation counters (start at 0)
             _freeIds = new Stack<int>(_cfg.InitialFreeIdCapacity); // Recycled IDs storage for destroyed entities
-            _nextId = 1; // New entities start from 1
+            _nextId = 1;                                           // New entities start from 1
             _pause = false;
 
             Id = id;
@@ -95,15 +101,15 @@ namespace ZenECS.Core.Internal
             _scope = scope ?? throw new ArgumentNullException(nameof(scope));
 
             // _store  = _scope.GetRequired<EntityStore>();
-            // _bus    = _scope.GetRequired<MessageBus>();
             // _events = _scope.GetRequired<EventHub>();
             // _query  = _scope.GetRequired<QueryGateway>();
+            _bus = _scope.GetRequired<IMessageBus>();
+            _worker = _scope.GetRequired<IWorker>();
             _contextRegistry = _scope.GetRequired<IContextRegistry>();
             _bindingRouter = _scope.GetRequired<IBindingRouter>();
             _permissionHook = _scope.GetRequired<IPermissionHook>();
             _runner = _scope.GetRequired<ISystemRunner>();
             _componentPoolRepository = _scope.GetRequired<IComponentPoolRepository>();
-            _componentPoolRepository.Initialize(_cfg.InitialPoolBuckets);
 
             // attach
 
@@ -120,13 +126,15 @@ namespace ZenECS.Core.Internal
         {
             if (_disposed) return;
             _disposed = true;
-            
+
             _runner.Shutdown(this);
 
             _kernel.OnBeginFrame -= BeginFrame;
             _kernel.OnFixedStep -= FixedStep;
             _kernel.OnLateFrame -= LateFrame;
 
+            Reset(false);
+            
             // Dispose DI scope (owned singletons/factories)
             _scope.Dispose();
         }
@@ -135,105 +143,6 @@ namespace ZenECS.Core.Internal
         {
             _runner.Build(systems, warn);
             _runner.Initialize(this);
-        }
-
-        public bool IsAlive(Entity e) => _alive.Get(e.Id) && _generation[e.Id] == e.Gen;
-
-         /// <summary>
-         /// Returns a list of all currently alive entities.
-         /// </summary>
-         public List<Entity> GetAllEntities()
-         {
-             var list = new List<Entity>(_nextId);
-             for (int id = 1; id < _nextId; id++)
-                 if (_alive.Get(id))
-                     list.Add(new Entity(id, _generation[id]));
-             return list;
-         }
-        
-        private void EnsureEntityCapacity(int id)
-        {
-            // BitSet expansion and preservation are handled internally by Set().
-            if (!_alive.Get(id)) _alive.Set(id, false);
-
-            // Expand the generation array based on the configured growth policy.
-            if (id >= _generation.Length)
-            {
-                int required = id + 1;
-                int newLen = ComputeNewCapacity(_generation.Length, required);
-                Array.Resize(ref _generation, newLen);
-            }
-        }
-
-        private int ComputeNewCapacity(int current, int required)
-        {
-            if (_cfg.GrowthPolicy == GrowthPolicy.Step)
-            {
-                int step = _cfg.GrowthStep;
-                // Round up to the nearest multiple of step.
-                int blocks = (required + step - 1) / step;
-                return Math.Max(required, blocks * step);
-            }
-            else // Doubling
-            {
-                int cap = Math.Max(16, current);
-                while (cap < required)
-                {
-                    int next = cap * 2;
-                    // Guarantee at least +256 to avoid too small incremental growth.
-                    if (next - cap < 256) next = cap + 256;
-                    cap = next;
-                }
-
-                return cap;
-            }
-        }
-
-        public Entity SpawnEntity(int? fixedId = null)
-        {
-            int id;
-            if (fixedId.HasValue)
-            {
-                id = fixedId.Value;
-                EnsureEntityCapacity(id);
-                _alive.Set(id, true);
-            }
-            else if (_freeIds.Count > 0)
-            {
-                id = _freeIds.Pop();
-                EnsureEntityCapacity(id);
-                _alive.Set(id, true);
-            }
-            else
-            {
-                id = _nextId++;
-                EnsureEntityCapacity(id);
-                _alive.Set(id, true);
-            }
-
-            // The current slot's generation is embedded into the handle.
-            var e = new Entity(id, _generation[id]);
-            //EntityEvents.RaiseCreated(this, e);
-            return e;
-        }
-
-        public void DespawnEntity(Entity e)
-        {
-            if (!IsAlive(e)) return;
-
-            //EntityEvents.RaiseDestroyRequested(this, e);
-            _bindingRouter.OnEntityDestroyed(this, e);
-            _contextRegistry.Clear(this, e);
-
-            _componentPoolRepository.RemoveEntity(e);
-
-            _alive.Set(e.Id, false);
-
-            // Increment generation: ensures that even if the same id is reused, the handle differs.
-            _generation[e.Id]++;
-            _freeIds.Push(e.Id);
-
-            //EntityEvents.RaiseDestroyed(this, e);
         }
 
         public void Pause()
@@ -245,7 +154,7 @@ namespace ZenECS.Core.Internal
         {
             _pause = false;
         }
-
+        
         private void BeginFrame(IWorld w, float dt)
         {
             if (w != this) return;

@@ -29,49 +29,49 @@ namespace ZenECS.Core
     /// </summary>
     public sealed partial class WorldOld
     {
-        private readonly WorldConfig _cfg;
-
-        /// <summary>
-        /// Bitset of occupied entity slots (alive flags).
-        /// </summary>
-        private BitSet _alive;
-
-        /// <summary>
-        /// Next id to issue for newly created entities.
-        /// Starts at 1 to reserve 0 for "null"/invalid semantics.
-        /// </summary>
-        private int _nextId = 1;
-
-        /// <summary>
-        /// Recycled IDs of destroyed entities (LIFO). When creating a new entity,
-        /// the world prefers reusing a freed id from this stack before growing.
-        /// </summary>
-        private Stack<int> _freeIds;
-
-        /// <summary>
-        /// Generation array: per-slot generation counter used to prevent zombie handles.
-        /// Increments when an id is destroyed and reused, so stale handles no longer match.
-        /// </summary>
-        private int[] _generation; // 세대(Generation) 배열: slot별 현재 세대 카운터 → Generation array: per-slot current generation
-
-        // public IBindingRouter? BindingRouter { get; private set; }
-        // public IContextRegistry? ContextRegistry { get; private set; }
-
-        /// <summary>
-        /// Constructs a World with the given configuration (or defaults).
-        /// Initializes liveness bitset, generation array, free-id stack, and the type→pool map.
-        /// </summary>
-        /// <param name="config">Optional world configuration; if null, defaults are used.</param>
-        public WorldOld(WorldConfig? config = null)
-        {
-            _cfg        = config ?? new WorldConfig();
-
-            _alive      = new BitSet(_cfg.InitialEntityCapacity);                         // Bitmap of occupied entity slots
-            _generation = new int[_cfg.InitialEntityCapacity];                            // Per-slot generation counters (start at 0)
-            _freeIds    = new Stack<int>(_cfg.InitialFreeIdCapacity);                     // Recycled IDs storage for destroyed entities
-            //_pools       = new Dictionary<Type, IComponentPool>(_cfg.InitialPoolBuckets); // Type→pool map
-            _nextId     = 1;                                                              // New entities start from 1
-        }
+        // private readonly WorldConfig _cfg;
+        //
+        // /// <summary>
+        // /// Bitset of occupied entity slots (alive flags).
+        // /// </summary>
+        // private BitSet _alive;
+        //
+        // /// <summary>
+        // /// Next id to issue for newly created entities.
+        // /// Starts at 1 to reserve 0 for "null"/invalid semantics.
+        // /// </summary>
+        // private int _nextId = 1;
+        //
+        // /// <summary>
+        // /// Recycled IDs of destroyed entities (LIFO). When creating a new entity,
+        // /// the world prefers reusing a freed id from this stack before growing.
+        // /// </summary>
+        // private Stack<int> _freeIds;
+        //
+        // /// <summary>
+        // /// Generation array: per-slot generation counter used to prevent zombie handles.
+        // /// Increments when an id is destroyed and reused, so stale handles no longer match.
+        // /// </summary>
+        // private int[] _generation; // 세대(Generation) 배열: slot별 현재 세대 카운터 → Generation array: per-slot current generation
+        //
+        // // public IBindingRouter? BindingRouter { get; private set; }
+        // // public IContextRegistry? ContextRegistry { get; private set; }
+        //
+        // /// <summary>
+        // /// Constructs a World with the given configuration (or defaults).
+        // /// Initializes liveness bitset, generation array, free-id stack, and the type→pool map.
+        // /// </summary>
+        // /// <param name="config">Optional world configuration; if null, defaults are used.</param>
+        // public WorldOld(WorldConfig? config = null)
+        // {
+        //     _cfg        = config ?? new WorldConfig();
+        //
+        //     _alive      = new BitSet(_cfg.InitialEntityCapacity);                         // Bitmap of occupied entity slots
+        //     _generation = new int[_cfg.InitialEntityCapacity];                            // Per-slot generation counters (start at 0)
+        //     _freeIds    = new Stack<int>(_cfg.InitialFreeIdCapacity);                     // Recycled IDs storage for destroyed entities
+        //     //_pools       = new Dictionary<Type, IComponentPool>(_cfg.InitialPoolBuckets); // Type→pool map
+        //     _nextId     = 1;                                                              // New entities start from 1
+        // }
 
         // internal void SetRouter(IBindingRouter router)
         // {

@@ -18,8 +18,6 @@ using System.Diagnostics;
 using System.Threading;
 using ZenECS;      // Kernel
 using ZenECS.Core;
-using ZenECS.Core.Infrastructure; // World, WorldConfig
-using ZenECS.Core.Messaging;      // IMessage, MessageBus
 using ZenECS.Core.Systems;        // IInitializeSystem, IVariableRunSystem, IPresentationSystem
 
 namespace ZenEcsCoreSamples.Messages
@@ -60,32 +58,30 @@ namespace ZenEcsCoreSamples.Messages
     [SimulationGroup]
     public sealed class DamageSystem : ISystemLifecycle
     {
-        private IMessageBus? _bus;
         private IDisposable? _sub;
 
-        public void Initialize(WorldOld w)
+        public void Initialize(IWorld w)
         {
-            _bus = EcsKernel.Bus;
-
             // Subscribe to View-originated messages
-            _sub = _bus.Subscribe<DamageRequest>(m =>
+            _sub = w.Subscribe<DamageRequest>(m =>
             {
                 if (!w.IsAlive(m.Entity)) return;
-                if (!w.Has<Health>(m.Entity)) return;
+                if (!w.HasComponent<Health>(m.Entity)) return;
 
-                var current = w.Read<Health>(m.Entity);
+                var current = w.ReadComponent<Health>(m.Entity);
                 var updated = new Health(Math.Max(0, current.Value - m.Amount));
-                w.Replace(m.Entity, updated);
+                w.ReplaceComponent(m.Entity, updated);
 
                 Console.WriteLine($"[Logic] e:{m.Entity} took {m.Amount} → {updated}");
             });
         }
-        public void Shutdown(WorldOld w)
+        
+        public void Shutdown(IWorld w)
         {
             _sub?.Dispose();
         }
-
-        public void Run(WorldOld w)
+        
+        public void Run(IWorld w, float dt)
         {
         }
     }
@@ -96,12 +92,11 @@ namespace ZenEcsCoreSamples.Messages
     [PresentationGroup]
     public sealed class PrintHealthSystem : IPresentationSystem
     {
-        public void Run(WorldOld w, float alpha)
+        public void Run(IWorld w, float dt, float alpha)
         {
-            Console.WriteLine($"-- Frame {w.FrameCount} (alpha={alpha:0.00}) --");
             foreach (var e in w.Query<Health>())
             {
-                var hp = w.Read<Health>(e);
+                var hp = w.ReadComponent<Health>(e);
                 Console.WriteLine($"Entity {e.Id,2}: {hp}");
             }
         }
@@ -112,42 +107,26 @@ namespace ZenEcsCoreSamples.Messages
     // ──────────────────────────────────────────────────────────────────────────
     public static class Program
     {
-        private static WorldOld? _w;
-        private static Entity _e1;
-        private static Entity _e2;
-        
         public static void Main()
         {
             Console.WriteLine("=== ZenECS Core Sample - View→Data via MessageBus (Kernel) ===");
 
-            // Boot: pass systems directly to EcsKernel.Start (as in Basic.cs)
-            EcsKernel.Start(
-                new WorldConfig(initialEntityCapacity: 32),
-                new ISystem[]
-                {
-                    new DamageSystem(),      // Simulation (writes via messages)
-                    new PrintHealthSystem(), // Presentation (read-only)
-                },
-                options: null,
-                systemRunnerLog: Console.WriteLine,
-                onComplete: () =>
-                {
-                    var world = EcsKernel.WorldOld;
-                    
-                    // Seed entities with Health data
-                    var e1 = world.CreateEntity();
-                    var e2 = world.CreateEntity();
-                    world.Add(e1, new Health(100));
-                    world.Add(e2, new Health(75));
+            var kernel = new Kernel();
+            var world = kernel.CreateWorld();
+            kernel.SetCurrentWorld(world);
 
-                    _w = world;
-                    _e1 = e1;
-                    _e2 = e2;
-                }
-            );
-
-            var bus = EcsKernel.Bus;
-
+            world.Initialize(new ISystem[]
+            {
+                new DamageSystem(),
+                new PrintHealthSystem()
+            });
+            
+            // Seed entities with Health data
+            var e1 = world.SpawnEntity();
+            var e2 = world.SpawnEntity();
+            world.AddComponent(e1, new Health(100));
+            world.AddComponent(e2, new Health(75));
+            
             // Main loop mirrors Basic.cs: Pump variable step + fixed step + Late
             const float fixedDelta = 1f / 60f; // 60Hz simulation
             const int   maxSubStepsPerFrame = 4;
@@ -169,11 +148,11 @@ namespace ZenEcsCoreSamples.Messages
                     switch (key)
                     {
                         case ConsoleKey.D1:
-                            bus.Publish(new DamageRequest(_e1, rand.Next(5, 15)));
+                            world.Publish(new DamageRequest(e1, rand.Next(5, 15)));
                             Console.WriteLine("[View] Sent DamageRequest → e:1");
                             break;
                         case ConsoleKey.D2:
-                            bus.Publish(new DamageRequest(_e2, rand.Next(5, 15)));
+                            world.Publish(new DamageRequest(e2, rand.Next(5, 15)));
                             Console.WriteLine("[View] Sent DamageRequest → e:2");
                             break;
                         case ConsoleKey.Escape:
@@ -187,14 +166,13 @@ namespace ZenEcsCoreSamples.Messages
                 float dt = (float)(now - prev);
                 prev = now;
 
-                EcsKernel.Pump(dt, fixedDelta, maxSubStepsPerFrame, out var alpha);
-                EcsKernel.LateFrame(alpha);
+                kernel.PumpAndLateFrame(dt, fixedDelta, maxSubStepsPerFrame);
 
                 Thread.Sleep(50); // be gentle to CPU in console
             }
 
             Console.WriteLine("Shutting down...");
-            EcsKernel.Shutdown();
+            kernel.Dispose();
             Console.WriteLine("Done.");
         }
     }

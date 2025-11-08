@@ -25,46 +25,38 @@
     <!-- 런타임 소스만 포함 -->
     <ItemGroup>
         <Compile Include="..\Packages\com.zenecs.core\Runtime\**\*.cs" Exclude="..\Packages\com.zenecs.core\Runtime\**\*.gen.cs" />
-        <Compile Include="DI\ServiceHost.cs">
-          <Link>Internal\Bootstrap\ServiceHost.cs</Link>
-        </Compile>
-        <Compile Include="World\Api\IWorld.cs">
-          <Link>World\IWorld.cs</Link>
-        </Compile>
-        <Compile Include="World\Api\IWorldEntitiesApi.cs">
-          <Link>World\IWorld.cs</Link>
-        </Compile>
-        <Compile Include="World\Build\WorldBuilder.cs" />
-        <Compile Include="World\Internal\IWorldInternal.cs" />
-        <Compile Include="World\Internal\WorldInternal.cs" />
-        <Compile Include="World\World.Api.Entities.cs" />
-        <Compile Include="World\World.cs" />
         <None Remove="..\Packages\com.zenecs.core\**\*.meta" />
         <None Remove="..\Packages\com.zenecs.core\Runtime\**\*.asmdef" />
         <!-- obj/** 파일들이 포함되지 않도록 명시 -->
         <Compile Remove="obj/**" />
         <None Remove="obj/**" />
-        <Compile Update="..\Packages\com.zenecs.core\Runtime\Binding\Abstractions\IContextFactoryHub.cs">
-          <Link>Binding\Abstractions\IContextFactoryHub.cs</Link>
+        <Compile Update="..\Packages\com.zenecs.core\Runtime\World\Api\IWorldSnapshot.cs">
+          <Link>World\Api\IWorldSnapshot.cs</Link>
         </Compile>
-        <Compile Update="..\Packages\com.zenecs.core\Runtime\Binding\Abstractions\IRequireContext.cs">
-          <Link>Binding\Abstractions\IRequireContext.cs</Link>
+        <Compile Update="..\Packages\com.zenecs.core\Runtime\World\Internal\WorldSnapshot.cs">
+          <Link>World\Internal\WorldSnapshot.cs</Link>
         </Compile>
-        <Compile Update="..\Packages\com.zenecs.core\Runtime\Binding\Implementations\ContextFactoryHub.cs">
-          <Link>Binding\Implementations\ContextFactoryHub.cs</Link>
+        <Compile Update="..\Packages\com.zenecs.core\Runtime\World\Internal\WorldEntityApi.cs">
+          <Link>World\Internal\WorldEntityApi.cs</Link>
         </Compile>
-        <Compile Update="..\Packages\com.zenecs.core\Runtime\Binding\Implementations\ContextRegistry.cs">
-          <Link>Binding\Implementations\ContextRegistry.cs</Link>
+        <Compile Update="..\Packages\com.zenecs.core\Runtime\World\Api\IWorldHookApi.cs">
+          <Link>World\Api\IWorldHookApi.cs</Link>
         </Compile>
-        <Compile Update="..\Packages\com.zenecs.core\Runtime\Systems\Internal\ISystemRunner.cs">
-          <Link>Systems\Internal\ISystemRunner.cs</Link>
+        <Compile Update="..\Packages\com.zenecs.core\Runtime\World\Internal\WorldHookApi.cs">
+          <Link>World\Internal\WorldHookApi.cs</Link>
         </Compile>
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Update="..\Packages\com.zenecs.core\Runtime\World" />
-      <Folder Include="Core\Api\" />
-      <Folder Include="Core\Build\" />
-      <Folder Include="Core\Internal\" />
+        <Compile Update="..\Packages\com.zenecs.core\Runtime\World\Api\IWorldResetApi.cs">
+          <Link>World\Api\IWorldResetApi.cs</Link>
+        </Compile>
+        <Compile Update="..\Packages\com.zenecs.core\Runtime\World\Internal\WorldResetApi.cs">
+          <Link>World\Internal\WorldResetApi.cs</Link>
+        </Compile>
+        <Compile Update="..\Packages\com.zenecs.core\Runtime\World\Api\IWorldWorkerApi.cs">
+          <Link>World\Api\IWorldWorkerApi.cs</Link>
+        </Compile>
+        <Compile Update="..\Packages\com.zenecs.core\Runtime\World\Internal\WorldWorkerApi.cs">
+          <Link>World\Internal\WorldWorkerApi.cs</Link>
+        </Compile>
     </ItemGroup>
     <!-- 선택적으로 플랫폼별 Define 추가 -->
     <PropertyGroup>

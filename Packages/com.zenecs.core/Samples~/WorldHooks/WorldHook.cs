@@ -17,7 +17,8 @@ using System.Diagnostics;
 using System.Threading;
 using ZenECS;                    // Kernel
 using ZenECS.Core;
-using ZenECS.Core.Infrastructure;
+using ZenECS.Core.Abstractions.Config;
+using ZenECS.Core.Abstractions.Diagnostics;
 using ZenECS.Core.Systems;
 
 namespace ZenEcsCoreSamples.WorldHooks
@@ -30,101 +31,58 @@ namespace ZenEcsCoreSamples.WorldHooks
         public override string ToString() => Value.ToString();
     }
 
-    // Simulation: installs hooks, performs writes/reads, then removes hooks. Runs once.
-    [SimulationGroup]
-    public sealed class WorldHooksDemoSystem : IVariableRunSystem
+    // Program entry — Basic.cs style kernel loop
+    public static class Program
     {
-        private bool _done;
-
         // Keep references to remove later
-        private Func<WorldOld, Entity, Type, bool>? _writePerm;
-        private Func<Mana, bool>? _validator;
+        private static Func<Entity, Type, bool>? _writePerm;
+        private static Func<Mana, bool>? _validator;
 
-        public void Run(WorldOld w)
+        private static void TryAdd(IWorld w, Entity e, in Mana v)
         {
-            if (_done) return;
+            try { w.AddComponent(e, v); Console.WriteLine($"Add<Mana> OK on e:{e.Id} -> {v}"); }
+            catch (Exception ex) { Console.WriteLine($"Add<Mana> FAIL on e:{e.Id} :: {ex.Message}"); }
+        }
 
-            Console.WriteLine("=== World Hooks demo (read/write permissions, validator) ===");
+        public static void Main()
+        {
+            Console.WriteLine("=== ZenECS Core Sample - World Hooks (Kernel) ===");
 
-            // Configure logging for write failures
-            EcsRuntimeOptions.Log = new ConsoleEcsLogger();
-            EcsRuntimeOptions.WritePolicy = EcsRuntimeOptions.WriteFailurePolicy.Log;
-
+            var kernel = new Kernel(null, logger: new EcsLogger());
+            var world = kernel.CreateWorld();
+            kernel.SetCurrentWorld(world);
+            
             // Write permission: only even entity IDs
-            _writePerm = (world, e, t) => (e.Id & 1) == 0;
-            w.AddWritePermission(_writePerm);
+            _writePerm = (e, t) => (e.Id & 1) == 0;
+            world.AddWritePermission(_writePerm);
 
             // Validator: Mana must be >= 0
             _validator = (m) => m.Value >= 0;
-            w.AddValidator(_validator);
+            world.AddValidator(_validator);
 
             // Create entities
-            var e1 = w.CreateEntity(); // odd id
-            var e2 = w.CreateEntity(); // even id
+            var e1 = world.SpawnEntity(); // odd id
+            var e2 = world.SpawnEntity(); // even id
 
             // Try to add/replace with various values
-            TryAdd(w, e1, new Mana(10));  // should be rejected by write permission
-            TryAdd(w, e2, new Mana(-10)); // rejected by validator
-            TryAdd(w, e2, new Mana(5));   // OK
+            TryAdd(world, e1, new Mana(10));  // should be rejected by write permission
+            TryAdd(world, e2, new Mana(-10)); // rejected by validator
+            TryAdd(world, e2, new Mana(5));   // OK
 
             // Read permission: allow reads only for Mana type
-            w.AddReadPermission((world, e, t) => t == typeof(Mana));
+            world.AddReadPermission((e, t) => t == typeof(Mana));
 
             // Read attempts
-            if (w.TryRead<Mana>(e2, out var mana))
+            if (world.TryRead<Mana>(e2, out var mana))
                 Console.WriteLine($"Read OK (e:{e2.Id}) -> Mana={mana.Value}");
             else
                 Console.WriteLine("Read denied");
 
             // Remove hooks to restore default behavior
-            w.RemoveWritePermission(_writePerm);
-            w.RemoveValidator(_validator);
-            w.ClearReadPermissions();
-
-            Console.WriteLine("All hooks removed.");
-
-            _done = true;
-        }
-
-        private static void TryAdd(WorldOld w, Entity e, in Mana v)
-        {
-            try { w.Add(e, v); Console.WriteLine($"Add<Mana> OK on e:{e.Id} -> {v}"); }
-            catch (Exception ex) { Console.WriteLine($"Add<Mana> FAIL on e:{e.Id} :: {ex.Message}"); }
-        }
-    }
-
-    // Presentation: read-only summary in Late
-    [PresentationGroup]
-    public sealed class PrintSummarySystem : IPresentationSystem
-    {
-        public void Run(WorldOld w, float alpha)
-        {
-            Console.WriteLine($"[Late] Frame {w.FrameCount}, alive={w.AliveCount}");
-            foreach (var e in w.Query<Mana>())
-                Console.WriteLine($"Entity {e.Id,2}: Mana={w.Read<Mana>(e).Value}");
-        }
-    }
-
-    // Program entry — Basic.cs style kernel loop
-    public static class Program
-    {
-        public static void Main()
-        {
-            Console.WriteLine("=== ZenECS Core Sample - World Hooks (Kernel) ===");
-
-            EcsKernel.Start(
-                new WorldConfig(initialEntityCapacity: 8),
-                new ISystem[]
-                {
-                    new WorldHooksDemoSystem(), // Simulation (install & test hooks)
-                    new PrintSummarySystem(),   // Presentation (read-only)
-                },
-                options: null,
-                systemRunnerLog: Console.WriteLine,
-                throwIfRunning: false,
-                onComplete: () => { }
-            );
-
+            world.RemoveWritePermission(_writePerm);
+            world.RemoveValidator(_validator);
+            world.ClearReadPermissions();
+            
             const float fixedDelta = 1f / 60f;
             const int   maxSubSteps = 4;
 
@@ -146,19 +104,18 @@ namespace ZenEcsCoreSamples.WorldHooks
                 float dt = (float)(now - prev);
                 prev = now;
 
-                EcsKernel.Pump(dt, fixedDelta, maxSubSteps, out var alpha);
-                EcsKernel.LateFrame(alpha);
+                kernel.PumpAndLateFrame(dt, fixedDelta, maxSubSteps);
 
                 Thread.Sleep(10);
             }
 
             Console.WriteLine("Shutting down...");
-            EcsKernel.Shutdown();
+            kernel.Dispose();
             Console.WriteLine("Done.");
         }
     }
 
-    sealed class ConsoleEcsLogger : EcsRuntimeOptions.ILogger
+    sealed class EcsLogger : IEcsLogger
     {
         public void Info(string msg)  => Console.WriteLine(msg);
         public void Warn(string msg)  => Console.WriteLine("WARN: "  + msg);

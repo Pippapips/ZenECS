@@ -3,6 +3,8 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using ZenECS.Core.Abstractions.Config;
+using ZenECS.Core.Abstractions.Diagnostics;
 using ZenECS.Core.DI;
 using ZenECS.Core.Internal;
 
@@ -39,7 +41,6 @@ namespace ZenECS.Core
         private long _frameCount;
         private long _fixedFrameCount;
         private int _fixedFrameIndexInFrame;
-        private bool _frameHasBegun;
         private bool _firstFixedStepThisFrame;
         private double _totalSimulatedSeconds; // 누적 시뮬레이션 시간(초)
         private KernelOptions? _options;
@@ -71,7 +72,7 @@ namespace ZenECS.Core
 
         // --- Ctor ------------------------------------------------------------
 
-        public Kernel(KernelOptions? options = null)
+        public Kernel(KernelOptions? options = null, IEcsLogger? logger = null)
         {
             if (IsRunning) return;
             IsRunning = true;
@@ -79,6 +80,7 @@ namespace ZenECS.Core
             _simulationAccumulatorSeconds = 0;
 
             _options = options ?? new KernelOptions();
+            if (logger != null) EcsRuntimeOptions.Log = logger;
             _root = Internal.Bootstrap.CoreBootstrap.BuildRoot(_options);
         }
 
@@ -104,10 +106,20 @@ namespace ZenECS.Core
             WorldId? presetId = null,
             bool setAsCurrent = false)
         {
+            if (Options == null)
+            {
+                throw new InvalidOperationException($"World has been no options");
+            }
+            
             var id = presetId ?? Options.NewWorldId();
             var finalName = name ?? $"{Options.AutoNamePrefix}{id.Value.ToString("N")[..6]}";
             var finalTags = (tags ?? Array.Empty<string>()).ToArray();
 
+            if (_root == null)
+            {
+                throw new InvalidOperationException($"World has been no _root scope");
+            }
+            
             var scope = Internal.Bootstrap.CoreBootstrap.BuildWorldScope(_root);
             var world = new Internal.World(cfg, id, finalName, finalTags, this, scope);
 
@@ -256,12 +268,11 @@ namespace ZenECS.Core
             if (!IsRunning || IsPaused) return;
 
             _delta = dt;
-            _frameHasBegun = true;
             _firstFixedStepThisFrame = false;
             _simulationAccumulatorSeconds += dt;
             _frameCount++;
 
-            if (Options.StepOnlyCurrentWhenSelected && _current is not null)
+            if (Options is { StepOnlyCurrentWhenSelected: true } && _current is not null)
             {
                 if (!_current.IsPaused)
                 {
@@ -294,7 +305,7 @@ namespace ZenECS.Core
             _fixedFrameIndexInFrame++;
             _totalSimulatedSeconds += fixedDelta;
             
-            if (Options.StepOnlyCurrentWhenSelected && _current is not null)
+            if (Options is { StepOnlyCurrentWhenSelected: true } && _current is not null)
             {
                 if (!_current.IsPaused)
                 {
@@ -317,9 +328,7 @@ namespace ZenECS.Core
         {
             if (!IsRunning || IsPaused) return;
 
-            _frameHasBegun = false;
-
-            if (Options.StepOnlyCurrentWhenSelected && _current is not null)
+            if (Options is { StepOnlyCurrentWhenSelected: true } && _current is not null)
             {
                 if (!_current.IsPaused)
                 {
