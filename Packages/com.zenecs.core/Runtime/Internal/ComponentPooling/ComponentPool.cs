@@ -1,14 +1,13 @@
 ﻿// ──────────────────────────────────────────────────────────────────────────────
-// ZenECS Core — World subsystem
-// File: Internal/ComponentPool.cs
-// Purpose: Generic component pool (T[]) + presence bitset implementing IComponentPool.
+// ZenECS Core — World internals
+// File: ComponentPool.cs
+// Purpose: Generic value-type component pool (T[]) with presence bitset.
 // Key concepts:
-//   • O(1) id-indexed access; auto-growth policy.
-//   • Boxed accessors for external tooling and snapshots.
-//   • Designed for maximum performance in runtime systems and safe use in AOT/IL2CPP.
-//
-// Copyright (c) 2025 Pippapips Limited
-// License: MIT (https://opensource.org/licenses/MIT)
+//   • O(1) id-indexed access with auto growth (power-of-two).
+//   • Ref returns: zero-copy read/write; TryGet/Get for safe copies.
+//   • Boxed accessors for tooling/snapshots; ClearAll for resets.
+// License: MIT
+// © 2025 Pippapips Limited
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
@@ -19,33 +18,27 @@ using System.Runtime.CompilerServices;
 namespace ZenECS.Core.Internal.ComponentPooling
 {
     /// <summary>
-    /// A strongly-typed pool for value-type components.
-    /// Backed by an array for O(1) access and a BitSet for tracking which entity IDs are occupied.
-    /// Designed for maximum performance with minimal memory overhead.
-    /// </summary> 
+    /// Strongly-typed pool for value-type components.
+    /// Backed by an array for O(1) access and a <c>BitSet</c> to track presence.
+    /// </summary>
     internal sealed class ComponentPool<T> : IComponentPool where T : struct
     {
         private const int DefaultInitialCapacity = 256;
 
-        // Core data storage: maps entityId directly to component instance
+        // Core data storage: maps entityId → component value
         private T[] _data;
 
-        // BitSet indicating which entity indices are currently active
+        // Presence flags per entityId
         private BitSet _present;
 
-        // Number of components currently stored
+        // Active component count
         private int _count;
 
-        /// <summary>
-        /// Parameterless constructor provided to support reflection and AOT-safe instantiation
-        /// through Activator.CreateInstance on closed generic types.
-        /// </summary> 
-        public ComponentPool() : this(DefaultInitialCapacity) {}
+        /// <summary>Parameterless ctor for reflection/AOT-safe instantiation.</summary>
+        public ComponentPool() : this(DefaultInitialCapacity) { }
 
-        /// <summary>
-        /// Creates a new pool with a specific initial capacity.
-        /// </summary>
-        public ComponentPool(int initialCapacity /*= DefaultInitialCapacity*/)        
+        /// <summary>Create a new pool with the given initial capacity.</summary>
+        public ComponentPool(int initialCapacity)
         {
             int cap = Math.Max(1, initialCapacity);
             _data = new T[cap];
@@ -56,26 +49,19 @@ namespace ZenECS.Core.Internal.ComponentPooling
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void EnsureInitialized()
         {
-            // Ensure that internal arrays exist and are ready to use
             if (_data == null || _data.Length == 0)
                 _data = new T[DefaultInitialCapacity];
 
-            // The BitSet should never be replaced — only expanded to preserve bit flags
             if (_present == null)
                 _present = new BitSet(Math.Max(1, _data.Length));
             else if (_present.Length < _data.Length)
-                _present.EnsureCapacity(_data.Length); // Preserve existing bits
+                _present.EnsureCapacity(_data.Length);
         }
 
-        /// <summary>
-        /// Gets the number of currently active components.
-        /// </summary>
+        /// <inheritdoc/>
         public int Count => _count;
 
-        /// <summary>
-        /// Ensures that this pool can store a component for the given entityId.
-        /// Expands the internal arrays exponentially (×2) to avoid frequent allocations.
-        /// </summary>
+        /// <inheritdoc/>
         public void EnsureCapacity(int entityId)
         {
             EnsureInitialized();
@@ -85,25 +71,21 @@ namespace ZenECS.Core.Internal.ComponentPooling
             while (cap <= entityId) cap <<= 1;
 
             Array.Resize(ref _data, cap);
-            _present.EnsureCapacity(cap); // Preserve bits when expanding
+            _present.EnsureCapacity(cap);
         }
 
-        /// <summary>
-        /// Checks whether the specified entity currently has a <typeparamref name="T"/> component.
-        /// </summary>
+        /// <inheritdoc/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Has(int entityId)
         {
             if (entityId < 0) return false;
             if (_data == null || entityId >= _data.Length) return false;
             if (_present == null) return false;
-            var has = _present.Get(entityId);
-            return has;
+            return _present.Get(entityId);
         }
 
         /// <summary>
-        /// Retrieves a reference to the component for writing.
-        /// If the component does not exist, it is automatically created and marked as present.
+        /// Get a reference to the component for writing; creates it if missing.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref T Ref(int entityId)
@@ -118,9 +100,7 @@ namespace ZenECS.Core.Internal.ComponentPooling
         }
 
         /// <summary>
-        /// Retrieves a reference to an existing component.
-        /// Throws an exception if the component is missing.
-        /// This is the fastest path for known existing components.
+        /// Get a reference to an existing component; throws if missing.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref T RefExisting(int entityId)
@@ -131,16 +111,14 @@ namespace ZenECS.Core.Internal.ComponentPooling
         }
 
         /// <summary>
-        /// Returns a copy of the component value (default if not found).
-        /// This is slower than Ref() but safe for read-only access.
+        /// Get a copy of the component value (default if not found).
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Get(int entityId)
             => Has(entityId) ? _data[entityId] : default;
 
         /// <summary>
-        /// Attempts to retrieve a component using an out parameter.
-        /// Returns true if present, otherwise returns false with default value.
+        /// Try get a value copy of the component.
         /// </summary>
         public bool TryGet(int entityId, out T value)
         {
@@ -153,10 +131,7 @@ namespace ZenECS.Core.Internal.ComponentPooling
             return false;
         }
 
-        /// <summary>
-        /// Removes a component from the given entity.
-        /// Optionally clears its memory slot to default value.
-        /// </summary>
+        /// <inheritdoc/>
         public void Remove(int entityId, bool dataClear = true)
         {
             if (!Has(entityId)) return;
@@ -166,41 +141,40 @@ namespace ZenECS.Core.Internal.ComponentPooling
                 _data[entityId] = default;
         }
 
-        // 상한: 내부 배열 길이(=스캔 범위)
+        /// <inheritdoc/>
         public int Capacity => _data?.Length ?? 0;
 
-        // 스파스 구조: denseIndex == entityId
+        /// <inheritdoc/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int EntityIdAt(int index) => index;
 
-        // 🔁 기존의 iterator(yield return) 제거하고 값타입 열거자 반환
+        /// <summary>
+        /// Allocation-free enumerator over active entity ids.
+        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public PoolEnumerator EnumerateIds()
-            => new PoolEnumerator(this);        
+            => new PoolEnumerator(this);
 
+        /// <summary>
+        /// Enumerate (entityId, boxed component) pairs for external tools/snapshots.
+        /// </summary>
         public IEnumerable<(int id, object boxed)> EnumerateAll()
         {
             var it = new PoolEnumerator(this);
             while (it.MoveNext())
             {
                 int id = it.CurrentId;
-                var boxed = GetBoxed(id);          // struct면 여기서 boxing
+                var boxed = GetBoxed(id);
                 if (boxed != null)
                     yield return (id, boxed);
             }
         }
-        
-        /// <summary>
-        /// Returns the component as a boxed object (null if missing).
-        /// Used primarily by reflection or snapshot tools.
-        /// </summary>
+
+        /// <inheritdoc/>
         public object? GetBoxed(int entityId)
             => Has(entityId) ? (object)_data[entityId] : null;
 
-        /// <summary>
-        /// Assigns a boxed component value.
-        /// Performs a runtime type check to ensure correctness.
-        /// </summary>
+        /// <inheritdoc/>
         public void SetBoxed(int entityId, object value)
         {
             EnsureInitialized();
@@ -209,14 +183,11 @@ namespace ZenECS.Core.Internal.ComponentPooling
                     $"SetBoxed type mismatch: value is '{value?.GetType().FullName ?? "null"}' " +
                     $"but pool expects '{typeof(T).FullName}'");
 
-            ref var r = ref Ref(entityId); // Shared for add/update
+            ref var r = ref Ref(entityId);
             r = v;
         }
 
-        /// <summary>
-        /// Clears all data and presence flags.
-        /// Used when reloading snapshots or resetting the World.
-        /// </summary>
+        /// <inheritdoc/>
         public void ClearAll()
         {
             EnsureInitialized();

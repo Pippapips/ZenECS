@@ -1,4 +1,18 @@
-﻿#nullable enable
+﻿// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Core — World
+// File: World.cs
+// Purpose: Concrete per-world runtime host (entities, components, systems, IO).
+// Key concepts:
+//   • DI-composed per-world services: runner, pools, router, contexts, bus.
+//   • Lifetime wiring: subscribe to Kernel ticks; cleanly detach on dispose.
+//   • Entity id/generation: stable handles; 0 is reserved as “null”.
+//   • Pause per world: Kernel may step selected worlds only.
+//   • Reset paths: fast capacity-preserving reset for bulk despawn.
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT
+// SPDX-License-Identifier: MIT
+// ─────────────────────────────────────────────────────────────────────────────-
+#nullable enable
 using System;
 using System.Collections.Generic;
 using ZenECS.Core.Internal.Binding;
@@ -14,20 +28,15 @@ using ZenECS.Core.Systems;
 namespace ZenECS.Core.Internal
 {
     /// <summary>
-    /// World implementation: storage, messaging, events, runner, binding host.
-    /// All per-world services are resolved from the provided ServiceHost scope.
+    /// Concrete world: owns entity storage, component pools, messaging, systems, and binding host.
+    /// All services are resolved from the per-world DI <see cref="ServiceContainer"/>.
     /// </summary>
     internal sealed partial class World : IWorld
     {
         private readonly IKernel _kernel;
-
-        // DI scope for this world (disposed with the world)
         private readonly ServiceContainer _scope;
 
         // Per-world services (resolved from _scope)
-        // private readonly EntityStore   _store;
-        // private readonly EventHub      _events;
-        // private readonly QueryGateway  _query;
         private readonly ISystemRunner _runner;
         private readonly IPermissionHook _permissionHook;
         private readonly IBindingRouter _bindingRouter;
@@ -36,13 +45,13 @@ namespace ZenECS.Core.Internal
         private readonly IMessageBus _bus;
         private readonly IWorker _worker;
 
-        // // Read-only view + binding host are composed here (need this world context)
-        // private readonly IReadWorld _readOnlyView;
-        // private readonly AddonHost  _addons;
-
+        /// <inheritdoc/>
         public WorldId Id { get; }
+        /// <inheritdoc/>
         public string Name { get; set; }
+        /// <inheritdoc/>
         public IReadOnlyCollection<string> Tags { get; }
+        /// <inheritdoc/>
         public bool IsPaused => _pause;
 
         private bool _pause;
@@ -50,40 +59,34 @@ namespace ZenECS.Core.Internal
 
         private readonly WorldConfig _cfg;
 
-        /// <summary>
-        /// Bitset of occupied entity slots (alive flags).
-        /// </summary>
+        /// <summary>Bitset of occupied entity slots (alive flags).</summary>
         private BitSet _alive;
 
-        /// <summary>
-        /// Next id to issue for newly created entities.
-        /// Starts at 1 to reserve 0 for "null"/invalid semantics.
-        /// </summary>
+        /// <summary>Next id to issue for newly created entities (1-based; 0 reserved).</summary>
         private int _nextId = 1;
 
-        /// <summary>
-        /// Recycled IDs of destroyed entities (LIFO). When creating a new entity,
-        /// the world prefers reusing a freed id from this stack before growing.
-        /// </summary>
+        /// <summary>Recycled ids of destroyed entities (LIFO).</summary>
         private Stack<int> _freeIds;
 
-        /// <summary>
-        /// Generation array: per-slot generation counter used to prevent zombie handles.
-        /// Increments when an id is destroyed and reused, so stale handles no longer match.
-        /// </summary>
-        private int[] _generation; // 세대(Generation) 배열: slot별 현재 세대 카운터 → Generation array: per-slot current generation
+        /// <summary>Per-slot generation counter preventing stale handles.</summary>
+        private int[] _generation;
 
+        /// <summary>Get current generation value for the given internal id.</summary>
         public int GenerationOf(int id) => _generation[id];
 
+        /// <summary>
+        /// Construct a world with a configuration, identity metadata, and a DI scope.
+        /// Subscribes to kernel tick events and composes per-world services.
+        /// </summary>
         public World(WorldConfig cfg, WorldId id, string name, IReadOnlyCollection<string> tags, IKernel kernel,
             ServiceContainer scope)
         {
             _cfg = cfg;
 
-            _alive = new BitSet(_cfg.InitialEntityCapacity);       // Bitmap of occupied entity slots
-            _generation = new int[_cfg.InitialEntityCapacity];     // Per-slot generation counters (start at 0)
-            _freeIds = new Stack<int>(_cfg.InitialFreeIdCapacity); // Recycled IDs storage for destroyed entities
-            _nextId = 1;                                           // New entities start from 1
+            _alive = new BitSet(_cfg.InitialEntityCapacity);
+            _generation = new int[_cfg.InitialEntityCapacity];
+            _freeIds = new Stack<int>(_cfg.InitialFreeIdCapacity);
+            _nextId = 1;
             _pause = false;
 
             Id = id;
@@ -106,6 +109,9 @@ namespace ZenECS.Core.Internal
             _kernel.OnLateFrame += LateFrame;
         }
 
+        /// <summary>
+        /// Dispose the world: shutdown systems, unsubscribe from kernel ticks, reset storage, and dispose DI scope.
+        /// </summary>
         public void Dispose()
         {
             if (_disposed) return;
@@ -114,31 +120,30 @@ namespace ZenECS.Core.Internal
             _runner.Shutdown(this);
 
             _kernel.OnBeginFrame -= BeginFrame;
-            _kernel.OnFixedStep -= FixedStep;
-            _kernel.OnLateFrame -= LateFrame;
+            _kernel.OnFixedStep  -= FixedStep;
+            _kernel.OnLateFrame  -= LateFrame;
 
             Reset(false);
-            
-            // Dispose DI scope (owned singletons/factories)
             _scope.Dispose();
         }
 
+        /// <summary>
+        /// Build and initialize systems for this world using the configured runner.
+        /// </summary>
+        /// <param name="systems">Optional explicit system list; runner may provide defaults.</param>
+        /// <param name="warn">Optional warning logger for runner diagnostics.</param>
         public void Initialize(IEnumerable<ISystem>? systems = null, Action<string>? warn = null)
         {
             _runner.Build(systems, warn);
             _runner.Initialize(this);
         }
 
-        public void Pause()
-        {
-            _pause = true;
-        }
+        /// <summary>Pause stepping for this world.</summary>
+        public void Pause() => _pause = true;
 
-        public void Resume()
-        {
-            _pause = false;
-        }
-        
+        /// <summary>Resume stepping for this world.</summary>
+        public void Resume() => _pause = false;
+
         private void BeginFrame(IWorld w, float dt)
         {
             if (w != this) return;

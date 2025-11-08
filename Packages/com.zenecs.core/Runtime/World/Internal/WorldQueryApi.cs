@@ -1,20 +1,27 @@
 ﻿// ──────────────────────────────────────────────────────────────────────────────
-// ZenECS Core — World subsystem
-// File: World.Query.cs
-// Purpose: Query builder and iterator for ref-based component enumeration.
+// ZenECS Core — World subsystem (Query API)
+// File: WorldQueryApi.cs
+// Purpose: Ref-based component iteration with seed-from-smallest optimization.
 // Key concepts:
-//   • Seeds enumeration from the smallest pool for efficiency.
-//   • Filter WithAny/WithoutAny to constrain sets.
-//
+//   • Type-safe builders: Query<T1..T8>(Filter) produce struct enumerables.
+//   • ResolvedFilter: pre-resolves component pools for fast membership tests.
+//   • Smallest-pool seeding: minimizes scan set before applying filters.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT (https://opensource.org/licenses/MIT)
+// License: MIT
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-
 #nullable enable
 namespace ZenECS.Core.Internal
 {
+    /// <summary>
+    /// Implements <see cref="IWorldQueryApi"/> – strongly typed query entry points.
+    /// </summary>
     internal sealed partial class World : IWorldQueryApi
     {
+        /// <summary>
+        /// Build a query over entities that have <typeparamref name="T1"/>.
+        /// </summary>
+        /// <param name="f">Optional composable filter (with/without any/all).</param>
         public QueryEnumerable<T1> Query<T1>(Filter f = default) where T1 : struct
         {
             var a  = _componentPoolRepository.TryGetPool<T1>();
@@ -23,6 +30,7 @@ namespace ZenECS.Core.Internal
             return new QueryEnumerable<T1>(this, in ctx);
         }
 
+        /// <summary>Build a query over entities that have T1 and T2.</summary>
         public QueryEnumerable<T1, T2> Query<T1, T2>(Filter f = default)
             where T1 : struct where T2 : struct
         {
@@ -33,6 +41,7 @@ namespace ZenECS.Core.Internal
             return new QueryEnumerable<T1, T2>(this, in ctx);
         }
 
+        /// <summary>Build a query over entities that have T1, T2 and T3.</summary>
         public QueryEnumerable<T1, T2, T3> Query<T1, T2, T3>(Filter f = default)
             where T1 : struct where T2 : struct where T3 : struct
         {
@@ -44,6 +53,7 @@ namespace ZenECS.Core.Internal
             return new QueryEnumerable<T1, T2, T3>(this, in ctx);
         }
 
+        /// <summary>Build a query over entities that have T1…T4.</summary>
         public QueryEnumerable<T1, T2, T3, T4> Query<T1, T2, T3, T4>(Filter f = default)
             where T1 : struct where T2 : struct where T3 : struct where T4 : struct
         {
@@ -56,6 +66,7 @@ namespace ZenECS.Core.Internal
             return new QueryEnumerable<T1, T2, T3, T4>(this, in ctx);
         }
 
+        /// <summary>Build a query over entities that have T1…T5.</summary>
         public QueryEnumerable<T1, T2, T3, T4, T5> Query<T1, T2, T3, T4, T5>(Filter f = default)
             where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct
         {
@@ -69,6 +80,7 @@ namespace ZenECS.Core.Internal
             return new QueryEnumerable<T1, T2, T3, T4, T5>(this, in ctx);
         }
 
+        /// <summary>Build a query over entities that have T1…T6.</summary>
         public QueryEnumerable<T1, T2, T3, T4, T5, T6> Query<T1, T2, T3, T4, T5, T6>(Filter f = default)
             where T1 : struct where T2 : struct where T3 : struct where T4 : struct
             where T5 : struct where T6 : struct
@@ -84,6 +96,7 @@ namespace ZenECS.Core.Internal
             return new QueryEnumerable<T1, T2, T3, T4, T5, T6>(this, in ctx);
         }
 
+        /// <summary>Build a query over entities that have T1…T7.</summary>
         public QueryEnumerable<T1, T2, T3, T4, T5, T6, T7> Query<T1, T2, T3, T4, T5, T6, T7>(Filter f = default)
             where T1 : struct where T2 : struct where T3 : struct where T4 : struct
             where T5 : struct where T6 : struct where T7 : struct
@@ -100,6 +113,7 @@ namespace ZenECS.Core.Internal
             return new QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>(this, in ctx);
         }
 
+        /// <summary>Build a query over entities that have T1…T8.</summary>
         public QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8> Query<T1, T2, T3, T4, T5, T6, T7, T8>(Filter f = default)
             where T1 : struct where T2 : struct where T3 : struct where T4 : struct
             where T5 : struct where T6 : struct where T7 : struct where T8 : struct

@@ -1,14 +1,13 @@
 ﻿// ──────────────────────────────────────────────────────────────────────────────
-// ZenECS Core
+// ZenECS Core — Serialization
 // File: PostLoadMigrationRegistry.cs
-// Purpose: Holds and executes post-load migration tasks after world snapshot loading.
+// Purpose: Register and execute post-load migrations after snapshot load.
 // Key concepts:
-//   • Ensures unique registration by type to avoid duplicates.
-//   • Executes migrations in ascending Order, then by type name for stability.
-//   • Provides Clear() for reset/testing environments.
-// 
-// Copyright (c) 2025 Pippapips Limited
-// License: MIT (https://opensource.org/licenses/MIT)
+//   • Uniqueness: one instance per migration type.
+//   • Deterministic: ordered by Order, then type name.
+//   • Test-friendly: Clear() to reset state in unit tests/tools.
+// Copyright...
+// License: MIT
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
@@ -20,7 +19,7 @@ using ZenECS.Core.Serialization;
 namespace ZenECS.Core.Internal.Serialization
 {
     /// <summary>
-    /// Central registry for post-load migrations executed after snapshot load.
+    /// Central registry responsible for holding and executing post-load migrations.
     /// </summary>
     internal static class PostLoadMigrationRegistry
     {
@@ -28,8 +27,10 @@ namespace ZenECS.Core.Internal.Serialization
         private static readonly HashSet<Type> _migTypes = new();
 
         /// <summary>
-        /// Registers a migration. Ignores duplicates (same type).
+        /// Register a migration instance. Duplicate types are ignored.
         /// </summary>
+        /// <param name="mig">Migration instance.</param>
+        /// <returns><see langword="true"/> if registered; <see langword="false"/> if ignored.</returns>
         public static bool Register(IPostLoadMigration mig)
         {
             if (mig == null) return false;
@@ -42,13 +43,13 @@ namespace ZenECS.Core.Internal.Serialization
         }
 
         /// <summary>
-        /// Checks whether a migration of type <typeparamref name="T"/> is registered.
+        /// Check whether a migration of type <typeparamref name="T"/> is already registered.
         /// </summary>
         public static bool IsRegistered<T>() where T : IPostLoadMigration
             => _migTypes.Contains(typeof(T));
 
         /// <summary>
-        /// Creates and registers a migration only if it has not been registered yet.
+        /// Ensure a migration exists by registering a newly created instance if absent.
         /// </summary>
         public static bool EnsureRegistered<T>(Func<T> factory) where T : class, IPostLoadMigration
         {
@@ -58,22 +59,23 @@ namespace ZenECS.Core.Internal.Serialization
         }
 
         /// <summary>
-        /// Runs all registered migrations ordered by Order and type name (for deterministic execution).
+        /// Execute all registered migrations in deterministic order.
         /// </summary>
+        /// <param name="world">Target world.</param>
         public static void RunAll(IWorld world)
         {
             if (_migs.Count == 0) return;
 
             foreach (var m in _migs
-                         .OrderBy(m => m.Order)
-                         .ThenBy(m => m.GetType().FullName, StringComparer.Ordinal))
+                     .OrderBy(m => m.Order)
+                     .ThenBy(m => m.GetType().FullName, StringComparer.Ordinal))
             {
                 m.Run(world);
             }
         }
 
         /// <summary>
-        /// Clears all registered migrations and types (for testing or reset).
+        /// Remove all registered migrations and type keys. Intended for tests/resets.
         /// </summary>
         public static void Clear()
         {

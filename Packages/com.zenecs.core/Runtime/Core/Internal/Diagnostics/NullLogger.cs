@@ -1,4 +1,18 @@
-﻿using ZenECS.Core.Abstractions.Diagnostics;
+﻿// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Core — Diagnostics
+// File: NullLogger.cs
+// Purpose: Safe default logger that drops all messages (no-op).
+// Key concepts:
+//   • Always available: avoids null checks in core code paths.
+//   • Replace at bootstrap with your real logger.
+//   • Intentionally silent in all methods.
+// Copyright (...)
+// License: MIT
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
+
+#nullable enable
+using ZenECS.Core.Abstractions.Diagnostics;
 
 namespace ZenECS.Core.Internal.Diagnostics
 {
@@ -7,8 +21,13 @@ namespace ZenECS.Core.Internal.Diagnostics
     /// </summary>
     internal sealed class NullLogger : IEcsLogger
     {
+        /// <inheritdoc/>
         public void Info(string message) { }
+
+        /// <inheritdoc/>
         public void Warn(string message) { }
+
+        /// <inheritdoc/>
         public void Error(string message) { }
     }
 }

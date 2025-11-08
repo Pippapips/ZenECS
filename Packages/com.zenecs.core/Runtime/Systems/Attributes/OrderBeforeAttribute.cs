@@ -5,7 +5,6 @@
 // Key concepts:
 //   • Declares that this system must run <b>before</b> another target system.
 //   • Multiple attributes can be used to define multiple dependencies.
-//
 // Copyright (c) 2025 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT

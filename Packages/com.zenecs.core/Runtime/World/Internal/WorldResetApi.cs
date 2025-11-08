@@ -1,4 +1,17 @@
-﻿#nullable enable
+﻿// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Core — World subsystem (Reset API)
+// File: WorldResetApi.cs
+// Purpose: Reset/rehydrate world storage and subsystems with/without capacity reuse.
+// Key concepts:
+//   • Fast path reset: keep arrays/capacity; clear data; rebuild pools empty.
+//   • Hard reset: discard storage; recreate from initial configuration.
+//   • Subsystem hooks: pre/post reset partials to coordinate services.
+//   • Safety: flush jobs/cmd buffers; clear caches and hook queues before reuse.
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -7,8 +20,18 @@ using ZenECS.Core.Internal.ComponentPooling;
 
 namespace ZenECS.Core.Internal
 {
+    /// <summary>
+    /// Implements <see cref="IWorldResetApi"/>: world-level reset operations.
+    /// </summary>
     internal sealed partial class World : IWorldResetApi
     {
+        /// <summary>
+        /// Reset the world either by preserving current capacity (fast) or by fully rebuilding (hard).
+        /// </summary>
+        /// <param name="keepCapacity">
+        /// <see langword="true"/> to keep current array capacities and just clear/reinit;
+        /// <see langword="false"/> to discard storage and rebuild from initial config.
+        /// </param>
         public void Reset(bool keepCapacity)
         {
             if (keepCapacity) ResetButKeepCapacity();
@@ -16,20 +39,23 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Called before Reset — allows subsystems to perform pre-reset cleanup.
+        /// Called <b>before</b> the reset sequence — subsystems can cleanup transient state.
         /// </summary>
+        /// <param name="keepCapacity">Mirror of <see cref="Reset(bool)"/>; see remarks on strategy.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         partial void OnBeforeWorldReset(bool keepCapacity);
 
         /// <summary>
-        /// Called after Reset — allows subsystems to rebuild or reinitialize state.
+        /// Called <b>after</b> the reset sequence — subsystems can rebuild caches or state.
         /// </summary>
+        /// <param name="keepCapacity">Mirror of <see cref="Reset(bool)"/>; indicates path taken.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         partial void OnAfterWorldReset(bool keepCapacity);
         
         /// <summary>
-        /// Performs subsystem-level resets (command buffers, jobs, hooks, timing, queries, etc.).
+        /// Reset cross-cutting subsystems (jobs, command buffers, hooks, caches, events).
         /// </summary>
+        /// <param name="keepCapacity">Whether the fast path was chosen.</param>
         private void ResetSubsystems(bool keepCapacity)
         {
             OnBeforeWorldReset(keepCapacity);
@@ -46,13 +72,14 @@ namespace ZenECS.Core.Internal
             // Query / filter caches
             ResetQueryCaches();
 
+            // Static entity events (global within process)
             EntityEvents.Reset();
             
             OnAfterWorldReset(keepCapacity);
         }
 
         /// <summary>
-        /// Resets the world while retaining current capacities — fastest reset path.
+        /// Fast reset: retain capacity, clear data, and recreate empty pools sized to current cap.
         /// </summary>
         private void ResetButKeepCapacity()
         {
@@ -83,7 +110,7 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Performs a full reinitialization — discards all data and rebuilds internal structures.
+        /// Hard reset: discard all storage and caches, rebuild to initial configured capacities.
         /// </summary>
         private void HardReset()
         {
@@ -99,9 +126,11 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Creates a new empty component pool for the given type,
-        /// preallocating internal arrays up to the specified capacity.
+        /// Create a new empty component pool for <paramref name="compType"/> sized to <paramref name="cap"/>.
         /// </summary>
+        /// <param name="compType">Component type to allocate a pool for.</param>
+        /// <param name="cap">Desired capacity (entity slots).</param>
+        /// <returns>An empty pool instance ready for use.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private IComponentPool CreateEmptyPoolForType(Type compType, int cap)
         {

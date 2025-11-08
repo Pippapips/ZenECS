@@ -1,14 +1,13 @@
 ﻿// ──────────────────────────────────────────────────────────────────────────────
-// ZenECS Core
+// ZenECS Core — Serialization
 // File: IPostLoadMigration.cs
-// Purpose: Post-load world migration step executed after all pools are restored.
+// Purpose: Define post-load migrations executed after pools are restored.
 // Key concepts:
-//   • Ordered execution by ascending Order value.
-//   • Must be idempotent (running multiple times yields the same final state).
-//   • Suitable for re-binding, index rebuilds, or data corrections across the world.
-// 
-// Copyright (c) 2025 Pippapips Limited
-// License: MIT (https://opensource.org/licenses/MIT)
+//   • Idempotent: multiple runs yield the same final state.
+//   • Ordered: ascending Order, then type-name tie-break for determinism.
+//   • Scope: world-wide fixups (rebinding, index rebuilds, data corrections). 
+// Copyright (c) 2025...
+// License: MIT
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
@@ -16,18 +15,22 @@
 namespace ZenECS.Core.Serialization
 {
     /// <summary>
-    /// Runs after a full snapshot load (after component pools are populated) to perform
-    /// global fixes or migrations. Implementations must be <b>idempotent</b>.
-    /// Lower <see cref="Order"/> runs first.
+    /// A migration step that runs after a full snapshot has been loaded and all
+    /// component pools have been restored.
     /// </summary>
+    /// <remarks>
+    /// Implementations <b>must be idempotent</b>. Use to rebuild indices, rebind
+    /// contexts, or adjust data layouts between versions.
+    /// </remarks>
     public interface IPostLoadMigration
     {
-        /// <summary>Execution order (lower values run earlier).</summary>
+        /// <summary>Execution priority; lower values run earlier.</summary>
         int Order { get; }
 
         /// <summary>
-        /// Executes the migration over the entire world (e.g., re-binding, index rebuild, data corrections).
+        /// Execute the migration against the provided <paramref name="world"/>.
         /// </summary>
+        /// <param name="world">Target world instance.</param>
         void Run(IWorld world);
     }
 }

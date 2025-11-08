@@ -1,3 +1,23 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Core
+// File: Kernel.cs
+// Purpose: Central coordinator that owns the lifetime, lookup, and stepping of
+//          multiple independent Worlds. It composes the root DI container,
+//          creates per‑world scopes, and drives simulation (Begin/Fixed/Late).
+// Key concepts:
+//   • Multi‑world manager: create/destroy, find by id/name/tag, select current.
+//   • Deterministic stepping: BeginFrame(dt) → FixedStep(fixedDelta)×N → LateFrame(alpha).
+//   • Accumulator-based fixed update: PumpAndLateFrame() consumes dt into fixed substeps.
+//   • Events as hooks: OnBeginFrame/OnFixedStep/OnLateFrame per world.
+//   • DI/bootstrap: builds a root ServiceContainer and per‑world scopes.
+//   • Indexes: concurrent maps for id/name/tag with thread‑safe snapshots.
+//   • Pause & selection semantics: optionally step only the currently selected world.
+//   • Time tracking: frame counters and total simulated seconds (fixed‑step only).
+//   • Adapter‑friendly: Unity/Godot/etc. call the three ticks from their loops.
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 using System;
 using System.Collections.Concurrent;
@@ -43,7 +63,7 @@ namespace ZenECS.Core
         private long _fixedFrameCount;
         private int _fixedFrameIndexInFrame;
         private bool _firstFixedStepThisFrame;
-        private double _totalSimulatedSeconds; // 누적 시뮬레이션 시간(초)
+        private double _totalSimulatedSeconds; // Accumulated time processed by FixedStep (seconds)
         private KernelOptions? _options;
 
         public bool IsRunning { get; private set; }
@@ -180,7 +200,7 @@ namespace ZenECS.Core
             if (tags == null || tags.Length == 0)
                 yield break;
 
-            // 태그 정규화(공백 제거 + 대소문자 무시 Distinct)
+            // Normalize tags (trim + case-insensitive Distinct)
             var allowed = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var t in tags)
                 if (!string.IsNullOrWhiteSpace(t))
@@ -188,22 +208,22 @@ namespace ZenECS.Core
             if (allowed.Count == 0)
                 yield break;
 
-            // 같은 WorldId 중복 방지
-            var seen = new HashSet<WorldId>(); // WorldId가 struct면 기본 Equality로 충분(필요시 IEqualityComparer 제공)
+            // Prevent duplicates of the same WorldId in results
+            var seen = new HashSet<WorldId>();
 
-            // ConcurrentDictionary는 ToArray()로 '키-값 쌍' 스냅샷을 안전하게 얻을 수 있다.
+            // ConcurrentDictionary snapshot with ToArray() is safe.
             foreach (var kv in _byTag.ToArray()) // KeyValuePair<string, HashSet<WorldId>>
             {
                 var tag = kv.Key;
                 if (!allowed.Contains(tag))
                     continue;
 
-                // 값(HashSet<WorldId>)은 스레드 세이프가 아니므로 반드시 한 번 더 스냅샷
+                // HashSet is not thread-safe; take a snapshot before iterating.
                 WorldId[] ids = kv.Value.ToArray();
 
                 foreach (var id in ids)
                 {
-                    if (!seen.Add(id)) // 이미 반환한 월드면 skip
+                    if (!seen.Add(id)) // already yielded this world
                         continue;
 
                     if (_byId.TryGetValue(id, out var world) && world != null)
@@ -218,17 +238,16 @@ namespace ZenECS.Core
                 yield break;
 
             var p = prefix.Trim();
-            var seen = new HashSet<WorldId>(); // 같은 월드가 여러 이름에 걸려도 중복 방지
+            var seen = new HashSet<WorldId>(); // avoid duplicates if a world matches multiple keys
 
-            // _byName: ConcurrentDictionary<string, HashSet<WorldId>>  가정
-            foreach (var kv in _byName.ToArray()) // 스냅샷
+            // Snapshot iteration for thread-safety
+            foreach (var kv in _byName.ToArray())
             {
                 var name   = kv.Key;
-                var idSet  = kv.Value;                 // HashSet<WorldId>
+                var idSet  = kv.Value; // HashSet<WorldId>
                 if (name == null || !name.StartsWith(p, StringComparison.OrdinalIgnoreCase))
                     continue;
 
-                // HashSet은 스레드세이프가 아니므로 스냅샷을 떠서 순회
                 foreach (var wid in idSet.ToArray())
                 {
                     if (!seen.Add(wid)) continue;

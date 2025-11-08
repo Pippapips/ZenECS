@@ -1,22 +1,20 @@
 ﻿// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS.Core.Systems
 // File: IVariableRunSystem.cs
-// Purpose: Defines systems that execute every frame with a variable timestep.
+// Purpose: Systems that execute every frame with a variable timestep.
 // Key concepts:
-//   • Equivalent to Unity's Update() phase (variable delta time).
-//   • Used for non-deterministic updates such as input, UI, or dynamic logic.
-//   • Executed during the Simulation group each frame.
-//
+//   • Equivalent to an Update()-style pass (dt varies per frame).
+//   • Use for non-deterministic logic: input, UI, dynamic gameplay.
+//   • Runs in the Simulation group during variable-timestep frames.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT (https://opensource.org/licenses/MIT)
+// License: MIT
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 namespace ZenECS.Core.Systems
 {
     /// <summary>
-    /// Interface for systems executed once per frame with a variable timestep.
-    /// <para>Equivalent to Unity's <c>Update()</c> method.</para>
+    /// Runs once per variable-time frame (dt varies). Suitable for non-deterministic logic.
     /// </summary>
     public interface IVariableRunSystem : ISystem { }
 }

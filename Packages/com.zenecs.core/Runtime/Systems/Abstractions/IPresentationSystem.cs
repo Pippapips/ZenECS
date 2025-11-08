@@ -1,36 +1,35 @@
 ﻿// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS.Core.Systems
 // File: IPresentationSystem.cs
-// Purpose: Defines systems responsible for post-simulation rendering or view updates.
+// Purpose: Systems responsible for post-simulation rendering or view updates.
 // Key concepts:
-//   • Used for rendering, UI, or data→view synchronization.
-//   • Read-only: modifying ECS state here is discouraged.
-//   • Interpolation alpha is provided for smooth rendering between frames.
-//
+//   • Read-only presentation: apply router deltas, then render/UI sync.
+//   • Interpolation support: alpha provided for smoothing between frames.
+//   • Avoid mutating ECS state here (writes may be guarded/denied by runner). 
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT (https://opensource.org/licenses/MIT)
+// License: MIT
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 namespace ZenECS.Core.Systems
 {
     /// <summary>
-    /// Interface for systems executed during the <b>Presentation</b> phase.
-    /// <para>Used for rendering, UI updates, or data→view synchronization.</para>
-    /// <para>The provided <paramref name="alpha"/> value can be used for interpolation.</para>
+    /// Executed during the Presentation phase. Use for rendering, UI updates,
+    /// and data→view synchronization. Avoid mutating ECS state here.
     /// </summary>
     public interface IPresentationSystem : ISystem
     {
         /// <summary>
-        /// Executes the presentation logic with interpolation.
+        /// Execute the presentation logic with interpolation.
         /// </summary>
         /// <param name="w">The ECS world.</param>
-        /// <param name="alpha">Interpolation factor (1 = current frame, 0 = previous frame).</param>
+        /// <param name="dt">Delta time of the originating frame in seconds.</param>
+        /// <param name="alpha">Interpolation factor in [0,1] (1=current, 0=previous).</param>
         void Run(IWorld w, float dt, float alpha);
 
         /// <summary>
-        /// Default implementation for compatibility with <see cref="ISystem"/>.
-        /// Calls <see cref="Run(WorldOld, float)"/> with <c>alpha = 1f</c>.
+        /// Default shim to satisfy <see cref="ISystem.Run(ZenECS.Core.IWorld, float)"/>.
+        /// Calls <see cref="Run(IWorld, float, float)"/> with <c>alpha = 1f</c>.
         /// </summary>
         void ISystem.Run(IWorld w, float dt) => Run(w, dt, 1f);
     }

@@ -1,13 +1,14 @@
 // ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Core — World subsystem
 // File: WorldConfig.cs
-// Purpose: Defines WorldConfig: initial capacities and growth policies for pools and entities.
+// Purpose: Configure initial capacities and growth policies for entities,
+//          component pools, and binder registries.
 // Key concepts:
-//   • InitialEntityCapacity, GrowthPolicy, and related tuning knobs.
-//   • Affects memory layout and resize behavior.
-//
+//   • Initial capacities: size arrays and pools at world creation.
+//   • Growth policy: Doubling vs Step with configurable step size.
+//   • Performance tuning: control rehash frequency and free-id stack capacity.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT (https://opensource.org/licenses/MIT)
+// License: MIT
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
@@ -16,59 +17,73 @@ using System;
 namespace ZenECS.Core
 {
     /// <summary>
-    /// Defines how arrays and pools expand when capacity is exceeded.
+    /// Controls how arrays and pools expand once capacity is exceeded.
     /// </summary>
     public enum GrowthPolicy
     {
         /// <summary>
-        /// Doubles the capacity when expanding (guaranteeing at least +256).
-        /// Minimizes reallocation frequency and is suitable for dynamic growth.
+        /// Double capacity on expansion (guaranteeing at least +256). Reduces
+        /// resize frequency at the cost of larger jumps in memory usage.
         /// </summary>
         Doubling,
 
         /// <summary>
-        /// Expands capacity by a fixed number of slots (GrowthStep) each time.
-        /// Provides more predictable memory usage.
+        /// Expand capacity by a fixed number of slots (<see cref="WorldConfig.GrowthStep"/>)
+        /// on each expansion. Provides predictable memory growth.
         /// </summary>
         Step
     }
 
     /// <summary>
-    /// Configuration struct for <see cref="WorldOld"/>.
-    /// Controls initial memory capacities and growth behavior of entity arrays and component pools.
+    /// Immutable configuration for world storage. Used at world construction time
+    /// to size entity arrays, component pools, and binder registries, and to define
+    /// growth behavior when capacity is exceeded.
     /// </summary>
     public readonly struct WorldConfig
     {
         /// <summary>
-        /// Initial entity slot count (used to size arrays like Alive/Generation at startup).
+        /// Initial entity slot count (sizes <c>Alive</c>/<c>Generation</c> arrays).
         /// </summary>
         public readonly int InitialEntityCapacity;
 
         /// <summary>
-        /// Initial bucket count of the component pool dictionary.
-        /// Higher values reduce hash collisions and rehash frequency.
+        /// Initial bucket count for the component-pool dictionary (hash table).
+        /// Higher values reduce collisions and rehash frequency.
         /// </summary>
         public readonly int InitialPoolBuckets;
 
+        /// <summary>Initial bucket count for binder registries.</summary>
         public readonly int InitialBinderBuckets;
+
+        /// <summary>Initial per-entity binder-bucket count.</summary>
         public readonly int InitialBinderPerEntityBuckets;
 
         /// <summary>
-        /// Initial capacity of the free-id stack used for recycling entity IDs.
-        /// Increase this if entity creation/destruction is frequent.
+        /// Initial capacity of the free-id stack used to recycle entity IDs.
+        /// Increase if create/destroy churn is expected to be high.
         /// </summary>
         public readonly int InitialFreeIdCapacity;
 
         /// <summary>
-        /// Array/pool expansion policy when capacity is exceeded (Doubling vs Step).
+        /// Array/pool expansion policy when capacity is exceeded.
         /// </summary>
         public readonly GrowthPolicy GrowthPolicy;
 
         /// <summary>
-        /// Number of slots added per expansion when using the Step growth policy (e.g., 256, 512, 1024).
+        /// Number of slots added per expansion when using <see cref="Core.GrowthPolicy.Step"/>.
         /// </summary>
         public readonly int GrowthStep;
 
+        /// <summary>
+        /// Create a new world configuration with sensible bounds.
+        /// </summary>
+        /// <param name="initialEntityCapacity">Entity slots; clamped to ≥ 16.</param>
+        /// <param name="initialPoolBuckets">Pool dictionary buckets; clamped to ≥ 16.</param>
+        /// <param name="initialBinderBuckets">Binder registry buckets; clamped to ≥ 16.</param>
+        /// <param name="initialBinderPerEntityBuckets">Per-entity binder buckets; clamped to ≥ 4.</param>
+        /// <param name="initialFreeIdCapacity">Free-id stack capacity; clamped to ≥ 16.</param>
+        /// <param name="growthPolicy">Resize strategy: <see cref="Core.GrowthPolicy.Doubling"/> or <see cref="Core.GrowthPolicy.Step"/>.</param>
+        /// <param name="growthStep">Slots added per expansion when using Step; clamped to ≥ 32.</param>
         public WorldConfig(
             int initialEntityCapacity = 256,
             int initialPoolBuckets = 256,

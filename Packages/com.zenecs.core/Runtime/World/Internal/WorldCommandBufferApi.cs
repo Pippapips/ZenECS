@@ -1,26 +1,34 @@
-﻿#nullable enable
+﻿// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Core — World subsystem (Command Buffer API)
+// File: WorldCommandBufferApi.cs
+// Purpose: Frame-barrier-friendly command recording & application.
+// Key concepts:
+//   • using-scope buffers: record operations, apply on Dispose (schedule/immediate).
+//   • Scheduler integration: deferred jobs flushed at safe barriers.
+//   • Safety on reset: pending jobs are drained to avoid dropping work.
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT
+// SPDX-License-Identifier: MIT
+// ─────────────────────────────────────────────────────────────────────────────-
+#nullable enable
 using ZenECS.Core.Internal.Scheduling;
 
 namespace ZenECS.Core.Internal
 {
+    /// <summary>
+    /// Implements <see cref="IWorldCommandBufferApi"/> for recording/applying world mutations.
+    /// </summary>
     internal sealed partial class World : IWorldCommandBufferApi
     {
         /// <summary>
-        /// Begins a command-buffer write scope.
+        /// Begin a command-buffer write scope bound to this world.
         /// </summary>
         /// <param name="mode">
-        /// Application mode that determines what happens on <see cref="CommandBuffer.Dispose"/>:
-        /// <see cref="CommandBufferApplyMode.Schedule"/> (default) queues the buffer to apply at the frame barrier, while
+        /// Apply-on-dispose mode:
+        /// <see cref="CommandBufferApplyMode.Schedule"/> queues for later (frame barrier),
         /// <see cref="CommandBufferApplyMode.Immediate"/> applies instantly.
         /// </param>
-        /// <returns>A new <see cref="CommandBuffer"/> bound to this world.</returns>
-        /// <remarks>
-        /// Supports the <c>using</c> pattern:
-        /// <code>
-        /// using (var cb = world.BeginWrite()) { /* enqueue ops */ }                    // Applies on Dispose via Schedule
-        /// using (var cb = world.BeginWrite(ApplyMode.Immediate)) { /* enqueue ops */ } // Applies on Dispose immediately
-        /// </code>
-        /// </remarks>
+        /// <returns>A new <see cref="CommandBuffer"/>.</returns>
         public ICommandBuffer BeginWrite(CommandBufferApplyMode mode = CommandBufferApplyMode.Schedule)
         {
             var cb = new CommandBuffer();
@@ -29,14 +37,10 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Applies all queued operations in the specified <paramref name="cb"/> immediately.
+        /// Apply all enqueued operations in the given buffer immediately.
         /// </summary>
-        /// <param name="cb">The command buffer to flush. If <see langword="null"/>, no work is performed.</param>
-        /// <returns>The number of operations applied.</returns>
-        /// <remarks>
-        /// This method is typically called on the main thread. For deferred application,
-        /// see <see cref="Schedule(CommandBuffer?)"/>.
-        /// </remarks>
+        /// <param name="icb">Command buffer to flush; ignored if <see langword="null"/>.</param>
+        /// <returns>Number of applied operations.</returns>
         public int EndWrite(ICommandBuffer icb)
         {
             var cb = (CommandBuffer)icb;
@@ -51,32 +55,27 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Enqueues the given <paramref name="cb"/> to be executed at the next frame barrier via the world's scheduler.
+        /// Schedule a command buffer to run at the next safe frame barrier.
         /// </summary>
-        /// <param name="cb">The command buffer to schedule. If <see langword="null"/>, the call is ignored.</param>
+        /// <param name="cb">Command buffer to schedule; ignored if <see langword="null"/>.</param>
         public void Schedule(ICommandBuffer? cb)
         {
             if (cb != null)
-            {
                 _worker.Schedule((IJob)cb);
-            }
         }
 
         /// <summary>
-        /// Clears any frame-local/deferred command buffers by flushing the world's scheduled jobs queue.
+        /// Clear pending frame-local command buffers by flushing the scheduler queue.
         /// </summary>
         public void ClearAllCommandBuffers()
         {
             _worker.ClearAllScheduledJobs();
         }
-        
+
         /// <summary>
-        /// Hook executed before <see cref="WorldOld.Reset(bool)"/>. When capacity will be rebuilt,
-        /// this flushes scheduled jobs to avoid dropping queued operations.
+        /// Hook executed before world reset. When capacity will be rebuilt, flush jobs first.
         /// </summary>
-        /// <param name="keepCapacity">
-        /// <see langword="true"/> to keep current capacities; <see langword="false"/> to rebuild.
-        /// </param>
+        /// <param name="keepCapacity">Keep capacity if <see langword="true"/>; rebuild if <see langword="false"/>.</param>
         partial void OnBeforeWorldReset(bool keepCapacity)
         {
             if (!keepCapacity) _worker.RunScheduledJobs(this);

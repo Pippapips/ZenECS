@@ -1,12 +1,27 @@
-﻿#nullable enable
+﻿// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Core — Binding
+// File: ContextRegistry.cs
+// Purpose: Per-world registry of per-entity contexts (resource containers).
+// Key concepts:
+//   • Lookup-first: TryGet/Get/Has via IContextLookup.
+//   • Lifecycle: Initialize/Deinitialize/Reinitialize management.
+//   • Sharing policy: registry stores references; ownership defined by caller.
+// License: MIT
+// © 2025 Pippapips Limited
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ZenECS.Core;
 using ZenECS.Core.Binding;
 
 namespace ZenECS.Core.Internal.Contexts
 {
+    /// <summary>
+    /// Per-world registry storing contexts keyed by entity and context type.
+    /// Manages optional lifecycle hooks for registered contexts.
+    /// </summary>
     internal sealed class ContextRegistry : IContextRegistry
     {
         private sealed class Entry
@@ -14,13 +29,10 @@ namespace ZenECS.Core.Internal.Contexts
             public IContext Ctx;
             public Type KeyType;
             public bool Initialized;
-            public Entry(IContext ctx, Type key)
-            {
-                Ctx = ctx; KeyType = key; Initialized = false;
-            }
+            public Entry(IContext ctx, Type key) { Ctx = ctx; KeyType = key; Initialized = false; }
         }
 
-        // World → EntityId → (KeyType → Entry)
+        // World → Entity → (ContextType → Entry)
         private readonly Dictionary<IWorld, Dictionary<Entity, Dictionary<Type, Entry>>> _map
             = new(ReferenceEqualityComparer<IWorld>.Instance);
 
@@ -30,6 +42,8 @@ namespace ZenECS.Core.Internal.Contexts
             => Bag(w).TryGetValue(e, out var d) ? d : (Bag(w)[e] = new());
 
         // ── Lookup ───────────────────────────────────────────────────────
+
+        /// <inheritdoc/>
         public bool TryGet<T>(IWorld w, Entity e, out T ctx) where T : class, IContext
         {
             ctx = null!;
@@ -52,22 +66,26 @@ namespace ZenECS.Core.Internal.Contexts
             return ctx != null;
         }
 
-        bool TryGet(IWorld w, Entity e, out IContext ctx)
-        {
-            return TryGet(w, e, out ctx);
-        }
+        /// <summary>Non-generic TryGet.</summary>
+        private bool TryGet(IWorld w, Entity e, out IContext ctx)
+            => TryGet<IContext>(w, e, out ctx!);
 
+        /// <inheritdoc/>
         public T Get<T>(IWorld w, Entity e) where T : class, IContext
             => TryGet<T>(w, e, out var v) ? v :
                throw new KeyNotFoundException($"Context {typeof(T).Name} not found for {e}.");
 
+        /// <inheritdoc/>
         public bool Has<T>(IWorld w, Entity e) where T : class, IContext
             => TryGet<T>(w, e, out _);
 
+        /// <inheritdoc/>
         public bool Has(IWorld w, Entity e, IContext ctx)
             => TryGet(w, e, out _);
 
         // ── Register / Remove ────────────────────────────────────────────
+
+        /// <inheritdoc/>
         public void Register(IWorld w, Entity e, IContext ctx)
         {
             if (ctx == null) throw new ArgumentNullException(nameof(ctx));
@@ -81,7 +99,7 @@ namespace ZenECS.Core.Internal.Contexts
             }
             else
             {
-                // replace: deinit old if needed
+                // Replace: deinit old if needed
                 if (entry.Initialized && entry.Ctx is IContextInitialize oldIni)
                 {
                     oldIni.Deinitialize(w, e);
@@ -98,6 +116,7 @@ namespace ZenECS.Core.Internal.Contexts
             }
         }
 
+        /// <inheritdoc/>
         public bool Remove(IWorld w, Entity e, IContext ctx)
         {
             if (ctx == null) return false;
@@ -118,10 +137,13 @@ namespace ZenECS.Core.Internal.Contexts
             return true;
         }
 
+        /// <inheritdoc/>
         public bool Remove<T>(IWorld w, Entity e) where T : class, IContext
             => TryGet<T>(w, e, out var ctx) && Remove(w, e, ctx);
 
         // ── Reinitialize ─────────────────────────────────────────────────
+
+        /// <inheritdoc/>
         public bool Reinitialize(IWorld w, Entity e, IContext ctx)
         {
             if (!Bag(w).TryGetValue(e, out var dict)) return false;
@@ -151,10 +173,13 @@ namespace ZenECS.Core.Internal.Contexts
             return true;
         }
 
+        /// <inheritdoc/>
         public bool Reinitialize<T>(IWorld w, Entity e) where T : class, IContext
             => TryGet<T>(w, e, out var ctx) && Reinitialize(w, e, ctx);
 
         // ── State / Clear ────────────────────────────────────────────────
+
+        /// <inheritdoc/>
         public bool IsInitialized(IWorld w, Entity e, IContext ctx)
         {
             if (!Bag(w).TryGetValue(e, out var dict)) return false;
@@ -163,9 +188,11 @@ namespace ZenECS.Core.Internal.Contexts
             return false;
         }
 
+        /// <inheritdoc/>
         public bool IsInitialized<T>(IWorld w, Entity e) where T : class, IContext
             => TryGet<T>(w, e, out var ctx) && IsInitialized(w, e, ctx);
 
+        /// <inheritdoc/>
         public void Clear(IWorld w, Entity e)
         {
             if (!Bag(w).TryGetValue(e, out var dict)) return;
@@ -175,6 +202,7 @@ namespace ZenECS.Core.Internal.Contexts
             Bag(w).Remove(e);
         }
 
+        /// <inheritdoc/>
         public void ClearAll()
         {
             foreach (var (w, perE) in _map)
@@ -186,10 +214,19 @@ namespace ZenECS.Core.Internal.Contexts
         }
     }
 
+    /// <summary>
+    /// Reference equality comparer for dictionary keys of reference types.
+    /// </summary>
     internal sealed class ReferenceEqualityComparer<T> : IEqualityComparer<T> where T : class
     {
+        /// <summary>Singleton instance.</summary>
         public static readonly ReferenceEqualityComparer<T> Instance = new();
+
+        /// <inheritdoc/>
         public bool Equals(T x, T y) => ReferenceEquals(x, y);
-        public int  GetHashCode(T obj) => System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(obj);
+
+        /// <inheritdoc/>
+        public int GetHashCode(T obj) =>
+            System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(obj);
     }
 }

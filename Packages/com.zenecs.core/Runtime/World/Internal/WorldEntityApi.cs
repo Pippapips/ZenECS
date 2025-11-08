@@ -1,4 +1,16 @@
-﻿#nullable enable
+﻿// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Core — World subsystem (Entity API)
+// File: WorldEntityApi.cs
+// Purpose: Entity lifetime & indexing: spawn/despawn, alive checks, enumeration.
+// Key concepts:
+//   • Stable handles: (id, generation) prevent zombie references.
+//   • Capacity growth policy: step-based or doubling with floor increments.
+//   • Fast reset path: bulk clear without per-entity events when desired.
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
+#nullable enable
 using System;
 using System.Collections.Generic;
 using ZenECS.Core.Events;
@@ -6,17 +18,18 @@ using ZenECS.Core.Events;
 namespace ZenECS.Core.Internal
 {
     /// <summary>
-    /// World implementation: storage, messaging, events, runner, binding host.
-    /// All per-world services are resolved from the provided ServiceHost scope.
+    /// Implements <see cref="IWorldEntityApi"/> for entity creation, destruction, and enumeration.
     /// </summary>
     internal sealed partial class World : IWorldEntityApi
     {
+        /// <inheritdoc/>
         public int AliveCount => GetAllEntities().Count;
 
+        /// <inheritdoc/>
         public bool IsAlive(Entity e) => _alive.Get(e.Id) && _generation[e.Id] == e.Gen;
 
         /// <summary>
-        /// Returns a list of all currently alive entities.
+        /// Get a snapshot list of all currently alive entities.
         /// </summary>
         public List<Entity> GetAllEntities()
         {
@@ -27,12 +40,12 @@ namespace ZenECS.Core.Internal
             return list;
         }
 
+        // Internal helpers (capacity/growth) ----------------------------------
+
         private void EnsureEntityCapacity(int id)
         {
-            // BitSet expansion and preservation are handled internally by Set().
             if (!_alive.Get(id)) _alive.Set(id, false);
 
-            // Expand the generation array based on the configured growth policy.
             if (id >= _generation.Length)
             {
                 int required = id + 1;
@@ -46,25 +59,27 @@ namespace ZenECS.Core.Internal
             if (_cfg.GrowthPolicy == GrowthPolicy.Step)
             {
                 int step = _cfg.GrowthStep;
-                // Round up to the nearest multiple of step.
                 int blocks = (required + step - 1) / step;
                 return Math.Max(required, blocks * step);
             }
-            else // Doubling
+            else
             {
                 int cap = Math.Max(16, current);
                 while (cap < required)
                 {
                     int next = cap * 2;
-                    // Guarantee at least +256 to avoid too small incremental growth.
                     if (next - cap < 256) next = cap + 256;
                     cap = next;
                 }
-
                 return cap;
             }
         }
 
+        /// <summary>
+        /// Create a new entity, optionally using a fixed id (for restores/tests).
+        /// </summary>
+        /// <param name="fixedId">Optional explicit id to claim.</param>
+        /// <returns>A live <see cref="Entity"/> handle (id + current generation).</returns>
         public Entity SpawnEntity(int? fixedId = null)
         {
             int id;
@@ -87,12 +102,15 @@ namespace ZenECS.Core.Internal
                 _alive.Set(id, true);
             }
 
-            // The current slot's generation is embedded into the handle.
             var e = new Entity(id, _generation[id]);
             EntityEvents.RaiseSpawned(this, e);
             return e;
         }
 
+        /// <summary>
+        /// Destroy a live entity. Dispatches binder/context teardown and events.
+        /// </summary>
+        /// <param name="e">Entity to destroy.</param>
         public void DespawnEntity(Entity e)
         {
             if (!IsAlive(e)) return;
@@ -104,8 +122,6 @@ namespace ZenECS.Core.Internal
             _componentPoolRepository.RemoveEntity(e);
 
             _alive.Set(e.Id, false);
-
-            // Increment generation: ensures that even if the same id is reused, the handle differs.
             _generation[e.Id]++;
             _freeIds.Push(e.Id);
 
@@ -113,31 +129,24 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Destroys all entities currently alive.
-        /// <para>
-        /// When <paramref name="fireEvents"/> is true, individual Destroy events are fired (slower).<br/>
-        /// For fast resets, use the Reset family of methods instead.
-        /// </para>
+        /// Destroy all currently alive entities.
         /// </summary>
-        /// <param name="fireEvents">Whether to emit Destroy events for each entity.</param>
+        /// <param name="fireEvents">
+        /// If <see langword="true"/>, per-entity events are fired (slower).
+        /// If <see langword="false"/>, uses a fast reset path.
+        /// </param>
         public void DespawnAllEntities(bool fireEvents = false)
         {
             if (!fireEvents)
             {
-                // Fast path without firing events. Equivalent to ResetButKeepCapacity.
                 ResetButKeepCapacity();
                 return;
             }
 
-            // If events are required, call DestroyEntity() for all alive entities.
-            // Scan BitSet to find active slots.
             for (int id = 1; id < _alive.Length; id++)
             {
                 if (_alive.Get(id))
-                {
-                    // The standard DestroyEntity path includes events, pool removal, and generation increment.
                     DespawnEntity(new Entity(id, GenerationOf(id)));
-                }
             }
         }
     }

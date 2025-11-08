@@ -1,22 +1,20 @@
 ﻿// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS.Core.Systems
 // File: IFrameSetupSystem.cs
-// Purpose: Defines systems executed before Simulation every frame.
+// Purpose: Systems that run once per frame before Simulation.
 // Key concepts:
-//   • Used for input polling, buffer swapping, and frame preparation.
-//   • Runs once per frame before Simulation systems (no DeltaTime usage).
-//
+//   • Frame preparation: input snapshotting, buffer swapping, world preconditions.
+//   • Runs prior to Simulation on variable frames and also in fixed-step pass if needed.
+//   • Should not depend on precise delta time (dt may be ignored or advisory only). 
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT (https://opensource.org/licenses/MIT)
+// License: MIT
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 namespace ZenECS.Core.Systems
 {
     /// <summary>
-    /// Interface for systems executed before <b>Simulation</b> each frame.
-    /// <para>Common use cases: input snapshot, buffer swap, and world setup.</para>
-    /// <para>DeltaTime is not available in this phase.</para>
+    /// Executed before Simulation each frame to prepare state (input, buffers, etc.).
     /// </summary>
     public interface IFrameSetupSystem : ISystem { }
 }

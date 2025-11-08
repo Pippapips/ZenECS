@@ -1,4 +1,17 @@
-﻿#nullable enable
+﻿// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Core — World subsystem (Snapshot I/O)
+// File: WorldSnapshot.cs
+// Purpose: Serialize/deserialize full world state (metadata + component pools).
+// Key concepts:
+//   • Portable binary: "ZENSNAP1" header, little-endian, formatter-driven pools.
+//   • Metadata header: NextId, Generation[], FreeIds[], AliveBits (compact).
+//   • Type resolution: StableId → type via registry; formatter fallback supported.
+//   • Post-load migrations: user hooks run after pools are restored.
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
+#nullable enable
 using System;
 using System.IO;
 using System.Text;
@@ -8,47 +21,37 @@ using ZenECS.Core.Serialization;
 namespace ZenECS.Core.Internal
 {
     /// <summary>
-    /// World implementation: storage, messaging, events, runner, binding host.
-    /// All per-world services are resolved from the provided ServiceHost scope.
+    /// Implements <see cref="IWorldSnapshotApi"/>: full world snapshot save/load.
     /// </summary>
     internal sealed partial class World : IWorldSnapshotApi
     {
         /// <summary>
-        /// An immutable snapshot of world metadata (no component data).
+        /// Immutable world metadata header used when saving/loading a full snapshot.
         /// </summary>
         /// <remarks>
         /// Captures the next entity id, per-entity generation counters, the free-list of recycled ids,
-        /// and the bitset of currently alive entities. This structure is used as a compact header when
-        /// saving or loading full snapshots.
+        /// and the bitset of currently alive entities. This is a compact summary placed ahead of pools.
         /// </remarks>
         public readonly struct WorldSnapshot
         {
-            /// <summary>
-            /// The next entity id to be assigned when a new entity is created.
-            /// </summary>
+            /// <summary>Next entity id to be assigned when a new entity is created.</summary>
             public readonly int NextId;
 
-            /// <summary>
-            /// Per-entity generation numbers used to validate stale handles.
-            /// </summary>
+            /// <summary>Per-entity generation numbers used to validate stale handles.</summary>
             public readonly int[] Generation;
 
-            /// <summary>
-            /// A copy of the free-list containing recycled entity ids.
-            /// </summary>
+            /// <summary>A copy of the free-list containing recycled entity ids.</summary>
             public readonly int[] FreeIds;
 
-            /// <summary>
-            /// Bitset (little-endian byte order) indicating which entity ids are currently alive.
-            /// </summary>
+            /// <summary>Bitset (little-endian byte order) indicating which ids are alive.</summary>
             public readonly byte[] AliveBits;
 
             /// <summary>
-            /// Initializes a new <see cref="WorldSnapshot"/>.
+            /// Initialize a new metadata header for snapshot I/O.
             /// </summary>
-            /// <param name="nextId">Next entity id to be used by the world.</param>
-            /// <param name="gen">Array of generation counters (indexed by entity id).</param>
-            /// <param name="freeIds">Array of recycled entity ids.</param>
+            /// <param name="nextId">Next entity id.</param>
+            /// <param name="gen">Generation array indexed by entity id.</param>
+            /// <param name="freeIds">Free id stack snapshot.</param>
             /// <param name="aliveBits">Alive bitset encoded as bytes.</param>
             public WorldSnapshot(int nextId, int[] gen, int[] freeIds, byte[] aliveBits)
             {
@@ -64,21 +67,14 @@ namespace ZenECS.Core.Internal
         // =========================
 
         /// <summary>
-        /// Saves the complete world state to a portable binary snapshot with the header <c>"ZENSNAP1"</c>.
+        /// Save the complete world state to a portable binary snapshot with the magic header <c>"ZENSNAP1"</c>.
         /// </summary>
-        /// <param name="s">A writable stream that will receive the snapshot.</param>
-        /// <exception cref="ArgumentException">
-        /// Thrown when <paramref name="s"/> is <see langword="null"/> or not writable.
-        /// </exception>
+        /// <param name="s">Writable stream that receives the snapshot.</param>
+        /// <exception cref="ArgumentException">Thrown when the stream is null or not writable.</exception>
         /// <remarks>
-        /// <para>
-        /// The format is little-endian and begins with the 8-byte ASCII signature <c>'Z','E','N','S','N','A','P','1'</c>,
-        /// followed by world metadata (see <see cref="WorldSnapshot"/>) and then all component pools.
-        /// </para>
-        /// <para>
-        /// Component serialization is delegated to registered <see cref="IComponentFormatter"/> implementations.
-        /// Ensure that each component type has a formatter registered via <see cref="ComponentRegistry"/>.
-        /// </para>
+        /// Little-endian wire format. After the header and metadata, each component pool is written
+        /// using its registered <see cref="IComponentFormatter"/>. Ensure all component types are registered
+        /// via <see cref="ComponentRegistry"/>.
         /// </remarks>
         public void SaveFullSnapshotBinary(Stream s)
         {
@@ -93,29 +89,15 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Loads a complete world state from a portable binary snapshot with the header <c>"ZENSNAP1"</c>.
+        /// Load a complete world state from a portable binary snapshot with the magic header <c>"ZENSNAP1"</c>.
         /// </summary>
-        /// <param name="s">A readable stream that provides the snapshot bytes.</param>
-        /// <exception cref="ArgumentException">
-        /// Thrown when <paramref name="s"/> is <see langword="null"/> or not readable.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown when the snapshot header does not match the expected signature.
-        /// </exception>
-        /// <exception cref="NotSupportedException">
-        /// Thrown when a component type does not have a registered <see cref="IComponentFormatter"/>.
-        /// </exception>
+        /// <param name="s">Readable stream providing the snapshot bytes.</param>
+        /// <exception cref="ArgumentException">Stream is null or not readable.</exception>
+        /// <exception cref="InvalidOperationException">Header signature mismatch.</exception>
+        /// <exception cref="NotSupportedException">Missing component formatter for a type encountered.</exception>
         /// <remarks>
-        /// <para>
-        /// On load, existing component pools are cleared before data is restored. After all pools
-        /// are populated, registered post-load migrations are executed via
-        /// <c>PostLoadMigrationRegistry.RunAll(this)</c>.
-        /// </para>
-        /// <para>
-        /// When a StableId is present in the snapshot, the type is resolved through
-        /// <see cref="ComponentRegistry.TryGetType(string, out Type?)"/>; otherwise the formatter type name
-        /// recorded in the snapshot is used as a fallback.
-        /// </para>
+        /// Existing pools are cleared before data is restored. After all pools are populated,
+        /// post-load migrations run via <c>PostLoadMigrationRegistry.RunAll(this)</c>.
         /// </remarks>
         public void LoadFullSnapshotBinary(Stream s)
         {
@@ -145,6 +127,7 @@ namespace ZenECS.Core.Internal
         // Metadata serialization (private helpers)
         // =========================
 
+        /// <summary>Write world metadata header (NextId, Generation[], FreeIds[], AliveBits).</summary>
         private void SaveWorldMetaBinary(BinaryWriter bw)
         {
             var snap = TakeSnapshot();
@@ -161,6 +144,7 @@ namespace ZenECS.Core.Internal
             if (snap.AliveBits.Length > 0) bw.Write(snap.AliveBits);
         }
 
+        /// <summary>Read world metadata header and apply it to in-memory storage.</summary>
         private void LoadWorldMetaBinary(BinaryReader br)
         {
             int next = br.ReadInt32();
@@ -180,6 +164,7 @@ namespace ZenECS.Core.Internal
             ApplySnapshot(in snap);
         }
 
+        /// <summary>Create an immutable snapshot of the current world metadata.</summary>
         private WorldSnapshot TakeSnapshot()
         {
             var genCopy = new int[_generation.Length];
@@ -191,6 +176,7 @@ namespace ZenECS.Core.Internal
             return new WorldSnapshot(_nextId, genCopy, freeCopy, aliveBytes);
         }
 
+        /// <summary>Apply a previously captured metadata snapshot to the current world.</summary>
         private void ApplySnapshot(in WorldSnapshot snap)
         {
             if (snap.Generation.Length > _generation.Length)
@@ -210,6 +196,7 @@ namespace ZenECS.Core.Internal
         // Component pool serialization (private helpers)
         // =========================
 
+        /// <summary>Write all component pools (type id + payload per alive entity) to the writer.</summary>
         private void SaveAllComponentPoolsBinary(BinaryWriter bw)
         {
             var mask = _alive;
@@ -251,6 +238,7 @@ namespace ZenECS.Core.Internal
             }
         }
 
+        /// <summary>Read all component pools from the reader and repopulate in-memory pools.</summary>
         private void LoadAllComponentPoolsBinary(BinaryReader br)
         {
             int poolCount = br.ReadInt32();
@@ -292,6 +280,5 @@ namespace ZenECS.Core.Internal
                 }
             }
         }
-
     }
 }

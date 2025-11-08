@@ -5,7 +5,6 @@
 // Key concepts:
 //   • Grow-on-demand, fast Set/Clear/Test operations.
 //   • Backs entity alive flags and per-pool presence maps.
-//
 // Copyright (c) 2025 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT

@@ -1,24 +1,26 @@
 ﻿// ──────────────────────────────────────────────────────────────────────────────
-// ZenECS Core
-// File: IMessageBus.cs
-// Purpose: Defines a minimal message-passing interface for ECS systems.
+// ZenECS Core — Scheduling
+// File: ICommandBuffer.cs
+// Purpose: Buffered structural commands (Add/Replace/Remove/Despawn) with
+//          world-bound apply semantics (Immediate or Scheduled).
 // Key concepts:
-//   • Lightweight publish/subscribe model for struct-based messages.
-//   • PumpAll() delivers all queued messages to subscribers once per frame.
-//   • Thread-safe by design for cross-system communication.
-// 
-// Copyright (c) 2025 Pippapips Limited
-// License: MIT (https://opensource.org/licenses/MIT)
+//   • Using-scope creation via World.BeginWrite(...)
+//   • Auto-apply on Dispose according to apply mode
+//   • Also exposed as IJob to the world's worker for barrier execution
+// License: MIT
+// © 2025 Pippapips Limited
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
-using System;
-using ZenECS.Core.Internal.Scheduling;
-
 namespace ZenECS.Core.Internal.Scheduling
 {
+    /// <summary>
+    /// Internal binder used by the world to attach a buffer to a specific world
+    /// and choose the apply mode.
+    /// </summary>
     internal interface ICommandBufferInternal
     {
+        /// <summary>Bind this buffer to a world and apply mode.</summary>
         void Bind(IWorld w, CommandBufferApplyMode mode);
     }
 }

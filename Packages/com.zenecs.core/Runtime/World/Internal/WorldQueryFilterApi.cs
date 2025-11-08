@@ -1,14 +1,13 @@
-﻿﻿// ──────────────────────────────────────────────────────────────────────────────
-// ZenECS Core — World subsystem
-// File: World.Query.Filter.cs
-// Purpose: Composable filter definitions for queries (include/exclude component sets).
+﻿// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Core — World subsystem (Query Filter API)
+// File: WorldQueryFilterApi.cs
+// Purpose: Compose, resolve, and cache query filters against component pools.
 // Key concepts:
-//   • WithAny / WithoutAny fluent API for logical OR groups.
-//   • Used by Query to test entity membership efficiently.
-//   • Cached per filter key for reuse.
-//
+//   • WithAll/WithoutAll & WithAny/WithoutAny bucket semantics (AND of ORs).
+//   • Order-independent FilterKey hashing for cache lookups.
+//   • ResolvedFilter stores pool arrays for branchless membership tests.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT (https://opensource.org/licenses/MIT)
+// License: MIT
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-
 #nullable enable
@@ -23,25 +22,8 @@ namespace ZenECS.Core.Internal
 {
     internal sealed partial class World
     {
-        /*
-         Example:
-         var f = World.Filter.New
-             .With<Owner>()
-             .Without<DeadTag>()
-             .WithAny(typeof(Burning), typeof(Poisoned))   // Match if any of these exist
-             .WithoutAny(typeof(Shielded), typeof(Invuln)) // Exclude if any of these exist
-             .Build();
-
-         foreach (var e in world.Query<Position, Velocity>(f))
-         {
-             ref var p = ref world.RefExisting<Position>(e);
-             var  v    =  world.RefExisting<Velocity>(e);
-             p.Value += v.Value * world.DeltaTime;
-         }
-        */
-
         /// <summary>
-        /// Resolved, pool-level representation of a filter used by the query engine.
+        /// Pool-level representation of a filter used by the query engine.
         /// </summary>
         internal sealed class ResolvedFilter
         {
@@ -49,37 +31,29 @@ namespace ZenECS.Core.Internal
             public IComponentPool[] withAll = Array.Empty<IComponentPool>();
             /// <summary>Pools that must all be absent from the entity.</summary>
             public IComponentPool[] withoutAll = Array.Empty<IComponentPool>();
-            /// <summary>
-            /// Buckets where at least one pool in each bucket must be present (logical OR per bucket, AND across buckets).
-            /// </summary>
+            /// <summary>At least one pool in each bucket must be present (OR per bucket, AND across buckets).</summary>
             public IComponentPool[][] withAny = Array.Empty<IComponentPool[]>();
-            /// <summary>
-            /// Buckets where any present pool in a bucket causes exclusion (logical OR per bucket, AND across buckets).
-            /// </summary>
+            /// <summary>Any present pool in a bucket causes exclusion (OR per bucket, AND across buckets).</summary>
             public IComponentPool[][] withoutAny = Array.Empty<IComponentPool[]>();
         }
-        
+
         /// <summary>
-        /// Clears all cached query filters and their resolved component pool masks.
+        /// Clear cached filter resolutions (call after pool rebuilds/resets).
         /// </summary>
-        /// <remarks>
-        /// Call this when component pools are rebuilt or the world is reset in a way that invalidates cached lookups.
-        /// </remarks>
         private void ResetQueryCaches()
         {
             filterCache?.Clear();
         }
 
-        // ---------- Filter Key / Cache ----------
         /// <summary>
         /// Order-independent cache key for a composed filter.
         /// </summary>
-        internal struct FilterKey : System.IEquatable<FilterKey>
+        internal struct FilterKey : IEquatable<FilterKey>
         {
             /// <summary>Precomputed hash value representing the filter.</summary>
             public readonly ulong Hash;
 
-            /// <summary>Creates a new <see cref="FilterKey"/> with the given <paramref name="hash"/>.</summary>
+            /// <summary>Create a key from a hash.</summary>
             public FilterKey(ulong hash) { Hash = hash; }
 
             /// <inheritdoc/>
@@ -90,17 +64,14 @@ namespace ZenECS.Core.Internal
             public override int GetHashCode() => Hash.GetHashCode();
         }
 
-
         /// <summary>
-        /// Filter cache keyed by <see cref="FilterKey"/> (computed from included/excluded component types).
+        /// Cache of resolved filters keyed by <see cref="FilterKey"/>.
         /// </summary>
         private readonly ConcurrentDictionary<FilterKey, ResolvedFilter> filterCache = new();
 
         /// <summary>
-        /// Computes an order-independent key for the given filter, suitable for caching.
+        /// Compute an order-independent key for the given filter.
         /// </summary>
-        /// <param name="f">The filter to hash.</param>
-        /// <returns>A stable <see cref="FilterKey"/>.</returns>
         internal static FilterKey MakeKey(in Filter f)
         {
             unchecked
@@ -136,14 +107,10 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Resolves a high-level <see cref="Filter"/> to concrete component pool references and caches the result.
+        /// Resolve a high-level <see cref="Filter"/> to concrete pool references and cache it.
         /// </summary>
-        /// <param name="f">The filter to resolve.</param>
-        /// <returns>A <see cref="ResolvedFilter"/> ready for fast evaluation.</returns>
-        /// <remarks>
-        /// If a referenced component type does not have a registered pool, the corresponding section becomes empty,
-        /// which may cause the filter to match no entities (for <c>With</c>/<c>WithAny</c>) or to skip checks.
-        /// </remarks>
+        /// <param name="f">Filter to resolve.</param>
+        /// <returns>Resolved filter ready for fast evaluation.</returns>
         internal ResolvedFilter ResolveFilter(in Filter f)
         {
             var key = MakeKey(f);
@@ -198,41 +165,31 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Tests whether the entity identified by <paramref name="id"/> satisfies the conditions of a resolved filter.
+        /// Test whether the entity with internal id <paramref name="id"/> satisfies <paramref name="r"/>.
         /// </summary>
-        /// <param name="id">Internal entity id (index into component pools).</param>
-        /// <param name="r">Resolved filter to evaluate.</param>
         /// <returns><see langword="true"/> if the entity matches; otherwise <see langword="false"/>.</returns>
         internal static bool MeetsFilter(int id, in ResolvedFilter r)
         {
-            // WithAll: must contain all
             var wa = r.withAll;
             for (int i = 0; i < wa.Length; i++)
                 if (!wa[i].Has(id))
                     return false;
 
-            // WithoutAll: must not contain any
             var wo = r.withoutAll;
             for (int i = 0; i < wo.Length; i++)
                 if (wo[i].Has(id))
                     return false;
 
-            // WithAny: must contain at least one from each bucket
             var wan = r.withAny;
             for (int b = 0; b < wan.Length; b++)
             {
                 var bucket = wan[b];
                 bool any = false;
                 for (int i = 0; i < bucket.Length; i++)
-                    if (bucket[i] != null && bucket[i].Has(id))
-                    {
-                        any = true;
-                        break;
-                    }
+                    if (bucket[i] != null && bucket[i].Has(id)) { any = true; break; }
                 if (!any) return false;
             }
 
-            // WithoutAny: fails if any from each bucket exist
             var won = r.withoutAny;
             for (int b = 0; b < won.Length; b++)
             {

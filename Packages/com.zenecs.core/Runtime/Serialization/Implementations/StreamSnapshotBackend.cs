@@ -6,7 +6,6 @@
 //   • Provides binary read/write over .NET Stream with UTF8 encoding.
 //   • Supports both read-only and write-only modes.
 //   • Handles primitive and string types with strict length validation.
-// 
 // Copyright (c) 2025 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT

@@ -5,7 +5,6 @@
 // Key concepts:
 //   • Covers gameplay, physics, AI, and state update systems.
 //   • Executes between FrameSetup and Presentation groups.
-//
 // Copyright (c) 2025 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT

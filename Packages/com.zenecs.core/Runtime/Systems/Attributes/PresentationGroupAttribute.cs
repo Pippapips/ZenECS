@@ -5,7 +5,6 @@
 // Key concepts:
 //   • Includes rendering, UI updates, and data binding systems.
 //   • Typically read-only — structural changes are discouraged.
-//
 // Copyright (c) 2025 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT

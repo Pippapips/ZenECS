@@ -1,14 +1,13 @@
 ﻿// ──────────────────────────────────────────────────────────────────────────────
-// ZenECS Core
+// ZenECS Core — Serialization
 // File: ISnapshotBackend.cs
-// Purpose: Abstracts I/O for snapshot read/write operations.
+// Purpose: Abstract I/O surface for snapshot read/write operations.
 // Key concepts:
-//   • Provides primitive read/write for bytes, numbers, strings, and booleans.
-//   • Exposes stream-like Position/Length and Rewind capability.
-//   • Implementations may wrap streams, memory buffers, or custom stores.
-// 
-// Copyright (c) 2025 Pippapips Limited
-// License: MIT (https://opensource.org/licenses/MIT)
+//   • Primitive & block operations: bytes, numbers, strings, booleans.
+//   • Cursor control: Position, Length, Rewind.
+//   • Pluggable backends: streams, memory buffers, custom stores.
+// Copyright...
+// License: MIT
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
@@ -17,38 +16,60 @@ using System;
 namespace ZenECS.Core.Serialization
 {
     /// <summary>
-    /// Backend interface for snapshot I/O. Implementations should be deterministic and endian-stable.
+    /// Backend-agnostic I/O interface used by snapshot serializers.
+    /// Implementations must be deterministic and consistent about endianness.
     /// </summary>
     public interface ISnapshotBackend : IDisposable
     {
         // ---- Raw bytes -------------------------------------------------------
+
+        /// <summary>Write a contiguous span of bytes.</summary>
         void WriteBytes(ReadOnlySpan<byte> data);
+
+        /// <summary>Read exactly <paramref name="length"/> bytes into <paramref name="dst"/>.</summary>
         void ReadBytes(Span<byte> dst, int length);
 
         // ---- Primitives ------------------------------------------------------
-        void WriteInt(int v);
-        int  ReadInt();
 
+        /// <summary>Write a 32-bit signed integer.</summary>
+        void WriteInt(int v);
+
+        /// <summary>Read a 32-bit signed integer.</summary>
+        int ReadInt();
+
+        /// <summary>Write a 32-bit unsigned integer.</summary>
         void WriteUInt(uint v);
+
+        /// <summary>Read a 32-bit unsigned integer.</summary>
         uint ReadUInt();
 
+        /// <summary>Write a 32-bit floating-point value.</summary>
         void WriteFloat(float v);
+
+        /// <summary>Read a 32-bit floating-point value.</summary>
         float ReadFloat();
 
+        /// <summary>Write a UTF-8 string (implementation-defined length encoding).</summary>
         void WriteString(string s);
+
+        /// <summary>Read a UTF-8 string previously written by <see cref="WriteString"/>.</summary>
         string ReadString();
 
+        /// <summary>Write a Boolean value.</summary>
         void WriteBool(bool v);
+
+        /// <summary>Read a Boolean value.</summary>
         bool ReadBool();
 
         // ---- Cursor & length -------------------------------------------------
+
         /// <summary>Current cursor position.</summary>
         long Position { get; set; }
 
-        /// <summary>Rewinds the cursor to the beginning.</summary>
+        /// <summary>Reset the cursor to the beginning.</summary>
         void Rewind();
 
-        /// <summary>Total available length in the backend (if applicable).</summary>
+        /// <summary>Total readable length (when applicable).</summary>
         long Length { get; }
     }
 }

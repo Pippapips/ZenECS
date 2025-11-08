@@ -1,16 +1,15 @@
-﻿﻿// ──────────────────────────────────────────────────────────────────────────────
-// ZenECS Core
+﻿// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Core — Serialization
 // File: ComponentRegistry.cs
-// Purpose: Maintains global mappings between StableId ↔ Type and Type ↔ Formatter.
+// Purpose: Maintain global mappings between StableId ↔ Type and Type ↔ Formatter.
 // Key concepts:
-//   • Used by snapshot systems to resolve components during load/save.
-//   • Supports StableId validation between components and formatters.
-//   • Captures declared StableId via ZenFormatterForAttribute (Editor-only).
-// 
-// Copyright (c) 2025 Pippapips Limited
-// License: MIT (https://opensource.org/licenses/MIT)
+//   • Snapshot resolution: used during save/load to map ids to types/formatters.
+//   • Strictness: optional StableId validation for component ↔ formatter pairs.
+//   • Editor aid: capture declared StableId from a formatter attribute (when available). 
+// Copyright...
+// License: MIT
 // SPDX-License-Identifier: MIT
-// ─────────────────────────────────────────────────────────────────────────────-
+// ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -18,23 +17,11 @@ using System.Collections.Generic;
 namespace ZenECS.Core.Serialization
 {
     /// <summary>
-    /// Global registry for component type and formatter lookup.
-    /// Provides StableId ↔ <see cref="Type"/> and <see cref="Type"/> ↔ <see cref="IComponentFormatter"/> resolution.
+    /// Global registry for component types and their formatters.
+    /// Provides StableId ↔ <see cref="Type"/> and <see cref="Type"/> ↔ <see cref="IComponentFormatter"/> lookups.
     /// </summary>
     /// <remarks>
-    /// <para>
-    /// This registry is intended to be populated during application startup (e.g., bootstrapping or editor bake).
-    /// Concurrent writes are <b>not</b> thread-safe; perform registrations on a single thread before use.
-    /// Read access after initialization is effectively read-only and safe for concurrent reads.
-    /// </para>
-    /// <para>
-    /// Typical usage:
-    /// <code>
-    /// ComponentRegistry.Register&lt;Position&gt;("com.zenecs.position.v1");
-    /// ComponentRegistry.RegisterFormatter(new PositionFormatter(), "com.zenecs.position.v1");
-    /// ComponentRegistry.ValidateStrictStableIdMatch();
-    /// </code>
-    /// </para>
+    /// Populate this registry during app boot (single-threaded), then treat it as read-only.
     /// </remarks>
     public static class ComponentRegistry
     {
@@ -42,44 +29,25 @@ namespace ZenECS.Core.Serialization
         private static readonly Dictionary<Type, string> type2Id = new();
         private static readonly Dictionary<Type, IComponentFormatter> formatters = new();
 
-        // FormatterType → Declared StableId (via attribute or manual injection)
+        // FormatterType → declared StableId (captured via attribute or explicit overload)
         private static readonly Dictionary<Type, string> declaredSidByFormatterType = new();
 
-        /// <summary>
-        /// Attempts to resolve a component <see cref="Type"/> from its StableId.
-        /// </summary>
-        /// <param name="id">StableId string (e.g., <c>"com.zenecs.position.v1"</c>).</param>
-        /// <param name="t">When this method returns, contains the resolved type if found; otherwise <see langword="null"/>.</param>
-        /// <returns><see langword="true"/> if the mapping exists; otherwise <see langword="false"/>.</returns>
+        /// <summary>Try resolve a component <see cref="Type"/> from its StableId.</summary>
         public static bool TryGetType(string id, out Type? t) => id2Type.TryGetValue(id, out t);
 
-        /// <summary>
-        /// Attempts to resolve a StableId for the specified component <see cref="Type"/>.
-        /// </summary>
-        /// <param name="t">Component type previously registered with <see cref="Register(string, Type)"/> or <see cref="Register{T}(string)"/>.</param>
-        /// <param name="id">When this method returns, contains the StableId if found; otherwise <see langword="null"/>.</param>
-        /// <returns><see langword="true"/> if the mapping exists; otherwise <see langword="false"/>.</returns>
+        /// <summary>Try resolve a StableId string for the given component <see cref="Type"/>.</summary>
         public static bool TryGetId(Type t, out string? id) => type2Id.TryGetValue(t, out id);
 
         /// <summary>
-        /// Registers a mapping from StableId to component <typeparamref name="T"/>.
+        /// Register a StableId → component mapping for <typeparamref name="T"/>.
         /// </summary>
-        /// <typeparam name="T">Component value type (typically a <see langword="struct"/>).</typeparam>
-        /// <param name="stableId">StableId string to associate with <typeparamref name="T"/>.</param>
-        /// <remarks>
-        /// If the StableId or type was already registered, the mapping is overwritten.
-        /// </remarks>
         public static void Register<T>(string stableId) where T : struct
             => Register(stableId, typeof(T));
 
         /// <summary>
-        /// Registers a mapping from StableId to component <paramref name="type"/>.
+        /// Register a StableId → component mapping for a specific <see cref="Type"/>.
+        /// Existing entries are overwritten.
         /// </summary>
-        /// <param name="stableId">StableId string to associate with the type.</param>
-        /// <param name="type">Component type to register.</param>
-        /// <remarks>
-        /// If the StableId or type was already registered, the mapping is overwritten.
-        /// </remarks>
         public static void Register(string stableId, Type type)
         {
             id2Type[stableId] = type;
@@ -87,36 +55,22 @@ namespace ZenECS.Core.Serialization
         }
 
         /// <summary>
-        /// Registers a component formatter instance and captures its declared StableId from an editor attribute when available.
+        /// Register a formatter instance and (in Editor) capture its declared StableId via attribute.
         /// </summary>
-        /// <param name="f">Formatter instance to register.</param>
-        /// <remarks>
-        /// <para>
-        /// Runtime registration associates the formatter with its <see cref="IComponentFormatter.ComponentType"/>.
-        /// In Unity Editor, this also attempts to read a StableId from a <c>ZenFormatterForAttribute</c> on the formatter type.
-        /// </para>
-        /// <para>
-        /// To enforce strict StableId alignment between components and formatters, call
-        /// <see cref="ValidateStrictStableIdMatch(bool, Action{string}?)"/> after all registrations.
-        /// </para>
-        /// </remarks>
+        /// <param name="f">Formatter instance.</param>
         public static void RegisterFormatter(IComponentFormatter f)
         {
             formatters[f.ComponentType] = f;
-            // Editor-only attribute capture
             TryCaptureFormatterStableIdFromAttribute(f.GetType(), out var sid);
             if (!string.IsNullOrEmpty(sid))
                 declaredSidByFormatterType[f.GetType()] = sid!;
         }
 
         /// <summary>
-        /// Registers a component formatter instance and explicitly provides its declared StableId.
+        /// Register a formatter instance and explicitly provide its declared StableId.
         /// </summary>
-        /// <param name="f">Formatter instance to register.</param>
-        /// <param name="declaredStableId">StableId that the formatter declares it serializes (e.g., the component's StableId).</param>
-        /// <remarks>
-        /// Use this overload when the editor-only attribute is unavailable (e.g., in player builds) or when you want to override it.
-        /// </remarks>
+        /// <param name="f">Formatter instance.</param>
+        /// <param name="declaredStableId">StableId the formatter claims to serialize.</param>
         public static void RegisterFormatter(IComponentFormatter f, string declaredStableId)
         {
             RegisterFormatter(f);
@@ -125,23 +79,14 @@ namespace ZenECS.Core.Serialization
         }
 
         /// <summary>
-        /// Validates strict StableId consistency between registered component types and their registered formatters.
+        /// Validate strict StableId consistency between components and registered formatters.
         /// </summary>
-        /// <param name="throwOnError">
-        /// When <see langword="true"/>, throws on the first inconsistency; otherwise logs via <paramref name="log"/> and returns the number of issues.
-        /// </param>
-        /// <param name="log">Optional logger used when <paramref name="throwOnError"/> is <see langword="false"/>.</param>
-        /// <returns>The number of issues detected (0 when consistent).</returns>
+        /// <param name="throwOnError">Throw on first inconsistency; otherwise return issue count and log via <paramref name="log"/>.</param>
+        /// <param name="log">Optional logger when <paramref name="throwOnError"/> is false.</param>
+        /// <returns>Number of issues detected.</returns>
         /// <exception cref="InvalidOperationException">
-        /// Thrown when <paramref name="throwOnError"/> is <see langword="true"/> and:
-        /// <list type="bullet">
-        /// <item>no StableId is registered for a component that has a formatter registered;</item>
-        /// <item>no declared StableId is available for a formatter;</item>
-        /// <item>or the component StableId and formatter declared StableId do not match.</item>
+        /// Thrown when <paramref name="throwOnError"/> is true and a mismatch/missing mapping is found.
         /// </exception>
-        /// <remarks>
-        /// Call this after all <see cref="Register(string, Type)"/> and <see cref="RegisterFormatter(IComponentFormatter, string)"/> calls.
-        /// </remarks>
         public static int ValidateStrictStableIdMatch(bool throwOnError = true, Action<string>? log = null)
         {
             log ??= msg => System.Diagnostics.Debug.WriteLine(msg);
@@ -152,32 +97,24 @@ namespace ZenECS.Core.Serialization
                 if (!type2Id.TryGetValue(compType, out var compSid) || string.IsNullOrEmpty(compSid))
                 {
                     issues++;
-                    var msg =
-                        $"[ZenECS] Component '{compType.FullName}' has NO registered StableId, but formatter '{fmt.GetType().FullName}' is registered.";
-                    if (throwOnError) throw new InvalidOperationException(msg);
-                    else log(msg);
+                    var msg = $"Component '{compType.FullName}' has no registered StableId, but formatter '{fmt.GetType().FullName}' is registered.";
+                    if (throwOnError) throw new InvalidOperationException(msg); else log(msg);
                     continue;
                 }
 
-                if (!declaredSidByFormatterType.TryGetValue(fmt.GetType(), out var fmtSid) ||
-                    string.IsNullOrEmpty(fmtSid))
+                if (!declaredSidByFormatterType.TryGetValue(fmt.GetType(), out var fmtSid) || string.IsNullOrEmpty(fmtSid))
                 {
                     issues++;
-                    var msg =
-                        $"[ZenECS] Formatter '{fmt.GetType().FullName}' exposes NO declared StableId; cannot match against component sid='{compSid}'. " +
-                        "(Provide it in RegisterFormatter(f, stableId) or use the ZenFormatterForAttribute in Editor.)";
-                    if (throwOnError) throw new InvalidOperationException(msg);
-                    else log(msg);
+                    var msg = $"Formatter '{fmt.GetType().FullName}' has no declared StableId; cannot verify against component sid='{compSid}'.";
+                    if (throwOnError) throw new InvalidOperationException(msg); else log(msg);
                     continue;
                 }
 
                 if (!string.Equals(compSid, fmtSid, StringComparison.Ordinal))
                 {
                     issues++;
-                    var msg =
-                        $"[ZenECS] StableId mismatch: Component='{compType.FullName}' sid='{compSid}' <-> Formatter='{fmt.GetType().FullName}' sid='{fmtSid}'.";
-                    if (throwOnError) throw new InvalidOperationException(msg);
-                    else log(msg);
+                    var msg = $"StableId mismatch: Component='{compType.FullName}' sid='{compSid}' vs Formatter='{fmt.GetType().FullName}' sid='{fmtSid}'.";
+                    if (throwOnError) throw new InvalidOperationException(msg); else log(msg);
                 }
             }
 
@@ -185,14 +122,9 @@ namespace ZenECS.Core.Serialization
         }
 
         /// <summary>
-        /// Attempts to read a declared StableId from an editor-only attribute on the formatter type.
+        /// Try capture a formatter’s declared StableId from an editor-only attribute.
         /// </summary>
-        /// <param name="formatterType">The formatter's <see cref="Type"/>.</param>
-        /// <param name="sid">When this method returns, contains the declared StableId if found; otherwise <see langword="null"/>.</param>
-        /// <returns><see langword="true"/> if a StableId was captured from the attribute; otherwise <see langword="false"/>.</returns>
-        /// <remarks>
-        /// Effective only inside Unity Editor (<c>UNITY_EDITOR</c>). In player builds this always returns <see langword="false"/>.
-        /// </remarks>
+        /// <remarks>Effective only inside Unity Editor. In player builds this returns <see langword="false"/>.</remarks>
         private static bool TryCaptureFormatterStableIdFromAttribute(Type formatterType, out string? sid)
         {
             sid = null;
@@ -216,11 +148,9 @@ namespace ZenECS.Core.Serialization
         }
 
         /// <summary>
-        /// Gets the registered formatter for the given component <see cref="Type"/>.
+        /// Get the registered formatter for component type <paramref name="t"/>.
         /// </summary>
-        /// <param name="t">Component type.</param>
-        /// <returns>The formatter instance previously registered for <paramref name="t"/>.</returns>
-        /// <exception cref="InvalidOperationException">Thrown when no formatter is registered for <paramref name="t"/>.</exception>
+        /// <exception cref="InvalidOperationException">No formatter registered for the type.</exception>
         public static IComponentFormatter GetFormatter(Type t)
         {
             if (!formatters.TryGetValue(t, out var f))

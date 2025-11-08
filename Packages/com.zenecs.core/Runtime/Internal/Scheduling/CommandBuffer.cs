@@ -1,42 +1,40 @@
 // ──────────────────────────────────────────────────────────────────────────────
-// ZenECS Core
-// File: MessageBus.cs
-// Purpose: Thread-safe publish/subscribe message dispatcher for ECS systems.
+// ZenECS Core — Scheduling
+// File: CommandBuffer.cs
+// Purpose: Buffered structural command queue with auto-apply semantics.
 // Key concepts:
-//   • Struct-based messages, no boxing or allocations on Publish.
-//   • Each message type maintains its own queue and subscriber list.
-//   • PumpAll() flushes all message queues per frame (deterministic order).
-// 
-// Copyright (c) 2025 Pippapips Limited
-// License: MIT (https://opensource.org/licenses/MIT)
+//   • Enqueue structural ops; apply immediately or schedule at frame barrier
+//   • Implements IJob for worker integration
+//   • Safe no-op when target entity is already dead at apply time
+// License: MIT
+// © 2025 Pippapips Limited
 // SPDX-License-Identifier: MIT
-// ─────────────────────────────────────────────────────────────────────────────-
+// ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 
 namespace ZenECS.Core.Internal.Scheduling
 {
+    /// <summary>
+    /// Buffered structural command queue. Instances are typically created via
+    /// <c>world.BeginWrite(mode)</c> and auto-applied on <see cref="Dispose"/>.
+    /// </summary>
     internal sealed class CommandBuffer : IJob, ICommandBuffer, ICommandBufferInternal
     {
+        /// <summary>Internal operation contract for queued structural changes.</summary>
+        internal interface IOp { void Apply(IWorld w); }
+
         internal readonly ConcurrentQueue<IOp> Q = new();
 
-        // Bound in BeginWrite
+        // Bound in Bind(...)
         private IWorld? _boundWorld;
         private CommandBufferApplyMode _mode;
         private bool _disposed;
 
-        /// <summary>
-        /// The world this buffer is currently bound to (set by <see cref="BeginWrite(WorldOld.ApplyMode)"/>).
-        /// May be <see langword="null"/> after <see cref="Dispose"/> is called.
-        /// </summary>
+        /// <inheritdoc/>
         public IWorld? WorldRef => _boundWorld;
 
-        /// <summary>
-        /// Binds this buffer to a specific <see cref="WorldOld"/> and applies the given <see cref="WorldOld.ApplyMode"/>.
-        /// Intended for internal use by <see cref="WorldOld.BeginWrite(WorldOld.ApplyMode)"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public void Bind(IWorld w, CommandBufferApplyMode mode)
         {
             _boundWorld = w;
@@ -44,118 +42,69 @@ namespace ZenECS.Core.Internal.Scheduling
             _disposed = false;
         }
 
-        /// <summary>
-        /// Disposes the buffer and either schedules or immediately applies it according to the
-        /// <see cref="WorldOld.ApplyMode"/> that was used at creation time.
-        /// </summary>
-        /// <remarks>
-        /// Buffers created via <see cref="WorldOld.BeginWrite(WorldOld.ApplyMode)"/> are auto-applied on dispose.
-        /// Buffers created manually should be applied via <see cref="WorldOld.EndWrite(CommandBuffer)"/> or
-        /// <see cref="WorldOld.Schedule(CommandBuffer?)"/>.
-        /// </remarks>
+        /// <inheritdoc/>
         public void Dispose()
         {
             if (_disposed) return;
             _disposed = true;
 
-            // Auto-apply only for buffers created by using (BeginWrite)
             var w = _boundWorld;
             _boundWorld = null;
-
             if (w == null) return;
 
             if (_mode == CommandBufferApplyMode.Immediate)
-                w.EndWrite(this); // Apply immediately
+                w.EndWrite(this);     // apply immediately
             else
-                w.Schedule(this); // Apply at the barrier
+                w.Schedule(this);     // schedule for barrier
         }
 
-        /// <summary>
-        /// Internal operation contract implemented by each queued structural change.
-        /// </summary>
-        internal interface IOp
-        {
-            /// <summary>
-            /// Applies the operation against the provided <see cref="WorldOld"/>.
-            /// Implementations should guard against dead entities.
-            /// </summary>
-            void Apply(IWorld w);
-        }
+        // ---- Enqueue ops -----------------------------------------------------
 
-        /// <summary>
-        /// Enqueues an Add component operation for the given entity.
-        /// </summary>
-        /// <typeparam name="T">Component value type.</typeparam>
-        /// <param name="e">Target entity.</param>
-        /// <param name="v">Component value to add.</param>
-        public void AddComponent<T>(Entity e, in T v) where T : struct => Q.Enqueue(new AddOp<T>(e, v));
+        /// <inheritdoc/>
+        public void AddComponent<T>(Entity e, in T v) where T : struct
+            => Q.Enqueue(new AddOp<T>(e, v));
 
-        /// <summary>
-        /// Enqueues a Replace component operation for the given entity.
-        /// </summary>
-        /// <typeparam name="T">Component value type.</typeparam>
-        /// <param name="e">Target entity.</param>
-        /// <param name="v">New component value.</param>
-        public void ReplaceComponent<T>(Entity e, in T v) where T : struct => Q.Enqueue(new ReplaceOp<T>(e, v));
+        /// <inheritdoc/>
+        public void ReplaceComponent<T>(Entity e, in T v) where T : struct
+            => Q.Enqueue(new ReplaceOp<T>(e, v));
 
-        /// <summary>
-        /// Enqueues a Remove component operation for the given entity.
-        /// </summary>
-        /// <typeparam name="T">Component value type.</typeparam>
-        /// <param name="e">Target entity.</param>
-        public void RemoveComponent<T>(Entity e) where T : struct => Q.Enqueue(new RemoveOp<T>(e));
+        /// <inheritdoc/>
+        public void RemoveComponent<T>(Entity e) where T : struct
+            => Q.Enqueue(new RemoveOp<T>(e));
 
-        /// <summary>
-        /// Enqueues a Destroy entity operation.
-        /// </summary>
-        /// <param name="e">The entity to destroy.</param>
-        public void DespawnEntity(Entity e) => Q.Enqueue(new DestroyOp(e));
+        /// <inheritdoc/>
+        public void DespawnEntity(Entity e)
+            => Q.Enqueue(new DestroyOp(e));
 
-        // IJob: integration with the world's scheduler
+        // ---- IJob ------------------------------------------------------------
+
         void IJob.Execute(IWorld w)
         {
-            while (Q.TryDequeue(out var op)) op.Apply(w);
+            while (Q.TryDequeue(out var op))
+                op.Apply(w);
         }
 
-        // ----- Concrete ops ---------------------------------------------------------
+        // ---- Concrete ops ----------------------------------------------------
 
-        sealed class AddOp<T> : IOp where T : struct
+        private sealed class AddOp<T> : IOp where T : struct
         {
-            readonly Entity e;
-            readonly T v;
-            public AddOp(Entity e, in T v)
-            {
-                this.e = e;
-                this.v = v;
-            }
+            private readonly Entity _e;
+            private readonly T _v;
+            public AddOp(Entity e, in T v) { _e = e; _v = v; }
             public void Apply(IWorld w)
             {
-                if (!w.IsAlive(e))
-                {
-                    /* w.Trace($"Skip Add<{typeof(T).Name}>: {e} dead"); */
-                    return;
-                }
-                w.AddComponent(e, in v);
+                if (!w.IsAlive(_e)) return;
+                w.AddComponent(_e, in _v);
             }
         }
 
         private sealed class ReplaceOp<T> : IOp where T : struct
         {
-            private readonly Entity _e;
-            private readonly T _v;
-            public ReplaceOp(Entity e, in T v)
-            {
-                this._e = e;
-                this._v = v;
-            }
+            private readonly Entity _e; private readonly T _v;
+            public ReplaceOp(Entity e, in T v) { _e = e; _v = v; }
             public void Apply(IWorld w)
             {
-                if (!w.IsAlive(_e))
-                {
-                    /* w.Trace($"Skip Replace<{typeof(T).Name}>: {e} dead"); */
-                    return;
-                }
-                // Route through World.Replace to align with hooks/validation/events.
+                if (!w.IsAlive(_e)) return;
                 w.ReplaceComponent(_e, in _v);
             }
         }
@@ -163,14 +112,10 @@ namespace ZenECS.Core.Internal.Scheduling
         private sealed class RemoveOp<T> : IOp where T : struct
         {
             private readonly Entity _e;
-            public RemoveOp(Entity e) { this._e = e; }
+            public RemoveOp(Entity e) { _e = e; }
             public void Apply(IWorld w)
             {
-                if (!w.IsAlive(_e))
-                {
-                    /* w.Trace($"Skip Remove<{typeof(T).Name}>: {e} dead"); */
-                    return;
-                }
+                if (!w.IsAlive(_e)) return;
                 w.RemoveComponent<T>(_e);
             }
         }
@@ -178,15 +123,10 @@ namespace ZenECS.Core.Internal.Scheduling
         private sealed class DestroyOp : IOp
         {
             private readonly Entity _e;
-            public DestroyOp(Entity e) { this._e = e; }
-
+            public DestroyOp(Entity e) { _e = e; }
             public void Apply(IWorld w)
             {
-                if (!w.IsAlive(_e))
-                {
-                    /* w.Trace($"Skip Destroy: {e} already dead"); */
-                    return;
-                }
+                if (!w.IsAlive(_e)) return;
                 w.DespawnEntity(_e);
             }
         }

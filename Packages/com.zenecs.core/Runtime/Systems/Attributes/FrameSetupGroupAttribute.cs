@@ -5,7 +5,6 @@
 // Key concepts:
 //   • Used for pre-simulation tasks such as input polling, time updates, and queue swaps.
 //   • Executed before SimulationGroup systems each frame.
-//
 // Copyright (c) 2025 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT

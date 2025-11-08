@@ -1,17 +1,14 @@
 ﻿// ──────────────────────────────────────────────────────────────────────────────
-// ZenECS.Core
+// ZenECS Core — Systems
 // File: SystemPlanner.cs
-// Purpose: Defines deterministic system ordering with grouping, validation, and
-//          topological sorting. Provides a lifecycle plan for initialization and
-//          shutdown ordering.
+// Purpose: Determine deterministic execution order for ECS systems by grouping,
+//          validating, and topologically sorting constraints.
 // Key concepts:
-//   • Builds order edges only within the same group (cross-group constraints ignored).
-//   • Deterministic order via Kahn topological sort with lexical tie-break by type name.
-//   • Throws when cycles are detected during initialization.
-//   • Produces a Plan containing ordered sequences per phase and lifecycle views.
-//
-// Copyright (c) 2025 Pippapips Limited
-// License: MIT (https://opensource.org/licenses/MIT)
+//   • Groups: FrameSetup / Simulation / Presentation buckets.
+//   • Constraints: OrderBefore / OrderAfter honored only within the same group.
+//   • Deterministic: Kahn topological sort with lexical tie-break by type name.
+//   • Lifecycle views: forward order for Initialize, reverse for Shutdown.
+// License: MIT — (c) 2025 Pippapips Limited
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
@@ -24,24 +21,23 @@ using ZenECS.Core.Systems;
 namespace ZenECS.Core.Internal.Systems
 {
     /// <summary>
-    /// Provides deterministic planning and ordering for ECS systems.
-    /// Groups systems by execution phase (FrameSetup, Simulation, Presentation),
-    /// performs topological sorting within each group, and validates phase markers.
+    /// Provides deterministic planning and ordering for ECS systems. Systems are
+    /// grouped by phase, validated for marker/attribute consistency, and then
+    /// topologically sorted within each group.
     /// </summary>
     internal static class SystemPlanner
     {
         /// <summary>
-        /// Represents an immutable result of system planning,
-        /// including execution order and lifecycle views.
+        /// Immutable plan describing execution order per phase and lifecycle views.
         /// </summary>
         public sealed class Plan
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="Plan"/> class.
+            /// Create a new plan with ordered sequences for all phases.
             /// </summary>
-            /// <param name="frameSetup">Ordered systems for FrameSetup phase.</param>
-            /// <param name="simulation">Ordered systems for Simulation phase.</param>
-            /// <param name="presentation">Ordered systems for Presentation phase.</param>
+            /// <param name="frameSetup">Ordered systems for <c>FrameSetup</c>.</param>
+            /// <param name="simulation">Ordered systems for <c>Simulation</c>.</param>
+            /// <param name="presentation">Ordered systems for <c>Presentation</c>.</param>
             public Plan(IReadOnlyList<ISystem>? frameSetup,
                         IReadOnlyList<ISystem>? simulation,
                         IReadOnlyList<ISystem>? presentation)
@@ -51,50 +47,45 @@ namespace ZenECS.Core.Internal.Systems
                 Presentation = presentation ?? Array.Empty<ISystem>();
             }
 
-            /// <summary>
-            /// Ordered list of systems belonging to the FrameSetup phase.
-            /// </summary>
+            /// <summary>Execution order for the <c>FrameSetup</c> phase.</summary>
             public IReadOnlyList<ISystem> FrameSetup { get; }
 
-            /// <summary>
-            /// Ordered list of systems belonging to the Simulation phase.
-            /// </summary>
+            /// <summary>Execution order for the <c>Simulation</c> phase.</summary>
             public IReadOnlyList<ISystem> Simulation { get; }
 
-            /// <summary>
-            /// Ordered list of systems belonging to the Presentation phase.
-            /// </summary>
+            /// <summary>Execution order for the <c>Presentation</c> phase.</summary>
             public IReadOnlyList<ISystem> Presentation { get; }
 
             /// <summary>
-            /// Combined forward execution order across all groups.
+            /// Combined forward execution order across all phases.
             /// </summary>
             public IEnumerable<ISystem> AllInExecutionOrder =>
                 FrameSetup.Concat(Simulation).Concat(Presentation);
 
             /// <summary>
-            /// Ordered view of systems that implement <see cref="ISystemLifecycle"/> for initialization.
-            /// Follows forward execution order.
+            /// Ordered view of systems implementing <see cref="ISystemLifecycle"/> for initialization
+            /// (forward execution order).
             /// </summary>
             public IEnumerable<ISystemLifecycle> LifecycleInitializeOrder =>
                 AllInExecutionOrder.OfType<ISystemLifecycle>();
 
             /// <summary>
-            /// Ordered view of systems that implement <see cref="ISystemLifecycle"/> for shutdown.
-            /// Follows reverse execution order.
+            /// Ordered view of systems implementing <see cref="ISystemLifecycle"/> for shutdown
+            /// (reverse execution order).
             /// </summary>
             public IEnumerable<ISystemLifecycle> LifecycleShutdownOrder =>
                 AllInExecutionOrder.Reverse().OfType<ISystemLifecycle>();
         }
 
         /// <summary>
-        /// Builds a deterministic plan by analyzing, grouping, and sorting the given systems.
+        /// Build a plan by grouping, validating, and sorting the given systems.
         /// </summary>
-        /// <param name="systems">Collection of system instances to be ordered.</param>
-        /// <param name="warn">Optional callback invoked for non-critical warnings.</param>
-        /// <returns>A new <see cref="Plan"/> instance containing ordered systems.</returns>
-        /// <exception cref="InvalidOperationException">Thrown when phase or group validation fails,
-        /// or a cyclic dependency is detected within a group.</exception>
+        /// <param name="systems">System instances to analyze; may be <c>null</c>.</param>
+        /// <param name="warn">Optional sink for non-fatal warnings (e.g., cross-group constraints).</param>
+        /// <returns>A <see cref="Plan"/> or <c>null</c> if <paramref name="systems"/> is <c>null</c>.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when conflicting markers/attributes exist, or a cycle is detected inside a group.
+        /// </exception>
         public static Plan? Build(IEnumerable<ISystem>? systems, Action<string>? warn = null)
         {
             if (systems == null) return null;
@@ -106,7 +97,7 @@ namespace ZenECS.Core.Internal.Systems
                 [SystemGroup.Presentation] = new()
             };
 
-            // 1) Classification + constraint collection (including phase/group validation)
+            // 1) Classification + constraint collection
             foreach (ISystem s in systems)
             {
                 Type t = s.GetType();
@@ -129,11 +120,10 @@ namespace ZenECS.Core.Internal.Systems
         }
 
         /// <summary>
-        /// Determines which <see cref="SystemGroup"/> a given system type belongs to.
-        /// Priority: explicit attribute &gt; marker interface &gt; default (Simulation).
+        /// Resolve the execution group for a system type.
         /// </summary>
-        /// <param name="t">System type to resolve.</param>
-        /// <returns>The resolved group enumeration value.</returns>
+        /// <param name="t">System type.</param>
+        /// <returns>The resolved <see cref="SystemGroup"/>.</returns>
         private static SystemGroup ResolveGroup(Type t)
         {
             if (t.IsDefined(typeof(FrameSetupGroupAttribute), false))   return SystemGroup.FrameSetup;
@@ -149,11 +139,10 @@ namespace ZenECS.Core.Internal.Systems
         }
 
         /// <summary>
-        /// Validates phase markers and group attributes on a system type.
-        /// Ensures that no multiple phase markers or conflicting attributes exist.
+        /// Validate that a system type has consistent phase markers and group attributes.
         /// </summary>
-        /// <param name="t">System type to validate.</param>
-        /// <exception cref="InvalidOperationException">Thrown when conflicting markers or attributes are found.</exception>
+        /// <param name="t">System type.</param>
+        /// <exception cref="InvalidOperationException">Thrown if multiple markers or conflicting attributes exist.</exception>
         private static void ValidatePhaseMarkers(Type t)
         {
             int phaseCount =
@@ -189,17 +178,15 @@ namespace ZenECS.Core.Internal.Systems
         }
 
         /// <summary>
-        /// Performs topological sorting for all systems in a single group.
-        /// Uses Kahn’s algorithm with deterministic lexical tie-break.
+        /// Topologically sort one group (Kahn's algorithm). Cross-group edges are ignored
+        /// but can be reported via <paramref name="warn"/> as non-fatal notes.
         /// </summary>
-        /// <param name="list">List of system nodes and their ordering constraints.</param>
-        /// <param name="warn">Optional callback invoked for ignored cross-group references.</param>
-        /// <returns>Sorted list of systems for execution within that group.</returns>
-        /// <exception cref="InvalidOperationException">Thrown if a cyclic dependency is detected.</exception>
+        /// <param name="list">System nodes with within-group Before/After constraints.</param>
+        /// <param name="warn">Optional sink for ignored cross-group references.</param>
+        /// <returns>Deterministically ordered systems for that group.</returns>
+        /// <exception cref="InvalidOperationException">Thrown if a cycle is detected.</exception>
         /// <remarks>
-        /// <para>Only constraints within the same group are honored.</para>
-        /// <para>Cross-group Before/After references are ignored but reported through <paramref name="warn"/>.</para>
-        /// <para>Tie-breaker is the type’s full name to ensure deterministic order.</para>
+        /// Tie-breaker uses the type's full name for deterministic ordering.
         /// </remarks>
         private static List<ISystem> TopoSortWithinGroup(
             List<(Type type, ISystem inst, HashSet<Type> before, HashSet<Type> after)> list,
