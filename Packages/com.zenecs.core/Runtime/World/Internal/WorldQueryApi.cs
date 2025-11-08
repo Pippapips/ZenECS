@@ -1,4 +1,4 @@
-﻿﻿// ──────────────────────────────────────────────────────────────────────────────
+﻿// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Core — World subsystem
 // File: World.Query.cs
 // Purpose: Query builder and iterator for ref-based component enumeration.
@@ -11,11 +11,6 @@
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-
 #nullable enable
-using System;
-using System.Collections.Generic;
-using ZenECS.Core.Internal;
-using ZenECS.Core.Internal.ComponentPooling;
-
 namespace ZenECS.Core.Internal
 {
     internal sealed partial class World : IWorldQueryApi

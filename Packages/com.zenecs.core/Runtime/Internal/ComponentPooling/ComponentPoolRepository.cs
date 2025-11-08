@@ -79,6 +79,7 @@ namespace ZenECS.Core.Internal.ComponentPooling
 
             return pool;
         }
+        
         public void RemoveEntity(Entity e)
         {
             foreach (var kv in _pools)

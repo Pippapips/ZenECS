@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace ZenECS.Core
+namespace ZenECS.Core.Internal.ComponentPooling
 {
     /// <summary>
     /// Allocation-free enumerator over a component pool's active entity ids.

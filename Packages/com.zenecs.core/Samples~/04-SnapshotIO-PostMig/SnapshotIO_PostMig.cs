@@ -96,9 +96,6 @@ namespace ZenEcsCoreSamples.Snapshot
     [PresentationGroup]
     public sealed class PrintSummarySystem : IPresentationSystem
     {
-        public void Run(WorldOld w, float alpha)
-        {
-        }
         public void Run(IWorld w, float dt, float alpha)
         {
             // read-only logging for demonstration

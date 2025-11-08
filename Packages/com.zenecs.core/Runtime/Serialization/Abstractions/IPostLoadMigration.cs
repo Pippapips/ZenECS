@@ -12,7 +12,6 @@
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
-using ZenECS.Core.Serialization;
 
 namespace ZenECS.Core.Serialization
 {

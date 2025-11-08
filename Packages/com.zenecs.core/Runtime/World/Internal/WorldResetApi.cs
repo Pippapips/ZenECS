@@ -2,15 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using ZenECS.Core.Binding;
-using ZenECS.Core.DI;
-using ZenECS.Core.Internal;
-using ZenECS.Core.Internal.Binding;
-using ZenECS.Core.Internal.Bootstrap;
+using ZenECS.Core.Events;
 using ZenECS.Core.Internal.ComponentPooling;
-using ZenECS.Core.Internal.Contexts;
-using ZenECS.Core.Internal.Hooking;
-using ZenECS.Core.Systems;
 
 namespace ZenECS.Core.Internal
 {
@@ -41,21 +34,20 @@ namespace ZenECS.Core.Internal
         {
             OnBeforeWorldReset(keepCapacity);
 
-            // 1) Command buffers
+            // Command buffers
             ClearAllCommandBuffers();
 
-            // 2) Job scheduler
+            // Job scheduler
             _worker.ClearAllScheduledJobs();
 
-            // 3) Hooks / event queues
+            // Hooks / event queues
             _permissionHook.ClearAllHookQueues();
 
-            // 4) Timing counters
-//            ResetTimingCounters();
-
-            // 5) Query / filter caches
+            // Query / filter caches
             ResetQueryCaches();
 
+            EntityEvents.Reset();
+            
             OnAfterWorldReset(keepCapacity);
         }
 

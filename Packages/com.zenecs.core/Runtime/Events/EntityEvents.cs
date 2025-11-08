@@ -1,4 +1,4 @@
-﻿    // ──────────────────────────────────────────────────────────────────────────────
+﻿// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Core
 // File: EntityEvents.cs
 // Purpose: Global event hub for entity lifecycle notifications.
@@ -16,20 +16,20 @@ using System.Runtime.CompilerServices;
 
 namespace ZenECS.Core.Events
 {
-    internal static class EntityEvents
+    public static class EntityEvents
     {
-        internal static event Action<WorldOld, Entity>? EntityCreated;
-        internal static event Action<WorldOld, Entity>? EntityDestroyRequested;
-        internal static event Action<WorldOld, Entity>? EntityDestroyed;
+        public static event Action<IWorld, Entity>? EntityCreated;
+        public static event Action<IWorld, Entity>? EntityDestroyRequested;
+        public static event Action<IWorld, Entity>? EntityDestroyed;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void RaiseCreated(WorldOld w, Entity e) => EntityCreated?.Invoke(w, e);
+        internal static void RaiseSpawned(IWorld w, Entity e) => EntityCreated?.Invoke(w, e);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void RaiseDestroyRequested(WorldOld w, Entity e) => EntityDestroyRequested?.Invoke(w, e);
+        internal static void RaiseDespawnRequested(IWorld w, Entity e) => EntityDestroyRequested?.Invoke(w, e);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void RaiseDestroyed(WorldOld w, Entity e) => EntityDestroyed?.Invoke(w, e);
+        internal static void RaiseDespawned(IWorld w, Entity e) => EntityDestroyed?.Invoke(w, e);
 
         /// <summary>
         /// Clears all subscribers to prevent leaks during domain reloads or runtime restarts.

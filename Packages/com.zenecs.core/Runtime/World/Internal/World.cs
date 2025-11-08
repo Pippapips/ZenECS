@@ -1,21 +1,14 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.CompilerServices;
-using System.Text;
-using ZenECS.Core.Abstractions.Config;
-using ZenECS.Core.Binding;
-using ZenECS.Core.DI;
-using ZenECS.Core.Internal;
 using ZenECS.Core.Internal.Binding;
-using ZenECS.Core.Internal.Bootstrap;
 using ZenECS.Core.Internal.ComponentPooling;
 using ZenECS.Core.Internal.Contexts;
+using ZenECS.Core.Internal.DI;
 using ZenECS.Core.Internal.Hooking;
 using ZenECS.Core.Internal.Messaging;
 using ZenECS.Core.Internal.Scheduling;
-using ZenECS.Core.Serialization;
+using ZenECS.Core.Internal.Systems;
 using ZenECS.Core.Systems;
 
 namespace ZenECS.Core.Internal
@@ -82,10 +75,10 @@ namespace ZenECS.Core.Internal
 
         public int GenerationOf(int id) => _generation[id];
 
-        public World(WorldConfig? cfg, WorldId id, string name, IReadOnlyCollection<string> tags, IKernel kernel,
+        public World(WorldConfig cfg, WorldId id, string name, IReadOnlyCollection<string> tags, IKernel kernel,
             ServiceContainer scope)
         {
-            _cfg = cfg ?? new WorldConfig();
+            _cfg = cfg;
 
             _alive = new BitSet(_cfg.InitialEntityCapacity);       // Bitmap of occupied entity slots
             _generation = new int[_cfg.InitialEntityCapacity];     // Per-slot generation counters (start at 0)
@@ -100,9 +93,6 @@ namespace ZenECS.Core.Internal
             _kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
             _scope = scope ?? throw new ArgumentNullException(nameof(scope));
 
-            // _store  = _scope.GetRequired<EntityStore>();
-            // _events = _scope.GetRequired<EventHub>();
-            // _query  = _scope.GetRequired<QueryGateway>();
             _bus = _scope.GetRequired<IMessageBus>();
             _worker = _scope.GetRequired<IWorker>();
             _contextRegistry = _scope.GetRequired<IContextRegistry>();
@@ -111,15 +101,9 @@ namespace ZenECS.Core.Internal
             _runner = _scope.GetRequired<ISystemRunner>();
             _componentPoolRepository = _scope.GetRequired<IComponentPoolRepository>();
 
-            // attach
-
             _kernel.OnBeginFrame += BeginFrame;
             _kernel.OnFixedStep += FixedStep;
             _kernel.OnLateFrame += LateFrame;
-
-            // // Compose read-only view & addon host (world-scoped)
-            // _readOnlyView = new ReadOnlyView(_query, _events);
-            // _addons       = new AddonHost(_readOnlyView);
         }
 
         public void Dispose()

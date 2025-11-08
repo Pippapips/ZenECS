@@ -1,19 +1,9 @@
 ﻿#nullable enable
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Text;
-using ZenECS.Core.Binding;
-using ZenECS.Core.DI;
-using ZenECS.Core.Internal;
-using ZenECS.Core.Internal.Binding;
-using ZenECS.Core.Internal.Bootstrap;
-using ZenECS.Core.Internal.ComponentPooling;
-using ZenECS.Core.Internal.Contexts;
-using ZenECS.Core.Internal.Hooking;
+using ZenECS.Core.Internal.Serialization;
 using ZenECS.Core.Serialization;
-using ZenECS.Core.Systems;
 
 namespace ZenECS.Core.Internal
 {
@@ -21,7 +11,7 @@ namespace ZenECS.Core.Internal
     /// World implementation: storage, messaging, events, runner, binding host.
     /// All per-world services are resolved from the provided ServiceHost scope.
     /// </summary>
-    internal sealed partial class World : IWorldSnapshot
+    internal sealed partial class World : IWorldSnapshotApi
     {
         /// <summary>
         /// An immutable snapshot of world metadata (no component data).

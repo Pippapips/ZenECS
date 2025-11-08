@@ -1,7 +1,5 @@
 ﻿#nullable enable
 
-using ZenECS.Core.Internal.Contexts;
-
 namespace ZenECS.Core.Binding
 {
     /// <summary>
@@ -9,6 +7,14 @@ namespace ZenECS.Core.Binding
     /// </summary>
     public interface IContext { }
 
+    public interface IContextLookup
+    {
+        bool TryGet<T>(IWorld w, Entity e, out T ctx) where T : class, IContext;
+        T Get<T>(IWorld w, Entity e) where T : class, IContext;
+        bool Has<T>(IWorld w, Entity e) where T : class, IContext;
+        bool Has(IWorld w, Entity e, IContext ctx);
+    }
+    
     /// <summary>
     /// Optional lifecycle for contexts. The registry calls these at registration/removal time.
     /// </summary>

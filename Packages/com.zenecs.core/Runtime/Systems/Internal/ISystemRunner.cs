@@ -1,10 +1,9 @@
 #nullable enable
-
 using System;
 using System.Collections.Generic;
 using ZenECS.Core.Systems;
 
-namespace ZenECS.Core.Internal
+namespace ZenECS.Core.Internal.Systems
 {
     /// <summary>Runs user systems. Minimal placeholder runner in this skeleton.</summary>
     internal interface ISystemRunner

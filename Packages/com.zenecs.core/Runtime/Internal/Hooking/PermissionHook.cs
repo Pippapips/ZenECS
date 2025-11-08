@@ -87,9 +87,9 @@ namespace ZenECS.Core.Internal.Hooking
         public void ClearValidators() => _objValidators.Clear();
 
         // ===== Hook Combinators =====
-        private static Func<WorldOld, Entity, Type, bool> ChainAnd(
-            Func<WorldOld, Entity, Type, bool>? a,
-            Func<WorldOld, Entity, Type, bool> b)
+        private static Func<IWorld, Entity, Type, bool> ChainAnd(
+            Func<IWorld, Entity, Type, bool>? a,
+            Func<IWorld, Entity, Type, bool> b)
             => (w, e, t) => (a?.Invoke(w, e, t) ?? true) && b(w, e, t);
 
         private static Func<object, bool> ChainValidate(

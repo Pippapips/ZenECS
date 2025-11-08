@@ -9,24 +9,29 @@ using ZenECS.Core.Internal.Contexts;
 namespace ZenECS.Core.Internal.Binding
 {
     /// <summary>Manages binders per entity, dispatches deltas, calls Apply() once per frame.</summary>
-    public sealed class BindingRouter : IBindingRouter 
+    internal sealed class BindingRouter : IBindingRouter 
     {
-        private readonly IContextRegistry _ctx;
-        private readonly Dictionary<Entity, List<IBinder>> _byEntity = new(1024);
+        private readonly IContextRegistry _contextRegistry;
+        private readonly Dictionary<Entity, List<IBinder>> _byEntity;
+        private readonly int _initialEntityCapacity;
         private int _attachSeq = 0;
 
-        public BindingRouter(IContextRegistry registry)
+        public BindingRouter(IContextRegistry contextRegistry,
+            int binderBuckets = 1024,
+            int binderEntityPerBuckets = 4)
         {
-            _ctx = registry ?? throw new ArgumentNullException(nameof(registry));
+            _contextRegistry = contextRegistry ?? throw new ArgumentNullException(nameof(contextRegistry));
+            _byEntity = new Dictionary<Entity, List<IBinder>>(binderBuckets);
+            _initialEntityCapacity = binderEntityPerBuckets;
         }
 
         public void Attach(IWorld w, Entity e, IBinder binder, AttachOptions options = AttachOptions.Strict)
         {
             if (binder == null) throw new ArgumentNullException(nameof(binder));
             ValidateRequiredContexts(binder, w, e, options);
-            binder.Bind(w, e, _ctx);
+            binder.Bind(w, e, _contextRegistry);
             if (!_byEntity.TryGetValue(e, out var list))
-                _byEntity[e] = list = new List<IBinder>(4);
+                _byEntity[e] = list = new List<IBinder>(_initialEntityCapacity);
             InsertOrdered(list, binder);
         }
 
@@ -49,7 +54,6 @@ namespace ZenECS.Core.Internal.Binding
         public void OnEntityDestroyed(IWorld w, Entity e)
         {
             DetachAll(e);
-            _ctx.Clear(w, e);
         }
 
         public void ApplyAll()
@@ -113,43 +117,13 @@ namespace ZenECS.Core.Internal.Binding
 
         private bool HasContextDynamic(Type ctxType, IWorld w, Entity e)
         {
-            var mHas = _ctx.GetType().GetMethods()
+            var mHas = _contextRegistry.GetType().GetMethods()
                 .FirstOrDefault(mi => mi.IsGenericMethodDefinition && mi.Name == "Has"
                                       && mi.GetParameters().Length == 2
                                       && mi.GetParameters()[0].ParameterType == typeof(IWorld)
                                       && mi.GetParameters()[1].ParameterType == typeof(Entity));
             if (mHas != null)
-                return (bool)mHas.MakeGenericMethod(ctxType).Invoke(_ctx, new object[] { w, e });
-
-            mHas = _ctx.GetType().GetMethods()
-                .FirstOrDefault(mi => mi.IsGenericMethodDefinition && mi.Name == "Has"
-                                      && mi.GetParameters().Length == 1
-                                      && mi.GetParameters()[0].ParameterType == typeof(Entity));
-            if (mHas != null)
-                return (bool)mHas.MakeGenericMethod(ctxType).Invoke(_ctx, new object[] { e });
-
-            var mTry = _ctx.GetType().GetMethods()
-                .FirstOrDefault(mi => mi.IsGenericMethodDefinition && mi.Name == "TryGet"
-                                      && mi.GetParameters().Length == 3
-                                      && mi.GetParameters()[0].ParameterType == typeof(IWorld)
-                                      && mi.GetParameters()[1].ParameterType == typeof(Entity)
-                                      && mi.GetParameters()[2].IsOut);
-            if (mTry != null)
-            {
-                var args = new object[] { w, e, null! };
-                return (bool)mTry.MakeGenericMethod(ctxType).Invoke(_ctx, args);
-            }
-
-            mTry = _ctx.GetType().GetMethods()
-                .FirstOrDefault(mi => mi.IsGenericMethodDefinition && mi.Name == "TryGet"
-                                      && mi.GetParameters().Length == 2
-                                      && mi.GetParameters()[0].ParameterType == typeof(Entity)
-                                      && mi.GetParameters()[1].IsOut);
-            if (mTry != null)
-            {
-                var args = new object[] { e, null! };
-                return (bool)mTry.MakeGenericMethod(ctxType).Invoke(_ctx, args);
-            }
+                return (bool)mHas.MakeGenericMethod(ctxType).Invoke(_contextRegistry, new object[] { w, e });
 
             return false;
         }

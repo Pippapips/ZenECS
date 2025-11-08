@@ -1,19 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.CompilerServices;
-using System.Text;
-using ZenECS.Core.Binding;
-using ZenECS.Core.DI;
-using ZenECS.Core.Internal;
-using ZenECS.Core.Internal.Binding;
-using ZenECS.Core.Internal.Bootstrap;
-using ZenECS.Core.Internal.ComponentPooling;
-using ZenECS.Core.Internal.Contexts;
-using ZenECS.Core.Internal.Hooking;
-using ZenECS.Core.Serialization;
-using ZenECS.Core.Systems;
+using ZenECS.Core.Events;
 
 namespace ZenECS.Core.Internal
 {
@@ -24,7 +12,7 @@ namespace ZenECS.Core.Internal
     internal sealed partial class World : IWorldEntityApi
     {
         public int AliveCount => GetAllEntities().Count;
-        
+
         public bool IsAlive(Entity e) => _alive.Get(e.Id) && _generation[e.Id] == e.Gen;
 
         /// <summary>
@@ -101,7 +89,7 @@ namespace ZenECS.Core.Internal
 
             // The current slot's generation is embedded into the handle.
             var e = new Entity(id, _generation[id]);
-            //EntityEvents.RaiseCreated(this, e);
+            EntityEvents.RaiseSpawned(this, e);
             return e;
         }
 
@@ -109,10 +97,10 @@ namespace ZenECS.Core.Internal
         {
             if (!IsAlive(e)) return;
 
-            //EntityEvents.RaiseDestroyRequested(this, e);
+            EntityEvents.RaiseDespawnRequested(this, e);
+
             _bindingRouter.OnEntityDestroyed(this, e);
             _contextRegistry.Clear(this, e);
-
             _componentPoolRepository.RemoveEntity(e);
 
             _alive.Set(e.Id, false);
@@ -121,7 +109,36 @@ namespace ZenECS.Core.Internal
             _generation[e.Id]++;
             _freeIds.Push(e.Id);
 
-            //EntityEvents.RaiseDestroyed(this, e);
+            EntityEvents.RaiseDespawned(this, e);
+        }
+
+        /// <summary>
+        /// Destroys all entities currently alive.
+        /// <para>
+        /// When <paramref name="fireEvents"/> is true, individual Destroy events are fired (slower).<br/>
+        /// For fast resets, use the Reset family of methods instead.
+        /// </para>
+        /// </summary>
+        /// <param name="fireEvents">Whether to emit Destroy events for each entity.</param>
+        public void DespawnAllEntities(bool fireEvents = false)
+        {
+            if (!fireEvents)
+            {
+                // Fast path without firing events. Equivalent to ResetButKeepCapacity.
+                ResetButKeepCapacity();
+                return;
+            }
+
+            // If events are required, call DestroyEntity() for all alive entities.
+            // Scan BitSet to find active slots.
+            for (int id = 1; id < _alive.Length; id++)
+            {
+                if (_alive.Get(id))
+                {
+                    // The standard DestroyEntity path includes events, pool removal, and generation increment.
+                    DespawnEntity(new Entity(id, GenerationOf(id)));
+                }
+            }
         }
     }
 }

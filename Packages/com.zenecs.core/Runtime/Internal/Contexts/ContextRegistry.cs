@@ -7,7 +7,7 @@ using ZenECS.Core.Binding;
 
 namespace ZenECS.Core.Internal.Contexts
 {
-    public sealed class ContextRegistry : IContextRegistry
+    internal sealed class ContextRegistry : IContextRegistry
     {
         private sealed class Entry
         {

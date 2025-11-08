@@ -13,15 +13,15 @@ namespace ZenECS.Core.Binding
         void Apply(); // 프레임 말(프리젠테이션 끝)에 항상 1회
     }
 
-    internal interface IAttachOrderMarker
+    public interface IAttachOrderMarker
     {
         int AttachOrder { get; set; }
     }
-
+    
     public abstract class BaseBinder : IBinder, IAttachOrderMarker
     {
-        protected IWorld? _world { get; private set; }
-        protected IContextLookup? _contextLookup { get; private set; }
+        protected IWorld? World { get; private set; }
+        protected IContextLookup? ContextLookup { get; private set; }
         public Entity Entity { get; private set; }
         public virtual int Priority { get; set; }
         int IAttachOrderMarker.AttachOrder { get; set; }
@@ -30,8 +30,8 @@ namespace ZenECS.Core.Binding
         public void Bind(IWorld world, Entity e, IContextLookup contextLookup)
         {
             if (_bound) throw new Exception();
-            _world = world;
-            _contextLookup = contextLookup;
+            World = world;
+            ContextLookup = contextLookup;
             Entity = e;
             _bound = true;
             OnBind(e);
@@ -47,7 +47,7 @@ namespace ZenECS.Core.Binding
             finally
             {
                 _bound = false;
-                _world = null;
+                World = null;
                 Entity = default;
             }
         }

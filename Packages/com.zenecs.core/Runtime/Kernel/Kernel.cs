@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using ZenECS.Core.Abstractions.Config;
 using ZenECS.Core.Abstractions.Diagnostics;
-using ZenECS.Core.DI;
 using ZenECS.Core.Internal;
+using ZenECS.Core.Internal.Bootstrap;
+using ZenECS.Core.Internal.DI;
 
 namespace ZenECS.Core
 {
@@ -81,7 +82,7 @@ namespace ZenECS.Core
 
             _options = options ?? new KernelOptions();
             if (logger != null) EcsRuntimeOptions.Log = logger;
-            _root = Internal.Bootstrap.CoreBootstrap.BuildRoot(_options);
+            _root = CoreBootstrap.BuildRoot(_options);
         }
 
         public void Dispose()
@@ -119,9 +120,10 @@ namespace ZenECS.Core
             {
                 throw new InvalidOperationException($"World has been no _root scope");
             }
-            
-            var scope = Internal.Bootstrap.CoreBootstrap.BuildWorldScope(_root);
-            var world = new Internal.World(cfg, id, finalName, finalTags, this, scope);
+
+            var worldConfig = cfg ?? new WorldConfig();
+            var scope = CoreBootstrap.BuildWorldScope(worldConfig, _root);
+            var world = new World(worldConfig, id, finalName, finalTags, this, scope);
 
             if (!_byId.TryAdd(id, world))
                 throw new InvalidOperationException($"World with id {id} already exists.");
