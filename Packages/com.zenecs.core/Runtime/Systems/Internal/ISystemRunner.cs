@@ -8,7 +8,8 @@
 //   • Deterministic order: runner executes in the order provided by the planner.
 //   • Lifecycle: explicit Initialize/Shutdown around the first/last tick.
 //   • World-scoped: a runner always acts on a single IWorld instance.
-// License: MIT — (c) 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

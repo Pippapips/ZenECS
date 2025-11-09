@@ -6,8 +6,8 @@
 //   • Enqueue structural ops; apply immediately or schedule at frame barrier
 //   • Implements IJob for worker integration
 //   • Safe no-op when target entity is already dead at apply time
-// License: MIT
-// © 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

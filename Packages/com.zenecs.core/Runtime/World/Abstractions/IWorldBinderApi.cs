@@ -6,7 +6,8 @@
 //   • Decoupled view: binders consume contexts and deltas; world hosts lifecycle.
 //   • Policy: strict mode throws when required contexts are missing; warn/skip.
 //   • Safety: binders are detached on entity despawn/reset.
-// License: MIT — Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

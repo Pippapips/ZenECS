@@ -7,10 +7,11 @@
 //   • Invoked inside the fixed-step pass prior to fixed Simulation.
 //   • Should not rely on frame delta; use the provided fixed step if needed.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
+
 namespace ZenECS.Core.Systems
 {
     /// <summary>

@@ -7,10 +7,11 @@
 //   • Interpolation support: alpha provided for smoothing between frames.
 //   • Avoid mutating ECS state here (writes may be guarded/denied by runner). 
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
+
 namespace ZenECS.Core.Systems
 {
     /// <summary>

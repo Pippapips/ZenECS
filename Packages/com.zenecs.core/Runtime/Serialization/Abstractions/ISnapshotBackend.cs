@@ -6,8 +6,8 @@
 //   • Primitive & block operations: bytes, numbers, strings, booleans.
 //   • Cursor control: Position, Length, Rewind.
 //   • Pluggable backends: streams, memory buffers, custom stores.
-// Copyright...
-// License: MIT
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

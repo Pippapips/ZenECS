@@ -8,7 +8,7 @@
 //   • Serialization-friendly: stable, compact, framework-agnostic.
 //   • Readability: explicit intent in APIs (WorldId vs Guid).
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

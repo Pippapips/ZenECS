@@ -6,6 +6,8 @@
 //   • Stable handles: (id, generation) prevent zombie references.
 //   • Capacity policy: growth strategy is implementation-defined.
 //   • Bulk ops: fast destroy-all with/without per-entity events.
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

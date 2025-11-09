@@ -7,7 +7,7 @@
 //   • Scheduler integration: deferred jobs flushed at safe barriers.
 //   • Safety on reset: pending jobs are drained to avoid dropping work.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-
 #nullable enable

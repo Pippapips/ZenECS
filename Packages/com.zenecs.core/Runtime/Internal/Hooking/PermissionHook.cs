@@ -6,8 +6,8 @@
 //   • List-based predicates; all must pass (AND) to allow the operation
 //   • Per-type validator cache to avoid boxing on hot paths
 //   • Clear… helpers to reset during teardown or tests
-// License: MIT
-// © 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

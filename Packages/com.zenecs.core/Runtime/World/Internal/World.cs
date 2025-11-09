@@ -9,7 +9,7 @@
 //   • Pause per world: Kernel may step selected worlds only.
 //   • Reset paths: fast capacity-preserving reset for bulk despawn.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-
 #nullable enable

@@ -8,7 +8,8 @@
 //   • Constraints: OrderBefore / OrderAfter honored only within the same group.
 //   • Deterministic: Kahn topological sort with lexical tie-break by type name.
 //   • Lifecycle views: forward order for Initialize, reverse for Shutdown.
-// License: MIT — (c) 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

@@ -6,8 +6,8 @@
 //   • Always available: avoids null checks in core code paths.
 //   • Replace at bootstrap with your real logger.
 //   • Intentionally silent in all methods.
-// Copyright (...)
-// License: MIT
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 

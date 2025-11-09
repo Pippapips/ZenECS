@@ -6,8 +6,8 @@
 //   • O(1) id-indexed access with auto growth (power-of-two).
 //   • Ref returns: zero-copy read/write; TryGet/Get for safe copies.
 //   • Boxed accessors for tooling/snapshots; ClearAll for resets.
-// License: MIT
-// © 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

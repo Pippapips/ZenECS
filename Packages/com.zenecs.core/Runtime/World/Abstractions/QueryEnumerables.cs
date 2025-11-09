@@ -1,3 +1,17 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Core — Query Enumerables
+// File: QueryEnumerables.cs
+// Purpose: Define strongly-typed enumerables for component queries, and the
+//          filter DSL used to constrain entity iteration.
+// Key concepts:
+//   • Fluent immutable Filter builder (With / Without / WithAny / WithoutAny)
+//   • QueryEnumerable<T1..T8>: zero-allocation foreach enumerators
+//   • QuerySeed: chooses smallest pool as iteration seed for efficiency
+//   • MeetsFilter: per-entity evaluation via World.ResolvedFilter
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -7,14 +21,17 @@ using ZenECS.Core.Internal.ComponentPooling;
 
 namespace ZenECS.Core
 {
-    // ---------- Filter DSL ----------
+    // --------------------------------------------------------------------------
+    // FILTER DSL
+    // --------------------------------------------------------------------------
 
     /// <summary>
     /// Immutable value describing a query filter with include/exclude constraints.
     /// </summary>
     /// <remarks>
-    /// Use <see cref="Builder"/> via <see cref="New"/> to compose filters fluently,
-    /// then pass the result to <c>world.Query&lt;...>(filter)</c>.
+    /// Filters are created via the fluent <see cref="Builder"/> exposed by
+    /// <see cref="New"/>. Use them to refine queries passed into
+    /// <c>world.Query&lt;...&gt;(filter)</c>.
     /// </remarks>
     public readonly struct Filter
     {
@@ -32,7 +49,7 @@ namespace ZenECS.Core
         }
 
         /// <summary>
-        /// Entry point for the fluent filter builder.
+        /// Entry point for creating a new fluent <see cref="Builder"/>.
         /// </summary>
         public static Builder New => default;
 
@@ -40,7 +57,8 @@ namespace ZenECS.Core
         /// Fluent, immutable builder used to compose <see cref="Filter"/> instances.
         /// </summary>
         /// <remarks>
-        /// Each method returns a new builder that includes the requested constraint; the original builder remains unchanged.
+        /// Each method returns a new builder that includes the requested constraint;
+        /// the original builder remains unchanged.
         /// </remarks>
         public readonly struct Builder
         {
@@ -49,54 +67,38 @@ namespace ZenECS.Core
             private readonly List<List<Type>> wan;
             private readonly List<List<Type>> won;
 
-            /// <summary>
+/// <summary>
             /// Requires that entities include component <typeparamref name="T"/>.
             /// </summary>
-            /// <typeparam name="T">Component value type.</typeparam>
-            /// <returns>A new builder with the constraint added.</returns>
             public Builder With<T>() where T : struct => new(Append(wa, typeof(T)), wo, wan, won);
 
             /// <summary>
             /// Requires that entities exclude component <typeparamref name="T"/>.
             /// </summary>
-            /// <typeparam name="T">Component value type.</typeparam>
-            /// <returns>A new builder with the constraint added.</returns>
             public Builder Without<T>() where T : struct => new(wa, Append(wo, typeof(T)), wan, won);
 
             /// <summary>
-            /// Adds a logical OR group: the entity passes if it contains <em>any one</em> of the specified types.
+            /// Adds an OR group: entity passes if it contains <em>any one</em> of these types.
             /// </summary>
-            /// <param name="types">One or more component types to OR together.</param>
-            /// <returns>A new builder with the constraint added.</returns>
             public Builder WithAny(params Type[] types) => new(wa, wo, AppendBucket(wan, types), won);
 
             /// <summary>
-            /// Adds a negative logical OR group: the entity fails if it contains <em>any one</em> of the specified types.
+            /// Adds a NOT-OR group: entity fails if it contains <em>any one</em> of these types.
             /// </summary>
-            /// <param name="types">One or more component types to OR together for exclusion.</param>
-            /// <returns>A new builder with the constraint added.</returns>
             public Builder WithoutAny(params Type[] types) => new(wa, wo, wan, AppendBucket(won, types));
 
             /// <summary>
-            /// Finalizes the builder into an immutable <see cref="Filter"/>.
+            /// Finalizes this builder into an immutable <see cref="Filter"/>.
             /// </summary>
-            /// <returns>The composed filter.</returns>
-            public Filter Build()
-            {
-                return new Filter(
+            public Filter Build() =>
+                new Filter(
                     wa?.ToArray() ?? Array.Empty<Type>(),
                     wo?.ToArray() ?? Array.Empty<Type>(),
                     ToJagged(wan),
                     ToJagged(won));
-            }
 
             private Builder(List<Type> wa, List<Type> wo, List<List<Type>> wan, List<List<Type>> won)
-            {
-                this.wa = wa;
-                this.wo = wo;
-                this.wan = wan;
-                this.won = won;
-            }
+            { this.wa = wa; this.wo = wo; this.wan = wan; this.won = won; }
 
             private static List<Type> Append(List<Type> list, Type t)
             {
@@ -125,11 +127,16 @@ namespace ZenECS.Core
             }
         }
     }
-    
-    #region Seed picker (internal)
+
+    // --------------------------------------------------------------------------
+    // QUERY SEED PICKER
+    // --------------------------------------------------------------------------
 
     internal static class QuerySeed
     {
+        /// <summary>
+        /// Chooses the smallest-capacity component pool as the seed for iteration.
+        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IComponentPool? Pick(params IComponentPool?[] pools)
         {
@@ -139,15 +146,29 @@ namespace ZenECS.Core
             {
                 var p = pools[i];
                 if (p == null) continue;
-                var cap = p.Capacity; // 가능하면 ActiveCount로 바꿔도 됨
+                var cap = p.Capacity;
                 if (cap < bestCap) { best = p; bestCap = cap; }
             }
             return best;
         }
     }
 
-    #endregion
-
+    // --------------------------------------------------------------------------
+    // GENERIC QUERY ENUMERABLES
+    // --------------------------------------------------------------------------
+    //
+    // Each QueryEnumerable<T1..Tn> implements a zero-allocation foreach pattern:
+    // 
+    //   foreach (var e in world.Query<T1, T2>(filter)) { ... }
+    //
+    // Enumerator logic:
+    //   • Picks smallest seed pool for iteration
+    //   • Checks Has(id) across all component pools
+    //   • Validates entity against resolved filter
+    //   • Returns living entity handles (id, generation)
+    //
+    // --------------------------------------------------------------------------
+    
     #region T1
 
     internal readonly struct QueryCtx1<T1> where T1 : struct

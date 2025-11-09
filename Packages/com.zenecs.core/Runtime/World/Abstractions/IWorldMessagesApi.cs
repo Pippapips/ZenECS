@@ -6,6 +6,8 @@
 //   • Isolation per world: no cross-world bleed.
 //   • Value-type messages: minimal GC; Action<T> handlers.
 //   • Disposable subscription tokens for deterministic unsubscription.
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

@@ -7,10 +7,11 @@
 //   • Called by SystemRunner before first tick and after the last tick.
 //   • Implementations should be idempotent and resilient to multiple calls in tools/tests.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
+
 namespace ZenECS.Core.Systems
 {
     /// <summary>

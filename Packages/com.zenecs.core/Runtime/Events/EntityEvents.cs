@@ -7,9 +7,9 @@
 //   • Ordering: Spawned → DestroyRequested → Destroyed (when applicable).
 //   • Hygiene: Reset() clears all listeners to avoid leaks on reloads/tests.
 //   • Scope: Events fire per-world and carry the target IWorld + Entity handle.
+// Copyright (c) 2025 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
-// © 2025 Pippapips Limited
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 using System;

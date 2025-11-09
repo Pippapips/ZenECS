@@ -8,7 +8,7 @@
 //   • Growth policy: Doubling vs Step with configurable step size.
 //   • Performance tuning: control rehash frequency and free-id stack capacity.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

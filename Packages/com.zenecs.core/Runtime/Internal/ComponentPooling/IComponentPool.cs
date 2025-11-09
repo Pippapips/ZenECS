@@ -6,8 +6,8 @@
 //   • EnsureCapacity/Has/Remove for structural ops.
 //   • Boxed Get/Set for reflection and persistence layers.
 //   • Allocation-free enumeration via PoolEnumerator.
-// License: MIT
-// © 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

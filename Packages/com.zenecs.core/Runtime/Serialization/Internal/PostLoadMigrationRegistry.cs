@@ -6,8 +6,8 @@
 //   • Uniqueness: one instance per migration type.
 //   • Deterministic: ordered by Order, then type name.
 //   • Test-friendly: Clear() to reset state in unit tests/tools.
-// Copyright...
-// License: MIT
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

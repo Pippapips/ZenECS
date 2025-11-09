@@ -7,7 +7,7 @@
 //   • Pull + push: binders may read contexts while reacting to deltas.
 //   • Lightweight: struct payloads to avoid GC on hot paths.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 namespace ZenECS.Core.Binding

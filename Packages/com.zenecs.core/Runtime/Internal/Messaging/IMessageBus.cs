@@ -6,8 +6,8 @@
 //   • Per-type topics: queue + subscriber list
 //   • PumpAll() once per frame to deliver deterministically
 //   • Thread-safe publish/subscribe; synchronous delivery during PumpAll
-// License: MIT
-// © 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

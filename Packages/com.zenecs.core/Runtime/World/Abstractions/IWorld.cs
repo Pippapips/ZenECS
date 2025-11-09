@@ -7,7 +7,8 @@
 //   • Lifetime control: initialize systems, pause/resume, reset with policy.
 //   • Identity: stable WorldId + tags; per-world pause independent of Kernel.
 //   • Safety: generation-based entity handles prevent stale references.
-// License: MIT — Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

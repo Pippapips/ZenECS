@@ -7,7 +7,7 @@
 //   • Value-type messages: heap pressure kept low; handlers are Action<T>.
 //   • IDisposable subscriptions: deterministic unsubscription & lifetime mgmt.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-
 #nullable enable

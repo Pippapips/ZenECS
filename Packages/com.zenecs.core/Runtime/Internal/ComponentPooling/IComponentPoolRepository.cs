@@ -6,8 +6,8 @@
 //   • Typed and untyped accessors.
 //   • Factory cache for closed generic ComponentPool<T> creation.
 //   • Per-world lifetime; RemoveEntity() fan-out to all pools.
-// License: MIT
-// © 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

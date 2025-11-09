@@ -7,7 +7,7 @@
 //   • Optional lifecycle: Initialize/Deinitialize/Reinitialize hooks on registry events.
 //   • Sharing: contexts may be shared references; ownership is defined by the registry policy.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

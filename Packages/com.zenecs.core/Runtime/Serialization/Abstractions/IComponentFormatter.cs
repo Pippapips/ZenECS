@@ -7,7 +7,7 @@
 //   • Backend-agnostic: works with any ISnapshotBackend implementation.
 //   • Symmetry & tolerance: Write ↔ Read symmetry; version tolerance recommended.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

@@ -7,7 +7,7 @@
 //   • World scope: per-world services (worker, message bus, router, pools, hooks).
 //   • Engine-agnostic: adapters can extend/override in child scopes (Unity, server).
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

@@ -7,7 +7,7 @@
 //   • Severity levels: Info, Warn, Error (string messages only).
 //   • Lightweight: no formatting helpers to keep core dependency-free.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 

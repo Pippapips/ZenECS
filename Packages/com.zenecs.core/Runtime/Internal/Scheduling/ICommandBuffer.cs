@@ -7,8 +7,8 @@
 //   • Using-scope creation via World.BeginWrite(...)
 //   • Auto-apply on Dispose according to apply mode
 //   • Also exposed as IJob to the world's worker for barrier execution
-// License: MIT
-// © 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

@@ -7,10 +7,11 @@
 //   • Runs during the Simulation group within the fixed-step pass.
 //   • Scheduler supplies the fixed delta time to Run(IWorld, dt). 
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
+
 namespace ZenECS.Core.Systems
 {
     /// <summary>

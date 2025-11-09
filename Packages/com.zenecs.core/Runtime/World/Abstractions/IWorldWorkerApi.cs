@@ -7,7 +7,7 @@
 //   • Deterministic barriers: callers choose when to flush queued work.
 //   • Integration: command buffers and deferred ops can target the worker.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

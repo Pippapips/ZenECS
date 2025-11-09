@@ -6,7 +6,8 @@
 //   • Apply modes: schedule at barrier vs immediate apply on dispose.
 //   • Threading: record off-thread; schedule for main-thread safe application.
 //   • Determinism: batch commits to precise points in the frame.
-// License: MIT — Copyright (c) 2025
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

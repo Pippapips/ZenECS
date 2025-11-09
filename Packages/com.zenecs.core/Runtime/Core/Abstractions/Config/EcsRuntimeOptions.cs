@@ -7,7 +7,7 @@
 //   • Write failure policy: Throw / Log / Ignore on denied structural writes.
 //   • Error funnel: single place to report non-fatal exceptions (safe guards).
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 

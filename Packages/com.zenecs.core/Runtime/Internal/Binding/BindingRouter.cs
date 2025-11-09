@@ -8,8 +8,8 @@
 //   • Strict vs relaxed attach: validate IRequireContext<T> at bind time.
 //   • Delta fan-out: type-directed dispatch to IBinds<T> listeners.
 //   • Frame barrier: ApplyAll() is called once before Presentation systems.
-// License: MIT
-// © 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

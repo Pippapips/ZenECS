@@ -6,6 +6,8 @@
 //   • Registry per world: attach arbitrary resources to entities.
 //   • Binder integration: binders resolve contexts to render/apply updates.
 //   • Ownership: registry defines replacement/merge policy by type/key.
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

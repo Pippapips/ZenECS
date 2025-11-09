@@ -7,7 +7,7 @@
 //   • Router deltas: binder layer notified on add/change/remove.
 //   • Pools repository: fast ref access and presence checks per component type.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-
 #nullable enable

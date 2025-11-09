@@ -6,7 +6,8 @@
 //   • Ref access: allocation-free read/modify through pooled storage.
 //   • Validation: object + typed validators run before writes.
 //   • Presence checks and enumeration (boxed) for tooling/introspection.
-// License: MIT — Copyright (c) 2025
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

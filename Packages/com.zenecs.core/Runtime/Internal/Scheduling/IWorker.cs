@@ -6,8 +6,8 @@
 //   • Queue IJob instances; run them at the simulation barrier
 //   • Deterministic FIFO execution per frame
 //   • ClearAllScheduledJobs() for teardown / hard resets
-// License: MIT
-// © 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

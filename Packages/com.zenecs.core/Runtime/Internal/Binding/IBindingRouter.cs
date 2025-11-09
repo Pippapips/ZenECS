@@ -6,8 +6,8 @@
 //   • Ordered per-entity binder list (Priority + attach order).
 //   • Type-routed deltas → IBinds<T>.
 //   • Single frame barrier: ApplyAll() before Presentation.
-// License: MIT
-// © 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

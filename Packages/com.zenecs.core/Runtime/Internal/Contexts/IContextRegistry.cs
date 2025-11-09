@@ -6,8 +6,8 @@
 //   • Extends IContextLookup for read paths.
 //   • Manages Initialize/Deinitialize/Reinitialize for registered contexts.
 //   • World-scoped lifetime; Clear and ClearAll for teardown.
-// License: MIT
-// © 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

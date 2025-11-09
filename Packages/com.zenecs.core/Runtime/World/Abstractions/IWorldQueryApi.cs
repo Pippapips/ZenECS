@@ -6,6 +6,8 @@
 //   • Value-type enumerables: foreach-friendly without GC.
 //   • Filter buckets: WithAll/WithoutAll + WithAny/WithoutAny.
 //   • Arity up to 8: T1…T8 entry points for common tuples.
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

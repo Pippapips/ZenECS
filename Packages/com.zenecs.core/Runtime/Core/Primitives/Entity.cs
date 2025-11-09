@@ -6,8 +6,8 @@
 //   • Upper 32 bits: generation; lower 32 bits: id.
 //   • Value semantics: equality/hash by packed handle; explicit casts.
 //   • Safety: use world APIs to validate liveness/generation before access.
-// Copyright (...)
-// License: MIT
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

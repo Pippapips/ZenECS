@@ -16,7 +16,7 @@ namespace ZenECS.Core.Systems
 {
     /// <summary>
     /// Marks a system as part of the <b>Simulation</b> group.
-    /// <para>Typically includes core gameplay logic, physics updates, and AI systems.</para>
+    /// <para>Typically, includes core gameplay logic, physics updates, and AI systems.</para>
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
     public sealed class SimulationGroupAttribute : Attribute { }

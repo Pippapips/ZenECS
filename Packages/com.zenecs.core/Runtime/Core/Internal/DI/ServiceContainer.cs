@@ -7,8 +7,8 @@
 //   • Singletons & factories (transient or cached singleton) with ownership.
 //   • Freeze (Seal) after composition for safety and predictability.
 //   • Introspection: Verify / Dump / Contains / GetAll helpers for tooling/tests.
-// Copyright (c) 2025...
-// License: MIT
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

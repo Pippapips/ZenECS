@@ -6,8 +6,8 @@
 //   • Lazy factories: closed generic ComponentPool<T> via cached delegates.
 //   • Per-world repository: fast lookup, RemoveEntity fan-out.
 //   • Snapshot-friendly: EnsureCapacity(0) on creation for immediate validity.
-// License: MIT
-// © 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

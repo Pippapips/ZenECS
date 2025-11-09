@@ -7,7 +7,7 @@
 //   • Self-documenting: binder dependencies are explicit via generic markers.
 //   • Composition: multiple IRequireContext<T> can be implemented for multi-deps.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

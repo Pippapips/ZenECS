@@ -6,7 +6,7 @@
 //   • Context registry per world: attach arbitrary resources to entities.
 //   • Binder access: binders resolve contexts to render/apply updates.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-
 #nullable enable

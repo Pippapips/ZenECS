@@ -7,7 +7,7 @@
 //   • Order-independent FilterKey hashing for cache lookups.
 //   • ResolvedFilter stores pool arrays for branchless membership tests.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-
 #nullable enable

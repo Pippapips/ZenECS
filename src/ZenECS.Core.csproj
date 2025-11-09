@@ -30,33 +30,6 @@
         <!-- obj/** 파일들이 포함되지 않도록 명시 -->
         <Compile Remove="obj/**" />
         <None Remove="obj/**" />
-        <Compile Update="..\Packages\com.zenecs.core\Runtime\World\Api\IWorldSnapshot.cs">
-          <Link>World\Api\IWorldSnapshot.cs</Link>
-        </Compile>
-        <Compile Update="..\Packages\com.zenecs.core\Runtime\World\Internal\WorldSnapshot.cs">
-          <Link>World\Internal\WorldSnapshot.cs</Link>
-        </Compile>
-        <Compile Update="..\Packages\com.zenecs.core\Runtime\World\Internal\WorldEntityApi.cs">
-          <Link>World\Internal\WorldEntityApi.cs</Link>
-        </Compile>
-        <Compile Update="..\Packages\com.zenecs.core\Runtime\World\Api\IWorldHookApi.cs">
-          <Link>World\Api\IWorldHookApi.cs</Link>
-        </Compile>
-        <Compile Update="..\Packages\com.zenecs.core\Runtime\World\Internal\WorldHookApi.cs">
-          <Link>World\Internal\WorldHookApi.cs</Link>
-        </Compile>
-        <Compile Update="..\Packages\com.zenecs.core\Runtime\World\Api\IWorldResetApi.cs">
-          <Link>World\Api\IWorldResetApi.cs</Link>
-        </Compile>
-        <Compile Update="..\Packages\com.zenecs.core\Runtime\World\Internal\WorldResetApi.cs">
-          <Link>World\Internal\WorldResetApi.cs</Link>
-        </Compile>
-        <Compile Update="..\Packages\com.zenecs.core\Runtime\World\Api\IWorldWorkerApi.cs">
-          <Link>World\Api\IWorldWorkerApi.cs</Link>
-        </Compile>
-        <Compile Update="..\Packages\com.zenecs.core\Runtime\World\Internal\WorldWorkerApi.cs">
-          <Link>World\Internal\WorldWorkerApi.cs</Link>
-        </Compile>
     </ItemGroup>
     <!-- 선택적으로 플랫폼별 Define 추가 -->
     <PropertyGroup>

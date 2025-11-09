@@ -8,7 +8,8 @@
 //   • Barrier points: scheduler flush between setup/simulation; router apply before Late.
 //   • Read-only presentation: temporary write-deny guard during LateFrame.
 //   • Deterministic: respects order planned by SystemPlanner.
-// License: MIT — (c) 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

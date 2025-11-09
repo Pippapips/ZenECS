@@ -6,8 +6,8 @@
 //   • Struct messages only (no boxing on Publish)
 //   • Deterministic per-frame delivery via PumpAll()
 //   • Lock-free queues; synchronized subscriber list snapshots
-// License: MIT
-// © 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

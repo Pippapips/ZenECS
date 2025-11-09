@@ -6,8 +6,8 @@
 //   • Thread-safe queue; Execute jobs on caller thread
 //   • Barrier-friendly: invoke RunScheduledJobs() at a deterministic point
 //   • ClearAllScheduledJobs() for teardown or scene changes
-// License: MIT
-// © 2025 Pippapips Limited
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

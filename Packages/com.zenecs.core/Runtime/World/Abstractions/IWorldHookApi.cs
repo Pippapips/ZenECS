@@ -6,6 +6,8 @@
 //   • Read/Write predicates: (entity, componentType) → allowed.
 //   • Validators: object-level and typed validators before writes.
 //   • Testability: clear/remove helpers for deterministic setups.
+// Copyright (c) 2025 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable

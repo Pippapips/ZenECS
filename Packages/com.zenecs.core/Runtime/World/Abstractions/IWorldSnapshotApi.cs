@@ -8,7 +8,7 @@
 //   • Pool payloads: formatter-driven per component type.
 //   • Migrations: run post-load fixups after pools are restored.
 // Copyright (c) 2025 Pippapips Limited
-// License: MIT
+// License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
