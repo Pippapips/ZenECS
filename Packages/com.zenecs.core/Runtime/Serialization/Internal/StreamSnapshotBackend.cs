@@ -15,8 +15,9 @@ using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
+using ZenECS.Core.Serialization;
 
-namespace ZenECS.Core.Serialization
+namespace ZenECS.Core.Internal.Serialization
 {
     /// <summary>
     /// Stream-backed snapshot backend used for reading and writing component data.
@@ -69,10 +70,6 @@ namespace ZenECS.Core.Serialization
         /// <summary>
         /// Disposes the underlying <see cref="BinaryReader"/> or <see cref="BinaryWriter"/>.
         /// </summary>
-        /// <remarks>
-        /// When constructed with <paramref name="leaveOpen"/> = <see langword="true"/>, the underlying
-        /// <see cref="Stream"/> is not disposed.
-        /// </remarks>
         public void Dispose()
         {
             _bw?.Dispose();

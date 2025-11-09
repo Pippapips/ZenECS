@@ -1,0 +1,8 @@
+### YamlMime:ManagedReference
+apiRules:
+  - exclude:
+      uidRegex: ^ZenECS\.Core\.Internal
+      type: Namespace
+  - include:
+      uidRegex: ^ZenECS\.Core
+      type: Namespace

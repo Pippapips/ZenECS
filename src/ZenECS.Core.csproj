@@ -7,6 +7,9 @@
         <!-- 자동 AssemblyInfo 생성 끄기 -->
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+        <DocumentationFile>bin\Release\netstandard2.1\ZenECS.Core.xml</DocumentationFile>
         <!-- 빌드 출력 위치 -->
         <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)obj\</BaseIntermediateOutputPath>
         <OutputPath>$(MSBuildThisFileDirectory)bin\$(Configuration)\</OutputPath>
@@ -30,6 +33,9 @@
         <!-- obj/** 파일들이 포함되지 않도록 명시 -->
         <Compile Remove="obj/**" />
         <None Remove="obj/**" />
+        <Compile Update="..\Packages\com.zenecs.core\Runtime\Serialization\Internal\StreamSnapshotBackend.cs">
+          <Link>Serialization\Internal\StreamSnapshotBackend.cs</Link>
+        </Compile>
     </ItemGroup>
     <!-- 선택적으로 플랫폼별 Define 추가 -->
     <PropertyGroup>

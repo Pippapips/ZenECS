@@ -11,6 +11,8 @@
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
+using ZenECS.Core.Internal.Scheduling;
+
 namespace ZenECS.Core
 {
     /// <summary>Controls how a <see cref="CommandBuffer"/> is applied.</summary>

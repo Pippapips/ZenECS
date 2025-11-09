@@ -134,7 +134,7 @@ namespace ZenECS.Core
 
         /// <summary>
         /// Convenience helper that performs BeginFrame, then consumes the accumulator into up to
-        /// <paramref name="maxSubSteps"/> FixedStep calls, computes <paramref name="alpha"/>, and finally calls LateFrame.
+        /// <paramref name="maxSubSteps"/> FixedStep calls/>, and finally calls LateFrame.
         /// Returns the number of FixedStep calls executed.
         /// </summary>
         /// <param name="dt">Delta time to add to the accumulator (seconds).</param>
