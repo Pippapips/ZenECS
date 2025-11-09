@@ -37,7 +37,7 @@ namespace ZenECS.Core.Internal.Systems
         private readonly IMessageBus _bus;
         private readonly IWorker _worker;
         private readonly IBindingRouter _router;
-        private IPermissionHook _permissionHook;
+        private readonly IPermissionHook _permissionHook;
 
         /// <summary>
         /// Construct a runner bound to world-scoped services.
