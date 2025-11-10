@@ -5,8 +5,8 @@ using ZenECS.Adapter.Unity.Attributes;
 
 namespace ZenECS.EditorUtils
 {
-    [CustomPropertyDrawer(typeof(ReadOnlyInInspectorAttribute), useForChildren: true)]
-    public sealed class ReadOnlyInInspector : PropertyDrawer
+    [CustomPropertyDrawer(typeof(ZenReadOnlyInInspectorAttribute), useForChildren: true)]
+    public sealed class ZenReadOnlyInInspector : PropertyDrawer
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {

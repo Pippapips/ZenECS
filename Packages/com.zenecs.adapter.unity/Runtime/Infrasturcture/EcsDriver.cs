@@ -8,7 +8,6 @@ namespace ZenECS.Adapter.Unity
 {
     class Logger : IEcsLogger
     {
-
         public void Info(string message)
         {
             Debug.Log(message);

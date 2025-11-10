@@ -149,7 +149,7 @@ namespace ZenECS.Core.Internal.Binding
 
             foreach (var tCtx in need)
             {
-                var has = HasContextDynamic(tCtx, w, e);
+                var has = _contextRegistry.Has(w, e, tCtx);
                 if (!has)
                 {
                     var msg = $"[BindingRouter] Missing required context {tCtx.Name} for binder {binder.GetType().Name} on {e}.";
@@ -158,19 +158,6 @@ namespace ZenECS.Core.Internal.Binding
                     // else: warn externally if desired
                 }
             }
-        }
-
-        private bool HasContextDynamic(Type ctxType, IWorld w, Entity e)
-        {
-            var mHas = _contextRegistry.GetType().GetMethods()
-                .FirstOrDefault(mi => mi.IsGenericMethodDefinition && mi.Name == "Has"
-                                      && mi.GetParameters().Length == 2
-                                      && mi.GetParameters()[0].ParameterType == typeof(IWorld)
-                                      && mi.GetParameters()[1].ParameterType == typeof(Entity));
-            if (mHas != null)
-                return (bool)mHas.MakeGenericMethod(ctxType).Invoke(_contextRegistry, new object[] { w, e });
-
-            return false;
         }
     }
 }

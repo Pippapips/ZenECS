@@ -17,9 +17,10 @@ public sealed class ZenContextPickerWindow : EditorWindow
     private HashSet<Type> _disabled = new();
     private Action<Type> _onPick = _ => { };
     private int _hover = -1;
-    private GUIStyle _rowStyle;
-    private GUIStyle _rowDisabledStyle;
-    private GUIStyle _searchStyle;
+    private GUIStyle? _rowStyle;
+    private GUIStyle? _rowDisabledStyle;
+    private GUIStyle? _searchStyle;
+    string _title = "Add Context";
 
     public static void Show(IEnumerable<Type> allContextTypes,
                             HashSet<Type> disabled,
@@ -30,6 +31,7 @@ public sealed class ZenContextPickerWindow : EditorWindow
     {
         var win = CreateInstance<ZenContextPickerWindow>();
         win.titleContent = new GUIContent(title);
+        win._title = title;
         win._all = allContextTypes?.ToList() ?? new List<Type>();
         win._disabled = disabled ?? new HashSet<Type>();
         win._onPick = onPick ?? (_ => { });
@@ -118,6 +120,7 @@ public sealed class ZenContextPickerWindow : EditorWindow
     {
         using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
         {
+            EditorGUILayout.LabelField(_title, EditorStyles.boldLabel);
             GUI.SetNextControlName("ZenContextPickerSearch");
             _search = GUILayout.TextField(_search, _searchStyle, GUILayout.ExpandWidth(true));
             if (GUILayout.Button("×", EditorStyles.toolbarButton, GUILayout.Width(24)))

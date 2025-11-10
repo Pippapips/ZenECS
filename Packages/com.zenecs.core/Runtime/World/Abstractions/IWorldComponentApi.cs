@@ -19,27 +19,39 @@ namespace ZenECS.Core
     /// <summary>Typed component operations and ref accessors.</summary>
     public interface IWorldComponentApi
     {
-        /// <summary>Add a component if absent; returns <c>false</c> on denial or already present.</summary>
-        bool AddComponent<T>(Entity e, in T value) where T : struct;
-
-        /// <summary>Check if an entity currently has the component.</summary>
+        // ── Typed (existing) ────────────────────────────────────────────────
         bool HasComponent<T>(Entity e) where T : struct;
-
-        /// <summary>Get a <c>ref</c> to a component (creates storage if needed).</summary>
-        ref T RefComponent<T>(Entity e) where T : struct;
-
-        /// <summary>Get a <c>ref</c> to an existing component; throws if missing.</summary>
-        ref T RefComponentExisting<T>(Entity e) where T : struct;
-
-        /// <summary>Read by <c>ref</c> (alias of <see cref="RefComponent{T}(Entity)"/>).</summary>
-        ref T ReadComponent<T>(Entity e) where T : struct;
-
-        /// <summary>Replace a component value in place; returns <c>false</c> on denial.</summary>
+        bool AddComponent<T>(Entity e, in T value) where T : struct;
         bool ReplaceComponent<T>(Entity e, in T value) where T : struct;
-
-        /// <summary>Remove a component; returns <c>false</c> if absent or denied.</summary>
         bool RemoveComponent<T>(Entity e) where T : struct;
 
+        // ── Boxed / non-generic (NEW) ───────────────────────────────────────
+        /// <summary>
+        /// Checks component presence using a runtime <paramref name="componentType"/>.
+        /// </summary>
+        bool HasComponentBoxed(Entity e, Type? componentType);
+
+        /// <summary>
+        /// Adds a component using a boxed struct value. Delegates to
+        /// <see cref="AddComponent{T}(Entity, in T)"/>.
+        /// </summary>
+        bool AddComponentBoxed(Entity e, object? boxed);
+
+        /// <summary>
+        /// Replaces a component using a boxed struct value. Delegates to
+        /// <see cref="ReplaceComponent{T}(Entity, in T)"/>.
+        /// </summary>
+        bool ReplaceComponentBoxed(Entity e, object? boxed);
+
+        /// <summary>
+        /// Removes a component using a runtime <paramref name="componentType"/>.
+        /// Delegates to <see cref="RemoveComponent{T}(Entity)"/>.
+        /// </summary>
+        bool RemoveComponentBoxed(Entity e, Type? componentType);
+        
+        /// <summary>Read by <c>ref</c> (alias of <see cref="RefComponent{T}(Entity)"/>).</summary>
+        ref T ReadComponent<T>(Entity e) where T : struct;
+        
         /// <summary>Try read by value; returns <c>false</c> if the component is absent.</summary>
         bool TryRead<T>(Entity e, out T value) where T : struct;
 

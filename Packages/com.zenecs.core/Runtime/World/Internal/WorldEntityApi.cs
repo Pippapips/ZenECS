@@ -28,10 +28,16 @@ namespace ZenECS.Core.Internal
         /// <inheritdoc/>
         public bool IsAlive(Entity e) => _alive.Get(e.Id) && _generation[e.Id] == e.Gen;
 
+        /// <inheritdoc/>
+        public bool IsAlive(int id, int gen)
+        {
+            return IsAlive(new Entity(id, gen));
+        }
+
         /// <summary>
         /// Get a snapshot list of all currently alive entities.
         /// </summary>
-        public List<Entity> GetAllEntities()
+        public IReadOnlyList<Entity> GetAllEntities()
         {
             var list = new List<Entity>(_nextId);
             for (int id = 1; id < _nextId; id++)

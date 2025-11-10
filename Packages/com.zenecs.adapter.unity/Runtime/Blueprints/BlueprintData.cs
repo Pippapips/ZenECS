@@ -28,7 +28,8 @@ namespace ZenECS.Adapter.Unity.Blueprints
                 var t = Resolve(it.typeName);
                 if (t == null) continue;
                 var boxed = ComponentJson.Deserialize(it.json, t);
-                BlueprintApplier.AddBoxed(world, e, boxed);
+                world.AddComponentBoxed(e, boxed);
+                //BlueprintApplier.AddBoxed(world, e, boxed);
             }
         }
 

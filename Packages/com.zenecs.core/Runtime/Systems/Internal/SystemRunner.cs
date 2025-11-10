@@ -12,6 +12,7 @@
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-
+
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -97,7 +98,9 @@ namespace ZenECS.Core.Internal.Systems
         public void RequestAddRange(IEnumerable<ISystem> systems)
         {
             if (systems == null) return;
-            foreach (var s in systems) if (s != null) _pendingAdd.Add(s);
+            foreach (var s in systems)
+                if (s != null)
+                    _pendingAdd.Add(s);
             _dirty = true;
         }
 
@@ -124,10 +127,29 @@ namespace ZenECS.Core.Internal.Systems
         }
 
         /// <inheritdoc/>
+        public IReadOnlyList<ISystem> GetAllSystems()
+        {
+            return _active;
+        }
+
+        /// <inheritdoc/>
         public bool SetEnabled<T>(bool enabled) where T : ISystem
         {
             var s = _active.OfType<T>().FirstOrDefault();
-            if (s is ISystemEnabledFlag f) { f.Enabled = enabled; return true; }
+            if (s is ISystemEnabledFlag f)
+            {
+                f.Enabled = enabled;
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <inheritdoc/>
+        public bool IsEnabled<T>() where T : ISystem
+        {
+            var s = _active.OfType<T>().FirstOrDefault();
+            if (s is ISystemEnabledFlag f) return f.Enabled;
             return false;
         }
 
@@ -153,9 +175,11 @@ namespace ZenECS.Core.Internal.Systems
                             life.Shutdown();
                             _initialized.Remove(s);
                         }
+
                         _active.RemoveAt(i);
                     }
                 }
+
                 _pendingRemove.Clear();
             }
 
@@ -163,7 +187,8 @@ namespace ZenECS.Core.Internal.Systems
             if (_pendingAdd.Count > 0)
             {
                 foreach (var s in _pendingAdd)
-                    if (!_active.Contains(s)) _active.Add(s);
+                    if (!_active.Contains(s))
+                        _active.Add(s);
                 _pendingAdd.Clear();
             }
 
@@ -176,6 +201,12 @@ namespace ZenECS.Core.Internal.Systems
                     var sys = (ISystem)s;
                     if (!_initialized.Contains(sys))
                     {
+                        // default enabled
+                        if (s is ISystemEnabledFlag f)
+                        {
+                            f.Enabled = true;
+                        }
+
                         s.Initialize(w);
                         _initialized.Add(sys);
                     }

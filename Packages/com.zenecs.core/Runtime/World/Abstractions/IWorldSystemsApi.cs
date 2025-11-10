@@ -25,26 +25,37 @@ namespace ZenECS.Core
     public interface IWorldSystemsApi
     {
         /// <summary>Queues a system instance for addition at the next frame boundary.</summary>
-        void RequestAdd(ISystem system);
+        void RequestSystemAdd(ISystem system);
 
         /// <summary>Queues multiple systems for addition at the next frame boundary.</summary>
-        void RequestAddRange(IEnumerable<ISystem> systems);
+        void RequestSystemAddRange(IEnumerable<ISystem> systems);
 
         /// <summary>Queues the first system of type <typeparamref name="T"/> for removal.</summary>
-        void RequestRemove<T>() where T : ISystem;
+        void RequestSystemRemove<T>() where T : ISystem;
 
         /// <summary>Queues the first system of the specified <paramref name="t"/> for removal.</summary>
-        void RequestRemove(Type t);
+        void RequestSystemRemove(Type t);
 
         /// <summary>
         /// Attempts to retrieve the first active system of type <typeparamref name="T"/>.
         /// </summary>
-        bool TryGet<T>(out T? system) where T : class, ISystem;
+        bool TryGetSystem<T>(out T? system) where T : class, ISystem;
+        
+        /// <summary>
+        /// Get all active systems.
+        /// </summary>
+        IReadOnlyList<ISystem> GetAllSystems();
 
         /// <summary>
         /// Enables or disables execution of the first active system of type <typeparamref name="T"/>.
         /// The system must implement <c>ISystemEnabledFlag</c>.
         /// </summary>
-        bool SetEnabled<T>(bool enabled) where T : ISystem;
+        bool SetSystemEnabled<T>(bool enabled) where T : ISystem;
+        
+        /// <summary>
+        /// Is enable system of type <typeparamref name="T"/>.
+        /// The system must implement <c>ISystemEnabledFlag</c>.
+        /// </summary>
+        bool IsSystemEnabled<T>() where T : ISystem;
     }
 }

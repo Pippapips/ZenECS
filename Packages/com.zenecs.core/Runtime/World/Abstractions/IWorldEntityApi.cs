@@ -24,6 +24,9 @@ namespace ZenECS.Core
         /// <summary>Returns <c>true</c> if the handle refers to a live entity.</summary>
         bool IsAlive(Entity e);
 
+        /// <summary>Returns <c>true</c> if the handle refers to a live entity.</summary>
+        bool IsAlive(int id, int gen);
+
         /// <summary>Create a new entity (optionally with a fixed id for restores/tests).</summary>
         Entity SpawnEntity(int? fixedId = null);
 
@@ -34,6 +37,6 @@ namespace ZenECS.Core
         void DespawnAllEntities(bool fireEvents = false);
 
         /// <summary>Get a snapshot list of all currently alive entities.</summary>
-        List<Entity> GetAllEntities();
+        IReadOnlyList<Entity> GetAllEntities();
     }
 }

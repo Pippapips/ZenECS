@@ -12,6 +12,8 @@
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 
+using System;
+
 namespace ZenECS.Core.Binding
 {
     /// <summary>
@@ -40,9 +42,22 @@ namespace ZenECS.Core.Binding
         bool Has<T>(IWorld w, Entity e) where T : class, IContext;
 
         /// <summary>
-        /// Returns <c>true</c> if the specific <paramref name="ctx"/> instance is registered for <paramref name="e"/>.
+        /// Returns <see langword="true"/> if the exact <paramref name="ctx"/> instance
+        /// is registered for <paramref name="e"/> within world <paramref name="w"/>.
+        /// Uses reference equality.
         /// </summary>
-        bool Has(IWorld w, Entity e, IContext ctx);
+        bool Has(IWorld w, Entity e, IContext? ctx);
+
+        /// <summary>
+        /// Returns <see langword="true"/> if an <see cref="IContext"/> instance assignable
+        /// to <paramref name="contextType"/> is registered for <paramref name="e"/> in
+        /// world <paramref name="w"/>.
+        /// </summary>
+        /// <remarks>
+        /// This uses type-compatibility (<c>contextType.IsInstanceOfType(instance)</c>),
+        /// so derived/implementing contexts will also match.
+        /// </remarks>
+        bool Has(IWorld w, Entity e, Type? contextType);
     }
 
     /// <summary>

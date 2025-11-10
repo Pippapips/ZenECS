@@ -80,9 +80,39 @@ namespace ZenECS.Core.Internal.Contexts
             => TryGet<T>(w, e, out _);
 
         /// <inheritdoc/>
-        public bool Has(IWorld w, Entity e, IContext ctx)
-            => TryGet(w, e, out _);
+        public bool Has(IWorld w, Entity e, IContext? ctx)
+        {
+            if (ctx == null) return false;
+            if (!Bag(w).TryGetValue(e, out var dict)) return false;
 
+            // Check for the exact same instance registered for this entity
+            foreach (var kv in dict)
+            {
+                if (ReferenceEquals(kv.Value.Ctx, ctx))
+                    return true;
+            }
+            return false;
+        }
+        
+        /// <inheritdoc/>
+        public bool Has(IWorld w, Entity e, Type? contextType)
+        {
+            if (contextType is null) return false;
+            if (!typeof(IContext).IsAssignableFrom(contextType))
+                throw new ArgumentException("contextType must implement IContext.", nameof(contextType));
+
+            if (!Bag(w).TryGetValue(e, out var dict)) return false;
+
+            // Type-compatible match (derived/implementing contexts also match)
+            foreach (var kv in dict)
+            {
+                var c = kv.Value.Ctx;
+                if (c != null && contextType.IsInstanceOfType(c))
+                    return true;
+            }
+            return false;
+        }
+        
         // ── Register / Remove ────────────────────────────────────────────
 
         /// <inheritdoc/>
