@@ -33,7 +33,8 @@ namespace ZenECS.Core
         IWorldMessagesApi,
         IWorldHookApi,
         IWorldCommandBufferApi,
-        IWorldWorkerApi
+        IWorldWorkerApi,
+        IWorldSystemsApi
     {
         /// <summary>Stable identity of this world (value semantics).</summary>
         WorldId Id { get; }
@@ -66,12 +67,5 @@ namespace ZenECS.Core
         /// Get the current generation value for an internal entity id (for handle validation).
         /// </summary>
         int GenerationOf(int id);
-
-        /// <summary>
-        /// Build and initialize systems for this world with the configured runner.
-        /// </summary>
-        /// <param name="systems">Optional explicit system set; runner may provide defaults.</param>
-        /// <param name="warn">Optional warning sink for runner diagnostics.</param>
-        void Initialize(IEnumerable<ISystem>? systems = null, Action<string>? warn = null);
     }
 }

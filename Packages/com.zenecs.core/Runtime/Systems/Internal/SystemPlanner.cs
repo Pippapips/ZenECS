@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using ZenECS.Core.Abstractions.Config;
 using ZenECS.Core.Systems;
 
 namespace ZenECS.Core.Internal.Systems
@@ -82,12 +83,11 @@ namespace ZenECS.Core.Internal.Systems
         /// Build a plan by grouping, validating, and sorting the given systems.
         /// </summary>
         /// <param name="systems">System instances to analyze; may be <c>null</c>.</param>
-        /// <param name="warn">Optional sink for non-fatal warnings (e.g., cross-group constraints).</param>
         /// <returns>A <see cref="Plan"/> or <c>null</c> if <paramref name="systems"/> is <c>null</c>.</returns>
         /// <exception cref="InvalidOperationException">
         /// Thrown when conflicting markers/attributes exist, or a cycle is detected inside a group.
         /// </exception>
-        public static Plan? Build(IEnumerable<ISystem>? systems, Action<string>? warn = null)
+        public static Plan? Build(IEnumerable<ISystem>? systems)
         {
             if (systems == null) return null;
 
@@ -113,9 +113,9 @@ namespace ZenECS.Core.Internal.Systems
             }
 
             // 2) Sort each group independently
-            List<ISystem> setup = TopoSortWithinGroup(buckets[SystemGroup.FrameSetup], warn);
-            List<ISystem> simu  = TopoSortWithinGroup(buckets[SystemGroup.Simulation], warn);
-            List<ISystem> pres  = TopoSortWithinGroup(buckets[SystemGroup.Presentation], warn);
+            List<ISystem> setup = TopoSortWithinGroup(buckets[SystemGroup.FrameSetup]);
+            List<ISystem> simu  = TopoSortWithinGroup(buckets[SystemGroup.Simulation]);
+            List<ISystem> pres  = TopoSortWithinGroup(buckets[SystemGroup.Presentation]);
 
             return new Plan(setup, simu, pres);
         }
@@ -190,8 +190,7 @@ namespace ZenECS.Core.Internal.Systems
         /// Tie-breaker uses the type's full name for deterministic ordering.
         /// </remarks>
         private static List<ISystem> TopoSortWithinGroup(
-            List<(Type type, ISystem inst, HashSet<Type> before, HashSet<Type> after)> list,
-            Action<string>? warn)
+            List<(Type type, ISystem inst, HashSet<Type> before, HashSet<Type> after)> list)
         {
             var nodes = list.ToDictionary(x => x.type, x => x.inst);
             var edges = new Dictionary<Type, HashSet<Type>>();
@@ -211,7 +210,7 @@ namespace ZenECS.Core.Internal.Systems
                 {
                     if (!nodes.ContainsKey(target))
                     {
-                        warn?.Invoke($"[OrderBefore] {type.Name} → {target.Name} ignored (not in same group)");
+                        EcsRuntimeOptions.Log.Warn($"[OrderBefore] {type.Name} → {target.Name} ignored (not in same group)");
                         continue;
                     }
                     if (edges[type].Add(target))
@@ -222,7 +221,7 @@ namespace ZenECS.Core.Internal.Systems
                 {
                     if (!nodes.ContainsKey(target))
                     {
-                        warn?.Invoke($"[OrderAfter] {type.Name} ← {target.Name} ignored (not in same group)");
+                        EcsRuntimeOptions.Log.Warn($"[OrderAfter] {type.Name} ← {target.Name} ignored (not in same group)");
                         continue;
                     }
                     if (!edges.TryGetValue(target, out HashSet<Type>? set))

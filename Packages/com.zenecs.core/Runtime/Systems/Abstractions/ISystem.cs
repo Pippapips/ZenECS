@@ -14,6 +14,11 @@
 
 namespace ZenECS.Core.Systems
 {
+    public interface ISystemEnabledFlag
+    {
+        bool Enabled { get; set; }
+    }
+    
     /// <summary>
     /// High-level groups used by the scheduler to order system execution.
     /// </summary>

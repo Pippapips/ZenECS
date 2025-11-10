@@ -6,7 +6,6 @@
 // Key concepts:
 //   • Three-phase ticking: BeginFrame (variable) / FixedStep (fixed) / LateFrame (presentation).
 //   • Deterministic order: runner executes in the order provided by the planner.
-//   • Lifecycle: explicit Initialize/Shutdown around the first/last tick.
 //   • World-scoped: a runner always acts on a single IWorld instance.
 // Copyright (c) 2025 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
@@ -20,50 +19,68 @@ using ZenECS.Core.Systems;
 namespace ZenECS.Core.Internal.Systems
 {
     /// <summary>
-    /// Runs ECS systems bound to a single <see cref="IWorld"/>. The runner is responsible
-    /// for deterministic ordering, lifecycle calls, and per-phase execution.
+    /// Runs ECS systems bound to a single <see cref="IWorld"/>. The runner coordinates
+    /// deterministic ordering, lifecycle, and per-phase execution.
     /// </summary>
-    internal interface ISystemRunner
+    internal interface ISystemRunner : IDisposable
     {
         /// <summary>
-        /// Analyze and cache the system set and execution plan.
+        /// Queues a system instance for addition. The system is materialized at the next
+        /// frame boundary (before <see cref="BeginFrame"/>), not immediately.
         /// </summary>
-        /// <param name="systems">Optional explicit system collection; may be <c>null</c>.</param>
-        /// <param name="warn">Optional warning sink for non-fatal planning notes.</param>
-        void Build(IEnumerable<ISystem>? systems, Action<string>? warn);
+        void RequestAdd(ISystem system);
 
         /// <summary>
-        /// Initialize the cached systems (called once before the first tick).
+        /// Queues a batch of system instances for addition at the next frame boundary.
         /// </summary>
-        /// <param name="w">Target world.</param>
-        void Initialize(IWorld w);
+        void RequestAddRange(IEnumerable<ISystem> systems);
 
         /// <summary>
-        /// Shutdown the systems in reverse order (called once when the world is disposed or runner stops).
+        /// Queues removal of the first system matching <typeparamref name="T"/>.
+        /// The removal is applied at the next frame boundary.
         /// </summary>
-        /// <param name="w">Target world.</param>
-        void Shutdown(IWorld w);
+        void RequestRemove<T>() where T : ISystem;
 
         /// <summary>
-        /// Execute variable-timestep systems for the current frame (FrameSetup → Simulation).
+        /// Queues removal of the first system matching the provided <paramref name="t"/>.
+        /// The removal is applied at the next frame boundary.
+        /// </summary>
+        void RequestRemove(Type t);
+
+        /// <summary>
+        /// Attempts to retrieve the first active system of type <typeparamref name="T"/>.
+        /// </summary>
+        bool TryGet<T>(out T? system) where T : class, ISystem;
+
+        /// <summary>
+        /// Enables or disables execution of the first active system of type <typeparamref name="T"/>.
+        /// Systems must implement <c>ISystemEnabledFlag</c> to support this toggle.
+        /// </summary>
+        bool SetEnabled<T>(bool enabled) where T : ISystem;
+
+        /// <summary>
+        /// Executes variable-timestep groups for the current frame (FrameSetup → Simulation).
+        /// Pending mutations are applied before the first group runs.
         /// </summary>
         /// <param name="w">Target world.</param>
-        /// <param name="dt">Delta time for this frame in seconds.</param>
+        /// <param name="dt">Delta time (seconds).</param>
         void BeginFrame(IWorld w, float dt);
 
         /// <summary>
-        /// Execute fixed-timestep systems (FrameSetup → Simulation).
+        /// Executes fixed-timestep groups (FrameSetup → Simulation). Structural changes are
+        /// still deferred to the main-frame boundary.
         /// </summary>
         /// <param name="w">Target world.</param>
-        /// <param name="fixedDelta">Fixed step duration in seconds.</param>
+        /// <param name="fixedDelta">Fixed step duration (seconds).</param>
         void FixedStep(IWorld w, float fixedDelta);
 
         /// <summary>
-        /// Execute presentation (read-only) systems (Late stage).
+        /// Executes presentation (read-only) systems after applying router deltas. Write
+        /// operations to the world should be temporarily denied in this phase.
         /// </summary>
         /// <param name="w">Target world.</param>
-        /// <param name="dt">Delta time of the originating frame in seconds.</param>
-        /// <param name="alpha">Interpolation factor in [0,1] for presentation.</param>
+        /// <param name="dt">Originating frame's delta (seconds).</param>
+        /// <param name="alpha">Interpolation factor [0..1] for presentation.</param>
         void LateFrame(IWorld w, float dt, float alpha = 1.0f);
     }
 }

@@ -117,25 +117,12 @@ namespace ZenECS.Core.Internal
             if (_disposed) return;
             _disposed = true;
 
-            _runner.Shutdown(this);
-
             _kernel.OnBeginFrame -= BeginFrame;
             _kernel.OnFixedStep  -= FixedStep;
             _kernel.OnLateFrame  -= LateFrame;
 
             Reset(false);
             _scope.Dispose();
-        }
-
-        /// <summary>
-        /// Build and initialize systems for this world using the configured runner.
-        /// </summary>
-        /// <param name="systems">Optional explicit system list; runner may provide defaults.</param>
-        /// <param name="warn">Optional warning logger for runner diagnostics.</param>
-        public void Initialize(IEnumerable<ISystem>? systems = null, Action<string>? warn = null)
-        {
-            _runner.Build(systems, warn);
-            _runner.Initialize(this);
         }
 
         /// <summary>Pause stepping for this world.</summary>

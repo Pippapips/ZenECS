@@ -30,7 +30,6 @@ namespace ZenECS.Core.Systems
         /// Called once when the system runner shuts down systems (e.g., world dispose).
         /// Use this to release resources or unsubscribe from external events.
         /// </summary>
-        /// <param name="w">The ECS world instance.</param>
-        void Shutdown(IWorld w);
+        void Shutdown();
     }
 }
