@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using ZenECS.Core.Infrastructure;
 
-namespace ZenECS.EditorTools
+namespace ZenECS.EditorWindows
 {
     public sealed class EcsTracersWindow : EditorWindow
     {

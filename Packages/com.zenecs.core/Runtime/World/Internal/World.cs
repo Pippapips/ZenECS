@@ -53,7 +53,9 @@ namespace ZenECS.Core.Internal
         public IReadOnlyCollection<string> Tags { get; }
         /// <inheritdoc/>
         public bool IsPaused => _pause;
-
+        /// <inheritdoc/>
+        public bool IsDisposing => _disposed;
+        
         private bool _pause;
         private bool _disposed;
 
@@ -122,6 +124,7 @@ namespace ZenECS.Core.Internal
             _kernel.OnLateFrame  -= LateFrame;
 
             Reset(false);
+            Resume();
             _scope.Dispose();
         }
 
@@ -130,22 +133,25 @@ namespace ZenECS.Core.Internal
 
         /// <summary>Resume stepping for this world.</summary>
         public void Resume() => _pause = false;
-
+        
         private void BeginFrame(IWorld w, float dt)
         {
             if (w != this) return;
+            if (IsPaused) return;
             _runner.BeginFrame(w, dt);
         }
 
         private void FixedStep(IWorld w, float fixedDelta)
         {
             if (w != this) return;
+            if (IsPaused) return;
             _runner.FixedStep(w, fixedDelta);
         }
 
         private void LateFrame(IWorld w, float dt, float alpha = 1)
         {
             if (w != this) return;
+            if (IsPaused) return;
             _runner.LateFrame(w, dt, alpha);
         }
     }

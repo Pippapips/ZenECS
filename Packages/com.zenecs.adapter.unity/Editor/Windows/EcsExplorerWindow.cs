@@ -10,9 +10,10 @@ using ZenECS.Adapter.Unity;
 using ZenECS.Adapter.Unity.Attributes;
 using ZenECS.Core;
 using ZenECS.EditorCommon;
+using ZenECS.EditorTools;
 using Object = UnityEngine.Object;
 
-namespace ZenECS.EditorTools
+namespace ZenECS.EditorWindows
 {
     public sealed class EcsExplorerWindow : EditorWindow
     {
@@ -379,12 +380,6 @@ namespace ZenECS.EditorTools
                             sz.y + style.margin.vertical + 6f));
                     }
 
-                    // var syncTargetRegistry = EcsRuntimeDirectory.SyncTargetRegistry;
-                    // var syncTarget = syncTargetRegistry?.Resolve(e);
-                    // var hasView = syncTarget is IUnityViewBinder;
-
-                    var hasView = true;
-
                     const float wAdd = 20;
                     const float wSel = 20f;
                     
@@ -436,14 +431,13 @@ namespace ZenECS.EditorTools
                         }
                     }
 
+                    var hasView = EcsExplorerActions.TryGetEntityMainView(world, e, out var go);
                     if (hasView)
                     {
                         var rSel = new Rect(right - (wSel), yBtn, wSel, hBtn);
                         if (GUI.Button(rSel, useSel, style))
                         {
-                            // var t = ((IUnityViewBinder)syncTarget).Go.transform;
-                            // UnityEditor.Selection.activeTransform = t;
-                            // UnityEditor.EditorGUIUtility.PingObject(t);
+                            EcsExplorerActions.TrySelectEntityMainView(go);
                         }
                     }
                 }, true, false);
@@ -628,13 +622,31 @@ namespace ZenECS.EditorTools
             return any && true;
         }
 
-        public void SelectEntity(int entityId)
+        // external call (ex: EcsExplorerBridge)
+        public void SelectEntity(IWorld? world, int entityId, int entityGen)
         {
-            // var world = EcsRuntimeDirectory.World;
-            // _findEntityId = entityId;
-            // _foundValid = TryResolveEntityById(world, entityId, out _foundEntity);
-            // _findMode = true;
-            Repaint();
+            if (world != null)
+            {
+                _foundValid = world?.IsAlive(entityId, entityGen) ?? false;
+                if (_foundValid)
+                {
+                    _entityIdText = entityId.ToString();
+                    _entityGenText = entityGen.ToString();
+                    _findEntityId = entityId;
+                    _findEntityGen = entityGen;
+                    _foundEntity = _foundValid
+                        ? (Entity)Activator.CreateInstance(typeof(Entity), entityId, entityGen)
+                        : default;
+                    _findMode = true;
+                    Repaint();
+                    return;
+                }
+            }
+            
+            _findEntityId = null;
+            _findEntityGen = null;
+            _foundValid = false;
+            _findMode = true; // still enter to show guidance
         }
     }
 }

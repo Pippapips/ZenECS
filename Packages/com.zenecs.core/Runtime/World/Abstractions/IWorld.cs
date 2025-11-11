@@ -47,6 +47,9 @@ namespace ZenECS.Core
 
         /// <summary>Whether this world is paused (independent of kernel pause).</summary>
         bool IsPaused { get; }
+        
+        /// <summary>Whether this world is disposing</summary>
+        bool IsDisposing { get; }
 
         /// <summary>Pause stepping for this world only.</summary>
         void Pause();

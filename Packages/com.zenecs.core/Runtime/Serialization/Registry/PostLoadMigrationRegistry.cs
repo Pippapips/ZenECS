@@ -16,12 +16,12 @@ using System.Collections.Generic;
 using System.Linq;
 using ZenECS.Core.Serialization;
 
-namespace ZenECS.Core.Internal.Serialization
+namespace ZenECS.Core.Serialization
 {
     /// <summary>
     /// Central registry responsible for holding and executing post-load migrations.
     /// </summary>
-    internal static class PostLoadMigrationRegistry
+    public static class PostLoadMigrationRegistry
     {
         private static readonly List<IPostLoadMigration> _migs = new();
         private static readonly HashSet<Type> _migTypes = new();

@@ -8,23 +8,11 @@ namespace ZenECS.Adapter.Unity
 {
     class Logger : IEcsLogger
     {
-        public void Info(string message)
-        {
-            Debug.Log(message);
-        }
-        public void Warn(string message)
-        {
-            Debug.LogWarning(message);
-        }
-        public void Error(string message)
-        {
-            Debug.LogError(message);
-        }
+        public void Info(string message)  => Debug.Log(message);
+        public void Warn(string message)  => Debug.LogWarning(message);
+        public void Error(string message) => Debug.LogError(message);
     }
-    
-    /// <summary>
-    /// Unity ↔ ZenECS 브릿지. 씬에 한 개 두고 커널을 부팅/드라이브/정리한다.
-    /// </summary>
+
     [DefaultExecutionOrder(-10000)]
     public sealed class EcsDriver : MonoBehaviour
     {
@@ -32,35 +20,43 @@ namespace ZenECS.Adapter.Unity
 
         private void Awake()
         {
-            Kernel = new Kernel(new KernelOptions()
+            // 중복 드라이버 방지(최초만 유지)
+#if UNITY_2022_2_OR_NEWER
+            var first = FindFirstObjectByType<EcsDriver>(FindObjectsInactive.Include);
+#else
+            var first = FindObjectOfType<EcsDriver>(true);
+#endif
+            if (first != null && first != this)
             {
-                AutoSelectNewWorld = true
-            }, new Logger());
-        }
+                Debug.LogWarning("[EcsDriver] Duplicate found. Destroying the newer one.");
+                DestroyImmediate(gameObject);
+                return;
+            }
 
-        private void Start()
-        {
+            // 생성
+            Kernel = new Kernel(new KernelOptions() { AutoSelectNewWorld = true }, new Logger());
+
+            // 전역 등록 ★
+            KernelLocator.Attach(Kernel);
+
+            // 싱글턴 수명 유지
+            DontDestroyOnLoad(gameObject);
         }
 
         private void OnDestroy()
         {
-            Kernel?.Dispose();
-            Kernel = null;
+            if (Kernel != null)
+            {
+                // 전역 제거 ★
+                KernelLocator.Detach(Kernel);
+
+                Kernel.Dispose();
+                Kernel = null;
+            }
         }
 
-        private void Update()
-        {
-            Kernel?.BeginFrame(Time.deltaTime);
-        }
-
-        private void FixedUpdate()
-        {
-            Kernel?.FixedStep(Time.fixedDeltaTime);
-        }
-
-        private void LateUpdate()
-        {
-            Kernel?.LateFrame();
-        }
+        private void Update()      => Kernel?.BeginFrame(Time.deltaTime);
+        private void FixedUpdate() => Kernel?.FixedStep(Time.fixedDeltaTime);
+        private void LateUpdate()  => Kernel?.LateFrame();
     }
 }
