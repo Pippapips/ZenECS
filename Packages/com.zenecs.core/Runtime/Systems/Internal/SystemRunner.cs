@@ -126,6 +126,12 @@ namespace ZenECS.Core.Internal.Systems
             return system != null;
         }
 
+        public bool TryGet(Type t, out ISystem? system)
+        {
+            system = _active.FirstOrDefault(s => s.GetType() == t);
+            return system != null;
+        }
+
         /// <inheritdoc/>
         public IReadOnlyList<ISystem> GetAllSystems()
         {
@@ -149,6 +155,14 @@ namespace ZenECS.Core.Internal.Systems
         public bool IsEnabled<T>() where T : ISystem
         {
             var s = _active.OfType<T>().FirstOrDefault();
+            if (s is ISystemEnabledFlag f) return f.Enabled;
+            return false;
+        }
+
+        /// <inheritdoc/>
+        public bool IsEnabled(Type t)
+        {
+            var s = _active.FirstOrDefault(s => s.GetType() == t);
             if (s is ISystemEnabledFlag f) return f.Enabled;
             return false;
         }
@@ -201,12 +215,6 @@ namespace ZenECS.Core.Internal.Systems
                     var sys = (ISystem)s;
                     if (!_initialized.Contains(sys))
                     {
-                        // default enabled
-                        if (s is ISystemEnabledFlag f)
-                        {
-                            f.Enabled = true;
-                        }
-
                         s.Initialize(w);
                         _initialized.Add(sys);
                     }

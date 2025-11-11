@@ -51,6 +51,11 @@ namespace ZenECS.Core.Internal.Systems
         /// Attempts to retrieve the first active system of type <typeparamref name="T"/>.
         /// </summary>
         bool TryGet<T>(out T? system) where T : class, ISystem;
+
+        /// <summary>
+        /// Attempts to retrieve the first active system of type/>.
+        /// </summary>
+        bool TryGet(Type t, out ISystem? system);
         
         /// <summary>
         /// Get all active systems.
@@ -68,6 +73,12 @@ namespace ZenECS.Core.Internal.Systems
         /// Systems must implement <c>ISystemEnabledFlag</c> to support this toggle.
         /// </summary>
         bool IsEnabled<T>() where T : ISystem;
+
+        /// <summary>
+        /// Is enable system of type/>.
+        /// Systems must implement <c>ISystemEnabledFlag</c> to support this toggle.
+        /// </summary>
+        bool IsEnabled(Type t);
 
         /// <summary>
         /// Executes variable-timestep groups for the current frame (FrameSetup → Simulation).

@@ -8,58 +8,59 @@ using ZenECS.Core;
 namespace ZenECS.Adapter.Unity
 {
     /// <summary>
-    /// Global-access gateway for <see cref="IKernel"/> and multi-world utilities.
+    /// Global-access gateway for IKernel / CurrentWorld.
     /// - Zenject provider가 있으면 우선 사용
-    /// - 씬에 EcsDriver가 있으면 그것 사용
-    /// - 없으면 자동으로 숨김 EcsDriver 생성
+    /// - 씬의 EcsDriver가 있으면 그것 사용
+    /// - 없으면 자동 생성(DontDestroyOnLoad)
     /// </summary>
     public static class KernelLocator
     {
         private static IKernel? _cached;
         private static Func<IKernel?>? _provider;
 
-        /// <summary>Optional external provider (e.g., Zenject Container.Resolve).</summary>
         public static void SetProvider(Func<IKernel?> provider) => _provider = provider;
 
-        /// <summary>Returns a valid running kernel, auto-creating a hidden EcsDriver if missing.</summary>
         public static IKernel Current
         {
             get
-            {
-                if (_provider != null)
-                {
-                    var k = _provider();
-                    if (k != null) { _cached = k; return k; }
-                }
-
-                if (_cached != null) return _cached;
+            { if (_provider != null)
+              {
+                  var k = _provider();
+                  if (k != null)
+                  {
+                      _cached = k;
+                      return k;
+                  }
+              }
+              if (_cached != null) return _cached;
 
 #if UNITY_2022_2_OR_NEWER
-                var drv = UnityEngine.Object.FindFirstObjectByType<EcsDriver>(FindObjectsInactive.Include);
+              var drv = UnityEngine.Object.FindFirstObjectByType<EcsDriver>(FindObjectsInactive.Include);
 #else
                 var drv = UnityEngine.Object.FindObjectOfType<EcsDriver>(true);
 #endif
-                if (drv != null && drv.Kernel != null)
-                    return _cached = drv.Kernel;
+              if (drv != null && drv.Kernel != null)
+                  return _cached = drv.Kernel;
 
-                var go = new GameObject("[ZenECS] EcsDriver (auto)");
-                UnityEngine.Object.DontDestroyOnLoad(go);
-                drv = go.AddComponent<EcsDriver>();
-                return _cached ??= drv.Kernel!;
-            }
+              var go = new GameObject("[ZenECS] EcsDriver (auto)");
+              UnityEngine.Object.DontDestroyOnLoad(go);
+              drv = go.AddComponent<EcsDriver>();
+              return _cached ??= drv.Kernel!; }
         }
 
-        /// <summary>Returns the kernel’s current world (throws if null).</summary>
         public static IWorld CurrentWorld =>
             Current.CurrentWorld ?? throw new InvalidOperationException("Kernel.CurrentWorld is null");
 
         internal static void Attach(IKernel k) => _cached = k;
-        internal static void Detach(IKernel k) { if (ReferenceEquals(_cached, k)) _cached = null; }
+        internal static void Detach(IKernel k)
+        {
+            if (ReferenceEquals(_cached, k)) _cached = null;
+        }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void ResetOnDomainReload() => _cached = null;
 
-        // ──────────────────────────────────────────────
+// ──────────────────────────────────────────────
         // Multi-world helpers (strongly typed)
         // ──────────────────────────────────────────────
 
@@ -86,21 +87,29 @@ namespace ZenECS.Adapter.Unity
         public static bool SetCurrentWorld(IWorld w)
         {
             if (w == null) return false;
-            try { Current.SetCurrentWorld(w); return true; }
-            catch (Exception ex) { Debug.LogWarning($"[KernelLocator] Failed to set current world: {ex.Message}"); return false; }
+            try
+            {
+                Current.SetCurrentWorld(w);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[KernelLocator] Failed to set current world: {ex.Message}");
+                return false;
+            }
         }
 
         /// <summary>
         /// Ensure a world exists by name; if missing, create it and optionally set as current.
         /// </summary>
-        public static IWorld EnsureWorld(string name, bool setCurrent = true)
+        public static IWorld EnsureWorld(string name, bool setAsCurrent = true)
         {
             if (TryGetWorldByName(name, out var w))
             {
-                if (setCurrent) SetCurrentWorld(w);
+                if (setAsCurrent) SetCurrentWorld(w);
                 return w;
             }
-            return Current.CreateWorld(cfg: null, name: name, tags: null, presetId: null, setAsCurrent: setCurrent);
+            return Current.CreateWorld(cfg: null, name: name, tags: null, presetId: null, setAsCurrent: setAsCurrent);
         }
 
         // ──────────────────────────────────────────────
@@ -127,9 +136,17 @@ namespace ZenECS.Adapter.Unity
             foreach (var t in tags)
             {
                 var list = Current.FindByTag(t) ?? Enumerable.Empty<IWorld>();
-                var map  = list.Where(w => w != null).ToDictionary(w => w.Id, w => w);
-                if (acc == null) { acc = new HashSet<WorldId>(map.Keys); lastMap = map; }
-                else { acc.IntersectWith(map.Keys); lastMap = map; }
+                var map = list.Where(w => w != null).ToDictionary(w => w.Id, w => w);
+                if (acc == null)
+                {
+                    acc = new HashSet<WorldId>(map.Keys);
+                    lastMap = map;
+                }
+                else
+                {
+                    acc.IntersectWith(map.Keys);
+                    lastMap = map;
+                }
                 if (acc.Count == 0) break;
             }
 
@@ -167,7 +184,9 @@ namespace ZenECS.Adapter.Unity
         public static IReadOnlyDictionary<WorldId, IWorld> AllWorldsById()
         {
             var dict = new Dictionary<WorldId, IWorld>();
-            foreach (var w in AllWorlds) if (w != null) dict[w.Id] = w;
+            foreach (var w in AllWorlds)
+                if (w != null)
+                    dict[w.Id] = w;
             return dict;
         }
 
@@ -177,7 +196,7 @@ namespace ZenECS.Adapter.Unity
         /// </summary>
         public static IReadOnlyDictionary<string, List<IWorld>> AllWorldsByName(bool ignoreCase = true)
         {
-            var cmp  = ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
+            var cmp = ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
             var dict = new Dictionary<string, List<IWorld>>(cmp);
             foreach (var w in AllWorlds)
             {

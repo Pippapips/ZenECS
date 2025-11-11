@@ -36,7 +36,10 @@ namespace ZenECS.Core.Internal
 
         /// <inheritdoc/>
         public bool TryGetSystem<T>(out T? system) where T : class, ISystem => _runner.TryGet(out system);
-        
+
+        /// <inheritdoc/>
+        public bool TryGetSystem(Type t, out ISystem? system) => _runner.TryGet(t, out system);
+
         /// <inheritdoc/>
         public IReadOnlyList<ISystem> GetAllSystems() => _runner.GetAllSystems();
 
@@ -45,5 +48,8 @@ namespace ZenECS.Core.Internal
 
         /// <inheritdoc/>
         public bool IsEnabledSystem<T>() where T : ISystem => _runner.IsEnabled<T>();
+        
+        /// <inheritdoc/>
+        public bool IsEnabledSystem(Type t) => _runner.IsEnabled(t);
     }
 }

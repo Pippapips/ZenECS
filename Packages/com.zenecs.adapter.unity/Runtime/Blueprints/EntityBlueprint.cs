@@ -30,7 +30,6 @@ namespace ZenECS.Adapter.Unity.Blueprints
                 if (ctx == null) continue;
                 var inst = clonePerEntity ? (IContext)ShallowCopy(ctx, ctx.GetType()) : ctx;
 
-                // ✅ 제네릭 대신 비제네릭으로 “실제 런타임 타입” 등록
                 world.RegisterContext(e, inst);
             }
 
@@ -39,7 +38,6 @@ namespace ZenECS.Adapter.Unity.Blueprints
                 if (b == null) continue;
                 var inst = clonePerEntity ? (IBinder)ShallowCopy(b, b.GetType()) : b;
 
-                // Attach 시 IRequireContext<T> 검증이 이제 정상 통과
                 world.AttachBinder(e, inst);
             }
 
