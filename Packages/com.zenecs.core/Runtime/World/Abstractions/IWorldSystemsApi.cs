@@ -25,16 +25,16 @@ namespace ZenECS.Core
     public interface IWorldSystemsApi
     {
         /// <summary>Queues a system instance for addition at the next frame boundary.</summary>
-        void RequestSystemAdd(ISystem system);
+        void AddSystem(ISystem system);
 
         /// <summary>Queues multiple systems for addition at the next frame boundary.</summary>
-        void RequestSystemAddRange(IEnumerable<ISystem> systems);
+        void AddSystems(IEnumerable<ISystem> systems);
 
         /// <summary>Queues the first system of type <typeparamref name="T"/> for removal.</summary>
-        void RequestSystemRemove<T>() where T : ISystem;
+        void RemoveSystem<T>() where T : ISystem;
 
         /// <summary>Queues the first system of the specified <paramref name="t"/> for removal.</summary>
-        void RequestSystemRemove(Type t);
+        void RemoveSystem(Type t);
 
         /// <summary>
         /// Attempts to retrieve the first active system of type <typeparamref name="T"/>.
@@ -50,12 +50,12 @@ namespace ZenECS.Core
         /// Enables or disables execution of the first active system of type <typeparamref name="T"/>.
         /// The system must implement <c>ISystemEnabledFlag</c>.
         /// </summary>
-        bool SetSystemEnabled<T>(bool enabled) where T : ISystem;
+        bool SetEnabledSystem<T>(bool enabled) where T : ISystem;
         
         /// <summary>
         /// Is enable system of type <typeparamref name="T"/>.
         /// The system must implement <c>ISystemEnabledFlag</c>.
         /// </summary>
-        bool IsSystemEnabled<T>() where T : ISystem;
+        bool IsEnabledSystem<T>() where T : ISystem;
     }
 }

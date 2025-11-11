@@ -124,11 +124,10 @@ namespace ZenEcsCoreSamples.CommandBuffer
             var world = kernel.CreateWorld();
             kernel.SetCurrentWorld(world);
             
-            world.Initialize(new ISystem[]
-            {
+            world.AddSystems([
                 new CommandBufferDemoSystem(),
                 new PrintStatusSystem()
-            });
+            ]);
 
             // Main loop (same timing pattern as Basic.cs)
             const float fixedDelta = 1f / 60f; // 60Hz simulation

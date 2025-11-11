@@ -12,7 +12,7 @@ namespace ZenECS.Adapter.Unity.DI
         readonly DiContainer _c; public ViewLinkFactory(DiContainer c){_c=c;}
         public EntityLink Create(SpawnArgs a)
         {
-            var link = _c.InstantiatePrefabForComponent<EntityLink>(a.Prefab, a.Parent, false);
+            var link = _c.InstantiatePrefabForComponent<EntityLink>(a.Prefab, a.Parent, null);
             link.Attach(a.World, a.Entity, a.Key.Kind==ViewKind.Main?ViewKey.Main():ViewKey.Sub(a.Key.Index));
             return link;
         }

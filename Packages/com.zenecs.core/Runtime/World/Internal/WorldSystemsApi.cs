@@ -23,16 +23,16 @@ namespace ZenECS.Core.Internal
     internal sealed partial class World : IWorldSystemsApi
     {
         /// <inheritdoc/>
-        public void RequestSystemAdd(ISystem system) => _runner.RequestAdd(system);
+        public void AddSystem(ISystem system) => _runner.RequestAdd(system);
 
         /// <inheritdoc/>
-        public void RequestSystemAddRange(IEnumerable<ISystem> systems) => _runner.RequestAddRange(systems);
+        public void AddSystems(IEnumerable<ISystem> systems) => _runner.RequestAddRange(systems);
 
         /// <inheritdoc/>
-        public void RequestSystemRemove<T>() where T : ISystem => _runner.RequestRemove<T>();
+        public void RemoveSystem<T>() where T : ISystem => _runner.RequestRemove<T>();
 
         /// <inheritdoc/>
-        public void RequestSystemRemove(Type t) => _runner.RequestRemove(t);
+        public void RemoveSystem(Type t) => _runner.RequestRemove(t);
 
         /// <inheritdoc/>
         public bool TryGetSystem<T>(out T? system) where T : class, ISystem => _runner.TryGet(out system);
@@ -41,9 +41,9 @@ namespace ZenECS.Core.Internal
         public IReadOnlyList<ISystem> GetAllSystems() => _runner.GetAllSystems();
 
         /// <inheritdoc/>
-        public bool SetSystemEnabled<T>(bool enabled) where T : ISystem => _runner.SetEnabled<T>(enabled);
+        public bool SetEnabledSystem<T>(bool enabled) where T : ISystem => _runner.SetEnabled<T>(enabled);
 
         /// <inheritdoc/>
-        public bool IsSystemEnabled<T>() where T : ISystem => _runner.IsEnabled<T>();
+        public bool IsEnabledSystem<T>() where T : ISystem => _runner.IsEnabled<T>();
     }
 }

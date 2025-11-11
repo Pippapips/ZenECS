@@ -100,11 +100,10 @@ namespace ZenEcsCoreSamples.WorldReset
             var world = kernel.CreateWorld();
             kernel.SetCurrentWorld(world);
             
-            world.Initialize(new ISystem[]
-            {
+            world.AddSystems([
                 new WorldResetDemoSystem(),
                 new PrintSummarySystem()
-            });
+            ]);
 
             const float fixedDelta = 1f / 60f;   // 60Hz simulation
             const int   maxSubSteps = 4;

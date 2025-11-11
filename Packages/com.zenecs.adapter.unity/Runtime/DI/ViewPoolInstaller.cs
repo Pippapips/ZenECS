@@ -5,15 +5,18 @@ namespace ZenECS.Adapter.Unity.DI
 {
 #if ZENECS_ZENJECT
     using Zenject;
+
     public sealed class ViewPoolInstaller : MonoInstaller
     {
-        [SerializeField] private EntityLink _prefab; [SerializeField] private int _initialSize = 16;
+        [SerializeField] private EntityLink _prefab;
+        [SerializeField] private int _initialSize = 16;
+
         public override void InstallBindings()
         {
             Container.BindMemoryPool<EntityLink, ViewLinkPool>()
-                     .WithInitialSize(_initialSize)
-                     .FromComponentInNewPrefab(_prefab.gameObject)
-                     .UnderTransformGroup("ViewPool");
+                .WithInitialSize(_initialSize)
+                .FromComponentInNewPrefab(_prefab.gameObject)
+                .UnderTransformGroup("ViewPool");
         }
     }
 #else

@@ -95,11 +95,10 @@ namespace ZenEcsCoreSamples.Basic
             var world = kernel.CreateWorld();
             kernel.SetCurrentWorld(world);
 
-            world.Initialize(new ISystem[]
-            {
+            world.AddSystems([
                 new MoveSystem(),
-                new PrintPositionsSystem(),
-            });
+                new PrintPositionsSystem()
+            ]);
 
             // Create sample entities with Position and Velocity
             var e1 = world.SpawnEntity();

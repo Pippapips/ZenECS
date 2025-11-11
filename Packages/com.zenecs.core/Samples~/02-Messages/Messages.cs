@@ -76,7 +76,7 @@ namespace ZenEcsCoreSamples.Messages
             });
         }
         
-        public void Shutdown(IWorld w)
+        public void Shutdown()
         {
             _sub?.Dispose();
         }
@@ -115,11 +115,10 @@ namespace ZenEcsCoreSamples.Messages
             var world = kernel.CreateWorld();
             kernel.SetCurrentWorld(world);
 
-            world.Initialize(new ISystem[]
-            {
+            world.AddSystems([
                 new DamageSystem(),
                 new PrintHealthSystem()
-            });
+            ]);
             
             // Seed entities with Health data
             var e1 = world.SpawnEntity();

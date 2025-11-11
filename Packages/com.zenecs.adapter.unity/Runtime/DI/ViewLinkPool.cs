@@ -7,12 +7,17 @@ namespace ZenECS.Adapter.Unity.DI
     using Zenject;
     public sealed class ViewLinkPool : MonoMemoryPool<SpawnArgs, EntityLink>
     {
-        protected override void OnSpawned(SpawnArgs a, EntityLink link)
+        protected override void Reinitialize(SpawnArgs a, EntityLink link)
         {
-            base.OnSpawned(a, link);
             if (a.Parent) link.transform.SetParent(a.Parent, false);
             link.Attach(a.World, a.Entity, a.Key.Kind==ViewKind.Main?ViewKey.Main():ViewKey.Sub(a.Key.Index));
         }
+
+        protected override void OnSpawned(EntityLink link)
+        {
+            base.OnSpawned(link);
+        }
+
         protected override void OnDespawned(EntityLink link)
         {
             if (link) link.Detach(); if (link) link.gameObject.SetActive(false);

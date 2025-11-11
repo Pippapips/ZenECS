@@ -179,11 +179,9 @@ namespace ZenECS.Core.Internal.Systems
         }
 
         /// <summary>
-        /// Topologically sort one group (Kahn's algorithm). Cross-group edges are ignored
-        /// but can be reported via <paramref name="warn"/> as non-fatal notes.
+        /// Topologically sort one group (Kahn's algorithm). Cross-group edges are ignored.
         /// </summary>
         /// <param name="list">System nodes with within-group Before/After constraints.</param>
-        /// <param name="warn">Optional sink for ignored cross-group references.</param>
         /// <returns>Deterministically ordered systems for that group.</returns>
         /// <exception cref="InvalidOperationException">Thrown if a cycle is detected.</exception>
         /// <remarks>

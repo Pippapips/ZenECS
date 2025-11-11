@@ -48,8 +48,8 @@ namespace ZenECS.Core
         /// Delegates to <see cref="RemoveComponent{T}(Entity)"/>.
         /// </summary>
         bool RemoveComponentBoxed(Entity e, Type? componentType);
-        
-        /// <summary>Read by <c>ref</c> (alias of <see cref="RefComponent{T}(Entity)"/>).</summary>
+
+        /// <summary>Read by <c>ref</c> (alias of <see><cref>RefComponent{T}(Entity)</cref></see>).</summary>
         ref T ReadComponent<T>(Entity e) where T : struct;
         
         /// <summary>Try read by value; returns <c>false</c> if the component is absent.</summary>

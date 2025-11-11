@@ -118,10 +118,9 @@ namespace ZenEcsCoreSamples.Snapshot
 
             IKernel kernel = new Kernel();
             var world = kernel.CreateWorld(new WorldConfig(initialEntityCapacity: 8));
-            world.Initialize(new ISystem[]
-            {
+            world.AddSystems([
                 new PrintSummarySystem()
-            });
+            ]);
 
             // Register StableIds & formatters at runtime
             ComponentRegistry.Register("com.zenecs.samples.position.v1", typeof(PositionV1));
