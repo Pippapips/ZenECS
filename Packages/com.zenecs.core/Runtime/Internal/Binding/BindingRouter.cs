@@ -5,8 +5,7 @@
 //          component deltas, and call Apply() once per frame.
 // Key concepts:
 //   • Per-entity lists: ordered by Priority, then stable attach-sequence.
-//   • Strict vs relaxed attach: validate IRequireContext<T> at bind time.
-//   • Delta fan-out: type-directed dispatch to IBinds<T> listeners.
+//   • Delta fan-out: type-directed dispatch to IBind<T> listeners.
 //   • Frame barrier: ApplyAll() is called once before Presentation systems.
 // Copyright (c) 2025 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
@@ -59,7 +58,6 @@ namespace ZenECS.Core.Internal.Binding
         public void Attach(IWorld w, Entity e, IBinder binder, AttachOptions options = AttachOptions.Strict)
         {
             if (binder == null) throw new ArgumentNullException(nameof(binder));
-            ValidateRequiredContexts(binder, w, e, options);
             binder.Bind(w, e, _contextRegistry);
             if (!_byEntity.TryGetValue(e, out var list))
                 _byEntity[e] = list = new List<IBinder>(_initialEntityCapacity);
@@ -126,16 +124,20 @@ namespace ZenECS.Core.Internal.Binding
         /// Invoke <see cref="IBinder.Apply"/> for all binders of all tracked entities.
         /// Call this once per frame before presentation systems.
         /// </summary>
-        public void ApplyAll()
+        public void ApplyAll(IWorld w)
         {
-            foreach (var list in _byEntity.Values)
-                for (int i = 0; i < list.Count; i++)
-                    list[i].Apply();
+            foreach (var kv in _byEntity)
+            {
+                var e = kv.Key;
+                var list = kv.Value;
+                foreach (var binder in list)
+                    binder.Apply(w, e);
+            }
         }
 
         /// <summary>
         /// Dispatch a component <typeparamref name="T"/> delta to binders attached to
-        /// <see cref="ComponentDelta{T}.Entity"/> that implement <see cref="IBinds{T}"/>.
+        /// <see cref="ComponentDelta{T}.Entity"/> that implement <see cref="IBind{T}"/>.
         /// </summary>
         public void Dispatch<T>(in ComponentDelta<T> d) where T : struct
         {
@@ -144,7 +146,7 @@ namespace ZenECS.Core.Internal.Binding
             for (int i = 0; i < n; i++)
             {
                 if (i >= list.Count) break; // safe-guard against mid-iteration detaches
-                if (list[i] is IBinds<T> b) b.OnDelta(in d);
+                if (list[i] is IBind<T> b) b.OnDelta(in d);
             }
         }
 
@@ -185,26 +187,6 @@ namespace ZenECS.Core.Internal.Binding
             });
 
             if (idx < 0) list.Add(binder); else list.Insert(idx, binder);
-        }
-
-        private void ValidateRequiredContexts(IBinder binder, IWorld w, Entity e, AttachOptions options)
-        {
-            var need = binder.GetType().GetInterfaces()
-                             .Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IRequireContext<>))
-                             .Select(t => t.GetGenericArguments()[0])
-                             .Distinct().ToArray();
-
-            foreach (var tCtx in need)
-            {
-                var has = _contextRegistry.Has(w, e, tCtx);
-                if (!has)
-                {
-                    var msg = $"[BindingRouter] Missing required context {tCtx.Name} for binder {binder.GetType().Name} on {e}.";
-                    if (options == AttachOptions.Strict)
-                        throw new InvalidOperationException(msg);
-                    // else: warn externally if desired
-                }
-            }
         }
     }
 }

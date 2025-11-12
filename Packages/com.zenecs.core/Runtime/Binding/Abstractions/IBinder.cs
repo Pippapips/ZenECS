@@ -51,7 +51,7 @@ namespace ZenECS.Core.Binding
         /// Per-frame application step invoked at the end of Presentation.
         /// Perform view updates based on captured deltas/contexts here.
         /// </summary>
-        void Apply();
+        void Apply(IWorld w, Entity e);
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ namespace ZenECS.Core.Binding
         protected IWorld? World { get; private set; }
 
         /// <summary>Lookup service for resolving contexts (null when unbound).</summary>
-        protected IContextLookup? ContextLookup { get; private set; }
+        protected IContextLookup Contexts { get; private set; }
 
         /// <inheritdoc/>
         public Entity Entity { get; private set; }
@@ -90,7 +90,7 @@ namespace ZenECS.Core.Binding
         {
             if (_bound) throw new Exception("Binder is already bound.");
             World = world;
-            ContextLookup = contextLookup;
+            Contexts = contextLookup;
             Entity = e;
             _bound = true;
             OnBind(e);
@@ -109,12 +109,12 @@ namespace ZenECS.Core.Binding
                 _bound = false;
                 World = null;
                 Entity = default;
-                ContextLookup = null;
+                Contexts = null;
             }
         }
 
         /// <inheritdoc/>
-        public virtual void Apply() { }
+        public virtual void Apply(IWorld w, Entity e) { }
 
         /// <summary>
         /// Hook called once after a successful <see cref="Bind"/>. Use to cache context references.

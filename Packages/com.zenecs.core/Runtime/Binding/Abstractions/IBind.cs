@@ -1,6 +1,6 @@
 ﻿// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Core — Binding
-// File: IBinds.cs
+// File: IBind.cs
 // Purpose: Delta dispatch contracts that notify binders about component changes.
 // Key concepts:
 //   • Value-type deltas: Added / Changed / Removed per component T.
@@ -53,7 +53,7 @@ namespace ZenECS.Core.Binding
     /// Implemented by binders interested in receiving deltas for component <typeparamref name="T"/>.
     /// </summary>
     /// <typeparam name="T">Component type.</typeparam>
-    public interface IBinds<T> where T : struct
+    public interface IBind<T> where T : struct
     {
         /// <summary>Called when a delta for <typeparamref name="T"/> is dispatched.</summary>
         /// <param name="delta">Delta payload (value-type).</param>

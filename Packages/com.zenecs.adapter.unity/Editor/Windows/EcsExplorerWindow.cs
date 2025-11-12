@@ -533,12 +533,8 @@ namespace ZenECS.EditorWindows
 
         static class BinderIntrospection
         {
-            // “IBinds”, “IRequireContext” 네이밍을 느슨하게 매칭 (Generic 정의 이름 기준)
             static bool IsBindsInterface(Type t)
-                => t.IsInterface && t.IsGenericType && t.Name.StartsWith("IBinds", StringComparison.Ordinal);
-
-            static bool IsRequireCtxInterface(Type t)
-                => t.IsInterface && t.IsGenericType && t.Name.StartsWith("IRequireContext", StringComparison.Ordinal);
+                => t.IsInterface && t.IsGenericType && t.Name.StartsWith("IBind", StringComparison.Ordinal);
 
             public static IReadOnlyList<Type> ExtractObservedComponentTypes(Type binderType)
             {
@@ -547,7 +543,7 @@ namespace ZenECS.EditorWindows
                 {
                     if (!IsBindsInterface(itf)) continue;
 
-                    // 패턴 허용: IBinds<T>, IBinds<TDelta>, IBinds<TComp,TDelta> 등
+                    // 패턴 허용: IBind<T>, IBind<TDelta>, IBind<TComp,TDelta> 등
                     foreach (var ga in itf.GetGenericArguments())
                     {
                         // 컨텍스트/바인더/시스템 등은 제외하려 시도(휴리스틱)
@@ -557,19 +553,6 @@ namespace ZenECS.EditorWindows
 
                         set.Add(ga);
                     }
-                }
-                return set.OrderBy(t => t.Name).ToArray();
-            }
-
-            public static IReadOnlyList<Type> ExtractRequiredContexts(Type binderType)
-            {
-                var set = new HashSet<Type>();
-                foreach (var itf in binderType.GetInterfaces())
-                {
-                    if (!IsRequireCtxInterface(itf)) continue;
-
-                    foreach (var ga in itf.GetGenericArguments())
-                        set.Add(ga);
                 }
                 return set.OrderBy(t => t.Name).ToArray();
             }
@@ -718,7 +701,7 @@ namespace ZenECS.EditorWindows
         {
             var t = binder.GetType();
 
-            // 1) 관찰 컴포넌트(IBinds 기반) 리스트
+            // 1) 관찰 컴포넌트(IBind 기반) 리스트
             var observed = BinderIntrospection.ExtractObservedComponentTypes(t);
 
             // Has<T> 델리게이트(이미 EcsExplorer에서 사용하던 헬퍼를 재사용)
@@ -729,7 +712,7 @@ namespace ZenECS.EditorWindows
 
                 if (observed.Count == 0)
                 {
-                    EditorGUILayout.LabelField("— (no IBinds<> found)");
+                    EditorGUILayout.LabelField("— (no IBind<> found)");
                 }
                 else
                 {
@@ -755,46 +738,6 @@ namespace ZenECS.EditorWindows
                                 NotAssignLabel.Draw(80);
                             }
                             // ABSENT → 라벨 없음 (이탤릭 텍스트만)
-                        }
-                    }
-                }
-            }
-
-            // 2) 요구 컨텍스트(IRequireContext) 리스트
-            var req = BinderIntrospection.ExtractRequiredContexts(t);
-            using (new EditorGUILayout.VerticalScope("box"))
-            {
-                EditorGUILayout.LabelField("Required Contexts (IRequireContext)", EditorStyles.boldLabel);
-
-                if (req.Count == 0)
-                {
-                    EditorGUILayout.LabelField("— (no IRequireContext<> found)");
-                }
-                else
-                {
-                    foreach (var ctx in req)
-                    {
-                        bool hasApi = TryHasContext(world, e, ctx, out var avail);
-                        bool isOk = hasApi && avail; // API 없으면 미확인 → not OK 취급
-
-                        using (new EditorGUILayout.HorizontalScope())
-                        {
-                            if (isOk)
-                                EditorGUILayout.LabelField(ctx.Name, GUILayout.MinWidth(80));
-                            else
-                                ItalicLabel.DrawLeft(ctx.Name, GUILayout.MinWidth(80));
-
-                            GUILayout.FlexibleSpace();
-
-                            if (isOk)
-                            {
-                                OkLabel.DrawOK(36f); // AVAILABLE → OK
-                            }
-                            else
-                            {
-                                // MISSING/미확인 → 라벨 없음 (이탤릭 텍스트만)
-                                NotAssignLabel.Draw(36);
-                            }
                         }
                     }
                 }
@@ -878,12 +821,9 @@ namespace ZenECS.EditorWindows
             if (ZenComponentFormGUI.HasDrawableFields(t))
                 return true;
 
-            // 2) 메타(IBinds / IRequireContext)라도 있으면 바디를 보여줄 가치가 있음
+            // 2) 메타(IBind)라도 있으면 바디를 보여줄 가치가 있음
             var hasObserved = BinderIntrospection.ExtractObservedComponentTypes(t).Count > 0;
             if (hasObserved) return true;
-
-            var hasReq = BinderIntrospection.ExtractRequiredContexts(t).Count > 0;
-            if (hasReq) return true;
 
             return false;
         }

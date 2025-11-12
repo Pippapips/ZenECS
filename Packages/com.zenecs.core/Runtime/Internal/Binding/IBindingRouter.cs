@@ -4,7 +4,7 @@
 // Purpose: Router interface for binder attach/detach, delta dispatch, and frame apply.
 // Key concepts:
 //   • Ordered per-entity binder list (Priority + attach order).
-//   • Type-routed deltas → IBinds<T>.
+//   • Type-routed deltas → IBind<T>.
 //   • Single frame barrier: ApplyAll() before Presentation.
 // Copyright (c) 2025 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
@@ -38,11 +38,11 @@ namespace ZenECS.Core.Internal.Binding
         void OnEntityDestroyed(IWorld w, Entity e);
 
         /// <summary>Invoke <see cref="IBinder.Apply"/> for all binders in all entities.</summary>
-        void ApplyAll();
+        void ApplyAll(IWorld w);
 
         /// <summary>
         /// Dispatch a component delta to binders attached to the target entity that
-        /// implement <see cref="IBinds{T}"/>.
+        /// implement <see cref="IBind{T}"/>.
         /// </summary>
         void Dispatch<T>(in ComponentDelta<T> d) where T : struct;
 

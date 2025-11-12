@@ -254,7 +254,7 @@ namespace ZenECS.Core.Internal.Systems
         public void LateFrame(IWorld w, float dt, float interpolationAlpha = 1f)
         {
             // Apply world → view deltas before presentation systems run
-            _router.ApplyAll();
+            _router.ApplyAll(w);
 
             using IDisposable? guard = DenyWrites(_permissionHook);
             RunLateGroup(SystemGroup.Presentation, w, dt, interpolationAlpha);

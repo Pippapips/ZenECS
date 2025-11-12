@@ -44,7 +44,7 @@ namespace ZenECS.EditorInspectors
                     var style = new GUIStyle(EditorStyles.label) { richText = true };
                     var ns = type.Namespace ?? "Global";
                     var name = type.Name;
-                    var text = $"<b>{name}</b>\n<color=#888888><size=10>({ns})</size></color>";
+                    var text = $"<b>{name}</b>\n<color=#888888><size=10>[{ns}]</size></color>";
                     EditorGUI.LabelField(lineRect, new GUIContent(text, type.AssemblyQualifiedName), style);
                 }
                 else

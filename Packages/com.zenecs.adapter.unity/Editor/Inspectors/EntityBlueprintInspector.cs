@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace ZenECS.EditorInspectors
     public sealed class EntityBlueprintInspector : Editor
     {
         // ───────── Components (BlueprintData) ─────────
-        SerializedProperty _dataProp; // _data
+        SerializedProperty _dataProp;        // _data
         SerializedProperty _compEntriesProp; // _data.entries
         ReorderableList _componentsList;
 
@@ -30,9 +31,14 @@ namespace ZenECS.EditorInspectors
 
         readonly Dictionary<string, bool> _fold = new();
         const float PAD = 6f;
-
+        
+        GUIStyle _obsMissingStyle;   // 회색 이탤릭
+        bool _stylesReady;
+        
         void OnEnable()
         {
+            _stylesReady = true;
+            
             // Components
             _dataProp = serializedObject.FindProperty("_data");
             _compEntriesProp = _dataProp?.FindPropertyRelative("entries");
@@ -49,9 +55,32 @@ namespace ZenECS.EditorInspectors
             if (_bindersProp != null && _bindersProp.isArray)
                 BuildBindersList();
         }
+        
+        void EnsureStylesReady()
+        {
+            if (_stylesReady) return;
+
+            // OnGUI에서만 호출되도록 (Event.current != null 보장)
+            var baseStyle = EditorStyles.miniLabel ?? EditorStyles.label ?? GUI.skin?.label ?? new GUIStyle();
+            _obsMissingStyle = new GUIStyle(baseStyle)
+            {
+                fontStyle = FontStyle.Italic,
+                richText  = false
+            };
+
+            // 여기서야 안전하게 색상 적용 가능
+            var col = EditorGUIUtility.isProSkin ? new Color(0.45f, 0.45f, 0.45f)
+                : new Color(0.35f, 0.35f, 0.35f);
+            // GUIStyle.normal은 OnGUI 시점이면 유효
+            _obsMissingStyle.normal.textColor = col;
+
+            _stylesReady = true;
+        }
 
         public override void OnInspectorGUI()
         {
+            EnsureStylesReady(); // ← 반드시 가장 먼저
+
             serializedObject.Update();
 
             if (_componentsList != null)
@@ -325,56 +354,85 @@ namespace ZenECS.EditorInspectors
             _bindersList.elementHeightCallback = (index) =>
             {
                 var p = _bindersProp.GetArrayElementAtIndex(index);
-
+                var inst = p?.managedReferenceValue;
+                var t = inst?.GetType();
                 float headerH = EditorGUIUtility.singleLineHeight + PAD;
-                float badgesH = 20f; // Required context pills row
-
+                // // pill 라벨들 계산
+                // var provided = GetProvidedContextTypes(_contextsProp);
+                // var required = inst != null ? ExtractContextFieldTypes(inst) : Array.Empty<Type>();
+                // var pillLabels = required.Select(rt => rt.Name).ToList();
+                // float pillsH = CalcBadgesHeight(pillLabels, EditorGUIUtility.currentViewWidth - 40f);
+                // if (pillsH < 18f) pillsH = 18f;
+                float pillsH = 0f; // 컨텍스트 배지 없음
                 string key = $"binder:{index}";
                 bool open = _fold.TryGetValue(key, out var o) ? o : true;
-
-                if (!open) return headerH + badgesH + PAD;
-
+                if (!open)
+                    return headerH + pillsH + PAD;
+                // 바디(필드 폼) + 관찰 메타(IBind) 영역
                 float bodyH = EditorGUI.GetPropertyHeight(p, GUIContent.none, true);
-                return headerH + PAD + badgesH + PAD + bodyH + PAD;
+                float metaH = 0f;
+                if (t != null && ExtractObservedComponentTypes(t).Count > 0)
+                    metaH = EditorGUIUtility.singleLineHeight * (1 + ExtractObservedComponentTypes(t).Count) - 30f;
+                return headerH + PAD + pillsH + PAD + metaH + PAD + bodyH + PAD;
             };
 
             _bindersList.drawElementCallback = (rect, index, active, focused) =>
             {
                 var p = _bindersProp.GetArrayElementAtIndex(index);
                 var inst = p?.managedReferenceValue;
-                string title = inst != null ? inst.GetType().Name : "(None)";
-
+                var t = inst?.GetType();
+                string title = t != null ? t.Name : "(None)";
                 string key = $"binder:{index}";
                 if (!_fold.ContainsKey(key)) _fold[key] = true;
-
-                // Header
+                // 1) 헤더
                 var rHead = new Rect(rect.x + 4, rect.y + 3, rect.width - 8, EditorGUIUtility.singleLineHeight);
                 bool open = EditorGUI.Foldout(rHead, _fold[key], title, true, EditorStyles.foldoutHeader);
                 _fold[key] = open;
-
-                // --- Required Context Badges (just below header)
+                // 2) pill 배지 (필요 컨텍스트 vs 제공 컨텍스트)
                 var provided = GetProvidedContextTypes(_contextsProp);
-                var required = GetRequiredContextsForBinder(inst);
-
-                var rBadges = new Rect(rect.x + 8, rHead.yMax + 4f, rect.width - 16f, 20f);
-                DrawRequiredContextBadges(rBadges, required, provided);
-
-                // Warn icon if any missing
-                if (required.Length > 0 && !required.All(t => IsSatisfied(t, provided)))
-                {
-                    var warn = EditorGUIUtility.IconContent("console.warnicon.sml");
-                    var rIcon = new Rect(rHead.xMax - 18f, rHead.y, 16f, 16f);
-                    GUI.Label(rIcon, warn);
-                }
-
+                var required = inst != null ? ExtractContextFieldTypes(inst) : Array.Empty<Type>();
+                //var badgeTop = rHead.yMax + 4f;
+                //var rPills = new Rect(rect.x + 8, badgeTop, rect.width - 16, Mathf.Max(18f, rect.yMax - badgeTop));
+                //DrawContextPills(rPills, required, provided);
+                var rPills = new Rect(rect.x + 8, rHead.yMax, 0, 0); // 자리 없앰
                 if (!open) return;
+                // 3) Observing (IBinds) 메타 블럭
+                
+                // observed = IBind<T...>에서 뽑은 관찰 대상 타입 리스트
+                var observed = t != null ? ExtractObservedComponentTypes(t) : Array.Empty<Type>();
 
-                // Body
-                var top = rBadges.yMax + PAD;
-                var rBody = new Rect(rect.x + 8, top, rect.width - 16, rect.yMax - top - PAD);
+                if (observed.Count > 0)
+                {
+                    // ✅ Blueprint에 실제로 들어있는 컴포넌트 타입: entries(typeName)에서 해석
+                    var providedTypes = GetProvidedComponentTypesFromEntries(_compEntriesProp); // _data.entries
+                    var providedSet   = new HashSet<Type>(providedTypes);
 
+                    var yMeta = rPills.yMax + 6f;
+                    var metaTitle = new Rect(rect.x + 12, yMeta, rect.width - 24, EditorGUIUtility.singleLineHeight);
+                    EditorGUI.LabelField(metaTitle, "Observing (IBinds)", EditorStyles.boldLabel);
+                    yMeta = metaTitle.yMax + 2f;
+
+                    foreach (var ct in observed)
+                    {
+                        var line = new Rect(rect.x + 16, yMeta, rect.width - 32, EditorGUIUtility.singleLineHeight);
+
+                        // 정확 타입 매칭(보통 struct 컴포넌트) — 필요시 IsAssignableFrom으로 바꿔도 됨
+                        bool added = providedSet.Contains(ct);
+                        var style  = added ? EditorStyles.miniLabel : _obsMissingStyle;
+
+                        if (added) EditorGUI.LabelField(line, $"• {ct.Name}", style);
+                        else EditorGUI.LabelField(line, $"• {ct.Name} <not-assigned>", style);
+                        yMeta += EditorGUIUtility.singleLineHeight + 1f;
+                    }
+                }
+                
+                // 4) 바디(바인더 필드 편집 폼)
+                //var bodyTop = Mathf.Max(rPills.yMax, (observed.Count > 0 ? rPills.yMax + 40f : rPills.yMax)) + 6f;
+                var bodyTop = rHead.yMax + (observed.Count > 0 ? 40f : 6f);
+                var rBody = new Rect(rect.x + 8, bodyTop, rect.width - 16, rect.yMax - bodyTop - PAD);
                 EditorGUI.BeginChangeCheck();
-                EditorGUI.PropertyField(rBody, p, includeChildren: true);
+                //EditorGUI.PropertyField(rBody, p, includeChildren: true);
+                DrawBinderBody(rBody, p);
                 if (EditorGUI.EndChangeCheck())
                 {
                     serializedObject.ApplyModifiedProperties();
@@ -386,17 +444,6 @@ namespace ZenECS.EditorInspectors
         // =====================================================================
         // Badge helpers
         // =====================================================================
-        static Type[] GetRequiredContextsForBinder(object binderInstance)
-        {
-            if (binderInstance == null) return Array.Empty<Type>();
-            var t = binderInstance.GetType();
-            return t.GetInterfaces()
-                .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IRequireContext<>))
-                .Select(x => x.GetGenericArguments()[0])
-                .Distinct()
-                .ToArray();
-        }
-
         static List<Type> GetProvidedContextTypes(SerializedProperty contextsProp)
         {
             var list = new List<Type>();
@@ -420,49 +467,176 @@ namespace ZenECS.EditorInspectors
             return false;
         }
 
-        static void DrawRequiredContextBadges(Rect area, Type[] required, IReadOnlyList<Type> provided)
+        // === Binder 메타 추출: IBind<T...> 에서 관찰 컴포넌트 타입 수집 ===
+        static IReadOnlyList<Type> ExtractObservedComponentTypes(Type binderType)
         {
-            const float h = 18f;
-            float x = area.x;
-            float y = area.y;
-            float pad = 4f;
+            static bool IsBindsInterface(Type t)
+                => t.IsInterface && t.IsGenericType && t.Name.StartsWith("IBind", StringComparison.Ordinal);
 
-            if (required.Length == 0)
+            var set = new HashSet<Type>();
+            foreach (var itf in binderType.GetInterfaces())
             {
-                GUI.Label(new Rect(x, y, area.width, h), "No required contexts", EditorStyles.miniLabel);
-                return;
-            }
-
-            foreach (var req in required)
-            {
-                string label = req.Name;
-                bool ok = IsSatisfied(req, provided);
-
-                var content = new GUIContent(label, ok ? "Context present" : "Missing context");
-                var size = GUI.skin.label.CalcSize(content);
-                var w = Mathf.Clamp(size.x + 16f, 60f, area.width);
-
-                var r = new Rect(x, y, w, h);
-
-                var bg = ok ? new Color(0.20f, 0.65f, 0.20f, 0.22f) : new Color(0.85f, 0.25f, 0.25f, 0.22f);
-                EditorGUI.DrawRect(r, bg);
-
-                var outline = new Color(0f, 0f, 0f, 0.15f);
-                EditorGUI.DrawRect(new Rect(r.x, r.y, r.width, 1f), outline);
-                EditorGUI.DrawRect(new Rect(r.x, r.yMax - 1f, r.width, 1f), outline);
-                EditorGUI.DrawRect(new Rect(r.x, r.y, 1f, r.height), outline);
-                EditorGUI.DrawRect(new Rect(r.xMax - 1f, r.y, 1f, r.height), outline);
-
-                GUI.Label(r, content, EditorStyles.miniBoldLabel);
-
-                x += w + pad;
-                if (x + 60f > area.xMax)
+                if (!IsBindsInterface(itf)) continue;
+                foreach (var ga in itf.GetGenericArguments())
                 {
-                    x = area.x;
-                    y += h + 2f;
-                } // wrap
+                    if (ga.IsAbstract) continue;
+                    if (ga.Namespace?.EndsWith(".Editor", StringComparison.Ordinal) == true) continue;
+                    set.Add(ga);
+                }
+            }
+            return set.OrderBy(t => t.Name).ToArray();
+        }
+
+// === Binder에서 [Context] 필드 타입 수집 ===
+        static Type[] ExtractContextFieldTypes(object binderInstance)
+        {
+            if (binderInstance == null) return Array.Empty<Type>();
+            var t = binderInstance.GetType();
+            var list = new List<Type>(8);
+
+            foreach (var f in t.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+            {
+                // [Context] 특성 붙은 필드만 인정
+                var hasAttr = f.GetCustomAttributes(inherit: true)
+                    .Any(a => a.GetType().Name is "ContextAttribute");
+                if (!hasAttr) continue;
+
+                var ft = f.FieldType;
+                if (typeof(ZenECS.Core.Binding.IContext).IsAssignableFrom(ft))
+                    list.Add(ft);
+            }
+            return list.Distinct().ToArray();
+        }
+
+// === pill 배지 한 줄(또는 래핑) 높이 계산 ===
+        static float CalcBadgesHeight(IReadOnlyList<string> labels, float width, float minPill = 60f)
+        {
+            if (labels == null || labels.Count == 0) return 18f;
+            float h = 18f, x = 0f, pad = 4f;
+            foreach (var s in labels)
+            {
+                var w = Mathf.Clamp(GUI.skin.label.CalcSize(new GUIContent(s)).x + 16f, minPill, width);
+                if (x + w > width)
+                {
+                    h += 20f;
+                    x = 0f;
+                }
+                x += w + pad;
+            }
+            return h;
+        }
+
+// === “필요 컨텍스트” pill 배지 그리기 (초록=있음 / 빨강=없음) ===
+        static void DrawContextPills(Rect area, Type[] required, IReadOnlyList<Type> providedTypes)
+        {
+            // const float rowH = 18f;
+            // float x = area.x, y = area.y, pad = 4f;
+            //
+            // if (required == null || required.Length == 0)
+            // {
+            //     GUI.Label(new Rect(x, y, area.width, rowH), "No [Context] fields", EditorStyles.miniLabel);
+            //     return;
+            // }
+            //
+            // foreach (var req in required)
+            // {
+            //     string label = req.Name;
+            //     bool ok = IsSatisfied(req, providedTypes);
+            //
+            //     var content = new GUIContent(label, ok ? "Context present" : "Missing context");
+            //     var size = GUI.skin.label.CalcSize(content);
+            //     var w = Mathf.Clamp(size.x + 16f, 60f, area.width);
+            //
+            //     if (x + w > area.xMax)
+            //     {
+            //         x = area.x;
+            //         y += rowH + 2f;
+            //     }
+            //
+            //     var r = new Rect(x, y, w, rowH);
+            //     var bg = ok ? new Color(0.20f, 0.65f, 0.20f, 0.22f) : new Color(0.85f, 0.25f, 0.25f, 0.22f);
+            //     EditorGUI.DrawRect(r, bg);
+            //     var outline = new Color(0f, 0f, 0f, 0.15f);
+            //     EditorGUI.DrawRect(new Rect(r.x, r.y, r.width, 1f), outline);
+            //     EditorGUI.DrawRect(new Rect(r.x, r.yMax - 1f, r.width, 1f), outline);
+            //     EditorGUI.DrawRect(new Rect(r.x, r.y, 1f, r.height), outline);
+            //     EditorGUI.DrawRect(new Rect(r.xMax - 1f, r.y, 1f, r.height), outline);
+            //
+            //     GUI.Label(r, content, EditorStyles.miniBoldLabel);
+            //     x += w + pad;
+            // }
+        }
+
+        void DrawBinderBody(Rect area, SerializedProperty root)
+        {
+            var y = area.y;
+            var x = area.x;
+            var w = area.width;
+
+            // root의 끝 위치 잡기
+            var iter = root.Copy();
+            var end = root.GetEndProperty();
+
+            // 첫 NextVisible(true)로 루트 진입 → 이후부터 자식만 렌더
+            bool enterChildren = true;
+            while (iter.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iter, end))
+            {
+                // 루트 자체("Element 0")는 이미 건너뛰었으니 전부 자식
+                float h = EditorGUI.GetPropertyHeight(iter, GUIContent.none, true);
+                var r = new Rect(x, y, w, h);
+                EditorGUI.PropertyField(r, iter, GUIContent.none, true);
+                y += h + 2f;
+                enterChildren = false;
             }
         }
+
+        // BlueprintData.Resolve와 동일 컨셉의 로컬 리졸브
+        static Type ResolveTypeName(string typeName)
+        {
+            if (string.IsNullOrEmpty(typeName)) return null;
+            var t = Type.GetType(typeName, throwOnError: false);
+            if (t != null) return t;
+
+            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                var tt = asm.GetType(typeName, false);
+                if (tt != null) return tt;
+            }
+            return null;
+        }
+
+        // _data.entries(SerializedProperty)에서 제공된 컴포넌트 타입 수집
+        static IReadOnlyList<Type> GetProvidedComponentTypesFromEntries(SerializedProperty compEntriesProp)
+        {
+            if (compEntriesProp == null || !compEntriesProp.isArray) return Array.Empty<Type>();
+
+            var list = new List<Type>(compEntriesProp.arraySize);
+            for (int i = 0; i < compEntriesProp.arraySize; i++)
+            {
+                var e = compEntriesProp.GetArrayElementAtIndex(i);
+                var typeNameProp = e.FindPropertyRelative("typeName");
+                var tn = typeNameProp != null ? typeNameProp.stringValue : null;
+                var t = ResolveTypeName(tn);
+                if (t != null) list.Add(t);
+            }
+            return list;
+        }
+
+
+        // 블루프린트에 현재 추가된 컴포넌트 타입 수집
+        static IReadOnlyList<Type> GetProvidedComponentTypes(SerializedProperty componentsProp)
+        {
+            if (componentsProp == null || !componentsProp.isArray) return Array.Empty<Type>();
+            var list = new List<Type>(componentsProp.arraySize);
+            for (int i = 0; i < componentsProp.arraySize; i++)
+            {
+                var e = componentsProp.GetArrayElementAtIndex(i);
+                var val = e.managedReferenceValue;
+                if (val != null) list.Add(val.GetType());
+            }
+            return list;
+        }
+
     }
 }
 #endif
