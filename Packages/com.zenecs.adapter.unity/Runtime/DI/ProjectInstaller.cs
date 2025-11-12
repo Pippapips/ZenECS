@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using ZenECS.Core;
 
@@ -16,6 +17,13 @@ namespace ZenECS.Adapter.Unity.DI
         }
     }
 #else
-    public sealed class ProjectInstaller : UnityEngine.MonoBehaviour {}
+    public sealed class ProjectInstaller : UnityEngine.MonoBehaviour
+    {
+        private void Awake()
+        {
+            var ecsDriver = KernelLocator.CreateEcsDriver();
+            ecsDriver.CreateKernel();
+        }
+    }
 #endif
 }

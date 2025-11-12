@@ -71,7 +71,11 @@ namespace ZenECS.Adapter.Unity.Install
             var types = CollectDistinctTypes();
             if (types.Count == 0) return;
 
+#if ZENECS_ZENJECT
             var instances = InstantiateSystemsZenject(types, Container);
+#else
+            var instances = InstantiateSystemsActivator(types);
+#endif
             if (instances.Count > 0)
                 _world.AddSystems(instances); // 다음 BeginFrame에 반영
         }
