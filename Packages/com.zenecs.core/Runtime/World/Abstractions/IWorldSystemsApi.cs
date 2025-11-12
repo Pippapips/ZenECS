@@ -40,12 +40,12 @@ namespace ZenECS.Core
         /// Attempts to retrieve the first active system of type <typeparamref name="T"/>.
         /// </summary>
         bool TryGetSystem<T>(out T? system) where T : class, ISystem;
-        
+
         /// <summary>
-        /// Attempts to retrieve the first active system of type/>.
+        /// Attempts to retrieve the first active system of type>.
         /// </summary>
         bool TryGetSystem(Type t, out ISystem? system);
-        
+
         /// <summary>
         /// Get all active systems.
         /// </summary>
@@ -64,7 +64,7 @@ namespace ZenECS.Core
         bool IsEnabledSystem<T>() where T : ISystem;
         
         /// <summary>
-        /// Is enable system of type.
+        /// Is enable system of type>.
         /// The system must implement <c>ISystemEnabledFlag</c>.
         /// </summary>
         bool IsEnabledSystem(Type t);

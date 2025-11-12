@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using ZenECS.Adapter.Unity.DI;
 using ZenECS.Core;
 using ZenECS.Core.Systems;
 using ZenECS.Adapter.Unity.Util; // ← WorldInstaller 사용
@@ -42,12 +43,12 @@ namespace ZenECS.Adapter.Unity.Install
             WorldInstaller.Install(Container, _world);
 
             CreateSystemsViaZenject(Container, _created);
-            if (_created.Count > 0) _world.Systems.AddSystems(_created);
+            if (_created.Count > 0) _world.AddSystems(_created);
 
             Container.BindInterfacesTo<WorldSetupInstaller>().FromInstance(this).AsSingle();
         }
         public void Initialize() { }
-        public void Dispose() { if (removeOnDispose) TryRemoveAll(); }
+        public void Dispose() { if (_removeOnDispose) TryRemoveAll(); }
 #else
         void Awake()
         {
@@ -61,7 +62,7 @@ namespace ZenECS.Adapter.Unity.Install
 #if !ZENECS_ZENJECT
         void OnValidate() => CleanupInvalids();
 #else
-        public override void OnValidate() { base.OnValidate(); CleanupInvalids(); }
+        void OnValidate() { CleanupInvalids(); }
 #endif
 
         private void CleanupInvalids()
@@ -125,7 +126,7 @@ namespace ZenECS.Adapter.Unity.Install
             outList.Clear();
             foreach (var t in EnumerateSystemTypes())
             {
-                if (skipIfTypeAlreadyExists && SafeHasSystemType(_world.Systems, t)) continue;
+                if (_skipIfTypeAlreadyExists && SafeHasSystemType(_world, t)) continue;
                 var sys = (ISystem)c.Instantiate(t);   // DI 주입
                 outList.Add(sys);
             }
@@ -162,8 +163,9 @@ namespace ZenECS.Adapter.Unity.Install
             _created.Clear();
         }
 
-        private static bool SafeHasSystemType(IWorldSystemsApi api, Type t)
+        private static bool SafeHasSystemType(IWorldSystemsApi? api, Type t)
         {
+            if (api == null) return false;
             try { return api.TryGetSystem(t, out _) || api.IsEnabledSystem(t); }
             catch { return false; }
         }
