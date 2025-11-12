@@ -11,6 +11,7 @@
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
+using System;
 using ZenECS.Core.Binding;
 
 namespace ZenECS.Core.Internal
@@ -48,6 +49,13 @@ namespace ZenECS.Core.Internal
         public void DetachBinder(Entity e, IBinder binder)
         {
             _bindingRouter.Detach(e, binder);
+        }
+
+        public bool DetachBinder(Entity e, Type t) => _bindingRouter.Detach(e, t);
+
+        public (Type type, object boxed)[] GetAllBinders(Entity e)
+        {
+            return _bindingRouter.GetAllBinders(e);
         }
     }
 }

@@ -11,6 +11,7 @@
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
+using System;
 using ZenECS.Core.Binding;
 
 namespace ZenECS.Core
@@ -43,5 +44,9 @@ namespace ZenECS.Core
 
         /// <summary>Detach a specific binder instance from an entity.</summary>
         void DetachBinder(Entity e, IBinder binder);
+
+        bool DetachBinder(Entity e, Type t);
+
+        (Type type, object boxed)[] GetAllBinders(Entity e);
     }
 }

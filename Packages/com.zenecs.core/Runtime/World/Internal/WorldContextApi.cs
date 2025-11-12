@@ -10,6 +10,7 @@
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-
 #nullable enable
+using System;
 using ZenECS.Core.Binding;
 
 namespace ZenECS.Core.Internal
@@ -24,9 +25,7 @@ namespace ZenECS.Core.Internal
         /// </summary>
         /// <param name="e">Target entity.</param>
         /// <param name="ctx">Context instance.</param>
-        public void RegisterContext(Entity e, IContext ctx)
-        {
-            _contextRegistry.Register(this, e, ctx);
-        }
+        public void RegisterContext(Entity e, IContext ctx) => _contextRegistry.Register(this, e, ctx);
+        public bool HasContext(Entity e, Type? contextType) => _contextRegistry.Has(this, e, contextType);
     }
 }

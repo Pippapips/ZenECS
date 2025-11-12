@@ -76,6 +76,32 @@ namespace ZenECS.Core.Internal.Binding
         }
 
         /// <summary>
+        /// Detach the first binder of the given <paramref name="binderType"/> from <paramref name="e"/>.
+        /// A binder matches when <c>binderType.IsAssignableFrom(b.GetType())</c>.
+        /// Returns true if one was found and detached.
+        /// </summary>
+        /// <exception cref="ArgumentNullException">binderType is null.</exception>
+        public bool Detach(Entity e, Type binderType)
+        {
+            if (binderType is null) throw new ArgumentNullException(nameof(binderType));
+            if (!_byEntity.TryGetValue(e, out var list) || list is null || list.Count == 0)
+                return false;
+
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                var b = list[i];
+                if (binderType.IsAssignableFrom(b.GetType()))
+                {
+                    list.RemoveAt(i);
+                    b.Unbind();
+                    if (list.Count == 0) _byEntity.Remove(e);
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        /// <summary>
         /// Detach and unbind all binders currently attached to <paramref name="e"/>.
         /// </summary>
         public void DetachAll(Entity e)
@@ -122,6 +148,27 @@ namespace ZenECS.Core.Internal.Binding
             }
         }
 
+        /// <summary>
+        /// Returns all binders currently attached to <paramref name="e"/> as tuples of
+        /// (concrete runtime type, boxed instance). The array is a snapshot copy and
+        /// safe for editor reflection/tools to enumerate without holding internal lists.
+        /// </summary>
+        public (Type type, object boxed)[] GetAllBinders(Entity e)
+        {
+            if (_byEntity.TryGetValue(e, out var list) && list != null && list.Count > 0)
+            {
+                var arr = new (Type, object)[list.Count];
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var b = list[i];
+                    // IBinder는 null이 아니어야 함(Attach 시점 보장)
+                    arr[i] = (b.GetType(), (object)b);
+                }
+                return arr;
+            }
+            return Array.Empty<(Type, object)>();
+        }
+        
         // ---- helpers -------------------------------------------------------------
 
         private void InsertOrdered(List<IBinder> list, IBinder binder)

@@ -11,6 +11,7 @@
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
+using System;
 using ZenECS.Core.Binding;
 
 namespace ZenECS.Core
@@ -20,5 +21,6 @@ namespace ZenECS.Core
     {
         /// <summary>Register a context object for an entity (policy controls overwrite).</summary>
         void RegisterContext(Entity e, IContext ctx);
+        bool HasContext(Entity e, Type? contextType);
     }
 }
