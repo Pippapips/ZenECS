@@ -1,9 +1,13 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 using ZenECS.Core;
+#if ZENECS_ZENJECT
+using Zenject;
+#endif
 
 namespace ZenECS.Adapter.Unity
 {
@@ -16,42 +20,51 @@ namespace ZenECS.Adapter.Unity
     public static class KernelLocator
     {
         private static IKernel? _cached;
-        private static Func<IKernel?>? _provider;
-
-        public static void SetProvider(Func<IKernel?> provider) => _provider = provider;
-
+        
         public static IKernel Current
         {
             get
-            { if (_provider != null)
-              {
-                  var k = _provider();
-                  if (k != null)
-                  {
-                      _cached = k;
-                      return k;
-                  }
-              }
-              if (_cached != null) return _cached;
+            {
+                if (_cached != null) return _cached;
 
 #if UNITY_2022_2_OR_NEWER
-              var drv = UnityEngine.Object.FindFirstObjectByType<EcsDriver>(FindObjectsInactive.Include);
+                var drv = UnityEngine.Object.FindFirstObjectByType<EcsDriver>(FindObjectsInactive.Include);
 #else
                 var drv = UnityEngine.Object.FindObjectOfType<EcsDriver>(true);
 #endif
-              if (drv != null && drv.Kernel != null)
-                  return _cached = drv.Kernel;
+                if (drv != null && drv.Kernel != null)
+                    return _cached = drv.Kernel;
 
-              var go = new GameObject("[ZenECS] EcsDriver (auto)");
-              UnityEngine.Object.DontDestroyOnLoad(go);
-              drv = go.AddComponent<EcsDriver>();
-              return _cached ??= drv.Kernel!; }
+                return _cached ??= drv?.Kernel!;
+            }
+        }
+
+        public static EcsDriver CreateEcsDriver(bool dontDestroyOnLoad = true)
+        {
+#if UNITY_2022_2_OR_NEWER
+            var drv = UnityEngine.Object.FindFirstObjectByType<EcsDriver>(FindObjectsInactive.Include);
+#else
+            var drv = UnityEngine.Object.FindObjectOfType<EcsDriver>(true);
+#endif
+            if (drv == null)
+            {
+                var go = new GameObject("[ZenECS] EcsDriver (auto)");
+                drv = go.AddComponent<EcsDriver>();
+            }
+
+            if (dontDestroyOnLoad)
+            {
+                UnityEngine.Object.DontDestroyOnLoad(drv.gameObject);
+            }
+            
+            return drv;
         }
 
         public static IWorld CurrentWorld =>
             Current.CurrentWorld ?? throw new InvalidOperationException("Kernel.CurrentWorld is null");
 
         internal static void Attach(IKernel k) => _cached = k;
+
         internal static void Detach(IKernel k)
         {
             if (ReferenceEquals(_cached, k)) _cached = null;
@@ -60,7 +73,7 @@ namespace ZenECS.Adapter.Unity
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void ResetOnDomainReload() => _cached = null;
 
-// ──────────────────────────────────────────────
+        // ──────────────────────────────────────────────
         // Multi-world helpers (strongly typed)
         // ──────────────────────────────────────────────
 
@@ -109,6 +122,7 @@ namespace ZenECS.Adapter.Unity
                 if (setAsCurrent) SetCurrentWorld(w);
                 return w;
             }
+
             return Current.CreateWorld(cfg: null, name: name, tags: null, presetId: null, setAsCurrent: setAsCurrent);
         }
 
@@ -147,6 +161,7 @@ namespace ZenECS.Adapter.Unity
                     acc.IntersectWith(map.Keys);
                     lastMap = map;
                 }
+
                 if (acc.Count == 0) break;
             }
 
@@ -173,6 +188,7 @@ namespace ZenECS.Adapter.Unity
                 if (setCurrent) SetCurrentWorld(w);
                 return w;
             }
+
             return Current.CreateWorld(cfg: null, name: name, tags: tags, presetId: null, setAsCurrent: setCurrent);
         }
 
@@ -205,6 +221,7 @@ namespace ZenECS.Adapter.Unity
                 if (!dict.TryGetValue(name, out var list)) dict[name] = list = new List<IWorld>();
                 list.Add(w);
             }
+
             return dict;
         }
 

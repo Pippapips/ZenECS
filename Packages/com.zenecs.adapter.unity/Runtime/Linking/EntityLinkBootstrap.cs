@@ -8,7 +8,7 @@ namespace ZenECS.Adapter.Unity.Linking
     public sealed class EntityLinkBootstrap
     {
         private readonly LinkBootstrapPolicy _policy;
-        public EntityLinkBootstrap(LinkBootstrapPolicy policy) { _policy = policy; }
+        public EntityLinkBootstrap(LinkBootstrapPolicy policy = LinkBootstrapPolicy.ViewIfPresent) { _policy = policy; }
 
         public (IWorld w, Entity e, EntityLink main)
             Run(IWorld world, Entity? existingEntity, GameObject optionalViewPrefab, Transform optionalViewRoot, bool asMain = true, int subIndex = 0)

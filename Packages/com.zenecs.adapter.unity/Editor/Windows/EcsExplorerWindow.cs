@@ -431,8 +431,7 @@ namespace ZenECS.EditorWindows
                         }
                     }
 
-                    var hasView = EcsExplorerActions.TryGetEntityMainView(world, e, out var go);
-                    if (hasView)
+                    if (EcsExplorerActions.TryGetEntityMainView(world, e, out var go))
                     {
                         var rSel = new Rect(right - (wSel), yBtn, wSel, hBtn);
                         if (GUI.Button(rSel, useSel, style))

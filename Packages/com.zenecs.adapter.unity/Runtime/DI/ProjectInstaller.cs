@@ -1,3 +1,6 @@
+using UnityEngine;
+using ZenECS.Core;
+
 namespace ZenECS.Adapter.Unity.DI
 {
 #if ZENECS_ZENJECT
@@ -6,7 +9,9 @@ namespace ZenECS.Adapter.Unity.DI
     {
         public override void InstallBindings()
         {
-            // SignalBusInstaller.Install(Container); // 이벤트 버스 별도 사용 시
+            var ecsDriver = KernelLocator.CreateEcsDriver();
+            ecsDriver.CreateKernel();
+            Container.BindInstance(ecsDriver.Kernel);
             Container.Bind<IViewLinkFactory>().To<ViewLinkFactory>().AsSingle();
         }
     }

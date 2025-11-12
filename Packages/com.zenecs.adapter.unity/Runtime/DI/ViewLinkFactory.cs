@@ -6,15 +6,23 @@ namespace ZenECS.Adapter.Unity.DI
 {
 #if ZENECS_ZENJECT
     using Zenject;
-    public interface IViewLinkFactory : IFactory<SpawnArgs, EntityLink> {}
+
+    public interface IViewLinkFactory : IFactory<SpawnArgs, EntityLink> { }
+
     public sealed class ViewLinkFactory : IViewLinkFactory
     {
-        readonly DiContainer _c; public ViewLinkFactory(DiContainer c){_c=c;}
-        public EntityLink Create(SpawnArgs a)
+        readonly DiContainer Container;
+
+        public ViewLinkFactory(DiContainer container)
         {
-            var link = _c.InstantiatePrefabForComponent<EntityLink>(a.Prefab, a.Parent, null);
-            link.Attach(a.World, a.Entity, a.Key.Kind==ViewKind.Main?ViewKey.Main():ViewKey.Sub(a.Key.Index));
-            return link;
+            Container = container;
+        }
+
+        public EntityLink Create(SpawnArgs spawnArgs)
+        {
+            var entityLink = Container.InstantiatePrefabForComponent<EntityLink>(spawnArgs.Prefab, spawnArgs.Parent, null);
+            entityLink.Attach(spawnArgs.World, spawnArgs.Entity, spawnArgs.Key.Kind == ViewKind.Main ? ViewKey.Main() : ViewKey.Sub(spawnArgs.Key.Index));
+            return entityLink;
         }
     }
 #else

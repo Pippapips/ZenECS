@@ -2,6 +2,10 @@
 using UnityEngine;
 using ZenECS.Core;
 using ZenECS.Core.Abstractions.Diagnostics;
+#if ZENECS_ZENJECT
+using Zenject;
+#endif
+using Kernel = ZenECS.Core.Kernel;
 
 namespace ZenECS.Adapter.Unity
 {
@@ -12,11 +16,20 @@ namespace ZenECS.Adapter.Unity
         public void Error(string m) => Debug.LogError(m);
     }
 
+#if !ZENECS_ZENJECT
     [DefaultExecutionOrder(-10000)]
+#endif
     public sealed class EcsDriver : MonoBehaviour
     {
         public IKernel? Kernel { get; private set; }
 
+        public void CreateKernel()
+        {
+            if (Kernel != null) return;
+            Kernel ??= new Kernel(new KernelOptions { AutoSelectNewWorld = true }, new Logger());
+            KernelLocator.Attach(Kernel);
+        }
+        
         void Awake()
         {
 #if UNITY_2022_2_OR_NEWER
@@ -30,10 +43,8 @@ namespace ZenECS.Adapter.Unity
                 DestroyImmediate(gameObject);
                 return;
             }
-
-            Kernel = new Kernel(new KernelOptions { AutoSelectNewWorld = true }, new Logger());
-            KernelLocator.Attach(Kernel);
-            DontDestroyOnLoad(gameObject);
+            
+            CreateKernel();
         }
 
         void OnDestroy()
