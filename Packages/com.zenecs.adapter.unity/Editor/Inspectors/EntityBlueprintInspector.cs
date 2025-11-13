@@ -37,8 +37,6 @@ namespace ZenECS.EditorInspectors
         
         void OnEnable()
         {
-            _stylesReady = true;
-            
             // Components
             _dataProp = serializedObject.FindProperty("_data");
             _compEntriesProp = _dataProp?.FindPropertyRelative("entries");
@@ -65,14 +63,12 @@ namespace ZenECS.EditorInspectors
             _obsMissingStyle = new GUIStyle(baseStyle)
             {
                 fontStyle = FontStyle.Italic,
-                richText  = false
+                richText  = false,
+                normal =
+                {
+                    textColor = Color.darkGray
+                }
             };
-
-            // 여기서야 안전하게 색상 적용 가능
-            var col = EditorGUIUtility.isProSkin ? new Color(0.45f, 0.45f, 0.45f)
-                : new Color(0.35f, 0.35f, 0.35f);
-            // GUIStyle.normal은 OnGUI 시점이면 유효
-            _obsMissingStyle.normal.textColor = col;
 
             _stylesReady = true;
         }
