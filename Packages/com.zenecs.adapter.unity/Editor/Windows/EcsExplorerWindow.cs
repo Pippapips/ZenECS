@@ -34,8 +34,8 @@ namespace ZenECS.EditorWindows
         string _entityGenText = "0";
         int? _findEntityGen = null; // current target ID (null => list mode)
 
-        bool _findMode = false;   // single view mode on/off
-        Entity _foundEntity;      // resolved entity
+        bool _findMode = false; // single view mode on/off
+        Entity _foundEntity; // resolved entity
         bool _foundValid = false; // found in world?
 
         // --- Other UI/layout state ---
@@ -45,9 +45,9 @@ namespace ZenECS.EditorWindows
         double _nextRepaint;
         private int _selSysEntityCount;
 
-        readonly Dictionary<Entity, bool> _entityFold = new();    // entityId → fold
+        readonly Dictionary<Entity, bool> _entityFold = new(); // entityId → fold
         readonly Dictionary<string, bool> _componentFold = new(); // $"{entityId}:{typeName}" → fold
-        readonly Dictionary<string, bool> _binderFold = new();    // $"{entityId}:{typeName}" → fold
+        readonly Dictionary<string, bool> _binderFold = new(); // $"{entityId}:{typeName}" → fold
         bool _editMode = true;
 
         static EcsDriver? _driver;
@@ -323,7 +323,8 @@ namespace ZenECS.EditorWindows
                         }
 
                         _foundValid = world?.IsAlive(id, gen2) ?? false;
-                        _foundEntity = _foundValid ? (Entity)Activator.CreateInstance(typeof(Entity), id, gen) : default;
+                        _foundEntity =
+                            _foundValid ? (Entity)Activator.CreateInstance(typeof(Entity), id, gen) : default;
                         _findMode = true;
                     }
                     else
@@ -472,11 +473,13 @@ namespace ZenECS.EditorWindows
                 DrawComponentsList(world, e, arr);
 
                 {
-                    // ===== Binders Summary line =====
+// ===== Binders Summary line =====
                     var bindersOk = BinderApi.TryGetAll(world, e, out var binders);
                     if (!bindersOk)
                     {
-                        EditorGUILayout.HelpBox("Binders API가 연결되지 않았습니다. (GetAllBinders/AddBinderBoxed/RemoveBinderBoxed/ReplaceBinderBoxed 탐색 실패)", MessageType.None);
+                        EditorGUILayout.HelpBox(
+                            "Binders API가 연결되지 않았습니다. (GetAllBinders/AddBinderBoxed/RemoveBinderBoxed/ReplaceBinderBoxed 탐색 실패)",
+                            MessageType.None);
                     }
                     else
                     {
@@ -485,9 +488,19 @@ namespace ZenECS.EditorWindows
 
                         // Fold-all for binders (보이는 것만)
                         var rArrow2 = new Rect(r2.x + 3, r2.y + 1, 18f, r2.height - 2);
-                        var rLabel2 = new Rect(rArrow2.xMax - 1f, r2.y, r2.width - (rArrow2.width + 4f), r2.height);
+
+                        const float addW = 100f; // 버튼 폭
+                        const float gap = 6f;
+
+                        // 오른쪽 끝 Add 버튼 영역
+                        var rAdd = new Rect(r2.xMax - addW, r2.y, addW, r2.height);
+                        // 라벨은 버튼과 화살표를 제외한 영역
+                        var rLabel2 = new Rect(rArrow2.xMax - 1f, r2.y, r2.width - (rArrow2.width + addW + gap + 4f),
+                            r2.height);
 
                         bool allOpenB = AreAllBindersOpen_VisibleOnly(e, binders);
+
+                        // 화살표 토글
                         EditorGUI.BeginChangeCheck();
                         var visNextB = EditorGUI.Foldout(rArrow2, allOpenB, GUIContent.none, false);
                         EditorGUIUtility.AddCursorRect(rArrow2, MouseCursor.Link);
@@ -498,7 +511,33 @@ namespace ZenECS.EditorWindows
                             GUIUtility.ExitGUI();
                         }
 
+                        // 라벨
                         EditorGUI.LabelField(rLabel2, $"Binders: {binders.Length}");
+
+                        // Add Binder 버튼
+                        using (new EditorGUI.DisabledScope(!_editMode || !BinderApi.CanAdd(world)))
+                        {
+                            if (GUI.Button(rAdd, "Add Binder", EditorStyles.miniButton))
+                            {
+                                // 전체 바인더 타입 수집
+                                var allBinders = BinderTypeFinder.All();
+                                // 이미 붙어있는 타입은 disabled 처리
+                                var disabledB = new HashSet<Type>(binders.Select(x => x.type));
+
+                                ZenBinderPickerWindow.Show(
+                                    allBinderTypes: allBinders,
+                                    disabled: disabledB,
+                                    onPick: picked =>
+                                    {
+                                        var inst = ZenDefaults.CreateWithDefaults(picked);
+                                        BinderApi.Add(world, e, inst);
+                                        Repaint();
+                                    },
+                                    activatorRectGui: rAdd,
+                                    title: $"Entity #{e.Id}:{e.Gen} - Add Binder"
+                                );
+                            }
+                        }
 
                         // 실제 리스트
                         DrawBindersList(world, e, binders);
@@ -528,6 +567,7 @@ namespace ZenECS.EditorWindows
                 if (!_binderFold.TryGetValue(key, out bool open) || !open)
                     return false;
             }
+
             return any && true;
         }
 
@@ -548,12 +588,14 @@ namespace ZenECS.EditorWindows
                     {
                         // 컨텍스트/바인더/시스템 등은 제외하려 시도(휴리스틱)
                         if (ga.IsAbstract) continue;
-                        if (ga.IsInterface && ga.Name.IndexOf("Binder", StringComparison.OrdinalIgnoreCase) >= 0) continue;
+                        if (ga.IsInterface && ga.Name.IndexOf("Binder", StringComparison.OrdinalIgnoreCase) >= 0)
+                            continue;
                         if (ga.Namespace?.EndsWith(".Editor", StringComparison.Ordinal) == true) continue;
 
                         set.Add(ga);
                     }
                 }
+
                 return set.OrderBy(t => t.Name).ToArray();
             }
         }
@@ -609,7 +651,8 @@ namespace ZenECS.EditorWindows
             public static void Draw(float width = 50f)
             {
                 Ensure();
-                GUILayout.Label(new GUIContent("<b><color=#990000>Not Assigned</color></b>"), _rightMini, GUILayout.Width(width));
+                GUILayout.Label(new GUIContent("<b><color=#990000>Not Assigned</color></b>"), _rightMini,
+                    GUILayout.Width(width));
             }
         }
 
@@ -672,7 +715,7 @@ namespace ZenECS.EditorWindows
             {
                 StatusKind.Present => "#27ae60", // green
                 StatusKind.Available => "#27ae60",
-                StatusKind.Absent => "#bdc3c7",  // gray
+                StatusKind.Absent => "#bdc3c7", // gray
                 StatusKind.Missing => "#e74c3c", // red
                 _ => "#ffffff"
             };
@@ -797,22 +840,22 @@ namespace ZenECS.EditorWindows
                 return _cache;
             }
 
-            static bool LooksLikeBinder(Type t)
-            {
-                // 1) 인터페이스 이름에 Binder 포함 (e.g., IBinder, IEntityBinder 등)
-                if (t.GetInterfaces().Any(i => i.Name.IndexOf("Binder", StringComparison.OrdinalIgnoreCase) >= 0))
-                    return true;
-
-                // 2) 특성 이름에 Binder 포함 (e.g., [ZenBinder], [Binder] 등)
-                if (t.GetCustomAttributes(inherit: true).Any(a => a.GetType().Name.IndexOf("Binder", StringComparison.OrdinalIgnoreCase) >= 0))
-                    return true;
-
-                // 3) 타입명 규칙상 Binder 접미사
-                if (t.Name.EndsWith("Binder", StringComparison.Ordinal))
-                    return true;
-
-                return false;
-            }
+            static bool LooksLikeBinder(Type t) => typeof(IBinder).IsAssignableFrom(t);
+            // {
+            //     // 1) 인터페이스 이름에 Binder 포함 (e.g., IBinder, IEntityBinder 등)
+            //     if (t.GetInterfaces().Any(i => i.Name.IndexOf("Binder", StringComparison.OrdinalIgnoreCase) >= 0))
+            //         return true;
+            //
+            //     // 2) 특성 이름에 Binder 포함 (e.g., [ZenBinder], [Binder] 등)
+            //     if (t.GetCustomAttributes(inherit: true).Any(a => a.GetType().Name.IndexOf("Binder", StringComparison.OrdinalIgnoreCase) >= 0))
+            //         return true;
+            //
+            //     // 3) 타입명 규칙상 Binder 접미사
+            //     if (t.Name.EndsWith("Binder", StringComparison.Ordinal))
+            //         return true;
+            //
+            //     return false;
+            // }
         }
 
         static bool CanShowBinderBody(Type t, object boxed)
@@ -835,37 +878,37 @@ namespace ZenECS.EditorWindows
             using (new EditorGUI.IndentLevelScope())
             {
                 // 상단에 Add 버튼 (Binder Picker)
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    GUILayout.FlexibleSpace();
-                    using (new EditorGUI.DisabledScope(!_editMode || !BinderApi.CanAdd(world)))
-                    {
-                        //TODO: 이건 SO로 바인더를 추가하도록 하자 
-                        if (GUILayout.Button("Add Binder", GUILayout.Width(100)))
-                        {
-                            // 1) 전체 바인더 타입 수집
-                            var allBinders = BinderTypeFinder.All();
-
-                            // 2) 이미 붙어있는 타입은 disabled 처리
-                            var disabledB = new HashSet<Type>(bindersArray.Select(x => x.type));
-
-                            // 3) ZenBinderPickerWindow 호출 (네가 올려준 시그니처와 동일)
-                            var activatorRect = GUILayoutUtility.GetLastRect(); // 버튼 렌더 직후 rect
-                            ZenBinderPickerWindow.Show(
-                                allBinderTypes: allBinders,
-                                disabled: disabledB,
-                                onPick: picked =>
-                                {
-                                    var inst = ZenDefaults.CreateWithDefaults(picked); // 기존 컴포넌트 폼과 동일한 기본값 팩토리
-                                    BinderApi.Add(world, e, inst);
-                                    Repaint();
-                                },
-                                activatorRectGui: activatorRect,
-                                title: $"Entity #{e.Id}:{e.Gen} - Add Binder"
-                            );
-                        }
-                    }
-                }
+                // using (new EditorGUILayout.HorizontalScope())
+                // {
+                //     GUILayout.FlexibleSpace();
+                //     using (new EditorGUI.DisabledScope(!_editMode || !BinderApi.CanAdd(world)))
+                //     {
+                //         //TODO: 이건 SO로 바인더를 추가하도록 하자 
+                //         if (GUILayout.Button("Add Binder", GUILayout.Width(100)))
+                //         {
+                //             // 1) 전체 바인더 타입 수집
+                //             var allBinders = BinderTypeFinder.All();
+                //
+                //             // 2) 이미 붙어있는 타입은 disabled 처리
+                //             var disabledB = new HashSet<Type>(bindersArray.Select(x => x.type));
+                //
+                //             // 3) ZenBinderPickerWindow 호출 (네가 올려준 시그니처와 동일)
+                //             var activatorRect = GUILayoutUtility.GetLastRect(); // 버튼 렌더 직후 rect
+                //             ZenBinderPickerWindow.Show(
+                //                 allBinderTypes: allBinders,
+                //                 disabled: disabledB,
+                //                 onPick: picked =>
+                //                 {
+                //                     var inst = ZenDefaults.CreateWithDefaults(picked); // 기존 컴포넌트 폼과 동일한 기본값 팩토리
+                //                     BinderApi.Add(world, e, inst);
+                //                     Repaint();
+                //                 },
+                //                 activatorRectGui: activatorRect,
+                //                 title: $"Entity #{e.Id}:{e.Gen} - Add Binder"
+                //             );
+                //         }
+                //     }
+                // }
 
                 foreach (var (t, boxed) in bindersArray)
                 {
@@ -888,46 +931,71 @@ namespace ZenECS.EditorWindows
                             nameSpace: t.Namespace,
                             rRight =>
                             {
-                                var rReset = new Rect(rRight.xMax - 42.5f, rRight.y, 20, rRight.height);
-                                var rRemove = new Rect(rRight.xMax - 20, rRight.y, 20, rRight.height);
+                                var style = EditorStyles.miniButton;
+
+                                // 컴포넌트 헤더와 동일 규격(폭 20)으로 정렬
+                                const float wBtn = 20f;
+
+                                // 헤더 높이 기준 버튼 높이
+                                var hBtn = rRight.height;
+                                var yBtn = rRight.y;
+
+                                // 버튼 우측부터 X, + 순으로 배치 (컴포넌트 헤더의 rReset/rRemove 배치 규칙과 동일)
+                                var rRemove = new Rect(rRight.xMax - wBtn, yBtn, wBtn, hBtn); // X
+                                var rAdd = new Rect(rRight.xMax - (wBtn * 2f) - 2f, yBtn, wBtn, hBtn); // +
+
+                                // 선택 버튼(•)을 쓰고 있다면 동일 크기로 그 왼쪽에 배치 (선택 기능 유지)
+                                var useSelectButton = EcsExplorerActions.TryGetEntityMainView(world, e, out var go);
+                                var rSelect = new Rect(rAdd.x - wBtn - 2f, yBtn, wBtn, hBtn);
 
                                 using (new EditorGUI.DisabledScope(!_editMode))
                                 {
-                                    //TODO: 이건 Pause/Unpause로 하자
-                                    // using (new EditorGUI.DisabledScope(!hasFields || !BinderApi.CanReplace(world)))
-                                    // {
-                                    //     if (GUI.Button(rReset, "R", EditorStyles.miniButton))
-                                    //     {
-                                    //         if (EditorUtility.DisplayDialog(
-                                    //                 "Reset Binder",
-                                    //                 $"Reset to defaults?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}",
-                                    //                 "Yes", "No"))
-                                    //         {
-                                    //             var def = ZenDefaults.CreateWithDefaults(t);
-                                    //             BinderApi.Replace(world, e, def);
-                                    //             Repaint();
-                                    //         }
-                                    //     }
-                                    // }
-
-                                    using (new EditorGUI.DisabledScope(!BinderApi.CanRemove(world)))
+                                    // + : Add Component
+                                    var gcAdd = new GUIContent("+", "Add Component to this Entity");
+                                    if (GUI.Button(rAdd, gcAdd, style))
                                     {
-                                        if (GUI.Button(rRemove, "X", EditorStyles.miniButton))
-                                        {
-                                            if (EditorUtility.DisplayDialog(
-                                                    "Remove Binder",
-                                                    $"Remove this binder?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}",
-                                                    "Yes", "No"))
+                                        var all = ZenECS.EditorCommon.ZenComponentPickerWindow.FindAllZenComponents()
+                                            .ToList();
+                                        var disabled = new HashSet<Type>();
+                                        foreach (var (tHave, _) in world.GetAllComponents(e)) disabled.Add(tHave);
+
+                                        ZenComponentPickerWindow.Show(
+                                            all, disabled,
+                                            picked =>
                                             {
-                                                BinderApi.Remove(world, e, t);
-                                                _binderFold.Remove(ck);
+                                                var inst = ZenDefaults.CreateWithDefaults(picked);
+                                                world.AddComponentBoxed(e, inst);
                                                 Repaint();
-                                            }
+                                            },
+                                            rAdd,
+                                            $"Entity #{e.Id}:{e.Gen} Add Component",
+                                            ZenComponentPickerWindow.PickerOpenMode.UtilityFixedWidth
+                                        );
+                                    }
+
+                                    // X : Delete Entity
+                                    var gcDel = new GUIContent("X", "Delete this Entity");
+                                    if (GUI.Button(rRemove, gcDel, style))
+                                    {
+                                        if (EditorUtility.DisplayDialog(
+                                                "Remove Entity",
+                                                $"Remove this entity?\n\nEntity #{e.Id}:{e.Gen}",
+                                                "Yes", "No"))
+                                        {
+                                            world.DespawnEntity(e);
+                                            Repaint();
                                         }
                                     }
                                 }
-                            },
-                            foldable: hasMetaOrFields,
+
+                                // 선택 버튼(•) – 편집 모드와 무관하게 사용 가능
+                                if (useSelectButton)
+                                {
+                                    var gcSel = new GUIContent("•", "Select the main view GameObject of this Entity");
+                                    if (GUI.Button(rSelect, gcSel, style))
+                                        EcsExplorerActions.TrySelectEntityMainView(go);
+                                }
+                            }, foldable: hasMetaOrFields,
                             false
                         );
 
@@ -954,7 +1022,9 @@ namespace ZenECS.EditorWindows
                                     BinderApi.Replace(world, e, obj);
                             }
                         }
-                        catch (KeyNotFoundException) { }
+                        catch (KeyNotFoundException)
+                        {
+                        }
                     }
                 }
             }
@@ -1043,7 +1113,9 @@ namespace ZenECS.EditorWindows
                             ZenComponentFormGUI.DrawObject(bodyInner, obj, t);
                             if (EditorGUI.EndChangeCheck() && _editMode) world.ReplaceComponentBoxed(e, obj);
                         }
-                        catch (KeyNotFoundException) { }
+                        catch (KeyNotFoundException)
+                        {
+                        }
                     }
                 }
             }
@@ -1115,6 +1187,7 @@ namespace ZenECS.EditorWindows
                                 list.Add((t, o));
                             }
                         }
+
                         binders = list.ToArray();
                         return true;
                     }
@@ -1139,6 +1212,7 @@ namespace ZenECS.EditorWindows
                             if (b is null) continue;
                             list.Add((b.GetType(), b));
                         }
+
                         binders = list.ToArray();
                         return true;
                     }
@@ -1162,7 +1236,7 @@ namespace ZenECS.EditorWindows
             {
                 var b = (IBinder)binder;
                 w.AttachBinder(e, b);
-                
+
                 if (_miAddBinderBoxed is null) return;
                 _miAddBinderBoxed.Invoke(w, new object[] { e, binder });
             }

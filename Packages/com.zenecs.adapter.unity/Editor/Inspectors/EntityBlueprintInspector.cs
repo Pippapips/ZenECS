@@ -21,8 +21,8 @@ namespace ZenECS.EditorInspectors
         SerializedProperty _compEntriesProp; // _data.entries
         ReorderableList _componentsList;
 
-        // ───────── Contexts (managed reference) ─────────
-        SerializedProperty _contextsProp; // _contexts (List<IContext>)
+        // ───────── Contexts (ContextAsset refs) ─────────
+        SerializedProperty _contextsProp; // _contextAssets (List<ContextAsset>)
         ReorderableList _contextsList;
 
         // ───────── Binders (managed reference) ─────────
@@ -32,6 +32,7 @@ namespace ZenECS.EditorInspectors
         readonly Dictionary<string, bool> _fold = new();
         const float PAD = 6f;
         
+        GUIStyle _obsOkStyle;   // 회색 이탤릭
         GUIStyle _obsMissingStyle;   // 회색 이탤릭
         bool _stylesReady;
         
@@ -43,12 +44,12 @@ namespace ZenECS.EditorInspectors
             if (_compEntriesProp != null && _compEntriesProp.isArray)
                 BuildComponentsList();
 
-            // Contexts
-            _contextsProp = serializedObject.FindProperty("_contexts");
+            // Contexts (SO refs: _contextAssets)
+            _contextsProp = serializedObject.FindProperty("_contextAssets");
             if (_contextsProp != null && _contextsProp.isArray)
                 BuildContextsList();
 
-            // Binders
+            // Binders (managed reference)
             _bindersProp = serializedObject.FindProperty("_binders");
             if (_bindersProp != null && _bindersProp.isArray)
                 BuildBindersList();
@@ -67,6 +68,16 @@ namespace ZenECS.EditorInspectors
                 normal =
                 {
                     textColor = Color.darkGray
+                }
+            };
+
+            _obsOkStyle = new GUIStyle(baseStyle)
+            {
+                fontStyle = FontStyle.Normal,
+                richText  = false,
+                normal =
+                {
+                    textColor = Color.wheat
                 }
             };
 
@@ -209,47 +220,23 @@ namespace ZenECS.EditorInspectors
         }
 
         // =====================================================================
-        // Contexts (managed reference: IContext 인스턴스 그대로 편집)
+        // Contexts (ContextAsset refs)
         // =====================================================================
         void BuildContextsList()
         {
             _contextsList = new ReorderableList(serializedObject, _contextsProp, true, true, true, true);
+
             _contextsList.drawHeaderCallback = r =>
-                EditorGUI.LabelField(r, "Contexts (managed reference, shared per-entity)", EditorStyles.boldLabel);
+                EditorGUI.LabelField(r, "Contexts (Context Assets)", EditorStyles.boldLabel);
 
-            _contextsList.onAddDropdownCallback = (rect, list) =>
+            // 간단히: onAdd는 빈 슬롯 하나 추가하고, 사용자가 직접 SO를 드래그/선택
+            _contextsList.onAddCallback = rl =>
             {
-                // 1) 타입 수집: IContext 파생 + 비추상 + 파라미터 없는 생성자
-                IEnumerable<Type> AllContexts()
-                    => UnityEditor.TypeCache.GetTypesDerivedFrom(typeof(ZenECS.Core.Binding.IContext))
-                        .Where(t => !t.IsAbstract && t.GetConstructor(Type.EmptyTypes) != null);
-
-                // 2) 이미 추가된 타입 비활성
-                var disabled = new HashSet<Type>();
-                for (int i = 0; i < _contextsProp.arraySize; i++)
-                {
-                    var p = _contextsProp.GetArrayElementAtIndex(i);
-                    var inst = p?.managedReferenceValue;
-                    if (inst != null) disabled.Add(inst.GetType());
-                }
-
-                // 3) Picker 팝업
-                ZenContextPickerWindow.Show(
-                    allContextTypes: AllContexts(),
-                    disabled: disabled,
-                    onPick: pickedType =>
-                    {
-                        serializedObject.Update();
-                        int idx = _contextsProp.arraySize;
-                        _contextsProp.InsertArrayElementAtIndex(idx);
-                        var elem = _contextsProp.GetArrayElementAtIndex(idx);
-                        elem.managedReferenceValue = Activator.CreateInstance(pickedType);
-                        serializedObject.ApplyModifiedProperties();
-                        EditorUtility.SetDirty(target);
-                    },
-                    activatorRectGui: rect,
-                    title: "Add Context"
-                );
+                int idx = _contextsProp.arraySize;
+                _contextsProp.InsertArrayElementAtIndex(idx);
+                var elem = _contextsProp.GetArrayElementAtIndex(idx);
+                elem.objectReferenceValue = null;
+                serializedObject.ApplyModifiedProperties();
             };
 
             _contextsList.onRemoveCallback = rl =>
@@ -258,42 +245,15 @@ namespace ZenECS.EditorInspectors
                     _contextsProp.DeleteArrayElementAtIndex(rl.index);
             };
 
-            _contextsList.elementHeightCallback = (index) =>
-            {
-                var p = _contextsProp.GetArrayElementAtIndex(index);
-                float headerH = EditorGUIUtility.singleLineHeight + PAD;
-
-                string key = $"ctx:{index}";
-                bool open = _fold.TryGetValue(key, out var o) ? o : true;
-                if (!open) return headerH;
-
-                return headerH + PAD + EditorGUI.GetPropertyHeight(p, true) + PAD;
-            };
+            _contextsList.elementHeightCallback = index =>
+                EditorGUIUtility.singleLineHeight + PAD;
 
             _contextsList.drawElementCallback = (rect, index, active, focused) =>
             {
                 var p = _contextsProp.GetArrayElementAtIndex(index);
-                var inst = p?.managedReferenceValue;
-                string title = inst != null ? inst.GetType().Name : "(None)";
 
-                string key = $"ctx:{index}";
-                if (!_fold.ContainsKey(key)) _fold[key] = true;
-
-                var rHead = new Rect(rect.x + 4, rect.y + 3, rect.width - 8, EditorGUIUtility.singleLineHeight);
-                bool open = EditorGUI.Foldout(rHead, _fold[key], title, true, EditorStyles.foldoutHeader);
-                _fold[key] = open;
-                if (!open) return;
-
-                var top = rHead.yMax + PAD;
-                var rBody = new Rect(rect.x + 8, top, rect.width - 16, rect.yMax - top - PAD);
-
-                EditorGUI.BeginChangeCheck();
-                EditorGUI.PropertyField(rBody, p, includeChildren: true);
-                if (EditorGUI.EndChangeCheck())
-                {
-                    serializedObject.ApplyModifiedProperties();
-                    EditorUtility.SetDirty(target);
-                }
+                var r = new Rect(rect.x + 4, rect.y + 3, rect.width - 8, EditorGUIUtility.singleLineHeight);
+                EditorGUI.PropertyField(r, p, GUIContent.none);
             };
         }
 
@@ -353,22 +313,18 @@ namespace ZenECS.EditorInspectors
                 var inst = p?.managedReferenceValue;
                 var t = inst?.GetType();
                 float headerH = EditorGUIUtility.singleLineHeight + PAD;
-                // // pill 라벨들 계산
-                // var provided = GetProvidedContextTypes(_contextsProp);
-                // var required = inst != null ? ExtractContextFieldTypes(inst) : Array.Empty<Type>();
-                // var pillLabels = required.Select(rt => rt.Name).ToList();
-                // float pillsH = CalcBadgesHeight(pillLabels, EditorGUIUtility.currentViewWidth - 40f);
-                // if (pillsH < 18f) pillsH = 18f;
+
                 float pillsH = 0f; // 컨텍스트 배지 없음
                 string key = $"binder:{index}";
                 bool open = _fold.TryGetValue(key, out var o) ? o : true;
                 if (!open)
                     return headerH + pillsH + PAD;
-                // 바디(필드 폼) + 관찰 메타(IBind) 영역
+
                 float bodyH = EditorGUI.GetPropertyHeight(p, GUIContent.none, true);
                 float metaH = 0f;
                 if (t != null && ExtractObservedComponentTypes(t).Count > 0)
                     metaH = EditorGUIUtility.singleLineHeight * (1 + ExtractObservedComponentTypes(t).Count) - 30f;
+
                 return headerH + PAD + pillsH + PAD + metaH + PAD + bodyH + PAD;
             };
 
@@ -380,26 +336,24 @@ namespace ZenECS.EditorInspectors
                 string title = t != null ? t.Name : "(None)";
                 string key = $"binder:{index}";
                 if (!_fold.ContainsKey(key)) _fold[key] = true;
+
                 // 1) 헤더
                 var rHead = new Rect(rect.x + 4, rect.y + 3, rect.width - 8, EditorGUIUtility.singleLineHeight);
                 bool open = EditorGUI.Foldout(rHead, _fold[key], title, true, EditorStyles.foldoutHeader);
                 _fold[key] = open;
-                // 2) pill 배지 (필요 컨텍스트 vs 제공 컨텍스트)
-                var provided = GetProvidedContextTypes(_contextsProp);
-                var required = inst != null ? ExtractContextFieldTypes(inst) : Array.Empty<Type>();
-                //var badgeTop = rHead.yMax + 4f;
-                //var rPills = new Rect(rect.x + 8, badgeTop, rect.width - 16, Mathf.Max(18f, rect.yMax - badgeTop));
-                //DrawContextPills(rPills, required, provided);
-                var rPills = new Rect(rect.x + 8, rHead.yMax, 0, 0); // 자리 없앰
+
+                // 2) (현재는 pill 배지 비활성화 상태)
+                // var provided = GetProvidedContextTypes(_contextsProp);
+                // var required = inst != null ? ExtractContextFieldTypes(inst) : Array.Empty<Type>();
+                var rPills = new Rect(rect.x + 8, rHead.yMax, 0, 0); // 자리만 잡고 사용 안 함
+
                 if (!open) return;
+
                 // 3) Observing (IBinds) 메타 블럭
-                
-                // observed = IBind<T...>에서 뽑은 관찰 대상 타입 리스트
                 var observed = t != null ? ExtractObservedComponentTypes(t) : Array.Empty<Type>();
 
                 if (observed.Count > 0)
                 {
-                    // ✅ Blueprint에 실제로 들어있는 컴포넌트 타입: entries(typeName)에서 해석
                     var providedTypes = GetProvidedComponentTypesFromEntries(_compEntriesProp); // _data.entries
                     var providedSet   = new HashSet<Type>(providedTypes);
 
@@ -412,9 +366,8 @@ namespace ZenECS.EditorInspectors
                     {
                         var line = new Rect(rect.x + 16, yMeta, rect.width - 32, EditorGUIUtility.singleLineHeight);
 
-                        // 정확 타입 매칭(보통 struct 컴포넌트) — 필요시 IsAssignableFrom으로 바꿔도 됨
                         bool added = providedSet.Contains(ct);
-                        var style  = added ? EditorStyles.miniLabel : _obsMissingStyle;
+                        var style  = added ? _obsOkStyle : _obsMissingStyle;
 
                         if (added) EditorGUI.LabelField(line, $"• {ct.Name}", style);
                         else EditorGUI.LabelField(line, $"• {ct.Name} <not-assigned>", style);
@@ -423,11 +376,9 @@ namespace ZenECS.EditorInspectors
                 }
                 
                 // 4) 바디(바인더 필드 편집 폼)
-                //var bodyTop = Mathf.Max(rPills.yMax, (observed.Count > 0 ? rPills.yMax + 40f : rPills.yMax)) + 6f;
                 var bodyTop = rHead.yMax + (observed.Count > 0 ? 40f : 6f);
                 var rBody = new Rect(rect.x + 8, bodyTop, rect.width - 16, rect.yMax - bodyTop - PAD);
                 EditorGUI.BeginChangeCheck();
-                //EditorGUI.PropertyField(rBody, p, includeChildren: true);
                 DrawBinderBody(rBody, p);
                 if (EditorGUI.EndChangeCheck())
                 {
@@ -450,6 +401,10 @@ namespace ZenECS.EditorInspectors
                 var p = contextsProp.GetArrayElementAtIndex(i);
                 var inst = p?.managedReferenceValue;
                 if (inst != null) list.Add(inst.GetType());
+                // NOTE: 현재 contextsProp는 ContextAsset(Object ref)이므로
+                // managedReferenceValue는 대부분 null일 것.
+                // 나중에 pill 배지를 부활시킬 때 ContextAsset → IContext 타입 매핑을
+                // 별도 메타 정보로 풀어주면 됨.
             }
 
             return list;
@@ -483,7 +438,7 @@ namespace ZenECS.EditorInspectors
             return set.OrderBy(t => t.Name).ToArray();
         }
 
-// === Binder에서 [Context] 필드 타입 수집 ===
+        // === Binder에서 [Context] 필드 타입 수집 ===
         static Type[] ExtractContextFieldTypes(object binderInstance)
         {
             if (binderInstance == null) return Array.Empty<Type>();
@@ -504,7 +459,6 @@ namespace ZenECS.EditorInspectors
             return list.Distinct().ToArray();
         }
 
-// === pill 배지 한 줄(또는 래핑) 높이 계산 ===
         static float CalcBadgesHeight(IReadOnlyList<string> labels, float width, float minPill = 60f)
         {
             if (labels == null || labels.Count == 0) return 18f;
@@ -522,45 +476,9 @@ namespace ZenECS.EditorInspectors
             return h;
         }
 
-// === “필요 컨텍스트” pill 배지 그리기 (초록=있음 / 빨강=없음) ===
         static void DrawContextPills(Rect area, Type[] required, IReadOnlyList<Type> providedTypes)
         {
-            // const float rowH = 18f;
-            // float x = area.x, y = area.y, pad = 4f;
-            //
-            // if (required == null || required.Length == 0)
-            // {
-            //     GUI.Label(new Rect(x, y, area.width, rowH), "No [Context] fields", EditorStyles.miniLabel);
-            //     return;
-            // }
-            //
-            // foreach (var req in required)
-            // {
-            //     string label = req.Name;
-            //     bool ok = IsSatisfied(req, providedTypes);
-            //
-            //     var content = new GUIContent(label, ok ? "Context present" : "Missing context");
-            //     var size = GUI.skin.label.CalcSize(content);
-            //     var w = Mathf.Clamp(size.x + 16f, 60f, area.width);
-            //
-            //     if (x + w > area.xMax)
-            //     {
-            //         x = area.x;
-            //         y += rowH + 2f;
-            //     }
-            //
-            //     var r = new Rect(x, y, w, rowH);
-            //     var bg = ok ? new Color(0.20f, 0.65f, 0.20f, 0.22f) : new Color(0.85f, 0.25f, 0.25f, 0.22f);
-            //     EditorGUI.DrawRect(r, bg);
-            //     var outline = new Color(0f, 0f, 0f, 0.15f);
-            //     EditorGUI.DrawRect(new Rect(r.x, r.y, r.width, 1f), outline);
-            //     EditorGUI.DrawRect(new Rect(r.x, r.yMax - 1f, r.width, 1f), outline);
-            //     EditorGUI.DrawRect(new Rect(r.x, r.y, 1f, r.height), outline);
-            //     EditorGUI.DrawRect(new Rect(r.xMax - 1f, r.y, 1f, r.height), outline);
-            //
-            //     GUI.Label(r, content, EditorStyles.miniBoldLabel);
-            //     x += w + pad;
-            // }
+            // pill UI 현재 비활성화 상태 (필요시 ContextAsset 기반으로 다시 구현)
         }
 
         void DrawBinderBody(Rect area, SerializedProperty root)
@@ -569,15 +487,12 @@ namespace ZenECS.EditorInspectors
             var x = area.x;
             var w = area.width;
 
-            // root의 끝 위치 잡기
             var iter = root.Copy();
             var end = root.GetEndProperty();
 
-            // 첫 NextVisible(true)로 루트 진입 → 이후부터 자식만 렌더
             bool enterChildren = true;
             while (iter.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iter, end))
             {
-                // 루트 자체("Element 0")는 이미 건너뛰었으니 전부 자식
                 float h = EditorGUI.GetPropertyHeight(iter, GUIContent.none, true);
                 var r = new Rect(x, y, w, h);
                 EditorGUI.PropertyField(r, iter, GUIContent.none, true);
@@ -586,7 +501,6 @@ namespace ZenECS.EditorInspectors
             }
         }
 
-        // BlueprintData.Resolve와 동일 컨셉의 로컬 리졸브
         static Type ResolveTypeName(string typeName)
         {
             if (string.IsNullOrEmpty(typeName)) return null;
@@ -601,7 +515,6 @@ namespace ZenECS.EditorInspectors
             return null;
         }
 
-        // _data.entries(SerializedProperty)에서 제공된 컴포넌트 타입 수집
         static IReadOnlyList<Type> GetProvidedComponentTypesFromEntries(SerializedProperty compEntriesProp)
         {
             if (compEntriesProp == null || !compEntriesProp.isArray) return Array.Empty<Type>();
@@ -618,8 +531,6 @@ namespace ZenECS.EditorInspectors
             return list;
         }
 
-
-        // 블루프린트에 현재 추가된 컴포넌트 타입 수집
         static IReadOnlyList<Type> GetProvidedComponentTypes(SerializedProperty componentsProp)
         {
             if (componentsProp == null || !componentsProp.isArray) return Array.Empty<Type>();
@@ -632,7 +543,6 @@ namespace ZenECS.EditorInspectors
             }
             return list;
         }
-
     }
 }
 #endif
