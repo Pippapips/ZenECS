@@ -27,5 +27,7 @@ namespace ZenECS.Core.Internal
         /// <param name="ctx">Context instance.</param>
         public void RegisterContext(Entity e, IContext ctx) => _contextRegistry.Register(this, e, ctx);
         public bool HasContext(Entity e, Type? contextType) => _contextRegistry.Has(this, e, contextType);
+        public (Type type, object boxed)[] GetAllContexts(Entity e) => _contextRegistry.GetAllContexts(this, e);
+        public bool RemoveContext(Entity e, IContext ctx) => _contextRegistry.Remove(this, e, ctx);
     }
 }

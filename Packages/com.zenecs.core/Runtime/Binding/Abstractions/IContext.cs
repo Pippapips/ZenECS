@@ -13,6 +13,7 @@
 #nullable enable
 
 using System;
+using System.Collections.Generic;
 
 namespace ZenECS.Core.Binding
 {
@@ -58,6 +59,9 @@ namespace ZenECS.Core.Binding
         /// so derived/implementing contexts will also match.
         /// </remarks>
         bool Has(IWorld w, Entity e, Type? contextType);
+
+        IReadOnlyList<IContext>? GetAllContextList(IWorld w, Entity e);
+        (Type type, object boxed)[] GetAllContexts(IWorld w, Entity e);
     }
 
     /// <summary>

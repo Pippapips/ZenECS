@@ -144,6 +144,15 @@ namespace ZenECS.Core.Internal.Contexts
                 ini.Initialize(w, e, this);
                 entry.Initialized = true;
             }
+
+            var binders = w.GetAllBinderList(e);
+            if (binders != null)
+            {
+                foreach (var binder in binders)
+                {
+                    binder.ContextAttached(ctx);
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -156,6 +165,15 @@ namespace ZenECS.Core.Internal.Contexts
                       dict.Keys.FirstOrDefault(t => t.IsInstanceOfType(ctx));
             if (key == null) return false;
 
+            var binders = w.GetAllBinderList(e);
+            if (binders != null)
+            {
+                foreach (var binder in binders)
+                {
+                    binder.ContextDetached(ctx);
+                }
+            }
+            
             var entry = dict[key];
             if (entry.Initialized && entry.Ctx is IContextInitialize ini)
             {
@@ -164,6 +182,7 @@ namespace ZenECS.Core.Internal.Contexts
             }
             dict.Remove(key);
             if (dict.Count == 0) Bag(w).Remove(e);
+            
             return true;
         }
 
@@ -230,6 +249,26 @@ namespace ZenECS.Core.Internal.Contexts
                 if (entry.Initialized && entry.Ctx is IContextInitialize ini)
                     ini.Deinitialize(w, e);
             Bag(w).Remove(e);
+        }
+
+        public IReadOnlyList<IContext>? GetAllContextList(IWorld w, Entity e)
+        {
+            if (!Bag(w).TryGetValue(e, out var dict)) return null;
+            return dict.Values.Count == 0 ? null : dict.Values.Select(entry => entry.Ctx).ToList();
+        }
+
+        public (Type type, object boxed)[] GetAllContexts(IWorld w, Entity e)
+        {
+            if (!Bag(w).TryGetValue(e, out var dict)) return Array.Empty<(Type, object)>();
+            if (dict.Count == 0) return Array.Empty<(Type, object)>();
+            var contexts = dict.Values.ToArray();
+            var arr = new (Type, object)[contexts.Length];
+            for (int i = 0; i < contexts.Length; i++)
+            {
+                var b = contexts[i];
+                arr[i] = (b.KeyType, (object)b.Ctx);
+            }
+            return arr;
         }
 
         /// <inheritdoc/>

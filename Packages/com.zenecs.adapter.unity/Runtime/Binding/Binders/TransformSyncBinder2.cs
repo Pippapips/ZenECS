@@ -7,7 +7,7 @@ using ZenECS.Core.Binding;
 
 namespace ZenECS.Adapter.Unity.Binding.Binders.Implementations
 {
-    public class TransformSyncBinder :
+    public class TransformSyncBinder2 :
         BaseBinder,
         IBind<Position>,
         IBind<Rotation>

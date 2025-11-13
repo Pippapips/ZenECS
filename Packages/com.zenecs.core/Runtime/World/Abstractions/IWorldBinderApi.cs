@@ -12,6 +12,7 @@
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 using System;
+using System.Collections.Generic;
 using ZenECS.Core.Binding;
 
 namespace ZenECS.Core
@@ -48,5 +49,7 @@ namespace ZenECS.Core
         bool DetachBinder(Entity e, Type t);
 
         (Type type, object boxed)[] GetAllBinders(Entity e);
+        
+        IReadOnlyList<IBinder>? GetAllBinderList(Entity e);
     }
 }

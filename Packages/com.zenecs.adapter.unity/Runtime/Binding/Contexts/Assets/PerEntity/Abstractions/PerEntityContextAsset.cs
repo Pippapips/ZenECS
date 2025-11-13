@@ -8,6 +8,7 @@
 //   • Lifetime tied to entity; disposed when entity is destroyed.
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
+using System;
 using ZenECS.Core;
 using ZenECS.Core.Binding;
 
@@ -18,6 +19,8 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts.Assets
     /// </summary>
     public abstract class PerEntityContextAsset : ContextAsset
     {
+        public abstract Type ContextType { get; }
+        
         /// <summary>
         /// Create a new context instance for the given entity.
         /// Caller is responsible for registering it to the entity.

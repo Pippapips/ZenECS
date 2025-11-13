@@ -8,9 +8,12 @@
 //   • Lifetime: tied to entity; destroy GameObject when context is disposed (by caller).
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
+using System;
 using UnityEngine;
+using ZenECS.Adapter.Unity.Linking;
 using ZenECS.Core;
 using ZenECS.Core.Binding;
+using Object = UnityEngine.Object;
 
 namespace ZenECS.Adapter.Unity.Binding.Contexts.Assets
 {
@@ -19,13 +22,23 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts.Assets
         fileName = "ModelContext")]
     public sealed class ModelContextAsset : PerEntityContextAsset
     {
+        public override Type ContextType => typeof(ModelContext);
+        
         [Header("Model Prefab")]
         public GameObject modelPrefab = null!;
-
+        
         /// <inheritdoc />
         public override IContext CreateContextForEntity(IWorld world, Entity e)
         {
-            var instance = Object.Instantiate(modelPrefab);
+            var boot = new EntityLinkBootstrap(LinkBootstrapPolicy.PreferModel);
+            var (ww, ee, main) = boot.Run(
+                world,
+                existingEntity: e,
+                optionalViewPrefab: modelPrefab,
+                optionalViewRoot: null,
+                asMain: true);
+            
+            var instance = main.gameObject;
             var t = instance.transform;
             var animator = instance.GetComponent<Animator>();
 

@@ -12,6 +12,7 @@
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 using System;
+using System.Collections.Generic;
 using ZenECS.Core.Binding;
 
 namespace ZenECS.Core.Internal
@@ -57,5 +58,7 @@ namespace ZenECS.Core.Internal
         {
             return _bindingRouter.GetAllBinders(e);
         }
+
+        public IReadOnlyList<IBinder>? GetAllBinderList(Entity e) => _bindingRouter.GetAllBinderList(e);
     }
 }

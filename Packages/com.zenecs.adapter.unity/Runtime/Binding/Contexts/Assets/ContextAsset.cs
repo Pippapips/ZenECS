@@ -8,6 +8,7 @@
 //   • Split into shared (world-level) and per-entity variants.
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
+using System;
 using UnityEngine;
 
 namespace ZenECS.Adapter.Unity.Binding.Contexts.Assets

@@ -13,13 +13,20 @@
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 using System;
+using System.Collections.Generic;
 
 namespace ZenECS.Core.Binding
 {
+    public interface IContextAwareBinder
+    {
+        void ContextAttached(IContext context);
+        void ContextDetached(IContext context);
+    }
+    
     /// <summary>
     /// Connects an entity’s contexts and deltas to an external presentation target.
     /// </summary>
-    public interface IBinder
+    public interface IBinder : IContextAwareBinder
     {
         /// <summary>
         /// The entity this binder is currently attached to. Default(<see cref="Entity"/>) when detached.
@@ -58,7 +65,7 @@ namespace ZenECS.Core.Binding
     /// Internal marker that lets the router/registry preserve "attach sequence" ordering
     /// independent from <see cref="IBinder.Priority"/>.
     /// </summary>
-    public interface IAttachOrderMarker
+    internal interface IAttachOrderMarker
     {
         /// <summary>Zero-based order assigned at attachment time.</summary>
         int AttachOrder { get; set; }
@@ -73,7 +80,7 @@ namespace ZenECS.Core.Binding
         protected IWorld? World { get; private set; }
 
         /// <summary>Lookup service for resolving contexts (null when unbound).</summary>
-        protected IContextLookup Contexts { get; private set; }
+        protected IContextLookup? Contexts { get; private set; }
 
         /// <inheritdoc/>
         public Entity Entity { get; private set; }
@@ -93,7 +100,7 @@ namespace ZenECS.Core.Binding
             Contexts = contextLookup;
             Entity = e;
             _bound = true;
-            OnBind(e);
+            OnBind(e, contextLookup.GetAllContextList(world, e));
         }
 
         /// <inheritdoc/>
@@ -113,17 +120,31 @@ namespace ZenECS.Core.Binding
             }
         }
 
+        public void ContextAttached(IContext context)
+        {
+            OnContextAttached(context);
+        }
+
+        public void ContextDetached(IContext context)
+        {
+            OnContextDetached(context);
+        }
+
         /// <inheritdoc/>
         public virtual void Apply(IWorld w, Entity e) { }
 
         /// <summary>
         /// Hook called once after a successful <see cref="Bind"/>. Use to cache context references.
         /// </summary>
-        protected virtual void OnBind(Entity e) { }
+        protected virtual void OnBind(Entity e, IReadOnlyList<IContext>? contexts) { }
 
         /// <summary>
         /// Hook called during <see cref="Unbind"/> for cleanup (unsubscribe, dispose, etc.).
         /// </summary>
         protected virtual void OnUnbind() { }
+        
+        protected virtual void OnContextAttached(IContext context) { }
+        
+        protected virtual void OnContextDetached(IContext context) { }
     }
 }

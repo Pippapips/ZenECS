@@ -171,6 +171,15 @@ namespace ZenECS.Core.Internal.Binding
             return Array.Empty<(Type, object)>();
         }
         
+        public IReadOnlyList<IBinder>? GetAllBinderList(Entity e)
+        {
+            if (_byEntity.TryGetValue(e, out var list) && list != null && list.Count > 0)
+            {
+                return list;
+            }
+            return null;
+        }
+        
         // ---- helpers -------------------------------------------------------------
 
         private void InsertOrdered(List<IBinder> list, IBinder binder)

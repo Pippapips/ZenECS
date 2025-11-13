@@ -135,7 +135,7 @@ namespace ZenECS.EditorCommon
                     GUI.SetNextControlName("ZC_SEARCH");
                     var newFilter = GUILayout.TextField(
                         _filter,
-                        GUI.skin.FindStyle("ToolbarSeachTextField") ?? EditorStyles.textField,
+                        GUI.skin.FindStyle("ToolbarSearchTextField") ?? EditorStyles.textField,
                         GUILayout.MinWidth(140), GUILayout.MaxWidth(220)
                     );
 

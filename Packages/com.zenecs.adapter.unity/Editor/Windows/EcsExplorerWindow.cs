@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity;
 using ZenECS.Adapter.Unity.Attributes;
+using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
 using ZenECS.Core;
 using ZenECS.Core.Binding;
 using ZenECS.EditorCommon;
@@ -34,8 +35,8 @@ namespace ZenECS.EditorWindows
         string _entityGenText = "0";
         int? _findEntityGen = null; // current target ID (null => list mode)
 
-        bool _findMode = false; // single view mode on/off
-        Entity _foundEntity; // resolved entity
+        bool _findMode = false;   // single view mode on/off
+        Entity _foundEntity;      // resolved entity
         bool _foundValid = false; // found in world?
 
         // --- Other UI/layout state ---
@@ -45,9 +46,9 @@ namespace ZenECS.EditorWindows
         double _nextRepaint;
         private int _selSysEntityCount;
 
-        readonly Dictionary<Entity, bool> _entityFold = new(); // entityId → fold
+        readonly Dictionary<Entity, bool> _entityFold = new();    // entityId → fold
         readonly Dictionary<string, bool> _componentFold = new(); // $"{entityId}:{typeName}" → fold
-        readonly Dictionary<string, bool> _binderFold = new(); // $"{entityId}:{typeName}" → fold
+        readonly Dictionary<string, bool> _binderFold = new();    // $"{entityId}:{typeName}" → fold
         bool _editMode = true;
 
         static EcsDriver? _driver;
@@ -355,6 +356,24 @@ namespace ZenECS.EditorWindows
             }
         }
 
+        static GUIStyle _bigPlusButton;
+        static bool _bigPlusReady;
+
+        static void EnsureBigPlusStyle()
+        {
+            if (_bigPlusReady) return;
+            _bigPlusReady = true;
+
+            _bigPlusButton = new GUIStyle(EditorStyles.miniButton)
+            {
+                fontSize   = 16,                     // 기본보다 크게
+                alignment  = TextAnchor.MiddleCenter,
+                padding    = new RectOffset(0, 0, 0, 0),
+                fixedWidth = 22f,                    // 엔티티 헤더 버튼 폭과 비슷하게
+                fixedHeight = 18f
+            };
+        }
+
         // --- Render a single entity box (reused by list mode & single view mode) ---
         void DrawOneEntity(IWorld world, Entity e)
         {
@@ -371,6 +390,8 @@ namespace ZenECS.EditorWindows
                 {
                     var style = EditorStyles.miniButton;
 
+                    EnsureBigPlusStyle();
+                    
                     // label/icon candidates
                     var addLong = EditorGUIUtility.TrTextContent("+");
                     var selLong = EditorGUIUtility.TrTextContent("•");
@@ -380,10 +401,10 @@ namespace ZenECS.EditorWindows
                         if (gc == null) return 0f;
                         var sz = style.CalcSize(gc);
                         return Mathf.Ceil(Mathf.Max(EditorGUIUtility.singleLineHeight + 2f,
-                            sz.y + style.margin.vertical + 6f));
+                            sz.y + style.margin.vertical + 7f));
                     }
 
-                    const float wAdd = 20;
+                    const float wAdd = 20f;
                     const float wSel = 20f;
 
                     var useAdd = addLong;
@@ -394,14 +415,14 @@ namespace ZenECS.EditorWindows
                     var hBtn = Mathf.Max(hAdd, hSel);
                     var yBtn = rRight.y + Mathf.Max(0f, (rRight.height - hBtn) * 0.5f);
 
-                    var right = rRight.xMax;
-                    var rDel = new Rect(right - 20, yBtn, 20, hBtn);
+                    var right = rRight.xMax - 4;
+                    var rDel = new Rect(right - 20, yBtn, wAdd, hBtn);
                     var rAdd = new Rect(right - (wAdd + 22.5f), yBtn, wAdd, hBtn);
                     right = rAdd.x - (useSel != null ? 3f : 0f);
 
                     using (new EditorGUI.DisabledScope(!_editMode))
                     {
-                        if (GUI.Button(rDel, "x", style))
+                        if (GUI.Button(rDel, "X", style))
                         {
                             if (EditorUtility.DisplayDialog(
                                     "Remove Entity",
@@ -420,16 +441,16 @@ namespace ZenECS.EditorWindows
                             foreach (var (tHave, _) in world.GetAllComponents(e)) disabled.Add(tHave);
 
                             ZenComponentPickerWindow.Show(
-                                all, disabled,
+                                all,
+                                disabled,
                                 picked =>
                                 {
                                     var inst = ZenDefaults.CreateWithDefaults(picked);
                                     world.AddComponentBoxed(e, inst);
                                     Repaint();
                                 },
-                                rAdd,
-                                $"Entity #{e.Id}:{e.Gen} Add Component",
-                                ZenComponentPickerWindow.PickerOpenMode.UtilityFixedWidth
+                                rAdd, // 이 버튼 rect 기준으로
+                                $"Entity #{e.Id}:{e.Gen} Add Component"
                             );
                         }
                     }
@@ -472,8 +493,74 @@ namespace ZenECS.EditorWindows
                 EditorGUI.LabelField(rLabel, $"Components: {arr.Length}");
                 DrawComponentsList(world, e, arr);
 
+// ===== Components 끝난 직후 바로 아래에 추가 =====
                 {
-// ===== Binders Summary line =====
+                    // ===== Contexts Summary line =====
+                    if (ContextApi.TryGetAll(world, e, out var ctxs))
+                    {
+                        var lineC = EditorGUIUtility.singleLineHeight;
+                        var rc = GUILayoutUtility.GetRect(10, lineC, GUILayout.ExpandWidth(true));
+
+                        var rArrowC = new Rect(rc.x + 3, rc.y + 1, 18f, rc.height - 2);
+
+                        const float addW = 100f;
+                        const float gap = 6f;
+                        var rAddC = new Rect(rc.xMax - addW, rc.y, addW, rc.height);
+                        var rLabelC = new Rect(rArrowC.xMax - 1f, rc.y, rc.width - (rArrowC.width + addW + gap + 4f), rc.height);
+
+                        // 모든 Context 카드는 펼침 상태 없음(간단 표기) → 토글은 전체 표시/숨김 역할
+                        // 엔티티 별 폴드 상태 보관 (컴포넌트/바인더와 형태 통일)
+                        var keySummary = $"CTX:{e.Id}:{e.Gen}:OPEN";
+                        if (!_entityFold.ContainsKey(e)) _entityFold[e] = false;
+                        if (!_componentFold.ContainsKey(keySummary)) _componentFold[keySummary] = true;
+
+                        bool openCtx = _componentFold[keySummary];
+                        EditorGUI.BeginChangeCheck();
+                        var visNextCtx = EditorGUI.Foldout(rArrowC, openCtx, GUIContent.none, false);
+                        EditorGUIUtility.AddCursorRect(rArrowC, MouseCursor.Link);
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            _componentFold[keySummary] = visNextCtx;
+                            Repaint();
+                            GUIUtility.ExitGUI();
+                        }
+
+                        EditorGUI.LabelField(rLabelC, $"Contexts: {ctxs.Length}");
+
+                        // Add Context 버튼
+                        using (new EditorGUI.DisabledScope(!_editMode))
+                        {
+                            if (GUI.Button(rAddC, "Add Context", EditorStyles.miniButton))
+                            {
+                                // 이미 붙어있는 컨텍스트 타입 집합
+                                var disabledCtxTypes = new HashSet<Type>(ctxs.Select(c => c.type));
+
+                                ContextAssetPickerWindow.Show(
+                                    activatorRectGui: rAddC,
+                                    onPick: asset =>
+                                    {
+                                        ContextApi.AddFromAsset(world, e, asset);
+                                        Repaint();
+                                    },
+                                    disabledContextTypes: disabledCtxTypes,
+                                    title: $"Entity #{e.Id}:{e.Gen} - Add Context"
+                                );
+                            }
+                        }
+
+                        if (_componentFold[keySummary])
+                            DrawContextsList(world, e, ctxs);
+                    }
+                    else
+                    {
+                        EditorGUILayout.HelpBox("Contexts API가 연결되지 않았습니다. (GetAllContexts / AddContextFromAsset / AttachContext / RemoveContext)",
+                            MessageType.None);
+                    }
+                }
+
+
+                {
+                    // ===== Binders Summary line =====
                     var bindersOk = BinderApi.TryGetAll(world, e, out var binders);
                     if (!bindersOk)
                     {
@@ -715,7 +802,7 @@ namespace ZenECS.EditorWindows
             {
                 StatusKind.Present => "#27ae60", // green
                 StatusKind.Available => "#27ae60",
-                StatusKind.Absent => "#bdc3c7", // gray
+                StatusKind.Absent => "#bdc3c7",  // gray
                 StatusKind.Missing => "#e74c3c", // red
                 _ => "#ffffff"
             };
@@ -933,69 +1020,32 @@ namespace ZenECS.EditorWindows
                             {
                                 var style = EditorStyles.miniButton;
 
-                                // 컴포넌트 헤더와 동일 규격(폭 20)으로 정렬
                                 const float wBtn = 20f;
-
-                                // 헤더 높이 기준 버튼 높이
                                 var hBtn = rRight.height;
                                 var yBtn = rRight.y;
 
-                                // 버튼 우측부터 X, + 순으로 배치 (컴포넌트 헤더의 rReset/rRemove 배치 규칙과 동일)
-                                var rRemove = new Rect(rRight.xMax - wBtn, yBtn, wBtn, hBtn); // X
-                                var rAdd = new Rect(rRight.xMax - (wBtn * 2f) - 2f, yBtn, wBtn, hBtn); // +
+                                // 컨텍스트/컴포넌트 헤더처럼 오른쪽 끝에 X 하나만
+                                var rRemove = new Rect(rRight.xMax - wBtn, yBtn, wBtn, hBtn);
 
-                                // 선택 버튼(•)을 쓰고 있다면 동일 크기로 그 왼쪽에 배치 (선택 기능 유지)
-                                var useSelectButton = EcsExplorerActions.TryGetEntityMainView(world, e, out var go);
-                                var rSelect = new Rect(rAdd.x - wBtn - 2f, yBtn, wBtn, hBtn);
-
-                                using (new EditorGUI.DisabledScope(!_editMode))
+                                using (new EditorGUI.DisabledScope(!_editMode || !BinderApi.CanRemove(world)))
                                 {
-                                    // + : Add Component
-                                    var gcAdd = new GUIContent("+", "Add Component to this Entity");
-                                    if (GUI.Button(rAdd, gcAdd, style))
-                                    {
-                                        var all = ZenECS.EditorCommon.ZenComponentPickerWindow.FindAllZenComponents()
-                                            .ToList();
-                                        var disabled = new HashSet<Type>();
-                                        foreach (var (tHave, _) in world.GetAllComponents(e)) disabled.Add(tHave);
-
-                                        ZenComponentPickerWindow.Show(
-                                            all, disabled,
-                                            picked =>
-                                            {
-                                                var inst = ZenDefaults.CreateWithDefaults(picked);
-                                                world.AddComponentBoxed(e, inst);
-                                                Repaint();
-                                            },
-                                            rAdd,
-                                            $"Entity #{e.Id}:{e.Gen} Add Component",
-                                            ZenComponentPickerWindow.PickerOpenMode.UtilityFixedWidth
-                                        );
-                                    }
-
-                                    // X : Delete Entity
-                                    var gcDel = new GUIContent("X", "Delete this Entity");
+                                    // X : Remove this Binder
+                                    var gcDel = new GUIContent("X", "Remove this Binder from Entity");
                                     if (GUI.Button(rRemove, gcDel, style))
                                     {
                                         if (EditorUtility.DisplayDialog(
-                                                "Remove Entity",
-                                                $"Remove this entity?\n\nEntity #{e.Id}:{e.Gen}",
+                                                "Remove Binder",
+                                                $"Remove this binder?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}",
                                                 "Yes", "No"))
                                         {
-                                            world.DespawnEntity(e);
+                                            BinderApi.Remove(world, e, t);
+                                            _binderFold.Remove(ck);
                                             Repaint();
                                         }
                                     }
                                 }
-
-                                // 선택 버튼(•) – 편집 모드와 무관하게 사용 가능
-                                if (useSelectButton)
-                                {
-                                    var gcSel = new GUIContent("•", "Select the main view GameObject of this Entity");
-                                    if (GUI.Button(rSelect, gcSel, style))
-                                        EcsExplorerActions.TrySelectEntityMainView(go);
-                                }
-                            }, foldable: hasMetaOrFields,
+                            },
+                            foldable: hasMetaOrFields,
                             false
                         );
 
@@ -1022,9 +1072,7 @@ namespace ZenECS.EditorWindows
                                     BinderApi.Replace(world, e, obj);
                             }
                         }
-                        catch (KeyNotFoundException)
-                        {
-                        }
+                        catch (KeyNotFoundException) { }
                     }
                 }
             }
@@ -1113,9 +1161,7 @@ namespace ZenECS.EditorWindows
                             ZenComponentFormGUI.DrawObject(bodyInner, obj, t);
                             if (EditorGUI.EndChangeCheck() && _editMode) world.ReplaceComponentBoxed(e, obj);
                         }
-                        catch (KeyNotFoundException)
-                        {
-                        }
+                        catch (KeyNotFoundException) { }
                     }
                 }
             }
@@ -1351,6 +1397,491 @@ namespace ZenECS.EditorWindows
             _foundValid = false;
             _findMode = true; // still enter to show guidance
         }
+
+        static class ContextApi
+        {
+            static MethodInfo? _miGetAllContexts; // (Entity) -> (Type, object)[] 또는 IEnumerable
+            static MethodInfo? _miAddFromAsset;   // (Entity, ContextAsset) -> void
+            static MethodInfo? _miAttachContext;  // (Entity, IContext) -> void
+            static MethodInfo? _miRemoveContext;  // (Entity, Type) -> void
+
+            static readonly Dictionary<(Type, string, int), MethodInfo> _cache = new();
+
+            static MethodInfo? Find(IWorld w, string name, int argc, Func<MethodInfo, bool>? pred = null)
+            {
+                var key = (w.GetType(), name, argc);
+                if (_cache.TryGetValue(key, out var hit)) return hit;
+
+                var mi = w.GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                    .FirstOrDefault(m => m.Name == name
+                                         && m.GetParameters().Length == argc
+                                         && (pred is null || pred(m)));
+                if (mi != null) _cache[key] = mi;
+                return mi;
+            }
+
+            public static bool TryGetAll(IWorld w, Entity e, out (Type type, object? boxed)[] contexts)
+            {
+                contexts = Array.Empty<(Type, object?)>();
+
+                _miGetAllContexts ??= Find(w, "GetAllContexts", 1, m =>
+                {
+                    var ps = m.GetParameters();
+                    return ps[0].ParameterType == typeof(Entity);
+                });
+
+                if (_miGetAllContexts != null)
+                {
+                    var ret = _miGetAllContexts.Invoke(w, new object[] { e });
+                    if (ret is Array arr)
+                    {
+                        var list = new List<(Type, object)>(arr.Length);
+                        foreach (var item in arr)
+                        {
+                            var fs = item.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+                            if (fs.Length >= 2 && fs[0].FieldType == typeof(Type))
+                            {
+                                list.Add(((Type)fs[0].GetValue(item), fs[1].GetValue(item)));
+                            }
+                        }
+                        contexts = list.ToArray();
+                        return true;
+                    }
+                    if (ret is System.Collections.IEnumerable en)
+                    {
+                        var list = new List<(Type, object)>();
+                        foreach (var c in en)
+                        {
+                            if (c == null) continue;
+                            list.Add((c.GetType(), c));
+                        }
+                        contexts = list.ToArray();
+                        return true;
+                    }
+                }
+
+                // 마지막 대안: 없는 경우 실패
+                return false;
+            }
+
+            public static bool CanAdd(IWorld w)
+                => Find(w, "AddContextFromAsset", 2, m =>
+                       m.GetParameters()[0].ParameterType == typeof(Entity) &&
+                       typeof(ContextAsset).IsAssignableFrom(m.GetParameters()[1].ParameterType)) != null
+                   || Find(w, "AttachContext", 2, m =>
+                       m.GetParameters()[0].ParameterType == typeof(Entity) &&
+                       typeof(ZenECS.Core.Binding.IContext).IsAssignableFrom(m.GetParameters()[1].ParameterType)) != null;
+
+            public static void AddFromAsset(IWorld w, Entity e, ContextAsset asset)
+            {
+                switch (asset)
+                {
+                    case SharedContextMarkerAsset markerAsset:
+                    {
+                        // var ctx = sharedResolver.Resolve(markerAsset);
+                        // world.RegisterContext(e, ctx);
+                        break;
+                    }
+                    case PerEntityContextAsset perEntityAsset:
+                    {
+                        var ctx = perEntityAsset.CreateContextForEntity(w, e);
+                        w.RegisterContext(e, ctx);
+                        break;
+                    }
+                }
+
+
+                // // 1) World가 직접 (Entity, ContextAsset) 받는 경우
+                // _miAddFromAsset ??= Find(w, "AddContextFromAsset", 2, m =>
+                //     m.GetParameters()[0].ParameterType == typeof(Entity) &&
+                //     typeof(ContextAsset).IsAssignableFrom(m.GetParameters()[1].ParameterType));
+                //
+                // if (_miAddFromAsset != null)
+                // {
+                //     _miAddFromAsset.Invoke(w, new object[] { e, asset });
+                //     return;
+                // }
+                //
+                // // 2) Asset → IContext 인스턴스로 만들어 AttachContext(Entity, IContext)
+                // _miAttachContext ??= Find(w, "AttachContext", 2, m =>
+                //     m.GetParameters()[0].ParameterType == typeof(Entity) &&
+                //     typeof(ZenECS.Core.Binding.IContext).IsAssignableFrom(m.GetParameters()[1].ParameterType));
+                //
+                // if (_miAttachContext == null)
+                //     throw new MissingMethodException("World.AttachContext(Entity, IContext) not found.");
+                //
+                // // Asset에서 인스턴스 만드는 규약 탐색
+                // object? ctx = TryCreateContextInstance(asset, w, e);
+                // if (ctx == null)
+                //     throw new MissingMethodException("ContextAsset에서 컨텍스트 인스턴스를 만들 수 있는 팩토리를 찾지 못했습니다.");
+                //
+                // _miAttachContext.Invoke(w, new object[] { e, ctx });
+            }
+
+            static object? TryCreateContextInstance(ContextAsset asset, IWorld w, Entity e)
+            {
+                var aType = asset.GetType();
+                // 우선순위: Create(IWorld,Entity) -> Create(IWorld) -> Create() -> Build/Instantiate() 변형
+                var names = new[] { "Create", "Build", "Instantiate", "Make", "ToInstance" };
+                foreach (var name in names)
+                {
+                    var mi = aType.GetMethod(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                        null, new[] { typeof(IWorld), typeof(Entity) }, null);
+                    if (mi != null) return mi.Invoke(asset, new object[] { w, e });
+
+                    mi = aType.GetMethod(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                        null, new[] { typeof(IWorld) }, null);
+                    if (mi != null) return mi.Invoke(asset, new object[] { w });
+
+                    mi = aType.GetMethod(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                        null, Type.EmptyTypes, null);
+                    if (mi != null) return mi.Invoke(asset, Array.Empty<object>());
+                }
+                return null;
+            }
+
+            public static bool CanRemove(IWorld w)
+                => Find(w, "RemoveContext", 2, m =>
+                    m.GetParameters()[0].ParameterType == typeof(Entity) &&
+                    m.GetParameters()[1].ParameterType == typeof(Type)) != null;
+
+            public static void Remove(IWorld w, Entity e, IContext? ctx)
+            {
+                w.RemoveContext(e, ctx);
+            }
+        }
+
+        sealed class ContextAssetPickerWindow : EditorWindow
+        {
+            public static void Show(
+                Rect activatorRectGui,
+                Action<ContextAsset> onPick,
+                IReadOnlyCollection<Type>? disabledContextTypes,
+                string title = "Add Context")
+            {
+                var w = CreateInstance<ContextAssetPickerWindow>();
+                w._title = title;
+                w._onPick = onPick;
+                w._all = LoadAllAssets();
+                w._disabledSet = disabledContextTypes != null
+                    ? new HashSet<Type>(disabledContextTypes)
+                    : new HashSet<Type>();
+
+                var screen = GUIUtility.GUIToScreenRect(activatorRectGui);
+                var size = new Vector2(520, 400);
+                w.position = new Rect(screen.x, screen.yMax, size.x, size.y);
+                w.ShowAsDropDown(screen, size);
+                w.Focus();
+            }
+
+            string _title = "Add Context";
+            Action<ContextAsset> _onPick;
+            List<ContextAsset> _all = new();
+            string _search = "";
+            Vector2 _scroll;
+            int _hover = -1;
+
+            HashSet<Type> _disabledSet = new(); // 이미 붙어있는 컨텍스트 타입들
+
+            static List<ContextAsset> LoadAllAssets()
+            {
+                var res = new List<ContextAsset>(64);
+                foreach (var guid in AssetDatabase.FindAssets("t:ContextAsset"))
+                {
+                    var path = AssetDatabase.GUIDToAssetPath(guid);
+                    var a = AssetDatabase.LoadAssetAtPath<ContextAsset>(path);
+                    if (a) res.Add(a);
+                }
+                return res.OrderBy(a => a.name).ToList();
+            }
+
+            void OnGUI()
+            {
+                using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+                {
+                    EditorGUILayout.LabelField(_title, EditorStyles.boldLabel);
+                    _search = EditorGUILayout.TextField(_search, EditorStyles.toolbarSearchField);
+                }
+
+                var list = string.IsNullOrWhiteSpace(_search)
+                    ? _all
+                    : _all.Where(a => a.name.IndexOf(_search, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+
+                using (var sv = new EditorGUILayout.ScrollViewScope(_scroll))
+                {
+                    _scroll = sv.scrollPosition;
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        var a = list[i];
+                        var r = GUILayoutUtility.GetRect(1, 22, GUILayout.ExpandWidth(true));
+
+                        if (r.Contains(Event.current.mousePosition)) _hover = i;
+                        if (i == _hover) EditorGUI.DrawRect(r, new Color(0.24f, 0.48f, 0.90f, 0.15f));
+
+                        // 이 SO가 만들어줄 컨텍스트 타입 추론
+                        var ctxType = TryResolveContextType(a);
+                        bool disabled = ctxType != null &&
+                                        _disabledSet.Any(t =>
+                                            t == ctxType ||
+                                            t.IsSubclassOf(ctxType) ||
+                                            ctxType.IsSubclassOf(t));
+
+                        var style = new GUIStyle(EditorStyles.label) { richText = true };
+                        string path = AssetDatabase.GetAssetPath(a);
+
+                        string label;
+                        if (disabled)
+                        {
+                            // 이미 붙어있는 타입은 회색 + 안내
+                            label =
+                                $"<color=#777777>{a.name} </color>" +
+                                $"<size=10><color=#555>[{path}]</color></size>";
+                        }
+                        else
+                        {
+                            label =
+                                $"{a.name} <size=10><color=#888>[{path}]</color></size>";
+                        }
+
+                        using (new EditorGUI.DisabledScope(disabled))
+                        {
+                            EditorGUI.LabelField(r, label, style);
+
+                            if (!disabled &&
+                                Event.current.type == EventType.MouseDown &&
+                                r.Contains(Event.current.mousePosition))
+                            {
+                                _onPick?.Invoke(a);
+                                Close();
+                                GUIUtility.ExitGUI();
+                            }
+                        }
+                    }
+
+                    if (list.Count == 0)
+                    {
+                        GUILayout.FlexibleSpace();
+                        using (new GUILayout.HorizontalScope())
+                        {
+                            GUILayout.FlexibleSpace();
+                            GUILayout.Label("No ContextAsset found", EditorStyles.miniLabel);
+                            GUILayout.FlexibleSpace();
+                        }
+                        GUILayout.FlexibleSpace();
+                    }
+                }
+
+                if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Escape)
+                {
+                    Close();
+                    Event.current.Use();
+                }
+            }
+
+            void OnLostFocus() => Close();
+
+            // ContextAsset이 만들어내는 IContext 타입 추론
+            static Type? TryResolveContextType(ContextAsset asset)
+            {
+                if (asset == null) return null;
+                var aType = asset.GetType();
+
+                // 1) ContextType 프로퍼티 관례
+                var prop = aType.GetProperty("ContextType",
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+                if (prop != null && typeof(Type).IsAssignableFrom(prop.PropertyType))
+                {
+                    var v = prop.GetValue(prop.GetGetMethod(true)?.IsStatic == true ? null : asset) as Type;
+                    if (v != null && typeof(IContext).IsAssignableFrom(v))
+                        return v;
+                }
+
+                // 2) GetContextType() 메서드 관례
+                var mGet = aType.GetMethod("GetContextType",
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
+                    null, Type.EmptyTypes, null);
+                if (mGet != null && typeof(Type).IsAssignableFrom(mGet.ReturnType))
+                {
+                    var v = mGet.Invoke(mGet.IsStatic ? null : asset, Array.Empty<object>()) as Type;
+                    if (v != null && typeof(IContext).IsAssignableFrom(v))
+                        return v;
+                }
+
+                // 3) Create/Build/Instantiate/Make/ToInstance 반환 타입으로 추론
+                var names = new[] { "Create", "Build", "Instantiate", "Make", "ToInstance" };
+                foreach (var name in names)
+                {
+                    var methods = aType.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                        .Where(mi => mi.Name == name);
+                    foreach (var mi in methods)
+                    {
+                        var rt = mi.ReturnType;
+                        if (typeof(IContext).IsAssignableFrom(rt))
+                            return rt;
+                    }
+                }
+
+                return null;
+            }
+        }
+
+        void DrawContextsList(IWorld world, Entity e, (Type type, object boxed)[] ctxs)
+        {
+            using (new EditorGUI.IndentLevelScope())
+            {
+                foreach (var (t, inst) in ctxs)
+                {
+                    using (new EditorGUILayout.VerticalScope("box"))
+                    {
+                        var line = EditorGUIUtility.singleLineHeight + 6f;
+                        var rHead = GUILayoutUtility.GetRect(10, line, GUILayout.ExpandWidth(true));
+
+                        // 헤더: 타입명 / 네임스페이스 (좌), X 버튼(우)
+                        var rTitle = new Rect(rHead.x + 4, rHead.y, rHead.width - 28, rHead.height);
+                        var rRemove = new Rect(rHead.xMax - 20, rHead.y, 20, rHead.height);
+
+                        // 왼쪽 타이틀 (없으면 이탤릭)
+                        if (inst != null) EditorGUI.LabelField(rTitle, t.Name, EditorStyles.boldLabel);
+                        else ItalicLabel.DrawLeft(t?.Name ?? "(null)");
+
+                        // 오른쪽 X
+                        using (new EditorGUI.DisabledScope(!_editMode))
+                        {
+                            if (GUI.Button(rRemove, "X", EditorStyles.miniButton))
+                            {
+                                if (EditorUtility.DisplayDialog(
+                                        "Remove Context",
+                                        $"Remove this context?\n\nEntity #{e.Id}:{e.Gen} - {t?.Name}",
+                                        "Yes", "No"))
+                                {
+                                    if (t != null) ContextApi.Remove(world, e, (IContext)inst!);
+                                    Repaint();
+                                }
+                            }
+                        }
+
+                        // 🔽🔽 여기 한 줄 추가 🔽🔽
+                        if (inst != null)
+                            DrawContextFieldsReadonly(inst, t);
+
+                        // (선택) 소스 Asset 힌트: 인스턴스가 어느 SO에서 나왔는지 추적 가능한 경우라면 표기
+                        // var src = TryGetSourceAssetName(inst);
+                        // if (!string.IsNullOrEmpty(src))
+                        //     EditorGUILayout.LabelField($"• Source: {src}", EditorStyles.miniLabel);
+                    }
+                }
+            }
+        }
+
+        void DrawContextFieldsReadonly(object ctxInstance, Type ctxType)
+        {
+            if (ctxInstance == null || ctxType == null)
+                return;
+
+            // 공용 인스턴스 멤버 수집: Field + Property(get 가능, 인덱서 제외)
+            var members = new List<(string name, Type type, Func<object?> getter)>();
+
+            // 1) Fields
+            foreach (var f in ctxType.GetFields(BindingFlags.Public | BindingFlags.Instance))
+            {
+                // 숨김 어노테이션 체크
+                if (Attribute.IsDefined(f, typeof(ZenEcsExplorerHiddenAttribute), inherit: true)) continue;
+                if (Attribute.IsDefined(f, typeof(HideInInspector), inherit: true)) continue;
+
+                var localField = f;
+                members.Add((
+                    localField.Name,
+                    localField.FieldType,
+                    () => localField.GetValue(ctxInstance)
+                ));
+            }
+
+            // 2) Properties { get; ... }  (set-only, 인덱서 제외)
+            foreach (var p in ctxType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (!p.CanRead) continue;
+                if (p.GetIndexParameters().Length != 0) continue; // indexer는 스킵
+
+                // 숨김 어노테이션 체크
+                if (Attribute.IsDefined(p, typeof(ZenEcsExplorerHiddenAttribute), inherit: true)) continue;
+                if (Attribute.IsDefined(p, typeof(HideInInspector), inherit: true)) continue;
+
+                var localProp = p;
+                members.Add((
+                    localProp.Name,
+                    localProp.PropertyType,
+                    () => localProp.GetValue(ctxInstance, null)
+                ));
+            }
+
+            if (members.Count == 0)
+                return;
+
+            // 이름 순으로 정렬
+            members.Sort((a, b) => string.Compare(a.name, b.name, StringComparison.Ordinal));
+
+            using (new EditorGUI.IndentLevelScope())
+            {
+                foreach (var (name, mType, getter) in members)
+                {
+                    object? value;
+                    try
+                    {
+                        value = getter();
+                    }
+                    catch
+                    {
+                        value = null;
+                    }
+
+                    // UnityEngine.Object 계열이면 Ping 지원
+                    if (typeof(UnityEngine.Object).IsAssignableFrom(mType))
+                    {
+                        var obj = value as UnityEngine.Object;
+                        var rect = EditorGUILayout.GetControlRect();
+
+                        // 라벨/값 영역 분리
+                        var labelRect = new Rect(rect.x, rect.y, EditorGUIUtility.labelWidth, rect.height);
+                        var valRect = new Rect(rect.x + EditorGUIUtility.labelWidth, rect.y,
+                            rect.width - EditorGUIUtility.labelWidth, rect.height);
+
+                        // 이름
+                        EditorGUI.LabelField(labelRect, name);
+
+                        // Object 아이콘 + 이름을 레이블로만 표시 (ObjectField 사용 안 함 → 피커 안 뜸)
+                        GUIContent content;
+                        if (obj != null)
+                            content = EditorGUIUtility.ObjectContent(obj, mType);
+                        else
+                            content = new GUIContent("None", EditorGUIUtility.IconContent("Prefab Icon").image);
+
+                        EditorGUI.LabelField(valRect, content);
+
+                        // 라벨/값을 클릭하면 Ping만 수행
+                        if (obj != null &&
+                            Event.current.type == EventType.MouseDown &&
+                            (labelRect.Contains(Event.current.mousePosition) ||
+                             valRect.Contains(Event.current.mousePosition)))
+                        {
+                            EditorGUIUtility.PingObject(obj);
+                            Event.current.Use();
+                        }
+                    }
+                    else
+                    {
+                        // 일반 값 타입/문자열 등은 그냥 읽기 전용 텍스트
+                        string text;
+                        if (value == null) text = "null";
+                        else if (mType == typeof(float)) text = ((float)value).ToString("0.###");
+                        else if (mType == typeof(double)) text = ((double)value).ToString("0.###");
+                        else text = value.ToString() ?? "null";
+
+                        EditorGUILayout.LabelField(name, text);
+                    }
+                }
+            }
+        }
+
     }
 }
 #endif

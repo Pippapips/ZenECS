@@ -12,6 +12,7 @@
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 using System;
+using System.Collections.Generic;
 using ZenECS.Core.Binding;
 
 namespace ZenECS.Core.Internal.Binding
@@ -47,5 +48,7 @@ namespace ZenECS.Core.Internal.Binding
         void Dispatch<T>(in ComponentDelta<T> d) where T : struct;
 
         (Type type, object boxed)[] GetAllBinders(Entity e);
+
+        IReadOnlyList<IBinder>? GetAllBinderList(Entity e);
     }
 }

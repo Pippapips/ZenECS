@@ -92,9 +92,17 @@ namespace ZenECS.EditorCommon
 
                     // 표시 이름
                     string nice = t.FullName;
-                    if (isDisabled) nice = $"<color=#888888>{nice}  (already added)</color>";
+                    if (isDisabled)
+                    {
+                        nice =
+                            $"<color=#777777>{nice}</color>";
+                        //nice = $"<color=#777777>{nice}  (already added)</color>";
+                    }
 
-                    EditorGUI.LabelField(r, nice, rowStyle);
+                    using (new EditorGUI.DisabledScope(isDisabled))
+                    {
+                        EditorGUI.LabelField(r, nice, rowStyle);
+                    }
 
                     // 클릭
                     if (Event.current.type == EventType.MouseDown && r.Contains(Event.current.mousePosition))

@@ -22,5 +22,7 @@ namespace ZenECS.Core
         /// <summary>Register a context object for an entity (policy controls overwrite).</summary>
         void RegisterContext(Entity e, IContext ctx);
         bool HasContext(Entity e, Type? contextType);
+        (Type type, object boxed)[] GetAllContexts(Entity e);
+        bool RemoveContext(Entity e, IContext ctx);
     }
 }
