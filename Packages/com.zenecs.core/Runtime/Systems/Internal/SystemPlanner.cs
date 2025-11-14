@@ -87,7 +87,7 @@ namespace ZenECS.Core.Internal.Systems
         /// <exception cref="InvalidOperationException">
         /// Thrown when conflicting markers/attributes exist, or a cycle is detected inside a group.
         /// </exception>
-        public static Plan? Build(IEnumerable<ISystem>? systems)
+        public static Plan? Build(IWorld w, IEnumerable<ISystem>? systems)
         {
             if (systems == null) return null;
 
@@ -106,7 +106,7 @@ namespace ZenECS.Core.Internal.Systems
                 // Validate markers and attributes
                 ValidatePhaseMarkers(t);
 
-                SystemGroup group = ResolveGroup(t);
+                SystemGroup group = SystemUtil.ResolveGroup(t);
                 var before = t.GetCustomAttributes<OrderBeforeAttribute>().Select(a => a.Target).ToHashSet();
                 var after  = t.GetCustomAttributes<OrderAfterAttribute>().Select(a => a.Target).ToHashSet();
                 buckets[group].Add((t, s, before, after));
@@ -118,25 +118,6 @@ namespace ZenECS.Core.Internal.Systems
             List<ISystem> pres  = TopoSortWithinGroup(buckets[SystemGroup.Presentation]);
 
             return new Plan(setup, simu, pres);
-        }
-
-        /// <summary>
-        /// Resolve the execution group for a system type.
-        /// </summary>
-        /// <param name="t">System type.</param>
-        /// <returns>The resolved <see cref="SystemGroup"/>.</returns>
-        private static SystemGroup ResolveGroup(Type t)
-        {
-            if (t.IsDefined(typeof(FrameSetupGroupAttribute), false))   return SystemGroup.FrameSetup;
-            if (t.IsDefined(typeof(PresentationGroupAttribute), false)) return SystemGroup.Presentation;
-            if (t.IsDefined(typeof(SimulationGroupAttribute), false))   return SystemGroup.Simulation;
-
-            if (typeof(IPresentationSystem).IsAssignableFrom(t)) return SystemGroup.Presentation;
-            if (typeof(IFrameSetupSystem).IsAssignableFrom(t))   return SystemGroup.FrameSetup;
-            if (typeof(IFixedRunSystem).IsAssignableFrom(t))     return SystemGroup.Simulation;
-            if (typeof(IVariableRunSystem).IsAssignableFrom(t))  return SystemGroup.Simulation;
-
-            return SystemGroup.Simulation;
         }
 
         /// <summary>

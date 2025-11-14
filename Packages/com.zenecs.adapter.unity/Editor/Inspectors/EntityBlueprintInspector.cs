@@ -17,7 +17,7 @@ namespace ZenECS.EditorInspectors
     public sealed class EntityBlueprintInspector : Editor
     {
         // ───────── Components (BlueprintData) ─────────
-        SerializedProperty _dataProp;        // _data
+        SerializedProperty _dataProp; // _data
         SerializedProperty _compEntriesProp; // _data.entries
         ReorderableList _componentsList;
 
@@ -31,11 +31,14 @@ namespace ZenECS.EditorInspectors
 
         readonly Dictionary<string, bool> _fold = new();
         const float PAD = 6f;
-        
-        GUIStyle _obsOkStyle;   // 회색 이탤릭
-        GUIStyle _obsMissingStyle;   // 회색 이탤릭
+
+        GUIStyle _obsOkStyle; // Assigned된 컴포넌트 이름
+        GUIStyle _obsMissingStyle; // Not-assigned 컴포넌트 이름
+        GUIStyle _obsCheckStyle; // ✔ 아이콘
+        GUIStyle _obsXStyle; // ✕ 아이콘
+        GUIStyle _namespaceStyle;
         bool _stylesReady;
-        
+
         void OnEnable()
         {
             // Components
@@ -54,30 +57,47 @@ namespace ZenECS.EditorInspectors
             if (_bindersProp != null && _bindersProp.isArray)
                 BuildBindersList();
         }
-        
+
         void EnsureStylesReady()
         {
             if (_stylesReady) return;
 
-            // OnGUI에서만 호출되도록 (Event.current != null 보장)
             var baseStyle = EditorStyles.miniLabel ?? EditorStyles.label ?? GUI.skin?.label ?? new GUIStyle();
+
             _obsMissingStyle = new GUIStyle(baseStyle)
             {
                 fontStyle = FontStyle.Italic,
-                richText  = false,
-                normal =
-                {
-                    textColor = Color.darkGray
-                }
+                richText = false,
+                normal = { textColor = Color.gray }
             };
 
             _obsOkStyle = new GUIStyle(baseStyle)
             {
                 fontStyle = FontStyle.Normal,
-                richText  = false,
+                richText = false,
+                normal = { textColor = Color.white }
+            };
+
+            _obsCheckStyle = new GUIStyle(baseStyle)
+            {
+                alignment = TextAnchor.MiddleRight,
+                richText = true
+            };
+
+            _obsXStyle = new GUIStyle(baseStyle)
+            {
+                alignment = TextAnchor.MiddleRight,
+                richText = true
+            };
+
+            // ✅ 네임스페이스용: 짙은 회색 miniLabel
+            _namespaceStyle = new GUIStyle(baseStyle)
+            {
+                fontStyle = FontStyle.Normal,
+                richText = false,
                 normal =
                 {
-                    textColor = Color.wheat
+                    textColor = new Color(0.45f, 0.45f, 0.45f) // 짙은 회색
                 }
             };
 
@@ -174,10 +194,23 @@ namespace ZenECS.EditorInspectors
                 bool hasFields = t != null && ZenComponentFormGUI.HasDrawableFields(t);
                 if (!hasFields) return headerH;
 
+                // 네임스페이스 한 줄 높이
+                float nsH = 0f;
+                if (t != null && !string.IsNullOrEmpty(t.Namespace))
+                {
+                    // 1줄 + 위/아래 여백 약간
+                    nsH = EditorGUIUtility.singleLineHeight + 4f;
+                }
+
                 var jsonProp = e.FindPropertyRelative("json");
                 var obj = ComponentJson.Deserialize(jsonProp.stringValue, t);
                 float bodyH = ZenComponentFormGUI.CalcHeightForObject(obj, t);
-                return headerH + 6f + Mathf.Max(0f, bodyH) + 6f;
+
+                return headerH // Foldout 헤더
+                       + nsH // 네임스페이스 라인
+                       + 6f // 헤더/네임스페이스와 바디 사이 여백
+                       + Mathf.Max(0f, bodyH)
+                       + 6f; // 마지막 여백
             };
 
             _componentsList.drawElementCallback = (rect, index, active, focused) =>
@@ -192,16 +225,82 @@ namespace ZenECS.EditorInspectors
 
                 bool hasFields = t != null && ZenComponentFormGUI.HasDrawableFields(t);
 
-                var rHead = new Rect(rect.x + 4, rect.y + 3, rect.width - 8, EditorGUIUtility.singleLineHeight);
+                // ─ 헤더: Foldout + Reset(R) + Ping(돋보기) ─
+                float line = EditorGUIUtility.singleLineHeight;
+                var rHead = new Rect(rect.x + 4, rect.y + 3, rect.width - 8, line);
+
+                const float btnW = 20f; // Reset / Ping 둘 다 같은 폭
+
+                // 오른쪽 끝: 돋보기
+                var rPing = new Rect(rHead.xMax - btnW, rHead.y, btnW, rHead.height);
+                // 그 왼쪽: Reset 버튼 (R)
+                var rReset = new Rect(rHead.xMax - btnW * 2f - 2f, rHead.y, btnW, rHead.height);
+                // 나머지 영역: Foldout
+                var rFold = new Rect(
+                    rHead.x,
+                    rHead.y,
+                    rHead.width - (btnW * 2f + 6f),
+                    rHead.height
+                );
+
+                string label = t != null ? t.Name : "(Missing Type)";
+
                 bool openBefore = _fold[key];
-                bool openNow = EditorGUI.Foldout(rHead, openBefore, t != null ? t.Name : "(Missing Type)", true,
-                    EditorStyles.foldoutHeader);
+                bool openNow = EditorGUI.Foldout(
+                    rFold,
+                    openBefore,
+                    label,
+                    true,
+                    EditorStyles.foldoutHeader
+                );
                 _fold[key] = hasFields && openNow;
+
+                // Reset(R) 버튼: 디폴트 값으로 초기화
+                using (new EditorGUI.DisabledScope(t == null))
+                {
+                    if (GUI.Button(rReset, new GUIContent("R", "Reset component to defaults"),
+                            EditorStyles.miniButton) && t != null)
+                    {
+                        Undo.RecordObject(target, "Reset Blueprint Component");
+
+                        // ZenDefaults로 새 인스턴스 생성 후 다시 JSON 직렬화
+                        var inst = ZenDefaults.CreateWithDefaults(t);
+                        pJson.stringValue = ComponentJson.Serialize(inst, t);
+
+                        serializedObject.ApplyModifiedProperties();
+                        EditorUtility.SetDirty(target);
+                    }
+                }
+
+                // 이름 옆 Ping 버튼 (돋보기)
+                using (new EditorGUI.DisabledScope(t == null))
+                {
+                    var gcPing = GetSearchIconContent("Ping component script in Project");
+                    if (GUI.Button(rPing, gcPing, EditorStyles.iconButton) && t != null)
+                    {
+                        PingTypeSource(t);
+                    }
+                }
 
                 if (!hasFields || !_fold[key]) return;
 
-                var top = rHead.yMax + 6f;
-                var rBody = new Rect(rect.x + 8, top, rect.width - 16, rect.yMax - top - 6f);
+                // ─ 네임스페이스 + 바디는 기존 코드 유지 ─
+                float y = rHead.yMax;
+
+                if (t != null && !string.IsNullOrEmpty(t.Namespace))
+                {
+                    EnsureStylesReady(); // _namespaceStyle 사용
+                    y += 2f;
+                    var nsRect = new Rect(rect.x + 8, y, rect.width - 16, EditorGUIUtility.singleLineHeight);
+                    EditorGUI.LabelField(nsRect, t.Namespace, _namespaceStyle);
+                    y += EditorGUIUtility.singleLineHeight + 2f;
+                }
+                else
+                {
+                    y += 6f;
+                }
+
+                var rBody = new Rect(rect.x + 8, y, rect.width - 16, rect.yMax - y - 6f);
 
                 if (t != null)
                 {
@@ -246,14 +345,60 @@ namespace ZenECS.EditorInspectors
             };
 
             _contextsList.elementHeightCallback = index =>
-                EditorGUIUtility.singleLineHeight + PAD;
+            {
+                float line = EditorGUIUtility.singleLineHeight;
+                float h = line + 6f; // ObjectField
+
+                var p = _contextsProp.GetArrayElementAtIndex(index);
+                var obj = p.objectReferenceValue;
+                if (obj != null)
+                {
+                    var path = AssetDatabase.GetAssetPath(obj);
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        h += line + 4f; // 경로 한 줄
+                    }
+                    else
+                    {
+                        h += line + 4f; // "(Not saved asset)" 한 줄
+                    }
+                }
+
+                return h + 4f;
+            };
 
             _contextsList.drawElementCallback = (rect, index, active, focused) =>
             {
                 var p = _contextsProp.GetArrayElementAtIndex(index);
+                var obj = p.objectReferenceValue;
 
-                var r = new Rect(rect.x + 4, rect.y + 3, rect.width - 8, EditorGUIUtility.singleLineHeight);
-                EditorGUI.PropertyField(r, p, GUIContent.none);
+                float line = EditorGUIUtility.singleLineHeight;
+
+                // 1) Context SO ObjectField
+                var rField = new Rect(rect.x + 4, rect.y + 3, rect.width - 8, line);
+                EditorGUI.PropertyField(rField, p, GUIContent.none);
+
+                if (obj == null)
+                    return;
+
+                // 2) SO 경로 라인
+                var path = AssetDatabase.GetAssetPath(obj);
+                if (string.IsNullOrEmpty(path))
+                {
+                    path = "(Not saved asset)";
+                }
+                else
+                {
+                    path = $"[{path}]";
+                }
+
+                // 필드 시작 위치와 맞추고, 짙은 회색 miniLabel 스타일
+                var rPath = new Rect(rect.x + 8, rField.yMax + 2f, rect.width - 16, line);
+
+                var prevColor = GUI.color;
+                GUI.color = new Color(0.45f, 0.45f, 0.45f); // 짙은 회색
+                EditorGUI.LabelField(rPath, path, EditorStyles.miniLabel);
+                GUI.color = prevColor;
             };
         }
 
@@ -307,25 +452,51 @@ namespace ZenECS.EditorInspectors
                     _bindersProp.DeleteArrayElementAtIndex(rl.index);
             };
 
-            _bindersList.elementHeightCallback = (index) =>
+            _bindersList.elementHeightCallback = index =>
             {
+                const float pad = 6f;
+                float line = EditorGUIUtility.singleLineHeight;
+
+                if (_bindersProp == null || index < 0 || index >= _bindersProp.arraySize)
+                    return line + pad * 2f;
+
                 var p = _bindersProp.GetArrayElementAtIndex(index);
                 var inst = p?.managedReferenceValue;
                 var t = inst?.GetType();
-                float headerH = EditorGUIUtility.singleLineHeight + PAD;
 
-                float pillsH = 0f; // 컨텍스트 배지 없음
+                float headerH = line + pad; // 헤더 한 줄
+
                 string key = $"binder:{index}";
                 bool open = _fold.TryGetValue(key, out var o) ? o : true;
                 if (!open)
-                    return headerH + pillsH + PAD;
+                    return headerH + pad;
+
+                // 네임스페이스 한 줄
+                float nsH = 0f;
+                if (t != null && !string.IsNullOrEmpty(t.Namespace))
+                    nsH = line + 4f;
+                else
+                    nsH = pad;
+
+                // Priority / AttachOrder 두 줄
+                float orderH = 0f;
+                if (inst is IBinder) orderH += line;
+                if (inst is IAttachOrderMarker) orderH += line + 4f; // 약간 여백
+
+                // Observing(IBinds) 메타 높이
+                float metaH = 0f;
+                var observed = t != null ? ExtractObservedComponentTypes(t) : Array.Empty<Type>();
+                if (observed.Count > 0)
+                {
+                    // 제목 한 줄 + 항목들
+                    metaH = line; // "Observing (IBinds)"
+                    metaH += observed.Count * (line + 1f); // 각 컴포넌트 라인
+                    metaH += pad;
+                }
 
                 float bodyH = EditorGUI.GetPropertyHeight(p, GUIContent.none, true);
-                float metaH = 0f;
-                if (t != null && ExtractObservedComponentTypes(t).Count > 0)
-                    metaH = EditorGUIUtility.singleLineHeight * (1 + ExtractObservedComponentTypes(t).Count) - 30f;
 
-                return headerH + PAD + pillsH + PAD + metaH + PAD + bodyH + PAD;
+                return headerH + pad + nsH + orderH + metaH + bodyH + pad;
             };
 
             _bindersList.drawElementCallback = (rect, index, active, focused) =>
@@ -337,47 +508,228 @@ namespace ZenECS.EditorInspectors
                 string key = $"binder:{index}";
                 if (!_fold.ContainsKey(key)) _fold[key] = true;
 
-                // 1) 헤더
-                var rHead = new Rect(rect.x + 4, rect.y + 3, rect.width - 8, EditorGUIUtility.singleLineHeight);
-                bool open = EditorGUI.Foldout(rHead, _fold[key], title, true, EditorStyles.foldoutHeader);
+                float line = EditorGUIUtility.singleLineHeight;
+                float x = rect.x;
+                float y = rect.y + 3f;
+                float w = rect.width;
+
+                // IBinder / IAttachOrderMarker 캐스팅 (아래에서도 쓸 거라 미리 캐스팅)
+                var binder = inst as IBinder;
+                var marker = inst as IAttachOrderMarker;
+
+                // ─ 1) 헤더: Foldout + Reset(R) + 돋보기 Ping ─
+                var rHead = new Rect(x + 4f, y, w - 8f, line);
+
+                const float btnW = 20f;
+                // 오른쪽 끝: 돋보기
+                var rPing = new Rect(rHead.xMax - btnW, rHead.y, btnW, rHead.height);
+                // 그 왼쪽: Reset(R)
+                var rReset = new Rect(rHead.xMax - btnW * 2f - 2f, rHead.y, btnW, rHead.height);
+                // 나머지: Foldout
+                var rFold = new Rect(rHead.x, rHead.y, rHead.width - (btnW * 2f + 6f), rHead.height);
+
+                bool open = EditorGUI.Foldout(rFold, _fold[key], title, true, EditorStyles.foldoutHeader);
                 _fold[key] = open;
 
-                // 2) (현재는 pill 배지 비활성화 상태)
-                // var provided = GetProvidedContextTypes(_contextsProp);
-                // var required = inst != null ? ExtractContextFieldTypes(inst) : Array.Empty<Type>();
-                var rPills = new Rect(rect.x + 8, rHead.yMax, 0, 0); // 자리만 잡고 사용 안 함
+                // Reset 버튼: IBinder.Reset(withPriority: true)
+                using (new EditorGUI.DisabledScope(binder == null))
+                {
+                    if (GUI.Button(rReset, new GUIContent("R", "Reset binder (including priority)"),
+                            EditorStyles.miniButton)
+                        && binder != null)
+                    {
+                        binder.AttachOrder = 0;
+                        binder.Priority = 0;
+                        Repaint();
+                    }
+                }
+
+                // 돋보기 Ping 버튼: Binder 소스 Ping
+                using (new EditorGUI.DisabledScope(t == null))
+                {
+                    var gcPing = GetSearchIconContent("Ping binder script in Project");
+                    if (GUI.Button(rPing, gcPing, EditorStyles.iconButton) && t != null)
+                    {
+                        PingTypeSource(t); // Project에서 해당 스크립트 Ping만
+                    }
+                }
 
                 if (!open) return;
 
-                // 3) Observing (IBinds) 메타 블럭
+                y = rHead.yMax;
+
+                // ─ 2) 네임스페이스 한 줄 (Components 섹션과 동일 스타일) ─
+                if (t != null && !string.IsNullOrEmpty(t.Namespace))
+                {
+                    EnsureStylesReady(); // _namespaceStyle 준비
+                    y += 2f;
+                    var nsRect = new Rect(rect.x + 8f, y, rect.width - 16f, line);
+                    EditorGUI.LabelField(nsRect, t.Namespace, _namespaceStyle);
+                    y += line + 2f;
+                }
+                else
+                {
+                    y += 6f;
+                }
+
+                // ─ 3) Priority / AttachOrder 편집 (+/- 버튼 포함) ─
+                // 현재 값
+                int curPriority = binder != null ? binder.Priority : 0;
+                int curAttach = marker != null ? marker.AttachOrder : 0;
+                int newPriority = curPriority;
+                int newAttach = curAttach;
+                bool changedOrder = false;
+
+                const float btnWidth = 18f;
+                const float btnGap = 2f;
+
+                if (binder != null)
+                {
+                    var rPriBase = new Rect(rect.x + 12f, y, rect.width - 24f, line);
+
+                    // IntField 영역: 오른쪽에 버튼 두 개 자리 남겨두기
+                    var rPriField = new Rect(
+                        rPriBase.x,
+                        rPriBase.y,
+                        rPriBase.width - (btnWidth * 2f + btnGap * 2f),
+                        rPriBase.height
+                    );
+                    var rPriMinus = new Rect(rPriField.xMax + btnGap, rPriBase.y, btnWidth, rPriBase.height);
+                    var rPriPlus = new Rect(rPriMinus.xMax + btnGap, rPriBase.y, btnWidth, rPriBase.height);
+
+                    // 숫자 입력
+                    EditorGUI.BeginChangeCheck();
+                    newPriority = EditorGUI.IntField(
+                        rPriField,
+                        new GUIContent("Priority", "Execution priority (lower runs first)"),
+                        newPriority
+                    );
+                    if (EditorGUI.EndChangeCheck())
+                        changedOrder = true;
+
+                    // -1 버튼
+                    if (GUI.Button(rPriMinus, "-", EditorStyles.miniButton))
+                    {
+                        newPriority -= 1;
+                        changedOrder = true;
+                    }
+
+                    // +1 버튼
+                    if (GUI.Button(rPriPlus, "+", EditorStyles.miniButton))
+                    {
+                        newPriority += 1;
+                        changedOrder = true;
+                    }
+
+                    y += line;
+                }
+
+                if (marker != null)
+                {
+                    var rAttachBase = new Rect(rect.x + 12f, y, rect.width - 24f, line);
+
+                    var rAttachField = new Rect(
+                        rAttachBase.x,
+                        rAttachBase.y,
+                        rAttachBase.width - (btnWidth * 2f + btnGap * 2f),
+                        rAttachBase.height
+                    );
+                    var rAttachMinus = new Rect(rAttachField.xMax + btnGap, rAttachBase.y, btnWidth, rAttachBase.height);
+                    var rAttachPlus = new Rect(rAttachMinus.xMax + btnGap, rAttachBase.y, btnWidth, rAttachBase.height);
+
+                    EditorGUI.BeginChangeCheck();
+                    newAttach = EditorGUI.IntField(
+                        rAttachField,
+                        new GUIContent("Attach Order", "Bind order among binders (lower attaches first)"),
+                        newAttach
+                    );
+                    if (EditorGUI.EndChangeCheck())
+                        changedOrder = true;
+
+                    if (GUI.Button(rAttachMinus, "-", EditorStyles.miniButton))
+                    {
+                        newAttach -= 1;
+                        changedOrder = true;
+                    }
+
+                    if (GUI.Button(rAttachPlus, "+", EditorStyles.miniButton))
+                    {
+                        newAttach += 1;
+                        changedOrder = true;
+                    }
+
+                    y += line + 4f;
+                }
+
+                if (changedOrder && binder != null)
+                {
+                    // Undo는 신경 안쓰고 바로 값만 반영
+                    binder.Priority = newPriority;
+                    binder.AttachOrder = newAttach;
+                }
+
+                // ─ 4) Observing (IBinds) 메타 블럭 (✔ / ✕ 포함) ─
                 var observed = t != null ? ExtractObservedComponentTypes(t) : Array.Empty<Type>();
 
                 if (observed.Count > 0)
                 {
                     var providedTypes = GetProvidedComponentTypesFromEntries(_compEntriesProp); // _data.entries
-                    var providedSet   = new HashSet<Type>(providedTypes);
+                    var providedSet = new HashSet<Type>(providedTypes);
 
-                    var yMeta = rPills.yMax + 6f;
-                    var metaTitle = new Rect(rect.x + 12, yMeta, rect.width - 24, EditorGUIUtility.singleLineHeight);
+                    var metaTitle = new Rect(rect.x + 12f, y, rect.width - 24f, line);
                     EditorGUI.LabelField(metaTitle, "Observing (IBinds)", EditorStyles.boldLabel);
-                    yMeta = metaTitle.yMax + 2f;
+                    y = metaTitle.yMax + 2f;
 
                     foreach (var ct in observed)
                     {
-                        var line = new Rect(rect.x + 16, yMeta, rect.width - 32, EditorGUIUtility.singleLineHeight);
+                        var lineRect = new Rect(rect.x + 16f, y, rect.width - 32f, line);
 
-                        bool added = providedSet.Contains(ct);
-                        var style  = added ? _obsOkStyle : _obsMissingStyle;
+                        var left = new Rect(lineRect.x, lineRect.y, lineRect.width - 24f, lineRect.height);
+                        var right = new Rect(lineRect.xMax - 20f, lineRect.y, 20f, lineRect.height);
 
-                        if (added) EditorGUI.LabelField(line, $"• {ct.Name}", style);
-                        else EditorGUI.LabelField(line, $"• {ct.Name} <not-assigned>", style);
-                        yMeta += EditorGUIUtility.singleLineHeight + 1f;
+                        bool hasComp = providedSet.Contains(ct);
+
+                        EnsureStylesReady(); // _obsOkStyle / _obsMissingStyle 등
+
+                        if (hasComp)
+                        {
+                            EditorGUI.LabelField(left, $"• {ct.Name}", _obsOkStyle);
+
+                            var checkStyle = new GUIStyle(EditorStyles.miniLabel)
+                            {
+                                alignment = TextAnchor.MiddleRight,
+                                richText = true
+                            };
+                            EditorGUI.LabelField(
+                                right,
+                                new GUIContent("<b><color=#2ECC71>✔</color></b>"),
+                                checkStyle
+                            );
+                        }
+                        else
+                        {
+                            EditorGUI.LabelField(left, $"• {ct.Name}", _obsMissingStyle);
+
+                            var xStyle = new GUIStyle(EditorStyles.miniLabel)
+                            {
+                                alignment = TextAnchor.MiddleRight,
+                                richText = true
+                            };
+                            EditorGUI.LabelField(
+                                right,
+                                new GUIContent("<b><color=#E74C3C>✕</color></b>"),
+                                xStyle
+                            );
+                        }
+
+                        y += line + 1f;
                     }
+
+                    y += PAD;
                 }
-                
-                // 4) 바디(바인더 필드 편집 폼)
-                var bodyTop = rHead.yMax + (observed.Count > 0 ? 40f : 6f);
-                var rBody = new Rect(rect.x + 8, bodyTop, rect.width - 16, rect.yMax - bodyTop - PAD);
+
+                // ─ 5) 바인더 본문 ─
+                var rBody = new Rect(rect.x + 8f, y, rect.width - 16f, rect.yMax - y - PAD);
                 EditorGUI.BeginChangeCheck();
                 DrawBinderBody(rBody, p);
                 if (EditorGUI.EndChangeCheck())
@@ -435,6 +787,7 @@ namespace ZenECS.EditorInspectors
                     set.Add(ga);
                 }
             }
+
             return set.OrderBy(t => t.Name).ToArray();
         }
 
@@ -456,6 +809,7 @@ namespace ZenECS.EditorInspectors
                 if (typeof(ZenECS.Core.Binding.IContext).IsAssignableFrom(ft))
                     list.Add(ft);
             }
+
             return list.Distinct().ToArray();
         }
 
@@ -471,8 +825,10 @@ namespace ZenECS.EditorInspectors
                     h += 20f;
                     x = 0f;
                 }
+
                 x += w + pad;
             }
+
             return h;
         }
 
@@ -512,6 +868,7 @@ namespace ZenECS.EditorInspectors
                 var tt = asm.GetType(typeName, false);
                 if (tt != null) return tt;
             }
+
             return null;
         }
 
@@ -528,6 +885,7 @@ namespace ZenECS.EditorInspectors
                 var t = ResolveTypeName(tn);
                 if (t != null) list.Add(t);
             }
+
             return list;
         }
 
@@ -541,7 +899,45 @@ namespace ZenECS.EditorInspectors
                 var val = e.managedReferenceValue;
                 if (val != null) list.Add(val.GetType());
             }
+
             return list;
+        }
+
+        static void PingTypeSource(Type t)
+        {
+            if (t == null)
+                return;
+
+            var guids = AssetDatabase.FindAssets($"t:MonoScript {t.Name}");
+            foreach (var guid in guids)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var ms = AssetDatabase.LoadAssetAtPath<MonoScript>(path);
+                if (ms == null) continue;
+
+                if (ms.GetClass() == t)
+                {
+                    EditorGUIUtility.PingObject(ms);
+                    //Selection.activeObject = ms;
+                    break;
+                }
+            }
+        }
+
+        static GUIContent GetSearchIconContent(string tooltip)
+        {
+            // Unity 기본 검색 아이콘
+            var gc = EditorGUIUtility.IconContent("d_Search Icon");
+            if (gc == null || gc.image == null)
+                gc = EditorGUIUtility.IconContent("Search Icon");
+
+            // 혹시 아이콘을 못 찾았을 경우 텍스트로 fallback
+            if (gc == null)
+                gc = new GUIContent("🔍", tooltip);
+            else
+                gc.tooltip = tooltip;
+
+            return gc;
         }
     }
 }

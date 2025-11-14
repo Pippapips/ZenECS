@@ -23,10 +23,25 @@ namespace ZenECS.Core.Binding
         void ContextDetached(IContext context);
     }
     
+    public interface IBinderEnabledFlag
+    {
+        bool Enabled { get; set; }
+    }
+
+    /// <summary>
+    /// Internal marker that lets the router/registry preserve "attach sequence" ordering
+    /// independent from <see cref="IBinder.Priority"/>.
+    /// </summary>
+    public interface IAttachOrderMarker
+    {
+        /// <summary>Zero-based order assigned at attachment time.</summary>
+        int AttachOrder { get; set; }
+    }
+    
     /// <summary>
     /// Connects an entity’s contexts and deltas to an external presentation target.
     /// </summary>
-    public interface IBinder : IContextAwareBinder
+    public interface IBinder : IAttachOrderMarker, IContextAwareBinder, IBinderEnabledFlag
     {
         /// <summary>
         /// The entity this binder is currently attached to. Default(<see cref="Entity"/>) when detached.
@@ -37,8 +52,8 @@ namespace ZenECS.Core.Binding
         /// Execution priority among binders attached to the same entity.
         /// Lower values are applied earlier during the per-frame <see cref="Apply"/> pass.
         /// </summary>
-        int Priority { get; }
-
+        int Priority { get; set; }
+        
         /// <summary>
         /// Attach this binder to <paramref name="e"/> and cache lookup services.
         /// Called exactly once per attachment by the world/router.
@@ -62,19 +77,9 @@ namespace ZenECS.Core.Binding
     }
 
     /// <summary>
-    /// Internal marker that lets the router/registry preserve "attach sequence" ordering
-    /// independent from <see cref="IBinder.Priority"/>.
-    /// </summary>
-    internal interface IAttachOrderMarker
-    {
-        /// <summary>Zero-based order assigned at attachment time.</summary>
-        int AttachOrder { get; set; }
-    }
-
-    /// <summary>
     /// Convenience base class implementing the common binder lifecycle pattern.
     /// </summary>
-    public abstract class BaseBinder : IBinder, IAttachOrderMarker
+    public abstract class BaseBinder : IBinder
     {
         /// <summary>The world this binder is attached to (null when unbound).</summary>
         protected IWorld? World { get; private set; }
@@ -82,13 +87,15 @@ namespace ZenECS.Core.Binding
         /// <summary>Lookup service for resolving contexts (null when unbound).</summary>
         protected IContextLookup? Contexts { get; private set; }
 
+        public bool Enabled { get; set; } = true;
+
         /// <inheritdoc/>
         public Entity Entity { get; private set; }
 
         /// <inheritdoc/>
         public virtual int Priority { get; set; }
-
-        int IAttachOrderMarker.AttachOrder { get; set; }
+        
+        public virtual int AttachOrder { get; set; }
 
         private bool _bound;
 
@@ -131,7 +138,11 @@ namespace ZenECS.Core.Binding
         }
 
         /// <inheritdoc/>
-        public virtual void Apply(IWorld w, Entity e) { }
+        public void Apply(IWorld w, Entity e)
+        {
+            if (!Enabled) return;
+            OnApply(w, e);
+        }
 
         /// <summary>
         /// Hook called once after a successful <see cref="Bind"/>. Use to cache context references.
@@ -142,6 +153,8 @@ namespace ZenECS.Core.Binding
         /// Hook called during <see cref="Unbind"/> for cleanup (unsubscribe, dispose, etc.).
         /// </summary>
         protected virtual void OnUnbind() { }
+        
+        protected virtual void OnApply(IWorld w, Entity e) { }
         
         protected virtual void OnContextAttached(IContext context) { }
         

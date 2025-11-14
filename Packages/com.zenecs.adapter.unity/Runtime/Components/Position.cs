@@ -13,8 +13,6 @@ namespace ZenECS.Adapter.Unity.Components.Common
     public readonly struct Position : IEquatable<Position>
     {
         public static readonly Position Default = new Position(float3.zero);
-        
-        [ZenReadOnlyInInspector]
         public readonly float3 Value;
 
         public Position(in float3 value)

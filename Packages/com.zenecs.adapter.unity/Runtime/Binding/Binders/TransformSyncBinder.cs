@@ -54,11 +54,11 @@ namespace ZenECS.Adapter.Unity.Binding.Binders.Implementations
         {
         }
         
-        public override void Apply(IWorld w, Entity e)
+        protected override void OnApply(IWorld w, Entity e)
         {
             if (World == null) return;
             
-            if (_modelContext != null)
+            if (_modelContext != null && _modelContext.Root != null)
             {
                 if (World.TryRead<Position>(e, out var position))
                 {

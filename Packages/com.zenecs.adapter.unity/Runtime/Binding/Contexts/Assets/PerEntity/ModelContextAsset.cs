@@ -22,10 +22,10 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts.Assets
         fileName = "ModelContext")]
     public sealed class ModelContextAsset : PerEntityContextAsset
     {
-        public override Type ContextType => typeof(ModelContext);
-        
         [Header("Model Prefab")]
         public GameObject modelPrefab = null!;
+        
+        public override Type ContextType => typeof(ModelContext);
         
         /// <inheritdoc />
         public override IContext CreateContextForEntity(IWorld world, Entity e)

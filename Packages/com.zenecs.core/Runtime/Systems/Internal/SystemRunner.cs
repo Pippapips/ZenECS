@@ -207,7 +207,7 @@ namespace ZenECS.Core.Internal.Systems
             }
 
             // Rebuild plan and Initialize only newly joined systems
-            _plan = SystemPlanner.Build(_active);
+            _plan = SystemPlanner.Build(w, _active);
             if (_plan != null)
             {
                 foreach (var s in _plan.LifecycleInitializeOrder)

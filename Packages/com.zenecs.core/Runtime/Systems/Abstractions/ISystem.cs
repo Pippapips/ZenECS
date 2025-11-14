@@ -38,7 +38,7 @@ namespace ZenECS.Core.Systems
     /// <see cref="IVariableRunSystem"/>, <see cref="IPresentationSystem"/>)
     /// refine the phase/semantics of <see cref="Run"/>.
     /// </summary>
-    public interface ISystem
+    public interface ISystem    
     {
         /// <summary>
         /// Execute the system logic against the given world.
