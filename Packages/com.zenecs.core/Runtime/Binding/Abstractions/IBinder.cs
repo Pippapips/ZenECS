@@ -30,12 +30,15 @@ namespace ZenECS.Core.Binding
 
     /// <summary>
     /// Internal marker that lets the router/registry preserve "attach sequence" ordering
-    /// independent from <see cref="IBinder.Priority"/>.
+    /// independent from <see cref="IBinder.ApplyOrder"/>.
     /// </summary>
     public interface IAttachOrderMarker
     {
         /// <summary>Zero-based order assigned at attachment time.</summary>
-        int AttachOrder { get; set; }
+        int AttachOrder { get; }
+
+        void ResetAttachOrder();
+        void SetAttachOrder(int attachOrder);
     }
     
     /// <summary>
@@ -52,8 +55,13 @@ namespace ZenECS.Core.Binding
         /// Execution priority among binders attached to the same entity.
         /// Lower values are applied earlier during the per-frame <see cref="Apply"/> pass.
         /// </summary>
-        int Priority { get; set; }
+        int ApplyOrder { get; }
         
+        void SetApplyOrder(int order);
+        void SetApplyOrderAndAttachOrder(int applyOrder, int attachOrder);
+        void ResetApplyOrder();
+        void ResetApplyOrderAndAttachOrder();
+
         /// <summary>
         /// Attach this binder to <paramref name="e"/> and cache lookup services.
         /// Called exactly once per attachment by the world/router.
@@ -93,9 +101,43 @@ namespace ZenECS.Core.Binding
         public Entity Entity { get; private set; }
 
         /// <inheritdoc/>
-        public virtual int Priority { get; set; }
+        public virtual int ApplyOrder => _applyOrder;
+        private int _applyOrder;
         
-        public virtual int AttachOrder { get; set; }
+        public virtual int AttachOrder => _attachOrder;
+        private int _attachOrder;
+
+        public void ResetAttachOrder()
+        {
+            this._attachOrder = 0;
+        }
+
+        public void ResetApplyOrder()
+        {
+            this._applyOrder = 0;
+        }
+
+        public void ResetApplyOrderAndAttachOrder()
+        {
+            ResetAttachOrder();
+            ResetApplyOrder();
+        }
+
+        public void SetAttachOrder(int attachOrder)
+        {
+            this._attachOrder = attachOrder;
+        }
+
+        public void SetApplyOrder(int order)
+        {
+            this._applyOrder = order;
+        }
+
+        public void SetApplyOrderAndAttachOrder(int applyOrder, int attachOrder)
+        {
+            SetApplyOrder(applyOrder);
+            SetAttachOrder(attachOrder);
+        }
 
         private bool _bound;
 

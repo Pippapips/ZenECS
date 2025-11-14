@@ -538,8 +538,7 @@ namespace ZenECS.EditorInspectors
                             EditorStyles.miniButton)
                         && binder != null)
                     {
-                        binder.AttachOrder = 0;
-                        binder.Priority = 0;
+                        binder.ResetApplyOrderAndAttachOrder();
                         Repaint();
                     }
                 }
@@ -574,7 +573,7 @@ namespace ZenECS.EditorInspectors
 
                 // ─ 3) Priority / AttachOrder 편집 (+/- 버튼 포함) ─
                 // 현재 값
-                int curPriority = binder != null ? binder.Priority : 0;
+                int curPriority = binder != null ? binder.ApplyOrder : 0;
                 int curAttach = marker != null ? marker.AttachOrder : 0;
                 int newPriority = curPriority;
                 int newAttach = curAttach;
@@ -582,47 +581,6 @@ namespace ZenECS.EditorInspectors
 
                 const float btnWidth = 18f;
                 const float btnGap = 2f;
-
-                if (binder != null)
-                {
-                    var rPriBase = new Rect(rect.x + 12f, y, rect.width - 24f, line);
-
-                    // IntField 영역: 오른쪽에 버튼 두 개 자리 남겨두기
-                    var rPriField = new Rect(
-                        rPriBase.x,
-                        rPriBase.y,
-                        rPriBase.width - (btnWidth * 2f + btnGap * 2f),
-                        rPriBase.height
-                    );
-                    var rPriMinus = new Rect(rPriField.xMax + btnGap, rPriBase.y, btnWidth, rPriBase.height);
-                    var rPriPlus = new Rect(rPriMinus.xMax + btnGap, rPriBase.y, btnWidth, rPriBase.height);
-
-                    // 숫자 입력
-                    EditorGUI.BeginChangeCheck();
-                    newPriority = EditorGUI.IntField(
-                        rPriField,
-                        new GUIContent("Priority", "Execution priority (lower runs first)"),
-                        newPriority
-                    );
-                    if (EditorGUI.EndChangeCheck())
-                        changedOrder = true;
-
-                    // -1 버튼
-                    if (GUI.Button(rPriMinus, "-", EditorStyles.miniButton))
-                    {
-                        newPriority -= 1;
-                        changedOrder = true;
-                    }
-
-                    // +1 버튼
-                    if (GUI.Button(rPriPlus, "+", EditorStyles.miniButton))
-                    {
-                        newPriority += 1;
-                        changedOrder = true;
-                    }
-
-                    y += line;
-                }
 
                 if (marker != null)
                 {
@@ -658,14 +616,54 @@ namespace ZenECS.EditorInspectors
                         changedOrder = true;
                     }
 
+                    y += line;
+                }
+
+                if (binder != null)
+                {
+                    var rPriBase = new Rect(rect.x + 12f, y, rect.width - 24f, line);
+
+                    // IntField 영역: 오른쪽에 버튼 두 개 자리 남겨두기
+                    var rPriField = new Rect(
+                        rPriBase.x,
+                        rPriBase.y,
+                        rPriBase.width - (btnWidth * 2f + btnGap * 2f),
+                        rPriBase.height
+                    );
+                    var rPriMinus = new Rect(rPriField.xMax + btnGap, rPriBase.y, btnWidth, rPriBase.height);
+                    var rPriPlus = new Rect(rPriMinus.xMax + btnGap, rPriBase.y, btnWidth, rPriBase.height);
+
+                    // 숫자 입력
+                    EditorGUI.BeginChangeCheck();
+                    newPriority = EditorGUI.IntField(
+                        rPriField,
+                        new GUIContent("Apply Order", "Apply order (lower runs first)"),
+                        newPriority
+                    );
+                    if (EditorGUI.EndChangeCheck())
+                        changedOrder = true;
+
+                    // -1 버튼
+                    if (GUI.Button(rPriMinus, "-", EditorStyles.miniButton))
+                    {
+                        newPriority -= 1;
+                        changedOrder = true;
+                    }
+
+                    // +1 버튼
+                    if (GUI.Button(rPriPlus, "+", EditorStyles.miniButton))
+                    {
+                        newPriority += 1;
+                        changedOrder = true;
+                    }
+
                     y += line + 4f;
                 }
 
                 if (changedOrder && binder != null)
                 {
                     // Undo는 신경 안쓰고 바로 값만 반영
-                    binder.Priority = newPriority;
-                    binder.AttachOrder = newAttach;
+                    binder.SetApplyOrderAndAttachOrder(newPriority, newAttach);
                 }
 
                 // ─ 4) Observing (IBinds) 메타 블럭 (✔ / ✕ 포함) ─

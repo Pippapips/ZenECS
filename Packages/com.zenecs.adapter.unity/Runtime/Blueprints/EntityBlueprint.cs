@@ -31,7 +31,7 @@ namespace ZenECS.Adapter.Unity.Blueprints
         /// Spawn an entity and apply only component snapshot.
         /// Binder/Context SO는 별도 BindingInstaller 등에서 적용하는 것을 권장.
         /// </summary>
-        public Entity Spawn(IWorld world, bool clonePerEntity = true)
+        public Entity Spawn(IWorld world)
         {
             var e = world.SpawnEntity();
             _data?.ApplyTo(world, e);
@@ -60,7 +60,8 @@ namespace ZenECS.Adapter.Unity.Blueprints
             foreach (var b in _binders)
             {
                 if (b == null) continue;
-                var inst = clonePerEntity ? (IBinder)ShallowCopy(b, b.GetType()) : b;
+                var inst = (IBinder)ShallowCopy(b, b.GetType());
+                inst.SetApplyOrderAndAttachOrder(inst.ApplyOrder, b.AttachOrder);
                 world.AttachBinder(e, inst);
             }
             

@@ -11,6 +11,7 @@ using ZenECS.Adapter.Unity.Attributes;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
 using ZenECS.Core;
 using ZenECS.Core.Binding;
+using ZenECS.Core.Systems;
 using ZenECS.EditorCommon;
 using ZenECS.EditorTools;
 using Object = UnityEngine.Object;
@@ -45,10 +46,16 @@ namespace ZenECS.EditorWindows
         readonly List<Entity> _cache = new(256);
         double _nextRepaint;
         private int _selSysEntityCount;
+        static GUIStyle _bigPlusButton;
+        static bool _bigPlusReady;
+
+        // System.Enabled 리플렉션 캐시
+        static readonly Dictionary<Type, PropertyInfo?> _systemEnabledPropCache = new();
 
         readonly Dictionary<Entity, bool> _entityFold = new(); // entityId → fold
         readonly Dictionary<string, bool> _componentFold = new(); // $"{entityId}:{typeName}" → fold
         readonly Dictionary<string, bool> _binderFold = new(); // $"{entityId}:{typeName}" → fold
+        readonly Dictionary<string, bool> _contextFold = new(); // $"{entityId}:{typeName}:CTX" → fold
         bool _editMode = true;
 
         static EcsDriver? _driver;
@@ -82,7 +89,9 @@ namespace ZenECS.EditorWindows
             _selSysEntityCount = 0;
             _cache.Clear();
             _entityFold.Clear();
+            _binderFold.Clear();
             _componentFold.Clear();
+            _contextFold.Clear();
             _findMode = false;
             _findEntityId = null;
             _foundValid = false;
@@ -147,9 +156,77 @@ namespace ZenECS.EditorWindows
                     {
                         for (int i = 0; i < systems.Count; i++)
                         {
-                            var s = systems[i];
-                            var typeName = s.GetType().Name;
-                            if (GUILayout.Toggle(_selSystem == i, typeName, "Button")) _selSystem = i;
+                            var sys = systems[i];
+                            if (sys == null) continue;
+
+                            var tSys = sys.GetType();
+                            var typeName = tSys.Name;
+
+                            // --- ISystemEnabledFlag 구현 여부 및 Enabled 값 ---
+                            bool hasEnabled = sys is ISystemEnabledFlag;
+                            bool enabledValue = hasEnabled && ((ISystemEnabledFlag)sys).Enabled;
+
+                            // ===== 한 줄 전체 Rect =====
+                            var rowHeight = EditorGUIUtility.singleLineHeight + 4f;
+                            var rowRect = GUILayoutUtility.GetRect(0, rowHeight, GUILayout.ExpandWidth(true));
+
+                            const float pauseW = 24f;
+                            const float gap = 4f;
+
+                            var pauseRect = new Rect(rowRect.x, rowRect.y, pauseW, rowRect.height);
+                            var sysRect = new Rect(
+                                pauseRect.xMax + gap,
+                                rowRect.y,
+                                rowRect.width - (pauseRect.width + gap),
+                                rowRect.height
+                            );
+
+                            // ===== Enabled 토글 (일시정지 버튼 스타일) =====
+                            using (new EditorGUI.DisabledScope(!hasEnabled))
+                            {
+                                if (hasEnabled && !enabledValue)
+                                {
+                                    var inner = new Rect(pauseRect.x + 1, pauseRect.y + 1,
+                                        pauseRect.width - 2, pauseRect.height - 2);
+
+                                    var highlightFill = new Color(0.10f, 0.45f, 0.90f, 0.35f);
+                                    var highlightBorder = new Color(0.15f, 0.70f, 1.00f, 0.95f);
+
+                                    EditorGUI.DrawRect(inner, highlightFill);
+                                    Handles.DrawSolidRectangleWithOutline(inner, Color.clear, highlightBorder);
+                                }
+
+                                var oldBg = GUI.backgroundColor;
+                                if (hasEnabled && !enabledValue)
+                                {
+                                    GUI.backgroundColor = new Color(0.25f, 0.65f, 1.0f, 1f);
+                                }
+
+                                // ⏸ 아이콘: Unity 에디터 Pause 버튼 아이콘 사용
+                                var pauseContent = EditorGUIUtility.IconContent("PauseButton");
+                                if (pauseContent == null || pauseContent.image == null)
+                                {
+                                    // 혹시 아이콘을 못 찾는 경우 대비 fallback
+                                    pauseContent = EditorGUIUtility.TrTextContent("⏸");
+                                }
+
+                                if (GUI.Button(pauseRect, pauseContent, EditorStyles.miniButton))
+                                {
+                                    if (hasEnabled)
+                                    {
+                                        var flag = (ISystemEnabledFlag)sys;
+                                        flag.Enabled = !flag.Enabled;
+                                    }
+                                }
+
+                                GUI.backgroundColor = oldBg;
+                            }
+
+                            // ===== System 선택 버튼 =====
+                            bool selected = _selSystem == i;
+                            bool clicked = GUI.Toggle(sysRect, selected, typeName, "Button");
+                            if (clicked)
+                                _selSystem = i;
                         }
                     }
                 }
@@ -272,6 +349,22 @@ namespace ZenECS.EditorWindows
             DrawFooter();
         }
 
+        static GUIContent GetSearchIconContent(string tooltip)
+        {
+            // Unity 기본 검색 아이콘
+            var gc = EditorGUIUtility.IconContent("d_Search Icon");
+            if (gc == null || gc.image == null)
+                gc = EditorGUIUtility.IconContent("Search Icon");
+
+            // 혹시 아이콘을 못 찾았을 경우 텍스트로 fallback
+            if (gc == null)
+                gc = new GUIContent("🔍", tooltip);
+            else
+                gc.tooltip = tooltip;
+
+            return gc;
+        }
+
         private void DrawFooter()
         {
             IWorld? world = null;
@@ -289,9 +382,62 @@ namespace ZenECS.EditorWindows
 
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
             {
+                // ===== Global Pause 토글 버튼 (커널 기반) =====
+                var hasKernel = _driver != null && _driver.Kernel != null;
+                var isPaused = hasKernel && _driver!.Kernel!.IsPaused;
+
+                // 툴바 라인 높이에 맞춘 Rect
+                var rowHeight = EditorGUIUtility.singleLineHeight + 2f;
+                var pauseRect = GUILayoutUtility.GetRect(24f, rowHeight, GUILayout.Width(24f));
+
+                using (new EditorGUI.DisabledScope(!hasKernel))
+                {
+                    if (hasKernel && isPaused)
+                    {
+                        // 시스템 토글과 동일한 느낌의 하이라이트
+                        var inner = new Rect(pauseRect.x + 1, pauseRect.y + 1,
+                            pauseRect.width - 2, pauseRect.height - 2);
+
+                        var highlightFill = new Color(0.10f, 0.45f, 0.90f, 0.35f);
+                        var highlightBorder = new Color(0.15f, 0.70f, 1.00f, 0.95f);
+
+                        EditorGUI.DrawRect(inner, highlightFill);
+                        Handles.DrawSolidRectangleWithOutline(inner, Color.clear, highlightBorder);
+                    }
+
+                    var oldBg = GUI.backgroundColor;
+                    if (hasKernel && isPaused)
+                    {
+                        // 더 눈에 띄도록 배경색도 튜닝
+                        GUI.backgroundColor = new Color(0.25f, 0.65f, 1.0f, 1f);
+                    }
+
+                    var pauseContent = EditorGUIUtility.IconContent("PauseButton");
+                    if (pauseContent == null || pauseContent.image == null)
+                    {
+                        pauseContent = EditorGUIUtility.TrTextContent("⏸");
+                    }
+
+                    if (GUI.Button(pauseRect, pauseContent, EditorStyles.miniButton))
+                    {
+                        if (hasKernel)
+                        {
+                            _driver!.Kernel!.TogglePause();
+                        }
+                    }
+
+                    GUI.backgroundColor = oldBg;
+                }
+
+                GUILayout.Space(8);
+
+                // ===== 기존 정보 라벨들 =====
+                var elapsed = _driver?.Kernel?.TotalTimeSeconds ?? 0;
                 var systemCount = systems?.Count ?? 0;
                 var entityCount = world?.GetAllEntities()?.Count ?? 0;
 
+                GUILayout.Label($"Since running in seconds: {elapsed:0}");
+                GUILayout.Space(12);
                 GUILayout.Label($"Systems: {systemCount}");
                 GUILayout.Space(12);
                 GUILayout.Label($"Total Entities: {entityCount}");
@@ -355,10 +501,7 @@ namespace ZenECS.EditorWindows
                 _editMode = GUILayout.Toggle(_editMode, "Edit", "Button", GUILayout.Width(60));
             }
         }
-
-        static GUIStyle _bigPlusButton;
-        static bool _bigPlusReady;
-
+        
         static void EnsureBigPlusStyle()
         {
             if (_bigPlusReady) return;
@@ -390,35 +533,25 @@ namespace ZenECS.EditorWindows
                 {
                     var style = EditorStyles.miniButton;
 
-                    EnsureBigPlusStyle();
+                    const float wBtn = 20f;
+                    const float gap = 3f;
 
-                    // label/icon candidates
-                    var addLong = EditorGUIUtility.TrTextContent("+");
-                    var selLong = EditorGUIUtility.TrTextContent("•");
-
-                    float BtnH(GUIContent? gc)
-                    {
-                        if (gc == null) return 0f;
-                        var sz = style.CalcSize(gc);
-                        return Mathf.Ceil(Mathf.Max(EditorGUIUtility.singleLineHeight + 2f,
-                            sz.y + style.margin.vertical + 7f));
-                    }
-
-                    const float wAdd = 20f;
-                    const float wSel = 20f;
-
-                    var useAdd = addLong;
-                    var useSel = selLong;
-
-                    var hAdd = BtnH(useAdd);
-                    var hSel = BtnH(useSel);
-                    var hBtn = Mathf.Max(hAdd, hSel);
+                    var hBtn = Mathf.Ceil(EditorGUIUtility.singleLineHeight + 2f);
                     var yBtn = rRight.y + Mathf.Max(0f, (rRight.height - hBtn) * 0.5f);
 
-                    var right = rRight.xMax - 4;
-                    var rDel = new Rect(right - 20, yBtn, wAdd, hBtn);
-                    var rAdd = new Rect(right - (wAdd + 22.5f), yBtn, wAdd, hBtn);
-                    right = rAdd.x - (useSel != null ? 3f : 0f);
+                    var right = rRight.xMax - 4f;
+
+                    // 맨 오른쪽: 삭제 X
+                    var rDel = new Rect(right - wBtn, yBtn, wBtn, hBtn);
+                    right = rDel.x - gap;
+
+                    // 그 왼쪽: 메인 뷰 선택 버튼 (•)
+                    Rect? rSel = null;
+                    if (EcsExplorerActions.TryGetEntityMainView(world, e, out var go))
+                    {
+                        rSel = new Rect(right - wBtn + 2, yBtn + 2, wBtn, hBtn);
+                        right = rSel.Value.x - gap;
+                    }
 
                     using (new EditorGUI.DisabledScope(!_editMode))
                     {
@@ -433,53 +566,46 @@ namespace ZenECS.EditorWindows
                                 Repaint();
                             }
                         }
-
-                        if (GUI.Button(rAdd, useAdd, style))
-                        {
-                            var all = ZenECS.EditorCommon.ZenComponentPickerWindow.FindAllZenComponents().ToList();
-                            var disabled = new HashSet<Type>();
-                            foreach (var (tHave, _) in world.GetAllComponents(e)) disabled.Add(tHave);
-
-                            ZenComponentPickerWindow.Show(
-                                all,
-                                disabled,
-                                picked =>
-                                {
-                                    var inst = ZenDefaults.CreateWithDefaults(picked);
-                                    world.AddComponentBoxed(e, inst);
-                                    Repaint();
-                                },
-                                rAdd, // 이 버튼 rect 기준으로
-                                $"Entity #{e.Id}:{e.Gen} Add Component"
-                            );
-                        }
                     }
 
-                    if (EcsExplorerActions.TryGetEntityMainView(world, e, out var go))
+                    var gcPing = GetSearchIconContent("Ping entity view in Hierarchy");
+                    if (rSel.HasValue && GUI.Button(rSel.Value, gcPing, EditorStyles.iconButton))
                     {
-                        var rSel = new Rect(right - (wSel), yBtn, wSel, hBtn);
-                        if (GUI.Button(rSel, useSel, style))
-                        {
-                            EcsExplorerActions.TrySelectEntityMainView(go);
-                        }
+                        EcsExplorerActions.TrySelectEntityMainView(go);
                     }
                 }, true, false);
+
                 _entityFold[e] = openE;
 
                 if (!openE) return;
 
-                // ===== Summary line =====
+                // ===== Components Summary line =====
                 var line = EditorGUIUtility.singleLineHeight;
                 var r = GUILayoutUtility.GetRect(10, line, GUILayout.ExpandWidth(true));
 
                 var compsEnum = world.GetAllComponents(e);
                 var arr = compsEnum.ToArray();
 
-                // Arrow toggle (open/close all visible components)
+// Arrow toggle (open/close all visible components)
                 var rArrow = new Rect(r.x + 3, r.y + 1, 18f, r.height - 2);
-                var rLabel = new Rect(rArrow.xMax - 1f, r.y, r.width - (rArrow.width + 4f), r.height);
+
+                const float addWComp = 100f;
+                const float gapComp = 6f;
+
+// 오른쪽 끝 Add Component 버튼 영역
+                var rAddComp = new Rect(r.xMax - addWComp, r.y, addWComp, r.height);
+
+// 라벨 영역: 화살표 + Add 버튼을 제외한 부분
+                var rLabel = new Rect(
+                    rArrow.xMax - 1f,
+                    r.y,
+                    r.width - (rArrow.width + addWComp + gapComp + 4f),
+                    r.height
+                );
+
                 var allOpen = AreAllComponentsOpen_VisibleOnly(e, arr);
 
+                // 전체 컴포넌트 접기/펼치기 토글
                 EditorGUI.BeginChangeCheck();
                 var visNext = EditorGUI.Foldout(rArrow, allOpen, GUIContent.none, false);
                 EditorGUIUtility.AddCursorRect(rArrow, MouseCursor.Link);
@@ -490,10 +616,38 @@ namespace ZenECS.EditorWindows
                     GUIUtility.ExitGUI();
                 }
 
+                // 라벨
                 EditorGUI.LabelField(rLabel, $"Components: {arr.Length}");
+
+                // Add Component 버튼 (이제 여기!)
+                using (new EditorGUI.DisabledScope(!_editMode))
+                {
+                    if (GUI.Button(rAddComp, "Add Component", EditorStyles.miniButton))
+                    {
+                        var all = ZenECS.EditorCommon.ZenComponentPickerWindow.FindAllZenComponents().ToList();
+                        var disabled = new HashSet<Type>();
+                        foreach (var (tHave, _) in world.GetAllComponents(e))
+                            disabled.Add(tHave);
+
+                        ZenComponentPickerWindow.Show(
+                            all,
+                            disabled,
+                            picked =>
+                            {
+                                var inst = ZenDefaults.CreateWithDefaults(picked);
+                                world.AddComponentBoxed(e, inst);
+                                Repaint();
+                            },
+                            rAddComp, // 이제 Components 줄 오른쪽 Rect 기준으로
+                            $"Entity #{e.Id}:{e.Gen} Add Component"
+                        );
+                    }
+                }
+
+                // 실제 리스트 렌더링
                 DrawComponentsList(world, e, arr);
 
-// ===== Components 끝난 직후 바로 아래에 추가 =====
+                // ===== Components 끝난 직후 바로 아래에 추가 =====
                 {
                     // ===== Contexts Summary line =====
                     if (ContextApi.TryGetAll(world, e, out var ctxs))
@@ -506,29 +660,29 @@ namespace ZenECS.EditorWindows
                         const float addW = 100f;
                         const float gap = 6f;
                         var rAddC = new Rect(rc.xMax - addW, rc.y, addW, rc.height);
-                        var rLabelC = new Rect(rArrowC.xMax - 1f, rc.y, rc.width - (rArrowC.width + addW + gap + 4f),
-                            rc.height);
+                        var rLabelC = new Rect(
+                            rArrowC.xMax - 1f, rc.y,
+                            rc.width - (rArrowC.width + addW + gap + 4f),
+                            rc.height
+                        );
 
-                        // 모든 Context 카드는 펼침 상태 없음(간단 표기) → 토글은 전체 표시/숨김 역할
-                        // 엔티티 별 폴드 상태 보관 (컴포넌트/바인더와 형태 통일)
-                        var keySummary = $"CTX:{e.Id}:{e.Gen}:OPEN";
-                        if (!_entityFold.ContainsKey(e)) _entityFold[e] = false;
-                        if (!_componentFold.ContainsKey(keySummary)) _componentFold[keySummary] = true;
+                        // 모든 컨텍스트가 열려 있는지 (Components와 동일 패턴)
+                        var allOpen_ = AreAllContextsOpen(e, ctxs);
 
-                        bool openCtx = _componentFold[keySummary];
                         EditorGUI.BeginChangeCheck();
-                        var visNextCtx = EditorGUI.Foldout(rArrowC, openCtx, GUIContent.none, false);
+                        var visNextCtx = EditorGUI.Foldout(rArrowC, allOpen_, GUIContent.none, false);
                         EditorGUIUtility.AddCursorRect(rArrowC, MouseCursor.Link);
                         if (EditorGUI.EndChangeCheck())
                         {
-                            _componentFold[keySummary] = visNextCtx;
+                            // 루트 토글 → 전체 컨텍스트 접기/펼치기
+                            SetAllContextsFold(world, e, visNextCtx);
                             Repaint();
                             GUIUtility.ExitGUI();
                         }
 
                         EditorGUI.LabelField(rLabelC, $"Contexts: {ctxs.Length}");
 
-                        // Add Context 버튼
+                        // Add Context 버튼 (기존 로직 유지)
                         using (new EditorGUI.DisabledScope(!_editMode))
                         {
                             if (GUI.Button(rAddC, "Add Context", EditorStyles.miniButton))
@@ -549,8 +703,8 @@ namespace ZenECS.EditorWindows
                             }
                         }
 
-                        if (_componentFold[keySummary])
-                            DrawContextsList(world, e, ctxs);
+                        // 🔴 항상 DrawContextsList 호출 → 이름/네임스페이스는 언제나 표시
+                        DrawContextsList(world, e, ctxs);
                     }
                     else
                     {
@@ -633,6 +787,40 @@ namespace ZenECS.EditorWindows
                     }
                 }
             }
+        }
+
+        void SetAllContextsFold(IWorld world, Entity e, bool open)
+        {
+            if (!ContextApi.TryGetAll(world, e, out var ctxs)) return;
+
+            foreach (var (t, _) in ctxs)
+            {
+                if (t == null) continue;
+                var key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}:CTX";
+                _contextFold[key] = open;
+            }
+        }
+
+        bool AreAllContextsOpen(Entity e, (Type type, object boxed)[] ctxs)
+        {
+            bool any = false;
+
+            foreach (var (t, _) in ctxs)
+            {
+                if (t == null) continue;
+
+                any = true;
+                var key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}:CTX";
+
+                // 컴포넌트와 동일 패턴:
+                // - 키가 없거나
+                // - false 이면
+                //   => "다 안 열려 있음"으로 판단
+                if (!_contextFold.TryGetValue(key, out var open) || !open)
+                    return false;
+            }
+
+            return any && true;
         }
 
         void SetAllBindersFold(IWorld world, Entity e, bool open)
@@ -758,7 +946,7 @@ namespace ZenECS.EditorWindows
                 );
             }
         }
-        
+
         static class ItalicLabel
         {
             static GUIStyle _leftMiniItalic;
@@ -843,18 +1031,110 @@ namespace ZenECS.EditorWindows
             }
         }
 
-        void DrawBinderMeta(IWorld world, Entity e, object binder)
+        void DrawBinderMeta(IWorld world, Entity e, object binderObj)
         {
-            var t = binder.GetType();
+            if (binderObj == null) return;
 
-            // 1) 관찰 컴포넌트(IBind 기반) 리스트
-            var observed = BinderIntrospection.ExtractObservedComponentTypes(t);
+            var t = binderObj.GetType();
+            var binder = binderObj as IBinder;
 
-            // Has<T> 델리게이트(이미 EcsExplorer에서 사용하던 헬퍼를 재사용)
-            // 없다면: Func<Entity,bool>? GetHas(IWorld,Type) 를 구현해 캐싱하세요.
             using (new EditorGUILayout.VerticalScope("box"))
             {
+                // --- Priority 편집 영역 ---
+                if (binder != null)
+                {
+                    // 현재 Priority 값 가져오기 (우선 리플렉션, 실패하면 0)
+                    int currentPriority = 0;
+                    try
+                    {
+                        var piPrio = t.GetProperty(
+                            "ApplyOrder",
+                            BindingFlags.Public | BindingFlags.Instance
+                        );
+                        if (piPrio != null &&
+                            piPrio.PropertyType == typeof(int) &&
+                            piPrio.GetIndexParameters().Length == 0)
+                        {
+                            currentPriority = (int)(piPrio.GetValue(binder) ?? 0);
+                        }
+                    }
+                    catch
+                    {
+                        // 무시하고 0 사용
+                    }
+
+                    using (new EditorGUI.DisabledScope(!_editMode))
+                    {
+                        // 한 줄짜리 Rect를 직접 받아서 x 좌표를 제어
+                        var lineRect = EditorGUILayout.GetControlRect();
+
+                        int newPriority = currentPriority;
+                        bool changedByButton = false;
+
+                        // Observing (IBinds) 가 사용하는 boldLabel의 왼쪽 마진만큼 안쪽에서 시작
+                        float startX = lineRect.x + EditorStyles.boldLabel.margin.left + 12;
+                        float h = lineRect.height;
+                        const float btnW = 22f;
+                        const float btnGap = 2f;
+                        const float labelGap = 1f;
+                        const float labelW = 90f;
+
+                        // [-] / [+] / Label / IntField의 Rect 계산
+                        var minusRect = new Rect(startX, lineRect.y, btnW, h);
+                        var plusRect = new Rect(minusRect.xMax + btnGap, lineRect.y, btnW, h);
+                        var labelRect = new Rect(plusRect.xMax + labelGap - 8, lineRect.y, labelW, h);
+                        var fieldRect = new Rect(labelRect.xMax + labelGap, lineRect.y,
+                            lineRect.xMax - (labelRect.xMax + labelGap), h);
+
+                        // [-] 버튼
+                        if (GUI.Button(minusRect, "-"))
+                        {
+                            newPriority = currentPriority - 1;
+                            changedByButton = true;
+                        }
+
+                        // [+] 버튼
+                        if (GUI.Button(plusRect, "+"))
+                        {
+                            newPriority = currentPriority + 1;
+                            changedByButton = true;
+                        }
+
+                        // "Apply Order" 라벨
+                        EditorGUI.LabelField(labelRect, "Apply Order");
+
+                        // 숫자 직접 입력
+                        EditorGUI.BeginChangeCheck();
+                        newPriority = EditorGUI.IntField(fieldRect, GUIContent.none, newPriority);
+                        bool changedByField = EditorGUI.EndChangeCheck();
+
+                        if ((changedByButton || changedByField) && newPriority != currentPriority)
+                        {
+                            try
+                            {
+                                binder.SetApplyOrder(newPriority);
+                            }
+                            catch (MissingMethodException)
+                            {
+                                Debug.LogWarning(
+                                    $"IBinder.SetApplyOrder(int) 가 구현되지 않았습니다: {t.FullName}");
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.LogException(ex);
+                            }
+
+                            Repaint();
+                        }
+                    }
+
+                    GUILayout.Space(4);
+                }
+
+                // --- Observing (IBinds) 메타 정보는 그대로 유지 ---
                 EditorGUILayout.LabelField("Observing (IBinds)", EditorStyles.boldLabel);
+
+                var observed = BinderIntrospection.ExtractObservedComponentTypes(t);
 
                 if (observed.Count == 0)
                 {
@@ -877,13 +1157,12 @@ namespace ZenECS.EditorWindows
 
                             if (has)
                             {
-                                OkLabel.DrawOK(20f); // AVAILABLE/PRESENT → OK
+                                OkLabel.DrawOK(20f);
                             }
                             else
                             {
                                 NotAssignLabel.Draw(20);
                             }
-                            // ABSENT → 라벨 없음 (이탤릭 텍스트만)
                         }
                     }
                 }
@@ -1054,6 +1333,8 @@ namespace ZenECS.EditorWindows
                                     }
                                 }
 
+                                GUI.color = prevCtrlColor;
+
                                 using (new EditorGUI.DisabledScope(!_editMode || !BinderApi.CanRemove(world)))
                                 {
                                     var gcDel = new GUIContent("X", "Remove this Binder from Entity");
@@ -1070,8 +1351,6 @@ namespace ZenECS.EditorWindows
                                         }
                                     }
                                 }
-
-                                GUI.color = prevCtrlColor;
                             },
                             foldable: hasMetaOrFields,
                             false
@@ -1156,10 +1435,10 @@ namespace ZenECS.EditorWindows
                                     {
                                         if (GUI.Button(rReset, "R", EditorStyles.miniButton))
                                         {
-                                            if (EditorUtility.DisplayDialog(
-                                                    "Reset Component",
-                                                    $"Reset to defaults?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}Component",
-                                                    "Yes", "No"))
+                                            // if (EditorUtility.DisplayDialog(
+                                            //         "Reset Component",
+                                            //         $"Reset to defaults?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}Component",
+                                            //         "Yes", "No"))
                                             {
                                                 var def = ZenDefaults.CreateWithDefaults(t);
                                                 world.ReplaceComponentBoxed(e, def);
@@ -1777,49 +2056,95 @@ namespace ZenECS.EditorWindows
             }
         }
 
+        static bool HasVisibleContextMembers(Type ctxType)
+        {
+            if (ctxType == null) return false;
+
+            // public instance fields
+            foreach (var f in ctxType.GetFields(BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (Attribute.IsDefined(f, typeof(ZenEcsExplorerHiddenAttribute), inherit: true)) continue;
+                if (Attribute.IsDefined(f, typeof(HideInInspector), inherit: true)) continue;
+                return true;
+            }
+
+            // public instance properties with getter
+            foreach (var p in ctxType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (!p.CanRead) continue;
+                if (p.GetIndexParameters().Length != 0) continue;
+                if (Attribute.IsDefined(p, typeof(ZenEcsExplorerHiddenAttribute), inherit: true)) continue;
+                if (Attribute.IsDefined(p, typeof(HideInInspector), inherit: true)) continue;
+                return true;
+            }
+
+            return false;
+        }
+
         void DrawContextsList(IWorld world, Entity e, (Type type, object boxed)[] ctxs)
         {
+            var line = EditorGUIUtility.singleLineHeight;
+
             using (new EditorGUI.IndentLevelScope())
             {
                 foreach (var (t, inst) in ctxs)
                 {
+                    if (t == null) continue;
+
+                    var ck = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}:CTX";
+
+                    if (!_contextFold.TryGetValue(ck, out var open))
+                    {
+                        open = false;
+                        _contextFold[ck] = open;
+                    }
+
                     using (new EditorGUILayout.VerticalScope("box"))
                     {
-                        var line = EditorGUIUtility.singleLineHeight + 6f;
-                        var rHead = GUILayoutUtility.GetRect(10, line, GUILayout.ExpandWidth(true));
+                        var headRect = GUILayoutUtility.GetRect(10, line + 6f, GUILayout.ExpandWidth(true));
 
-                        // 헤더: 타입명 / 네임스페이스 (좌), X 버튼(우)
-                        var rTitle = new Rect(rHead.x + 4, rHead.y, rHead.width - 28, rHead.height);
-                        var rRemove = new Rect(rHead.xMax - 20, rHead.y, 20, rHead.height);
-
-                        // 왼쪽 타이틀 (없으면 이탤릭)
-                        if (inst != null) EditorGUI.LabelField(rTitle, t.Name, EditorStyles.boldLabel);
-                        else ItalicLabel.DrawLeft(t?.Name ?? "(null)");
-
-                        // 오른쪽 X
-                        using (new EditorGUI.DisabledScope(!_editMode))
-                        {
-                            if (GUI.Button(rRemove, "X", EditorStyles.miniButton))
+                        // 헤더: ZenFoldoutHeader 사용 (컴포넌트/바인더와 동일 폰트 + 네임스페이스)
+                        ZenFoldoutHeader.DrawRow(
+                            ref open,
+                            headRect,
+                            t.Name,
+                            t.Namespace,
+                            rRight =>
                             {
-                                if (EditorUtility.DisplayDialog(
-                                        "Remove Context",
-                                        $"Remove this context?\n\nEntity #{e.Id}:{e.Gen} - {t?.Name}",
-                                        "Yes", "No"))
+                                var rRemove = new Rect(rRight.xMax - 20f, rRight.y, 20f, rRight.height);
+
+                                using (new EditorGUI.DisabledScope(!_editMode))
                                 {
-                                    if (t != null) ContextApi.Remove(world, e, (IContext)inst!);
-                                    Repaint();
+                                    if (GUI.Button(rRemove, "X", EditorStyles.miniButton))
+                                    {
+                                        if (EditorUtility.DisplayDialog(
+                                                "Remove Context",
+                                                $"Remove this context?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}",
+                                                "Yes", "No"))
+                                        {
+                                            if (inst is IContext ctxInstance)
+                                            {
+                                                ContextApi.Remove(world, e, ctxInstance);
+                                                _contextFold.Remove(ck);
+                                            }
+
+                                            Repaint();
+                                        }
+                                    }
                                 }
-                            }
-                        }
+                            },
+                            foldable: true,
+                            noMarginTitle: false // ← 화살표 + 2줄(이름/네임스페이스) 레이아웃
+                        );
 
-                        // 🔽🔽 여기 한 줄 추가 🔽🔽
-                        if (inst != null)
-                            DrawContextFieldsReadonly(inst, t);
+                        _contextFold[ck] = open;
 
-                        // (선택) 소스 Asset 힌트: 인스턴스가 어느 SO에서 나왔는지 추적 가능한 경우라면 표기
-                        // var src = TryGetSourceAssetName(inst);
-                        // if (!string.IsNullOrEmpty(src))
-                        //     EditorGUILayout.LabelField($"• Source: {src}", EditorStyles.miniLabel);
+                        // 닫혀 있으면 필드 목록은 안 그림 (하지만 이름/네임스페이스는 항상 출력됨)
+                        if (!open || inst == null)
+                            continue;
+
+                        // 실제 컨텍스트 필드/프로퍼티 읽기 전용 렌더링
+                        DrawContextFieldsReadonly(inst, t);
                     }
                 }
             }

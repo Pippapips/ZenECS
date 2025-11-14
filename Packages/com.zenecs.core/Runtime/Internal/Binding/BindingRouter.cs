@@ -185,11 +185,11 @@ namespace ZenECS.Core.Internal.Binding
         private void InsertOrdered(List<IBinder> list, IBinder binder)
         {
             int attachOrder = ++_attachSeq;
-            if (binder is IAttachOrderMarker m) m.AttachOrder = attachOrder;
+            if (binder is IAttachOrderMarker m) m.SetAttachOrder(attachOrder);
 
             int idx = list.FindIndex(x =>
             {
-                int byPriority = x.Priority.CompareTo(binder.Priority);
+                int byPriority = x.ApplyOrder.CompareTo(binder.ApplyOrder);
                 if (byPriority != 0) return byPriority > 0;
                 int a1 = (x is IAttachOrderMarker mm) ? mm.AttachOrder : int.MaxValue;
                 return a1 > attachOrder;
