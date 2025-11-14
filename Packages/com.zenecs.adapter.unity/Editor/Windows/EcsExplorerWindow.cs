@@ -36,8 +36,8 @@ namespace ZenECS.EditorWindows
         string _entityGenText = "0";
         int? _findEntityGen = null; // current target ID (null => list mode)
 
-        bool _findMode = false; // single view mode on/off
-        Entity _foundEntity; // resolved entity
+        bool _findMode = false;   // single view mode on/off
+        Entity _foundEntity;      // resolved entity
         bool _foundValid = false; // found in world?
 
         // --- Other UI/layout state ---
@@ -52,10 +52,10 @@ namespace ZenECS.EditorWindows
         // System.Enabled 리플렉션 캐시
         static readonly Dictionary<Type, PropertyInfo?> _systemEnabledPropCache = new();
 
-        readonly Dictionary<Entity, bool> _entityFold = new(); // entityId → fold
+        readonly Dictionary<Entity, bool> _entityFold = new();    // entityId → fold
         readonly Dictionary<string, bool> _componentFold = new(); // $"{entityId}:{typeName}" → fold
-        readonly Dictionary<string, bool> _binderFold = new(); // $"{entityId}:{typeName}" → fold
-        readonly Dictionary<string, bool> _contextFold = new(); // $"{entityId}:{typeName}:CTX" → fold
+        readonly Dictionary<string, bool> _binderFold = new();    // $"{entityId}:{typeName}" → fold
+        readonly Dictionary<string, bool> _contextFold = new();   // $"{entityId}:{typeName}:CTX" → fold
         bool _editMode = true;
 
         static EcsDriver? _driver;
@@ -184,33 +184,46 @@ namespace ZenECS.EditorWindows
                             // ===== Enabled 토글 (일시정지 버튼 스타일) =====
                             using (new EditorGUI.DisabledScope(!hasEnabled))
                             {
-                                if (hasEnabled && !enabledValue)
-                                {
-                                    var inner = new Rect(pauseRect.x + 1, pauseRect.y + 1,
-                                        pauseRect.width - 2, pauseRect.height - 2);
+                                // 시스템 선택 버튼과 동일한 높이/위치로 맞춘 버튼 영역
+                                var btnRect = new Rect(
+                                    pauseRect.x,
+                                    pauseRect.y + 1f,
+                                    pauseRect.width,
+                                    pauseRect.height - 2f
+                                );
 
-                                    var highlightFill = new Color(0.10f, 0.45f, 0.90f, 0.35f);
-                                    var highlightBorder = new Color(0.15f, 0.70f, 1.00f, 0.95f);
-
-                                    EditorGUI.DrawRect(inner, highlightFill);
-                                    Handles.DrawSolidRectangleWithOutline(inner, Color.clear, highlightBorder);
-                                }
-
-                                var oldBg = GUI.backgroundColor;
-                                if (hasEnabled && !enabledValue)
-                                {
-                                    GUI.backgroundColor = new Color(0.25f, 0.65f, 1.0f, 1f);
-                                }
-
-                                // ⏸ 아이콘: Unity 에디터 Pause 버튼 아이콘 사용
+                                // Pause 아이콘
                                 var pauseContent = EditorGUIUtility.IconContent("PauseButton");
                                 if (pauseContent == null || pauseContent.image == null)
-                                {
-                                    // 혹시 아이콘을 못 찾는 경우 대비 fallback
                                     pauseContent = EditorGUIUtility.TrTextContent("⏸");
+
+                                // 항상 같은 스타일을 사용해서 크기/모양 변화 없게
+                                var pauseStyle = new GUIStyle("Button")
+                                {
+                                    alignment = TextAnchor.MiddleCenter,
+                                    padding = new RectOffset(0, 0, 0, 0),
+                                    margin = new RectOffset(0, 0, 0, 0)
+                                };
+
+                                var oldBg = GUI.backgroundColor;
+                                var oldCont = GUI.contentColor;
+
+                                if (hasEnabled && !enabledValue)
+                                {
+                                    // 🔹 Unity 툴바 일시정지 느낌의 파란색 (필요하면 살짝씩 조정해도 됨)
+                                    GUI.backgroundColor = EditorGUIUtility.isProSkin
+                                        ? new Color(0.24f, 0.48f, 0.90f, 1f)  // Dark Skin
+                                        : new Color(0.20f, 0.45f, 0.90f, 1f); // Light Skin
+
+                                    GUI.contentColor = Color.white; // 파란 배경 위 아이콘/글자
+                                }
+                                else
+                                {
+                                    GUI.backgroundColor = oldBg;
+                                    GUI.contentColor = oldCont;
                                 }
 
-                                if (GUI.Button(pauseRect, pauseContent, EditorStyles.miniButton))
+                                if (GUI.Button(btnRect, pauseContent, pauseStyle))
                                 {
                                     if (hasEnabled)
                                     {
@@ -220,12 +233,13 @@ namespace ZenECS.EditorWindows
                                 }
 
                                 GUI.backgroundColor = oldBg;
+                                GUI.contentColor = oldCont;
                             }
 
                             // ===== System 선택 버튼 =====
                             bool selected = _selSystem == i;
-                            bool clicked = GUI.Toggle(sysRect, selected, typeName, "Button");
-                            if (clicked)
+                            bool clicked_ = GUI.Toggle(sysRect, selected, typeName, "Button");
+                            if (clicked_)
                                 _selSystem = i;
                         }
                     }
@@ -349,6 +363,19 @@ namespace ZenECS.EditorWindows
             DrawFooter();
         }
 
+        static GUIContent GetPlusIconContent()
+        {
+            // Unity 기본 검색 아이콘
+            var gc = EditorGUIUtility.IconContent("d_CreateAddNew");
+            if (gc == null || gc.image == null)
+                gc = EditorGUIUtility.IconContent("CreateAddNew");
+
+            if (gc == null)
+                gc = new GUIContent("+");
+
+            return gc;
+        }
+
         static GUIContent GetSearchIconContent(string tooltip)
         {
             // Unity 기본 검색 아이콘
@@ -382,7 +409,7 @@ namespace ZenECS.EditorWindows
 
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
             {
-                // ===== Global Pause 토글 버튼 (커널 기반) =====
+// ===== Global Pause 토글 버튼 (커널 기반, System Pause와 동일 스타일) =====
                 var hasKernel = _driver != null && _driver.Kernel != null;
                 var isPaused = hasKernel && _driver!.Kernel!.IsPaused;
 
@@ -392,33 +419,41 @@ namespace ZenECS.EditorWindows
 
                 using (new EditorGUI.DisabledScope(!hasKernel))
                 {
-                    if (hasKernel && isPaused)
-                    {
-                        // 시스템 토글과 동일한 느낌의 하이라이트
-                        var inner = new Rect(pauseRect.x + 1, pauseRect.y + 1,
-                            pauseRect.width - 2, pauseRect.height - 2);
+                    // System 리스트에서 쓰는 것과 동일한 버튼 영역 보정
+                    var btnRect = new Rect(
+                        pauseRect.x,
+                        pauseRect.y + 1f,
+                        pauseRect.width,
+                        pauseRect.height - 2f
+                    );
 
-                        var highlightFill = new Color(0.10f, 0.45f, 0.90f, 0.35f);
-                        var highlightBorder = new Color(0.15f, 0.70f, 1.00f, 0.95f);
-
-                        EditorGUI.DrawRect(inner, highlightFill);
-                        Handles.DrawSolidRectangleWithOutline(inner, Color.clear, highlightBorder);
-                    }
-
-                    var oldBg = GUI.backgroundColor;
-                    if (hasKernel && isPaused)
-                    {
-                        // 더 눈에 띄도록 배경색도 튜닝
-                        GUI.backgroundColor = new Color(0.25f, 0.65f, 1.0f, 1f);
-                    }
-
+                    // Unity 기본 Pause 아이콘
                     var pauseContent = EditorGUIUtility.IconContent("PauseButton");
                     if (pauseContent == null || pauseContent.image == null)
-                    {
                         pauseContent = EditorGUIUtility.TrTextContent("⏸");
+
+                    // 항상 같은 스타일을 사용해서 크기/모양 변화 없게
+                    var pauseStyle = new GUIStyle("Button")
+                    {
+                        alignment = TextAnchor.MiddleCenter,
+                        padding = new RectOffset(0, 0, 0, 0),
+                        margin = new RectOffset(0, 0, 0, 0)
+                    };
+
+                    var oldBg = GUI.backgroundColor;
+                    var oldCont = GUI.contentColor;
+
+                    if (hasKernel && isPaused)
+                    {
+                        // Unity 툴바 Pause랑 비슷한 파란색
+                        GUI.backgroundColor = EditorGUIUtility.isProSkin
+                            ? new Color(0.24f, 0.48f, 0.90f, 1f)  // Dark Skin
+                            : new Color(0.20f, 0.45f, 0.90f, 1f); // Light Skin
+
+                        GUI.contentColor = Color.white;
                     }
 
-                    if (GUI.Button(pauseRect, pauseContent, EditorStyles.miniButton))
+                    if (GUI.Button(btnRect, pauseContent, pauseStyle))
                     {
                         if (hasKernel)
                         {
@@ -427,12 +462,13 @@ namespace ZenECS.EditorWindows
                     }
 
                     GUI.backgroundColor = oldBg;
+                    GUI.contentColor = oldCont;
                 }
 
                 GUILayout.Space(8);
 
                 // ===== 기존 정보 라벨들 =====
-                var elapsed = _driver?.Kernel?.TotalTimeSeconds ?? 0;
+                var elapsed = _driver?.Kernel?.SimulationAccumulatorSeconds ?? 0;
                 var systemCount = systems?.Count ?? 0;
                 var entityCount = world?.GetAllEntities()?.Count ?? 0;
 
@@ -501,7 +537,7 @@ namespace ZenECS.EditorWindows
                 _editMode = GUILayout.Toggle(_editMode, "Edit", "Button", GUILayout.Width(60));
             }
         }
-        
+
         static void EnsureBigPlusStyle()
         {
             if (_bigPlusReady) return;
@@ -549,7 +585,7 @@ namespace ZenECS.EditorWindows
                     Rect? rSel = null;
                     if (EcsExplorerActions.TryGetEntityMainView(world, e, out var go))
                     {
-                        rSel = new Rect(right - wBtn + 2, yBtn + 2, wBtn, hBtn);
+                        rSel = new Rect(right - wBtn + 2, yBtn + 1, wBtn, hBtn);
                         right = rSel.Value.x - gap;
                     }
 
@@ -589,11 +625,11 @@ namespace ZenECS.EditorWindows
 // Arrow toggle (open/close all visible components)
                 var rArrow = new Rect(r.x + 3, r.y + 1, 18f, r.height - 2);
 
-                const float addWComp = 100f;
+                const float addWComp = 20f;
                 const float gapComp = 6f;
 
 // 오른쪽 끝 Add Component 버튼 영역
-                var rAddComp = new Rect(r.xMax - addWComp, r.y, addWComp, r.height);
+                var rAddComp = new Rect(r.xMax - addWComp - 1.5f, r.y + 2, addWComp, r.height);
 
 // 라벨 영역: 화살표 + Add 버튼을 제외한 부분
                 var rLabel = new Rect(
@@ -622,7 +658,7 @@ namespace ZenECS.EditorWindows
                 // Add Component 버튼 (이제 여기!)
                 using (new EditorGUI.DisabledScope(!_editMode))
                 {
-                    if (GUI.Button(rAddComp, "Add Component", EditorStyles.miniButton))
+                    if (GUI.Button(rAddComp, GetPlusIconContent(), EditorStyles.iconButton))
                     {
                         var all = ZenECS.EditorCommon.ZenComponentPickerWindow.FindAllZenComponents().ToList();
                         var disabled = new HashSet<Type>();
@@ -657,9 +693,9 @@ namespace ZenECS.EditorWindows
 
                         var rArrowC = new Rect(rc.x + 3, rc.y + 1, 18f, rc.height - 2);
 
-                        const float addW = 100f;
+                        const float addW = 20f;
                         const float gap = 6f;
-                        var rAddC = new Rect(rc.xMax - addW, rc.y, addW, rc.height);
+                        var rAddC = new Rect(rc.xMax - addW - 1.5f, rc.y + 2, addW, rc.height);
                         var rLabelC = new Rect(
                             rArrowC.xMax - 1f, rc.y,
                             rc.width - (rArrowC.width + addW + gap + 4f),
@@ -685,7 +721,7 @@ namespace ZenECS.EditorWindows
                         // Add Context 버튼 (기존 로직 유지)
                         using (new EditorGUI.DisabledScope(!_editMode))
                         {
-                            if (GUI.Button(rAddC, "Add Context", EditorStyles.miniButton))
+                            if (GUI.Button(rAddC, GetPlusIconContent(), EditorStyles.iconButton))
                             {
                                 // 이미 붙어있는 컨텍스트 타입 집합
                                 var disabledCtxTypes = new HashSet<Type>(ctxs.Select(c => c.type));
@@ -732,11 +768,11 @@ namespace ZenECS.EditorWindows
                         // Fold-all for binders (보이는 것만)
                         var rArrow2 = new Rect(r2.x + 3, r2.y + 1, 18f, r2.height - 2);
 
-                        const float addW = 100f; // 버튼 폭
+                        const float addW = 20f; // 버튼 폭
                         const float gap = 6f;
 
                         // 오른쪽 끝 Add 버튼 영역
-                        var rAdd = new Rect(r2.xMax - addW, r2.y, addW, r2.height);
+                        var rAdd = new Rect(r2.xMax - addW - 1.5f, r2.y + 2, addW, r2.height);
                         // 라벨은 버튼과 화살표를 제외한 영역
                         var rLabel2 = new Rect(rArrow2.xMax - 1f, r2.y, r2.width - (rArrow2.width + addW + gap + 4f),
                             r2.height);
@@ -760,7 +796,7 @@ namespace ZenECS.EditorWindows
                         // Add Binder 버튼
                         using (new EditorGUI.DisabledScope(!_editMode || !BinderApi.CanAdd(world)))
                         {
-                            if (GUI.Button(rAdd, "Add Binder", EditorStyles.miniButton))
+                            if (GUI.Button(rAdd, GetPlusIconContent(), EditorStyles.iconButton))
                             {
                                 // 전체 바인더 타입 수집
                                 var allBinders = BinderTypeFinder.All();
@@ -1006,7 +1042,7 @@ namespace ZenECS.EditorWindows
             {
                 StatusKind.Present => "#27ae60", // green
                 StatusKind.Available => "#27ae60",
-                StatusKind.Absent => "#bdc3c7", // gray
+                StatusKind.Absent => "#bdc3c7",  // gray
                 StatusKind.Missing => "#e74c3c", // red
                 _ => "#ffffff"
             };
@@ -1298,43 +1334,68 @@ namespace ZenECS.EditorWindows
                                 var style = EditorStyles.miniButton;
 
                                 const float wBtn = 20f;
+                                const float gap = 3f;
                                 var hBtn = rRight.height;
                                 var yBtn = rRight.y;
 
                                 // 오른쪽 끝: 삭제 버튼
                                 var rRemove = new Rect(rRight.xMax - wBtn, yBtn, wBtn, hBtn);
 
-                                // 삭제 버튼 왼쪽: Enabled 토글
-                                var rToggle = new Rect(
-                                    rRight.xMax - (wBtn + 18f),
-                                    yBtn + 2f,
-                                    16f,
-                                    hBtn - 4f
-                                );
+                                // 그 왼쪽: Binder Enabled(Pause) 토글 버튼
+                                var rPause = new Rect(rRemove.x - gap - wBtn, yBtn, wBtn, hBtn);
 
-                                // 컨트롤은 색상 원래대로 (헤더 텍스트만 회색으로)
-                                var prevCtrlColor = GUI.color;
-                                GUI.color = Color.white;
+                                // binder 활성 상태
+                                var hasBinder = binder != null;
+                                bool isEnabled = hasBinder && binder.Enabled;
+                                bool canToggle = hasBinder && _editMode; // 읽기전용일 땐 토글 비활성
 
-                                // Enabled 토글은 항상 토글 가능
-                                if (binder != null)
+                                // 🔹 Enabled Pause 스타일 (System / Global Pause와 동일)
+                                using (new EditorGUI.DisabledScope(!canToggle))
                                 {
-                                    bool enabled = binder.Enabled;
-                                    EditorGUI.BeginChangeCheck();
-                                    enabled = GUI.Toggle(rToggle, enabled, GUIContent.none);
-                                    if (EditorGUI.EndChangeCheck())
+                                    // 버튼 영역 보정
+                                    var btnRect = new Rect(
+                                        rPause.x,
+                                        rPause.y,
+                                        rPause.width,
+                                        rPause.height
+                                    );
+
+                                    // Unity 기본 Pause 아이콘
+                                    var pauseContent = EditorGUIUtility.IconContent("PauseButton");
+                                    if (pauseContent == null || pauseContent.image == null)
+                                        pauseContent = EditorGUIUtility.TrTextContent("⏸");
+
+                                    var pauseStyle = new GUIStyle("Button")
                                     {
-                                        binder.Enabled = enabled;
+                                        alignment = TextAnchor.MiddleCenter,
+                                        padding = new RectOffset(0, 0, 0, 0),
+                                        margin = new RectOffset(0, 0, 0, 0)
+                                    };
 
-                                        if (_editMode && BinderApi.CanReplace(world))
-                                            BinderApi.Replace(world, e, binder);
+                                    var oldBg = GUI.backgroundColor;
+                                    var oldCont = GUI.contentColor;
 
-                                        Repaint();
+                                    if (hasBinder && !isEnabled)
+                                    {
+                                        // Unity 툴바 Pause랑 비슷한 파란색
+                                        GUI.backgroundColor = EditorGUIUtility.isProSkin
+                                            ? new Color(0.24f, 0.48f, 0.90f, 1f)  // Dark Skin
+                                            : new Color(0.20f, 0.45f, 0.90f, 1f); // Light Skin
+
+                                        GUI.contentColor = Color.white;
                                     }
+
+                                    if (GUI.Button(btnRect, pauseContent, pauseStyle) && canToggle)
+                                    {
+                                        isEnabled = !isEnabled;
+                                        binder.Enabled = isEnabled;
+                                    }
+
+                                    GUI.backgroundColor = oldBg;
+                                    GUI.contentColor = oldCont;
                                 }
 
-                                GUI.color = prevCtrlColor;
-
+                                // 🔸 삭제 버튼 (기존 그대로)
                                 using (new EditorGUI.DisabledScope(!_editMode || !BinderApi.CanRemove(world)))
                                 {
                                     var gcDel = new GUIContent("X", "Remove this Binder from Entity");
@@ -1483,9 +1544,7 @@ namespace ZenECS.EditorWindows
                             ZenComponentFormGUI.DrawObject(bodyInner, obj, t);
                             if (EditorGUI.EndChangeCheck() && _editMode) world.ReplaceComponentBoxed(e, obj);
                         }
-                        catch (KeyNotFoundException)
-                        {
-                        }
+                        catch (KeyNotFoundException) { }
                     }
                 }
             }
@@ -1725,9 +1784,9 @@ namespace ZenECS.EditorWindows
         static class ContextApi
         {
             static MethodInfo? _miGetAllContexts; // (Entity) -> (Type, object)[] 또는 IEnumerable
-            static MethodInfo? _miAddFromAsset; // (Entity, ContextAsset) -> void
-            static MethodInfo? _miAttachContext; // (Entity, IContext) -> void
-            static MethodInfo? _miRemoveContext; // (Entity, Type) -> void
+            static MethodInfo? _miAddFromAsset;   // (Entity, ContextAsset) -> void
+            static MethodInfo? _miAttachContext;  // (Entity, IContext) -> void
+            static MethodInfo? _miRemoveContext;  // (Entity, Type) -> void
 
             static readonly Dictionary<(Type, string, int), MethodInfo> _cache = new();
 
