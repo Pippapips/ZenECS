@@ -26,7 +26,7 @@ namespace ZenECS.Adapter.Unity
         public IKernel CreateKernel()
         {
             if (Kernel != null) return Kernel;
-            Kernel ??= new Kernel(new KernelOptions { AutoSelectNewWorld = true }, new Logger());
+            Kernel ??= new Kernel(new KernelOptions { AutoSelectNewWorld = false }, new Logger());
             KernelLocator.Attach(Kernel);
             return Kernel;
         }

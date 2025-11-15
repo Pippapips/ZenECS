@@ -89,7 +89,7 @@ namespace ZenECS.EditorInspectors
             if (link == null || link.World == null || !link.IsAlive) return false;
 
             var e = link.Entity;
-            return EcsExplorerBridge.TryOpenAndSelect(link.World, e.Id, e.Gen);
+            return ZenEcsExplorerBridge.TryOpenAndSelect(link.World, e.Id, e.Gen);
         }
 
         private static bool TryPingMainView(EntityLink? link)

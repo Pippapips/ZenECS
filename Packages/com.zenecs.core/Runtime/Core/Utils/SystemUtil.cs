@@ -12,7 +12,6 @@ namespace ZenECS.Core
         /// <returns>The resolved <see cref="SystemGroup"/>.</returns>
         public static SystemGroup ResolveGroup(Type t)
         {
-            if (t.IsDefined(typeof(FixedSetupGroupAttribute), false))   return SystemGroup.FrameSetup;
             if (t.IsDefined(typeof(FrameSetupGroupAttribute), false))   return SystemGroup.FrameSetup;
             if (t.IsDefined(typeof(PresentationGroupAttribute), false)) return SystemGroup.Presentation;
             if (t.IsDefined(typeof(SimulationGroupAttribute), false))   return SystemGroup.Simulation;

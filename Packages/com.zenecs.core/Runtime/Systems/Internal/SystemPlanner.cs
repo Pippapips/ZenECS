@@ -135,7 +135,6 @@ namespace ZenECS.Core.Internal.Systems
                 throw new InvalidOperationException($"{t.Name} implements multiple phase markers.");
 
             int groupAttrCount =
-                (t.IsDefined(typeof(FixedSetupGroupAttribute), false)   ? 1 : 0) +
                 (t.IsDefined(typeof(FrameSetupGroupAttribute), false)   ? 1 : 0) +
                 (t.IsDefined(typeof(SimulationGroupAttribute), false)   ? 1 : 0) +
                 (t.IsDefined(typeof(PresentationGroupAttribute), false) ? 1 : 0);
@@ -152,7 +151,6 @@ namespace ZenECS.Core.Internal.Systems
                         ? SystemGroup.Simulation : (SystemGroup?)null;
 
                 var attrGroup =
-                    t.IsDefined(typeof(FixedSetupGroupAttribute), false)   ? SystemGroup.FrameSetup :
                     t.IsDefined(typeof(FrameSetupGroupAttribute), false)   ? SystemGroup.FrameSetup :
                     t.IsDefined(typeof(PresentationGroupAttribute), false) ? SystemGroup.Presentation :
                     SystemGroup.Simulation;
@@ -203,7 +201,7 @@ namespace ZenECS.Core.Internal.Systems
                 {
                     if (!nodes.ContainsKey(target))
                     {
-                        EcsRuntimeOptions.Log.Warn($"[OrderAfter] {type.Name} ← {target.Name} ignored (not in same group)");
+                        EcsRuntimeOptions.Log.Warn($"[OrderAfter] {type.Name} ← {target.Name} ignored (not in same group) or system not added in the world");
                         continue;
                     }
                     if (!edges.TryGetValue(target, out HashSet<Type>? set))

@@ -15,7 +15,7 @@ namespace ZenECS.EditorTools
     /// - 인스턴스 획득: EditorWindow.GetWindow(type, true, title, true)
     /// - 메서드: public void SelectEntity(int entityId, int entityGen)
     /// </summary>
-    internal static class EcsExplorerBridge
+    internal static class ZenEcsExplorerBridge
     {
         private static Type? _cachedType;
         private static MethodInfo? _cachedSelectMethod;
@@ -26,7 +26,7 @@ namespace ZenECS.EditorTools
             var t = ResolveExplorerType();
             if (t == null) return false;
 
-            var win = EditorWindow.GetWindow(t, utility: false, title: "ECS Explorer", focus: true);
+            var win = EditorWindow.GetWindow(t, utility: false, title: "ZenECS Explorer", focus: true);
             if (win == null)
             {
                 // 포커스 실패 시 마지막 수단
@@ -61,7 +61,7 @@ namespace ZenECS.EditorTools
             if (_cachedType != null) return _cachedType;
 
             // 우선순위: 명확한 이름 먼저
-            string[] candidates = { "ExplorerWindow", "EcsExplorerWindow", "ZenECSExplorerWindow" };
+            string[] candidates = { "ExplorerWindow", "EcsExplorerWindow", "ZenEcsExplorerWindow" };
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
             {
                 Type? t = null;

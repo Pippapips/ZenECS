@@ -84,6 +84,8 @@ namespace ZenECS.Core
         /// <summary>Destroy a previously created world. No‑op if the world is not registered.</summary>
         void DestroyWorld(IWorld world);
 
+        IEnumerable<IWorld> GetAllWorld();
+        
         /// <summary>Try to get a live world by id.</summary>
         /// <param name="id">The world identifier.</param>
         /// <param name="world">When this method returns, contains the world if found.</param>

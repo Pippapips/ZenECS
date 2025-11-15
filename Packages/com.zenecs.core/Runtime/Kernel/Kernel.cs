@@ -176,6 +176,11 @@ namespace ZenECS.Core
             }
         }
 
+        public IEnumerable<IWorld> GetAllWorld()
+        {
+            return _byId.Values;
+        }
+        
         public bool TryGet(WorldId id, out IWorld world)
             => _byId.TryGetValue(id, out world!);
 
