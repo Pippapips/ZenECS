@@ -12,7 +12,7 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts.Assets
             _container = container;
         }
     
-        public IContext Resolve(SharedContextMarkerAsset marker)
+        public IContext Resolve(SharedContextAsset marker)
         {
             var t = marker.ContextType;
             var resolved = _container.Resolve(t);

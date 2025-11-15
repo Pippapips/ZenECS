@@ -237,6 +237,9 @@ namespace ZenECS.EditorWindows
                             }
 
                             // ===== System 선택 버튼 =====
+
+                            var watchedCount = ZenECS.Adapter.Unity.Infrastructure.WatchQueryRunner.TryCountByWatch(sys, world);
+                            typeName = $"{typeName} ({watchedCount})";
                             bool selected = _selSystem == i;
                             bool clicked_ = GUI.Toggle(sysRect, selected, typeName, "Button");
                             if (clicked_)
@@ -255,11 +258,11 @@ namespace ZenECS.EditorWindows
                     // --- Toolbar (Find / Clear Filter / Edit Mode) ---
                     using (new EditorGUILayout.HorizontalScope())
                     {
-                        if (_selSysEntityCount > 0)
-                        {
-                            EditorGUILayout.LabelField($"Entities ({_selSysEntityCount})", EditorStyles.boldLabel);
-                        }
-                        else
+                        // if (_selSysEntityCount > 0)
+                        // {
+                        //     EditorGUILayout.LabelField($"Entities ({_selSysEntityCount})", EditorStyles.boldLabel);
+                        // }
+                        // else
                         {
                             EditorGUILayout.LabelField("Entities", EditorStyles.boldLabel);
                         }
@@ -1866,7 +1869,7 @@ namespace ZenECS.EditorWindows
             {
                 switch (asset)
                 {
-                    case SharedContextMarkerAsset markerAsset:
+                    case SharedContextAsset markerAsset:
                     {
                         var resolver = ZenEcsUnityBridge.SharedContextResolver;
                         if (resolver != null)

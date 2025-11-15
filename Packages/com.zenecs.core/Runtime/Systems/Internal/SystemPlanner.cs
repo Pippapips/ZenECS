@@ -135,6 +135,7 @@ namespace ZenECS.Core.Internal.Systems
                 throw new InvalidOperationException($"{t.Name} implements multiple phase markers.");
 
             int groupAttrCount =
+                (t.IsDefined(typeof(FixedSetupGroupAttribute), false)   ? 1 : 0) +
                 (t.IsDefined(typeof(FrameSetupGroupAttribute), false)   ? 1 : 0) +
                 (t.IsDefined(typeof(SimulationGroupAttribute), false)   ? 1 : 0) +
                 (t.IsDefined(typeof(PresentationGroupAttribute), false) ? 1 : 0);
@@ -144,12 +145,14 @@ namespace ZenECS.Core.Internal.Systems
             if (groupAttrCount == 1)
             {
                 var inferred =
+                    typeof(IFixedSetupSystem).IsAssignableFrom(t) ? SystemGroup.FrameSetup :
                     typeof(IPresentationSystem).IsAssignableFrom(t) ? SystemGroup.Presentation :
                     typeof(IFrameSetupSystem).IsAssignableFrom(t)   ? SystemGroup.FrameSetup :
                     (typeof(IFixedRunSystem).IsAssignableFrom(t) || typeof(IVariableRunSystem).IsAssignableFrom(t))
                         ? SystemGroup.Simulation : (SystemGroup?)null;
 
                 var attrGroup =
+                    t.IsDefined(typeof(FixedSetupGroupAttribute), false)   ? SystemGroup.FrameSetup :
                     t.IsDefined(typeof(FrameSetupGroupAttribute), false)   ? SystemGroup.FrameSetup :
                     t.IsDefined(typeof(PresentationGroupAttribute), false) ? SystemGroup.Presentation :
                     SystemGroup.Simulation;

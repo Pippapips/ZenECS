@@ -7,7 +7,6 @@
 //   • Creates a distinct ModelContext per entity, instantiating the prefab.
 //   • Lifetime: tied to entity; destroy GameObject when context is disposed (by caller).
 // ──────────────────────────────────────────────────────────────────────────────
-#nullable enable
 using System;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Linking;
@@ -22,8 +21,9 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts.Assets
         fileName = "ModelContext")]
     public sealed class ModelContextAsset : PerEntityContextAsset
     {
-        [Header("Model Prefab")]
-        public GameObject modelPrefab = null!;
+        [SerializeField] private GameObject _modelPrefab;
+        
+        public GameObject ModelPrefab => _modelPrefab;
         
         public override Type ContextType => typeof(ModelContext);
         
@@ -34,7 +34,7 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts.Assets
             var (ww, ee, main) = boot.Run(
                 world,
                 existingEntity: e,
-                optionalViewPrefab: modelPrefab,
+                optionalViewPrefab: ModelPrefab,
                 optionalViewRoot: null,
                 asMain: true);
             

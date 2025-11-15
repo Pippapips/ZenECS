@@ -39,7 +39,7 @@ namespace ZenECS.Adapter.Unity.Blueprints
                 var asset = _contextAssets[i];
                 switch (asset)
                 {
-                    case SharedContextMarkerAsset markerAsset:
+                    case SharedContextAsset markerAsset:
                     {
                         var ctx = sharedContextResolver.Resolve(markerAsset);
                         world.RegisterContext(e, ctx);

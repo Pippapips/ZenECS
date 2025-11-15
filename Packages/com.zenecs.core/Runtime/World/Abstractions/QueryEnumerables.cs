@@ -62,30 +62,42 @@ namespace ZenECS.Core
         /// </remarks>
         public readonly struct Builder
         {
-            private readonly List<Type> wa;
-            private readonly List<Type> wo;
-            private readonly List<List<Type>> wan;
-            private readonly List<List<Type>> won;
+            private readonly List<Type>? wa;
+            private readonly List<Type>? wo;
+            private readonly List<List<Type>>? wan;
+            private readonly List<List<Type>>? won;
 
-/// <summary>
+            private Builder(List<Type>? wa, List<Type>? wo, List<List<Type>>? wan, List<List<Type>>? won)
+            {
+                this.wa = wa;
+                this.wo = wo;
+                this.wan = wan;
+                this.won = won;
+            }
+
+            /// <summary>
             /// Requires that entities include component <typeparamref name="T"/>.
             /// </summary>
-            public Builder With<T>() where T : struct => new(Append(wa, typeof(T)), wo, wan, won);
+            public Builder With<T>() where T : struct =>
+                new(Append(wa, typeof(T)), wo, wan, won);
 
             /// <summary>
             /// Requires that entities exclude component <typeparamref name="T"/>.
             /// </summary>
-            public Builder Without<T>() where T : struct => new(wa, Append(wo, typeof(T)), wan, won);
+            public Builder Without<T>() where T : struct =>
+                new(wa, Append(wo, typeof(T)), wan, won);
 
             /// <summary>
             /// Adds an OR group: entity passes if it contains <em>any one</em> of these types.
             /// </summary>
-            public Builder WithAny(params Type[] types) => new(wa, wo, AppendBucket(wan, types), won);
+            public Builder WithAny(params Type[] types) =>
+                new(wa, wo, AppendBucket(wan, types), won);
 
             /// <summary>
             /// Adds a NOT-OR group: entity fails if it contains <em>any one</em> of these types.
             /// </summary>
-            public Builder WithoutAny(params Type[] types) => new(wa, wo, wan, AppendBucket(won, types));
+            public Builder WithoutAny(params Type[] types) =>
+                new(wa, wo, wan, AppendBucket(won, types));
 
             /// <summary>
             /// Finalizes this builder into an immutable <see cref="Filter"/>.
@@ -97,32 +109,38 @@ namespace ZenECS.Core
                     ToJagged(wan),
                     ToJagged(won));
 
-            private Builder(List<Type> wa, List<Type> wo, List<List<Type>> wan, List<List<Type>> won)
-            { this.wa = wa; this.wo = wo; this.wan = wan; this.won = won; }
-
-            private static List<Type> Append(List<Type> list, Type t)
+            private static List<Type> Append(List<Type>? list, Type t)
             {
                 var l = list ?? new List<Type>(4);
                 l.Add(t);
                 return l;
             }
 
-            private static List<List<Type>> AppendBucket(List<List<Type>> list, Type[] types)
+            private static List<List<Type>> AppendBucket(List<List<Type>>? list, Type[] types)
             {
                 var l = list ?? new List<List<Type>>(2);
-                var b = new List<Type>(types.Length);
+                var bucket = new List<Type>(types.Length);
                 foreach (var t in types)
+                {
                     if (t != null)
-                        b.Add(t);
-                if (b.Count > 0) l.Add(b);
+                        bucket.Add(t);
+                }
+
+                if (bucket.Count > 0)
+                    l.Add(bucket);
+
                 return l;
             }
 
-            private static Type[][] ToJagged(List<List<Type>> src)
+            private static Type[][] ToJagged(List<List<Type>>? src)
             {
-                if (src == null || src.Count == 0) return Array.Empty<Type[]>();
+                if (src == null || src.Count == 0)
+                    return Array.Empty<Type[]>();
+
                 var arr = new Type[src.Count][];
-                for (int i = 0; i < src.Count; i++) arr[i] = src[i].ToArray();
+                for (int i = 0; i < src.Count; i++)
+                    arr[i] = src[i].ToArray();
+
                 return arr;
             }
         }
@@ -136,19 +154,27 @@ namespace ZenECS.Core
     {
         /// <summary>
         /// Chooses the smallest-capacity component pool as the seed for iteration.
+        /// Null pools are ignored.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IComponentPool? Pick(params IComponentPool?[] pools)
         {
             IComponentPool? best = null;
             int bestCap = int.MaxValue;
+
             for (int i = 0; i < pools.Length; i++)
             {
                 var p = pools[i];
                 if (p == null) continue;
+
                 var cap = p.Capacity;
-                if (cap < bestCap) { best = p; bestCap = cap; }
+                if (cap < bestCap)
+                {
+                    best = p;
+                    bestCap = cap;
+                }
             }
+
             return best;
         }
     }
@@ -158,7 +184,7 @@ namespace ZenECS.Core
     // --------------------------------------------------------------------------
     //
     // Each QueryEnumerable<T1..Tn> implements a zero-allocation foreach pattern:
-    // 
+    //
     //   foreach (var e in world.Query<T1, T2>(filter)) { ... }
     //
     // Enumerator logic:
@@ -167,15 +193,25 @@ namespace ZenECS.Core
     //   • Validates entity against resolved filter
     //   • Returns living entity handles (id, generation)
     //
+    // For multi-component queries (T2..T8) we enforce that all requested
+    // component pools must exist. If any pool is missing, the query is treated
+    // as empty. This prevents "accidentally relaxed" queries where a missing
+    // pool would otherwise be interpreted as "no requirement".
+    //
     // --------------------------------------------------------------------------
-    
+
     #region T1
 
     internal readonly struct QueryCtx1<T1> where T1 : struct
     {
         public readonly IComponentPool? A;
         public readonly World.ResolvedFilter RF;
-        public QueryCtx1(IComponentPool? a, World.ResolvedFilter rf) { A = a; RF = rf; }
+
+        public QueryCtx1(IComponentPool? a, World.ResolvedFilter rf)
+        {
+            A = a;
+            RF = rf;
+        }
     }
 
     public readonly struct QueryEnumerable<T1> where T1 : struct
@@ -183,7 +219,11 @@ namespace ZenECS.Core
         private readonly World _w;
         private readonly QueryCtx1<T1> _ctx;
 
-        internal QueryEnumerable(World w, in QueryCtx1<T1> ctx) { _w = w; _ctx = ctx; }
+        internal QueryEnumerable(World w, in QueryCtx1<T1> ctx)
+        {
+            _w = w;
+            _ctx = ctx;
+        }
 
         public Enumerator GetEnumerator() => new Enumerator(_w, _ctx);
 
@@ -197,11 +237,12 @@ namespace ZenECS.Core
 
             internal Enumerator(World w, in QueryCtx1<T1> ctx)
             {
-                _w  = w;
-                _a  = ctx.A;
+                _w = w;
+                _a = ctx.A;
                 _rf = ctx.RF;
+
                 var seed = _a;
-                _it  = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
+                _it = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
                 _cur = default;
             }
 
@@ -213,9 +254,17 @@ namespace ZenECS.Core
                 while (_it.MoveNext())
                 {
                     int id = _it.CurrentId;
-                    if ((_a == null || _a.Has(id)) && World.MeetsFilter(id, in _rf))
-                    { _cur = new Entity(id, _w.GenerationOf(id)); return true; }
+
+                    // For single-component queries, a missing pool means empty query.
+                    // However, we keep the null-check for safety and symmetry.
+                    if ((_a == null || _a.Has(id)) &&
+                        World.MeetsFilter(id, in _rf))
+                    {
+                        _cur = new Entity(id, _w.GenerationOf(id));
+                        return true;
+                    }
                 }
+
                 return false;
             }
         }
@@ -230,8 +279,13 @@ namespace ZenECS.Core
     {
         public readonly IComponentPool? A, B;
         public readonly World.ResolvedFilter RF;
+
         public QueryCtx2(IComponentPool? a, IComponentPool? b, World.ResolvedFilter rf)
-        { A = a; B = b; RF = rf; }
+        {
+            A = a;
+            B = b;
+            RF = rf;
+        }
     }
 
     public readonly struct QueryEnumerable<T1, T2>
@@ -240,7 +294,11 @@ namespace ZenECS.Core
         private readonly World _w;
         private readonly QueryCtx2<T1, T2> _ctx;
 
-        internal QueryEnumerable(World w, in QueryCtx2<T1, T2> ctx) { _w = w; _ctx = ctx; }
+        internal QueryEnumerable(World w, in QueryCtx2<T1, T2> ctx)
+        {
+            _w = w;
+            _ctx = ctx;
+        }
 
         public Enumerator GetEnumerator() => new Enumerator(_w, _ctx);
 
@@ -254,12 +312,21 @@ namespace ZenECS.Core
 
             internal Enumerator(World w, in QueryCtx2<T1, T2> ctx)
             {
-                _w  = w;
-                _a  = ctx.A;
-                _b  = ctx.B;
+                _w = w;
+                _a = ctx.A;
+                _b = ctx.B;
                 _rf = ctx.RF;
+
+                // If any required pool is missing, this query is empty.
+                if (_a == null || _b == null)
+                {
+                    _it = PoolEnumerator.Empty;
+                    _cur = default;
+                    return;
+                }
+
                 var seed = QuerySeed.Pick(_a, _b);
-                _it  = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
+                _it = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
                 _cur = default;
             }
 
@@ -271,11 +338,17 @@ namespace ZenECS.Core
                 while (_it.MoveNext())
                 {
                     int id = _it.CurrentId;
-                    if ((_a == null || _a.Has(id)) &&
-                        (_b == null || _b.Has(id)) &&
+
+                    // All pools are guaranteed non-null here.
+                    if (_a!.Has(id) &&
+                        _b!.Has(id) &&
                         World.MeetsFilter(id, in _rf))
-                    { _cur = new Entity(id, _w.GenerationOf(id)); return true; }
+                    {
+                        _cur = new Entity(id, _w.GenerationOf(id));
+                        return true;
+                    }
                 }
+
                 return false;
             }
         }
@@ -290,8 +363,14 @@ namespace ZenECS.Core
     {
         public readonly IComponentPool? A, B, C;
         public readonly World.ResolvedFilter RF;
+
         public QueryCtx3(IComponentPool? a, IComponentPool? b, IComponentPool? c, World.ResolvedFilter rf)
-        { A = a; B = b; C = c; RF = rf; }
+        {
+            A = a;
+            B = b;
+            C = c;
+            RF = rf;
+        }
     }
 
     public readonly struct QueryEnumerable<T1, T2, T3>
@@ -300,7 +379,11 @@ namespace ZenECS.Core
         private readonly World _w;
         private readonly QueryCtx3<T1, T2, T3> _ctx;
 
-        internal QueryEnumerable(World w, in QueryCtx3<T1, T2, T3> ctx) { _w = w; _ctx = ctx; }
+        internal QueryEnumerable(World w, in QueryCtx3<T1, T2, T3> ctx)
+        {
+            _w = w;
+            _ctx = ctx;
+        }
 
         public Enumerator GetEnumerator() => new Enumerator(_w, _ctx);
 
@@ -314,11 +397,22 @@ namespace ZenECS.Core
 
             internal Enumerator(World w, in QueryCtx3<T1, T2, T3> ctx)
             {
-                _w  = w;
-                _a  = ctx.A; _b = ctx.B; _c = ctx.C;
+                _w = w;
+                _a = ctx.A;
+                _b = ctx.B;
+                _c = ctx.C;
                 _rf = ctx.RF;
+
+                // If any required pool is missing, this query is empty.
+                if (_a == null || _b == null || _c == null)
+                {
+                    _it = PoolEnumerator.Empty;
+                    _cur = default;
+                    return;
+                }
+
                 var seed = QuerySeed.Pick(_a, _b, _c);
-                _it  = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
+                _it = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
                 _cur = default;
             }
 
@@ -330,12 +424,17 @@ namespace ZenECS.Core
                 while (_it.MoveNext())
                 {
                     int id = _it.CurrentId;
-                    if ((_a == null || _a.Has(id)) &&
-                        (_b == null || _b.Has(id)) &&
-                        (_c == null || _c.Has(id)) &&
+
+                    if (_a!.Has(id) &&
+                        _b!.Has(id) &&
+                        _c!.Has(id) &&
                         World.MeetsFilter(id, in _rf))
-                    { _cur = new Entity(id, _w.GenerationOf(id)); return true; }
+                    {
+                        _cur = new Entity(id, _w.GenerationOf(id));
+                        return true;
+                    }
                 }
+
                 return false;
             }
         }
@@ -350,8 +449,20 @@ namespace ZenECS.Core
     {
         public readonly IComponentPool? A, B, C, D;
         public readonly World.ResolvedFilter RF;
-        public QueryCtx4(IComponentPool? a, IComponentPool? b, IComponentPool? c, IComponentPool? d, World.ResolvedFilter rf)
-        { A = a; B = b; C = c; D = d; RF = rf; }
+
+        public QueryCtx4(
+            IComponentPool? a,
+            IComponentPool? b,
+            IComponentPool? c,
+            IComponentPool? d,
+            World.ResolvedFilter rf)
+        {
+            A = a;
+            B = b;
+            C = c;
+            D = d;
+            RF = rf;
+        }
     }
 
     public readonly struct QueryEnumerable<T1, T2, T3, T4>
@@ -360,7 +471,11 @@ namespace ZenECS.Core
         private readonly World _w;
         private readonly QueryCtx4<T1, T2, T3, T4> _ctx;
 
-        internal QueryEnumerable(World w, in QueryCtx4<T1, T2, T3, T4> ctx) { _w = w; _ctx = ctx; }
+        internal QueryEnumerable(World w, in QueryCtx4<T1, T2, T3, T4> ctx)
+        {
+            _w = w;
+            _ctx = ctx;
+        }
 
         public Enumerator GetEnumerator() => new Enumerator(_w, _ctx);
 
@@ -374,11 +489,23 @@ namespace ZenECS.Core
 
             internal Enumerator(World w, in QueryCtx4<T1, T2, T3, T4> ctx)
             {
-                _w  = w;
-                _a  = ctx.A; _b = ctx.B; _c = ctx.C; _d = ctx.D;
+                _w = w;
+                _a = ctx.A;
+                _b = ctx.B;
+                _c = ctx.C;
+                _d = ctx.D;
                 _rf = ctx.RF;
+
+                // If any required pool is missing, this query is empty.
+                if (_a == null || _b == null || _c == null || _d == null)
+                {
+                    _it = PoolEnumerator.Empty;
+                    _cur = default;
+                    return;
+                }
+
                 var seed = QuerySeed.Pick(_a, _b, _c, _d);
-                _it  = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
+                _it = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
                 _cur = default;
             }
 
@@ -390,13 +517,18 @@ namespace ZenECS.Core
                 while (_it.MoveNext())
                 {
                     int id = _it.CurrentId;
-                    if ((_a == null || _a.Has(id)) &&
-                        (_b == null || _b.Has(id)) &&
-                        (_c == null || _c.Has(id)) &&
-                        (_d == null || _d.Has(id)) &&
+
+                    if (_a!.Has(id) &&
+                        _b!.Has(id) &&
+                        _c!.Has(id) &&
+                        _d!.Has(id) &&
                         World.MeetsFilter(id, in _rf))
-                    { _cur = new Entity(id, _w.GenerationOf(id)); return true; }
+                    {
+                        _cur = new Entity(id, _w.GenerationOf(id));
+                        return true;
+                    }
                 }
+
                 return false;
             }
         }
@@ -411,8 +543,22 @@ namespace ZenECS.Core
     {
         public readonly IComponentPool? A, B, C, D, E;
         public readonly World.ResolvedFilter RF;
-        public QueryCtx5(IComponentPool? a, IComponentPool? b, IComponentPool? c, IComponentPool? d, IComponentPool? e, World.ResolvedFilter rf)
-        { A = a; B = b; C = c; D = d; E = e; RF = rf; }
+
+        public QueryCtx5(
+            IComponentPool? a,
+            IComponentPool? b,
+            IComponentPool? c,
+            IComponentPool? d,
+            IComponentPool? e,
+            World.ResolvedFilter rf)
+        {
+            A = a;
+            B = b;
+            C = c;
+            D = d;
+            E = e;
+            RF = rf;
+        }
     }
 
     public readonly struct QueryEnumerable<T1, T2, T3, T4, T5>
@@ -421,7 +567,11 @@ namespace ZenECS.Core
         private readonly World _w;
         private readonly QueryCtx5<T1, T2, T3, T4, T5> _ctx;
 
-        internal QueryEnumerable(World w, in QueryCtx5<T1, T2, T3, T4, T5> ctx) { _w = w; _ctx = ctx; }
+        internal QueryEnumerable(World w, in QueryCtx5<T1, T2, T3, T4, T5> ctx)
+        {
+            _w = w;
+            _ctx = ctx;
+        }
 
         public Enumerator GetEnumerator() => new Enumerator(_w, _ctx);
 
@@ -435,11 +585,24 @@ namespace ZenECS.Core
 
             internal Enumerator(World w, in QueryCtx5<T1, T2, T3, T4, T5> ctx)
             {
-                _w  = w;
-                _a  = ctx.A; _b = ctx.B; _c = ctx.C; _d = ctx.D; _e = ctx.E;
+                _w = w;
+                _a = ctx.A;
+                _b = ctx.B;
+                _c = ctx.C;
+                _d = ctx.D;
+                _e = ctx.E;
                 _rf = ctx.RF;
+
+                // If any required pool is missing, this query is empty.
+                if (_a == null || _b == null || _c == null || _d == null || _e == null)
+                {
+                    _it = PoolEnumerator.Empty;
+                    _cur = default;
+                    return;
+                }
+
                 var seed = QuerySeed.Pick(_a, _b, _c, _d, _e);
-                _it  = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
+                _it = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
                 _cur = default;
             }
 
@@ -451,14 +614,19 @@ namespace ZenECS.Core
                 while (_it.MoveNext())
                 {
                     int id = _it.CurrentId;
-                    if ((_a == null || _a.Has(id)) &&
-                        (_b == null || _b.Has(id)) &&
-                        (_c == null || _c.Has(id)) &&
-                        (_d == null || _d.Has(id)) &&
-                        (_e == null || _e.Has(id)) &&
+
+                    if (_a!.Has(id) &&
+                        _b!.Has(id) &&
+                        _c!.Has(id) &&
+                        _d!.Has(id) &&
+                        _e!.Has(id) &&
                         World.MeetsFilter(id, in _rf))
-                    { _cur = new Entity(id, _w.GenerationOf(id)); return true; }
+                    {
+                        _cur = new Entity(id, _w.GenerationOf(id));
+                        return true;
+                    }
                 }
+
                 return false;
             }
         }
@@ -469,21 +637,43 @@ namespace ZenECS.Core
     #region T1..T6
 
     internal readonly struct QueryCtx6<T1, T2, T3, T4, T5, T6>
-        where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct where T6 : struct
+        where T1 : struct where T2 : struct where T3 : struct where T4 : struct
+        where T5 : struct where T6 : struct
     {
         public readonly IComponentPool? A, B, C, D, E, F;
         public readonly World.ResolvedFilter RF;
-        public QueryCtx6(IComponentPool? a, IComponentPool? b, IComponentPool? c, IComponentPool? d, IComponentPool? e, IComponentPool? f, World.ResolvedFilter rf)
-        { A = a; B = b; C = c; D = d; E = e; F = f; RF = rf; }
+
+        public QueryCtx6(
+            IComponentPool? a,
+            IComponentPool? b,
+            IComponentPool? c,
+            IComponentPool? d,
+            IComponentPool? e,
+            IComponentPool? f,
+            World.ResolvedFilter rf)
+        {
+            A = a;
+            B = b;
+            C = c;
+            D = d;
+            E = e;
+            F = f;
+            RF = rf;
+        }
     }
 
     public readonly struct QueryEnumerable<T1, T2, T3, T4, T5, T6>
-        where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct where T6 : struct
+        where T1 : struct where T2 : struct where T3 : struct where T4 : struct
+        where T5 : struct where T6 : struct
     {
         private readonly World _w;
         private readonly QueryCtx6<T1, T2, T3, T4, T5, T6> _ctx;
 
-        internal QueryEnumerable(World w, in QueryCtx6<T1, T2, T3, T4, T5, T6> ctx) { _w = w; _ctx = ctx; }
+        internal QueryEnumerable(World w, in QueryCtx6<T1, T2, T3, T4, T5, T6> ctx)
+        {
+            _w = w;
+            _ctx = ctx;
+        }
 
         public Enumerator GetEnumerator() => new Enumerator(_w, _ctx);
 
@@ -497,11 +687,25 @@ namespace ZenECS.Core
 
             internal Enumerator(World w, in QueryCtx6<T1, T2, T3, T4, T5, T6> ctx)
             {
-                _w  = w;
-                _a  = ctx.A; _b = ctx.B; _c = ctx.C; _d = ctx.D; _e = ctx.E; _f = ctx.F;
+                _w = w;
+                _a = ctx.A;
+                _b = ctx.B;
+                _c = ctx.C;
+                _d = ctx.D;
+                _e = ctx.E;
+                _f = ctx.F;
                 _rf = ctx.RF;
+
+                // If any required pool is missing, this query is empty.
+                if (_a == null || _b == null || _c == null || _d == null || _e == null || _f == null)
+                {
+                    _it = PoolEnumerator.Empty;
+                    _cur = default;
+                    return;
+                }
+
                 var seed = QuerySeed.Pick(_a, _b, _c, _d, _e, _f);
-                _it  = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
+                _it = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
                 _cur = default;
             }
 
@@ -513,15 +717,20 @@ namespace ZenECS.Core
                 while (_it.MoveNext())
                 {
                     int id = _it.CurrentId;
-                    if ((_a == null || _a.Has(id)) &&
-                        (_b == null || _b.Has(id)) &&
-                        (_c == null || _c.Has(id)) &&
-                        (_d == null || _d.Has(id)) &&
-                        (_e == null || _e.Has(id)) &&
-                        (_f == null || _f.Has(id)) &&
+
+                    if (_a!.Has(id) &&
+                        _b!.Has(id) &&
+                        _c!.Has(id) &&
+                        _d!.Has(id) &&
+                        _e!.Has(id) &&
+                        _f!.Has(id) &&
                         World.MeetsFilter(id, in _rf))
-                    { _cur = new Entity(id, _w.GenerationOf(id)); return true; }
+                    {
+                        _cur = new Entity(id, _w.GenerationOf(id));
+                        return true;
+                    }
                 }
+
                 return false;
             }
         }
@@ -532,21 +741,45 @@ namespace ZenECS.Core
     #region T1..T7
 
     internal readonly struct QueryCtx7<T1, T2, T3, T4, T5, T6, T7>
-        where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct where T6 : struct where T7 : struct
+        where T1 : struct where T2 : struct where T3 : struct where T4 : struct
+        where T5 : struct where T6 : struct where T7 : struct
     {
         public readonly IComponentPool? A, B, C, D, E, F, G;
         public readonly World.ResolvedFilter RF;
-        public QueryCtx7(IComponentPool? a, IComponentPool? b, IComponentPool? c, IComponentPool? d, IComponentPool? e, IComponentPool? f, IComponentPool? g, World.ResolvedFilter rf)
-        { A = a; B = b; C = c; D = d; E = e; F = f; G = g; RF = rf; }
+
+        public QueryCtx7(
+            IComponentPool? a,
+            IComponentPool? b,
+            IComponentPool? c,
+            IComponentPool? d,
+            IComponentPool? e,
+            IComponentPool? f,
+            IComponentPool? g,
+            World.ResolvedFilter rf)
+        {
+            A = a;
+            B = b;
+            C = c;
+            D = d;
+            E = e;
+            F = f;
+            G = g;
+            RF = rf;
+        }
     }
 
     public readonly struct QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>
-        where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct where T6 : struct where T7 : struct
+        where T1 : struct where T2 : struct where T3 : struct where T4 : struct
+        where T5 : struct where T6 : struct where T7 : struct
     {
         private readonly World _w;
         private readonly QueryCtx7<T1, T2, T3, T4, T5, T6, T7> _ctx;
 
-        internal QueryEnumerable(World w, in QueryCtx7<T1, T2, T3, T4, T5, T6, T7> ctx) { _w = w; _ctx = ctx; }
+        internal QueryEnumerable(World w, in QueryCtx7<T1, T2, T3, T4, T5, T6, T7> ctx)
+        {
+            _w = w;
+            _ctx = ctx;
+        }
 
         public Enumerator GetEnumerator() => new Enumerator(_w, _ctx);
 
@@ -560,11 +793,27 @@ namespace ZenECS.Core
 
             internal Enumerator(World w, in QueryCtx7<T1, T2, T3, T4, T5, T6, T7> ctx)
             {
-                _w  = w;
-                _a  = ctx.A; _b = ctx.B; _c = ctx.C; _d = ctx.D; _e = ctx.E; _f = ctx.F; _g = ctx.G;
+                _w = w;
+                _a = ctx.A;
+                _b = ctx.B;
+                _c = ctx.C;
+                _d = ctx.D;
+                _e = ctx.E;
+                _f = ctx.F;
+                _g = ctx.G;
                 _rf = ctx.RF;
+
+                // If any required pool is missing, this query is empty.
+                if (_a == null || _b == null || _c == null ||
+                    _d == null || _e == null || _f == null || _g == null)
+                {
+                    _it = PoolEnumerator.Empty;
+                    _cur = default;
+                    return;
+                }
+
                 var seed = QuerySeed.Pick(_a, _b, _c, _d, _e, _f, _g);
-                _it  = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
+                _it = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
                 _cur = default;
             }
 
@@ -576,16 +825,21 @@ namespace ZenECS.Core
                 while (_it.MoveNext())
                 {
                     int id = _it.CurrentId;
-                    if ((_a == null || _a.Has(id)) &&
-                        (_b == null || _b.Has(id)) &&
-                        (_c == null || _c.Has(id)) &&
-                        (_d == null || _d.Has(id)) &&
-                        (_e == null || _e.Has(id)) &&
-                        (_f == null || _f.Has(id)) &&
-                        (_g == null || _g.Has(id)) &&
+
+                    if (_a!.Has(id) &&
+                        _b!.Has(id) &&
+                        _c!.Has(id) &&
+                        _d!.Has(id) &&
+                        _e!.Has(id) &&
+                        _f!.Has(id) &&
+                        _g!.Has(id) &&
                         World.MeetsFilter(id, in _rf))
-                    { _cur = new Entity(id, _w.GenerationOf(id)); return true; }
+                    {
+                        _cur = new Entity(id, _w.GenerationOf(id));
+                        return true;
+                    }
                 }
+
                 return false;
             }
         }
@@ -601,10 +855,28 @@ namespace ZenECS.Core
     {
         public readonly IComponentPool? A, B, C, D, E, F, G, H;
         public readonly World.ResolvedFilter RF;
-        public QueryCtx8(IComponentPool? a, IComponentPool? b, IComponentPool? c, IComponentPool? d,
-                         IComponentPool? e, IComponentPool? f, IComponentPool? g, IComponentPool? h,
-                         World.ResolvedFilter rf)
-        { A = a; B = b; C = c; D = d; E = e; F = f; G = g; H = h; RF = rf; }
+
+        public QueryCtx8(
+            IComponentPool? a,
+            IComponentPool? b,
+            IComponentPool? c,
+            IComponentPool? d,
+            IComponentPool? e,
+            IComponentPool? f,
+            IComponentPool? g,
+            IComponentPool? h,
+            World.ResolvedFilter rf)
+        {
+            A = a;
+            B = b;
+            C = c;
+            D = d;
+            E = e;
+            F = f;
+            G = g;
+            H = h;
+            RF = rf;
+        }
     }
 
     public readonly struct QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>
@@ -614,7 +886,11 @@ namespace ZenECS.Core
         private readonly World _w;
         private readonly QueryCtx8<T1, T2, T3, T4, T5, T6, T7, T8> _ctx;
 
-        internal QueryEnumerable(World w, in QueryCtx8<T1, T2, T3, T4, T5, T6, T7, T8> ctx) { _w = w; _ctx = ctx; }
+        internal QueryEnumerable(World w, in QueryCtx8<T1, T2, T3, T4, T5, T6, T7, T8> ctx)
+        {
+            _w = w;
+            _ctx = ctx;
+        }
 
         public Enumerator GetEnumerator() => new Enumerator(_w, _ctx);
 
@@ -628,11 +904,28 @@ namespace ZenECS.Core
 
             internal Enumerator(World w, in QueryCtx8<T1, T2, T3, T4, T5, T6, T7, T8> ctx)
             {
-                _w  = w;
-                _a  = ctx.A; _b = ctx.B; _c = ctx.C; _d = ctx.D; _e = ctx.E; _f = ctx.F; _g = ctx.G; _h = ctx.H;
+                _w = w;
+                _a = ctx.A;
+                _b = ctx.B;
+                _c = ctx.C;
+                _d = ctx.D;
+                _e = ctx.E;
+                _f = ctx.F;
+                _g = ctx.G;
+                _h = ctx.H;
                 _rf = ctx.RF;
+
+                // If any required pool is missing, this query is empty.
+                if (_a == null || _b == null || _c == null || _d == null ||
+                    _e == null || _f == null || _g == null || _h == null)
+                {
+                    _it = PoolEnumerator.Empty;
+                    _cur = default;
+                    return;
+                }
+
                 var seed = QuerySeed.Pick(_a, _b, _c, _d, _e, _f, _g, _h);
-                _it  = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
+                _it = seed != null ? seed.EnumerateIds() : PoolEnumerator.Empty;
                 _cur = default;
             }
 
@@ -644,21 +937,26 @@ namespace ZenECS.Core
                 while (_it.MoveNext())
                 {
                     int id = _it.CurrentId;
-                    if ((_a == null || _a.Has(id)) &&
-                        (_b == null || _b.Has(id)) &&
-                        (_c == null || _c.Has(id)) &&
-                        (_d == null || _d.Has(id)) &&
-                        (_e == null || _e.Has(id)) &&
-                        (_f == null || _f.Has(id)) &&
-                        (_g == null || _g.Has(id)) &&
-                        (_h == null || _h.Has(id)) &&
+
+                    if (_a!.Has(id) &&
+                        _b!.Has(id) &&
+                        _c!.Has(id) &&
+                        _d!.Has(id) &&
+                        _e!.Has(id) &&
+                        _f!.Has(id) &&
+                        _g!.Has(id) &&
+                        _h!.Has(id) &&
                         World.MeetsFilter(id, in _rf))
-                    { _cur = new Entity(id, _w.GenerationOf(id)); return true; }
+                    {
+                        _cur = new Entity(id, _w.GenerationOf(id));
+                        return true;
+                    }
                 }
+
                 return false;
             }
         }
     }
 
-    #endregion    
+    #endregion
 }
