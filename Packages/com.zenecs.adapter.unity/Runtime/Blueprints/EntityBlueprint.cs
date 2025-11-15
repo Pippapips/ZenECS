@@ -18,11 +18,8 @@ namespace ZenECS.Adapter.Unity.Blueprints
         [SerializeField] private BlueprintData _data = new();
         public BlueprintData Data => _data;
 
-        // 🔁 기존: [SerializeReference] List<IContext> _contexts
-        //     → SO 기반 컨텍스트 에셋 레퍼런스
-        [Header("Contexts (assets)")]
+        [Header("Contexts (ScriptableObject assets)")]
         [SerializeField] private List<ContextAsset> _contextAssets = new();
-        public IReadOnlyList<ContextAsset> ContextAssets => _contextAssets;
 
         [Header("Binders (managed reference)")]
         [SerializeReference] private List<IBinder> _binders = new();
@@ -31,7 +28,7 @@ namespace ZenECS.Adapter.Unity.Blueprints
         /// Spawn an entity and apply only component snapshot.
         /// Binder/Context SO는 별도 BindingInstaller 등에서 적용하는 것을 권장.
         /// </summary>
-        public Entity Spawn(IWorld world)
+        public Entity Spawn(IWorld world, ISharedContextResolver sharedContextResolver)
         {
             var e = world.SpawnEntity();
             _data?.ApplyTo(world, e);
@@ -44,8 +41,8 @@ namespace ZenECS.Adapter.Unity.Blueprints
                 {
                     case SharedContextMarkerAsset markerAsset:
                     {
-                        // var ctx = sharedResolver.Resolve(markerAsset);
-                        // world.RegisterContext(e, ctx);
+                        var ctx = sharedContextResolver.Resolve(markerAsset);
+                        world.RegisterContext(e, ctx);
                         break;
                     }
                     case PerEntityContextAsset perEntityAsset:
@@ -67,20 +64,6 @@ namespace ZenECS.Adapter.Unity.Blueprints
             
             return e;
         }
-
-        // 필요하다면 나중에 이런 형태의 헬퍼를 추가해서
-        // SO → 런타임 컨텍스트/바인더를 바로 적용할 수 있음:
-        //
-        // public Entity Spawn(IWorld world, IWorldContextApi ctxApi, IBinderAttachmentApi binderApi)
-        // {
-        //     var e = world.SpawnEntity();
-        //     _data?.ApplyTo(world, e);
-        //
-        //     var installer = new BindingInstaller(world, ctxApi, binderApi);
-        //     installer.Apply(e, _binderAssets, _contextAssets);
-        //
-        //     return e;
-        // }
 
         private static object ShallowCopy(object? source, Type t)
         {

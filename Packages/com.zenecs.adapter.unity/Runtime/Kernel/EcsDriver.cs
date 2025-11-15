@@ -23,11 +23,12 @@ namespace ZenECS.Adapter.Unity
     {
         public IKernel? Kernel { get; private set; }
 
-        public void CreateKernel()
+        public IKernel CreateKernel()
         {
-            if (Kernel != null) return;
+            if (Kernel != null) return Kernel;
             Kernel ??= new Kernel(new KernelOptions { AutoSelectNewWorld = true }, new Logger());
             KernelLocator.Attach(Kernel);
+            return Kernel;
         }
         
         void Awake()

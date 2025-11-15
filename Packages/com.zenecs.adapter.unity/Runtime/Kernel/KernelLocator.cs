@@ -56,8 +56,13 @@ namespace ZenECS.Adapter.Unity
             {
                 UnityEngine.Object.DontDestroyOnLoad(drv.gameObject);
             }
-            
+
             return drv;
+        }
+
+        public static IKernel CreateEcsDriverWithKernel(bool dontDestroyOnLoad = true)
+        {
+            return CreateEcsDriver(dontDestroyOnLoad).CreateKernel();
         }
 
         public static IWorld CurrentWorld =>

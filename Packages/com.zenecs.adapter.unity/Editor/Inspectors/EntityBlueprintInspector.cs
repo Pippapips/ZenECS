@@ -90,16 +90,23 @@ namespace ZenECS.EditorInspectors
                 richText = true
             };
 
-            // ✅ 네임스페이스용: 짙은 회색 miniLabel
+            // 네임스페이스 스타일
             _namespaceStyle = new GUIStyle(baseStyle)
             {
                 fontStyle = FontStyle.Normal,
                 richText = false,
-                normal =
-                {
-                    textColor = new Color(0.45f, 0.45f, 0.45f) // 짙은 회색
-                }
             };
+
+            // ProSkin(다크테마)일 때는 밝은 회색
+            if (EditorGUIUtility.isProSkin)
+            {
+                _namespaceStyle.normal.textColor = new Color(0.78f, 0.78f, 0.78f); // #C7C7C7 정도
+            }
+            else
+            {
+                // 라이트 테마에서는 중간 정도 회색
+                _namespaceStyle.normal.textColor = new Color(0.25f, 0.25f, 0.25f);
+            }
 
             _stylesReady = true;
         }

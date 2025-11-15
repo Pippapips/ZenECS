@@ -46,7 +46,7 @@ namespace ZenECS.EditorWindows
         readonly List<Entity> _cache = new(256);
         double _nextRepaint;
         private int _selSysEntityCount;
-        static GUIStyle _bigPlusButton;
+        private static GUIStyle? _bigPlusButton;
         static bool _bigPlusReady;
 
         // System.Enabled 리플렉션 캐시
@@ -362,7 +362,7 @@ namespace ZenECS.EditorWindows
             GUILayout.Space(4);
             DrawFooter();
         }
-
+        
         static GUIContent GetPlusIconContent()
         {
             // Unity 기본 검색 아이콘
@@ -809,7 +809,7 @@ namespace ZenECS.EditorWindows
                                     onPick: picked =>
                                     {
                                         var inst = ZenDefaults.CreateWithDefaults(picked);
-                                        BinderApi.Add(world, e, inst);
+                                        if (inst != null) BinderApi.Add(world, e, inst);
                                         Repaint();
                                     },
                                     activatorRectGui: rAdd,
@@ -837,7 +837,7 @@ namespace ZenECS.EditorWindows
             }
         }
 
-        bool AreAllContextsOpen(Entity e, (Type type, object boxed)[] ctxs)
+        bool AreAllContextsOpen(Entity e, (Type type, object? boxed)[] ctxs)
         {
             bool any = false;
 
@@ -869,12 +869,12 @@ namespace ZenECS.EditorWindows
             }
         }
 
-        bool AreAllBindersOpen_VisibleOnly(Entity e, (Type type, object boxed)[] binders)
+        bool AreAllBindersOpen_VisibleOnly(Entity e, (Type type, object? boxed)[] binders)
         {
             bool any = false;
             foreach (var (t, boxed) in binders)
             {
-                if (!CanShowBinderBody(t, boxed)) continue;
+                if (boxed != null && !CanShowBinderBody(t, boxed)) continue;
                 any = true;
                 var key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}:BINDER";
                 if (!_binderFold.TryGetValue(key, out bool open) || !open)
@@ -921,7 +921,7 @@ namespace ZenECS.EditorWindows
 
         class OkLabel
         {
-            static GUIStyle _rightMini;
+            private static GUIStyle? _rightMini;
             static bool _ready;
 
             static void Ensure()
@@ -953,7 +953,7 @@ namespace ZenECS.EditorWindows
 
         static class NotAssignLabel
         {
-            static GUIStyle _rightMini;
+            private static GUIStyle? _rightMini;
             static bool _ready;
 
             static void Ensure()
@@ -985,7 +985,7 @@ namespace ZenECS.EditorWindows
 
         static class ItalicLabel
         {
-            static GUIStyle _leftMiniItalic;
+            private static GUIStyle? _leftMiniItalic;
             static bool _ready;
 
             static void Ensure()
@@ -1019,8 +1019,8 @@ namespace ZenECS.EditorWindows
 
         static class StatusLabelGUI
         {
-            static GUIStyle _pill;
-            static GUIStyle _pillRight;
+            private static GUIStyle? _pill;
+            private static GUIStyle? _pillRight;
             static bool _ready;
 
             static void Ensure()
@@ -1067,7 +1067,7 @@ namespace ZenECS.EditorWindows
             }
         }
 
-        void DrawBinderMeta(IWorld world, Entity e, object binderObj)
+        void DrawBinderMeta(IWorld world, Entity e, object? binderObj)
         {
             if (binderObj == null) return;
 
@@ -1207,7 +1207,7 @@ namespace ZenECS.EditorWindows
 
         static class BinderTypeFinder
         {
-            static List<Type> _cache;
+            private static List<Type>? _cache;
 
             public static IEnumerable<Type> All()
             {
@@ -1289,7 +1289,7 @@ namespace ZenECS.EditorWindows
             return false;
         }
 
-        void DrawBindersList(IWorld world, Entity e, (Type type, object boxed)[] bindersArray)
+        void DrawBindersList(IWorld world, Entity e, (Type type, object? boxed)[] bindersArray)
         {
             var line = EditorGUIUtility.singleLineHeight;
 
@@ -1301,7 +1301,7 @@ namespace ZenECS.EditorWindows
                     if (!_binderFold.ContainsKey(ck)) _binderFold[ck] = false;
 
                     bool hasFields = ZenComponentFormGUI.HasDrawableFields(t);
-                    bool hasMetaOrFields = CanShowBinderBody(t, boxed);
+                    bool hasMetaOrFields = boxed != null && CanShowBinderBody(t, boxed);
 
                     // IBinder + Disabled 판정
                     var binder = boxed as IBinder;
@@ -1346,7 +1346,7 @@ namespace ZenECS.EditorWindows
 
                                 // binder 활성 상태
                                 var hasBinder = binder != null;
-                                bool isEnabled = hasBinder && binder.Enabled;
+                                bool isEnabled = hasBinder && binder is { Enabled: true };
                                 bool canToggle = hasBinder && _editMode; // 읽기전용일 땐 토글 비활성
 
                                 // 🔹 Enabled Pause 스타일 (System / Global Pause와 동일)
@@ -1388,7 +1388,10 @@ namespace ZenECS.EditorWindows
                                     if (GUI.Button(btnRect, pauseContent, pauseStyle) && canToggle)
                                     {
                                         isEnabled = !isEnabled;
-                                        binder.Enabled = isEnabled;
+                                        if (binder != null)
+                                        {
+                                            binder.Enabled = isEnabled;
+                                        }
                                     }
 
                                     GUI.backgroundColor = oldBg;
@@ -1828,7 +1831,7 @@ namespace ZenECS.EditorWindows
                             }
                         }
 
-                        contexts = list.ToArray();
+                        contexts = list.ToArray()!;
                         return true;
                     }
 
@@ -1841,7 +1844,7 @@ namespace ZenECS.EditorWindows
                             list.Add((c.GetType(), c));
                         }
 
-                        contexts = list.ToArray();
+                        contexts = list.ToArray()!;
                         return true;
                     }
                 }
@@ -1865,8 +1868,12 @@ namespace ZenECS.EditorWindows
                 {
                     case SharedContextMarkerAsset markerAsset:
                     {
-                        // var ctx = sharedResolver.Resolve(markerAsset);
-                        // world.RegisterContext(e, ctx);
+                        var resolver = ZenEcsUnityBridge.SharedContextResolver;
+                        if (resolver != null)
+                        {
+                            var ctx = resolver.Resolve(markerAsset);
+                            w.RegisterContext(e, ctx);
+                        }
                         break;
                     }
                     case PerEntityContextAsset perEntityAsset:
@@ -1935,6 +1942,7 @@ namespace ZenECS.EditorWindows
 
             public static void Remove(IWorld w, Entity e, IContext? ctx)
             {
+                if (ctx == null) return;
                 w.RemoveContext(e, ctx);
             }
         }
@@ -1963,7 +1971,7 @@ namespace ZenECS.EditorWindows
             }
 
             string _title = "Add Context";
-            Action<ContextAsset> _onPick;
+            private Action<ContextAsset>? _onPick;
             List<ContextAsset> _all = new();
             string _search = "";
             Vector2 _scroll;
@@ -2119,16 +2127,18 @@ namespace ZenECS.EditorWindows
         {
             if (ctxType == null) return false;
 
-            // public instance fields
-            foreach (var f in ctxType.GetFields(BindingFlags.Public | BindingFlags.Instance))
+            // 🔹 이 타입에 "직접 선언된" public 필드만
+            foreach (var f in ctxType.GetFields(
+                         BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
             {
                 if (Attribute.IsDefined(f, typeof(ZenEcsExplorerHiddenAttribute), inherit: true)) continue;
                 if (Attribute.IsDefined(f, typeof(HideInInspector), inherit: true)) continue;
                 return true;
             }
 
-            // public instance properties with getter
-            foreach (var p in ctxType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            // 🔹 이 타입에 "직접 선언된" public 프로퍼티만
+            foreach (var p in ctxType.GetProperties(
+                         BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
             {
                 if (!p.CanRead) continue;
                 if (p.GetIndexParameters().Length != 0) continue;
@@ -2140,7 +2150,7 @@ namespace ZenECS.EditorWindows
             return false;
         }
 
-        void DrawContextsList(IWorld world, Entity e, (Type type, object boxed)[] ctxs)
+        void DrawContextsList(IWorld world, Entity e, (Type type, object? boxed)[] ctxs)
         {
             var line = EditorGUIUtility.singleLineHeight;
 
@@ -2217,10 +2227,10 @@ namespace ZenECS.EditorWindows
             // 공용 인스턴스 멤버 수집: Field + Property(get 가능, 인덱서 제외)
             var members = new List<(string name, Type type, Func<object?> getter)>();
 
-            // 1) Fields
-            foreach (var f in ctxType.GetFields(BindingFlags.Public | BindingFlags.Instance))
+// 1) 이 타입에 "직접 선언된" public 필드
+            foreach (var f in ctxType.GetFields(
+                         BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
             {
-                // 숨김 어노테이션 체크
                 if (Attribute.IsDefined(f, typeof(ZenEcsExplorerHiddenAttribute), inherit: true)) continue;
                 if (Attribute.IsDefined(f, typeof(HideInInspector), inherit: true)) continue;
 
@@ -2232,13 +2242,12 @@ namespace ZenECS.EditorWindows
                 ));
             }
 
-            // 2) Properties { get; ... }  (set-only, 인덱서 제외)
-            foreach (var p in ctxType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            // 2) 이 타입에 "직접 선언된" public 프로퍼티 (getter만, 인덱서 제외)
+            foreach (var p in ctxType.GetProperties(
+                         BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
             {
                 if (!p.CanRead) continue;
-                if (p.GetIndexParameters().Length != 0) continue; // indexer는 스킵
-
-                // 숨김 어노테이션 체크
+                if (p.GetIndexParameters().Length != 0) continue;
                 if (Attribute.IsDefined(p, typeof(ZenEcsExplorerHiddenAttribute), inherit: true)) continue;
                 if (Attribute.IsDefined(p, typeof(HideInInspector), inherit: true)) continue;
 
@@ -2252,7 +2261,7 @@ namespace ZenECS.EditorWindows
 
             if (members.Count == 0)
                 return;
-
+            
             // 이름 순으로 정렬
             members.Sort((a, b) => string.Compare(a.name, b.name, StringComparison.Ordinal));
 

@@ -121,7 +121,7 @@ namespace ZenECS.EditorInspectors
                     var infoStyle = new GUIStyle(EditorStyles.miniLabel) { richText = true };
 
                     // ─ 3) Group 정보 ─
-                    var groupSummary = SystemUtil.ResolveGroup(type).ToString();
+                    var groupSummary = GetSystemGroupSummary(type);
                     if (!string.IsNullOrEmpty(groupSummary))
                     {
                         var r = new Rect(x + 8f, y, w - 8f, line);
@@ -305,30 +305,7 @@ namespace ZenECS.EditorInspectors
         // ─ 어떤 그룹인지: SimulationGroup 등 GroupAttribute 기반 요약 ─
         static string GetSystemGroupSummary(Type t)
         {
-            if (t == null) return string.Empty;
-
-            var groups = new List<string>();
-
-            // ZenECS.Core.Systems 네임스페이스에 있는 "*GroupAttribute" 들을 전부 텍스트로 변환
-            foreach (var attr in t.GetCustomAttributes(inherit: false))
-            {
-                var at = attr.GetType();
-                if (at.Namespace != null &&
-                    at.Namespace.StartsWith("ZenECS.Core.Systems", StringComparison.Ordinal) &&
-                    at.Name.EndsWith("GroupAttribute", StringComparison.Ordinal))
-                {
-                    var name = at.Name;
-                    if (name.EndsWith("Attribute", StringComparison.Ordinal))
-                        name = name.Substring(0, name.Length - "Attribute".Length);
-                    if (name.EndsWith("Group", StringComparison.Ordinal))
-                        name = name.Substring(0, name.Length - "Group".Length);
-
-                    groups.Add(name); // 예: "Simulation"
-                }
-            }
-
-            if (groups.Count == 0) return string.Empty;
-            return string.Join(", ", groups.Distinct());
+            return SystemUtil.ResolveGroup(t).ToString();
         }
 
         // ─ 어떤 RunSystem 인터페이스를 구현하는지 요약 ─

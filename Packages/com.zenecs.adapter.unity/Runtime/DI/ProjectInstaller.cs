@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
 using ZenECS.Core;
 
 namespace ZenECS.Adapter.Unity.DI
@@ -10,9 +11,11 @@ namespace ZenECS.Adapter.Unity.DI
     {
         public override void InstallBindings()
         {
-            var ecsDriver = KernelLocator.CreateEcsDriver();
-            ecsDriver.CreateKernel();
-            Container.BindInstance(ecsDriver.Kernel);
+            ZenEcsUnityBridge.Kernel = KernelLocator.CreateEcsDriverWithKernel();
+            ZenEcsUnityBridge.SharedContextResolver = new WorldSharedContextResolver(Container);
+            
+            Container.BindInstance(ZenEcsUnityBridge.Kernel);
+            Container.Bind<ISharedContextResolver>().FromInstance(ZenEcsUnityBridge.SharedContextResolver).AsSingle();
             Container.Bind<IViewLinkFactory>().To<ViewLinkFactory>().AsSingle();
         }
     }
@@ -21,8 +24,7 @@ namespace ZenECS.Adapter.Unity.DI
     {
         private void Awake()
         {
-            var ecsDriver = KernelLocator.CreateEcsDriver();
-            ecsDriver.CreateKernel();
+            KernelLocator.CreateEcsDriverWithKernel();
         }
     }
 #endif
