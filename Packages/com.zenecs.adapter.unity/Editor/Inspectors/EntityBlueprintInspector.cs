@@ -113,6 +113,16 @@ namespace ZenECS.EditorInspectors
 
         public override void OnInspectorGUI()
         {
+            ZenEcsEditorHeader.DrawHeader(
+                "Entity Blueprint",
+                "Defines components, contexts, and binders used to spawn a fully configured entity.",
+                new[]
+                {
+                    "Runtime Blueprint",
+                    "Components + Contexts + Binders"
+                }
+            );
+            
             EnsureStylesReady(); // ← 반드시 가장 먼저
 
             serializedObject.Update();

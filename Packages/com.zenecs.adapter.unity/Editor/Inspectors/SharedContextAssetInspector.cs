@@ -6,6 +6,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
+using ZenECS.EditorCommon;
 
 namespace ZenECS.EditorInspectors
 {
@@ -20,28 +21,41 @@ namespace ZenECS.EditorInspectors
     ///   6) Unity default inspector (excluding m_Script)
     /// </summary>
     [CustomEditor(typeof(SharedContextAsset), editorForChildClasses: true)]
-    public sealed class SharedContextMarkerAssetInspector : Editor
+    public sealed class SharedContextAssetInspector : Editor
     {
         public override void OnInspectorGUI()
         {
+            var icon = EditorGUIUtility.ObjectContent(target, target.GetType()).image;
+
+            ZenEcsEditorHeader.DrawHeader(
+                "Shared Context",
+                "Declares a world-level context type that is instantiated once and shared across all entities.",
+                new[]
+                {
+                    "Context",
+                    "World-Level",
+                    "Runtime Marker"
+                }
+            );
+            
             serializedObject.Update();
 
             var marker  = (SharedContextAsset)target;
             var ctxType = marker.ContextType;
 
-            // ─────────────────────────────────────────────
-            // 1) Script (항상 맨 첫 줄, 읽기 전용)
-            // ─────────────────────────────────────────────
-            var scriptProp = serializedObject.FindProperty("m_Script");
-            if (scriptProp != null)
-            {
-                using (new EditorGUI.DisabledScope(true))
-                {
-                    EditorGUILayout.PropertyField(scriptProp);
-                }
-            }
+            // // ─────────────────────────────────────────────
+            // // 1) Script (항상 맨 첫 줄, 읽기 전용)
+            // // ─────────────────────────────────────────────
+            // var scriptProp = serializedObject.FindProperty("m_Script");
+            // if (scriptProp != null)
+            // {
+            //     using (new EditorGUI.DisabledScope(true))
+            //     {
+            //         EditorGUILayout.PropertyField(scriptProp);
+            //     }
+            // }
 
-            EditorGUILayout.Space(4f);
+            // EditorGUILayout.Space(4f);
 
             // ContextType이 유효한 경우에만 Context 정보 표시
             if (ctxType != null)

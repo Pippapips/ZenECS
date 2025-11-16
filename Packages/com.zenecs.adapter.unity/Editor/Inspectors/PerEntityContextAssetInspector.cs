@@ -4,6 +4,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
+using ZenECS.EditorCommon;
 
 namespace ZenECS.EditorInspectors
 {
@@ -22,22 +23,31 @@ namespace ZenECS.EditorInspectors
         {
             serializedObject.Update();
 
+            var icon = EditorGUIUtility.ObjectContent(target, target.GetType()).image;
+
+            // ZenECS 헤더 추가
+            ZenEcsEditorHeader.DrawHeader(
+                "Per-Entity Context",
+                "Creates a unique context instance for every spawned entity.",
+                new[] { "Context", "Per-Entity", "Runtime Factory" }
+            );
+            
             var asset   = (ModelContextAsset)target;
             var ctxType = asset.ContextType;
 
-            // ─────────────────────────────────────────────
-            // 1) Script (항상 맨 첫 줄, 읽기 전용)
-            // ─────────────────────────────────────────────
-            var scriptProp = serializedObject.FindProperty("m_Script");
-            if (scriptProp != null)
-            {
-                using (new EditorGUI.DisabledScope(true))
-                {
-                    EditorGUILayout.PropertyField(scriptProp);
-                }
-            }
-
-            EditorGUILayout.Space(4f);
+            // // ─────────────────────────────────────────────
+            // // 1) Script (항상 맨 첫 줄, 읽기 전용)
+            // // ─────────────────────────────────────────────
+            // var scriptProp = serializedObject.FindProperty("m_Script");
+            // if (scriptProp != null)
+            // {
+            //     using (new EditorGUI.DisabledScope(true))
+            //     {
+            //         EditorGUILayout.PropertyField(scriptProp);
+            //     }
+            // }
+            //
+            // EditorGUILayout.Space(4f);
 
             // ContextType이 유효한 경우에만 Context 정보 표시
             if (ctxType != null)

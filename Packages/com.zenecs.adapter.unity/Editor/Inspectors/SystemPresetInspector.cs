@@ -22,7 +22,7 @@ namespace ZenECS.EditorInspectors
         SerializedProperty? _propTypes;
 
         readonly Dictionary<int, bool> _foldouts = new();
-        bool _globalExpanded = true;
+        bool _globalExpanded = false;
 
         string _filterText = string.Empty;
 
@@ -104,6 +104,19 @@ namespace ZenECS.EditorInspectors
 
         public override void OnInspectorGUI()
         {
+            var icon = EditorGUIUtility.ObjectContent(target, target.GetType()).image;
+
+            ZenEcsEditorHeader.DrawHeader(
+                "System Preset",
+                "Defines a reusable group of systems that can be registered to a world in a single operation.",
+                new[]
+                {
+                    "Editor Tool",
+                    "System Group",
+                    "Runtime-Ready"
+                }
+            );
+            
             serializedObject.Update();
 
             DrawTopToolbar();
@@ -288,6 +301,9 @@ namespace ZenECS.EditorInspectors
                 if (!string.IsNullOrEmpty(GetSystemRunKinds(typeBase)))
                     openedLines++;
 
+                // Order Before/After (Attribute 기반)
+                openedLines += 2;
+                
                 var watched = GetSystemWatchedComponents(typeBase);
                 if (watched.Count > 0)
                     openedLines += 1 + watched.Count;
@@ -339,7 +355,7 @@ namespace ZenECS.EditorInspectors
             var miniGrayStyle = new GUIStyle(EditorStyles.miniLabel)
             {
                 richText = true,
-                normal = { textColor = new Color(0.6f, 0.6f, 0.6f) }
+                normal = { textColor = new Color(0.4f, 0.4f, 0.4f) }
             };
             var infoStyle = new GUIStyle(EditorStyles.miniLabel) { richText = true };
 
@@ -441,7 +457,7 @@ namespace ZenECS.EditorInspectors
                 if (!string.IsNullOrEmpty(groupSummary))
                 {
                     Rect r = new Rect(contentX + 8f, y, contentW - 8f, line);
-                    EditorGUI.LabelField(r, $"Group: <b>{groupSummary}</b>", infoStyle);
+                    EditorGUI.LabelField(r, $"Group: <color=#909090>{groupSummary}</color>", infoStyle);
                     y += line;
                 }
 
@@ -449,10 +465,55 @@ namespace ZenECS.EditorInspectors
                 if (!string.IsNullOrEmpty(runKinds))
                 {
                     Rect r = new Rect(contentX + 8f, y, contentW - 8f, line);
-                    EditorGUI.LabelField(r, $"Execution: <b>{runKinds}</b>", infoStyle);
+                    EditorGUI.LabelField(r, $"Execution: <color=#909090>{runKinds}</color>", infoStyle);
                     y += line;
                 }
 
+                // Order Before/After (Attribute 기반)
+                var beforeList = new List<string>();
+                var afterList = new List<string>();
+
+                try
+                {
+                    var beforeAttrs = type.GetCustomAttributes(typeof(OrderBeforeAttribute), true)
+                        .Cast<OrderBeforeAttribute>();
+                    foreach (var a in beforeAttrs)
+                    {
+                        var target = a.Target;
+                        if (target != null)
+                            beforeList.Add(target.Name);
+                    }
+                
+                    var afterAttrs = type.GetCustomAttributes(typeof(OrderAfterAttribute), true)
+                        .Cast<OrderAfterAttribute>();
+                    foreach (var a in afterAttrs)
+                    {
+                        var target = a.Target;
+                        if (target != null)
+                            afterList.Add(target.Name);
+                    }
+                }
+                catch
+                {
+                    // 구버전에서 타입이 다를 수 있으니 조용히 무시
+                }
+
+                string beforeText = beforeList.Count > 0
+                    ? string.Join(", ", beforeList.Distinct())
+                    : "—";
+
+                string afterText = afterList.Count > 0
+                    ? string.Join(", ", afterList.Distinct())
+                    : "—";
+
+                var orderBeforeRect = new Rect(contentX + 8f, y, contentW - 8f, line);
+                EditorGUI.LabelField(orderBeforeRect, $"Order Before: <color=#909090>{beforeText}</color>", infoStyle);
+                y += line;
+
+                var orderAfterRect = new Rect(contentX + 8f, y, contentW - 8f, line);
+                EditorGUI.LabelField(orderAfterRect, $"Order After: <color=#909090>{afterText}</color>", infoStyle);
+                y += line;
+                
                 var watched = GetSystemWatchedComponents(type);
                 if (watched.Count > 0)
                 {
@@ -469,7 +530,7 @@ namespace ZenECS.EditorInspectors
 
                         Rect itemRect = new Rect(contentX + 16f, y, contentW - 16f, line);
                         string labelText =
-                            $"• <b>{compName}</b> <color=#777777>[{compNs}]</color>";
+                            $"• {compName} <color=#909090>[{compNs}]</color>";
 
                         EditorGUI.LabelField(
                             itemRect,

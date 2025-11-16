@@ -160,11 +160,24 @@ namespace ZenECS.EditorInspectors
 
         public override void OnInspectorGUI()
         {
-            EnsureStyles();
             serializedObject.Update();
 
-            EditorGUILayout.LabelField("World Setup Installer", _worldHeaderStyle);
-            EditorGUILayout.Space(4);
+            var icon = EditorGUIUtility.ObjectContent(target, target.GetType()).image;
+
+            ZenEcsEditorHeader.DrawHeader(
+                "World System Installer",
+                "Creates or resolves a world, assigns tags, and installs systems from presets and installer-local types.",
+                new[]
+                {
+                    "Installer",
+                    "World Setup",
+                    "System Registration"
+                }
+            );
+            
+            EnsureStyles();
+            // EditorGUILayout.LabelField("World Setup Installer", _worldHeaderStyle);
+            // EditorGUILayout.Space(4);
 
             DrawWorldSection();
 

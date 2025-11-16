@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using ZenECS.Core;
 using ZenECS.Adapter.Unity.Linking;
+using ZenECS.EditorCommon;
 using ZenECS.EditorTools;
 
 namespace ZenECS.EditorInspectors
@@ -17,14 +18,29 @@ namespace ZenECS.EditorInspectors
         public override void OnInspectorGUI()
         {
             var link = (EntityLink)target;
+            var icon = EditorGUIUtility.ObjectContent(target, target.GetType()).image;
 
-            // (1) 기본 ViewKey 필드는 보기만 가능(런타임에 변경은 코드로)
-            using (new EditorGUI.DisabledScope(true))
-            {
-                EditorGUILayout.ObjectField("GameObject", link.gameObject, typeof(GameObject), true);
-            }
-
-            EditorGUILayout.Space(4);
+            // ─────────────────────────────────────────────
+            // ZenECS Header (NEW)
+            // ─────────────────────────────────────────────
+            ZenEcsEditorHeader.DrawHeader(
+                "Entity Link",
+                "Links this GameObject to an ECS entity, providing world/entity metadata and debugging utilities.",
+                new[]
+                {
+                    "Runtime Metadata",
+                    "Debug Tool",
+                    "Unity ↔ ECS Bridge"
+                }
+            );
+            
+            // // (1) 기본 ViewKey 필드는 보기만 가능(런타임에 변경은 코드로)
+            // using (new EditorGUI.DisabledScope(true))
+            // {
+            //     EditorGUILayout.ObjectField("GameObject", link.gameObject, typeof(GameObject), true);
+            // }
+            //
+            // EditorGUILayout.Space(4);
 
             // (2) 메타 패널
             DrawMetaBox(link);
