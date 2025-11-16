@@ -21,7 +21,7 @@ namespace ZenECS.EditorTools
         private static MethodInfo? _cachedSelectMethod;
 
         /// <summary>ExplorerWindow를 열어 SelectEntity(id, gen)을 호출.</summary>
-        public static bool TryOpenAndSelect(IWorld w, int entityId, int entityGen)
+        public static bool TryOpenAndSelect(int entityId, int entityGen)
         {
             var t = ResolveExplorerType();
             if (t == null) return false;
@@ -40,7 +40,7 @@ namespace ZenECS.EditorTools
 
             try
             {
-                mi.Invoke(win, new object[] { w, entityId, entityGen });
+                mi.Invoke(win, new object[] { entityId, entityGen });
                 win.Repaint();
                 return true;
             }
@@ -106,14 +106,13 @@ namespace ZenECS.EditorTools
                                    {
                                        if (m.Name != "SelectEntity") return false;
                                        var ps = m.GetParameters();
-                                       return ps.Length == 3
-                                              && ps[0].ParameterType == typeof(IWorld)
-                                              && ps[1].ParameterType == typeof(int)
-                                              && ps[2].ParameterType == typeof(int);
+                                       return ps.Length == 2
+                                              && ps[0].ParameterType == typeof(int)
+                                              && ps[1].ParameterType == typeof(int);
                                    });
 
             if (_cachedSelectMethod == null)
-                Debug.LogWarning("[ExplorerBridge] SelectEntity(IWorld, int, int) 메서드를 찾지 못했습니다.");
+                Debug.LogWarning("[ExplorerBridge] SelectEntity(int, int) 메서드를 찾지 못했습니다.");
 
             return _cachedSelectMethod;
         }

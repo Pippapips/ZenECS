@@ -41,6 +41,7 @@ namespace ZenECS.EditorWindows
         bool _findMode = false;   // single view mode on/off
         Entity _foundEntity;      // resolved entity
         bool _foundValid = false; // found in world?
+        bool _findWatchedSystemsFold = false;
 
         // --- Other UI/layout state ---
         Vector2 _left, _right;
@@ -112,6 +113,7 @@ namespace ZenECS.EditorWindows
             _findMode = false;
             _findEntityId = null;
             _foundValid = false;
+            _findWatchedSystemsFold = false;
 
             // 👇 시스템 트리 Foldout 초기화
             _groupFold.Clear();
@@ -128,6 +130,7 @@ namespace ZenECS.EditorWindows
                 _findMode = false;
                 _findEntityId = null;
                 _foundValid = false;
+                _findWatchedSystemsFold = false;
 
                 // 👇 시스템 트리 Foldout 초기화
                 _groupFold.Clear();
@@ -181,21 +184,21 @@ namespace ZenECS.EditorWindows
                         using (new EditorGUILayout.HorizontalScope())
                         {
                             GUIStyle centeredButtonStyle = EditorStyles.toolbarButton;
-                            // centeredButtonStyle.alignment = TextAnchor.MiddleCenter;
                             centeredButtonStyle.fontStyle = FontStyle.Normal;
                             centeredButtonStyle.fontSize = 20;
-                            
+
                             GUILayout.FlexibleSpace();
                             if (GUILayout.Button("BACK", centeredButtonStyle, GUILayout.Width(80)))
                             {
                                 _entityFold[_foundEntity] = _findEntityFoldBackup;
-                                
+
                                 _entityIdText = "";
                                 _findEntityId = null;
 
                                 _entityGenText = "0";
                                 _findEntityGen = null;
 
+                                _findWatchedSystemsFold = false;
                                 _foundValid = false;
                                 _findMode = false;
                                 Repaint();
@@ -205,6 +208,61 @@ namespace ZenECS.EditorWindows
                         }
 
                         EditorGUILayout.Space(6);
+
+                        // 🔹 Watched Systems 목록 (Back 버튼 바로 아래)
+                        if (world != null && systems != null && _foundValid)
+                        {
+                            var watchedList = CollectWatchedSystemsForEntity(world, _foundEntity, systems);
+                            if (watchedList.Count > 0)
+                            {
+                                using (new EditorGUILayout.VerticalScope("box"))
+                                {
+                                    // Foldout 헤더: "Watched Systems (N)"
+                                    _findWatchedSystemsFold = EditorGUILayout.Foldout(
+                                        _findWatchedSystemsFold,
+                                        $"Watched Systems ({watchedList.Count})",
+                                        true
+                                    );
+
+                                    if (_findWatchedSystemsFold)
+                                    {
+                                        EditorGUI.indentLevel++;
+
+                                        // Watched Components와 동일한 회색 네임스페이스 스타일
+                                        var nsStyle = new GUIStyle(EditorStyles.miniLabel)
+                                        {
+                                            normal =
+                                            {
+                                                textColor = EditorGUIUtility.isProSkin
+                                                    ? new Color(0.5f, 0.5f, 0.5f)
+                                                    : new Color(0.4f, 0.4f, 0.4f)
+                                            }
+                                        };
+
+                                        foreach (var (sys, tSys) in watchedList)
+                                        {
+                                            if (tSys == null) continue;
+                                            string ns = string.IsNullOrEmpty(tSys.Namespace)
+                                                ? "(global)"
+                                                : tSys.Namespace;
+
+                                            using (new EditorGUILayout.HorizontalScope())
+                                            {
+                                                // System 이름
+                                                EditorGUILayout.LabelField(tSys.Name, GUILayout.ExpandWidth(false));
+
+                                                // [namespace] 어두운 회색
+                                                EditorGUILayout.LabelField($"[{ns}]", nsStyle, GUILayout.ExpandWidth(true));
+                                            }
+                                        }
+
+                                        EditorGUI.indentLevel--;
+                                    }
+                                }
+
+                                EditorGUILayout.Space(6);
+                            }
+                        }
 
                         // 아래는 기존 Entity 표시 로직 그대로
                         if (world == null)
@@ -220,13 +278,13 @@ namespace ZenECS.EditorWindows
                                     EditorStyles.boldLabel);
 
                                 GUILayout.Space(2);
-                                
+
                                 DrawOneEntity(world, _foundEntity);
                             }
                             else
                             {
                                 EditorGUILayout.HelpBox(
-                                    $"No entity with ID {_findEntityId.Value}:{_findEntityGen.Value} in this World.",
+                                    $"No entity with ID {_findEntityId.Value}:{_findEntityGen.Value} in {world.Name} World.",
                                     MessageType.Info
                                 );
                             }
@@ -257,17 +315,16 @@ namespace ZenECS.EditorWindows
                     _left = sv.scrollPosition;
 
                     EditorGUILayout.Space(4);
+
                     using (new EditorGUILayout.HorizontalScope())
                     {
-                        EditorGUILayout.LabelField("Systems", EditorStyles.boldLabel);
+                        EditorGUILayout.LabelField($"Systems ({systems?.Count}) Entities ({world?.GetAllEntities().Count})", EditorStyles.boldLabel);
                         GUILayout.FlexibleSpace();
 
-                        GUIStyle centeredButtonStyle = new GUIStyle(GUI.skin.button);
-                        centeredButtonStyle.alignment = TextAnchor.MiddleCenter;
-                        centeredButtonStyle.fontStyle = FontStyle.Normal;
-                        centeredButtonStyle.fontSize = 10;
+                        GUIStyle buttonStyle = new GUIStyle(EditorStyles.miniButton);
+                        buttonStyle.alignment = TextAnchor.LowerCenter;
 
-                        if (GUILayout.Button("Clear", centeredButtonStyle, GUILayout.Width(40)))
+                        if (GUILayout.Button(new GUIContent("R", "Clear Selection"), buttonStyle, GUILayout.Width(24), GUILayout.Height(24)))
                         {
                             _selSystem = -1;
                             _selSysEntityCount = 0;
@@ -275,7 +332,7 @@ namespace ZenECS.EditorWindows
                         }
                     }
 
-                    EditorGUILayout.Space(4);
+                    //EditorGUILayout.Space(2);
 
                     if (systems == null || systems.Count == 0)
                     {
@@ -856,6 +913,14 @@ namespace ZenECS.EditorWindows
                     int newIndex = EditorGUILayout.Popup(currentIndex, options, GUILayout.MaxWidth(220));
                     if (newIndex != currentIndex)
                     {
+                        _entityIdText = "";
+                        _entityGenText = "0";
+                        _findEntityId = null;
+                        _findEntityGen = null;
+                        _foundValid = false;
+                        _findWatchedSystemsFold = false;
+                        _findMode = false;
+                        
                         var selected = worlds[newIndex];
                         kernel.SetCurrentWorld(selected);
                         currentWorld = selected;
@@ -1098,7 +1163,7 @@ namespace ZenECS.EditorWindows
                     GUI.contentColor = oldCont;
                 }
 
-                GUILayout.Space(8);
+                GUILayout.Space(4);
 
                 // ===== 기존 정보 라벨들 =====
                 var elapsed = _driver?.Kernel?.SimulationAccumulatorSeconds ?? 0;
@@ -1114,9 +1179,9 @@ namespace ZenECS.EditorWindows
 
                 GUILayout.Label($"Since running in seconds: {elapsed:0}", centeredLabelStyle);
                 GUILayout.Space(10);
-                GUILayout.Label($"Systems: {systemCount}", centeredLabelStyle);
-                GUILayout.Space(10);
-                GUILayout.Label($"Total Entities: {entityCount}", centeredLabelStyle);
+                // GUILayout.Label($"Systems: {systemCount}", centeredLabelStyle);
+                // GUILayout.Space(10);
+                //GUILayout.Label($"Active Entities: {entityCount}", centeredLabelStyle);
 
                 GUILayout.FlexibleSpace();
 
@@ -1172,7 +1237,7 @@ namespace ZenECS.EditorWindows
                                 _entityFold.TryAdd(_foundEntity, true);
                             }
                         }
-                        
+
                         _findMode = true;
                     }
                     else
@@ -1180,6 +1245,7 @@ namespace ZenECS.EditorWindows
                         _findEntityId = null;
                         _findEntityGen = null;
                         _foundValid = false;
+                        _findWatchedSystemsFold = false;
                         _findMode = true; // still enter to show guidance
                     }
 
@@ -1199,6 +1265,7 @@ namespace ZenECS.EditorWindows
                     _findEntityId = null;
                     _findEntityGen = null;
                     _foundValid = false;
+                    _findWatchedSystemsFold = false;
                     _findMode = false;
                     Repaint();
                 }
@@ -2427,11 +2494,16 @@ namespace ZenECS.EditorWindows
         }
 
         // external call (ex: EcsExplorerBridge)
-        public void SelectEntity(IWorld? world, int entityId, int entityGen)
+        public void SelectEntity(int entityId, int entityGen)
         {
-            if (world != null)
+            _findEntityId = entityId;
+            _findEntityGen = entityGen;
+            
+            // Explorer에서 현재 선택된 World로 검사한다.
+            var currentWorld = _driver!.Kernel?.CurrentWorld;
+            if (currentWorld != null)
             {
-                _foundValid = world?.IsAlive(entityId, entityGen) ?? false;
+                _foundValid = currentWorld?.IsAlive(entityId, entityGen) ?? false;
                 if (_foundValid)
                 {
                     _entityIdText = entityId.ToString();
@@ -2441,7 +2513,7 @@ namespace ZenECS.EditorWindows
                     _foundEntity = _foundValid
                         ? (Entity)Activator.CreateInstance(typeof(Entity), entityId, entityGen)
                         : default;
-                    
+
                     if (_foundValid)
                     {
                         if (_entityFold.TryGetValue(_foundEntity, out var fold))
@@ -2455,16 +2527,15 @@ namespace ZenECS.EditorWindows
                             _entityFold.TryAdd(_foundEntity, true);
                         }
                     }
-                    
+
                     _findMode = true;
                     Repaint();
                     return;
                 }
             }
 
-            _findEntityId = null;
-            _findEntityGen = null;
             _foundValid = false;
+            _findWatchedSystemsFold = false;
             _findMode = true; // still enter to show guidance
         }
 
@@ -3265,13 +3336,27 @@ namespace ZenECS.EditorWindows
             Dictionary<SystemGroup, Dictionary<PhaseKind, List<(int index, ISystem sys, Type type)>>> tree,
             IWorld? world)
         {
+            GUIStyle systemTreeToggleStyle = new GUIStyle(EditorStyles.foldout);
+            systemTreeToggleStyle.fontStyle = FontStyle.Normal;
+            systemTreeToggleStyle.fontSize = 11;
+            systemTreeToggleStyle.richText = false;
+            systemTreeToggleStyle.alignment = TextAnchor.MiddleLeft;
+            systemTreeToggleStyle.focused.textColor = systemTreeTextColor;
+            systemTreeToggleStyle.onFocused.textColor = systemTreeTextColor;
+            systemTreeToggleStyle.hover.textColor = systemTreeTextColor;
+            systemTreeToggleStyle.onHover.textColor = systemTreeTextColor;
+            systemTreeToggleStyle.active.textColor = systemTreeTextColor;
+            systemTreeToggleStyle.onActive.textColor = systemTreeTextColor;
+            systemTreeToggleStyle.normal.textColor = systemTreeTextColor;
+            systemTreeToggleStyle.onNormal.textColor = systemTreeTextColor;
+
             if (!tree.TryGetValue(group, out var phaseMap) ||
                 phaseMap.Values.All(l => l == null || l.Count == 0))
             {
                 // 빈 그룹은 회색으로 비활성 Foldout 한 줄만
                 using (new EditorGUI.DisabledScope(true))
                 {
-                    EditorGUILayout.Foldout(false, label, true);
+                    EditorGUILayout.Foldout(false, label, true, systemTreeToggleStyle);
                 }
                 return;
             }
@@ -3279,7 +3364,7 @@ namespace ZenECS.EditorWindows
             if (!_groupFold.TryGetValue(group, out var openGroup))
                 openGroup = true;
 
-            openGroup = EditorGUILayout.Foldout(openGroup, label, true);
+            openGroup = EditorGUILayout.Foldout(openGroup, label, true, systemTreeToggleStyle);
             _groupFold[group] = openGroup;
             if (!openGroup) return;
 
@@ -3306,6 +3391,8 @@ namespace ZenECS.EditorWindows
             }
         }
 
+        private Color systemTreeTextColor = Color.lightGray;
+
         void DrawPhaseSection(
             SystemGroup group,
             PhaseKind phase,
@@ -3316,11 +3403,25 @@ namespace ZenECS.EditorWindows
             if (!phaseMap.TryGetValue(phase, out var list) || list.Count == 0)
                 return;
 
+            GUIStyle systemTreeToggleStyle = new GUIStyle(EditorStyles.foldout);
+            systemTreeToggleStyle.fontStyle = FontStyle.Normal;
+            systemTreeToggleStyle.fontSize = 11;
+            systemTreeToggleStyle.richText = false;
+            systemTreeToggleStyle.alignment = TextAnchor.MiddleLeft;
+            systemTreeToggleStyle.focused.textColor = systemTreeTextColor;
+            systemTreeToggleStyle.onFocused.textColor = systemTreeTextColor;
+            systemTreeToggleStyle.hover.textColor = systemTreeTextColor;
+            systemTreeToggleStyle.onHover.textColor = systemTreeTextColor;
+            systemTreeToggleStyle.active.textColor = systemTreeTextColor;
+            systemTreeToggleStyle.onActive.textColor = systemTreeTextColor;
+            systemTreeToggleStyle.normal.textColor = systemTreeTextColor;
+            systemTreeToggleStyle.onNormal.textColor = systemTreeTextColor;
+
             var key = (group, phase);
             if (!_phaseFold.TryGetValue(key, out var openPhase))
                 openPhase = true;
 
-            openPhase = EditorGUILayout.Foldout(openPhase, label, true);
+            openPhase = EditorGUILayout.Foldout(openPhase, label, true, systemTreeToggleStyle);
             _phaseFold[key] = openPhase;
             if (!openPhase) return;
 
@@ -3361,6 +3462,50 @@ namespace ZenECS.EditorWindows
             DrawGroupSection(SystemGroup.FrameSetup, "Frame Setup", tree, world);
             DrawGroupSection(SystemGroup.Simulation, "Simulation", tree, world);
             DrawGroupSection(SystemGroup.Presentation, "Presentation", tree, world);
+        }
+        
+        List<(ISystem sys, Type type)> CollectWatchedSystemsForEntity(
+            IWorld world,
+            Entity entity,
+            IReadOnlyList<ISystem> systems)
+        {
+            var result = new List<(ISystem, Type)>();
+
+            if (systems == null || systems.Count == 0)
+                return result;
+
+            foreach (var sys in systems)
+            {
+                if (sys == null) continue;
+                var tSys = sys.GetType();
+
+                // 이 시스템이 [Watch] 속성을 가지고 있는지 먼저 거칠게 필터링
+                bool hasWatchAttribute = false;
+                try
+                {
+                    hasWatchAttribute = tSys.GetCustomAttributes(typeof(ZenSystemWatchAttribute), false).Any();
+                }
+                catch
+                {
+                    // 리플렉션 실패 시 그냥 계속 진행
+                }
+
+                if (!hasWatchAttribute)
+                    continue;
+
+                // WatchQueryRunner를 통해 이 시스템이 감시하는 엔티티 목록 수집
+                var tmp = new List<Entity>();
+                if (!ZenECS.Adapter.Unity.Infrastructure.WatchQueryRunner.TryCollectByWatch(sys, world, tmp))
+                    continue;
+
+                // 현재 Find 뷰의 엔티티가 포함되어 있으면 목록에 추가
+                if (tmp.Contains(entity))
+                {
+                    result.Add((sys, tSys));
+                }
+            }
+
+            return result;
         }
     }
 }
