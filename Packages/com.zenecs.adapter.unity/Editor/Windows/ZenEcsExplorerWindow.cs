@@ -920,7 +920,7 @@ namespace ZenECS.EditorWindows
                         _foundValid = false;
                         _findWatchedSystemsFold = false;
                         _findMode = false;
-                        
+
                         var selected = worlds[newIndex];
                         kernel.SetCurrentWorld(selected);
                         currentWorld = selected;
@@ -961,21 +961,127 @@ namespace ZenECS.EditorWindows
 
                 if (GUI.Button(rPlus, plusContent, EditorStyles.iconButton))
                 {
-                    ShowPlusContextMenu(rPlus);
+                    ShowPlusContextMenu(rPlus, currentWorld);
                 }
             }
         }
 
-        void ShowPlusContextMenu(Rect activatorRectGui)
+        void ShowPlusContextMenu(Rect activatorRectGui, IWorld? world)
         {
             var menu = new GenericMenu();
 
-            menu.AddItem(new GUIContent("Add Entity from Blueprint..."), false, () => { ShowEntityBlueprintPicker(activatorRectGui); });
+            if (world == null)
+            {
+                // 월드 없으면 비활성 상태로만 노출
+                menu.AddDisabledItem(new GUIContent("Add Entity from Blueprint... (no current World)"));
+            }
+            else
+            {
+                menu.AddItem(new GUIContent("Add Entity from Blueprint..."), false, () => { ShowEntityBlueprintPicker(activatorRectGui); });
+            }
 
-            menu.AddSeparator("");
+            if (world == null)
+            {
+                // 월드 없으면 비활성 상태로만 노출
+                menu.AddDisabledItem(new GUIContent("Add System (no current World)"));
+            }
+            else
+            {
+                menu.AddItem(
+                    new GUIContent("Add System..."),
+                    false,
+                    () =>
+                    {
+                        // 전체 System 타입 목록
+                        var allSystemTypes = SystemTypeFinder.All().ToList();
 
-            menu.AddDisabledItem(new GUIContent("Add System"));
-            menu.AddDisabledItem(new GUIContent("Add System Preset"));
+                        // 이미 등록된 System 타입들은 disabled 처리
+                        var disabled = new HashSet<Type>();
+                        var existing = world.GetAllSystems();
+                        if (existing != null)
+                        {
+                            foreach (var s in existing)
+                            {
+                                if (s == null) continue;
+                                disabled.Add(s.GetType());
+                            }
+                        }
+
+                        // Picker 오픈
+                        ZenSystemPickerWindow.Show(
+                            allSystemTypes: allSystemTypes,
+                            disabled: disabled,
+                            onPick: t =>
+                            {
+                                if (world == null) return; // 안전장치
+
+                                try
+                                {
+                                    var inst = Activator.CreateInstance(t) as ISystem;
+                                    if (inst == null)
+                                    {
+                                        Debug.LogError(
+                                            $"ZenECS Explorer: Cannot create system of type {t.FullName}. " +
+                                            "System must have a public parameterless constructor.");
+                                        return;
+                                    }
+
+                                    // 실제 등록
+                                    world.AddSystem(inst);
+
+                                    // 선택 상태를 새로 추가된 System으로 이동
+                                    var systems = world.GetAllSystems();
+                                    if (systems != null)
+                                    {
+                                        int idx = -1;
+                                        for (int i = 0; i < systems.Count; i++)
+                                        {
+                                            if (ReferenceEquals(systems[i], inst))
+                                            {
+                                                idx = i;
+                                                break;
+                                            }
+                                        }
+
+                                        if (idx >= 0)
+                                        {
+                                            _selSystem = idx;
+                                            _selSysEntityCount = 0;
+                                            _cache.Clear();
+                                        }
+                                    }
+
+                                    Repaint();
+                                }
+                                catch (Exception ex)
+                                {
+                                    Debug.LogException(ex);
+                                }
+                            },
+                            activatorRectGui: activatorRectGui,
+                            title: "Add System",
+                            onCancel: null
+                        );
+                    });
+            }
+
+            // ───────────── Add System Preset… ─────────────
+            if (world == null)
+            {
+                menu.AddDisabledItem(new GUIContent("Add System Preset (no current World)"));
+            }
+            else if (ZenEcsUnityBridge.SystemPresetResolver == null)
+            {
+                menu.AddDisabledItem(new GUIContent("Add System Preset (no SystemPresetResolver)"));
+            }
+            else
+            {
+                menu.AddItem(
+                    new GUIContent("Add System Preset..."),
+                    false,
+                    () => ShowSystemPresetPicker(activatorRectGui, world)
+                );
+            }
 
             // 버튼 기준으로 컨텍스트 드롭다운
             menu.DropDown(activatorRectGui);
@@ -1335,6 +1441,17 @@ namespace ZenECS.EditorWindows
                                     "Yes", "No"))
                             {
                                 world.DespawnEntity(e);
+                                _entityFold[_foundEntity] = _findEntityFoldBackup;
+
+                                _entityIdText = "";
+                                _findEntityId = null;
+
+                                _entityGenText = "0";
+                                _findEntityGen = null;
+
+                                _findWatchedSystemsFold = false;
+                                _foundValid = false;
+                                _findMode = false;
                                 Repaint();
                             }
                         }
@@ -2494,44 +2611,47 @@ namespace ZenECS.EditorWindows
         }
 
         // external call (ex: EcsExplorerBridge)
-        public void SelectEntity(int entityId, int entityGen)
+        public void SelectEntity(IWorld world, int entityId, int entityGen)
         {
             _findEntityId = entityId;
             _findEntityGen = entityGen;
-            
+
             // Explorer에서 현재 선택된 World로 검사한다.
             var currentWorld = _driver!.Kernel?.CurrentWorld;
-            if (currentWorld != null)
+            if (currentWorld == null || currentWorld != world)
             {
-                _foundValid = currentWorld?.IsAlive(entityId, entityGen) ?? false;
+                _driver!.Kernel?.SetCurrentWorld(world);
+                currentWorld = world;
+            }
+
+            _foundValid = currentWorld?.IsAlive(entityId, entityGen) ?? false;
+            if (_foundValid)
+            {
+                _entityIdText = entityId.ToString();
+                _entityGenText = entityGen.ToString();
+                _findEntityId = entityId;
+                _findEntityGen = entityGen;
+                _foundEntity = _foundValid
+                    ? (Entity)Activator.CreateInstance(typeof(Entity), entityId, entityGen)
+                    : default;
+
                 if (_foundValid)
                 {
-                    _entityIdText = entityId.ToString();
-                    _entityGenText = entityGen.ToString();
-                    _findEntityId = entityId;
-                    _findEntityGen = entityGen;
-                    _foundEntity = _foundValid
-                        ? (Entity)Activator.CreateInstance(typeof(Entity), entityId, entityGen)
-                        : default;
-
-                    if (_foundValid)
+                    if (_entityFold.TryGetValue(_foundEntity, out var fold))
                     {
-                        if (_entityFold.TryGetValue(_foundEntity, out var fold))
-                        {
-                            _findEntityFoldBackup = fold;
-                            _entityFold[_foundEntity] = true;
-                        }
-                        else
-                        {
-                            _findEntityFoldBackup = false;
-                            _entityFold.TryAdd(_foundEntity, true);
-                        }
+                        _findEntityFoldBackup = fold;
+                        _entityFold[_foundEntity] = true;
                     }
-
-                    _findMode = true;
-                    Repaint();
-                    return;
+                    else
+                    {
+                        _findEntityFoldBackup = false;
+                        _entityFold.TryAdd(_foundEntity, true);
+                    }
                 }
+
+                _findMode = true;
+                Repaint();
+                return;
             }
 
             _foundValid = false;
@@ -3463,7 +3583,7 @@ namespace ZenECS.EditorWindows
             DrawGroupSection(SystemGroup.Simulation, "Simulation", tree, world);
             DrawGroupSection(SystemGroup.Presentation, "Presentation", tree, world);
         }
-        
+
         List<(ISystem sys, Type type)> CollectWatchedSystemsForEntity(
             IWorld world,
             Entity entity,
@@ -3507,6 +3627,140 @@ namespace ZenECS.EditorWindows
 
             return result;
         }
+
+        static class SystemTypeFinder
+        {
+            private static List<Type>? _cache;
+
+            public static IEnumerable<Type> All()
+            {
+                if (_cache != null) return _cache;
+
+                var list = new List<Type>(256);
+                var asms = AppDomain.CurrentDomain.GetAssemblies();
+
+                foreach (var asm in asms)
+                {
+                    var n = asm.GetName().Name;
+                    if (n.StartsWith("UnityEditor", StringComparison.OrdinalIgnoreCase)) continue;
+                    if (n.StartsWith("System", StringComparison.OrdinalIgnoreCase)) continue;
+                    if (n.StartsWith("mscorlib", StringComparison.OrdinalIgnoreCase)) continue;
+                    if (n.StartsWith("netstandard", StringComparison.OrdinalIgnoreCase)) continue;
+
+                    Type[] types;
+                    try
+                    {
+                        types = asm.GetTypes();
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+
+                    foreach (var t in types)
+                    {
+                        if (t == null) continue;
+                        if (t.IsAbstract) continue;
+                        if (t.IsGenericTypeDefinition) continue;
+                        if (t.Namespace != null && t.Namespace.EndsWith(".Editor", StringComparison.Ordinal)) continue;
+
+                        // ISystem 구현 여부
+                        if (!typeof(ISystem).IsAssignableFrom(t)) continue;
+
+                        // 기본 생성자 필수 (Activator.CreateInstance용)
+                        if (t.GetConstructor(Type.EmptyTypes) == null) continue;
+
+                        list.Add(t);
+                    }
+                }
+
+                _cache = list
+                    .Distinct()
+                    .OrderBy(t => t.FullName)
+                    .ToList();
+
+                return _cache;
+            }
+        }
+
+        void ShowSystemPresetPicker(Rect activatorRectGui, IWorld world)
+        {
+            ZenSystemPresetPickerWindow.Show(
+                activatorRectGui,
+                onPick: preset =>
+                {
+                    var resolver = ZenEcsUnityBridge.SystemPresetResolver;
+                    if (resolver == null)
+                    {
+                        EditorUtility.DisplayDialog(
+                            "SystemPresetResolver missing",
+                            "ZenEcsUnityBridge.SystemPresetResolver is null.\nPlease configure a SystemPresetResolver.",
+                            "OK");
+                        return;
+                    }
+
+                    try
+                    {
+                        // SystemsPreset.GetValidTypes() 리플렉션으로 호출
+                        var mi = preset.GetType().GetMethod(
+                            "GetValidTypes",
+                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                            null,
+                            Type.EmptyTypes,
+                            null);
+
+                        if (mi == null)
+                        {
+                            EditorUtility.DisplayDialog(
+                                "Invalid SystemsPreset",
+                                $"SystemsPreset '{preset.name}' must define GetValidTypes() returning IEnumerable<Type>.",
+                                "OK");
+                            return;
+                        }
+
+                        var ret = mi.Invoke(preset, null);
+                        if (ret is not IEnumerable<Type> validTypes)
+                        {
+                            EditorUtility.DisplayDialog(
+                                "Invalid SystemsPreset",
+                                $"GetValidTypes() of '{preset.name}' must return IEnumerable<Type>.",
+                                "OK");
+                            return;
+                        }
+
+                        // ZenEcsUnityBridge.SystemPresetResolver?.InstantiateSystems(...)
+                        var systems = resolver.InstantiateSystems(validTypes.ToList());
+                        if (systems == null)
+                        {
+                            EditorUtility.DisplayDialog(
+                                "InstantiateSystems returned null",
+                                "SystemPresetResolver.InstantiateSystems returned null.",
+                                "OK");
+                            return;
+                        }
+
+                        // world.AddSystems(systems)로 일괄 등록
+                        world.AddSystems(systems);
+
+                        // 캐시 클리어 & UI 갱신
+                        _selSystem = -1;
+                        _selSysEntityCount = 0;
+                        _cache.Clear();
+                        Repaint();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogException(ex);
+                        EditorUtility.DisplayDialog(
+                            "Add System Preset failed",
+                            $"Failed to apply SystemsPreset '{preset.name}'.\nSee Console for details.",
+                            "OK");
+                    }
+                },
+                title: "Add System Preset"
+            );
+        }
+
     }
 }
 #endif

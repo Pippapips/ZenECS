@@ -10,6 +10,23 @@ namespace ZenECS.EditorCommon
 {
     public sealed class ZenSystemPickerWindow : EditorWindow
     {
+        private const float ROW_HEIGHT = 22f;
+        private const float PADDING = 6f;
+
+        private string _search = "";
+        private Vector2 _scroll;
+        private List<Type> _all = new();
+        private HashSet<Type> _disabled = new();
+        private Action<Type>? _onPick;
+        private Action? _onCancel;
+
+        private int _hover = -1;
+        private GUIStyle? _rowStyle;
+        private GUIStyle? _searchStyle;
+        private string _title = "Add System";
+
+        private bool _picked;
+
         public static void Show(
             IEnumerable<Type> allSystemTypes,
             HashSet<Type> disabled,
@@ -18,182 +35,284 @@ namespace ZenECS.EditorCommon
             string title = "Add System",
             Action? onCancel = null)
         {
-            var w = CreateInstance<ZenSystemPickerWindow>();
-            w._title = title;
-            w._onPick = onPick;
-            w._onCancel = onCancel;
-            w._all = allSystemTypes
+            var win = CreateInstance<ZenSystemPickerWindow>();
+            win.titleContent = new GUIContent(title);
+            win._title = title;
+            win._onPick = onPick;
+            win._onCancel = onCancel;
+
+            win._all = allSystemTypes
                 .Where(t => t != null && !t.IsAbstract)
                 .Distinct()
                 .OrderBy(t => t.FullName)
                 .ToList();
-            w._disabled = disabled ?? new HashSet<Type>();
 
-            var screenRect = GUIUtility.GUIToScreenRect(activatorRectGui);
-            var size = new Vector2(520, 420);
-            w.position = new Rect(
-                Mathf.Clamp(screenRect.x, 0, Screen.currentResolution.width - size.x),
-                Mathf.Clamp(screenRect.yMax, 0, Screen.currentResolution.height - size.y),
-                size.x, size.y);
+            win._disabled = disabled ?? new HashSet<Type>();
 
-            w.ShowAsDropDown(screenRect, size);
-            w.Focus();
+            // Blueprint Picker와 유사한 위치 계산
+            var width = 520f;
+            var height = 420f;
+
+            var topLeft = GUIUtility.GUIToScreenPoint(
+                new Vector2(activatorRectGui.x, activatorRectGui.y));
+            var bottomLeft = GUIUtility.GUIToScreenPoint(
+                new Vector2(activatorRectGui.x, activatorRectGui.y + activatorRectGui.height));
+
+            var anchorRect = new Rect(
+                topLeft.x,
+                bottomLeft.y + 10f, // 버튼 아래로 약간 띄우기
+                activatorRectGui.width,
+                activatorRectGui.height
+            );
+
+            win.ShowAsDropDown(anchorRect, new Vector2(width, height));
+            win.Focus();
         }
 
-        string _title = "Add System";
-        Action<Type>? _onPick;
-        Action? _onCancel;
-        List<Type> _all = new();
-        HashSet<Type> _disabled = new();
-
-        string _search = "";
-        Vector2 _scroll;
-        int _hoverIndex = -1;
-        bool _picked;
-
-        void OnGUI()
+        private void OnEnable()
         {
-            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+            // Row 스타일: Blueprint Picker와 동일 컨셉
+            var baseLabel = EditorStyles.label;
+            _rowStyle = new GUIStyle(baseLabel)
             {
-                EditorGUILayout.LabelField(_title, EditorStyles.boldLabel);
-                GUI.SetNextControlName("SB_SEARCH");
-                var next = EditorGUILayout.TextField(_search, EditorStyles.toolbarSearchField);
-                if (next != _search)
-                {
-                    _search = next;
-                    _hoverIndex = -1;
-                    Repaint();
-                }
-            }
+                alignment = TextAnchor.MiddleLeft,
+                fixedHeight = ROW_HEIGHT,
+                richText = true,
+                padding = new RectOffset(4, 4, 0, 0)
+            };
 
-            var list = Filtered(_all, _search).ToList();
-            using (var sv = new EditorGUILayout.ScrollViewScope(_scroll))
+            // 검색창 스타일
+            _searchStyle = new GUIStyle(EditorStyles.toolbarSearchField);
+
+            wantsMouseMove = true;
+        }
+
+        private void OnGUI()
+        {
+            DrawSearchBar();
+            EditorGUILayout.Space(2);
+
+            var filtered = Filtered().ToList();
+
+            if (filtered.Count == 0)
             {
-                _scroll = sv.scrollPosition;
-                for (int i = 0; i < list.Count; i++)
-                {
-                    var t = list[i];
-                    bool isDisabled = _disabled.Contains(t);
-                    var r = GUILayoutUtility.GetRect(1, 22, GUILayout.ExpandWidth(true));
-
-                    if (r.Contains(Event.current.mousePosition))
-                    {
-                        _hoverIndex = i;
-                        if (Event.current.type == EventType.MouseMove) Repaint();
-                    }
-
-                    if (i == _hoverIndex)
-                        EditorGUI.DrawRect(r, new Color(0.24f, 0.48f, 0.90f, 0.12f));
-
-                    var ns = t.Namespace ?? "Global";
-                    var name = t.Name;
-                    var label = isDisabled
-                        ? $"<color=#888888>{name}</color>  <color=#999999>({ns})</color>"
-                        : $"<b>{name}</b>  <color=#888888>({ns})</color>";
-
-                    var style = new GUIStyle(EditorStyles.label) { richText = true };
-                    var content = new GUIContent(label, t.AssemblyQualifiedName);
-                    EditorGUI.LabelField(r, content, style);
-
-                    if (Event.current.type == EventType.MouseDown && r.Contains(Event.current.mousePosition))
-                    {
-                        if (!isDisabled)
-                        {
-                            _picked = true;
-                            _onPick?.Invoke(t);
-                            Close();
-                            GUIUtility.ExitGUI();
-                        }
-
-                        Event.current.Use();
-                    }
-                }
-
-                if (list.Count == 0)
+                GUILayout.FlexibleSpace();
+                using (new EditorGUILayout.HorizontalScope())
                 {
                     GUILayout.FlexibleSpace();
-                    using (new GUILayout.HorizontalScope())
+
+                    var msgStyle = new GUIStyle(EditorStyles.label)
                     {
-                        GUILayout.FlexibleSpace();
-                        GUILayout.Label("No results", EditorStyles.miniLabel);
-                        GUILayout.FlexibleSpace();
-                    }
+                        alignment = TextAnchor.MiddleCenter,
+                        wordWrap = true
+                    };
+
+                    EditorGUILayout.LabelField(
+                        "No matching systems found.\n" +
+                        "Check search text or implement ISystem types.",
+                        msgStyle,
+                        GUILayout.MaxWidth(400));
 
                     GUILayout.FlexibleSpace();
                 }
-            }
-
-            HandleKeyboard(list);
-        }
-
-        IEnumerable<Type> Filtered(IEnumerable<Type> src, string keyword)
-        {
-            if (string.IsNullOrWhiteSpace(keyword)) return src;
-            keyword = keyword.Trim();
-            return src.Where(t =>
-                t.Name.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                (t.FullName?.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0);
-        }
-
-        void HandleKeyboard(List<Type> list)
-        {
-            var e = Event.current;
-            if (e.type != EventType.KeyDown) return;
-
-            if (e.keyCode == KeyCode.Escape)
-            {
-                Close();
-                e.Use();
+                GUILayout.FlexibleSpace();
                 return;
             }
 
-            if (e.keyCode == KeyCode.DownArrow)
-            {
-                _hoverIndex = Mathf.Clamp(_hoverIndex + 1, 0, Math.Max(0, list.Count - 1));
-                e.Use();
-                Repaint();
-                return;
-            }
+            // 리스트 영역 & 스크롤
+            var viewRect = GUILayoutUtility.GetRect(
+                0, 100000,
+                0, 100000,
+                GUILayout.ExpandWidth(true),
+                GUILayout.ExpandHeight(true));
 
-            if (e.keyCode == KeyCode.UpArrow)
-            {
-                _hoverIndex = Mathf.Clamp(_hoverIndex - 1, 0, Math.Max(0, list.Count - 1));
-                e.Use();
-                Repaint();
-                return;
-            }
+            var contentRect = new Rect(
+                0, 0,
+                viewRect.width - 16,
+                filtered.Count * ROW_HEIGHT + PADDING * 2);
 
-            if (e.keyCode == KeyCode.Return || e.keyCode == KeyCode.KeypadEnter)
+            _scroll = GUI.BeginScrollView(viewRect, _scroll, contentRect);
+
+            var y = PADDING;
+            _hover = Mathf.Clamp(_hover, -1, filtered.Count - 1);
+
+            for (int i = 0; i < filtered.Count; i++)
             {
-                if (_hoverIndex >= 0 && _hoverIndex < list.Count)
+                var t = filtered[i];
+                var r = new Rect(PADDING, y, contentRect.width - PADDING * 2, ROW_HEIGHT);
+
+                // Hover 처리
+                if (r.Contains(Event.current.mousePosition))
                 {
-                    var t = list[_hoverIndex];
-                    if (!_disabled.Contains(t))
+                    _hover = i;
+                }
+
+                if (_hover == i)
+                {
+                    var bg = EditorGUIUtility.isProSkin
+                        ? new Color(1, 1, 1, 0.06f)
+                        : new Color(0, 0, 0, 0.06f);
+                    EditorGUI.DrawRect(r, bg);
+                }
+
+                bool isDisabled = _disabled.Contains(t);
+                var ns = t.Namespace ?? "Global";
+                var typeName = t.Name;
+                var fullName = t.FullName ?? typeName;
+
+                // 화면에 보여줄 텍스트
+                // SystemName   <size=9><color=#888888>Namespace / FullName</color></size>
+                string secondary = $"{ns}";
+                const int maxLen = 70;
+                if (fullName.Length > maxLen)
+                    secondary = "…" + fullName.Substring(fullName.Length - maxLen);
+
+                string displayText = isDisabled
+                    ? $"<color=#888888>{typeName}</color>   <size=9><color=#999999>{secondary}</color></size>"
+                    : $"<b>{typeName}</b>   <size=9><color=#888888>{secondary}</color></size>";
+
+                var content = new GUIContent(displayText, fullName);
+
+                if (isDisabled)
+                {
+                    // Disabled는 클릭 불가 라벨
+                    GUI.Label(r, content, _rowStyle!);
+                }
+                else
+                {
+                    if (GUI.Button(r, content, _rowStyle!))
                     {
                         _picked = true;
                         _onPick?.Invoke(t);
                         Close();
                     }
+                }
 
-                    e.Use();
+                y += ROW_HEIGHT;
+            }
+
+            GUI.EndScrollView();
+
+            if (Event.current.type == EventType.MouseMove)
+                Repaint();
+
+            HandleKeyboard(filtered);
+
+            // --- Tooltip / status bar ---
+            EditorGUILayout.Space(2);
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.FlexibleSpace();
+
+                var tipStyle = new GUIStyle(EditorStyles.miniLabel)
+                {
+                    alignment = TextAnchor.MiddleLeft,
+                    wordWrap = false
+                };
+
+                string tipText = GUI.tooltip ?? string.Empty;
+                var tipContent = new GUIContent(tipText);
+
+                var rect = GUILayoutUtility.GetRect(
+                    tipContent,
+                    tipStyle,
+                    GUILayout.ExpandWidth(true));
+
+                EditorGUI.LabelField(rect, tipContent, tipStyle);
+            }
+        }
+
+        private void DrawSearchBar()
+        {
+            using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
+            {
+                EditorGUILayout.LabelField(_title, EditorStyles.boldLabel);
+                GUI.SetNextControlName("ZenSystemPickerSearch");
+                _search = GUILayout.TextField(_search, _searchStyle, GUILayout.ExpandWidth(true));
+                if (GUILayout.Button("×", EditorStyles.toolbarButton, GUILayout.Width(24)))
+                {
+                    _search = "";
+                    GUI.FocusControl("ZenSystemPickerSearch");
                 }
             }
         }
 
-        void OnEnable()
+        private IEnumerable<Type> Filtered()
         {
-            EditorApplication.delayCall += () =>
+            IEnumerable<Type> src = _all;
+            if (!string.IsNullOrEmpty(_search))
             {
-                Focus();
-                EditorGUI.FocusTextInControl("SB_SEARCH");
-            };
+                var s = _search.Trim();
+                src = src.Where(t =>
+                {
+                    var name = t.Name ?? "";
+                    var ns = t.Namespace ?? "";
+                    var full = t.FullName ?? "";
+                    return (!string.IsNullOrEmpty(name) &&
+                            name.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0)
+                           || (!string.IsNullOrEmpty(ns) &&
+                               ns.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0)
+                           || (!string.IsNullOrEmpty(full) &&
+                               full.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0);
+                });
+            }
+
+            return src.OrderBy(t => t.FullName);
         }
 
-        void OnLostFocus() => Close();
-
-        void OnDestroy()
+        private void HandleKeyboard(List<Type> filtered)
         {
-            if (!_picked) _onCancel?.Invoke();
+            var e = Event.current;
+            if (e.type != EventType.KeyDown) return;
+
+            switch (e.keyCode)
+            {
+                case KeyCode.UpArrow:
+                    _hover = Mathf.Clamp((_hover < 0 ? filtered.Count : _hover) - 1, 0,
+                        Mathf.Max(0, filtered.Count - 1));
+                    e.Use();
+                    Repaint();
+                    break;
+
+                case KeyCode.DownArrow:
+                    _hover = Mathf.Clamp(_hover + 1, 0, Mathf.Max(0, filtered.Count - 1));
+                    e.Use();
+                    Repaint();
+                    break;
+
+                case KeyCode.Return:
+                case KeyCode.KeypadEnter:
+                    if (_hover >= 0 && _hover < filtered.Count)
+                    {
+                        var t = filtered[_hover];
+                        if (!_disabled.Contains(t))
+                        {
+                            _picked = true;
+                            _onPick?.Invoke(t);
+                            Close();
+                        }
+                        e.Use();
+                    }
+                    break;
+
+                case KeyCode.Escape:
+                    Close();
+                    e.Use();
+                    break;
+            }
+        }
+
+        private void OnLostFocus()
+        {
+            // 드롭다운 스타일 유지 위해 포커스 잃으면 닫기
+            Close();
+        }
+
+        private void OnDestroy()
+        {
+            if (!_picked)
+                _onCancel?.Invoke();
         }
     }
 }

@@ -73,7 +73,7 @@ namespace ZenECS.Adapter.Unity.Install
             if (types.Count == 0) return;
 
 #if ZENECS_ZENJECT
-            var instances = InstantiateSystemsZenject(types, Container);
+            var instances = ZenEcsUnityBridge.SystemPresetResolver?.InstantiateSystems(types);
 #else
             var instances = InstantiateSystemsActivator(types);
 #endif

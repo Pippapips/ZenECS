@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
+using ZenECS.Adapter.Unity.Install;
 using ZenECS.Core;
 
 namespace ZenECS.Adapter.Unity.DI
@@ -13,6 +14,7 @@ namespace ZenECS.Adapter.Unity.DI
         {
             ZenEcsUnityBridge.Kernel = KernelLocator.CreateEcsDriverWithKernel();
             ZenEcsUnityBridge.SharedContextResolver = new WorldSharedContextResolver(Container);
+            ZenEcsUnityBridge.SystemPresetResolver = new SystemPresetResolver(Container);
             
             Container.BindInstance(ZenEcsUnityBridge.Kernel);
             Container.Bind<ISharedContextResolver>().FromInstance(ZenEcsUnityBridge.SharedContextResolver).AsSingle();

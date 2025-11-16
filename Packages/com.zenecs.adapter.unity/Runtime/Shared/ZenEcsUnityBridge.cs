@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
+using ZenECS.Adapter.Unity.Install;
 using ZenECS.Core;
 
 namespace ZenECS.Adapter.Unity
@@ -11,6 +12,8 @@ namespace ZenECS.Adapter.Unity
     /// </summary>
     public static class ZenEcsUnityBridge
     {
+        public static ISystemPresetResolver? SystemPresetResolver { get; set; }
+        
         /// <summary>
         /// Global shared context resolver used by both runtime and editor tools.
         /// Editor / runtime can override this during bootstrap.

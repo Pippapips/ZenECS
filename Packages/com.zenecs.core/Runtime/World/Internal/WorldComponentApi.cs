@@ -33,10 +33,10 @@ namespace ZenECS.Core.Internal
         private static MethodInfo? _miRemoveOpen;
 
         // ── Per-type invoker caches (instance-bound) ────────────────────────
-        private static readonly Dictionary<Type, Func<Entity, bool>> _hasCache = new();
-        private static readonly Dictionary<Type, Func<Entity, object, bool>> _addBoxedCache = new();
-        private static readonly Dictionary<Type, Func<Entity, object, bool>> _replaceBoxedCache = new();
-        private static readonly Dictionary<Type, Func<Entity, bool>> _removeCache = new();
+        private readonly Dictionary<Type, Func<Entity, bool>> _hasCache = new();
+        private readonly Dictionary<Type, Func<Entity, object, bool>> _addBoxedCache = new();
+        private readonly Dictionary<Type, Func<Entity, object, bool>> _replaceBoxedCache = new();
+        private readonly Dictionary<Type, Func<Entity, bool>> _removeCache = new();
 
         // ── Boxed / non-generic implementations ─────────────────────────────        
 
