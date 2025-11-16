@@ -139,6 +139,35 @@ namespace ZenECS.EditorInspectors
         }
 
         // =====================================================================
+        // Helpers: expand/collapse all
+        // =====================================================================
+        void SetComponentsFoldAll(bool open)
+        {
+            if (_compEntriesProp == null || !_compEntriesProp.isArray)
+                return;
+
+            for (int i = 0; i < _compEntriesProp.arraySize; i++)
+            {
+                var e = _compEntriesProp.GetArrayElementAtIndex(i);
+                var tname = e.FindPropertyRelative("typeName").stringValue;
+                var key = $"comp:{i}:{tname}";
+                _fold[key] = open;
+            }
+        }
+
+        void SetBindersFoldAll(bool open)
+        {
+            if (_bindersProp == null || !_bindersProp.isArray)
+                return;
+
+            for (int i = 0; i < _bindersProp.arraySize; i++)
+            {
+                var key = $"binder:{i}";
+                _fold[key] = open;
+            }
+        }
+
+        // =====================================================================
         // Components (BlueprintData 그대로)
         // =====================================================================
         void BuildComponentsList()
@@ -146,7 +175,26 @@ namespace ZenECS.EditorInspectors
             _componentsList = new ReorderableList(serializedObject, _compEntriesProp, true, true, true, true);
 
             _componentsList.drawHeaderCallback = r =>
-                EditorGUI.LabelField(r, "Components (BlueprintData)", EditorStyles.boldLabel);
+            {
+                const float buttonWidth = 24f;
+                const float buttonGap = 2f;
+
+                var labelRect = new Rect(r.x, r.y, r.width - (buttonWidth * 2f + buttonGap * 2f), r.height);
+                EditorGUI.LabelField(labelRect, "Components (BlueprintData)", EditorStyles.boldLabel);
+
+                var expandRect = new Rect(r.xMax - (buttonWidth * 2f + buttonGap), r.y, buttonWidth, r.height);
+                var collapseRect = new Rect(r.xMax - buttonWidth, r.y, buttonWidth, r.height);
+
+                if (GUI.Button(expandRect, new GUIContent("▼", "Expand all component entries"), EditorStyles.miniButton))
+                {
+                    SetComponentsFoldAll(true);
+                }
+
+                if (GUI.Button(collapseRect, new GUIContent("▲", "Collapse all component entries"), EditorStyles.miniButton))
+                {
+                    SetComponentsFoldAll(false);
+                }
+            };
 
             _componentsList.onAddDropdownCallback = (rect, list) =>
             {
@@ -416,7 +464,26 @@ namespace ZenECS.EditorInspectors
         {
             _bindersList = new ReorderableList(serializedObject, _bindersProp, true, true, true, true);
             _bindersList.drawHeaderCallback = r =>
-                EditorGUI.LabelField(r, "Binders (managed reference)", EditorStyles.boldLabel);
+            {
+                const float buttonWidth = 24f;
+                const float buttonGap = 2f;
+
+                var labelRect = new Rect(r.x, r.y, r.width - (buttonWidth * 2f + buttonGap * 2f), r.height);
+                EditorGUI.LabelField(labelRect, "Binders (managed reference)", EditorStyles.boldLabel);
+
+                var expandRect = new Rect(r.xMax - (buttonWidth * 2f + buttonGap), r.y, buttonWidth, r.height);
+                var collapseRect = new Rect(r.xMax - buttonWidth, r.y, buttonWidth, r.height);
+
+                if (GUI.Button(expandRect, new GUIContent("▼", "Expand all binder entries"), EditorStyles.miniButton))
+                {
+                    SetBindersFoldAll(true);
+                }
+
+                if (GUI.Button(collapseRect, new GUIContent("▲", "Collapse all binder entries"), EditorStyles.miniButton))
+                {
+                    SetBindersFoldAll(false);
+                }
+            };
 
             _bindersList.onAddDropdownCallback = (rect, list) =>
             {
