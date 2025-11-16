@@ -110,6 +110,7 @@ namespace ZenECS.EditorWindows
             _binderFold.Clear();
             _componentFold.Clear();
             _contextFold.Clear();
+            _watchedFold.Clear();
             _findMode = false;
             _findEntityId = null;
             _foundValid = false;
@@ -131,6 +132,11 @@ namespace ZenECS.EditorWindows
                 _findEntityId = null;
                 _foundValid = false;
                 _findWatchedSystemsFold = false;
+                _entityFold.Clear();
+                _binderFold.Clear();
+                _componentFold.Clear();
+                _contextFold.Clear();
+                _watchedFold.Clear();
 
                 // 👇 시스템 트리 Foldout 초기화
                 _groupFold.Clear();
@@ -328,6 +334,11 @@ namespace ZenECS.EditorWindows
                         {
                             _selSystem = -1;
                             _selSysEntityCount = 0;
+                            _entityFold.Clear();
+                            _binderFold.Clear();
+                            _componentFold.Clear();
+                            _contextFold.Clear();
+                            _watchedFold.Clear();
                             _cache.Clear();
                         }
                     }
@@ -509,7 +520,7 @@ namespace ZenECS.EditorWindows
             GUILayout.FlexibleSpace();
         }
 
-        void DrawSystemMeta(ISystem sys, IWorld? world)
+        void DrawSystemMeta(ISystem? sys, IWorld? world)
         {
             if (sys == null) return;
 
@@ -593,7 +604,7 @@ namespace ZenECS.EditorWindows
                 ? string.Join(", ", afterList.Distinct())
                 : "—";
 
-// ZenSystemWatchAttribute.AllOf 기반으로 Watched Components 추출
+            // ZenSystemWatchAttribute.AllOf 기반으로 Watched Components 추출
             var watchedTypes = new List<Type>();
             try
             {
@@ -646,6 +657,18 @@ namespace ZenECS.EditorWindows
             //     }
             //}
 
+            // 네임스페이스용 회색 스타일
+            var nsStyle = new GUIStyle(EditorStyles.miniLabel)
+            {
+                normal =
+                {
+                    textColor = EditorGUIUtility.isProSkin
+                        ? new Color(0.5f, 0.5f, 0.5f)
+                        : new Color(0.4f, 0.4f, 0.4f)
+                },
+                fontSize = 10,
+            };
+            
             using (new EditorGUILayout.VerticalScope("box"))
             {
                 // 상단: System 이름 + Namespace + Ping 아이콘
@@ -657,7 +680,7 @@ namespace ZenECS.EditorWindows
                     using (new EditorGUILayout.VerticalScope())
                     {
                         EditorGUILayout.LabelField(t.Name, EditorStyles.boldLabel);
-                        EditorGUILayout.LabelField(ns, EditorStyles.miniLabel);
+                        EditorGUILayout.LabelField($"[{ns}]", nsStyle);
                     }
 
                     GUILayout.FlexibleSpace();
@@ -679,11 +702,17 @@ namespace ZenECS.EditorWindows
                 // 조금 눈에 잘 들어오도록 라벨 스타일 준비
                 var leftLabelStyle = new GUIStyle(EditorStyles.miniLabel)
                 {
-                    fontStyle = FontStyle.Bold
+                    fontStyle = FontStyle.Bold,
+                    normal =
+                    {
+                        textColor = systemMetaTextColor
+                    },
                 };
                 var valueStyle = new GUIStyle(EditorStyles.label)
                 {
-                    wordWrap = true
+                    wordWrap = true,
+                    fontSize = 9,
+                    padding = new RectOffset(0, 0, 4, 0),
                 };
 
                 EditorGUILayout.BeginHorizontal();
@@ -697,17 +726,42 @@ namespace ZenECS.EditorWindows
                 EditorGUILayout.EndHorizontal();
 
                 // Order (Before/After)
-                EditorGUILayout.LabelField("Order Before", beforeText);
-                EditorGUILayout.LabelField("Order After", afterText);
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("Order Before", leftLabelStyle, GUILayout.Width(70));
+                EditorGUILayout.LabelField(beforeText, valueStyle);
+                EditorGUILayout.EndHorizontal();
+                
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("Order After", leftLabelStyle, GUILayout.Width(70));
+                EditorGUILayout.LabelField(afterText, valueStyle);
+                EditorGUILayout.EndHorizontal();
 
 // ==== Watched Components Foldout ====
 
+                var leftFoldoutStyle = new GUIStyle(EditorStyles.foldout)
+                {
+                    fontStyle = FontStyle.Bold,
+                    fontSize = 10,
+                };
+                
+                leftFoldoutStyle.focused.textColor = systemMetaTextColor;
+                leftFoldoutStyle.onFocused.textColor = systemMetaTextColor;
+                leftFoldoutStyle.hover.textColor = systemMetaTextColor;
+                leftFoldoutStyle.onHover.textColor = systemMetaTextColor;
+                leftFoldoutStyle.active.textColor = systemMetaTextColor;
+                leftFoldoutStyle.onActive.textColor = systemMetaTextColor;
+                leftFoldoutStyle.normal.textColor = systemMetaTextColor;
+                leftFoldoutStyle.onNormal.textColor = systemMetaTextColor;
+                
 // Watched 대상이 하나도 없으면 간단히 표시만
                 if (watchedDistinct.Count == 0)
                 {
                     using (new EditorGUILayout.HorizontalScope())
                     {
-                        EditorGUILayout.LabelField("Watched Components", "—");
+                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField("Watched", leftLabelStyle, GUILayout.Width(70));
+                        EditorGUILayout.LabelField("—", valueStyle);
+                        EditorGUILayout.EndHorizontal();
                         // if (watchedCount > 0)
                         // {
                         //     GUILayout.FlexibleSpace();
@@ -728,8 +782,9 @@ namespace ZenECS.EditorWindows
                         // Foldout: "Watched (N)"
                         open = EditorGUILayout.Foldout(
                             open,
-                            $"Watched Components ({watchedDistinct.Count})",
-                            true
+                            $"Watched ({watchedDistinct.Count})",
+                            true,
+                            leftFoldoutStyle
                         );
                         _watchedFold[key] = open;
 
@@ -746,14 +801,15 @@ namespace ZenECS.EditorWindows
                     {
                         EditorGUI.indentLevel++;
 
-                        // 네임스페이스용 회색 스타일
-                        var nsStyle = new GUIStyle(EditorStyles.miniLabel)
+                        var componentStyle = new GUIStyle(EditorStyles.miniLabel)
                         {
+                            wordWrap = true,
+                            fontSize = 10,
+                            padding = new RectOffset(0, 0, 4, 0),
+                            richText = true,
                             normal =
                             {
-                                textColor = EditorGUIUtility.isProSkin
-                                    ? new Color(0.5f, 0.5f, 0.5f)
-                                    : new Color(0.4f, 0.4f, 0.4f)
+                                textColor = systemMetaTextColor
                             }
                         };
 
@@ -766,10 +822,10 @@ namespace ZenECS.EditorWindows
                             using (new EditorGUILayout.HorizontalScope())
                             {
                                 // 컴포넌트명
-                                EditorGUILayout.LabelField(compType.Name, GUILayout.ExpandWidth(false));
+                                EditorGUILayout.LabelField($"{compType.Name} <color=#707070>[{cns}]</color>", componentStyle);
 
-                                // 네임스페이스 [Namespace] (회색)
-                                EditorGUILayout.LabelField($"[{cns}]", nsStyle, GUILayout.ExpandWidth(true));
+                                // // 네임스페이스 [Namespace] (회색)
+                                // EditorGUILayout.LabelField($"[{cns}]", nsStyle);
 
                                 // 돋보기 아이콘 (우측 끝)
                                 var icon = GetSearchIconContent("Ping component script asset");
@@ -1047,6 +1103,11 @@ namespace ZenECS.EditorWindows
                                         {
                                             _selSystem = idx;
                                             _selSysEntityCount = 0;
+                                            _entityFold.Clear();
+                                            _binderFold.Clear();
+                                            _componentFold.Clear();
+                                            _contextFold.Clear();
+                                            _watchedFold.Clear();
                                             _cache.Clear();
                                         }
                                     }
@@ -3373,15 +3434,12 @@ namespace ZenECS.EditorWindows
             {
                 _selSystem = index;
                 _selSysEntityCount = 0;
+                _entityFold.Clear();
+                _binderFold.Clear();
+                _componentFold.Clear();
+                _contextFold.Clear();
+                _watchedFold.Clear();
                 _cache.Clear();
-                var entities = world?.GetAllEntities();
-                if (entities != null)
-                {
-                    foreach (var e in entities)
-                    {
-                        if (_entityFold.ContainsKey(e)) _entityFold[e] = false;
-                    }
-                }
             }
 
             // ===== 돋보기 버튼 (Ping, Selection 변경 없음) =====
@@ -3442,6 +3500,11 @@ namespace ZenECS.EditorWindows
                         _selSystem = -1;
                         _selSysEntityCount = 0;
                         _cache.Clear();
+                        _entityFold.Clear();
+                        _binderFold.Clear();
+                        _componentFold.Clear();
+                        _contextFold.Clear();
+                        _watchedFold.Clear();
 
                         Repaint();
                         GUIUtility.ExitGUI();
@@ -3511,6 +3574,7 @@ namespace ZenECS.EditorWindows
             }
         }
 
+        private Color systemMetaTextColor = Color.lightGray;
         private Color systemTreeTextColor = Color.lightGray;
 
         void DrawPhaseSection(
@@ -3746,6 +3810,11 @@ namespace ZenECS.EditorWindows
                         _selSystem = -1;
                         _selSysEntityCount = 0;
                         _cache.Clear();
+                        _entityFold.Clear();
+                        _binderFold.Clear();
+                        _componentFold.Clear();
+                        _contextFold.Clear();
+                        _watchedFold.Clear();
                         Repaint();
                     }
                     catch (Exception ex)

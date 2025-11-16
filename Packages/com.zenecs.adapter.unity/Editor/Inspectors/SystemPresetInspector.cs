@@ -21,6 +21,13 @@ namespace ZenECS.EditorInspectors
         ReorderableList? _list;
         SerializedProperty? _propTypes;
 
+        readonly Dictionary<int, bool> _foldouts = new();
+        bool _globalExpanded = true;
+
+        string _filterText = string.Empty;
+
+        bool UseFilter => !string.IsNullOrWhiteSpace(_filterText);
+
         void OnEnable()
         {
             _propTypes = serializedObject.FindProperty("systemTypes");
@@ -34,165 +41,12 @@ namespace ZenECS.EditorInspectors
             _list.drawHeaderCallback = rect =>
                 EditorGUI.LabelField(rect, "System Types (ISystem)", EditorStyles.boldLabel);
 
-            // ─ elementHeight: System 타입 정보에 따라 줄 수 계산 ─
-            _list.elementHeightCallback = index =>
-            {
-                const float pad = 6f;
-                float line = EditorGUIUtility.singleLineHeight;
-
-                if (_propTypes == null || index < 0 || index >= _propTypes.arraySize)
-                    return line + pad * 2;
-
-                var elem = _propTypes.GetArrayElementAtIndex(index);
-                var aqn = elem.FindPropertyRelative("_assemblyQualifiedName").stringValue;
-                var type = string.IsNullOrWhiteSpace(aqn) ? null : Type.GetType(aqn, false);
-
-                // 기본: 이름 1줄 + 네임스페이스 1줄
-                int lines = 2;
-
-                if (type != null)
-                {
-                    if (!string.IsNullOrEmpty(GetSystemGroupSummary(type)))
-                        lines++; // Group
-
-                    if (!string.IsNullOrEmpty(GetSystemRunKinds(type)))
-                        lines++; // Run
-
-                    // 🔹 여기부터 수정: Watch 줄수 = "Watch:" 한 줄 + 컴포넌트 개수
-                    var watched = GetSystemWatchedComponents(type);
-                    if (watched.Count > 0)
-                        lines += 1 + watched.Count;
-                }
-
-                return pad * 2 + lines * line;
-            };
-
-            // ─ 각 System 항목 렌더링 ─
+            _list.elementHeightCallback = CalcElementHeight;
             _list.drawElementCallback = (rect, index, active, focused) =>
-            {
-                if (_propTypes == null || index < 0 || index >= _propTypes.arraySize)
-                    return;
+                DrawElement(rect, index, active, focused);
 
-                var elem = _propTypes.GetArrayElementAtIndex(index);
-                var aqn = elem.FindPropertyRelative("_assemblyQualifiedName").stringValue;
-                var type = string.IsNullOrWhiteSpace(aqn) ? null : Type.GetType(aqn, false);
-
-                float line = EditorGUIUtility.singleLineHeight;
-                float x = rect.x + 6f;
-                float w = rect.width - 12f;
-                float y = rect.y + 3f;
-
-                if (type != null)
-                {
-                    string ns = type.Namespace ?? "Global";
-                    string name = type.Name;
-
-                    // ─ 1) 이름 + 우측 돋보기 버튼 ─
-                    var headRect = new Rect(x, y, w, line);
-                    const float pingW = 20f;
-                    var pingRect = new Rect(headRect.xMax - pingW, headRect.y, pingW, headRect.height);
-                    var nameRect = new Rect(headRect.x, headRect.y, headRect.width - pingW - 4f, headRect.height);
-
-                    var nameStyle = new GUIStyle(EditorStyles.label) { richText = true };
-                    EditorGUI.LabelField(nameRect, $"<b>{name}</b>", nameStyle);
-
-                    using (new EditorGUI.DisabledScope(false))
-                    {
-                        var gcPing = GetSearchIconContent("Ping system script in Project");
-                        if (GUI.Button(pingRect, gcPing, EditorStyles.iconButton))
-                        {
-                            PingTypeSource(type);
-                        }
-                    }
-
-                    y += line;
-
-                    // ─ 2) 네임스페이스 ─
-                    var nsStyle = new GUIStyle(EditorStyles.miniLabel)
-                    {
-                        richText = true,
-                        normal = { textColor = new Color(0.6f, 0.6f, 0.6f) }
-                    };
-                    var nsRect = new Rect(x + 4f, y, w - 4f, line);
-                    EditorGUI.LabelField(nsRect, $"[{ns}]", nsStyle);
-                    y += line;
-
-                    // 공통 info 스타일
-                    var infoStyle = new GUIStyle(EditorStyles.miniLabel) { richText = true };
-
-                    // ─ 3) Group 정보 ─
-                    var groupSummary = GetSystemGroupSummary(type);
-                    if (!string.IsNullOrEmpty(groupSummary))
-                    {
-                        var r = new Rect(x + 8f, y, w - 8f, line);
-                        EditorGUI.LabelField(r, $"Group: <b>{groupSummary}</b>", infoStyle);
-                        y += line;
-                    }
-
-                    // ─ 4) RunSystem 종류 ─
-                    var runKinds = GetSystemRunKinds(type); // 예: "IVariableRunSystem"
-                    if (!string.IsNullOrEmpty(runKinds))
-                    {
-                        var r = new Rect(x + 8f, y, w - 8f, line);
-                        EditorGUI.LabelField(r, $"Run: <b>{runKinds}</b>", infoStyle);
-                        y += line;
-                    }
-
-                    // ─ 5) Watch 대상 (목록) ─
-                    var watched = GetSystemWatchedComponents(type);
-                    if (watched.Count > 0)
-                    {
-                        // "Watch:" 라벨 한 줄
-                        var rLabel = new Rect(x + 8f, y, w - 8f, line);
-                        EditorGUI.LabelField(rLabel, "Watch:", infoStyle);
-                        y += line;
-
-                        // 각 컴포넌트 한 줄씩: "• Name [Namespace]" + 클릭 시 Ping
-                        foreach (var ct in watched)
-                        {
-                            if (ct == null) continue;
-
-                            string compName = ct.Name;
-                            string compNs = ct.Namespace ?? "Global";
-
-                            var itemRect = new Rect(x + 16f, y, w - 16f, line);
-
-                            // richText 라벨: 컴포넌트명 + 짙은 회색 네임스페이스
-                            // Namespace 부분만 색 태그 적용
-                            string labelText =
-                                $"• <b>{compName}</b> <color=#777777>[{compNs}]</color>";
-
-                            EditorGUI.LabelField(
-                                itemRect,
-                                new GUIContent(labelText, ct.AssemblyQualifiedName),
-                                infoStyle
-                            );
-
-                            // 클릭 시 해당 컴포넌트 스크립트 Ping
-                            var e = Event.current;
-                            if (e.type == EventType.MouseDown && e.button == 0 && itemRect.Contains(e.mousePosition))
-                            {
-                                PingTypeSource(ct);
-                                e.Use();
-                            }
-
-                            y += line;
-                        }
-                    }
-                }
-                else
-                {
-                    var style = new GUIStyle(EditorStyles.label)
-                    {
-                        normal = { textColor = new Color(1f, 0.35f, 0.35f) }
-                    };
-                    var lineRect = new Rect(x, y, w, line);
-                    EditorGUI.LabelField(lineRect, "None (Click + to add with picker)", style);
-                }
-            };
-
-            // onAdd / onRemove / CleanupInvalidDuplicates / ShowPickerForIndex는 기존 그대로
-            _list.onAddCallback = list =>
+            // Add / Remove 그대로 유지
+            _list.onAddDropdownCallback = (buttonRect, list) =>
             {
                 serializedObject.Update();
                 var newIndex = _propTypes!.arraySize;
@@ -201,7 +55,32 @@ namespace ZenECS.EditorInspectors
                 elem.FindPropertyRelative("_assemblyQualifiedName").stringValue = string.Empty;
                 serializedObject.ApplyModifiedProperties();
 
-                ShowPickerForIndex(newIndex, () =>
+                ShowPickerForIndex(newIndex, buttonRect, () =>
+                {
+                    serializedObject.Update();
+                    var e = _propTypes.GetArrayElementAtIndex(newIndex);
+                    var aqn = e.FindPropertyRelative("_assemblyQualifiedName").stringValue;
+                    if (string.IsNullOrWhiteSpace(aqn))
+                    {
+                        _propTypes.DeleteArrayElementAtIndex(newIndex);
+                        serializedObject.ApplyModifiedProperties();
+                    }
+                });
+            };
+
+            _list.onAddCallback = list =>
+            {
+                var mousePos = Event.current != null ? Event.current.mousePosition : Vector2.zero;
+                var rect = new Rect(mousePos.x, mousePos.y, 1, 1);
+
+                serializedObject.Update();
+                var newIndex = _propTypes!.arraySize;
+                _propTypes.InsertArrayElementAtIndex(newIndex);
+                var elem = _propTypes.GetArrayElementAtIndex(newIndex);
+                elem.FindPropertyRelative("_assemblyQualifiedName").stringValue = string.Empty;
+                serializedObject.ApplyModifiedProperties();
+
+                ShowPickerForIndex(newIndex, rect, () =>
                 {
                     serializedObject.Update();
                     var e = _propTypes.GetArrayElementAtIndex(newIndex);
@@ -219,6 +98,7 @@ namespace ZenECS.EditorInspectors
                 if (_propTypes!.arraySize <= 0) return;
                 _propTypes.DeleteArrayElementAtIndex(list.index);
                 serializedObject.ApplyModifiedProperties();
+                _foldouts.Clear();
             };
         }
 
@@ -226,52 +106,423 @@ namespace ZenECS.EditorInspectors
         {
             serializedObject.Update();
 
-            // ── 시스템 목록 ────────────────────────────────────────────────────
-            _list!.DoLayoutList();
+            DrawTopToolbar();
 
-            // (선택) 정리 버튼: 빈 슬롯은 유지, 값 있는 항목만 유효성/중복 정리
-            using (new GUILayout.HorizontalScope())
+            GUILayout.Space(4);
+
+            if (!UseFilter)
             {
-                GUILayout.FlexibleSpace();
-                if (GUILayout.Button("Clean Invalid & Duplicates", GUILayout.Width(220)))
-                    CleanupInvalidDuplicates();
+                // 필터 없으면 ReorderableList 그대로 사용 (드래그 핸들 포함)
+                _list!.DoLayoutList();
+            }
+            else
+            {
+                // 필터 있을 때는 "=" 핸들 없는 커스텀 뷰
+                DrawFilteredList();
             }
 
             serializedObject.ApplyModifiedProperties();
         }
 
-        void CleanupInvalidDuplicates()
-        {
-            if (_propTypes == null) return;
+        #region Top Toolbar (Expand/Collapse + Filter)
 
-            var seen = new HashSet<string>(StringComparer.Ordinal);
-            for (int i = _propTypes.arraySize - 1; i >= 0; i--)
+        void DrawTopToolbar()
+        {
+            using (new GUILayout.HorizontalScope())
+            {
+                if (GUILayout.Button("Expand All", GUILayout.Width(120)))
+                {
+                    _globalExpanded = true;
+                    if (_propTypes != null)
+                    {
+                        for (int i = 0; i < _propTypes.arraySize; i++)
+                            _foldouts[i] = true;
+                    }
+                }
+
+                if (GUILayout.Button("Collapse All", GUILayout.Width(120)))
+                {
+                    _globalExpanded = false;
+                    if (_propTypes != null)
+                    {
+                        for (int i = 0; i < _propTypes.arraySize; i++)
+                            _foldouts[i] = false;
+                    }
+                }
+
+                GUILayout.FlexibleSpace();
+
+                // 오른쪽 정렬 Filter
+                var searchTextStyle = GUI.skin.FindStyle("ToolbarSeachTextField") ?? GUI.skin.textField;
+                var cancelStyle = GUI.skin.FindStyle("ToolbarSeachCancelButton");
+
+                GUILayout.Label("Filter", GUILayout.Width(40));
+                _filterText = EditorGUILayout.TextField(_filterText, searchTextStyle, GUILayout.MaxWidth(200));
+
+                if (cancelStyle != null)
+                {
+                    if (GUILayout.Button(GUIContent.none, cancelStyle))
+                    {
+                        _filterText = string.Empty;
+                        GUI.FocusControl(null);
+                    }
+                }
+                else
+                {
+                    if (GUILayout.Button("X", GUILayout.Width(20)))
+                    {
+                        _filterText = string.Empty;
+                        GUI.FocusControl(null);
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region Filtered View (no "=" handle)
+
+        void DrawFilteredList()
+        {
+            if (_propTypes == null)
+                return;
+
+            var indices = new List<int>();
+
+            for (int i = 0; i < _propTypes.arraySize; i++)
             {
                 var elem = _propTypes.GetArrayElementAtIndex(i);
                 var aqn = elem.FindPropertyRelative("_assemblyQualifiedName").stringValue;
+                var type = string.IsNullOrWhiteSpace(aqn) ? null : Type.GetType(aqn, false);
 
-                if (string.IsNullOrWhiteSpace(aqn)) continue; // 빈 슬롯 유지
-
-                var t = Type.GetType(aqn, false);
-                if (t == null || t.IsAbstract || !typeof(ISystem).IsAssignableFrom(t) || !seen.Add(aqn))
-                {
-                    _propTypes.DeleteArrayElementAtIndex(i);
-                }
+                if (PassFilter(type))
+                    indices.Add(i);
             }
 
-            serializedObject.ApplyModifiedProperties();
+            if (indices.Count == 0)
+            {
+                EditorGUILayout.HelpBox("No systems match current filter.", MessageType.Info);
+                return;
+            }
+
+            // 헤더 모양은 ReorderableList랑 비슷하게 한 번 더
+            var headerRect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+            EditorGUI.LabelField(headerRect, "Filtered Systems", EditorStyles.boldLabel);
+
+            GUILayout.Space(2);
+
+            foreach (var idx in indices)
+            {
+                float h = CalcElementHeight(idx);
+                var r = EditorGUILayout.GetControlRect(false, h);
+                DrawElementWithoutHandle(r, idx);
+                GUILayout.Space(2);
+            }
+
+            GUILayout.Space(4);
+
+            // 필터 모드에서도 추가 버튼 하나는 있어야 편함
+            using (new GUILayout.HorizontalScope())
+            {
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button("Add System...", GUILayout.Width(120)))
+                {
+                    var mousePos = Event.current != null ? Event.current.mousePosition : Vector2.zero;
+                    var rect = new Rect(mousePos.x, mousePos.y, 1, 1);
+
+                    serializedObject.Update();
+                    var newIndex = _propTypes.arraySize;
+                    _propTypes.InsertArrayElementAtIndex(newIndex);
+                    var elem = _propTypes.GetArrayElementAtIndex(newIndex);
+                    elem.FindPropertyRelative("_assemblyQualifiedName").stringValue = string.Empty;
+                    serializedObject.ApplyModifiedProperties();
+
+                    ShowPickerForIndex(newIndex, rect, () =>
+                    {
+                        serializedObject.Update();
+                        var e = _propTypes.GetArrayElementAtIndex(newIndex);
+                        var aqn = e.FindPropertyRelative("_assemblyQualifiedName").stringValue;
+                        if (string.IsNullOrWhiteSpace(aqn))
+                        {
+                            _propTypes.DeleteArrayElementAtIndex(newIndex);
+                            serializedObject.ApplyModifiedProperties();
+                        }
+                    });
+                }
+            }
         }
 
-        void ShowPickerForIndex(int index, Action onCancel)
+        #endregion
+
+        #region Element Height & Drawing
+
+        float CalcElementHeight(int index)
         {
-            // 모든 ISystem 타입 수집
+            const float pad = 6f;
+            float line = EditorGUIUtility.singleLineHeight;
+
+            if (_propTypes == null || index < 0 || index >= _propTypes.arraySize)
+                return line + pad * 2;
+
+            var elemBase = _propTypes.GetArrayElementAtIndex(index);
+            var aqnBase = elemBase.FindPropertyRelative("_assemblyQualifiedName").stringValue;
+            var typeBase = string.IsNullOrWhiteSpace(aqnBase) ? null : Type.GetType(aqnBase, false);
+
+            bool opened = _globalExpanded;
+            if (_foldouts.TryGetValue(index, out var v))
+                opened = v;
+
+            if (!opened)
+            {
+                int lines = (typeBase != null) ? 2 : 1;
+                return pad * 2 + lines * line;
+            }
+
+            int openedLines = 2; // name + namespace
+
+            if (typeBase != null)
+            {
+                if (!string.IsNullOrEmpty(GetSystemGroupSummary(typeBase)))
+                    openedLines++;
+
+                if (!string.IsNullOrEmpty(GetSystemRunKinds(typeBase)))
+                    openedLines++;
+
+                var watched = GetSystemWatchedComponents(typeBase);
+                if (watched.Count > 0)
+                    openedLines += 1 + watched.Count;
+            }
+
+            return pad * 2 + openedLines * line;
+        }
+
+        void DrawElement(Rect rect, int index, bool active, bool focused)
+        {
+            // ReorderableList에서 호출되는 버전 (= 핸들 있음)
+            InternalDrawElement(rect, index, drawHandleOffset: true);
+        }
+
+        void DrawElementWithoutHandle(Rect rect, int index)
+        {
+            // 필터 전용 버전 (= 핸들 없음)
+            InternalDrawElement(rect, index, drawHandleOffset: false);
+        }
+
+        void InternalDrawElement(Rect rect, int index, bool drawHandleOffset)
+        {
+            if (_propTypes == null || index < 0 || index >= _propTypes.arraySize)
+                return;
+
+            var elem = _propTypes.GetArrayElementAtIndex(index);
+            var aqn = elem.FindPropertyRelative("_assemblyQualifiedName").stringValue;
+            var type = string.IsNullOrWhiteSpace(aqn) ? null : Type.GetType(aqn, false);
+
+            float line = EditorGUIUtility.singleLineHeight;
+
+            // ReorderableList 핸들이 있을 때는 여백을 더 줌
+            float handleOffset = drawHandleOffset ? 10f : 0f;
+
+            const float padX = 0f;
+            const float padRight = 6f;
+            float x = rect.x + padX + handleOffset;
+            float y = rect.y + 1f;
+            float fullW = rect.width - padX - padRight - handleOffset;
+
+            if (!_foldouts.ContainsKey(index))
+                _foldouts[index] = _globalExpanded;
+
+            const float foldW = 14f;
+            Rect foldRect = new Rect(x, y, foldW, line);
+            _foldouts[index] = EditorGUI.Foldout(foldRect, _foldouts[index], GUIContent.none);
+
+            var nameStyle = new GUIStyle(EditorStyles.label) { richText = true };
+            var miniGrayStyle = new GUIStyle(EditorStyles.miniLabel)
+            {
+                richText = true,
+                normal = { textColor = new Color(0.6f, 0.6f, 0.6f) }
+            };
+            var infoStyle = new GUIStyle(EditorStyles.miniLabel) { richText = true };
+
+            float contentX = foldRect.xMax - 14f;
+            float contentW = rect.x + rect.width - padRight - contentX;
+
+            if (!_foldouts[index])
+            {
+                const float pingW = 20f;
+
+                if (type == null)
+                {
+                    string label = "None (empty slot)";
+
+                    Rect pingRect = new Rect(
+                        rect.x + rect.width - padRight - pingW,
+                        y,
+                        pingW,
+                        line);
+
+                    Rect nameRect = new Rect(
+                        contentX,
+                        y,
+                        pingRect.xMin - 2f - contentX,
+                        line);
+
+                    EditorGUI.LabelField(nameRect, label, nameStyle);
+                    return;
+                }
+
+                string ns = type.Namespace ?? "Global";
+                string labelName = $"<b>{type.Name}</b>";
+
+                Rect pingRectCollapsed = new Rect(
+                    rect.x + rect.width - padRight - pingW,
+                    y,
+                    pingW,
+                    line);
+
+                Rect nameRectCollapsed = new Rect(
+                    contentX,
+                    y,
+                    pingRectCollapsed.xMin - 2f - contentX,
+                    line);
+
+                EditorGUI.LabelField(nameRectCollapsed, labelName, nameStyle);
+
+                using (new EditorGUI.DisabledScope(false))
+                {
+                    var gcPing = GetSearchIconContent("Ping system script in Project");
+                    if (GUI.Button(pingRectCollapsed, gcPing, EditorStyles.iconButton))
+                    {
+                        PingTypeSource(type);
+                    }
+                }
+
+                y += line;
+                Rect nsRectCollapsed = new Rect(contentX + 4f, y, contentW - 4f, line);
+                EditorGUI.LabelField(nsRectCollapsed, $"[{ns}]", miniGrayStyle);
+                return;
+            }
+
+            if (type != null)
+            {
+                string ns = type.Namespace ?? "Global";
+                string name = type.Name;
+
+                const float pingW2 = 20f;
+                Rect headRect = new Rect(contentX, y, contentW, line);
+                Rect pingRect = new Rect(
+                    rect.x + rect.width - padRight - pingW2,
+                    y,
+                    pingW2,
+                    line);
+                Rect nameRect = new Rect(
+                    headRect.x,
+                    y,
+                    pingRect.xMin - 2f - headRect.x,
+                    line);
+
+                EditorGUI.LabelField(nameRect, $"<b>{name}</b>", nameStyle);
+
+                using (new EditorGUI.DisabledScope(false))
+                {
+                    var gcPing = GetSearchIconContent("Ping system script in Project");
+                    if (GUI.Button(pingRect, gcPing, EditorStyles.iconButton))
+                    {
+                        PingTypeSource(type);
+                    }
+                }
+
+                y += line;
+
+                Rect nsRect = new Rect(contentX + 4f, y, contentW - 4f, line);
+                EditorGUI.LabelField(nsRect, $"[{ns}]", miniGrayStyle);
+                y += line;
+
+                var groupSummary = GetSystemGroupSummary(type);
+                if (!string.IsNullOrEmpty(groupSummary))
+                {
+                    Rect r = new Rect(contentX + 8f, y, contentW - 8f, line);
+                    EditorGUI.LabelField(r, $"Group: <b>{groupSummary}</b>", infoStyle);
+                    y += line;
+                }
+
+                var runKinds = GetSystemRunKinds(type);
+                if (!string.IsNullOrEmpty(runKinds))
+                {
+                    Rect r = new Rect(contentX + 8f, y, contentW - 8f, line);
+                    EditorGUI.LabelField(r, $"Execution: <b>{runKinds}</b>", infoStyle);
+                    y += line;
+                }
+
+                var watched = GetSystemWatchedComponents(type);
+                if (watched.Count > 0)
+                {
+                    Rect rLabel = new Rect(contentX + 8f, y, contentW - 8f, line);
+                    EditorGUI.LabelField(rLabel, "Watched", infoStyle);
+                    y += line;
+
+                    foreach (var ct in watched)
+                    {
+                        if (ct == null) continue;
+
+                        string compName = ct.Name;
+                        string compNs = ct.Namespace ?? "Global";
+
+                        Rect itemRect = new Rect(contentX + 16f, y, contentW - 16f, line);
+                        string labelText =
+                            $"• <b>{compName}</b> <color=#777777>[{compNs}]</color>";
+
+                        EditorGUI.LabelField(
+                            itemRect,
+                            new GUIContent(labelText, ct.AssemblyQualifiedName),
+                            infoStyle
+                        );
+
+                        var e = Event.current;
+                        if (e.type == EventType.MouseDown && e.button == 0 && itemRect.Contains(e.mousePosition))
+                        {
+                            PingTypeSource(ct);
+                            e.Use();
+                        }
+
+                        y += line;
+                    }
+                }
+            }
+            else
+            {
+                Rect lineRect = new Rect(contentX, y, contentW, line);
+                var style = new GUIStyle(EditorStyles.label)
+                {
+                    normal = { textColor = new Color(1f, 0.35f, 0.35f) }
+                };
+                EditorGUI.LabelField(lineRect, "None (Click + to add with picker)", style);
+            }
+        }
+
+        #endregion
+
+        #region Picker & Utility
+
+        bool PassFilter(Type? type)
+        {
+            if (!UseFilter)
+                return true;
+
+            if (type == null)
+                return false;
+
+            var name = type.Name ?? string.Empty;
+            return name.IndexOf(_filterText, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        void ShowPickerForIndex(int index, Rect activatorRectGui, Action onCancel)
+        {
             var all = TypeCache.GetTypesDerivedFrom<ISystem>()
                 .Where(t => t != null && !t.IsAbstract)
                 .Distinct()
                 .OrderBy(t => t.FullName)
                 .ToList();
 
-            // 이미 담긴 타입은 disabled (현재 index 제외)
             var disabled = new HashSet<Type>();
             for (int i = 0; i < _propTypes!.arraySize; i++)
             {
@@ -281,10 +532,6 @@ namespace ZenECS.EditorInspectors
                 var t = string.IsNullOrWhiteSpace(aqn) ? null : Type.GetType(aqn, false);
                 if (t != null) disabled.Add(t);
             }
-
-            // 리스트 끝 근처에 드롭다운 표시
-            var rect = GUILayoutUtility.GetLastRect();
-            rect = new Rect(rect.x + rect.width - 200, rect.yMax, 200, 20);
 
             ZenSystemPickerWindow.Show(
                 allSystemTypes: all,
@@ -297,40 +544,35 @@ namespace ZenECS.EditorInspectors
                     serializedObject.ApplyModifiedProperties();
                     Repaint();
                 },
-                activatorRectGui: rect,
+                activatorRectGui: activatorRectGui,
                 title: "Add System",
                 onCancel: onCancel);
         }
 
-        // ─ 어떤 그룹인지: SimulationGroup 등 GroupAttribute 기반 요약 ─
         static string GetSystemGroupSummary(Type t)
         {
             return SystemUtil.ResolveGroup(t).ToString();
         }
 
-        // ─ 어떤 RunSystem 인터페이스를 구현하는지 요약 ─
         static string GetSystemRunKinds(Type t)
         {
             if (t == null) return string.Empty;
 
-            // 런타임에 인터페이스 풀네임 기준으로 검사 (컴파일 의존성 줄이기)
             bool Implements(string fullName)
                 => t.GetInterfaces().Any(i => string.Equals(i.FullName, fullName, StringComparison.Ordinal));
 
             var kinds = new List<string>();
 
-            if (Implements("ZenECS.Core.Systems.IInitSystem"))
-                kinds.Add("IInitSystem");
-            if (Implements("ZenECS.Core.Systems.IRunSystem"))
-                kinds.Add("IRunSystem");
+            if (Implements("ZenECS.Core.Systems.IFrameSetupSystem"))
+                kinds.Add("Variable (IFrameSetupSystem)");
+            if (Implements("ZenECS.Core.Systems.IFixedSetupSystem"))
+                kinds.Add("Fixed (IFixedSetupSystem)");
             if (Implements("ZenECS.Core.Systems.IVariableRunSystem"))
-                kinds.Add("IVariableRunSystem");
+                kinds.Add("Variable (IVariableRunSystem)");
             if (Implements("ZenECS.Core.Systems.IFixedRunSystem"))
-                kinds.Add("IFixedRunSystem");
-            if (Implements("ZenECS.Core.Systems.ILateRunSystem"))
-                kinds.Add("ILateRunSystem");
-            if (Implements("ZenECS.Core.Systems.ICleanupSystem"))
-                kinds.Add("ICleanupSystem");
+                kinds.Add("Fixed (IFixedRunSystem)");
+            if (Implements("ZenECS.Core.Systems.IPresentationSystem"))
+                kinds.Add("Presentation (IPresentationSystem)");
 
             if (kinds.Count == 0)
                 return "ISystem";
@@ -338,71 +580,6 @@ namespace ZenECS.EditorInspectors
             return string.Join(", ", kinds);
         }
 
-        // ─ ZenSystemWatch로 어떤 컴포넌트를 Watch하는지 요약 ─
-        static string GetSystemWatchSummary(Type t)
-        {
-            if (t == null) return string.Empty;
-
-            var attrs = (ZenSystemWatchAttribute[])t
-                .GetCustomAttributes(typeof(ZenSystemWatchAttribute), inherit: false);
-
-            if (attrs == null || attrs.Length == 0)
-                return string.Empty;
-
-            var watched = new List<string>();
-            foreach (var a in attrs)
-            {
-                if (a.AllOf == null) continue;
-                foreach (var ct in a.AllOf)
-                {
-                    if (ct == null) continue;
-                    watched.Add(ct.Name);
-                }
-            }
-
-            if (watched.Count == 0) return string.Empty;
-
-            // ex: "Rotation, Translation"
-            var distinct = watched.Distinct().ToArray();
-            return $"<b>{string.Join(", ", distinct)}</b>";
-        }
-
-        static void PingTypeSource(Type? t)
-        {
-            if (t == null) return;
-
-            // MonoScript 검색
-            var guids = AssetDatabase.FindAssets($"t:MonoScript {t.Name}");
-            foreach (var guid in guids)
-            {
-                var path = AssetDatabase.GUIDToAssetPath(guid);
-                var ms = AssetDatabase.LoadAssetAtPath<MonoScript>(path);
-                if (ms == null) continue;
-
-                if (ms.GetClass() == t)
-                {
-                    EditorGUIUtility.PingObject(ms);
-                    break;
-                }
-            }
-        }
-
-        static GUIContent GetSearchIconContent(string tooltip)
-        {
-            // Unity 기본 돋보기 아이콘
-            var gc = EditorGUIUtility.IconContent("d_Search Icon");
-            if (gc == null || gc.image == null)
-                gc = EditorGUIUtility.IconContent("Search Icon");
-
-            if (gc == null)
-                gc = new GUIContent("🔍", tooltip);
-            else
-                gc.tooltip = tooltip;
-
-            return gc;
-        }
-
-        // ─ ZenSystemWatch로 어떤 컴포넌트들을 Watch하는지 목록 ─
         static List<Type> GetSystemWatchedComponents(Type t)
         {
             var result = new List<Type>();
@@ -424,12 +601,46 @@ namespace ZenECS.EditorInspectors
                 }
             }
 
-            // 중복 제거
             return result
                 .Where(c => c != null)
                 .Distinct()
                 .ToList();
         }
+
+        static void PingTypeSource(Type? t)
+        {
+            if (t == null) return;
+
+            var guids = AssetDatabase.FindAssets($"t:MonoScript {t.Name}");
+            foreach (var guid in guids)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var ms = AssetDatabase.LoadAssetAtPath<MonoScript>(path);
+                if (ms == null) continue;
+
+                if (ms.GetClass() == t)
+                {
+                    EditorGUIUtility.PingObject(ms);
+                    break;
+                }
+            }
+        }
+
+        static GUIContent GetSearchIconContent(string tooltip)
+        {
+            var gc = EditorGUIUtility.IconContent("d_Search Icon");
+            if (gc == null || gc.image == null)
+                gc = EditorGUIUtility.IconContent("Search Icon");
+
+            if (gc == null)
+                gc = new GUIContent("🔍", tooltip);
+            else
+                gc.tooltip = tooltip;
+
+            return gc;
+        }
+
+        #endregion
     }
 }
 #endif
