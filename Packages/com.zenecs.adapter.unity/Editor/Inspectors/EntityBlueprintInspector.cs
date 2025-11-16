@@ -412,22 +412,22 @@ namespace ZenECS.EditorInspectors
             _contextsList.elementHeightCallback = index =>
             {
                 float line = EditorGUIUtility.singleLineHeight;
-                float h = line + 6f; // ObjectField
+                float h = line; // ObjectField
 
-                var p = _contextsProp.GetArrayElementAtIndex(index);
-                var obj = p.objectReferenceValue;
-                if (obj != null)
-                {
-                    var path = AssetDatabase.GetAssetPath(obj);
-                    if (!string.IsNullOrEmpty(path))
-                    {
-                        h += line + 4f; // 경로 한 줄
-                    }
-                    else
-                    {
-                        h += line + 4f; // "(Not saved asset)" 한 줄
-                    }
-                }
+                // var p = _contextsProp.GetArrayElementAtIndex(index);
+                // var obj = p.objectReferenceValue;
+                // if (obj != null)
+                // {
+                //     var path = AssetDatabase.GetAssetPath(obj);
+                //     if (!string.IsNullOrEmpty(path))
+                //     {
+                //         h += line + 4f; // 경로 한 줄
+                //     }
+                //     else
+                //     {
+                //         h += line + 4f; // "(Not saved asset)" 한 줄
+                //     }
+                // }
 
                 return h + 4f;
             };
@@ -446,24 +446,24 @@ namespace ZenECS.EditorInspectors
                 if (obj == null)
                     return;
 
-                // 2) SO 경로 라인
-                var path = AssetDatabase.GetAssetPath(obj);
-                if (string.IsNullOrEmpty(path))
-                {
-                    path = "(Not saved asset)";
-                }
-                else
-                {
-                    path = $"[{path}]";
-                }
-
-                // 필드 시작 위치와 맞추고, 짙은 회색 miniLabel 스타일
-                var rPath = new Rect(rect.x + 8, rField.yMax + 2f, rect.width - 16, line);
-
-                var prevColor = GUI.color;
-                GUI.color = new Color(0.45f, 0.45f, 0.45f); // 짙은 회색
-                EditorGUI.LabelField(rPath, path, EditorStyles.miniLabel);
-                GUI.color = prevColor;
+                // // 2) SO 경로 라인
+                // var path = AssetDatabase.GetAssetPath(obj);
+                // if (string.IsNullOrEmpty(path))
+                // {
+                //     path = "(Not saved asset)";
+                // }
+                // else
+                // {
+                //     path = $"[{path}]";
+                // }
+                //
+                // // 필드 시작 위치와 맞추고, 짙은 회색 miniLabel 스타일
+                // var rPath = new Rect(rect.x + 8, rField.yMax + 2f, rect.width - 16, line);
+                //
+                // var prevColor = GUI.color;
+                // GUI.color = new Color(0.45f, 0.45f, 0.45f); // 짙은 회색
+                // EditorGUI.LabelField(rPath, path, EditorStyles.miniLabel);
+                // GUI.color = prevColor;
             };
         }
 

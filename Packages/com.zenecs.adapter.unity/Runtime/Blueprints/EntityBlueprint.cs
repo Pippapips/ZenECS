@@ -47,7 +47,7 @@ namespace ZenECS.Adapter.Unity.Blueprints
                     }
                     case PerEntityContextAsset perEntityAsset:
                     {
-                        var ctx = perEntityAsset.CreateContextForEntity(world, e);
+                        var ctx = perEntityAsset.Create();
                         world.RegisterContext(e, ctx);
                         break;
                     }

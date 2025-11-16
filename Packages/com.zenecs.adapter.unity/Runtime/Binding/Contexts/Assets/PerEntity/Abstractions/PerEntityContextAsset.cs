@@ -25,6 +25,6 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts.Assets
         /// Create a new context instance for the given entity.
         /// Caller is responsible for registering it to the entity.
         /// </summary>
-        public abstract IContext CreateContextForEntity(IWorld world, Entity e);
+        public abstract IContext Create();
     }
 }

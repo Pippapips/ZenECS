@@ -9,7 +9,6 @@
 // ──────────────────────────────────────────────────────────────────────────────
 using System;
 using UnityEngine;
-using ZenECS.Adapter.Unity.Linking;
 using ZenECS.Core;
 using ZenECS.Core.Binding;
 using Object = UnityEngine.Object;
@@ -23,31 +22,12 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts.Assets
     {
         [SerializeField] private GameObject _modelPrefab;
         
-        public GameObject ModelPrefab => _modelPrefab;
-        
-        public override Type ContextType => typeof(ModelContext);
+        public override Type ContextType => typeof(UnityTransformContext);
         
         /// <inheritdoc />
-        public override IContext CreateContextForEntity(IWorld world, Entity e)
+        public override IContext Create()
         {
-            var boot = new EntityLinkBootstrap(LinkBootstrapPolicy.PreferModel);
-            var (ww, ee, main) = boot.Run(
-                world,
-                existingEntity: e,
-                optionalViewPrefab: ModelPrefab,
-                optionalViewRoot: null,
-                asMain: true);
-            
-            var instance = main.gameObject;
-            var t = instance.transform;
-            var animator = instance.GetComponent<Animator>();
-
-            return new ModelContext
-            {
-                Instance = instance,
-                Root = t,
-                Animator = animator
-            };
+            return new UnityTransformContext(_modelPrefab);
         }
     }
 }

@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity;
 using ZenECS.Adapter.Unity.Attributes;
+using ZenECS.Adapter.Unity.Binding.Contexts;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
 using ZenECS.Adapter.Unity.Blueprints;
 using ZenECS.Core;
@@ -868,6 +869,33 @@ namespace ZenECS.EditorWindows
             }
         }
 
+        static void PingContextType(Type t)
+        {
+            if (t == null) return;
+
+            // 시스템 Ping과 동일하게 MonoScript에서 타입을 찾아 Ping
+            var scripts = Resources.FindObjectsOfTypeAll<MonoScript>();
+            foreach (var ms in scripts)
+            {
+                if (ms == null) continue;
+                try
+                {
+                    if (ms.GetClass() == t)
+                    {
+                        // Selection은 유지하고 Ping만
+                        EditorGUIUtility.PingObject(ms);
+                        return;
+                    }
+                }
+                catch
+                {
+                    // 일부 스크립트는 GetClass() 호출시 예외 발생 가능 → 무시
+                }
+            }
+
+            Debug.Log($"EcsExplorer: Could not locate script asset for component type {t.FullName}");
+        }
+
         static void PingComponentType(Type t)
         {
             if (t == null) return;
@@ -1509,13 +1537,13 @@ namespace ZenECS.EditorWindows
                     var rDel = new Rect(right - wBtn, yBtn, wBtn, hBtn);
                     right = rDel.x - gap;
 
-                    // 그 왼쪽: 메인 뷰 선택 버튼 (•)
-                    Rect? rSel = null;
-                    if (EcsExplorerActions.TryGetEntityMainView(world, e, out var go))
-                    {
-                        rSel = new Rect(right - wBtn + 2, yBtn + 1, wBtn, hBtn);
-                        right = rSel.Value.x - gap;
-                    }
+                    // // 그 왼쪽: 메인 뷰 선택 버튼 (•)
+                    // Rect? rSel = null;
+                    // if (EcsExplorerActions.TryGetEntityMainView(world, e, out var go))
+                    // {
+                    //     rSel = new Rect(right - wBtn + 2, yBtn + 1, wBtn, hBtn);
+                    //     right = rSel.Value.x - gap;
+                    // }
 
                     using (new EditorGUI.DisabledScope(!_editMode))
                     {
@@ -1543,11 +1571,11 @@ namespace ZenECS.EditorWindows
                         }
                     }
 
-                    var gcPing = GetSearchIconContent("Ping entity view in Hierarchy");
-                    if (rSel.HasValue && GUI.Button(rSel.Value, gcPing, EditorStyles.iconButton))
-                    {
-                        EcsExplorerActions.TrySelectEntityMainView(go);
-                    }
+                    // var gcPing = GetSearchIconContent("Ping entity view in Hierarchy");
+                    // if (rSel.HasValue && GUI.Button(rSel.Value, gcPing, EditorStyles.iconButton))
+                    // {
+                    //     EcsExplorerActions.TrySelectEntityMainView(go);
+                    // }
                 }, true, false);
 
                 _entityFold[e] = openE;
@@ -2278,27 +2306,30 @@ namespace ZenECS.EditorWindows
                                 var yBtn = rRight.y;
 
                                 // 오른쪽 끝: 삭제 버튼
-                                var rRemove = new Rect(rRight.xMax - wBtn, yBtn, wBtn, hBtn);
+                                var rR0 = new Rect(rRight.xMax - wBtn, yBtn, wBtn, hBtn);
 
                                 // 그 왼쪽: Binder Enabled(Pause) 토글 버튼
-                                var rPause = new Rect(rRemove.x - gap - wBtn, yBtn, wBtn, hBtn);
+                                var rR1 = new Rect(rR0.x - gap - wBtn, yBtn, wBtn, hBtn);
+
+                                // 그 왼쪽: Binder Enabled(Pause) 토글 버튼
+                                var rR2 = new Rect(rR1.x - gap - wBtn, yBtn, wBtn, hBtn);
 
                                 // binder 활성 상태
                                 var hasBinder = binder != null;
                                 bool isEnabled = hasBinder && binder is { Enabled: true };
                                 bool canToggle = hasBinder && _editMode; // 읽기전용일 땐 토글 비활성
 
+                                var icon = GetSearchIconContent("Ping script asset");
+                                if (GUI.Button(rR2, icon, EditorStyles.iconButton))
+                                {
+                                    PingContextType(t);
+                                }
+                                
                                 // 🔹 Enabled Pause 스타일 (System / Global Pause와 동일)
                                 using (new EditorGUI.DisabledScope(!canToggle))
                                 {
-                                    // 버튼 영역 보정
-                                    var btnRect = new Rect(
-                                        rPause.x,
-                                        rPause.y,
-                                        rPause.width,
-                                        rPause.height
-                                    );
-
+                                    // CKWORK
+                                    
                                     // Unity 기본 Pause 아이콘
                                     var pauseContent = EditorGUIUtility.IconContent("PauseButton");
                                     if (pauseContent == null || pauseContent.image == null)
@@ -2324,7 +2355,7 @@ namespace ZenECS.EditorWindows
                                         GUI.contentColor = Color.white;
                                     }
 
-                                    if (GUI.Button(btnRect, pauseContent, pauseStyle) && canToggle)
+                                    if (GUI.Button(rR1, pauseContent, pauseStyle) && canToggle)
                                     {
                                         isEnabled = !isEnabled;
                                         if (binder != null)
@@ -2341,7 +2372,7 @@ namespace ZenECS.EditorWindows
                                 using (new EditorGUI.DisabledScope(!_editMode || !BinderApi.CanRemove(world)))
                                 {
                                     var gcDel = new GUIContent("X", "Remove this Binder from Entity");
-                                    if (GUI.Button(rRemove, gcDel, style))
+                                    if (GUI.Button(rR0, gcDel, style))
                                     {
                                         if (EditorUtility.DisplayDialog(
                                                 "Remove Binder",
@@ -2429,14 +2460,35 @@ namespace ZenECS.EditorWindows
                             t.Namespace,
                             rRight =>
                             {
-                                var rReset = new Rect(rRight.xMax - 42.5f, rRight.y, 20, rRight.height);
-                                var rRemove = new Rect(rRight.xMax - 20, rRight.y, 20, rRight.height);
+                                const float wBtn = 20f;
+                                const float gap = 3f;
+                                var hBtn = rRight.height;
+                                var yBtn = rRight.y;
+                                
+                                var rR0 = new Rect(rRight.xMax - wBtn, yBtn, wBtn, hBtn);
+                                var rR1 = new Rect(rR0.x - gap - wBtn, yBtn, wBtn, hBtn);
+                                var rR2 = new Rect(rR1.x - gap - wBtn, yBtn, wBtn, hBtn);
 
+                                // CKWORK
+                                
                                 using (new EditorGUI.DisabledScope(!_editMode))
                                 {
+                                    if (GUI.Button(rR0, "X", EditorStyles.miniButton))
+                                    {
+                                        if (EditorUtility.DisplayDialog(
+                                                "Remove Component",
+                                                $"Remove this component?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}Component",
+                                                "Yes", "No"))
+                                        {
+                                            world.RemoveComponentBoxed(e, t);
+                                            _componentFold.Remove(ck);
+                                            Repaint();
+                                        }
+                                    }
+                                    
                                     using (new EditorGUI.DisabledScope(!hasFields))
                                     {
-                                        if (GUI.Button(rReset, "R", EditorStyles.miniButton))
+                                        if (GUI.Button(rR1, "R", EditorStyles.miniButton))
                                         {
                                             // if (EditorUtility.DisplayDialog(
                                             //         "Reset Component",
@@ -2449,18 +2501,11 @@ namespace ZenECS.EditorWindows
                                             }
                                         }
                                     }
-
-                                    if (GUI.Button(rRemove, "X", EditorStyles.miniButton))
+                                    
+                                    var icon = GetSearchIconContent("Ping script asset");
+                                    if (GUI.Button(rR2, icon, EditorStyles.iconButton))
                                     {
-                                        if (EditorUtility.DisplayDialog(
-                                                "Remove Component",
-                                                $"Remove this component?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}Component",
-                                                "Yes", "No"))
-                                        {
-                                            world.RemoveComponentBoxed(e, t);
-                                            _componentFold.Remove(ck);
-                                            Repaint();
-                                        }
+                                        PingContextType(t);
                                     }
                                 }
                             },
@@ -2839,7 +2884,7 @@ namespace ZenECS.EditorWindows
                     }
                     case PerEntityContextAsset perEntityAsset:
                     {
-                        var ctx = perEntityAsset.CreateContextForEntity(w, e);
+                        var ctx = perEntityAsset.Create();
                         w.RegisterContext(e, ctx);
                         break;
                     }
@@ -3141,11 +3186,26 @@ namespace ZenECS.EditorWindows
                             t.Namespace,
                             rRight =>
                             {
-                                var rRemove = new Rect(rRight.xMax - 20f, rRight.y, 20f, rRight.height);
+                                var style = EditorStyles.miniButton;
 
+                                const float wBtn = 20f;
+                                const float gap = 3f;
+                                var hBtn = rRight.height;
+                                var yBtn = rRight.y;
+                                
+                                // 오른쪽 끝: 삭제 버튼
+                                var rR0 = new Rect(rRight.xMax - wBtn, yBtn, wBtn, hBtn);
+
+                                // 그 왼쪽: Binder Enabled(Pause) 토글 버튼
+                                var rR1 = new Rect(rR0.x - gap - wBtn, yBtn, wBtn, hBtn);
+
+                                // 그 왼쪽: Binder Enabled(Pause) 토글 버튼
+                                var rR2 = new Rect(rR1.x - gap - wBtn, yBtn, wBtn, hBtn);
+
+                                // CKWORK
                                 using (new EditorGUI.DisabledScope(!_editMode))
                                 {
-                                    if (GUI.Button(rRemove, "X", EditorStyles.miniButton))
+                                    if (GUI.Button(rR0, "X", EditorStyles.miniButton))
                                     {
                                         if (EditorUtility.DisplayDialog(
                                                 "Remove Context",
@@ -3159,6 +3219,50 @@ namespace ZenECS.EditorWindows
                                             }
 
                                             Repaint();
+                                        }
+                                    }
+                                    
+                                    var pingStyle = new GUIStyle(EditorStyles.iconButton)
+                                    {
+                                        alignment = TextAnchor.LowerCenter,
+                                        padding = new RectOffset(0, 0, 0, 0),
+                                        margin = new RectOffset(0, 0, 0, 0)
+                                    };
+                                    
+                                    var pauseStyle = new GUIStyle("Button")
+                                    {
+                                        alignment = TextAnchor.MiddleCenter,
+                                        padding = new RectOffset(0, 0, 0, 0),
+                                        margin = new RectOffset(0, 0, 0, 0)
+                                    };
+
+                                    if (inst is IContextReinitialize)
+                                    {
+                                        if (GUI.Button(rR1, "R", pauseStyle))
+                                        {
+                                            var s = $"Reinitialize {t.Name}";
+                                            if (world.ReinitializeContext(e, (IContext)inst))
+                                            {
+                                                s += " success";
+                                            }
+                                            else
+                                            {
+                                                s += " failed";
+                                            }
+                                            Debug.Log(s);
+                                        }
+                                        var icon = GetSearchIconContent("Ping script asset");
+                                        if (GUI.Button(rR2, icon, pingStyle))
+                                        {
+                                            PingContextType(t);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var icon = GetSearchIconContent("Ping script asset");
+                                        if (GUI.Button(rR1, icon, pingStyle))
+                                        {
+                                            PingContextType(t);
                                         }
                                     }
                                 }

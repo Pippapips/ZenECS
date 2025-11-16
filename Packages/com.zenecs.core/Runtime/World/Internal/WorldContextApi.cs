@@ -29,5 +29,6 @@ namespace ZenECS.Core.Internal
         public bool HasContext(Entity e, Type? contextType) => _contextRegistry.Has(this, e, contextType);
         public (Type type, object boxed)[] GetAllContexts(Entity e) => _contextRegistry.GetAllContexts(this, e);
         public bool RemoveContext(Entity e, IContext ctx) => _contextRegistry.Remove(this, e, ctx);
+        public bool ReinitializeContext(Entity e, IContext ctx) => _contextRegistry.Reinitialize(this, e, ctx);
     }
 }

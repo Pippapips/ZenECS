@@ -24,5 +24,6 @@ namespace ZenECS.Core
         bool HasContext(Entity e, Type? contextType);
         (Type type, object boxed)[] GetAllContexts(Entity e);
         bool RemoveContext(Entity e, IContext ctx);
+        bool ReinitializeContext(Entity e, IContext ctx);
     }
 }

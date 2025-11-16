@@ -13,10 +13,7 @@ namespace ZenECS.Adapter.Unity.Binding.Binders.Implementations
         IBind<Position>,
         IBind<Rotation>
     {
-        private ModelContext? _modelContext;
-        private SharedUIRootContext? _sharedUIRootContext;
-
-        private float _sinceSharedContextAttached;
+        private UnityTransformContext? _unityTransformContext;
 
         protected override void OnBind(Entity e, IReadOnlyList<IContext>? contexts)
         {
@@ -33,12 +30,10 @@ namespace ZenECS.Adapter.Unity.Binding.Binders.Implementations
         {
             switch (context)
             {
-                case ModelContext modelContext:
-                    _modelContext = modelContext;
+                case UnityTransformContext modelContext:
+                    _unityTransformContext = modelContext;
                     break;
                 case SharedUIRootContext sharedUIRootContext:
-                    _sharedUIRootContext = sharedUIRootContext;
-                    _sinceSharedContextAttached = 0;
                     break;
             }
         }
@@ -47,27 +42,17 @@ namespace ZenECS.Adapter.Unity.Binding.Binders.Implementations
         {
             switch (context)
             {
-                case ModelContext modelContext:
-                    _modelContext = null;
+                case UnityTransformContext modelContext:
+                    _unityTransformContext = null;
                     break;
                 case SharedUIRootContext sharedUIRootContext:
-                    if (_sharedUIRootContext)
-                    {
-                        _sharedUIRootContext.Text.text = $"Shared UIRoot Detached";
-                    }
-                    _sharedUIRootContext = null;
                     break;
             }
         }
 
         protected override void OnUnbind()
         {
-            _modelContext = null;
-            if (_sharedUIRootContext)
-            {
-                _sharedUIRootContext.Text.text = $"Shared UIRoot Unbound";
-            }
-            _sharedUIRootContext = null;
+            _unityTransformContext = null;
         }
 
         public void OnDelta(in ComponentDelta<Position> delta)
@@ -82,23 +67,22 @@ namespace ZenECS.Adapter.Unity.Binding.Binders.Implementations
         {
             if (World == null) return;
             
-            if (_modelContext != null && _modelContext.Root != null)
+            if (_unityTransformContext != null && _unityTransformContext.Root != null)
             {
                 if (World.TryRead<Position>(e, out var position))
                 {
-                    _modelContext.Root.position = position.Value;
+                    _unityTransformContext.Root.position = position.Value;
                 }
                 
                 if (World.TryRead<Rotation>(e, out var rotation))
                 {
-                    _modelContext.Root.rotation = rotation.Value;
+                    _unityTransformContext.Root.rotation = rotation.Value;
                 }
-            }
-
-            if (_sharedUIRootContext != null)
-            {
-                _sinceSharedContextAttached += Time.deltaTime;
-                _sharedUIRootContext.Text.text = $"Since shared context attached in {_sinceSharedContextAttached:0} seconds";
+                
+                if (World.TryRead<Scale>(e, out var scale))
+                {
+                    _unityTransformContext.Root.localScale = scale.Value;
+                }
             }
         }
     }

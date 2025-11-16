@@ -18,7 +18,7 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts
     /// <summary>
     /// Entity-owned model context wrapping a Unity GameObject instance.
     /// </summary>
-    public sealed class ModelContext : IContext, IContextInitialize
+    public sealed class UnityTransformContext : IContext, IContextReinitialize
     {
         /// <summary>The instantiated GameObject for this entity's model.</summary>
         public GameObject? Instance { get; set; } = null!;
@@ -26,11 +26,17 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts
         /// <summary>Cached root transform for fast access.</summary>
         public Transform? Root { get; set; } = null!;
 
-        /// <summary>Optional Animator attached to the model.</summary>
-        public Animator? Animator { get; set; }
+        private GameObject _prefab;
 
+        public UnityTransformContext(GameObject prefab)
+        {
+            _prefab = prefab;
+        }
+        
         public void Initialize(IWorld w, Entity e, IContextLookup l)
         {
+            Instance = Object.Instantiate(_prefab);
+            Root = Instance.transform;
         }
         
         public void Deinitialize(IWorld w, Entity e)
@@ -38,6 +44,12 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts
             Object.Destroy(Instance);
             Instance = null;
             Root = null;
+        }
+        
+        public void Reinitialize(IWorld w, Entity e, IContextLookup l)
+        {
+            Deinitialize(w, e);
+            Initialize(w, e, l);
         }
     }
 }

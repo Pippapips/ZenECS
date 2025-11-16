@@ -18,7 +18,6 @@ namespace ZenECS.Adapter.Unity.DI
             
             Container.BindInstance(ZenEcsUnityBridge.Kernel);
             Container.Bind<ISharedContextResolver>().FromInstance(ZenEcsUnityBridge.SharedContextResolver).AsSingle();
-            Container.Bind<IViewLinkFactory>().To<ViewLinkFactory>().AsSingle();
         }
     }
 #else
