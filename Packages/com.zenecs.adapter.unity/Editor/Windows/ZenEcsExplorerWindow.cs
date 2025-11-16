@@ -223,11 +223,25 @@ namespace ZenECS.EditorWindows
                             {
                                 using (new EditorGUILayout.VerticalScope("box"))
                                 {
+                                    var leftFoldoutStyle = new GUIStyle(EditorStyles.foldout)
+                                    {
+                                    };
+                
+                                    leftFoldoutStyle.focused.textColor = systemMetaTextColor;
+                                    leftFoldoutStyle.onFocused.textColor = systemMetaTextColor;
+                                    leftFoldoutStyle.hover.textColor = systemMetaTextColor;
+                                    leftFoldoutStyle.onHover.textColor = systemMetaTextColor;
+                                    leftFoldoutStyle.active.textColor = systemMetaTextColor;
+                                    leftFoldoutStyle.onActive.textColor = systemMetaTextColor;
+                                    leftFoldoutStyle.normal.textColor = systemMetaTextColor;
+                                    leftFoldoutStyle.onNormal.textColor = systemMetaTextColor;
+                                    
                                     // Foldout 헤더: "Watched Systems (N)"
                                     _findWatchedSystemsFold = EditorGUILayout.Foldout(
                                         _findWatchedSystemsFold,
                                         $"Watched Systems ({watchedList.Count})",
-                                        true
+                                        true,
+                                        leftFoldoutStyle
                                     );
 
                                     if (_findWatchedSystemsFold)
@@ -237,14 +251,16 @@ namespace ZenECS.EditorWindows
                                         // Watched Components와 동일한 회색 네임스페이스 스타일
                                         var nsStyle = new GUIStyle(EditorStyles.miniLabel)
                                         {
+                                            wordWrap = true,
+                                            fontSize = 10,
+                                            padding = new RectOffset(0, 0, 0, 0),
+                                            richText = true,
                                             normal =
                                             {
-                                                textColor = EditorGUIUtility.isProSkin
-                                                    ? new Color(0.5f, 0.5f, 0.5f)
-                                                    : new Color(0.4f, 0.4f, 0.4f)
+                                                textColor = systemMetaTextColor
                                             }
                                         };
-
+                                        
                                         foreach (var (sys, tSys) in watchedList)
                                         {
                                             if (tSys == null) continue;
@@ -255,10 +271,19 @@ namespace ZenECS.EditorWindows
                                             using (new EditorGUILayout.HorizontalScope())
                                             {
                                                 // System 이름
-                                                EditorGUILayout.LabelField(tSys.Name, GUILayout.ExpandWidth(false));
-
-                                                // [namespace] 어두운 회색
-                                                EditorGUILayout.LabelField($"[{ns}]", nsStyle, GUILayout.ExpandWidth(true));
+                                                EditorGUILayout.LabelField($"{tSys.Name} <color=#707070>[{ns}]</color>", nsStyle);
+                                                // EditorGUILayout.LabelField(tSys.Name, GUILayout.ExpandWidth(false));
+                                                //
+                                                // // [namespace] 어두운 회색
+                                                // EditorGUILayout.LabelField($"[{ns}]", nsStyle, GUILayout.ExpandWidth(true));
+                                                
+                                                // 돋보기 아이콘 (우측 끝)
+                                                var icon = GetSearchIconContent("Ping system script asset");
+                                                if (GUILayout.Button(icon, EditorStyles.iconButton, GUILayout.Width(18), GUILayout.Height(16)))
+                                                {
+                                                    // 선택은 유지하고 Ping만
+                                                    PingSystemTypeNoSelect(tSys);
+                                                }
                                             }
                                         }
 
