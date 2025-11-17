@@ -8,11 +8,16 @@ using ZenECS.Core.Binding;
 
 namespace ZenECS.Adapter.Unity.Binding.Binders.Implementations
 {
-    public class TransformSyncBinder :
+    public class UnityTransformSyncBinder :
         BaseBinder,
         IBind<Position>,
-        IBind<Rotation>
+        IBind<Rotation>,
+        IBind<Scale>
     {
+        private DeltaTracker<Position> _pos;
+        private DeltaTracker<Rotation> _rot;
+        private DeltaTracker<Scale> _scale;
+        
         private UnityTransformContext? _unityTransformContext;
 
         protected override void OnBind(Entity e, IReadOnlyList<IContext>? contexts)
@@ -33,7 +38,7 @@ namespace ZenECS.Adapter.Unity.Binding.Binders.Implementations
                 case UnityTransformContext modelContext:
                     _unityTransformContext = modelContext;
                     break;
-                case SharedUIRootContext sharedUIRootContext:
+                case SharedUIRootContext _:
                     break;
             }
         }
@@ -42,10 +47,10 @@ namespace ZenECS.Adapter.Unity.Binding.Binders.Implementations
         {
             switch (context)
             {
-                case UnityTransformContext modelContext:
+                case UnityTransformContext _:
                     _unityTransformContext = null;
                     break;
-                case SharedUIRootContext sharedUIRootContext:
+                case SharedUIRootContext _:
                     break;
             }
         }
@@ -57,31 +62,48 @@ namespace ZenECS.Adapter.Unity.Binding.Binders.Implementations
 
         public void OnDelta(in ComponentDelta<Position> delta)
         {
+            _pos.ApplyDelta(delta);
         }
         
         public void OnDelta(in ComponentDelta<Rotation> delta)
         {
+            _rot.ApplyDelta(delta);
         }
-        
+
+        public void OnDelta(in ComponentDelta<Scale> delta)
+        {
+            _scale.ApplyDelta(delta);
+        }
+
         protected override void OnApply(IWorld w, Entity e)
         {
-            if (World == null) return;
-            
-            if (_unityTransformContext != null && _unityTransformContext.Root != null)
+            var t = _unityTransformContext?.Root;
+            if (t == null) return;
+
+            if (_pos.NeedsApply)
             {
-                if (World.TryRead<Position>(e, out var position))
+                _pos.ClearDirty();
+                if (_pos.Has)
                 {
-                    _unityTransformContext.Root.position = position.Value;
+                    t.position = _pos.Last.Value;
                 }
-                
-                if (World.TryRead<Rotation>(e, out var rotation))
+            }
+
+            if (_rot.NeedsApply)
+            {
+                _rot.ClearDirty();
+                if (_rot.Has)
                 {
-                    _unityTransformContext.Root.rotation = rotation.Value;
+                    t.rotation = _rot.Last.Value;
                 }
-                
-                if (World.TryRead<Scale>(e, out var scale))
+            }
+
+            if (_scale.NeedsApply)
+            {
+                _scale.ClearDirty();
+                if (_scale.Has)
                 {
-                    _unityTransformContext.Root.localScale = scale.Value;
+                    t.localScale = _scale.Last.Value;
                 }
             }
         }

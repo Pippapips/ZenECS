@@ -41,7 +41,7 @@ namespace ZenECS.Core.Internal
         public int QueryToSpan<T1>(Span<Entity> dst, Filter f = default) where T1 : struct
         {
             int n = 0;
-            foreach (var e in Query<T1>(f))
+            foreach (var (e, _) in Query<T1>(f))
             {
                 if (n >= dst.Length) break;
                 dst[n++] = e;
@@ -55,7 +55,7 @@ namespace ZenECS.Core.Internal
             where T1 : struct where T2 : struct
         {
             int n = 0;
-            foreach (var e in Query<T1, T2>(f))
+            foreach (var (e, _, _) in Query<T1, T2>(f))
             {
                 if (n >= dst.Length) break;
                 dst[n++] = e;
@@ -69,7 +69,7 @@ namespace ZenECS.Core.Internal
             where T1 : struct where T2 : struct where T3 : struct
         {
             int n = 0;
-            foreach (var e in Query<T1, T2, T3>(f))
+            foreach (var (e, _, _, _) in Query<T1, T2, T3>(f))
             {
                 if (n >= dst.Length) break;
                 dst[n++] = e;
@@ -83,7 +83,7 @@ namespace ZenECS.Core.Internal
             where T1 : struct where T2 : struct where T3 : struct where T4 : struct
         {
             int n = 0;
-            foreach (var e in Query<T1, T2, T3, T4>(f))
+            foreach (var (e, _, _, _, _) in Query<T1, T2, T3, T4>(f))
             {
                 if (n >= dst.Length) break;
                 dst[n++] = e;
@@ -97,7 +97,7 @@ namespace ZenECS.Core.Internal
             where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct
         {
             int n = 0;
-            foreach (var e in Query<T1, T2, T3, T4, T5>(f))
+            foreach (var (e, _, _, _, _, _) in Query<T1, T2, T3, T4, T5>(f))
             {
                 if (n >= dst.Length) break;
                 dst[n++] = e;
@@ -112,7 +112,7 @@ namespace ZenECS.Core.Internal
             where T5 : struct where T6 : struct
         {
             int n = 0;
-            foreach (var e in Query<T1, T2, T3, T4, T5, T6>(f))
+            foreach (var (e, _, _, _, _, _, _) in Query<T1, T2, T3, T4, T5, T6>(f))
             {
                 if (n >= dst.Length) break;
                 dst[n++] = e;
@@ -127,7 +127,7 @@ namespace ZenECS.Core.Internal
             where T5 : struct where T6 : struct where T7 : struct
         {
             int n = 0;
-            foreach (var e in Query<T1, T2, T3, T4, T5, T6, T7>(f))
+            foreach (var (e, _, _, _, _, _, _, _) in Query<T1, T2, T3, T4, T5, T6, T7>(f))
             {
                 if (n >= dst.Length) break;
                 dst[n++] = e;
@@ -142,7 +142,7 @@ namespace ZenECS.Core.Internal
             where T5 : struct where T6 : struct where T7 : struct where T8 : struct
         {
             int n = 0;
-            foreach (var e in Query<T1, T2, T3, T4, T5, T6, T7, T8>(f))
+            foreach (var (e, _, _, _, _, _, _, _, _) in Query<T1, T2, T3, T4, T5, T6, T7, T8>(f))
             {
                 if (n >= dst.Length) break;
                 dst[n++] = e;

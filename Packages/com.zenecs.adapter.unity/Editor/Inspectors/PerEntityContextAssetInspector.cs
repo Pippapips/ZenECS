@@ -32,7 +32,7 @@ namespace ZenECS.EditorInspectors
                 new[] { "Context", "Per-Entity", "Runtime Factory" }
             );
             
-            var asset   = (ModelContextAsset)target;
+            var asset   = (PerEntityContextAsset)target;
             var ctxType = asset.ContextType;
 
             // // ─────────────────────────────────────────────

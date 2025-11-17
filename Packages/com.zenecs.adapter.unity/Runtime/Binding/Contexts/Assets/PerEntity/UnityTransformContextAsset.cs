@@ -16,9 +16,9 @@ using Object = UnityEngine.Object;
 namespace ZenECS.Adapter.Unity.Binding.Contexts.Assets
 {
     [CreateAssetMenu(
-        menuName = "ZenECS/Context/Model",
-        fileName = "ModelContext")]
-    public sealed class ModelContextAsset : PerEntityContextAsset
+        menuName = "ZenECS/Context/Unity",
+        fileName = "UnityTransformContext")]
+    public sealed class UnityTransformContextAsset : PerEntityContextAsset
     {
         [SerializeField] private GameObject _modelPrefab;
         

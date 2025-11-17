@@ -10,9 +10,8 @@ namespace ZenECS.Adapter.Unity.Migrations
         public int Order => 100; // 필요 시 다른 마이그보다 늦게/빨리 조절
         public void Run(IWorld world)
         {
-            foreach (var e in world.Query<Position>())
+            foreach (var (e, p) in world.Query<Position>())
             {
-                var p = world.ReadComponent<Position>(e);
             }
         }
     }
