@@ -38,6 +38,7 @@ namespace ZenECS.EditorCommon
                     {
                         alignment = TextAnchor.MiddleLeft,
                         clipping = TextClipping.Clip,
+                        richText = true
                     };
                 }
 
@@ -154,7 +155,8 @@ namespace ZenECS.EditorCommon
 
                         var bold = new GUIStyle(EditorStyles.boldLabel)
                         {
-                            alignment = TextAnchor.MiddleLeft
+                            alignment = TextAnchor.MiddleLeft,
+                            richText = true
                         };
                         var mini = new GUIStyle(EditorStyles.miniLabel)
                         {

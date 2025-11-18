@@ -123,6 +123,8 @@ namespace ZenECS.Core.Internal
 
             EntityEvents.RaiseDespawnRequested(this, e);
 
+            clearSingletonIndex(e);
+            
             _bindingRouter.OnEntityDestroyed(this, e);
             _contextRegistry.Clear(this, e);
             _componentPoolRepository.RemoveEntity(e);

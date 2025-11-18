@@ -10,9 +10,11 @@
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-
+
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using ZenECS.Core.Abstractions.Config;
@@ -37,6 +39,12 @@ namespace ZenECS.Core.Internal
         private readonly Dictionary<Type, Func<Entity, object, bool>> _addBoxedCache = new();
         private readonly Dictionary<Type, Func<Entity, object, bool>> _replaceBoxedCache = new();
         private readonly Dictionary<Type, Func<Entity, bool>> _removeCache = new();
+
+        /// <summary>
+        /// Per-component-type singleton owner index.
+        /// Ensures each singleton component type T has exactly one entity owner.
+        /// </summary>
+        private readonly Dictionary<Type, Entity> _singletonIndex = new();
 
         // ── Boxed / non-generic implementations ─────────────────────────────        
 
@@ -137,7 +145,7 @@ namespace ZenECS.Core.Internal
             _removeCache[t] = Wrapped;
             return Wrapped;
         }
-        
+
         /// <summary>
         /// Check if the entity currently has the component.
         /// </summary>
@@ -146,7 +154,7 @@ namespace ZenECS.Core.Internal
             var pool = _componentPoolRepository.TryGetPool<T>();
             return pool != null && pool.Has(e.Id);
         }
-        
+
         /// <summary>
         /// Add a component to an entity if absent, honoring permission/validation hooks.
         /// </summary>
@@ -166,7 +174,8 @@ namespace ZenECS.Core.Internal
             }
             else if (!_permissionHook.ValidateObject(value!))
             {
-                if (!HandleDenied($"[Denied] Add<{typeof(T).Name}> e={e.Id} reason=ValidateFailed(value-hook) value={value}"))
+                if (!HandleDenied(
+                        $"[Denied] Add<{typeof(T).Name}> e={e.Id} reason=ValidateFailed(value-hook) value={value}"))
                     return false;
             }
 
@@ -174,6 +183,9 @@ namespace ZenECS.Core.Internal
 
             ref var r = ref RefComponent<T>(e);
             r = value;
+
+            addSingletonIndex<T>(e);
+            
             _bindingRouter.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Added, value));
             return true;
         }
@@ -197,7 +209,8 @@ namespace ZenECS.Core.Internal
             }
             else if (!_permissionHook.ValidateObject(value!))
             {
-                if (!HandleDenied($"[Denied] Replace<{typeof(T).Name}> e={e.Id} reason=ValidateFailed(value-hook) value={value}"))
+                if (!HandleDenied(
+                        $"[Denied] Replace<{typeof(T).Name}> e={e.Id} reason=ValidateFailed(value-hook) value={value}"))
                     return false;
             }
 
@@ -221,10 +234,11 @@ namespace ZenECS.Core.Internal
             var pool = _componentPoolRepository.TryGetPool<T>();
             if (pool == null) return false;
             pool.Remove(e.Id);
+            removeSingletonIndex<T>(e);
             _bindingRouter.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Removed));
             return true;
         }
-        
+
         /// <summary>
         /// Get a <c>ref</c> to a component on an entity (creates storage if missing).
         /// </summary>
@@ -252,17 +266,22 @@ namespace ZenECS.Core.Internal
         {
             return ref RefComponent<T>(e);
         }
-        
+
         /// <summary>
         /// Try to read a component by value (non-ref); returns <see langword="false"/> if absent.
         /// </summary>
         public bool TryRead<T>(Entity e, out T value) where T : struct
         {
-            if (!HasComponent<T>(e)) { value = default; return false; }
+            if (!HasComponent<T>(e))
+            {
+                value = default;
+                return false;
+            }
+
             value = ReadComponent<T>(e);
             return true;
         }
-        
+
         /// <summary>
         /// Enumerate all components currently present on the entity (boxed values).
         /// </summary>
@@ -272,7 +291,7 @@ namespace ZenECS.Core.Internal
                 if (kv.Value.Has(e.Id))
                     yield return (kv.Key, kv.Value.GetBoxed(e.Id));
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool HandleDenied(string reason)
         {
@@ -286,6 +305,193 @@ namespace ZenECS.Core.Internal
                 default:
                     return false;
             }
+        }
+
+        /// <summary>
+        /// Ensure only one entity in this world has component type T.
+        /// Throws if more than one exists.
+        /// This method also updates the _singletonIndex accordingly.
+        /// </summary>
+        private Entity? EnsureSingletonConsistency<T>(out bool has) where T : struct
+        {
+            var type = typeof(T);
+
+            // 1) Quick path: if index contains entry, validate it.
+            if (_singletonIndex.TryGetValue(type, out var indexed))
+            {
+                // Check if indexed entity actually has T.
+                if (HasComponent<T>(indexed))
+                {
+                    has = true;
+                    return indexed;
+                }
+                else
+                {
+                    // Entry invalid (entity no longer has T) → remove and full scan.
+                    _singletonIndex.Remove(type);
+                }
+            }
+
+            // 2) Full scan
+            Entity? found = null;
+            bool foundAny = false;
+
+            foreach (var (e, _) in Query<T>())
+            {
+                if (!foundAny)
+                {
+                    found = e;
+                    foundAny = true;
+                }
+                else
+                {
+                    // More than one → violation
+                    throw new InvalidOperationException(
+                        $"Singleton violation: multiple entities contain component {type.FullName}");
+                }
+            }
+
+            if (!foundAny)
+            {
+                has = false;
+                return null;
+            }
+
+            // Exactly one → register
+            _singletonIndex[type] = found!.Value;
+            has = true;
+            return found;
+        }
+
+        /// <summary>
+        /// Get singleton entity for T. Throws if missing or multiple.
+        /// </summary>
+        internal Entity GetSingletonEntityInternal<T>() where T : struct
+        {
+            var e = EnsureSingletonConsistency<T>(out bool has);
+            if (!has)
+                throw new InvalidOperationException(
+                    $"No singleton of type {typeof(T).FullName} exists in this world.");
+            return e!.Value;
+        }
+
+        /// <summary>
+        /// Try get singleton entity for T.
+        /// No creation performed.
+        /// Returns false if missing.
+        /// </summary>
+        internal bool TryGetSingletonEntityInternal<T>(out Entity entity) where T : struct
+        {
+            var e = EnsureSingletonConsistency<T>(out bool has);
+            if (has)
+            {
+                entity = e!.Value;
+                return true;
+            }
+
+            entity = default;
+            return false;
+        }
+        
+        public void SetSingleton<T>(in T value) where T : struct, IWorldSingletonComponent
+        {
+            // Check if exists
+            if (TryGetSingletonEntityInternal<T>(out var e))
+            {
+                ReplaceComponent(e, value);
+                _singletonIndex[typeof(T)] = e;
+                return;
+            }
+
+            // Create new
+            var newEntity = SpawnEntity();
+            AddComponent(newEntity, value);
+            _singletonIndex[typeof(T)] = newEntity;
+        }
+
+        public T GetSingleton<T>() where T : struct, IWorldSingletonComponent
+        {
+            var e = GetSingletonEntityInternal<T>();
+            return ReadComponent<T>(e);
+        }
+
+        public bool RemoveSingleton<T>(in T value) where T : struct, IWorldSingletonComponent
+        {
+            if (TryGetSingletonEntityInternal<T>(out var e))
+            {
+                RemoveComponent<T>(e);
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool TryGetSingleton<T>(out T value) where T : struct, IWorldSingletonComponent
+        {
+            if (TryGetSingletonEntityInternal<T>(out var e))
+            {
+                value = ReadComponent<T>(e);
+                return true;
+            }
+            value = default;
+            return false;
+        }
+        
+        private void clearSingletonIndex(Entity e)
+        {
+            List<Type>? toRemove = null;
+            
+            // Remove from singleton index if owning any singleton components
+            foreach (var kv in _singletonIndex)
+            {
+                if (kv.Value.Id == e.Id)
+                {
+                    toRemove ??= new List<Type>();
+                    toRemove.Add(kv.Key);
+                }
+            }
+
+            if (toRemove != null)
+            {
+                foreach (var t in toRemove)
+                    _singletonIndex.Remove(t);
+            }
+        }
+ 
+        private void addSingletonIndex<T>(Entity e) where T : struct
+        {
+            // After successful AddComponent<T>(e, value)
+            // Insert singleton enforcement:
+            if (typeof(IWorldSingletonComponent).IsAssignableFrom(typeof(T)))
+            {
+                // Check if another entity already has T
+                foreach (var (other, _) in Query<T>())
+                {
+                    if (other.Id != e.Id)
+                    {
+                        throw new InvalidOperationException(
+                            $"Singleton violation: component {typeof(T).FullName} " +
+                            $"is marked as IWorldSingletonComponent but added to multiple entities.");
+                    }
+                }
+
+                // If OK, update singleton index
+                _singletonIndex[typeof(T)] = e;
+            }
+        }
+
+        private void removeSingletonIndex<T>(Entity e) where T : struct
+        {
+            // If removing singleton type → remove from index
+            if (_singletonIndex.TryGetValue(typeof(T), out var owner) && owner.Id == e.Id)
+            {
+                _singletonIndex.Remove(typeof(T));
+            }
+        }
+
+        public bool HasSingleton(Entity e)
+        {
+            return _singletonIndex.Select(keyValuePair => keyValuePair.Value).Any(se => se.Equals(e));
         }
     }
 }

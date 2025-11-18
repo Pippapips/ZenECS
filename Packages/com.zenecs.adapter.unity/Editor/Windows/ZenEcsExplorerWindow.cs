@@ -1521,7 +1521,14 @@ namespace ZenECS.EditorWindows
                     GUILayout.ExpandWidth(true));
                 bool openE = _entityFold[e];
 
-                ZenFoldoutHeader.DrawRow(ref openE, headRect, $"Entity #{e.Id}:{e.Gen}", "", rRight =>
+                var entityTitle = $"Entity #{e.Id}:{e.Gen}";
+                var isSingleton = world.HasSingleton(e);
+                if (isSingleton)
+                {
+                    entityTitle += " <color=#999900><size=10>SINGLETON</size></color>";
+                }
+                
+                ZenFoldoutHeader.DrawRow(ref openE, headRect, entityTitle, "", rRight =>
                 {
                     var style = EditorStyles.miniButton;
 
@@ -1549,9 +1556,15 @@ namespace ZenECS.EditorWindows
                     {
                         if (GUI.Button(rDel, "X", style))
                         {
+                            var msg = $"Remove this entity?\n\nEntity #{e.Id}:{e.Gen}";
+                            if (isSingleton)
+                            {
+                                msg = $"Remove this singleton?\n\nSingleton Entity #{e.Id}:{e.Gen}";
+                            }
+                            
                             if (EditorUtility.DisplayDialog(
                                     "Remove Entity",
-                                    $"Remove this entity?\n\nEntity #{e.Id}:{e.Gen}",
+                                    msg,
                                     "Yes", "No"))
                             {
                                 world.DespawnEntity(e);
@@ -1620,35 +1633,45 @@ namespace ZenECS.EditorWindows
                 }
 
                 // 라벨
-                EditorGUI.LabelField(rLabel, $"Components: {arr.Length}");
+                if (isSingleton)
+                {
+                    EditorGUI.LabelField(rLabel, $"Component");
+                }
+                else
+                {
+                    EditorGUI.LabelField(rLabel, $"Components: {arr.Length}");
+                }
 
                 // Add Component 버튼 (이제 여기!)
-                using (new EditorGUI.DisabledScope(!_editMode))
+                if (!isSingleton)
                 {
-                    if (GUI.Button(rAddComp, GetPlusIconContent(), EditorStyles.iconButton))
+                    using (new EditorGUI.DisabledScope(!_editMode))
                     {
-                        var all = ZenECS.EditorCommon.ZenComponentPickerWindow.FindAllZenComponents().ToList();
-                        var disabled = new HashSet<Type>();
-                        foreach (var (tHave, _) in world.GetAllComponents(e))
-                            disabled.Add(tHave);
+                        if (GUI.Button(rAddComp, GetPlusIconContent(), EditorStyles.iconButton))
+                        {
+                            var all = ZenECS.EditorCommon.ZenComponentPickerWindow.FindAllZenComponents().ToList();
+                            var disabled = new HashSet<Type>();
+                            foreach (var (tHave, _) in world.GetAllComponents(e))
+                                disabled.Add(tHave);
 
-                        ZenComponentPickerWindow.Show(
-                            all,
-                            disabled,
-                            picked =>
-                            {
-                                var inst = ZenDefaults.CreateWithDefaults(picked);
-                                world.AddComponentBoxed(e, inst);
-                                Repaint();
-                            },
-                            rAddComp, // 이제 Components 줄 오른쪽 Rect 기준으로
-                            $"Entity #{e.Id}:{e.Gen} Add Component"
-                        );
+                            ZenComponentPickerWindow.Show(
+                                all,
+                                disabled,
+                                picked =>
+                                {
+                                    var inst = ZenDefaults.CreateWithDefaults(picked);
+                                    world.AddComponentBoxed(e, inst);
+                                    Repaint();
+                                },
+                                rAddComp, // 이제 Components 줄 오른쪽 Rect 기준으로
+                                $"Entity #{e.Id}:{e.Gen} Add Component"
+                            );
+                        }
                     }
                 }
 
                 // 실제 리스트 렌더링
-                DrawComponentsList(world, e, arr);
+                DrawComponentsList(world, e, isSingleton, arr);
 
                 // ===== Components 끝난 직후 바로 아래에 추가 =====
                 {
@@ -2434,7 +2457,7 @@ namespace ZenECS.EditorWindows
         }
 
 
-        void DrawComponentsList(IWorld world, Entity e, (Type type, object? boxed)[] compsArray)
+        void DrawComponentsList(IWorld world, Entity e, bool isSingleton, (Type type, object? boxed)[] compsArray)
         {
             var line = EditorGUIUtility.singleLineHeight;
 
@@ -2473,39 +2496,66 @@ namespace ZenECS.EditorWindows
                                 
                                 using (new EditorGUI.DisabledScope(!_editMode))
                                 {
-                                    if (GUI.Button(rR0, "X", EditorStyles.miniButton))
+                                    if (!isSingleton)
                                     {
-                                        if (EditorUtility.DisplayDialog(
-                                                "Remove Component",
-                                                $"Remove this component?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}Component",
-                                                "Yes", "No"))
+                                        if (GUI.Button(rR0, "X", EditorStyles.miniButton))
                                         {
-                                            world.RemoveComponentBoxed(e, t);
-                                            _componentFold.Remove(ck);
-                                            Repaint();
-                                        }
-                                    }
-                                    
-                                    using (new EditorGUI.DisabledScope(!hasFields))
-                                    {
-                                        if (GUI.Button(rR1, "R", EditorStyles.miniButton))
-                                        {
-                                            // if (EditorUtility.DisplayDialog(
-                                            //         "Reset Component",
-                                            //         $"Reset to defaults?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}Component",
-                                            //         "Yes", "No"))
+                                            if (EditorUtility.DisplayDialog(
+                                                    "Remove Component",
+                                                    $"Remove this component?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}Component",
+                                                    "Yes", "No"))
                                             {
-                                                var def = ZenDefaults.CreateWithDefaults(t);
-                                                world.ReplaceComponentBoxed(e, def);
+                                                world.RemoveComponentBoxed(e, t);
+                                                _componentFold.Remove(ck);
                                                 Repaint();
                                             }
                                         }
-                                    }
+                                        
+                                        using (new EditorGUI.DisabledScope(!hasFields))
+                                        {
+                                            if (GUI.Button(rR1, "R", EditorStyles.miniButton))
+                                            {
+                                                // if (EditorUtility.DisplayDialog(
+                                                //         "Reset Component",
+                                                //         $"Reset to defaults?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}Component",
+                                                //         "Yes", "No"))
+                                                {
+                                                    var def = ZenDefaults.CreateWithDefaults(t);
+                                                    world.ReplaceComponentBoxed(e, def);
+                                                    Repaint();
+                                                }
+                                            }
+                                        }
                                     
-                                    var icon = GetSearchIconContent("Ping script asset");
-                                    if (GUI.Button(rR2, icon, EditorStyles.iconButton))
+                                        var icon = GetSearchIconContent("Ping script asset");
+                                        if (GUI.Button(rR2, icon, EditorStyles.iconButton))
+                                        {
+                                            PingContextType(t);
+                                        }
+                                    }
+                                    else
                                     {
-                                        PingContextType(t);
+                                        using (new EditorGUI.DisabledScope(!hasFields))
+                                        {
+                                            if (GUI.Button(rR0, "R", EditorStyles.miniButton))
+                                            {
+                                                // if (EditorUtility.DisplayDialog(
+                                                //         "Reset Component",
+                                                //         $"Reset to defaults?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}Component",
+                                                //         "Yes", "No"))
+                                                {
+                                                    var def = ZenDefaults.CreateWithDefaults(t);
+                                                    world.ReplaceComponentBoxed(e, def);
+                                                    Repaint();
+                                                }
+                                            }
+                                        }
+                                    
+                                        var icon = GetSearchIconContent("Ping script asset");
+                                        if (GUI.Button(rR1, icon, EditorStyles.iconButton))
+                                        {
+                                            PingContextType(t);
+                                        }
                                     }
                                 }
                             },

@@ -16,6 +16,11 @@ using System.Collections.Generic;
 
 namespace ZenECS.Core
 {
+    /// <summary>
+    /// Marker interface for components that must exist zero-or-one per world.
+    /// </summary>
+    public interface IWorldSingletonComponent {}
+    
     /// <summary>Typed component operations and ref accessors.</summary>
     public interface IWorldComponentApi
     {
@@ -57,5 +62,11 @@ namespace ZenECS.Core
 
         /// <summary>Enumerate all present components (boxed) for the entity.</summary>
         IEnumerable<(Type type, object? boxed)> GetAllComponents(Entity e);
+
+        void SetSingleton<T>(in T value) where T : struct, IWorldSingletonComponent;
+        T GetSingleton<T>() where T : struct, IWorldSingletonComponent;
+        bool RemoveSingleton<T>(in T value) where T : struct, IWorldSingletonComponent;
+        bool TryGetSingleton<T>(out T value) where T : struct, IWorldSingletonComponent;
+        bool HasSingleton(Entity e);
     }
 }
