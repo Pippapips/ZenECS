@@ -1,0 +1,15 @@
+{
+    "name": "ZenECS.Physics",
+    "rootNamespace": "ZenECS.Physics",
+    "references": [
+        "ZenECS.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "noEngineReferences": true
+}

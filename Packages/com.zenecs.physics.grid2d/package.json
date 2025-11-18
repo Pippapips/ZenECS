@@ -1,0 +1,21 @@
+{
+  "name": "com.zenecs.physics.grid2d",
+  "displayName": "ZenECS Physics Grid2D",
+  "version": "1.0.0",
+  "unity": "2021.3",
+  "description": "Tile/grid-based kinematic 2D collision helpers for ZenECS Physics (MapGrid2D, tile collision, grid movement).",
+  "keywords": [
+    "ecs",
+    "physics",
+    "grid",
+    "tile",
+    "zenecs"
+  ],
+  "author": {
+    "name": "Pippapips Limited"
+  },
+  "dependencies": {
+    "com.zenecs.core": "1.0.0",
+    "com.zenecs.physics": "1.0.0"
+  }
+}

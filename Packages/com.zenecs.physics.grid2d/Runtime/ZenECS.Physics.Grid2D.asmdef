@@ -1,0 +1,16 @@
+{
+    "name": "ZenECS.Physics.Grid2D",
+    "rootNamespace": "ZenECS.Physics.Grid2D",
+    "references": [
+        "ZenECS.Core",
+        "ZenECS.Physics"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "noEngineReferences": true
+}
