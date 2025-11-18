@@ -4,7 +4,8 @@ using System.Reflection;
 using Unity.Collections;                  // ★ FixedString64Bytes
 using UnityEngine;
 using ZenECS.Adapter.Unity.Attributes;
-using ZenECS.Core;                        // ★ ZenDefaults.CreateWithDefaults
+using ZenECS.Core;
+using ZenECS.Core.Attributes; // ★ ZenDefaults.CreateWithDefaults
 
 namespace ZenECS.Adapter.Unity.Blueprints
 {

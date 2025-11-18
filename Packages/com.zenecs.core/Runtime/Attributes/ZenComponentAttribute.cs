@@ -14,7 +14,7 @@
 using System;
 using System.Diagnostics; // Conditional
 
-namespace ZenECS.Adapter.Unity.Attributes
+namespace ZenECS.Core.Attributes
 {
     /// <summary>
     /// Attribute used by editor/tooling to collect component metadata.

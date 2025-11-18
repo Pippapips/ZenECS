@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace ZenECS.Adapter.Unity.Attributes
+namespace ZenECS.Core.Attributes
 {
     /// <summary>
     /// 간단 관제 쿼리: AllOf(모두 포함) 조합 기준으로 엔티티를 수집.

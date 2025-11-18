@@ -10,6 +10,7 @@ using ZenECS.Adapter.Unity.Attributes;
 using ZenECS.Adapter.Unity.Install;
 using ZenECS.Adapter.Unity.Util;
 using ZenECS.Core;
+using ZenECS.Core.Attributes;
 using ZenECS.Core.Systems;
 using ZenECS.EditorCommon;
 

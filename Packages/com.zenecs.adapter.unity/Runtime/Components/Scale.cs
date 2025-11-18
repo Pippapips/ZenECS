@@ -2,6 +2,7 @@
 using Unity.Mathematics;
 using ZenECS.Adapter.Unity.Attributes;
 using ZenECS.Core;
+using ZenECS.Core.Attributes;
 using ZenECS.Core.Serialization;
 using ZenECS.Core.Serialization.Formats.Binary;
 

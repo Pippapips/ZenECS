@@ -5,20 +5,21 @@ using ZenECS.Adapter.Unity.Binding.Contexts;
 using ZenECS.Adapter.Unity.Components.Common;
 using ZenECS.Core;
 using ZenECS.Core.Binding;
+using ZenECS.Physics.Components;
 
-namespace ZenECS.Adapter.Unity.Binding.Binders.Implementations
+namespace ZenECS.Physics.Grid2D.Unity.Binding.Binders
 {
-    public class UnityTransformSyncBinder :
+    public class Grid2DUnityTransform2DSyncBinder :
         BaseBinder,
-        IBind<Position>,
-        IBind<Rotation>,
-        IBind<Scale>
+        IBind<Position2D>
     {
-        private DeltaTracker<Position> _pos;
-        private DeltaTracker<Rotation> _rot;
-        private DeltaTracker<Scale> _scale;
+        private DeltaTracker<Position2D> _pos;
         
         private UnityTransformContext? _unityTransformContext;
+
+        protected override void OnBind(Entity e)
+        {
+        }
 
         protected override void OnContextAttached(IContext context)
         {
@@ -49,19 +50,9 @@ namespace ZenECS.Adapter.Unity.Binding.Binders.Implementations
             _unityTransformContext = null;
         }
 
-        public void OnDelta(in ComponentDelta<Position> delta)
+        public void OnDelta(in ComponentDelta<Position2D> delta)
         {
             _pos.ApplyDelta(delta);
-        }
-        
-        public void OnDelta(in ComponentDelta<Rotation> delta)
-        {
-            _rot.ApplyDelta(delta);
-        }
-
-        public void OnDelta(in ComponentDelta<Scale> delta)
-        {
-            _scale.ApplyDelta(delta);
         }
 
         protected override void OnApply(IWorld w, Entity e)
@@ -74,25 +65,10 @@ namespace ZenECS.Adapter.Unity.Binding.Binders.Implementations
                 _pos.ClearDirty();
                 if (_pos.Has)
                 {
-                    t.position = _pos.Last.Value;
-                }
-            }
-
-            if (_rot.NeedsApply)
-            {
-                _rot.ClearDirty();
-                if (_rot.Has)
-                {
-                    t.rotation = _rot.Last.Value;
-                }
-            }
-
-            if (_scale.NeedsApply)
-            {
-                _scale.ClearDirty();
-                if (_scale.Has)
-                {
-                    t.localScale = _scale.Last.Value;
+                    var p = t.position;
+                    p.x = _pos.Last.x;
+                    p.z = _pos.Last.y;
+                    t.position = p;
                 }
             }
         }

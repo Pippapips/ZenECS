@@ -7,6 +7,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Attributes;
+using ZenECS.Core.Attributes;
 
 namespace ZenECS.EditorCommon
 {

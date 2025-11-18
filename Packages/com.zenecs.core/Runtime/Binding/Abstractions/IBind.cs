@@ -22,7 +22,8 @@ namespace ZenECS.Core.Binding
         /// <summary>Component value changed (in-place update).</summary>
         Changed,
         /// <summary>Component was removed.</summary>
-        Removed
+        Removed,
+        Snapshot,
     }
 
     /// <summary>

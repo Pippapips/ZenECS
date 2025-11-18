@@ -112,6 +112,7 @@ namespace ZenECS.Core.Binding
         {
             switch (delta.Kind)
             {
+                case ComponentDeltaKind.Snapshot:
                 case ComponentDeltaKind.Added:
                 case ComponentDeltaKind.Changed:
                     Set(delta.Value, markDirty: true);

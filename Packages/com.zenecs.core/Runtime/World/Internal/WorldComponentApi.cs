@@ -32,12 +32,14 @@ namespace ZenECS.Core.Internal
         private static MethodInfo? _miHasOpen;
         private static MethodInfo? _miAddOpen;
         private static MethodInfo? _miReplaceOpen;
+        private static MethodInfo? _miSnapshotOpen;
         private static MethodInfo? _miRemoveOpen;
 
         // ── Per-type invoker caches (instance-bound) ────────────────────────
         private readonly Dictionary<Type, Func<Entity, bool>> _hasCache = new();
         private readonly Dictionary<Type, Func<Entity, object, bool>> _addBoxedCache = new();
         private readonly Dictionary<Type, Func<Entity, object, bool>> _replaceBoxedCache = new();
+        private readonly Dictionary<Type, Func<Entity, bool>> _snapshotBoxedCache = new();
         private readonly Dictionary<Type, Func<Entity, bool>> _removeCache = new();
 
         /// <summary>
@@ -76,6 +78,21 @@ namespace ZenECS.Core.Internal
             return _replaceBoxedInvoker(t)(e, boxed);
         }
 
+        public bool SnapshotComponentBoxed(Entity e, object? boxed)
+        {
+            if (boxed is null) return false;
+            var t = boxed.GetType();
+            if (!t.IsValueType)
+                throw new ArgumentException("Boxed component must be a value type (struct).", nameof(boxed));
+
+            return _snapshotBoxedInvoker(t)(e);
+        }
+        
+        public bool SnapshotComponentTyped(Entity e, Type? t)
+        {
+            return t != null && _snapshotBoxedInvoker(t)(e);
+        }
+
         /// <inheritdoc/>
         public bool RemoveComponentBoxed(Entity e, Type? componentType)
             => componentType is not null && _removeInvoker(componentType)(e);
@@ -111,6 +128,22 @@ namespace ZenECS.Core.Internal
             bool Wrapped(Entity e, object value) => (bool)closed.Invoke(this, new object[] { e, value })!;
 
             _addBoxedCache[t] = Wrapped;
+            return Wrapped;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Func<Entity, bool> _snapshotBoxedInvoker(Type t)
+        {
+            if (_snapshotBoxedCache.TryGetValue(t, out var fn)) return fn;
+
+            _miSnapshotOpen ??= typeof(World).GetMethod(
+                nameof(SnapshotComponent),
+                BindingFlags.Instance | BindingFlags.Public)!; // SnapshotComponent<T>(Entity)
+
+            var closed = _miSnapshotOpen.MakeGenericMethod(t);
+            bool Wrapped(Entity e) => (bool)closed.Invoke(this, new object[] { e })!;
+
+            _snapshotBoxedCache[t] = Wrapped;
             return Wrapped;
         }
 
@@ -187,6 +220,17 @@ namespace ZenECS.Core.Internal
             addSingletonIndex<T>(e);
             
             _bindingRouter.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Added, value));
+            return true;
+        }
+
+        /// <summary>
+        /// Snapshot a component value in-place and dispatch a “Changed” delta.
+        /// </summary>
+        public bool SnapshotComponent<T>(Entity e) where T : struct
+        {
+            if (!HasComponent<T>(e)) return false;
+            var r = ReadComponent<T>(e);
+            _bindingRouter.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Snapshot, r));
             return true;
         }
 

@@ -1,7 +1,6 @@
 ﻿#nullable enable
 using System.Collections.Generic;
 using UnityEngine;
-using ZenECS.Physics.Kinematic2D;
 
 namespace ZenECS.Physics.Grid2D.Unity
 {
@@ -31,7 +30,7 @@ namespace ZenECS.Physics.Grid2D.Unity
         /// Whether to include inactive children while scanning.
         /// </param>
         public static MapGrid2D BuildFromChildren(
-            Transform root,
+            Transform? root,
             int unitsPerUnity,
             float tileSizeUnity,
             LayerMask cubeLayerMask,
@@ -104,8 +103,10 @@ namespace ZenECS.Physics.Grid2D.Unity
                 };
             }
 
-            int originX = Mathf.RoundToInt(minTx * tileSizeUnits);
-            int originY = Mathf.RoundToInt(minTy * tileSizeUnits);
+            float halfTileUnity = tileSizeUnity * 0.5f;
+
+            int originX = Mathf.RoundToInt((minTx * tileSizeUnity - halfTileUnity) * unitsPerUnity);
+            int originY = Mathf.RoundToInt((minTy * tileSizeUnity - halfTileUnity) * unitsPerUnity);
 
             var collision = new byte[width * height];
 
@@ -134,12 +135,17 @@ namespace ZenECS.Physics.Grid2D.Unity
         }
 
         static List<Transform> CollectCubeTransforms(
-            Transform root,
+            Transform? root,
             LayerMask cubeLayerMask,
             bool includeInactiveChildren)
         {
             var result = new List<Transform>();
             var queue = new Queue<Transform>();
+            if (root == null)
+            {
+                Debug.LogWarning("No root transform found.");
+                return result;
+            }
             queue.Enqueue(root);
 
             while (queue.Count > 0)

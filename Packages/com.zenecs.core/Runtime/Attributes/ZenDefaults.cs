@@ -15,7 +15,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Reflection;
 
-namespace ZenECS.Adapter.Unity.Attributes
+namespace ZenECS.Core.Attributes
 {
     /// <summary>
     /// Core utility for creating objects with a type-specific default when available.

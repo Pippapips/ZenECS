@@ -15,7 +15,7 @@
 using System;
 using System.Diagnostics; // Conditional
 
-namespace ZenECS.Adapter.Unity.Attributes
+namespace ZenECS.Core.Attributes
 {
     /// <summary>
     /// Attribute used by editor/tooling to register a formatter for a specific component type.

@@ -62,6 +62,12 @@ namespace ZenECS.Core.Internal.Binding
             if (!_byEntity.TryGetValue(e, out var list))
                 _byEntity[e] = list = new List<IBinder>(_initialEntityCapacity);
             InsertOrdered(list, binder);
+
+            var components = w.GetAllComponents(e);
+            foreach (var (type, boxed) in components)
+            {
+                w.SnapshotComponentTyped(e, type);
+            }
         }
 
         /// <summary>

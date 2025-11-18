@@ -29,6 +29,7 @@ namespace ZenECS.Core
         bool AddComponent<T>(Entity e, in T value) where T : struct;
         bool ReplaceComponent<T>(Entity e, in T value) where T : struct;
         bool RemoveComponent<T>(Entity e) where T : struct;
+        bool SnapshotComponent<T>(Entity e) where T : struct;
 
         // ── Boxed / non-generic (NEW) ───────────────────────────────────────
         /// <summary>
@@ -47,6 +48,9 @@ namespace ZenECS.Core
         /// <see cref="ReplaceComponent{T}(Entity, in T)"/>.
         /// </summary>
         bool ReplaceComponentBoxed(Entity e, object? boxed);
+
+        bool SnapshotComponentBoxed(Entity e, object? boxed);
+        bool SnapshotComponentTyped(Entity e, Type? t);
 
         /// <summary>
         /// Removes a component using a runtime <paramref name="componentType"/>.

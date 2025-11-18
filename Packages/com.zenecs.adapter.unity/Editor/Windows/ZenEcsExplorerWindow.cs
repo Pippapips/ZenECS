@@ -12,6 +12,7 @@ using ZenECS.Adapter.Unity.Binding.Contexts;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
 using ZenECS.Adapter.Unity.Blueprints;
 using ZenECS.Core;
+using ZenECS.Core.Attributes;
 using ZenECS.Core.Binding;
 using ZenECS.Core.Systems;
 using ZenECS.EditorCommon;

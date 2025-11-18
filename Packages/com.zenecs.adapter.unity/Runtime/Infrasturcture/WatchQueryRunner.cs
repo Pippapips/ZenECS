@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using ZenECS.Adapter.Unity.Attributes;
 using ZenECS.Core;
+using ZenECS.Core.Attributes;
 
 namespace ZenECS.Adapter.Unity.Infrastructure
 {

@@ -149,7 +149,15 @@ namespace ZenECS.Core.Binding
             Contexts = contextLookup;
             Entity = e;
             _bound = true;
-            OnBind(e, contextLookup.GetAllContextList(world, e));
+            if (Contexts != null)
+            {
+                foreach (var context in Contexts.GetAllContextList(world, e)!)
+                {
+                    OnContextAttached(context);
+                }
+            }
+
+            OnBind(e);
         }
 
         /// <inheritdoc/>
@@ -189,7 +197,7 @@ namespace ZenECS.Core.Binding
         /// <summary>
         /// Hook called once after a successful <see cref="Bind"/>. Use to cache context references.
         /// </summary>
-        protected virtual void OnBind(Entity e, IReadOnlyList<IContext>? contexts) { }
+        protected virtual void OnBind(Entity e) { }
 
         /// <summary>
         /// Hook called during <see cref="Unbind"/> for cleanup (unsubscribe, dispose, etc.).
