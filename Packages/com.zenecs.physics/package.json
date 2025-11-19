@@ -1,9 +1,9 @@
 {
   "name": "com.zenecs.physics",
-  "displayName": "ZenECS Physics Core",
+  "displayName": "ZenECS Physics",
   "version": "1.0.0",
   "unity": "2021.3",
-  "description": "Core deterministic ECS-only kinematic 2D physics primitives for ZenECS (no grid/tile dependency).",
+  "description": "Deterministic ECS-only kinematic 2D physics primitives for ZenECS (no grid/tile dependency).",
   "keywords": [
     "ecs",
     "physics",

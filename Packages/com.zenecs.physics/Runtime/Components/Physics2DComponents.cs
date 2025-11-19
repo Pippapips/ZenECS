@@ -92,4 +92,49 @@ namespace ZenECS.Physics.Components
             this.y = y;
         }
     }
+
+    public struct Projectile
+    {
+        public Entity Owner;
+        public int Damage;
+        public int Radius;
+        public int MaxDistance;
+        public int Traveled;
+
+        public Projectile(Entity owner, int damage, int radius, int maxDistance, int traveled)
+        {
+            Owner = owner;
+            Damage = damage;
+            Radius = radius;
+            MaxDistance = maxDistance;
+            Traveled = traveled;
+        }
+    }
+    
+    public struct FireProjectileRequest
+    {
+        public FixedPosition2D SpawnPos;
+        public Velocity2D InitialVelocity;
+
+        public int Damage;
+        public int Radius;
+        public int MaxDistance;
+
+        public FireProjectileRequest(FixedPosition2D spawnPos, Velocity2D initialVelocity, int damage, int radius,
+            int maxDistance)
+        {
+            SpawnPos = spawnPos;
+            InitialVelocity = initialVelocity;
+            Damage = damage;
+            Radius = radius;
+            MaxDistance = maxDistance;
+        }
+    }
+
+    public struct HitEvent
+    {
+        public Entity Target;
+        public Entity Source;
+        public int Damage;
+    }
 }

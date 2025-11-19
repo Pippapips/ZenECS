@@ -11,6 +11,7 @@
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
+using System;
 using System.Collections.Concurrent;
 
 namespace ZenECS.Core.Internal.Scheduling
@@ -60,6 +61,18 @@ namespace ZenECS.Core.Internal.Scheduling
 
         // ---- Enqueue ops -----------------------------------------------------
 
+        /// <inheritdoc/>
+        public Entity SpawnEntity(IWorld w)
+        {
+            // World는 internal sealed partial 이고, 같은 어셈블리라 캐스트 가능
+            if (w is not World world)
+                throw new InvalidOperationException("CommandBuffer expects a World instance.");
+
+            var e = world.ReserveEntity();       // 아직 alive 아님
+            Q.Enqueue(new SpawnOp(e));           // 배리어에서 SpawnReserved 호출
+            return e;
+        }
+        
         /// <inheritdoc/>
         public void AddComponent<T>(Entity e, in T v) where T : struct
             => Q.Enqueue(new AddOp<T>(e, v));
@@ -117,6 +130,21 @@ namespace ZenECS.Core.Internal.Scheduling
             {
                 if (!w.IsAlive(_e)) return;
                 w.RemoveComponent<T>(_e);
+            }
+        }
+
+        private sealed class SpawnOp : IOp
+        {
+            private readonly Entity _e;
+            public SpawnOp(Entity e) { _e = e; }
+
+            public void Apply(IWorld w)
+            {
+                // World로 캐스트해서 SpawnReserved 호출
+                if (w is World world)
+                {
+                    world.SpawnReserved(_e);
+                }
             }
         }
 

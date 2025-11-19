@@ -83,36 +83,63 @@ namespace ZenECS.Core.Internal
 
         /// <summary>
         /// Create a new entity, optionally using a fixed id (for restores/tests).
+        /// Kept for compatibility; internally delegates to ReserveEntity+SpawnReserved.
         /// </summary>
         /// <param name="fixedId">Optional explicit id to claim.</param>
         /// <returns>A live <see cref="Entity"/> handle (id + current generation).</returns>
         public Entity SpawnEntity(int? fixedId = null)
+        {
+            var e = ReserveEntity(fixedId);
+            SpawnReserved(e);
+            return e;
+        }
+        
+        /// <summary>
+        /// Reserve an entity id/generation pair without marking it alive.
+        /// Intended for deferred structural changes via command buffers.
+        /// </summary>
+        /// <param name="fixedId">Optional explicit id to claim.</param>
+        /// <returns>A reserved <see cref="Entity"/> handle (id + current generation).</returns>
+        internal Entity ReserveEntity(int? fixedId = null)
         {
             int id;
             if (fixedId.HasValue)
             {
                 id = fixedId.Value;
                 EnsureEntityCapacity(id);
-                _alive.Set(id, true);
+                // NOTE: do NOT set _alive here; stays false until SpawnReserved
             }
             else if (_freeIds.Count > 0)
             {
                 id = _freeIds.Pop();
                 EnsureEntityCapacity(id);
-                _alive.Set(id, true);
+                // _alive[id] stays false
             }
             else
             {
                 id = _nextId++;
                 EnsureEntityCapacity(id);
-                _alive.Set(id, true);
+                // _alive[id] stays false
             }
 
-            var e = new Entity(id, _generation[id]);
-            EntityEvents.RaiseSpawned(this, e);
-            return e;
+            return new Entity(id, _generation[id]);
         }
+        
+        /// <summary>
+        /// Transition a previously reserved entity into the alive state
+        /// and fire spawn events.
+        /// </summary>
+        internal void SpawnReserved(Entity e)
+        {
+            // Already alive? then do nothing (idempotent guard)
+            if (IsAlive(e))
+                return;
 
+            // Mark as alive and raise events
+            _alive.Set(e.Id, true);
+            EntityEvents.RaiseSpawned(this, e);
+        }
+        
         /// <summary>
         /// Destroy a live entity. Dispatches binder/context teardown and events.
         /// </summary>

@@ -32,6 +32,12 @@ namespace ZenECS.Core
     {
         /// <summary>The world this buffer is bound to (null after disposal).</summary>
         IWorld? WorldRef { get; }
+
+        /// <summary>
+        /// Reserve a new entity in the target world and enqueue a SpawnOp
+        /// so that it becomes alive when the buffer is applied.
+        /// </summary>
+        Entity SpawnEntity(IWorld w);
         
         /// <summary>Add a component (no-op if present policies forbid).</summary>
         void AddComponent<T>(Entity e, in T v) where T : struct;

@@ -306,9 +306,9 @@ namespace ZenECS.Core.Internal
         /// <summary>
         /// Read component by ref (alias of <see cref="RefComponent{T}(Entity)"/>).
         /// </summary>
-        public ref T ReadComponent<T>(Entity e) where T : struct
+        public T ReadComponent<T>(Entity e) where T : struct
         {
-            return ref RefComponent<T>(e);
+            return RefComponent<T>(e);
         }
 
         /// <summary>

@@ -227,17 +227,9 @@ namespace ZenECS.Core.Internal.Systems
         /// <inheritdoc/>
         public void BeginFrame(IWorld w, float dt)
         {
-            // Apply queued mutations at the start of the frame
             ApplyPending(w);
-
-            // Drain per-world message queue at frame start
             _bus.PumpAll();
-
-            // FrameSetup (variable)
             RunGroup(SystemGroup.FrameSetup, w, dt);
-            _worker.RunScheduledJobs(w);
-
-            // Simulation (variable)
             RunGroup(SystemGroup.Simulation, w, dt);
             _worker.RunScheduledJobs(w);
         }
@@ -247,7 +239,7 @@ namespace ZenECS.Core.Internal.Systems
         {
             RunFixedGroup(SystemGroup.FrameSetup, w, fixedDelta);
             RunFixedGroup(SystemGroup.Simulation, w, fixedDelta);
-            // Note: structural changes are deferred to the main-frame boundary
+            _worker.RunScheduledJobs(w);
         }
 
         /// <inheritdoc/>
@@ -255,8 +247,7 @@ namespace ZenECS.Core.Internal.Systems
         {
             // Apply world → view deltas before presentation systems run
             _router.ApplyAll(w);
-
-            using IDisposable? guard = DenyWrites(_permissionHook);
+            using var guard = DenyWrites(_permissionHook);
             RunLateGroup(SystemGroup.Presentation, w, dt, interpolationAlpha);
         }
 

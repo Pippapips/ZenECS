@@ -24,6 +24,8 @@ namespace ZenECS.Core
     /// </remarks>
     public readonly struct Entity : IEquatable<Entity>
     {
+        public static readonly Entity None = default;
+        
         /// <summary>Raw 64-bit handle value (upper 32 = generation, lower 32 = id).</summary>
         public readonly ulong Handle;
 

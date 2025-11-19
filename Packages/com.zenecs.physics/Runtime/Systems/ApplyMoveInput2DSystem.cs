@@ -36,6 +36,17 @@ namespace ZenECS.Physics.Systems
             foreach (var (e, stats, vel) in
                      w.Query<MovementStats2D, Velocity2D>())
             {
+
+                if (w.TryRead<Position2D>(e, out var p))
+                {
+                    p.x = 10;
+                    p.y = 20;
+                }
+
+                var p2d = w.ReadComponent<Position2D>(e);
+                p2d.x = 10;
+                p2d.y = 20;
+                
                 var newVel = vel;
                 newVel.vx = _dx * stats.GetSpeedPerTick(dt) / 1000;
                 newVel.vy = _dy * stats.GetSpeedPerTick(dt) / 1000;
