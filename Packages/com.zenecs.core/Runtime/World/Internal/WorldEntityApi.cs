@@ -87,7 +87,7 @@ namespace ZenECS.Core.Internal
         /// </summary>
         /// <param name="fixedId">Optional explicit id to claim.</param>
         /// <returns>A live <see cref="Entity"/> handle (id + current generation).</returns>
-        public Entity SpawnEntity(int? fixedId = null)
+        internal Entity SpawnEntity(int? fixedId = null)
         {
             var e = ReserveEntity(fixedId);
             SpawnReserved(e);

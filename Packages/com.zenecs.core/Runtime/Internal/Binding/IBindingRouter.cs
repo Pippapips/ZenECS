@@ -24,7 +24,7 @@ namespace ZenECS.Core.Internal.Binding
     internal interface IBindingRouter
     {
         /// <summary>Attach a binder to the entity.</summary>
-        void Attach(IWorld w, Entity e, IBinder binder, AttachOptions options = AttachOptions.Strict);
+        void Attach(IWorld w, Entity e, IBinder binder);
 
         /// <summary>Detach a specific binder from the entity.</summary>
         void Detach(Entity e, IBinder binder);

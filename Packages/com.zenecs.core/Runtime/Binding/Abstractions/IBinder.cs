@@ -151,9 +151,13 @@ namespace ZenECS.Core.Binding
             _bound = true;
             if (Contexts != null)
             {
-                foreach (var context in Contexts.GetAllContextList(world, e)!)
+                var contextList = Contexts.GetAllContextList(world, e);
+                if (contextList != null)
                 {
-                    OnContextAttached(context);
+                    foreach (var context in contextList)
+                    {
+                        OnContextAttached(context);
+                    }
                 }
             }
 

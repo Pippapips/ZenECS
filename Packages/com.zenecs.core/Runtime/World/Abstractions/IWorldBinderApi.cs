@@ -38,7 +38,7 @@ namespace ZenECS.Core
         /// <summary>
         /// Attach a binder to an entity using the given policy.
         /// </summary>
-        void AttachBinder(Entity e, IBinder binder, AttachOptions options = AttachOptions.Strict);
+        void AttachBinder(Entity e, IBinder binder);
 
         /// <summary>Detach all binders from an entity.</summary>
         void DetachAllBinders(Entity e);

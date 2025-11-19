@@ -93,6 +93,14 @@ namespace ZenECS.Core.Events
         internal static void RaiseDespawned(IWorld w, Entity e) => EntityDestroyed?.Invoke(w, e);
 
         /// <summary>
+        /// Raise the <see cref="EntityDestroyed"/> event.
+        /// </summary>
+        /// <param name="w">World in which the entity was destroyed.</param>
+        /// <param name="e">The destroyed entity handle.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void RaiseNewEntitiesFrame(IWorld w, Entity[]? entities) => NewEntitiesFrame?.Invoke(w, entities);
+
+        /// <summary>
         /// Clears all subscribers to prevent leaks during domain reloads, test runs, or runtime restarts.
         /// </summary>
         /// <remarks>
@@ -105,6 +113,9 @@ namespace ZenECS.Core.Events
             EntityCreated = null;
             EntityDestroyRequested = null;
             EntityDestroyed = null;
+            NewEntitiesFrame = null;
         }
+        
+        public static event Action<IWorld, Entity[]?>? NewEntitiesFrame;
     }
 }

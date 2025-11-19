@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ZenECS.Core.Events;
 using ZenECS.Core.Internal.Binding;
 using ZenECS.Core.Internal.Hooking;
 using ZenECS.Core.Internal.Messaging;
@@ -43,6 +44,8 @@ namespace ZenECS.Core.Internal.Systems
         // Pending mutations (applied only at frame boundary)
         private readonly List<ISystem> _pendingAdd = new();
         private readonly List<Type> _pendingRemove = new();
+        readonly List<Entity> _newEntitiesThisFrame = new();
+        
         private bool _dirty;
 
         private readonly IMessageBus _bus;
@@ -59,6 +62,13 @@ namespace ZenECS.Core.Internal.Systems
             _router = router;
             _worker = worker;
             _bus = bus;
+            
+            EntityEvents.EntityCreated += EntityEventsOnEntityCreated;
+        }
+        
+        private void EntityEventsOnEntityCreated(IWorld w, Entity e)
+        {
+            _newEntitiesThisFrame.Add(e);
         }
 
         /// <summary>
@@ -245,6 +255,12 @@ namespace ZenECS.Core.Internal.Systems
         /// <inheritdoc/>
         public void LateFrame(IWorld w, float dt, float interpolationAlpha = 1f)
         {
+            if (_newEntitiesThisFrame.Count > 0)
+            {
+                EntityEvents.RaiseNewEntitiesFrame(w, _newEntitiesThisFrame.ToArray());
+                _newEntitiesThisFrame.Clear();
+            }
+            
             // Apply world → view deltas before presentation systems run
             _router.ApplyAll(w);
             using var guard = DenyWrites(_permissionHook);
