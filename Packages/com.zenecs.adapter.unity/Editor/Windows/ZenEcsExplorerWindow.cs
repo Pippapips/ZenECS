@@ -1568,7 +1568,8 @@ namespace ZenECS.EditorWindows
                                     msg,
                                     "Yes", "No"))
                             {
-                                world.DespawnEntity(e);
+                                using var cmd = world.BeginWrite();
+                                cmd.DespawnEntity(e);
                                 _entityFold[_foundEntity] = _findEntityFoldBackup;
 
                                 _entityIdText = "";
@@ -1660,8 +1661,9 @@ namespace ZenECS.EditorWindows
                                 disabled,
                                 picked =>
                                 {
+                                    using var cmd = world.BeginWrite();
                                     var inst = ZenDefaults.CreateWithDefaults(picked);
-                                    world.AddComponentBoxed(e, inst);
+                                    cmd.AddComponentBoxed(e, inst);
                                     Repaint();
                                 },
                                 rAddComp, // 이제 Components 줄 오른쪽 Rect 기준으로
@@ -2506,7 +2508,8 @@ namespace ZenECS.EditorWindows
                                                     $"Remove this component?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}Component",
                                                     "Yes", "No"))
                                             {
-                                                world.RemoveComponentBoxed(e, t);
+                                                using var cmd = world.BeginWrite();
+                                                cmd.RemoveComponentTyped(e, t);
                                                 _componentFold.Remove(ck);
                                                 Repaint();
                                             }
@@ -2521,8 +2524,9 @@ namespace ZenECS.EditorWindows
                                                 //         $"Reset to defaults?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}Component",
                                                 //         "Yes", "No"))
                                                 {
+                                                    using var cmd = world.BeginWrite();
                                                     var def = ZenDefaults.CreateWithDefaults(t);
-                                                    world.ReplaceComponentBoxed(e, def);
+                                                    cmd.ReplaceComponentBoxed(e, def);
                                                     Repaint();
                                                 }
                                             }
@@ -2545,8 +2549,9 @@ namespace ZenECS.EditorWindows
                                                 //         $"Reset to defaults?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}Component",
                                                 //         "Yes", "No"))
                                                 {
+                                                    using var cmd = world.BeginWrite();
                                                     var def = ZenDefaults.CreateWithDefaults(t);
-                                                    world.ReplaceComponentBoxed(e, def);
+                                                    cmd.ReplaceComponentBoxed(e, def);
                                                     Repaint();
                                                 }
                                             }
@@ -2580,7 +2585,11 @@ namespace ZenECS.EditorWindows
 
                             EditorGUI.BeginChangeCheck();
                             ZenComponentFormGUI.DrawObject(bodyInner, obj, t);
-                            if (EditorGUI.EndChangeCheck() && _editMode) world.ReplaceComponentBoxed(e, obj);
+                            if (EditorGUI.EndChangeCheck() && _editMode)
+                            {
+                                using var cmd = world.BeginWrite();
+                                cmd.ReplaceComponentBoxed(e, obj);
+                            }
                         }
                         catch (KeyNotFoundException) { }
                     }

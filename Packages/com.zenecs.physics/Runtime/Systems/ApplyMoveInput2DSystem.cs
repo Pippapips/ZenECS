@@ -32,6 +32,8 @@ namespace ZenECS.Physics.Systems
         
         public void Run(IWorld w, float dt)
         {
+            using var cmd = w.BeginWrite();
+            
             // dt ignore
             foreach (var (e, stats, vel) in
                      w.Query<MovementStats2D, Velocity2D>())
@@ -50,7 +52,7 @@ namespace ZenECS.Physics.Systems
                 var newVel = vel;
                 newVel.vx = _dx * stats.GetSpeedPerTick(dt) / 1000;
                 newVel.vy = _dy * stats.GetSpeedPerTick(dt) / 1000;
-                w.ReplaceComponent(e, newVel);
+                cmd.ReplaceComponent(e, newVel);
             }
         }
     }

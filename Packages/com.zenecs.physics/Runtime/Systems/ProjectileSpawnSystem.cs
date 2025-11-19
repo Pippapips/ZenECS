@@ -21,7 +21,7 @@ namespace ZenECS.Physics.Systems
             foreach (var (owner, req) in w.Query<FireProjectileRequest>())
             {
                 // 1) 엔티티 예약 + SpawnOp 기록
-                var projectile = cmd.SpawnEntity(w);
+                var projectile = cmd.SpawnEntity();
 
                 // 2) 컴포넌트 추가는 전부 버퍼에 기록
                 cmd.AddComponent(projectile, req.SpawnPos);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Input;
 using ZenECS.Core;
 
 namespace ZenECS.Adapter.Unity.Blueprints
@@ -20,15 +21,16 @@ namespace ZenECS.Adapter.Unity.Blueprints
 
         public List<Entry> entries = new();
 
-        public void ApplyTo(IWorld world, Entity e)
+        public void ApplyTo(IWorld world, Entity e, ICommandBuffer cmd)
         {
+            //using var cmd = world.BeginWrite();
             foreach (var it in entries)
             {
                 if (string.IsNullOrEmpty(it?.typeName)) continue;
                 var t = Resolve(it.typeName);
                 if (t == null) continue;
                 var boxed = ComponentJson.Deserialize(it.json, t);
-                world.AddComponentBoxed(e, boxed);
+                cmd.AddComponentBoxed(e, boxed);
                 //BlueprintApplier.AddBoxed(world, e, boxed);
             }
         }

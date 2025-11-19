@@ -24,12 +24,12 @@ namespace ZenECS.Core
     /// <summary>Typed component operations and ref accessors.</summary>
     public interface IWorldComponentApi
     {
-        bool AddComponent<T>(Entity e, in T value) where T : struct;
-        bool AddComponentBoxed(Entity e, object? boxed);
-        bool ReplaceComponent<T>(Entity e, in T value) where T : struct;
-        bool RemoveComponent<T>(Entity e) where T : struct;
-        bool ReplaceComponentBoxed(Entity e, object? boxed);
-        bool RemoveComponentBoxed(Entity e, Type? componentType);
+        // bool AddComponent<T>(Entity e, in T value) where T : struct;
+        // bool AddComponentBoxed(Entity e, object? boxed);
+        // bool ReplaceComponent<T>(Entity e, in T value) where T : struct;
+        // bool RemoveComponent<T>(Entity e) where T : struct;
+        // bool ReplaceComponentBoxed(Entity e, object? boxed);
+        // bool RemoveComponentBoxed(Entity e, Type? componentType);
         
         bool HasComponent<T>(Entity e) where T : struct;
         bool HasComponentBoxed(Entity e, Type? componentType);
@@ -46,9 +46,10 @@ namespace ZenECS.Core
         /// <summary>Enumerate all present components (boxed) for the entity.</summary>
         IEnumerable<(Type type, object? boxed)> GetAllComponents(Entity e);
 
-        void SetSingleton<T>(in T value) where T : struct, IWorldSingletonComponent;
+        // void SetSingleton<T>(in T value) where T : struct, IWorldSingletonComponent;
+        // bool RemoveSingleton<T>(in T value) where T : struct, IWorldSingletonComponent;
+
         T GetSingleton<T>() where T : struct, IWorldSingletonComponent;
-        bool RemoveSingleton<T>(in T value) where T : struct, IWorldSingletonComponent;
         bool TryGetSingleton<T>(out T value) where T : struct, IWorldSingletonComponent;
         bool HasSingleton(Entity e);
     }

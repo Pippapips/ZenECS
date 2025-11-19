@@ -56,8 +56,7 @@ namespace ZenECS.Core.Internal
             return componentType is not null && _hasInvoker(componentType)(e);
         }
 
-        /// <inheritdoc/>
-        public bool AddComponentBoxed(Entity e, object? boxed)
+        internal bool AddComponentBoxed(Entity e, object? boxed)
         {
             if (boxed is null) return false;
             var t = boxed.GetType();
@@ -67,8 +66,7 @@ namespace ZenECS.Core.Internal
             return _addBoxedInvoker(t)(e, boxed);
         }
 
-        /// <inheritdoc/>
-        public bool ReplaceComponentBoxed(Entity e, object? boxed)
+        internal bool ReplaceComponentBoxed(Entity e, object? boxed)
         {
             if (boxed is null) return false;
             var t = boxed.GetType();
@@ -77,6 +75,9 @@ namespace ZenECS.Core.Internal
 
             return _replaceBoxedInvoker(t)(e, boxed);
         }
+
+        internal bool RemoveComponentTyped(Entity e, Type? componentType)
+            => componentType is not null && _removeInvoker(componentType)(e);
 
         public bool SnapshotComponentBoxed(Entity e, object? boxed)
         {
@@ -92,10 +93,6 @@ namespace ZenECS.Core.Internal
         {
             return t != null && _snapshotBoxedInvoker(t)(e);
         }
-
-        /// <inheritdoc/>
-        public bool RemoveComponentBoxed(Entity e, Type? componentType)
-            => componentType is not null && _removeInvoker(componentType)(e);
 
         // ── Invoker builders (cached) ───────────────────────────────────────
 
@@ -122,7 +119,7 @@ namespace ZenECS.Core.Internal
 
             _miAddOpen ??= typeof(World).GetMethod(
                 nameof(AddComponent),
-                BindingFlags.Instance | BindingFlags.Public)!; // AddComponent<T>(Entity, in T)
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!; // AddComponent<T>(Entity, in T)
 
             var closed = _miAddOpen.MakeGenericMethod(t);
             bool Wrapped(Entity e, object value) => (bool)closed.Invoke(this, new object[] { e, value })!;
@@ -154,7 +151,7 @@ namespace ZenECS.Core.Internal
 
             _miReplaceOpen ??= typeof(World).GetMethod(
                 nameof(ReplaceComponent),
-                BindingFlags.Instance | BindingFlags.Public)!; // ReplaceComponent<T>(Entity, in T)
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!; // ReplaceComponent<T>(Entity, in T)
 
             var closed = _miReplaceOpen.MakeGenericMethod(t);
             bool Wrapped(Entity e, object value) => (bool)closed.Invoke(this, new object[] { e, value })!;
@@ -170,7 +167,7 @@ namespace ZenECS.Core.Internal
 
             _miRemoveOpen ??= typeof(World).GetMethod(
                 nameof(RemoveComponent),
-                BindingFlags.Instance | BindingFlags.Public)!; // RemoveComponent<T>(Entity)
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!; // RemoveComponent<T>(Entity)
 
             var closed = _miRemoveOpen.MakeGenericMethod(t);
             bool Wrapped(Entity e) => (bool)closed.Invoke(this, new object[] { e })!;
@@ -191,7 +188,7 @@ namespace ZenECS.Core.Internal
         /// <summary>
         /// Add a component to an entity if absent, honoring permission/validation hooks.
         /// </summary>
-        public bool AddComponent<T>(Entity e, in T value) where T : struct
+        internal bool AddComponent<T>(Entity e, in T value) where T : struct
         {
             if (!_permissionHook.EvaluateWritePermission(e, typeof(T)))
             {
@@ -237,7 +234,7 @@ namespace ZenECS.Core.Internal
         /// <summary>
         /// Replace a component value in-place and dispatch a “Changed” delta.
         /// </summary>
-        public bool ReplaceComponent<T>(Entity e, in T value) where T : struct
+        internal bool ReplaceComponent<T>(Entity e, in T value) where T : struct
         {
             if (!_permissionHook.EvaluateWritePermission(e, typeof(T)))
             {
@@ -267,7 +264,7 @@ namespace ZenECS.Core.Internal
         /// <summary>
         /// Remove a component from an entity and dispatch a “Removed” delta.
         /// </summary>
-        public bool RemoveComponent<T>(Entity e) where T : struct
+        internal bool RemoveComponent<T>(Entity e) where T : struct
         {
             if (!_permissionHook.EvaluateWritePermission(e, typeof(T)))
             {
@@ -437,7 +434,7 @@ namespace ZenECS.Core.Internal
             return false;
         }
         
-        public void SetSingleton<T>(in T value) where T : struct, IWorldSingletonComponent
+        internal void SetSingleton<T>(in T value) where T : struct, IWorldSingletonComponent
         {
             // Check if exists
             if (TryGetSingletonEntityInternal<T>(out var e))
@@ -459,7 +456,7 @@ namespace ZenECS.Core.Internal
             return ReadComponent<T>(e);
         }
 
-        public bool RemoveSingleton<T>(in T value) where T : struct, IWorldSingletonComponent
+        internal bool RemoveSingleton<T>() where T : struct, IWorldSingletonComponent
         {
             if (TryGetSingletonEntityInternal<T>(out var e))
             {

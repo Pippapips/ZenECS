@@ -30,8 +30,10 @@ namespace ZenECS.Adapter.Unity.Blueprints
         /// </summary>
         public Entity Spawn(IWorld world, ISharedContextResolver sharedContextResolver)
         {
-            var e = world.SpawnEntity();
-            _data?.ApplyTo(world, e);
+            using var cmd = world.BeginWrite();
+            var e = cmd.SpawnEntity();
+            //cmd.EndWrite();
+            _data?.ApplyTo(world, e, cmd);
 
             // 1) Contexts first (so binders see them in OnAttach).
             for (int i = 0; i < _contextAssets.Count; i++)

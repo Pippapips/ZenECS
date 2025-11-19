@@ -144,7 +144,7 @@ namespace ZenECS.Core.Internal
         /// Destroy a live entity. Dispatches binder/context teardown and events.
         /// </summary>
         /// <param name="e">Entity to destroy.</param>
-        public void DespawnEntity(Entity e)
+        internal void DespawnEntity(Entity e)
         {
             if (!IsAlive(e)) return;
 

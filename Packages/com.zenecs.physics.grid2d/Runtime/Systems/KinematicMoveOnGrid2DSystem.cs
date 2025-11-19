@@ -19,6 +19,8 @@ namespace ZenECS.Physics.Grid2D.Systems
         {
             var map = w.GetSingleton<MapGrid2D>();
 
+            using var cmd = w.BeginWrite();
+            
             foreach (var (e, pos, vel, col, stats) in
                      w.Query<FixedPosition2D, Velocity2D, CircleCollider2D, MovementStats2D>(_f))
             {
@@ -26,13 +28,13 @@ namespace ZenECS.Physics.Grid2D.Systems
                 if (KinematicGridMove2D.MoveWithTileCollision(ref newPos, in vel, in col, in map))
                 {
                     // 실제로 위치가 바뀌었을 때만 스냅 + 보간 리셋
-                    w.ReplaceComponent(e, newPos);
+                    cmd.ReplaceComponent(e, newPos);
 
                     var newStats = stats;
                     newStats.InterpolationTime = 0f;
                     newStats.LastFixedX = newPos.x;
                     newStats.LastFixedY = newPos.y;
-                    w.ReplaceComponent(e, newStats);
+                    cmd.ReplaceComponent(e, newStats);
                 }
             }
         }

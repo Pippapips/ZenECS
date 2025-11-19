@@ -16,6 +16,8 @@ namespace ZenECS.Physics.Grid2D.Unity.Systems
 
         public void Run(IWorld w, float dt)
         {
+            using var cmd = w.BeginWrite();
+            
             foreach (var (e, fpos, pos, stats) in
                      w.Query<FixedPosition2D, Position2D, MovementStats2D>(_f))
             {
@@ -36,9 +38,9 @@ namespace ZenECS.Physics.Grid2D.Unity.Systems
                         (float)fpos.x / (float)newStats.UnitsPerUnity,
                         (float)fpos.y / (float)newStats.UnitsPerUnity);
 
-                    w.ReplaceComponent(e, snapped);
+                    cmd.ReplaceComponent(e, snapped);
                     newStats.InterpolationTime = 1f;
-                    w.ReplaceComponent(e, newStats);
+                    cmd.ReplaceComponent(e, newStats);
                     continue;
                 }
                 
@@ -46,7 +48,7 @@ namespace ZenECS.Physics.Grid2D.Unity.Systems
                 newStats.InterpolationTime = Mathf.Clamp01(
                     newStats.InterpolationTime + dt / newStats.FixedDeltaTime);
 
-                w.ReplaceComponent(e, newStats);
+                cmd.ReplaceComponent(e, newStats);
 
                 // ---- 여기서부터는 "항상 Unity 단위"에서 Lerp ----
                 float fromX = pos.x;
@@ -59,7 +61,7 @@ namespace ZenECS.Physics.Grid2D.Unity.Systems
                 float y = Mathf.Lerp(fromY, toY, newStats.InterpolationTime);
 
                 var interp = new Position2D(x, y);
-                w.ReplaceComponent(e, interp);
+                cmd.ReplaceComponent(e, interp);
             }
         }
     }
