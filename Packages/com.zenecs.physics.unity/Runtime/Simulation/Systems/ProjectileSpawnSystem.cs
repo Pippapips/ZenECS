@@ -76,7 +76,7 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                 cmd.AddComponent(projectile, new CircleCollider2D
                 {
                     radius = radiusUnits,
-                    layerMask = 0, // TODO: 프로젝트 규칙에 맞게 설정
+                    layerMask = 1,
                     isTrigger = true
                 });
 

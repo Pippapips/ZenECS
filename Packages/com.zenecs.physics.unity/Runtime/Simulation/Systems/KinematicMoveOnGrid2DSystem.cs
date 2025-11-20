@@ -1,7 +1,9 @@
-﻿using ZenECS.Core;
+﻿using UnityEngine;
+using ZenECS.Core;
 using ZenECS.Core.Attributes;
 using ZenECS.Core.Systems;
 using ZenECS.Physics.Unity.Simulation.Components;
+using CircleCollider2D = ZenECS.Physics.Unity.Simulation.Components.CircleCollider2D;
 
 namespace ZenECS.Physics.Unity.Simulation.Systems
 {
@@ -24,7 +26,21 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                      w.Query<FixedPosition2D, Velocity2D, CircleCollider2D, MovementStats2D>(_f))
             {
                 var newPos = pos;
-                if (KinematicGridMove2D.MoveWithTileCollision(ref newPos, in vel, in col, in map))
+                var result = KinematicGridMove2D.MoveWithTileCollision(ref newPos, in vel, in col, in map);
+                if (result.hitWall)
+                {
+                    if (w.TryReadComponent<Projectile>(e, out var projectile))
+                    {
+                        Debug.Log("HitEvent Here");
+                        cmd.AddComponent(e, new HitEvent()
+                        {
+                            Damage = 10,
+                            Source = projectile.Owner,
+                            HitType = EHitType.MapWall
+                        });
+                    }
+                }
+                else if (result.moved)
                 {
                     // 실제로 위치가 바뀌었을 때만 스냅 + 보간 리셋
                     cmd.ReplaceComponent(e, newPos);

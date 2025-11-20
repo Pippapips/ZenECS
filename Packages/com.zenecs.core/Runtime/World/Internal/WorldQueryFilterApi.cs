@@ -122,12 +122,13 @@ namespace ZenECS.Core.Internal
                 var arr = new IComponentPool[types.Length];
                 for (int i = 0; i < types.Length; i++)
                 {
-                    var p = _componentPoolRepository.GetPool(types[i]);
-                    if (p == null) return null;
+                    var p = _componentPoolRepository.GetOrCreatePoolByType(types[i]);
+                    if (p == null) return null;  // 아직 풀이 없음
                     arr[i] = p;
                 }
                 return arr;
             }
+
             IComponentPool[][]? ToPoolBuckets(Type[][]? buckets)
             {
                 if (buckets == null || buckets.Length == 0) return Array.Empty<IComponentPool[]>();
@@ -138,7 +139,7 @@ namespace ZenECS.Core.Internal
                     var ps = new IComponentPool[tset.Length];
                     for (int j = 0; j < tset.Length; j++)
                     {
-                        var p = _componentPoolRepository.GetPool(tset[j]);
+                        var p = _componentPoolRepository.GetOrCreatePoolByType(tset[j]);
                         if (p == null) return null;
                         ps[j] = p;
                     }
@@ -147,18 +148,22 @@ namespace ZenECS.Core.Internal
                 return arr;
             }
 
+            var withAll    = ToPools(f.withAll);
+            var withoutAll = ToPools(f.withoutAll);
+            var withAny    = ToPoolBuckets(f.withAny);
+            var withoutAny = ToPoolBuckets(f.withoutAny);
+
             var rf = new ResolvedFilter
             {
-                withAll = ToPools(f.withAll) ?? Array.Empty<IComponentPool>(),
-                withoutAll = ToPools(f.withoutAll) ?? Array.Empty<IComponentPool>(),
-                withAny = ToPoolBuckets(f.withAny) ?? Array.Empty<IComponentPool[]>(),
-                withoutAny = ToPoolBuckets(f.withoutAny) ?? Array.Empty<IComponentPool[]>(),
+                withAll    = withAll    ?? Array.Empty<IComponentPool>(),
+                withoutAll = withoutAll ?? Array.Empty<IComponentPool>(),
+                withAny    = withAny    ?? Array.Empty<IComponentPool[]>(),
+                withoutAny = withoutAny ?? Array.Empty<IComponentPool[]>(),
             };
-            if (rf.withAll == null)
-            {
-                rf.withAll = Array.Empty<IComponentPool>();
-                rf.withAny = Array.Empty<IComponentPool[]>();
-            }
+
+            // ★ 어떤 타입이라도 아직 풀이 없으면 캐시하지 않는다.
+            if (withAll == null || withoutAll == null || withAny == null || withoutAny == null)
+                return rf;
 
             filterCache[key] = rf;
             return rf;

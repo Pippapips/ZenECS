@@ -134,6 +134,7 @@ namespace ZenECS.Physics.Unity.Simulation.Components
 
     public struct HitEvent
     {
+        public EHitType HitType;
         public Entity Target;
         public Entity Source;
         public int Damage;
