@@ -3,13 +3,10 @@
     "rootNamespace": "ZenECS.Adapter.Unity",
     "references": [
         "ZenECS.Core",
-        "Unity.Mathematics",
-        "Unity.Collections",
-        "Unity.Addressables",
         "UniRx",
         "Zenject",
-        "Unity.TextMeshPro",
-        "ZenECS.Physics"
+        "Unity.Mathematics",
+        "Unity.Collections"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -28,16 +25,6 @@
             "name": "com.neuecc.unirx",
             "expression": "7.1.0",
             "define": "ZENECS_UNIRX"
-        },
-        {
-            "name": "com.unity.mathematics",
-            "expression": "1.3.2",
-            "define": "ZENECS_MATH"
-        },
-        {
-            "name": "com.unity.collections",
-            "expression": "2.5.7",
-            "define": "ZENECS_COLLECTIONS"
         }
     ],
     "noEngineReferences": false

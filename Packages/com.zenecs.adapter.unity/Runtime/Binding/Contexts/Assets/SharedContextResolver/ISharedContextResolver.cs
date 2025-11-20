@@ -9,5 +9,6 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts.Assets
         /// 없으면 null.
         /// </summary>
         IContext Resolve(SharedContextAsset marker);
+        IContext Resolve<T>() where T : IContext;
     }
 }

@@ -41,7 +41,7 @@ namespace ZenECS.Core
         T ReadComponent<T>(Entity e) where T : struct;
         
         /// <summary>Try read by value; returns <c>false</c> if the component is absent.</summary>
-        bool TryRead<T>(Entity e, out T value) where T : struct;
+        bool TryReadComponent<T>(Entity e, out T value) where T : struct;
 
         /// <summary>Enumerate all present components (boxed) for the entity.</summary>
         IEnumerable<(Type type, object? boxed)> GetAllComponents(Entity e);

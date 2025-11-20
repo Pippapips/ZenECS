@@ -117,6 +117,11 @@ namespace ZenECS.Core.Internal
             _q.Enqueue(new RemoveSingletonOp<T>());
         }
 
+        public void DespawnAllEntities()
+        {
+            _q.Enqueue(new DespawnAllEntitiesOp());
+        }
+
         // ──────────────────────────────────────────────────────────────────
         // IJob
         // ──────────────────────────────────────────────────────────────────
@@ -317,6 +322,19 @@ namespace ZenECS.Core.Internal
                 //  • 싱글톤 엔티티가 있다면 전용 엔티티 통째로 Despawn
                 //  • 없다면 no-op
                 world.RemoveSingleton<T>();
+            }
+        }
+        
+        private sealed class DespawnAllEntitiesOp : IOp
+        {
+            public void Apply(IWorld w)
+            {
+                if (w is not World world) return;
+
+                // 내부 RemoveSingleton 구현은:
+                //  • 싱글톤 엔티티가 있다면 전용 엔티티 통째로 Despawn
+                //  • 없다면 no-op
+                world.DespawnAllEntities();
             }
         }
     }

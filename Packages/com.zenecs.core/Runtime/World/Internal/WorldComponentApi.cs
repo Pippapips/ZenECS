@@ -311,7 +311,7 @@ namespace ZenECS.Core.Internal
         /// <summary>
         /// Try to read a component by value (non-ref); returns <see langword="false"/> if absent.
         /// </summary>
-        public bool TryRead<T>(Entity e, out T value) where T : struct
+        public bool TryReadComponent<T>(Entity e, out T value) where T : struct
         {
             if (!HasComponent<T>(e))
             {

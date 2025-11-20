@@ -98,5 +98,12 @@ namespace ZenECS.Core
         /// </summary>
         /// <typeparam name="T">Singleton component type.</typeparam>
         void RemoveSingleton<T>() where T : struct, IWorldSingletonComponent;
+        
+        /// <summary>
+        /// Record a command to despawn <b>all alive entities</b> in the world.
+        /// Applied at the barrier, this will behave as if every entity had been
+        /// despawned individually (events, router, binders included).
+        /// </summary>
+        void DespawnAllEntities();
     }
 }

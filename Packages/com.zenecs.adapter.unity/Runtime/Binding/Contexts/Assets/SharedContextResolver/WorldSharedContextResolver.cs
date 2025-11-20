@@ -18,5 +18,10 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts.Assets
             var resolved = _container.Resolve(t);
             return _container.Resolve(t) as IContext;
         }
+
+        public IContext Resolve<T>() where T : IContext
+        {
+            return  _container.Resolve<T>();
+        }
     }
 }

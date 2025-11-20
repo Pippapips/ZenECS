@@ -170,14 +170,8 @@ namespace ZenECS.Core.Internal
         /// If <see langword="true"/>, per-entity events are fired (slower).
         /// If <see langword="false"/>, uses a fast reset path.
         /// </param>
-        public void DespawnAllEntities(bool fireEvents = false)
+        internal void DespawnAllEntities()
         {
-            if (!fireEvents)
-            {
-                ResetButKeepCapacity();
-                return;
-            }
-
             for (int id = 1; id < _alive.Length; id++)
             {
                 if (_alive.Get(id))
