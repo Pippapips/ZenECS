@@ -45,6 +45,8 @@ namespace ZenECS.Core.Internal
         private readonly IMessageBus _bus;
         private readonly IWorker _worker;
 
+        public IKernel Kernel => _kernel;
+        
         /// <inheritdoc/>
         public WorldId Id { get; }
         /// <inheritdoc/>

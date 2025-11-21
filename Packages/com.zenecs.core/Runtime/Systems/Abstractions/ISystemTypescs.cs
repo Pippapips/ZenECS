@@ -1,11 +1,11 @@
 ﻿// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS.Core.Systems
-// File: IPresentationSystem.cs
-// Purpose: Systems responsible for post-simulation rendering or view updates.
+// File: ISystemLifecycle.cs
+// Purpose: Optional lifecycle hooks for systems (Initialize/Shutdown).
 // Key concepts:
-//   • Read-only presentation: apply router deltas, then render/UI sync.
-//   • Interpolation support: alpha provided for smoothing between frames.
-//   • Avoid mutating ECS state here (writes may be guarded/denied by runner). 
+//   • Allows setup/teardown around system execution.
+//   • Called by SystemRunner before first tick and after the last tick.
+//   • Implementations should be idempotent and resilient to multiple calls in tools/tests.
 // Copyright (c) 2025 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
@@ -14,6 +14,26 @@
 
 namespace ZenECS.Core.Systems
 {
+    /// <summary>
+    /// Executed before Simulation each frame to prepare state (input, buffers, etc.).
+    /// </summary>
+    public interface IFrameSetupSystem : ISystem { }
+    
+    /// <summary>
+    /// Runs once per variable-time frame (dt varies). Suitable for non-deterministic logic.
+    /// </summary>
+    public interface IFrameRunSystem : ISystem { }
+    
+    /// <summary>
+    /// Executed during fixed-step before physics/deterministic updates to prepare state.
+    /// </summary>
+    public interface IFixedSetupSystem : ISystem { }
+ 
+    /// <summary>
+    /// Runs on a constant fixed step; ideal for physics or other deterministic updates.
+    /// </summary>
+    public interface IFixedRunSystem : ISystem { }
+    
     /// <summary>
     /// Executed during the Presentation phase. Use for rendering, UI updates,
     /// and data→view synchronization. Avoid mutating ECS state here.

@@ -590,8 +590,8 @@ namespace ZenECS.EditorWindows
                     execDetail = nameof(IFrameSetupSystem);
                 else if (typeof(IFixedRunSystem).IsAssignableFrom(t))
                     execDetail = nameof(IFixedRunSystem);
-                else if (typeof(IVariableRunSystem).IsAssignableFrom(t))
-                    execDetail = nameof(IVariableRunSystem);
+                else if (typeof(IFrameRunSystem).IsAssignableFrom(t))
+                    execDetail = nameof(IFrameRunSystem);
             }
 
             // Order Before/After (Attribute 기반)
@@ -3459,7 +3459,7 @@ namespace ZenECS.EditorWindows
             bool isFixedSetup = typeof(IFixedSetupSystem).IsAssignableFrom(t);
             bool isFrameSetup = typeof(IFrameSetupSystem).IsAssignableFrom(t);
             bool isFixedRun = typeof(IFixedRunSystem).IsAssignableFrom(t);
-            bool isVarRun = typeof(IVariableRunSystem).IsAssignableFrom(t);
+            bool isVarRun = typeof(IFrameRunSystem).IsAssignableFrom(t);
 
             // 1) Presentation 우선
             if (isPresentation)
@@ -3470,7 +3470,7 @@ namespace ZenECS.EditorWindows
             }
 
             // 2) Group Attribute가 있으면 우선 사용 (없으면 인터페이스 기반 추론)
-            bool hasFrameAttr = t.IsDefined(typeof(FrameSetupGroupAttribute), false);
+            bool hasFrameAttr = t.IsDefined(typeof(SetupGroupAttribute), false);
             bool hasSimAttr = t.IsDefined(typeof(SimulationGroupAttribute), false);
             bool hasPresAttr = t.IsDefined(typeof(PresentationGroupAttribute), false);
 

@@ -139,4 +139,8 @@ namespace ZenECS.Physics.Unity.Simulation.Components
         public Entity Source;
         public int Damage;
     }
+
+    public struct DeadTag
+    {
+    }
 }

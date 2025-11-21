@@ -9,13 +9,14 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
 {
     [ZenSystemWatch(typeof(MovementStats2D), typeof(Velocity2D))]
     [SimulationGroup]
+    [OrderBefore(typeof(KinematicMoveOnGrid2DSystem))]
     public sealed class ApplyMoveInput2DSystem : IFixedRunSystem, ISystemLifecycle
     {
         private IDisposable? _input2DMessage = null;
 
         private int _dx;
         private int _dy;
-        
+
         public void Initialize(IWorld w)
         {
             _input2DMessage = w.Subscribe<MoveInput2D>(input2D =>
@@ -24,23 +25,20 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                 _dy = input2D.dy;
             });
         }
-        
+
         public void Shutdown()
         {
             _input2DMessage?.Dispose();
         }
-        
+
         private static readonly Filter _f = new Filter.Builder()
             .Without<Projectile>()
             .Build();
-        
+
         public void Run(IWorld w, float dt)
         {
             using var cmd = w.BeginWrite();
-            
-            // dt ignore
-            foreach (var (e, stats, vel) in
-                     w.Query<MovementStats2D, Velocity2D>(_f))
+            foreach (var (e, stats, vel) in w.Query<MovementStats2D, Velocity2D>(_f))
             {
                 var newVel = vel;
                 newVel.vx = _dx * stats.GetSpeedPerTick(dt) / 1000;

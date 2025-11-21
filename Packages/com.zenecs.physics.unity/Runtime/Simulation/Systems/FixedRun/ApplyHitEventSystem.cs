@@ -1,4 +1,5 @@
 #nullable enable
+using UnityEngine;
 using ZenECS.Core;
 using ZenECS.Core.Attributes;
 using ZenECS.Core.Systems;
@@ -11,14 +12,13 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
     /// </summary>
     [ZenSystemWatch(typeof(HitEvent))]
     [OrderAfter(typeof(ProjectileHitDetectionSystem))]
-    [SimulationGroup]
-    public sealed class ApplyProjectileHitSystem : IFixedRunSystem
+    public sealed class ApplyHitEventSystem : IFixedRunSystem
     {
         public void Run(IWorld w, float dt)
         {
             using var cmd = w.BeginWrite();
 
-            foreach (var (e, hit) in w.Query<HitEvent>())
+            foreach (var (e, hitEvent) in w.Query<HitEvent>())
             {
                 // 대상이 여전히 살아있으면 Health 적용
                 // if (w.TryReadComponent<Health>(hit.Target, out var health))
@@ -36,8 +36,9 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                 //     }
                 // }
 
+                Debug.Log($"<color=#ff0000>Hit Event</color> F:{w.Kernel.FrameCount} T:{w.Kernel.FixedFrameCount}");
                 // HitEvent 는 1틱짜리이므로 바로 제거
-                cmd.DespawnEntity(e);
+                //cmd.DespawnEntity(e);
             }
         }
     }

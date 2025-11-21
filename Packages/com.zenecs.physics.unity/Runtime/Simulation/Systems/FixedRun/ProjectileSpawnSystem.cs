@@ -15,6 +15,7 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
     /// </summary>
     [ZenSystemWatch(typeof(FireProjectileRequest))]
     [SimulationGroup]
+    [OrderBefore(typeof(KinematicMoveOnGrid2DSystem))]
     public sealed class ProjectileSpawnSystem : IFixedRunSystem
     {
         public void Run(IWorld w, float dt)

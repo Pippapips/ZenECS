@@ -16,6 +16,11 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
     [SimulationGroup]
     public sealed class ProjectileHitDetectionSystem : IFixedRunSystem
     {
+        private static readonly Filter _f = new Filter.Builder()
+            .With<KinematicBodyTag2D>()
+            .Without<DeadTag>()
+            .Build();
+        
         // Health + CircleCollider2D 가진 애들만 피격 후보
         private static readonly Filter VictimFilter = new Filter.Builder()
             .With<FixedPosition2D>()
@@ -41,7 +46,7 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
 
             // --- 2) 각 발사체에 대해 원형 충돌 체크 ---
             foreach (var (projEntity, proj, projPos, projCol) in
-                     w.Query<Projectile, FixedPosition2D, CircleCollider2D>())
+                     w.Query<Projectile, FixedPosition2D, CircleCollider2D>(_f))
             {
                 int px = projPos.x;
                 int py = projPos.y;
@@ -84,7 +89,7 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                         });
 
                         // 기본: 첫 히트에서 발사체 제거 (관통탄이면 여기서 제거 안하면 됨)
-                        cmd.DespawnEntity(projEntity);
+                        cmd.AddComponent(projEntity, new DeadTag());
                         hit = true;
                         break;
                     }

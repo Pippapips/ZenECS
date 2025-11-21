@@ -13,14 +13,16 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
     /// </summary>
     [ZenSystemWatch(typeof(Projectile))]
     [OrderAfter(typeof(KinematicMoveOnGrid2DSystem))]
-    [SimulationGroup]
     public sealed class ProjectileLifetimeSystem : IFixedRunSystem
     {
+        private static readonly Filter _f = new Filter.Builder()
+            .Without<DeadTag>()
+            .Build();
+        
         public void Run(IWorld w, float dt)
         {
             using var cmd = w.BeginWrite();
-
-            foreach (var (e, proj, vel) in w.Query<Projectile, Velocity2D>())
+            foreach (var (e, proj, vel) in w.Query<Projectile, Velocity2D>(_f))
             {
                 // 이동 거리: |vx| + |vy| (맨해튼)
                 int step = Math.Abs(vel.vx) + Math.Abs(vel.vy);
@@ -35,7 +37,7 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                 if (newProj.Traveled >= newProj.MaxDistance)
                 {
                     // 수명 종료 → 발사체 제거
-                    cmd.DespawnEntity(e);
+                    cmd.AddComponent(e, new DeadTag());
                 }
                 else
                 {

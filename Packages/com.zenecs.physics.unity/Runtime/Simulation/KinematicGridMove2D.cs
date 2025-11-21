@@ -26,16 +26,13 @@ namespace ZenECS.Physics.Unity.Simulation
                 hitWall = true;
             }
 
-            if (!hitWall)
+            int newY = pos.y + vel.vy;
+            if (!TileCollision2D.CheckCircle(map, pos.x, newY, col.radius))
             {
-                int newY = pos.y + vel.vy;
-                if (!TileCollision2D.CheckCircle(map, pos.x, newY, col.radius))
-                {
-                    pos.y = newY;
-                    moved = true;
-                }
-                else hitWall = true;
+                pos.y = newY;
+                moved = true;
             }
+            else hitWall = true;
             
             return new MoveResult
             {

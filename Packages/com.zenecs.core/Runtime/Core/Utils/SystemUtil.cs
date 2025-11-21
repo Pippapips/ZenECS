@@ -12,7 +12,7 @@ namespace ZenECS.Core
         /// <returns>The resolved <see cref="SystemGroup"/>.</returns>
         public static SystemGroup ResolveGroup(Type t)
         {
-            if (t.IsDefined(typeof(FrameSetupGroupAttribute), false))   return SystemGroup.FrameSetup;
+            if (t.IsDefined(typeof(SetupGroupAttribute), false))   return SystemGroup.FrameSetup;
             if (t.IsDefined(typeof(PresentationGroupAttribute), false)) return SystemGroup.Presentation;
             if (t.IsDefined(typeof(SimulationGroupAttribute), false))   return SystemGroup.Simulation;
 
@@ -20,7 +20,7 @@ namespace ZenECS.Core
             if (typeof(IFixedSetupSystem).IsAssignableFrom(t))   return SystemGroup.FrameSetup;
             if (typeof(IFrameSetupSystem).IsAssignableFrom(t))   return SystemGroup.FrameSetup;
             if (typeof(IFixedRunSystem).IsAssignableFrom(t))     return SystemGroup.Simulation;
-            if (typeof(IVariableRunSystem).IsAssignableFrom(t))  return SystemGroup.Simulation;
+            if (typeof(IFrameRunSystem).IsAssignableFrom(t))  return SystemGroup.Simulation;
 
             return SystemGroup.Simulation;
         }

@@ -316,7 +316,7 @@ namespace ZenECS.Core.Internal.Systems
                     break;
 
                 case SystemGroup.Simulation:
-                    foreach (IVariableRunSystem s in _plan.Simulation.OfType<IVariableRunSystem>())
+                    foreach (IFrameRunSystem s in _plan.Simulation.OfType<IFrameRunSystem>())
                         s.Run(w, dt);
                     break;
             }

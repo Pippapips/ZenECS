@@ -35,7 +35,7 @@ namespace ZenECS.Core.Systems
     /// <summary>
     /// Base interface for all ECS systems. Specialized interfaces (e.g.,
     /// <see cref="IFrameSetupSystem"/>, <see cref="IFixedRunSystem"/>,
-    /// <see cref="IVariableRunSystem"/>, <see cref="IPresentationSystem"/>)
+    /// <see cref="IFrameRunSystem"/>, <see cref="IPresentationSystem"/>)
     /// refine the phase/semantics of <see cref="Run"/>.
     /// </summary>
     public interface ISystem    

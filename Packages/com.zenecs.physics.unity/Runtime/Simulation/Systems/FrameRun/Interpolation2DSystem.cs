@@ -7,11 +7,11 @@ using ZenECS.Physics.Unity.Simulation.Components;
 namespace ZenECS.Physics.Unity.Simulation.Systems
 {
     [ZenSystemWatch(typeof(FixedPosition2D), typeof(Position2D), typeof(KinematicBodyTag2D))]
-    [SimulationGroup]
-    public sealed class Interpolation2DSystem : IVariableRunSystem
+    public sealed class Interpolation2DSystem : IFrameRunSystem
     {
         private static readonly Filter _f = new Filter.Builder()
             .With<KinematicBodyTag2D>()
+            .Without<DeadTag>()
             .Build();
 
         public void Run(IWorld w, float dt)

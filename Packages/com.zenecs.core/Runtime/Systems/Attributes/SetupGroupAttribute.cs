@@ -1,21 +1,23 @@
 ﻿// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS.Core.Systems
-// File: IFrameSetupSystem.cs
-// Purpose: Systems that run once per frame before Simulation.
+// File: FrameSetupGroupAttribute.cs
+// Purpose: Defines the system group responsible for frame preparation.
 // Key concepts:
-//   • Frame preparation: input snapshotting, buffer swapping, world preconditions.
-//   • Runs prior to Simulation on variable frames and also in fixed-step pass if needed.
-//   • Should not depend on precise delta time (dt may be ignored or advisory only). 
+//   • Used for pre-simulation tasks such as input polling, time updates, and queue swaps.
+//   • Executed before SimulationGroup systems each frame.
 // Copyright (c) 2025 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
+using System;
 
 namespace ZenECS.Core.Systems
 {
     /// <summary>
-    /// Executed before Simulation each frame to prepare state (input, buffers, etc.).
+    /// Marks a system as belonging to the <b>FrameSetup</b> group.
+    /// <para>Typical usage: input snapshot, delta time calculation, or queue swapping.</para>
     /// </summary>
-    public interface IFrameSetupSystem : ISystem { }
+    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+    public sealed class SetupGroupAttribute : Attribute { }
 }

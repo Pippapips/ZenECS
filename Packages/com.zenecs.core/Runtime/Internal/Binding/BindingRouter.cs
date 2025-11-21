@@ -52,7 +52,7 @@ namespace ZenECS.Core.Internal.Binding
         /// <param name="w">Target world.</param>
         /// <param name="e">Target entity.</param>
         /// <param name="binder">Binder instance.</param>
-        public void Attach(IWorld w, Entity e, IBinder binder)
+        public void Attach(IWorld w, Entity e, IBinder? binder)
         {
             if (binder == null) throw new ArgumentNullException(nameof(binder));
             binder.Bind(w, e, _contextRegistry);

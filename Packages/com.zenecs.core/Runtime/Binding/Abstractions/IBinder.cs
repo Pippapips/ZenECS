@@ -89,6 +89,9 @@ namespace ZenECS.Core.Binding
     /// </summary>
     public abstract class BaseBinder : IBinder
     {
+        [NonSerialized] private bool _done;
+        public bool Done => _done;
+        
         /// <summary>The world this binder is attached to (null when unbound).</summary>
         protected IWorld? World { get; private set; }
 
@@ -106,6 +109,8 @@ namespace ZenECS.Core.Binding
         
         public virtual int AttachOrder => _attachOrder;
         private int _attachOrder;
+
+        private bool _bound;
 
         public void ResetAttachOrder()
         {
@@ -139,8 +144,11 @@ namespace ZenECS.Core.Binding
             SetAttachOrder(attachOrder);
         }
 
-        private bool _bound;
-
+        public void MarkDone()
+        {
+            _done = true;
+        }
+        
         /// <inheritdoc/>
         public void Bind(IWorld world, Entity e, IContextLookup contextLookup)
         {
@@ -194,6 +202,7 @@ namespace ZenECS.Core.Binding
         /// <inheritdoc/>
         public void Apply(IWorld w, Entity e)
         {
+            if (_done) return;
             if (!Enabled) return;
             OnApply(w, e);
         }

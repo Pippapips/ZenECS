@@ -36,6 +36,8 @@ namespace ZenECS.Core
         IWorldWorkerApi,
         IWorldSystemsApi
     {
+        IKernel Kernel { get; }
+        
         /// <summary>Stable identity of this world (value semantics).</summary>
         WorldId Id { get; }
 
