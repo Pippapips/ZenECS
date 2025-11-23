@@ -558,8 +558,13 @@ namespace ZenECS.EditorWindows
 
             string groupLabel = group switch
             {
-                SystemGroup.FrameSetup => "Frame Setup",
-                SystemGroup.Simulation => "Simulation",
+                SystemGroup.FrameInput => "Frame Input",
+                SystemGroup.FrameView => "Frame View",
+                SystemGroup.FrameUI => "Frame UI",
+                SystemGroup.FixedInput => "Fixed Input",
+                SystemGroup.FixedDecision => "Fixed Decision",
+                SystemGroup.FixedSimulation => "Fixed Simulation",
+                SystemGroup.FixedPost => "Fixed Post",
                 SystemGroup.Presentation => "Presentation",
                 _ => group.ToString()
             };
@@ -3481,51 +3486,51 @@ namespace ZenECS.EditorWindows
                 return;
             }
 
-            if (hasFrameAttr)
-            {
-                group = SystemGroup.FrameSetup;
-                phase = isFixedSetup ? PhaseKind.Fixed : PhaseKind.Variable;
-                return;
-            }
-
-            if (hasSimAttr)
-            {
-                group = SystemGroup.Simulation;
-                phase = isFixedRun ? PhaseKind.Fixed : PhaseKind.Variable;
-                return;
-            }
-
-            // 3) Attribute가 없으면 인터페이스로 그룹/Phase 추론
-            if (isFixedSetup)
-            {
-                group = SystemGroup.FrameSetup;
-                phase = PhaseKind.Fixed;
-                return;
-            }
-
-            if (isFrameSetup)
-            {
-                group = SystemGroup.FrameSetup;
-                phase = PhaseKind.Variable;
-                return;
-            }
-
-            if (isFixedRun)
-            {
-                group = SystemGroup.Simulation;
-                phase = PhaseKind.Fixed;
-                return;
-            }
-
-            if (isVarRun)
-            {
-                group = SystemGroup.Simulation;
-                phase = PhaseKind.Variable;
-                return;
-            }
-
-            // 4) 다 안 걸리면 Simulation/Variable로 기본값 처리
-            group = SystemGroup.Simulation;
+            // if (hasFrameAttr)
+            // {
+            //     group = SystemGroup.FrameSetup;
+            //     phase = isFixedSetup ? PhaseKind.Fixed : PhaseKind.Variable;
+            //     return;
+            // }
+            //
+            // if (hasSimAttr)
+            // {
+            //     group = SystemGroup.Simulation;
+            //     phase = isFixedRun ? PhaseKind.Fixed : PhaseKind.Variable;
+            //     return;
+            // }
+            //
+            // // 3) Attribute가 없으면 인터페이스로 그룹/Phase 추론
+            // if (isFixedSetup)
+            // {
+            //     group = SystemGroup.FrameSetup;
+            //     phase = PhaseKind.Fixed;
+            //     return;
+            // }
+            //
+            // if (isFrameSetup)
+            // {
+            //     group = SystemGroup.FrameSetup;
+            //     phase = PhaseKind.Variable;
+            //     return;
+            // }
+            //
+            // if (isFixedRun)
+            // {
+            //     group = SystemGroup.Simulation;
+            //     phase = PhaseKind.Fixed;
+            //     return;
+            // }
+            //
+            // if (isVarRun)
+            // {
+            //     group = SystemGroup.Simulation;
+            //     phase = PhaseKind.Variable;
+            //     return;
+            // }
+            //
+            // // 4) 다 안 걸리면 Simulation/Variable로 기본값 처리
+            group = SystemGroup.FixedSimulation;
             phase = PhaseKind.Variable;
         }
 
@@ -3832,8 +3837,8 @@ namespace ZenECS.EditorWindows
             }
 
             // 그룹 순서 고정: FrameSetup → Simulation → Presentation
-            DrawGroupSection(SystemGroup.FrameSetup, "Frame Setup", tree, world);
-            DrawGroupSection(SystemGroup.Simulation, "Simulation", tree, world);
+            DrawGroupSection(SystemGroup.FrameInput, "Frame Setup", tree, world);
+            DrawGroupSection(SystemGroup.FixedSimulation, "Simulation", tree, world);
             DrawGroupSection(SystemGroup.Presentation, "Presentation", tree, world);
         }
 

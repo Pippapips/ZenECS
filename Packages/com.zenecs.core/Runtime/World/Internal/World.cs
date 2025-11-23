@@ -53,6 +53,10 @@ namespace ZenECS.Core.Internal
         public string Name { get; set; }
         /// <inheritdoc/>
         public IReadOnlyCollection<string> Tags { get; }
+
+        public long FrameCount { get; private set; }
+        public long Tick { get; private set; }
+
         /// <inheritdoc/>
         public bool IsPaused => _pause;
         /// <inheritdoc/>
@@ -140,6 +144,7 @@ namespace ZenECS.Core.Internal
         {
             if (w != this) return;
             if (IsPaused) return;
+            FrameCount++;
             _runner.BeginFrame(w, dt);
         }
 
@@ -147,6 +152,7 @@ namespace ZenECS.Core.Internal
         {
             if (w != this) return;
             if (IsPaused) return;
+            Tick++;
             _runner.FixedStep(w, fixedDelta);
         }
 

@@ -4,7 +4,8 @@
 // Purpose: Determine deterministic execution order for ECS systems by grouping,
 //          validating, and topologically sorting constraints.
 // Key concepts:
-//   • Groups: FrameSetup / Simulation / Presentation buckets.
+//   • Groups: FixedInput / FixedDecision / FixedSimulation / FixedPost
+//             FrameInput / FrameView / FrameUI / Presentation buckets.
 //   • Constraints: OrderBefore / OrderAfter honored only within the same group.
 //   • Deterministic: Kahn topological sort with lexical tie-break by type name.
 //   • Lifecycle views: forward order for Initialize, reverse for Shutdown.
@@ -37,32 +38,73 @@ namespace ZenECS.Core.Internal.Systems
             /// <summary>
             /// Create a new plan with ordered sequences for all phases.
             /// </summary>
-            /// <param name="frameSetup">Ordered systems for <c>FrameSetup</c>.</param>
-            /// <param name="simulation">Ordered systems for <c>Simulation</c>.</param>
-            /// <param name="presentation">Ordered systems for <c>Presentation</c>.</param>
-            public Plan(IReadOnlyList<ISystem>? frameSetup,
-                        IReadOnlyList<ISystem>? simulation,
-                        IReadOnlyList<ISystem>? presentation)
+            public Plan(
+                IReadOnlyList<ISystem>? fixedInput,
+                IReadOnlyList<ISystem>? fixedDecision,
+                IReadOnlyList<ISystem>? fixedSimulation,
+                IReadOnlyList<ISystem>? fixedPost,
+                IReadOnlyList<ISystem>? frameInput,
+                IReadOnlyList<ISystem>? frameView,
+                IReadOnlyList<ISystem>? frameUI,
+                IReadOnlyList<ISystem>? presentation)
             {
-                FrameSetup   = frameSetup   ?? Array.Empty<ISystem>();
-                Simulation   = simulation   ?? Array.Empty<ISystem>();
-                Presentation = presentation ?? Array.Empty<ISystem>();
+                FixedInput      = fixedInput      ?? Array.Empty<ISystem>();
+                FixedDecision   = fixedDecision   ?? Array.Empty<ISystem>();
+                FixedSimulation = fixedSimulation ?? Array.Empty<ISystem>();
+                FixedPost       = fixedPost       ?? Array.Empty<ISystem>();
+
+                FrameInput      = frameInput      ?? Array.Empty<ISystem>();
+                FrameView       = frameView       ?? Array.Empty<ISystem>();
+                FrameUI         = frameUI         ?? Array.Empty<ISystem>();
+
+                Presentation    = presentation    ?? Array.Empty<ISystem>();
             }
 
-            /// <summary>Execution order for the <c>FrameSetup</c> phase.</summary>
-            public IReadOnlyList<ISystem> FrameSetup { get; }
+            // ───── Fixed-step deterministic groups ─────
 
-            /// <summary>Execution order for the <c>Simulation</c> phase.</summary>
-            public IReadOnlyList<ISystem> Simulation { get; }
+            /// <summary>Execution order for the <see cref="SystemGroup.FixedInput"/> phase.</summary>
+            public IReadOnlyList<ISystem> FixedInput { get; }
 
-            /// <summary>Execution order for the <c>Presentation</c> phase.</summary>
+            /// <summary>Execution order for the <see cref="SystemGroup.FixedDecision"/> phase.</summary>
+            public IReadOnlyList<ISystem> FixedDecision { get; }
+
+            /// <summary>Execution order for the <see cref="SystemGroup.FixedSimulation"/> phase.</summary>
+            public IReadOnlyList<ISystem> FixedSimulation { get; }
+
+            /// <summary>Execution order for the <see cref="SystemGroup.FixedPost"/> phase.</summary>
+            public IReadOnlyList<ISystem> FixedPost { get; }
+
+            // ───── Variable-step frame groups ─────
+
+            /// <summary>Execution order for the <see cref="SystemGroup.FrameInput"/> phase.</summary>
+            public IReadOnlyList<ISystem> FrameInput { get; }
+
+            /// <summary>Execution order for the <see cref="SystemGroup.FrameView"/> phase.</summary>
+            public IReadOnlyList<ISystem> FrameView { get; }
+
+            /// <summary>Execution order for the <see cref="SystemGroup.FrameUI"/> phase.</summary>
+            public IReadOnlyList<ISystem> FrameUI { get; }
+
+            /// <summary>Execution order for the <see cref="SystemGroup.Presentation"/> phase.</summary>
             public IReadOnlyList<ISystem> Presentation { get; }
 
             /// <summary>
             /// Combined forward execution order across all phases.
+            /// <para>
+            /// Order matches the typical runner pipeline:
+            /// FrameInput → FrameView → FixedInput → FixedDecision → FixedSimulation
+            /// → FixedPost → Presentation → FrameUI
+            /// </para>
             /// </summary>
             public IEnumerable<ISystem> AllInExecutionOrder =>
-                FrameSetup.Concat(Simulation).Concat(Presentation);
+                FrameInput
+                    .Concat(FrameView)
+                    .Concat(FixedInput)
+                    .Concat(FixedDecision)
+                    .Concat(FixedSimulation)
+                    .Concat(FixedPost)
+                    .Concat(Presentation)
+                    .Concat(FrameUI);
 
             /// <summary>
             /// Ordered view of systems implementing <see cref="ISystemLifecycle"/> for initialization
@@ -93,9 +135,16 @@ namespace ZenECS.Core.Internal.Systems
 
             var buckets = new Dictionary<SystemGroup, List<(Type type, ISystem inst, HashSet<Type> before, HashSet<Type> after)>>()
             {
-                [SystemGroup.FrameSetup]   = new(),
-                [SystemGroup.Simulation]   = new(),
-                [SystemGroup.Presentation] = new()
+                [SystemGroup.FixedInput]      = new(),
+                [SystemGroup.FixedDecision]   = new(),
+                [SystemGroup.FixedSimulation] = new(),
+                [SystemGroup.FixedPost]       = new(),
+
+                [SystemGroup.FrameInput]      = new(),
+                [SystemGroup.FrameView]       = new(),
+                [SystemGroup.FrameUI]         = new(),
+
+                [SystemGroup.Presentation]    = new()
             };
 
             // 1) Classification + constraint collection
@@ -103,61 +152,80 @@ namespace ZenECS.Core.Internal.Systems
             {
                 Type t = s.GetType();
 
-                // Validate markers and attributes
+                // Validate markers and attributes (no conflicting phase markers, no multi-group attributes)
                 ValidatePhaseMarkers(t);
 
                 SystemGroup group = SystemUtil.ResolveGroup(t);
-                var before = t.GetCustomAttributes<OrderBeforeAttribute>().Select(a => a.Target).ToHashSet();
-                var after  = t.GetCustomAttributes<OrderAfterAttribute>().Select(a => a.Target).ToHashSet();
-                buckets[group].Add((t, s, before, after));
+
+                var before = t.GetCustomAttributes<OrderBeforeAttribute>()
+                              .Select(a => a.Target)
+                              .ToHashSet();
+                var after  = t.GetCustomAttributes<OrderAfterAttribute>()
+                              .Select(a => a.Target)
+                              .ToHashSet();
+
+                if (!buckets.TryGetValue(group, out var list))
+                {
+                    list = new List<(Type, ISystem, HashSet<Type>, HashSet<Type>)>();
+                    buckets[group] = list;
+                }
+
+                list.Add((t, s, before, after));
             }
 
             // 2) Sort each group independently
-            List<ISystem> setup = TopoSortWithinGroup(buckets[SystemGroup.FrameSetup]);
-            List<ISystem> simu  = TopoSortWithinGroup(buckets[SystemGroup.Simulation]);
-            List<ISystem> pres  = TopoSortWithinGroup(buckets[SystemGroup.Presentation]);
+            List<ISystem> fixedInput      = TopoSortWithinGroup(buckets[SystemGroup.FixedInput]);
+            List<ISystem> fixedDecision   = TopoSortWithinGroup(buckets[SystemGroup.FixedDecision]);
+            List<ISystem> fixedSimulation = TopoSortWithinGroup(buckets[SystemGroup.FixedSimulation]);
+            List<ISystem> fixedPost       = TopoSortWithinGroup(buckets[SystemGroup.FixedPost]);
 
-            return new Plan(setup, simu, pres);
+            List<ISystem> frameInput      = TopoSortWithinGroup(buckets[SystemGroup.FrameInput]);
+            List<ISystem> frameView       = TopoSortWithinGroup(buckets[SystemGroup.FrameView]);
+            List<ISystem> frameUI         = TopoSortWithinGroup(buckets[SystemGroup.FrameUI]);
+
+            List<ISystem> presentation    = TopoSortWithinGroup(buckets[SystemGroup.Presentation]);
+
+            return new Plan(
+                fixedInput,
+                fixedDecision,
+                fixedSimulation,
+                fixedPost,
+                frameInput,
+                frameView,
+                frameUI,
+                presentation);
         }
 
         /// <summary>
         /// Validate that a system type has consistent phase markers and group attributes.
         /// </summary>
         /// <param name="t">System type.</param>
-        /// <exception cref="InvalidOperationException">Thrown if multiple markers or conflicting attributes exist.</exception>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown if multiple markers or conflicting group attributes exist.
+        /// </exception>
         private static void ValidatePhaseMarkers(Type t)
         {
+            // A system must not implement more than one "phase" marker interface.
             int phaseCount =
-                (typeof(IFixedRunSystem).IsAssignableFrom(t)     ? 1 : 0) +
-                (typeof(IFrameRunSystem).IsAssignableFrom(t)  ? 1 : 0) +
-                (typeof(IPresentationSystem).IsAssignableFrom(t) ? 1 : 0);
+                (typeof(IFixedSetupSystem).IsAssignableFrom(t)      ? 1 : 0) +
+                (typeof(IFixedRunSystem).IsAssignableFrom(t)        ? 1 : 0) +
+                (typeof(IFrameSetupSystem).IsAssignableFrom(t)      ? 1 : 0) +
+                (typeof(IFrameRunSystem).IsAssignableFrom(t)        ? 1 : 0) +
+                (typeof(IPresentationSystem).IsAssignableFrom(t)    ? 1 : 0);
+
             if (phaseCount > 1)
-                throw new InvalidOperationException($"{t.Name} implements multiple phase markers.");
+                throw new InvalidOperationException($"{t.Name} implements multiple phase marker interfaces.");
 
-            int groupAttrCount =
-                (t.IsDefined(typeof(SetupGroupAttribute), false)   ? 1 : 0) +
-                (t.IsDefined(typeof(SimulationGroupAttribute), false)   ? 1 : 0) +
-                (t.IsDefined(typeof(PresentationGroupAttribute), false) ? 1 : 0);
+            // A system must not declare more than one SimulationGroupAttribute
+            // (including derived attributes like FixedInputGroupAttribute, etc.).
+            int groupAttrCount = t.GetCustomAttributes<SimulationGroupAttribute>(false).Count();
             if (groupAttrCount > 1)
-                throw new InvalidOperationException($"{t.Name} has multiple group attributes.");
+                throw new InvalidOperationException($"{t.Name} has multiple SimulationGroup-derived group attributes.");
 
-            if (groupAttrCount == 1)
-            {
-                var inferred =
-                    typeof(IFixedSetupSystem).IsAssignableFrom(t) ? SystemGroup.FrameSetup :
-                    typeof(IPresentationSystem).IsAssignableFrom(t) ? SystemGroup.Presentation :
-                    typeof(IFrameSetupSystem).IsAssignableFrom(t)   ? SystemGroup.FrameSetup :
-                    (typeof(IFixedRunSystem).IsAssignableFrom(t) || typeof(IFrameRunSystem).IsAssignableFrom(t))
-                        ? SystemGroup.Simulation : (SystemGroup?)null;
-
-                var attrGroup =
-                    t.IsDefined(typeof(SetupGroupAttribute), false)   ? SystemGroup.FrameSetup :
-                    t.IsDefined(typeof(PresentationGroupAttribute), false) ? SystemGroup.Presentation :
-                    SystemGroup.Simulation;
-
-                if (inferred.HasValue && inferred.Value != attrGroup)
-                    throw new InvalidOperationException($"{t.Name} group attribute conflicts with its marker interface.");
-            }
+            // We intentionally do NOT enforce a strict mapping between marker interfaces
+            // and specific SystemGroup values here, because some markers (e.g. IFixedSetupSystem)
+            // may be valid for multiple groups (FixedInput, FixedDecision). The actual
+            // mapping is handled by SystemUtil.ResolveGroup(..) using attributes + markers.
         }
 
         /// <summary>
@@ -172,6 +240,9 @@ namespace ZenECS.Core.Internal.Systems
         private static List<ISystem> TopoSortWithinGroup(
             List<(Type type, ISystem inst, HashSet<Type> before, HashSet<Type> after)> list)
         {
+            if (list.Count == 0)
+                return new List<ISystem>();
+
             var nodes = list.ToDictionary(x => x.type, x => x.inst);
             var edges = new Dictionary<Type, HashSet<Type>>();
             var indeg = new Dictionary<Type, int>();
@@ -186,22 +257,26 @@ namespace ZenECS.Core.Internal.Systems
             {
                 ensure(type);
 
+                // this -> target  (this must run before target)
                 foreach (Type target in before)
                 {
                     if (!nodes.ContainsKey(target))
                     {
-                        EcsRuntimeOptions.Log.Warn($"[OrderBefore] {type.Name} → {target.Name} ignored (not in same group)");
+                        EcsRuntimeOptions.Log.Warn(
+                            $"[OrderBefore] {type.Name} → {target.Name} ignored (not in same group or not present in world)");
                         continue;
                     }
                     if (edges[type].Add(target))
                         indeg[target] = indeg.GetValueOrDefault(target) + 1;
                 }
 
+                // target -> this  (this must run after target)
                 foreach (Type target in after)
                 {
                     if (!nodes.ContainsKey(target))
                     {
-                        EcsRuntimeOptions.Log.Warn($"[OrderAfter] {type.Name} ← {target.Name} ignored (not in same group) or system not added in the world");
+                        EcsRuntimeOptions.Log.Warn(
+                            $"[OrderAfter] {type.Name} ← {target.Name} ignored (not in same group or system not added in the world)");
                         continue;
                     }
                     if (!edges.TryGetValue(target, out HashSet<Type>? set))

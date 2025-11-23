@@ -5,12 +5,11 @@
 //          coordination against a world’s worker/router/permission hooks.
 // Key concepts:
 //   • Three-phase flow: BeginFrame (variable), FixedStep (fixed), LateFrame (presentation).
-//   • Barrier points: scheduler flush between setup/simulation; router apply before Late.
+//   • FixedStep is split into: FixedInput → FixedDecision → FixedSimulation → FixedPost.
+//   • Frame flow: FrameInput → FrameView, then Presentation + FrameUI in LateFrame.
+//   • Barrier points: scheduler flush between phase buckets; router apply before Late.
 //   • Read-only presentation: temporary write-deny guard during LateFrame.
 //   • Deterministic: respects order planned by SystemPlanner.
-// Copyright (c) 2025 Pippapips Limited
-// License: MIT (https://opensource.org/licenses/MIT)
-// SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-
 
 #nullable enable
@@ -27,11 +26,12 @@ using ZenECS.Core.Systems;
 namespace ZenECS.Core.Internal.Systems
 {
     /// <summary>
-    /// Coordinates system execution for a single world across FrameSetup, Simulation,
-    /// and Presentation phases. Handles lifecycle, barrier flushing, and frame-safe
-    /// runtime mutations (add/remove/enable).
+    /// Coordinates system execution for a single world across FrameInput/FrameView,
+    /// FixedInput/FixedDecision/FixedSimulation/FixedPost, and Presentation/FrameUI
+    /// phases. Handles lifecycle, barrier flushing, and frame-safe runtime mutations
+    /// (add/remove/enable).
     /// </summary>
-    internal sealed class SystemRunner : ISystemRunner
+    internal sealed class SystemRunner : ISystemRunner, IDisposable
     {
         private SystemPlanner.Plan? _plan;
 
@@ -44,8 +44,8 @@ namespace ZenECS.Core.Internal.Systems
         // Pending mutations (applied only at frame boundary)
         private readonly List<ISystem> _pendingAdd = new();
         private readonly List<Type> _pendingRemove = new();
-        readonly List<Entity> _newEntitiesThisFrame = new();
-        
+        private readonly List<Entity> _newEntitiesThisFrame = new();
+
         private bool _dirty;
 
         private readonly IMessageBus _bus;
@@ -62,10 +62,10 @@ namespace ZenECS.Core.Internal.Systems
             _router = router;
             _worker = worker;
             _bus = bus;
-            
+
             EntityEvents.EntityCreated += EntityEventsOnEntityCreated;
         }
-        
+
         private void EntityEventsOnEntityCreated(IWorld w, Entity e)
         {
             _newEntitiesThisFrame.Add(e);
@@ -89,7 +89,10 @@ namespace ZenECS.Core.Internal.Systems
             _active.Clear();
             _pendingAdd.Clear();
             _pendingRemove.Clear();
+            _newEntitiesThisFrame.Clear();
             _dirty = false;
+
+            EntityEvents.EntityCreated -= EntityEventsOnEntityCreated;
         }
 
         // ─────────────────────────────────────────────────────────────────────
@@ -109,8 +112,10 @@ namespace ZenECS.Core.Internal.Systems
         {
             if (systems == null) return;
             foreach (var s in systems)
+            {
                 if (s != null)
                     _pendingAdd.Add(s);
+            }
             _dirty = true;
         }
 
@@ -211,8 +216,11 @@ namespace ZenECS.Core.Internal.Systems
             if (_pendingAdd.Count > 0)
             {
                 foreach (var s in _pendingAdd)
+                {
                     if (!_active.Contains(s))
                         _active.Add(s);
+                }
+
                 _pendingAdd.Clear();
             }
 
@@ -239,16 +247,31 @@ namespace ZenECS.Core.Internal.Systems
         {
             ApplyPending(w);
             _bus.PumpAll();
-            RunGroup(SystemGroup.FrameSetup, w, dt);
-            RunGroup(SystemGroup.Simulation, w, dt);
+
+            // 1) FrameInput: Unity Input, 디바이스, 창 크기 등
+            RunGroup(SystemGroup.FrameInput, w, dt);
+            _worker.RunScheduledJobs(w);
+
+            // 2) FrameView: 카메라, 예측, 뷰용 로직
+            RunGroup(SystemGroup.FrameView, w, dt);
             _worker.RunScheduledJobs(w);
         }
 
         /// <inheritdoc/>
         public void FixedStep(IWorld w, float fixedDelta)
         {
-            RunFixedGroup(SystemGroup.FrameSetup, w, fixedDelta);
-            RunFixedGroup(SystemGroup.Simulation, w, fixedDelta);
+            // Fixed-step deterministic pipeline:
+            // FixedInput → FixedDecision → FixedSimulation → FixedPost
+            RunFixedGroup(SystemGroup.FixedInput, w, fixedDelta);
+            _worker.RunScheduledJobs(w);
+
+            RunFixedGroup(SystemGroup.FixedDecision, w, fixedDelta);
+            _worker.RunScheduledJobs(w);
+
+            RunFixedGroup(SystemGroup.FixedSimulation, w, fixedDelta);
+            _worker.RunScheduledJobs(w);
+
+            RunFixedGroup(SystemGroup.FixedPost, w, fixedDelta);
             _worker.RunScheduledJobs(w);
         }
 
@@ -260,11 +283,17 @@ namespace ZenECS.Core.Internal.Systems
                 EntityEvents.RaiseNewEntitiesFrame(w, _newEntitiesThisFrame.ToArray());
                 _newEntitiesThisFrame.Clear();
             }
-            
+
             // Apply world → view deltas before presentation systems run
             _router.ApplyAll(w);
+
             using var guard = DenyWrites(_permissionHook);
+
+            // Presentation: 보간/뷰 바인딩 (IPresentationSystem)
             RunLateGroup(SystemGroup.Presentation, w, dt, interpolationAlpha);
+
+            // FrameUI: HUD/디버그 (IFrameRunSystem, read-only 영역)
+            RunLateGroup(SystemGroup.FrameUI, w, dt, interpolationAlpha);
         }
 
         /// <summary>
@@ -284,53 +313,78 @@ namespace ZenECS.Core.Internal.Systems
             public void Dispose() => _onDispose();
         }
 
-        /// <summary>Runs fixed-timestep systems for a specific execution group.</summary>
-        private void RunFixedGroup(SystemGroup g, IWorld w, float dt)
-        {
-            if (_plan == null) return;
-
-            switch (g)
-            {
-                case SystemGroup.FrameSetup:
-                    foreach (IFixedSetupSystem s in _plan.FrameSetup.OfType<IFixedSetupSystem>())
-                        s.Run(w, dt);
-                    break;
-
-                case SystemGroup.Simulation:
-                    foreach (IFixedRunSystem s in _plan.Simulation.OfType<IFixedRunSystem>())
-                        s.Run(w, dt);
-                    break;
-            }
-        }
-
-        /// <summary>Runs variable-timestep systems for a specific execution group.</summary>
+        /// <summary>
+        /// Runs variable-timestep systems for a specific execution group.
+        /// FrameInput / FrameView.
+        /// </summary>
         private void RunGroup(SystemGroup g, IWorld w, float dt)
         {
             if (_plan == null) return;
 
             switch (g)
             {
-                case SystemGroup.FrameSetup:
-                    foreach (IFrameSetupSystem s in _plan.FrameSetup.OfType<IFrameSetupSystem>())
+                case SystemGroup.FrameInput:
+                    foreach (IFrameSetupSystem s in _plan.FrameInput.OfType<IFrameSetupSystem>())
                         s.Run(w, dt);
                     break;
 
-                case SystemGroup.Simulation:
-                    foreach (IFrameRunSystem s in _plan.Simulation.OfType<IFrameRunSystem>())
+                case SystemGroup.FrameView:
+                    foreach (IFrameRunSystem s in _plan.FrameView.OfType<IFrameRunSystem>())
                         s.Run(w, dt);
                     break;
             }
         }
 
-        /// <summary>Runs read-only presentation systems.</summary>
+        /// <summary>
+        /// Runs fixed-timestep systems for a specific execution group.
+        /// FixedInput / FixedDecision / FixedSimulation / FixedPost.
+        /// </summary>
+        private void RunFixedGroup(SystemGroup g, IWorld w, float dt)
+        {
+            if (_plan == null) return;
+
+            switch (g)
+            {
+                case SystemGroup.FixedInput:
+                    foreach (IFixedSetupSystem s in _plan.FixedInput.OfType<IFixedSetupSystem>())
+                        s.Run(w, dt);
+                    break;
+
+                case SystemGroup.FixedDecision:
+                    foreach (IFixedSetupSystem s in _plan.FixedDecision.OfType<IFixedSetupSystem>())
+                        s.Run(w, dt);
+                    break;
+
+                case SystemGroup.FixedSimulation:
+                    foreach (IFixedRunSystem s in _plan.FixedSimulation.OfType<IFixedRunSystem>())
+                        s.Run(w, dt);
+                    break;
+
+                case SystemGroup.FixedPost:
+                    foreach (IFixedRunSystem s in _plan.FixedPost.OfType<IFixedRunSystem>())
+                        s.Run(w, dt);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Runs read-only presentation and frame UI systems.
+        /// </summary>
         private void RunLateGroup(SystemGroup g, IWorld w, float dt, float interpolationAlpha = 1.0f)
         {
             if (_plan == null) return;
 
-            if (g == SystemGroup.Presentation)
+            switch (g)
             {
-                foreach (IPresentationSystem s in _plan.Presentation.OfType<IPresentationSystem>())
-                    s.Run(w, dt, interpolationAlpha);
+                case SystemGroup.Presentation:
+                    foreach (IPresentationSystem s in _plan.Presentation.OfType<IPresentationSystem>())
+                        s.Run(w, dt, interpolationAlpha);
+                    break;
+
+                case SystemGroup.FrameUI:
+                    foreach (IFrameRunSystem s in _plan.FrameUI.OfType<IFrameRunSystem>())
+                        s.Run(w, dt);
+                    break;
             }
         }
     }

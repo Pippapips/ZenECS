@@ -19,19 +19,21 @@ namespace ZenECS.Core.Systems
         bool Enabled { get; set; }
     }
     
-    /// <summary>
-    /// High-level groups used by the scheduler to order system execution.
-    /// </summary>
     public enum SystemGroup
     {
-        /// <summary>Executed before Simulation — input polling, buffer swaps, preparation.</summary>
-        FrameSetup,
-        /// <summary>Main game logic — physics, AI, gameplay updates.</summary>
-        Simulation,
-        /// <summary>Executed after Simulation — rendering, UI, data→view presentation.</summary>
-        Presentation
-    }
+        // Fixed-step deterministic simulation
+        FixedInput,
+        FixedDecision,
+        FixedSimulation,
+        FixedPost,
 
+        // Variable-step frame run (non-deterministic)
+        FrameInput,   // Unity Input, 디바이스, 뷰 이벤트 수집
+        FrameView,    // 카메라, 클라 예측, 뷰 로직
+        Presentation, // 보간 + Transform/애니/메시 바인딩
+        FrameUI,      // UI/HUD/디버그
+    }
+    
     /// <summary>
     /// Base interface for all ECS systems. Specialized interfaces (e.g.,
     /// <see cref="IFrameSetupSystem"/>, <see cref="IFixedRunSystem"/>,

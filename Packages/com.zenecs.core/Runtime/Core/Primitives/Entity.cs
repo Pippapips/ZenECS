@@ -72,5 +72,16 @@ namespace ZenECS.Core
 
         /// <summary>Explicitly converts an <see cref="Entity"/> to its raw 64-bit handle.</summary>
         public static explicit operator ulong(Entity e) => e.Handle;
+        
+        /// <summary>
+        /// Returns true if this entity is Entity.None (zero handle).
+        /// </summary>
+        public bool IsNone => Handle == 0UL;
+
+        /// <summary>
+        /// Returns true if this entity is not Entity.None.
+        /// (Note: does NOT guarantee the entity is alive; world must validate liveness.)
+        /// </summary>
+        public bool IsValid => Handle != 0UL;
     }
 }

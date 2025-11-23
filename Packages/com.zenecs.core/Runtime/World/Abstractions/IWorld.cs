@@ -47,6 +47,9 @@ namespace ZenECS.Core
         /// <summary>Readonly set of tags for discovery/grouping.</summary>
         IReadOnlyCollection<string> Tags { get; }
 
+        long FrameCount { get; }
+        long Tick { get; }
+        
         /// <summary>Whether this world is paused (independent of kernel pause).</summary>
         bool IsPaused { get; }
         
