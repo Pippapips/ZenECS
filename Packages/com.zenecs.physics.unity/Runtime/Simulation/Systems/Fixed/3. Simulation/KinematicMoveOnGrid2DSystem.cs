@@ -49,6 +49,8 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                 var newStats = stats;
 
                 int axisLock = newStats.AxisLock;
+                int axisLockCornerY = newStats.AxisLockCornerY;
+                int axisLockCornerX = newStats.AxisLockCornerX;
                 
                 // 🔹 미로 스타일 + 코너 슬라이드 + 대각선 축 선택 이동
                 var moveResult = KinematicGridMove2D.MoveMazeStyleWithCornerSlideAndAxisResolve(
@@ -56,7 +58,9 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                     in vel,
                     in col,
                     in map,
-                    ref axisLock 
+                    ref axisLock,
+                    ref axisLockCornerX,
+                    ref axisLockCornerY
                 );
 
 #if UNITY_EDITOR
@@ -88,6 +92,8 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                 newStats.LastFixedX = pos.x;
                 newStats.LastFixedY = pos.y;
                 newStats.AxisLock = axisLock;
+                newStats.AxisLockCornerY = axisLockCornerY;
+                newStats.AxisLockCornerX = axisLockCornerX;
                 cmd.ReplaceComponent(e, newStats);
 
                 // 렌더링 좌표(Position2D) 갱신

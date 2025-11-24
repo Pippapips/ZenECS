@@ -29,7 +29,7 @@ namespace ZenECS.Physics.Unity.Simulation.Components
     {
         public float x;
         public float y;
-        
+
         public Position2D(float x, float y)
         {
             this.x = x;
@@ -75,8 +75,8 @@ namespace ZenECS.Physics.Unity.Simulation.Components
     /// </summary>
     public struct FireInputState : IWorldSingletonComponent
     {
-        /// <summary>이번 프레임에 발사 입력이 들어왔는지 여부.</summary>
-        public bool Pressed;
+        public bool PressedThisFrame; // Unity Update에서 세트, 매 프레임 초기화되는 edge
+        public bool FireQueued;       // Fixed에서 소비할 때까지 유지되는 버퍼
     }
 
     /// <summary>
@@ -98,18 +98,21 @@ namespace ZenECS.Physics.Unity.Simulation.Components
 
         /// <summary>보간 기준이 되는 마지막 fixed 위치.</summary>
         public int LastFixedX;
+
         public int LastFixedY;
 
         /// <summary>디버그/통계용 입력 기록 (스케일된 방향값).</summary>
         public int MoveInputX;
+
         public int MoveInputY;
 
-        public int AxisLock; // 0 = 없음, 1 = Vertical only, 2 = Horizontal only
+        public int AxisLock;        // 0 = 없음, 1 = Vertical only, 2 = Horizontal only
+        public int AxisLockCornerY; // Vertical only일 때 기준이 되는 Y (fixed 좌표)
+        public int AxisLockCornerX; // Horizontal only일 때 기준이 되는 X (필요하면)
 
         public MovementStats2D(float moveSpeedUnityPerSecond,
             int unitsPerUnity,
-            float fixedDeltaTime,
-            int axisLock = 0)
+            float fixedDeltaTime)
         {
             MoveSpeedUnityPerSecond = moveSpeedUnityPerSecond;
             UnitsPerUnity = unitsPerUnity;
@@ -121,8 +124,10 @@ namespace ZenECS.Physics.Unity.Simulation.Components
 
             MoveInputX = 0;
             MoveInputY = 0;
-            
-            AxisLock = axisLock;
+
+            AxisLock = 0;
+            AxisLockCornerX = 0;
+            AxisLockCornerY = 0;
         }
 
         public static readonly MovementStats2D Default =
@@ -191,8 +196,8 @@ namespace ZenECS.Physics.Unity.Simulation.Components
 
         /// <summary>true이면 트리거 취급.</summary>
         public bool isTrigger;
-        
-        public  CircleCollider2D(int radius, int layerMask, bool isTrigger)
+
+        public CircleCollider2D(int radius, int layerMask, bool isTrigger)
         {
             this.radius = radius;
             this.layerMask = layerMask;
@@ -212,16 +217,12 @@ namespace ZenECS.Physics.Unity.Simulation.Components
     /// <summary>
     /// 키네마틱 바디 태그 (캐릭터/발사체 등 "움직이는 애들" 필터용).
     /// </summary>
-    public struct KinematicBodyTag2D
-    {
-    }
+    public struct KinematicBodyTag2D { }
 
     /// <summary>
     /// 플레이어 식별용 태그.
     /// </summary>
-    public struct PlayerTag
-    {
-    }
+    public struct PlayerTag { }
 
     /// <summary>
     /// 발사체 상태 및 파라미터.
@@ -275,7 +276,5 @@ namespace ZenECS.Physics.Unity.Simulation.Components
     /// <summary>
     /// 엔티티가 제거 대상임을 표시하는 태그.
     /// </summary>
-    public struct DeadTag
-    {
-    }
+    public struct DeadTag { }
 }

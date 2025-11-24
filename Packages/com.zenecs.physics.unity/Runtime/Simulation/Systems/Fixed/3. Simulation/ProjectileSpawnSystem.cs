@@ -49,7 +49,7 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                 cmd.AddComponent(proj, new CircleCollider2D
                 {
                     radius = radiusFixed,
-                    layerMask = 0,
+                    layerMask = 1,
                     isTrigger = true
                 });
                 cmd.AddComponent(proj, new Projectile(
@@ -60,12 +60,23 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                 ));
                 cmd.AddComponent(proj, new KinematicBodyTag2D());
 
+                // 🔹 MovementStats2D 복사/초기화
+                var mstats = shooterStats;
+                mstats.InterpolationAlpha = 0f;
+                mstats.LastFixedX = startPos.x;
+                mstats.LastFixedY = startPos.y;
+                cmd.AddComponent(proj, mstats);
+                
                 // 초기 렌더링용 Position2D 세팅 (옵션)
                 cmd.AddComponent(proj, new Position2D
                 {
                     x = (float)startPos.x / units,
                     y = (float)startPos.y / units
                 });
+
+                var projRot = new FixedRotation2D();
+                projRot.SetFromForward(dir);
+                cmd.AddComponent(proj, projRot);
 
                 cmd.RemoveComponent<FireProjectileRequest>(shooter);
             }

@@ -1,4 +1,5 @@
-﻿﻿using Unity.Mathematics;
+﻿#nullable enable
+using Unity.Mathematics;
 using ZenECS.Physics.Unity.Simulation;
 using ZenECS.Physics.Unity.Simulation.Components;
 
@@ -12,17 +13,10 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
     /// - 1: 수직(Y축)만 이동 허용 (Vertical only)
     /// - 2: 수평(X축)만 이동 허용 (Horizontal only)
     ///
-    /// 설계 요약:
-    /// - 기본은 미로 방식 (primary → secondary 축 순서로 이동).
-    /// - 순수 축 입력에서 모서리에 걸리면 코너 슬라이드(TryCornerSlide*) 수행.
-    /// - 대각선 입력 + 충돌 + 이동 0 인 프레임에서:
-    ///   - 타일 AABB와의 법선(normal)을 기반으로 "더 많이 걸린 축"을 blocked로 판단.
-    ///   - blocked 축의 반대 축만 살려서 MoveAxis 재시도 + axisLock 설정.
-    /// - axisLock 상태에서는:
-    ///   - 해당 축만 사용해서 이동 + (필요시) 코너 슬라이드 수행.
-    ///   - 축락 상태에서는 여전히 대각선 입력이어도 유지.
-    ///   - 대신, "양옆(또는 위아래)에 더 이상 벽이 없다"면 → Lock 해제.
-    ///   - 대각선 입력이 끝났을 때도(Lock 중이라도) axisLock 해제.
+    /// axisLockCornerY / axisLockCornerX:
+    /// - AxisLock 걸릴 때 기준이 된 타일 모서리 좌표를 저장한다.
+    /// - Vertical only일 때: 플레이어 중심 y가 이 값을 넘어서는 순간 Lock 해제.
+    /// - Horizontal only일 때: 플레이어 중심 x가 이 값을 넘어서는 순간 Lock 해제.
     /// </summary>
     public static class KinematicGridMove2D
     {
@@ -31,7 +25,9 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
             in Velocity2D vel,
             in CircleCollider2D col,
             in MapGrid2D map,
-            ref int axisLock)   // 0: none, 1: vertical only, 2: horizontal only
+            ref int axisLock,          // 0: none, 1: vertical only, 2: horizontal only
+            ref int axisLockCornerY,   // vertical-only 기준 Y
+            ref int axisLockCornerX)   // horizontal-only 기준 X
         {
             var result = new KinematicMoveResult2D
             {
@@ -65,7 +61,9 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
             // 🔹 대각선이 아니면 축 고정 해제 (평범한 직선 이동)
             if (!diagonalInput)
             {
-                axisLock = 0;
+                axisLock        = 0;
+                axisLockCornerY = 0;
+                axisLockCornerX = 0;
             }
             else
             {
@@ -110,29 +108,21 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                         }
                     }
 
-                    // 🔸 아직 "양옆에 벽"이 있는지 검사
-                    //    - 축락 상태에선 HitWall 여부와 상관없이,
-                    //      좌/우 어느 쪽이든 여전히 벽이 있으면 Lock 유지
-                    //    - 좌/우 모두 벽이 없으면 Lock 해제
-                    bool hasLeftWall = TileCollision2D.CheckCircle(
-                        in map,
-                        x - r,
-                        y,
-                        r,
-                        ~0,
-                        out _, out _);
-
-                    bool hasRightWall = TileCollision2D.CheckCircle(
-                        in map,
-                        x + r,
-                        y,
-                        r,
-                        ~0,
-                        out _, out _);
-
-                    if (!hasLeftWall && !hasRightWall)
+                    // 🔸 플레이어 중심 Y가 저장된 모서리 Y를 넘어서면 Lock 해제
+                    //     - 위로 이동(signY > 0): y > cornerY
+                    //     - 아래로 이동(signY < 0): y < cornerY
+                    if (axisLockCornerY != 0)
                     {
-                        axisLock = 0;
+                        if (signY > 0 && y > axisLockCornerY)
+                        {
+                            axisLock        = 0;
+                            axisLockCornerY = 0;
+                        }
+                        else if (signY < 0 && y < axisLockCornerY)
+                        {
+                            axisLock        = 0;
+                            axisLockCornerY = 0;
+                        }
                     }
 
                     pos.x = x;
@@ -177,26 +167,19 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                         }
                     }
 
-                    // 🔸 위/아래에 벽이 있는지 검사
-                    bool hasDownWall = TileCollision2D.CheckCircle(
-                        in map,
-                        x,
-                        y - r,
-                        r,
-                        ~0,
-                        out _, out _);
-
-                    bool hasUpWall = TileCollision2D.CheckCircle(
-                        in map,
-                        x,
-                        y + r,
-                        r,
-                        ~0,
-                        out _, out _);
-
-                    if (!hasDownWall && !hasUpWall)
+                    // 🔸 플레이어 중심 X가 저장된 모서리 X를 넘어서면 Lock 해제
+                    if (axisLockCornerX != 0)
                     {
-                        axisLock = 0;
+                        if (signX > 0 && x > axisLockCornerX)
+                        {
+                            axisLock        = 0;
+                            axisLockCornerX = 0;
+                        }
+                        else if (signX < 0 && x < axisLockCornerX)
+                        {
+                            axisLock        = 0;
+                            axisLockCornerX = 0;
+                        }
                     }
 
                     pos.x = x;
@@ -304,7 +287,7 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                     !primaryVertical &&
                     cy >= tileMinY && cy <= tileMaxY;
 
-                if (!(frontHitVertical || frontHitHorizontal))
+                if (!frontHitVertical && !frontHitHorizontal)
                 {
                     // 🔸 타일 AABB에 대해 최근접점 계산 → 충돌 법선(normal) 추출
                     int closestX = math.clamp(cx, tileMinX, tileMaxX);
@@ -313,10 +296,9 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                     int nxPen = cx - closestX;
                     int nyPen = cy - closestY;
 
-                    // 혹시라도 완전히 모서리 중앙에 걸렸다면(이론상 거의 없음) 축 선택은 primary 기준으로 처리
+                    // 혹시라도 완전히 모서리 중앙에 걸렸다면(거의 없음) 축 선택은 primary 기준으로 처리
                     if (nxPen == 0 && nyPen == 0)
                     {
-                        // fallback: primary 축을 막힌 축으로 보고 반대축만 살리기
                         bool keepVerticalFallback = !primaryVertical; // primary 막고 반대 축 살리기
 
                         x = startX;
@@ -330,12 +312,16 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                         if (keepVerticalFallback)
                         {
                             axisLock = 1; // Y만
+                            axisLockCornerY = (dy > 0) ? tileMinY : tileMaxY;
+
                             if (stepsY > 0 && signY != 0)
                                 MoveAxis(ref x, ref y, signY, stepsY, vertical: true, radius, in map, ref result);
                         }
                         else
                         {
                             axisLock = 2; // X만
+                            axisLockCornerX = (dx > 0) ? tileMinX : tileMaxX;
+
                             if (stepsX > 0 && signX != 0)
                                 MoveAxis(ref x, ref y, signX, stepsX, vertical: false, radius, in map, ref result);
                         }
@@ -356,18 +342,27 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                         // 수평 성분이 더 크다 → X축 쪽으로 더 많이 겹침 → X가 막힌 축 → Y만 살리기
                         keepVertical = true;
                         axisLock     = 1; // 이후 틱에서도 Y만 사용
+
+                        axisLockCornerY = (dy > 0) ? tileMinY : tileMaxY;
                     }
                     else if (absNy > absNx)
                     {
                         // 수직 성분이 더 크다 → Y축 쪽으로 더 많이 겹침 → Y가 막힌 축 → X만 살리기
                         keepVertical = false;
                         axisLock     = 2; // 이후 틱에서도 X만 사용
+
+                        axisLockCornerX = (dx > 0) ? tileMinX : tileMaxX;
                     }
                     else
                     {
                         // 둘 다 비슷하면 primary 축을 막힌 축으로 본다.
                         keepVertical = !primaryVertical;
                         axisLock     = keepVertical ? 1 : 2;
+
+                        if (axisLock == 1)
+                            axisLockCornerY = (dy > 0) ? tileMinY : tileMaxY;
+                        else
+                            axisLockCornerX = (dx > 0) ? tileMinX : tileMaxX;
                     }
 
                     x = startX;
@@ -440,6 +435,12 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
             }
         }
 
+        /// <summary>
+        /// primary가 수직(위/아래)일 때의 코너 슬라이드:
+        /// - 순수 위/아래 입력에서, 위/아래로 더 이상 갈 수 없을 때
+        /// - 남은 step 을 좌/우로 흘려보내며 코너를 파고 나간다.
+        /// - 타일의 가로폭 안에서 정면으로 박힌 경우에는 슬라이드를 하지 않는다.
+        /// </summary>
         private static bool TryCornerSlideVertical(
             ref int x,
             ref int y,
@@ -487,6 +488,12 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
             return moved;
         }
 
+        /// <summary>
+        /// primary가 수평(좌/우)일 때의 코너 슬라이드:
+        /// - 순수 좌/우 입력에서, 좌/우로 더 이상 갈 수 없을 때
+        /// - 남은 step 을 위/아래로 흘려보내며 코너를 파고 나간다.
+        /// - 타일의 세로폭 안에서 정면으로 박힌 경우에는 슬라이드를 하지 않는다.
+        /// </summary>
         private static bool TryCornerSlideHorizontal(
             ref int x,
             ref int y,

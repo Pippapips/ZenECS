@@ -12,7 +12,7 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
     /// - FireInputState + 플레이어 상태를 기반으로 FireProjectileRequest를 생성.
     /// </summary>
     [FixedDecisionGroup]
-    public sealed class PlayerFireDecisionSystem : IFixedSetupSystem
+    public sealed class PlayerFireDecisionSystem : ISystemLifecycle, IFixedSetupSystem
     {
         private static readonly Filter _playerFilter = new Filter.Builder()
             .With<PlayerTag>()
@@ -26,13 +26,17 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
             public int TickUntilReady;
         }
 
+        public void Initialize(IWorld w)
+        {
+        }
+        
+        public void Shutdown()
+        {
+        }
+
         public void Run(IWorld w, float dt)
         {
-            if (!w.TryGetSingleton<FireInputState>(out var fireInputEntity))
-                return;
-
-            var fireInput = w.GetSingleton<FireInputState>();
-            if (!fireInput.Pressed)
+            if (!w.TryGetSingleton<FireInputState>(out var fireInput))
                 return;
 
             using var cmd = w.BeginWrite();
@@ -40,6 +44,9 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
 
             foreach (var (e, pos, rot) in w.Query<FixedPosition2D, FixedRotation2D>(_playerFilter))
             {
+                if (!fireInput.FireQueued)
+                    return;
+                
                 // FireCooldown cd = default;
                 // if (w.HasComponent<FireCooldown>(e))
                 //     cd = w.GetComponent<FireCooldown>(e);
@@ -69,6 +76,9 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
 
                 // cd.TickUntilReady = currentTick + 8; // 예: 8틱 쿨타임
                 // cmd.SetOrAddComponent(e, cd);
+                
+                fireInput.FireQueued = false;
+                cmd.SetSingleton<FireInputState>(fireInput);
             }
         }
     }
