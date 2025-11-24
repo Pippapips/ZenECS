@@ -23,8 +23,10 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
             {
                 bool shouldDespawn = false;
 
-                if (w.HasComponent<DeadTag>(e))
-                    shouldDespawn = true;
+                if (w.TryReadComponent<DeadTag>(e, out var deadTag))
+                {
+                    shouldDespawn = deadTag.DelayTickCount <= w.Tick;
+                }
 
                 if (!shouldDespawn && proj.MaxDistance > 0 && proj.Traveled >= proj.MaxDistance)
                     shouldDespawn = true;

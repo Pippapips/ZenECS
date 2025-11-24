@@ -6,7 +6,9 @@ using ZenECS.Physics.Unity.Simulation.Components;
 namespace ZenECS.Physics.Unity.Simulation.Systems
 {
     /// <summary>
-    /// "미로 스타일 + 코너 슬라이드 + 대각선 축 선택 + 축 고정(AxisLock)" 2D 키네마틱 이동 유틸.
+    /// 2D 결정론 그리드 이동 유틸 모음.
+    /// 플레이어용: MoveMazeStyleWithCornerSlideAndAxisResolve(...)
+    /// 발사체용:   MoveMazeStyleNoSlide(...)
     ///
     /// axisLock:
     /// - 0: 축 고정 없음 (기본)
@@ -20,6 +22,82 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
     /// </summary>
     public static class KinematicGridMove2D
     {
+        /// <summary>
+        /// 🔹 발사체 전용: "미로식" 그리드 이동만 수행하고,
+        ///     - 코너 슬라이드 ❌
+        ///     - AxisLock ❌
+        ///     - primary 축 → secondary 축 순서로만 이동
+        ///
+        /// 규칙:
+        /// - dx, dy를 int 스텝으로 보고, abs가 큰 쪽을 primary 축으로 사용.
+        /// - primary 축을 먼저 MoveAxis로 이동 (벽 만나면 거기서 stop).
+        /// - primary 이동 중 벽에 막힌 경우 → secondary 축 이동은 시도하지 않음.
+        /// - primary가 끝까지 갔다면 → secondary 축도 MoveAxis로 이동.
+        ///
+        /// 결과:
+        /// - pos는 "벽과 겹치기 직전" 좌표까지 전진.
+        /// - HitWall == true이면 그 틱 동안 벽에 막혀 더 이상 가지 못했다는 뜻.
+        /// - LastHitTileX/Y는 막혔던 타일 인덱스를 가리킴.
+        /// </summary>
+        public static KinematicMoveResult2D MoveMazeStyleNoSlide(
+            ref FixedPosition2D pos,
+            in Velocity2D vel,
+            in CircleCollider2D col,
+            in MapGrid2D map)
+        {
+            var result = new KinematicMoveResult2D
+            {
+                LastHitTileX = -1,
+                LastHitTileY = -1
+            };
+
+            int x = pos.x;
+            int y = pos.y;
+
+            int dx = vel.vx;
+            int dy = vel.vy;
+
+            if (dx == 0 && dy == 0)
+                return result;
+
+            int stepsX = math.abs(dx);
+            int stepsY = math.abs(dy);
+            int signX  = dx > 0 ? 1 : (dx < 0 ? -1 : 0);
+            int signY  = dy > 0 ? 1 : (dy < 0 ? -1 : 0);
+
+            bool primaryVertical = math.abs(dy) >= math.abs(dx);
+            int radius = col.radius;
+
+            if (primaryVertical)
+            {
+                // 1) Y축 먼저
+                if (stepsY > 0 && signY != 0)
+                    MoveAxis(ref x, ref y, signY, stepsY, vertical: true, radius, in map, ref result);
+
+                // 2) Y축 이동 중 벽에 막히지 않았다면 → X축도 이동
+                if (!result.HitWall && stepsX > 0 && signX != 0)
+                    MoveAxis(ref x, ref y, signX, stepsX, vertical: false, radius, in map, ref result);
+            }
+            else
+            {
+                // 1) X축 먼저
+                if (stepsX > 0 && signX != 0)
+                    MoveAxis(ref x, ref y, signX, stepsX, vertical: false, radius, in map, ref result);
+
+                // 2) X축 이동 중 벽에 막히지 않았다면 → Y축도 이동
+                if (!result.HitWall && stepsY > 0 && signY != 0)
+                    MoveAxis(ref x, ref y, signY, stepsY, vertical: true, radius, in map, ref result);
+            }
+
+            pos.x = x;
+            pos.y = y;
+            return result;
+        }
+
+        /// <summary>
+        /// 플레이어용: "미로 스타일 + 코너 슬라이드 + 대각선 축 선택 + 축 고정(AxisLock)" 2D 키네마틱 이동.
+        /// (기존 코드 그대로)
+        /// </summary>
         public static KinematicMoveResult2D MoveMazeStyleWithCornerSlideAndAxisResolve(
             ref FixedPosition2D pos,
             in Velocity2D vel,
@@ -193,113 +271,178 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
 
             bool primaryVertical = math.abs(dy) >= math.abs(dx);
 
-            int radius = col.radius;
-
-            // 1) primary 축 이동
-            int beforePrimaryX = x;
-            int beforePrimaryY = y;
-
-            if (primaryVertical)
             {
-                if (stepsY > 0 && signY != 0)
-                    MoveAxis(ref x, ref y, signY, stepsY, vertical: true, radius, in map, ref result);
-            }
-            else
-            {
-                if (stepsX > 0 && signX != 0)
-                    MoveAxis(ref x, ref y, signX, stepsX, vertical: false, radius, in map, ref result);
-            }
+                int radius = col.radius;
 
-            int movedPrimary = primaryVertical
-                ? math.abs(y - beforePrimaryY)
-                : math.abs(x - beforePrimaryX);
+                // 1) primary 축 이동
+                int beforePrimaryX = x;
+                int beforePrimaryY = y;
 
-            int primarySteps     = primaryVertical ? stepsY : stepsX;
-            int remainingPrimary = primarySteps - movedPrimary;
-
-            // 2) 코너 슬라이드 (순수 primary 입력일 때만)
-            bool didCornerSlide = false;
-
-            if (result.HitWall && remainingPrimary > 0)
-            {
-                if (primaryVertical && stepsX == 0 && signY != 0)
-                {
-                    // 순수 위/아래 입력 → 좌/우 슬라이드 시도
-                    didCornerSlide = TryCornerSlideVertical(
-                        ref x, ref y,
-                        remainingPrimary,
-                        radius,
-                        in map,
-                        ref result);
-                }
-                else if (!primaryVertical && stepsY == 0 && signX != 0)
-                {
-                    // 순수 좌/우 입력 → 위/아래 슬라이드 시도
-                    didCornerSlide = TryCornerSlideHorizontal(
-                        ref x, ref y,
-                        remainingPrimary,
-                        radius,
-                        in map,
-                        ref result);
-                }
-            }
-
-            if (didCornerSlide)
-            {
-                result.DidMove      = true;
-                result.Slided       = true;
-                result.CornerAssist = true;
-            }
-            else
-            {
-                // 3) secondary 축 이동 (고전적인 미로 스타일)
                 if (primaryVertical)
-                {
-                    if (stepsX > 0 && signX != 0)
-                        MoveAxis(ref x, ref y, signX, stepsX, vertical: false, radius, in map, ref result);
-                }
-                else
                 {
                     if (stepsY > 0 && signY != 0)
                         MoveAxis(ref x, ref y, signY, stepsY, vertical: true, radius, in map, ref result);
                 }
-            }
-
-            // 4) 대각선 입력인데 한 칸도 못 움직인 경우:
-            //    - 충돌한 타일과의 관계(법선)를 보고, 한 축만 살려서 다시 한 번 이동 시도 + axisLock 설정
-            if (!result.DidMove && result.HitWall && diagonalInput &&
-                result.LastHitTileX >= 0 && result.LastHitTileY >= 0)
-            {
-                // 히트된 타일 AABB (fixed 좌표)
-                int tileMinX = map.originX + result.LastHitTileX * map.tileSize;
-                int tileMaxX = tileMinX + map.tileSize;
-                int tileMinY = map.originY + result.LastHitTileY * map.tileSize;
-                int tileMaxY = tileMinY + map.tileSize;
-
-                int cx = startX;
-                int cy = startY;
-
-                // 정면 충돌인 경우: 축 선택 재시도 자체를 하지 않고 그대로 멈춘다.
-                bool frontHitVertical =
-                    primaryVertical &&
-                    cx >= tileMinX && cx <= tileMaxX;
-                bool frontHitHorizontal =
-                    !primaryVertical &&
-                    cy >= tileMinY && cy <= tileMaxY;
-
-                if (!frontHitVertical && !frontHitHorizontal)
+                else
                 {
-                    // 🔸 타일 AABB에 대해 최근접점 계산 → 충돌 법선(normal) 추출
-                    int closestX = math.clamp(cx, tileMinX, tileMaxX);
-                    int closestY = math.clamp(cy, tileMinY, tileMaxY);
+                    if (stepsX > 0 && signX != 0)
+                        MoveAxis(ref x, ref y, signX, stepsX, vertical: false, radius, in map, ref result);
+                }
 
-                    int nxPen = cx - closestX;
-                    int nyPen = cy - closestY;
+                int movedPrimary = primaryVertical
+                    ? math.abs(y - beforePrimaryY)
+                    : math.abs(x - beforePrimaryX);
 
-                    // 혹시라도 완전히 모서리 중앙에 걸렸다면(거의 없음) 축 선택은 primary 기준으로 처리
-                    if (nxPen == 0 && nyPen == 0)
+                int primarySteps     = primaryVertical ? stepsY : stepsX;
+                int remainingPrimary = primarySteps - movedPrimary;
+
+                // 2) 코너 슬라이드 (순수 primary 입력일 때만)
+                bool didCornerSlide = false;
+
+                if (result.HitWall && remainingPrimary > 0)
+                {
+                    if (primaryVertical && stepsX == 0 && signY != 0)
                     {
-                        bool keepVerticalFallback = !primaryVertical; // primary 막고 반대 축 살리기
+                        // 순수 위/아래 입력 → 좌/우 슬라이드 시도
+                        didCornerSlide = TryCornerSlideVertical(
+                            ref x, ref y,
+                            remainingPrimary,
+                            radius,
+                            in map,
+                            ref result);
+                    }
+                    else if (!primaryVertical && stepsY == 0 && signX != 0)
+                    {
+                        // 순수 좌/우 입력 → 위/아래 슬라이드 시도
+                        didCornerSlide = TryCornerSlideHorizontal(
+                            ref x, ref y,
+                            remainingPrimary,
+                            radius,
+                            in map,
+                            ref result);
+                    }
+                }
+
+                if (didCornerSlide)
+                {
+                    result.DidMove      = true;
+                    result.Slided       = true;
+                    result.CornerAssist = true;
+                }
+                else
+                {
+                    // 3) secondary 축 이동 (고전적인 미로 스타일)
+                    if (primaryVertical)
+                    {
+                        if (stepsX > 0 && signX != 0)
+                            MoveAxis(ref x, ref y, signX, stepsX, vertical: false, radius, in map, ref result);
+                    }
+                    else
+                    {
+                        if (stepsY > 0 && signY != 0)
+                            MoveAxis(ref x, ref y, signY, stepsY, vertical: true, radius, in map, ref result);
+                    }
+                }
+
+                // 4) 대각선 입력인데 한 칸도 못 움직인 경우:
+                //    - 충돌한 타일과의 관계(법선)를 보고, 한 축만 살려서 다시 한 번 이동 시도 + axisLock 설정
+                if (!result.DidMove && result.HitWall && diagonalInput &&
+                    result.LastHitTileX >= 0 && result.LastHitTileY >= 0)
+                {
+                    // 히트된 타일 AABB (fixed 좌표)
+                    int tileMinX = map.originX + result.LastHitTileX * map.tileSize;
+                    int tileMaxX = tileMinX + map.tileSize;
+                    int tileMinY = map.originY + result.LastHitTileY * map.tileSize;
+                    int tileMaxY = tileMinY + map.tileSize;
+
+                    int cx = startX;
+                    int cy = startY;
+
+                    // 정면 충돌인 경우: 축 선택 재시도 자체를 하지 않고 그대로 멈춘다.
+                    bool frontHitVertical =
+                        primaryVertical &&
+                        cx >= tileMinX && cx <= tileMaxX;
+                    bool frontHitHorizontal =
+                        !primaryVertical &&
+                        cy >= tileMinY && cy <= tileMaxY;
+
+                    if (!frontHitVertical && !frontHitHorizontal)
+                    {
+                        // 🔸 타일 AABB에 대해 최근접점 계산 → 충돌 법선(normal) 추출
+                        int closestX = math.clamp(cx, tileMinX, tileMaxX);
+                        int closestY = math.clamp(cy, tileMinY, tileMaxY);
+
+                        int nxPen = cx - closestX;
+                        int nyPen = cy - closestY;
+
+                        // 혹시라도 완전히 모서리 중앙에 걸렸다면(거의 없음) 축 선택은 primary 기준으로 처리
+                        if (nxPen == 0 && nyPen == 0)
+                        {
+                            bool keepVerticalFallback = !primaryVertical; // primary 막고 반대 축 살리기
+
+                            x = startX;
+                            y = startY;
+                            result = new KinematicMoveResult2D
+                            {
+                                LastHitTileX = -1,
+                                LastHitTileY = -1
+                            };
+
+                            if (keepVerticalFallback)
+                            {
+                                axisLock = 1; // Y만
+                                axisLockCornerY = (dy > 0) ? tileMinY : tileMaxY;
+
+                                if (stepsY > 0 && signY != 0)
+                                    MoveAxis(ref x, ref y, signY, stepsY, vertical: true, radius, in map, ref result);
+                            }
+                            else
+                            {
+                                axisLock = 2; // X만
+                                axisLockCornerX = (dx > 0) ? tileMinX : tileMaxX;
+
+                                if (stepsX > 0 && signX != 0)
+                                    MoveAxis(ref x, ref y, signX, stepsX, vertical: false, radius, in map, ref result);
+                            }
+
+                            pos.x = x;
+                            pos.y = y;
+                            return result;
+                        }
+
+                        // 🔸 법선의 절대값 비교로 "어느 축이 더 막혔는지" 판정
+                        int absNx = math.abs(nxPen);
+                        int absNy = math.abs(nyPen);
+
+                        bool keepVertical; // true면 Y축만, false면 X축만 살림
+
+                        if (absNx > absNy)
+                        {
+                            // 수평 성분이 더 크다 → X축 쪽으로 더 많이 겹침 → X가 막힌 축 → Y만 살리기
+                            keepVertical = true;
+                            axisLock     = 1; // 이후 틱에서도 Y만 사용
+
+                            axisLockCornerY = (dy > 0) ? tileMinY : tileMaxY;
+                        }
+                        else if (absNy > absNx)
+                        {
+                            // 수직 성분이 더 크다 → Y축 쪽으로 더 많이 겹침 → Y가 막힌 축 → X만 살리기
+                            keepVertical = false;
+                            axisLock     = 2; // 이후 틱에서도 X만 사용
+
+                            axisLockCornerX = (dx > 0) ? tileMinX : tileMaxX;
+                        }
+                        else
+                        {
+                            // 둘 다 비슷하면 primary 축을 막힌 축으로 본다.
+                            keepVertical = !primaryVertical;
+                            axisLock     = keepVertical ? 1 : 2;
+
+                            if (axisLock == 1)
+                                axisLockCornerY = (dy > 0) ? tileMinY : tileMaxY;
+                            else
+                                axisLockCornerX = (dx > 0) ? tileMinX : tileMaxX;
+                        }
 
                         x = startX;
                         y = startY;
@@ -309,79 +452,16 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                             LastHitTileY = -1
                         };
 
-                        if (keepVerticalFallback)
+                        if (keepVertical)
                         {
-                            axisLock = 1; // Y만
-                            axisLockCornerY = (dy > 0) ? tileMinY : tileMaxY;
-
                             if (stepsY > 0 && signY != 0)
                                 MoveAxis(ref x, ref y, signY, stepsY, vertical: true, radius, in map, ref result);
                         }
                         else
                         {
-                            axisLock = 2; // X만
-                            axisLockCornerX = (dx > 0) ? tileMinX : tileMaxX;
-
                             if (stepsX > 0 && signX != 0)
                                 MoveAxis(ref x, ref y, signX, stepsX, vertical: false, radius, in map, ref result);
                         }
-
-                        pos.x = x;
-                        pos.y = y;
-                        return result;
-                    }
-
-                    // 🔸 법선의 절대값 비교로 "어느 축이 더 막혔는지" 판정
-                    int absNx = math.abs(nxPen);
-                    int absNy = math.abs(nyPen);
-
-                    bool keepVertical; // true면 Y축만, false면 X축만 살림
-
-                    if (absNx > absNy)
-                    {
-                        // 수평 성분이 더 크다 → X축 쪽으로 더 많이 겹침 → X가 막힌 축 → Y만 살리기
-                        keepVertical = true;
-                        axisLock     = 1; // 이후 틱에서도 Y만 사용
-
-                        axisLockCornerY = (dy > 0) ? tileMinY : tileMaxY;
-                    }
-                    else if (absNy > absNx)
-                    {
-                        // 수직 성분이 더 크다 → Y축 쪽으로 더 많이 겹침 → Y가 막힌 축 → X만 살리기
-                        keepVertical = false;
-                        axisLock     = 2; // 이후 틱에서도 X만 사용
-
-                        axisLockCornerX = (dx > 0) ? tileMinX : tileMaxX;
-                    }
-                    else
-                    {
-                        // 둘 다 비슷하면 primary 축을 막힌 축으로 본다.
-                        keepVertical = !primaryVertical;
-                        axisLock     = keepVertical ? 1 : 2;
-
-                        if (axisLock == 1)
-                            axisLockCornerY = (dy > 0) ? tileMinY : tileMaxY;
-                        else
-                            axisLockCornerX = (dx > 0) ? tileMinX : tileMaxX;
-                    }
-
-                    x = startX;
-                    y = startY;
-                    result = new KinematicMoveResult2D
-                    {
-                        LastHitTileX = -1,
-                        LastHitTileY = -1
-                    };
-
-                    if (keepVertical)
-                    {
-                        if (stepsY > 0 && signY != 0)
-                            MoveAxis(ref x, ref y, signY, stepsY, vertical: true, radius, in map, ref result);
-                    }
-                    else
-                    {
-                        if (stepsX > 0 && signX != 0)
-                            MoveAxis(ref x, ref y, signX, stepsX, vertical: false, radius, in map, ref result);
                     }
                 }
             }
@@ -435,12 +515,6 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
             }
         }
 
-        /// <summary>
-        /// primary가 수직(위/아래)일 때의 코너 슬라이드:
-        /// - 순수 위/아래 입력에서, 위/아래로 더 이상 갈 수 없을 때
-        /// - 남은 step 을 좌/우로 흘려보내며 코너를 파고 나간다.
-        /// - 타일의 가로폭 안에서 정면으로 박힌 경우에는 슬라이드를 하지 않는다.
-        /// </summary>
         private static bool TryCornerSlideVertical(
             ref int x,
             ref int y,
@@ -488,12 +562,6 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
             return moved;
         }
 
-        /// <summary>
-        /// primary가 수평(좌/우)일 때의 코너 슬라이드:
-        /// - 순수 좌/우 입력에서, 좌/우로 더 이상 갈 수 없을 때
-        /// - 남은 step 을 위/아래로 흘려보내며 코너를 파고 나간다.
-        /// - 타일의 세로폭 안에서 정면으로 박힌 경우에는 슬라이드를 하지 않는다.
-        /// </summary>
         private static bool TryCornerSlideHorizontal(
             ref int x,
             ref int y,

@@ -29,7 +29,7 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
 
                     if (health.Current == 0 && !w.HasComponent<DeadTag>(hit.Target))
                     {
-                        cmd.AddComponent(hit.Target, new DeadTag());
+                        cmd.AddComponent(hit.Target, new DeadTag((int)w.Tick));
                     }
                 }
 

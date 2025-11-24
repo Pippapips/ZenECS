@@ -276,5 +276,15 @@ namespace ZenECS.Physics.Unity.Simulation.Components
     /// <summary>
     /// 엔티티가 제거 대상임을 표시하는 태그.
     /// </summary>
-    public struct DeadTag { }
+    public struct DeadTag
+    {
+        public int Tick;
+        public int DelayTickCount;
+        
+        public DeadTag(int tick, int delayTickCount = 0)
+        {
+            Tick = tick;
+            DelayTickCount = tick + delayTickCount;
+        }
+    }
 }

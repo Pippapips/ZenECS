@@ -31,6 +31,11 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
     [OrderAfter(typeof(ProjectileSpawnSystem))]
     public sealed class KinematicMoveOnGrid2DSystem : IFixedRunSystem
     {
+        private static readonly Filter _f = new Filter.Builder()
+            .Without<Projectile>()
+            .Without<DeadTag>()
+            .Build();
+        
         public void Run(IWorld w, float dt)
         {
             if (!w.TryGetSingleton<MapGrid2D>(out var map))
@@ -39,7 +44,7 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
             using var cmd = w.BeginWrite();
 
             foreach (var (e, pos, vel, col, stats, rot) in w
-                         .Query<FixedPosition2D, Velocity2D, CircleCollider2D, MovementStats2D, FixedRotation2D>())
+                         .Query<FixedPosition2D, Velocity2D, CircleCollider2D, MovementStats2D, FixedRotation2D>(_f))
             {
                 // Kinematic이 아닌 애들은 스킵 (안전장치 – Tag가 없으면 넘어감)
                 if (!w.HasComponent<KinematicBodyTag2D>(e))
