@@ -1,527 +1,550 @@
-﻿// using System;
-// using ZenECS.Physics.Unity.Simulation.Components;
-//
-// namespace ZenECS.Physics.Unity.Simulation
-// {
-//     /// <summary>
-//     /// 코너 슬라이딩/강도 옵션.
-//     /// Projectile / Player를 다르게 세팅할 때 사용.
-//     /// </summary>
-//     public readonly struct KinematicMoveOptions2D
-//     {
-//         public readonly bool EnableCornerSlide;
-//         public readonly float CornerSlideIntensity; // 0~1 권장
-//
-//         public KinematicMoveOptions2D(bool enableCornerSlide, float cornerSlideIntensity)
-//         {
-//             EnableCornerSlide = enableCornerSlide;
-//             CornerSlideIntensity = cornerSlideIntensity < 0f ? 0f : cornerSlideIntensity;
-//         }
-//
-//         public static readonly KinematicMoveOptions2D None =
-//             new KinematicMoveOptions2D(false, 0f);
-//
-//         /// <summary>Projectile용: 코너 슬라이딩 약하게</summary>
-//         public static readonly KinematicMoveOptions2D ProjectileSoft =
-//             new KinematicMoveOptions2D(true, 0.25f);
-//
-//         /// <summary>캐릭터용: 코너 슬라이딩 강하게</summary>
-//         public static readonly KinematicMoveOptions2D CharacterStrong =
-//             new KinematicMoveOptions2D(true, 1.0f);
-//     }
-//
-//     public static class KinematicGridMove2D
-//     {
-//         /// <summary>
-//         /// 타일맵 기반 2D 원형 이동.
-//         /// - X,Y 축 분리 이동 + 1유닛 스윕
-//         /// - X/Y 둘 다 막힌 코너에서, 옵션에 따라 슬라이딩 시도
-//         /// 반환값: 실제로 위치가 바뀌었는지 여부.
-//         /// </summary>
-//         public static bool MoveWithTileCollision(
-//             ref FixedPosition2D pos,
-//             in Velocity2D vel,
-//             in CircleCollider2D col,
-//             in MapGrid2D map,
-//             in KinematicMoveOptions2D options,
-//             int moveInputX, // MoveInput.x
-//             int moveInputY) // MoveInput.y
-//         {
-//             int vx = vel.vx;
-//             int vy = vel.vy;
-//
-//             if (vx == 0 && vy == 0)
-//                 return false;
-//
-//             int radius = col.radius;
-//
-//             int startX = pos.x;
-//             int startY = pos.y;
-//
-//             bool movedX = false;
-//             bool movedY = false;
-//             bool hitX = false;
-//             bool hitY = false;
-//
-//             // --- 1) X 축 이동 ---
-//             if (vx != 0)
-//             {
-//                 int targetX = startX + vx;
-//
-//                 if (!TileCollision2D.CheckCircle(in map, targetX, startY, radius))
-//                 {
-//                     pos.x = targetX;
-//                     movedX = true;
-//                 }
-//                 else
-//                 {
-//                     hitX = true;
-//
-//                     int dirX = vx > 0 ? 1 : -1;
-//                     int currentX = startX;
-//                     int remaining = Math.Abs(vx);
-//
-//                     while (remaining-- > 0)
-//                     {
-//                         int nextX = currentX + dirX;
-//                         if (TileCollision2D.CheckCircle(in map, nextX, startY, radius))
-//                             break;
-//
-//                         currentX = nextX;
-//                     }
-//
-//                     if (currentX != startX)
-//                     {
-//                         pos.x = currentX;
-//                         movedX = true;
-//                     }
-//                 }
-//             }
-//
-//             // --- 2) Y 축 이동 (X 결과 기준) ---
-//             if (vy != 0)
-//             {
-//                 int baseXForY = pos.x; // X 결과 기준
-//
-//                 int targetY = startY + vy;
-//                 if (!TileCollision2D.CheckCircle(in map, baseXForY, targetY, radius))
-//                 {
-//                     pos.y = targetY;
-//                     movedY = true;
-//                 }
-//                 else
-//                 {
-//                     hitY = true;
-//
-//                     int dirY = vy > 0 ? 1 : -1;
-//                     int currentY = startY;
-//                     int remaining = Math.Abs(vy);
-//
-//                     while (remaining-- > 0)
-//                     {
-//                         int nextY = currentY + dirY;
-//                         if (TileCollision2D.CheckCircle(in map, baseXForY, nextY, radius))
-//                             break;
-//
-//                         currentY = nextY;
-//                     }
-//
-//                     if (currentY != startY)
-//                     {
-//                         pos.y = currentY;
-//                         movedY = true;
-//                     }
-//                 }
-//             }
-//
-//             bool moved = movedX || movedY;
-//
-//             // --- 3) 코너/슬라이딩 처리 ---
-//             if (!options.EnableCornerSlide)
-//                 return moved;
-//
-//             // (1) 대각선 코너: 기존 TryCornerSlide 유지
-//             if (vx != 0 && vy != 0 &&
-//                 !movedX && !movedY &&
-//                 hitX && hitY)
-//             {
-//                 TryCornerSlideDiagonal(
-//                     ref pos,
-//                     startX, startY,
-//                     vx, vy,
-//                     radius,
-//                     in map,
-//                     in options,
-//                     ref moved);
-//             }
-//             // (2) 수직 이동 중 위/아래가 막혔고, 아직 Y도 못 움직였다면 → 수평 슬라이드
-//             else if (vy != 0 && !movedY && hitY)
-//             {
-//                 TryVerticalCornerSlideWithForward(
-//                     ref pos,
-//                     startX, startY,
-//                     vx, vy,
-//                     moveInputX, moveInputY,
-//                     radius,
-//                     in map,
-//                     in options,
-//                     ref moved);
-//             }
-//             // (3) 수평 이동 중 좌/우가 막혔고, 아직 X도 못 움직였다면 → 수직 슬라이드
-//             else if (vx != 0 && !movedX && hitX)
-//             {
-//                 TryHorizontalCornerSlideWithForward(
-//                     ref pos,
-//                     startX, startY,
-//                     vx, vy,
-//                     moveInputX, moveInputY,
-//                     radius,
-//                     in map,
-//                     in options,
-//                     ref moved);
-//             }
-//
-//             return moved;
-//         }
-//
-//         private static void TryCornerSlideDiagonal(
-//             ref FixedPosition2D pos,
-//             int startX,
-//             int startY,
-//             int vx,
-//             int vy,
-//             int radius,
-//             in MapGrid2D map,
-//             in KinematicMoveOptions2D options,
-//             ref bool moved)
-//         {
-//             // 입력 방향 정규화
-//             float dx = vx;
-//             float dy = vy;
-//             float lenSq = dx * dx + dy * dy;
-//             if (lenSq <= 0.0001f)
-//                 return;
-//
-//             float invLen = 1.0f / (float)Math.Sqrt(lenSq);
-//             dx *= invLen;
-//             dy *= invLen;
-//
-//             // X쪽 벽 노멀: vx > 0 → 오른쪽 벽에 막힘 → 노멀은 왼쪽(-1,0)
-//             float nxX = (vx > 0) ? -1f : 1f;
-//             float nyX = 0f;
-//
-//             // Y쪽 벽 노멀: vy > 0 → 위쪽 벽에 막힘 → 노멀은 아래(0,-1)
-//             float nxY = 0f;
-//             float nyY = (vy > 0) ? -1f : 1f;
-//
-//             float dotX = dx * nxX + dy * nyX;
-//             float dotY = dx * nxY + dy * nyY;
-//
-//             // dot 값이 더 작은 쪽이 "더 평행한" 벽
-//             bool preferX = Math.Abs(dotX) < Math.Abs(dotY);
-//
-//             int maxBase = Math.Max(Math.Abs(vx), Math.Abs(vy));
-//             if (maxBase <= 0) maxBase = 1;
-//
-//             int maxSlideUnits = (int)Math.Ceiling(options.CornerSlideIntensity * maxBase);
-//             if (maxSlideUnits <= 0)
-//                 return;
-//
-//             // 우선 한 축 먼저 시도하고, 안 움직였으면 반대 축 fallback
-//             bool movedLocal = false;
-//
-//             if (preferX)
-//             {
-//                 movedLocal = TrySlideAlongXWall(ref pos, startX, startY, vy, radius, in map, maxSlideUnits);
-//                 if (!movedLocal)
-//                 {
-//                     movedLocal = TrySlideAlongYWall(ref pos, startX, startY, vx, radius, in map, maxSlideUnits);
-//                 }
-//             }
-//             else
-//             {
-//                 movedLocal = TrySlideAlongYWall(ref pos, startX, startY, vx, radius, in map, maxSlideUnits);
-//                 if (!movedLocal)
-//                 {
-//                     movedLocal = TrySlideAlongXWall(ref pos, startX, startY, vy, radius, in map, maxSlideUnits);
-//                 }
-//             }
-//
-//             if (movedLocal)
-//                 moved = true;
-//         }
-//
-//         private static bool TrySlideAlongXWall(
-//             ref FixedPosition2D pos,
-//             int startX,
-//             int startY,
-//             int vy,
-//             int radius,
-//             in MapGrid2D map,
-//             int maxSlideUnits)
-//         {
-//             int dirY = vy > 0 ? 1 : -1;
-//             int currentY = startY;
-//             int remaining = maxSlideUnits;
-//
-//             while (remaining-- > 0)
-//             {
-//                 int testY = currentY + dirY;
-//
-//                 // ✅ 슬라이딩은 "부딪히면 멈춤"
-//                 if (TileCollision2D.CheckCircle(in map, startX, testY, radius))
-//                     break;
-//
-//                 // 빈 칸이면 한 칸 전진
-//                 currentY = testY;
-//             }
-//
-//             if (currentY != startY)
-//             {
-//                 pos.x = startX;   // X는 코너에 붙어있고
-//                 pos.y = currentY; // Y로만 미끄러져간 결과
-//                 return true;
-//             }
-//
-//             return false;
-//         }
-//
-//         private static bool TrySlideAlongYWall(
-//             ref FixedPosition2D pos,
-//             int startX,
-//             int startY,
-//             int vx,
-//             int radius,
-//             in MapGrid2D map,
-//             int maxSlideUnits)
-//         {
-//             int dirX = vx > 0 ? 1 : -1;
-//             int currentX = startX;
-//             int remaining = maxSlideUnits;
-//
-//             while (remaining-- > 0)
-//             {
-//                 int testX = currentX + dirX;
-//
-//                 // ✅ 여기서도 마찬가지로 "충돌이면 멈춤"
-//                 if (TileCollision2D.CheckCircle(in map, testX, startY, radius))
-//                     break;
-//
-//                 currentX = testX;
-//             }
-//
-//             if (currentX != startX)
-//             {
-//                 pos.x = currentX; // X로만 미끄러져간 결과
-//                 pos.y = startY;
-//                 return true;
-//             }
-//
-//             return false;
-//         }
-//
-//         private static void TryVerticalCornerSlideWithForward(
-//             ref FixedPosition2D pos,
-//             int startX,
-//             int startY,
-//             int vx,
-//             int vy,
-//             int moveInputX,
-//             int moveInputY,
-//             int radius,
-//             in MapGrid2D map,
-//             in KinematicMoveOptions2D options,
-//             ref bool moved)
-//         {
-//             // 이번 틱 Y 목표 (full speed)
-//             int targetY = startY + vy;
-//
-//             int maxSlideUnits = Math.Abs(vy);
-//             if (maxSlideUnits <= 0)
-//                 return;
-//
-//             // Forward (MoveInput)를 정규화해서 "기울기" 판단
-//             float fx = moveInputX;
-//             float fy = moveInputY;
-//             float lenSq = fx * fx + fy * fy;
-//             if (lenSq > 0.0001f)
-//             {
-//                 float invLen = 1.0f / (float)Math.Sqrt(lenSq);
-//                 fx *= invLen;
-//                 fy *= invLen;
-//             }
-//             else
-//             {
-//                 fx = 0f;
-//                 fy = 1f; // 기본값: 위로
-//             }
-//
-//             // 슬라이드 후보 X 방향: Forward.x를 우선 반영
-//             int[] slideDirsX;
-//             if (fx > 0.01f)
-//             {
-//                 // 오른쪽 기울기 → 오른쪽 우선
-//                 slideDirsX = new[] { +1, -1 };
-//             }
-//             else if (fx < -0.01f)
-//             {
-//                 // 왼쪽 기울기 → 왼쪽 우선
-//                 slideDirsX = new[] { -1, +1 };
-//             }
-//             else
-//             {
-//                 // 수직 입력 (정면) → 양쪽 다 후보
-//                 slideDirsX = new[] { -1, +1 };
-//             }
-//
-//             // 수직 벽과 "완전 정면"이면 슬라이딩 안 함 (규칙 2)
-//             // 여기서는 상/하 벽 normal ~ (0, ±1) 이라고 보고 dot 체크
-//             float ny = (vy > 0) ? -1f : 1f; // 위로 갈 때는 위쪽에서 아래로 오는 normal
-//             float dot = fx * 0f + fy * ny;
-//             if (Math.Abs(dot) > 0.999f)
-//             {
-//                 // 정말 정면에 가까운 각도면 슬라이드 X
-//                 return;
-//             }
-//
-//             foreach (int dirX in slideDirsX)
-//             {
-//                 int slideX = startX;
-//                 int remaining = maxSlideUnits;
-//
-//                 // 1단계: 현재 Y(startY) 기준으로 수평 슬라이드 가능한 X 찾기
-//                 while (remaining-- > 0)
-//                 {
-//                     int testX = slideX + dirX;
-//
-//                     if (TileCollision2D.CheckCircle(in map, testX, startY, radius))
-//                         break; // 이 방향으로는 더 가면 벽
-//
-//                     slideX = testX;
-//                 }
-//
-//                 if (slideX == startX)
-//                     continue; // 이 방향은 못 움직였음
-//
-//                 // 2단계: 찾은 slideX에서 위로 vy만큼 이동 시도
-//                 int finalY = startY;
-//                 int dirY = vy > 0 ? 1 : -1;
-//                 int remainY = Math.Abs(vy);
-//
-//                 while (remainY-- > 0)
-//                 {
-//                     int testY = finalY + dirY;
-//                     if (TileCollision2D.CheckCircle(in map, slideX, testY, radius))
-//                         break;
-//
-//                     finalY = testY;
-//                 }
-//
-//                 pos.x = slideX;
-//                 pos.y = finalY;
-//                 moved = (slideX != startX) || (finalY != startY);
-//                 return;
-//             }
-//         }
-//
-//         private static void TryHorizontalCornerSlideWithForward(
-//             ref FixedPosition2D pos,
-//             int startX,
-//             int startY,
-//             int vx,
-//             int vy,
-//             int moveInputX,
-//             int moveInputY,
-//             int radius,
-//             in MapGrid2D map,
-//             in KinematicMoveOptions2D options,
-//             ref bool moved)
-//         {
-//             int targetX = startX + vx;
-//             int maxSlideUnits = Math.Abs(vx);
-//             if (maxSlideUnits <= 0)
-//                 return;
-//
-//             // Forward 정규화
-//             float fx = moveInputX;
-//             float fy = moveInputY;
-//             float lenSq = fx * fx + fy * fy;
-//             if (lenSq > 0.0001f)
-//             {
-//                 float invLen = 1.0f / (float)Math.Sqrt(lenSq);
-//                 fx *= invLen;
-//                 fy *= invLen;
-//             }
-//             else
-//             {
-//                 fx = 1f;
-//                 fy = 0f;
-//             }
-//
-//             // 슬라이드 후보 Y 방향: Forward.y를 반영
-//             int[] slideDirsY;
-//             if (fy > 0.01f)
-//             {
-//                 // 위로 기울기 → 위쪽 우선
-//                 slideDirsY = new[] { +1, -1 };
-//             }
-//             else if (fy < -0.01f)
-//             {
-//                 // 아래로 기울기 → 아래쪽 우선
-//                 slideDirsY = new[] { -1, +1 };
-//             }
-//             else
-//             {
-//                 slideDirsY = new[] { -1, +1 };
-//             }
-//
-//             // 수평 벽 정면 체크 (normal ~ (±1, 0))
-//             float nx = (vx > 0) ? -1f : 1f;
-//             float dot = fx * nx + fy * 0f;
-//             if (Math.Abs(dot) > 0.999f)
-//             {
-//                 // 정면에 가까우면 슬라이드 X
-//                 return;
-//             }
-//
-//             foreach (int dirY in slideDirsY)
-//             {
-//                 int slideY = startY;
-//                 int remaining = maxSlideUnits;
-//
-//                 // 1단계: 현재 X(startX) 기준으로 수직 슬라이드 가능한 Y 찾기
-//                 while (remaining-- > 0)
-//                 {
-//                     int testY = slideY + dirY;
-//
-//                     if (TileCollision2D.CheckCircle(in map, startX, testY, radius))
-//                         break;
-//
-//                     slideY = testY;
-//                 }
-//
-//                 if (slideY == startY)
-//                     continue;
-//
-//                 // 2단계: slideY에서 왼/오른쪽으로 vx만큼 이동 시도
-//                 int finalX = startX;
-//                 int dirX = vx > 0 ? 1 : -1;
-//                 int remainX = Math.Abs(vx);
-//
-//                 while (remainX-- > 0)
-//                 {
-//                     int testX = finalX + dirX;
-//                     if (TileCollision2D.CheckCircle(in map, testX, slideY, radius))
-//                         break;
-//
-//                     finalX = testX;
-//                 }
-//
-//                 pos.x = finalX;
-//                 pos.y = slideY;
-//                 moved = (finalX != startX) || (slideY != startY);
-//                 return;
-//             }
-//         }
-//     }
-// }
+﻿﻿using Unity.Mathematics;
+using ZenECS.Physics.Unity.Simulation;
+using ZenECS.Physics.Unity.Simulation.Components;
+
+namespace ZenECS.Physics.Unity.Simulation.Systems
+{
+    /// <summary>
+    /// "미로 스타일 + 코너 슬라이드 + 대각선 축 선택 + 축 고정(AxisLock)" 2D 키네마틱 이동 유틸.
+    ///
+    /// axisLock:
+    /// - 0: 축 고정 없음 (기본)
+    /// - 1: 수직(Y축)만 이동 허용 (Vertical only)
+    /// - 2: 수평(X축)만 이동 허용 (Horizontal only)
+    ///
+    /// 설계 요약:
+    /// - 기본은 미로 방식 (primary → secondary 축 순서로 이동).
+    /// - 순수 축 입력에서 모서리에 걸리면 코너 슬라이드(TryCornerSlide*) 수행.
+    /// - 대각선 입력 + 충돌 + 이동 0 인 프레임에서:
+    ///   - 타일 AABB와의 법선(normal)을 기반으로 "더 많이 걸린 축"을 blocked로 판단.
+    ///   - blocked 축의 반대 축만 살려서 MoveAxis 재시도 + axisLock 설정.
+    /// - axisLock 상태에서는:
+    ///   - 해당 축만 사용해서 이동 + (필요시) 코너 슬라이드 수행.
+    ///   - 축락 상태에서는 여전히 대각선 입력이어도 유지.
+    ///   - 대신, "양옆(또는 위아래)에 더 이상 벽이 없다"면 → Lock 해제.
+    ///   - 대각선 입력이 끝났을 때도(Lock 중이라도) axisLock 해제.
+    /// </summary>
+    public static class KinematicGridMove2D
+    {
+        public static KinematicMoveResult2D MoveMazeStyleWithCornerSlideAndAxisResolve(
+            ref FixedPosition2D pos,
+            in Velocity2D vel,
+            in CircleCollider2D col,
+            in MapGrid2D map,
+            ref int axisLock)   // 0: none, 1: vertical only, 2: horizontal only
+        {
+            var result = new KinematicMoveResult2D
+            {
+                LastHitTileX = -1,
+                LastHitTileY = -1
+            };
+
+            int startX = pos.x;
+            int startY = pos.y;
+
+            int x = startX;
+            int y = startY;
+
+            int dx = vel.vx;
+            int dy = vel.vy;
+
+            if (dx == 0 && dy == 0)
+            {
+                // 입력이 없으면 축 고정도 해제
+                axisLock = 0;
+                return result;
+            }
+
+            int stepsX = math.abs(dx);
+            int stepsY = math.abs(dy);
+            int signX  = dx > 0 ? 1 : (dx < 0 ? -1 : 0);
+            int signY  = dy > 0 ? 1 : (dy < 0 ? -1 : 0);
+
+            bool diagonalInput = (stepsX > 0 && stepsY > 0);
+
+            // 🔹 대각선이 아니면 축 고정 해제 (평범한 직선 이동)
+            if (!diagonalInput)
+            {
+                axisLock = 0;
+            }
+            else
+            {
+                // 🔹 대각선 입력 + axisLock 이 이미 설정되어 있다면,
+                //     → 해당 축만 사용해서 이동을 시도하고, 나머지 로직은 건너뛴다.
+                if (axisLock == 1) // Vertical only (Y축만)
+                {
+                    int r = col.radius;
+
+                    // 대각선 속도 길이를 유지하기 위한 스칼라 step
+                    int effectiveSteps = (int)math.round(math.sqrt(dx * dx + dy * dy));
+                    if (effectiveSteps <= 0)
+                        effectiveSteps = math.max(stepsX, stepsY);
+
+                    int beforeY = y;
+
+                    if (effectiveSteps > 0 && signY != 0)
+                    {
+                        MoveAxis(ref x, ref y, signY, effectiveSteps, vertical: true, r, in map, ref result);
+                    }
+
+                    int movedY     = math.abs(y - beforeY);
+                    int remainingY = effectiveSteps - movedY;
+
+                    // 코너 슬라이드 (남은 step으로 좌우 슬라이드)
+                    if (result.HitWall && remainingY > 0)
+                    {
+                        bool slid = TryCornerSlideVertical(
+                            ref x,
+                            ref y,
+                            remainingY,
+                            r,
+                            in map,
+                            ref result
+                        );
+
+                        if (slid)
+                        {
+                            result.DidMove      = true;
+                            result.Slided       = true;
+                            result.CornerAssist = true;
+                        }
+                    }
+
+                    // 🔸 아직 "양옆에 벽"이 있는지 검사
+                    //    - 축락 상태에선 HitWall 여부와 상관없이,
+                    //      좌/우 어느 쪽이든 여전히 벽이 있으면 Lock 유지
+                    //    - 좌/우 모두 벽이 없으면 Lock 해제
+                    bool hasLeftWall = TileCollision2D.CheckCircle(
+                        in map,
+                        x - r,
+                        y,
+                        r,
+                        ~0,
+                        out _, out _);
+
+                    bool hasRightWall = TileCollision2D.CheckCircle(
+                        in map,
+                        x + r,
+                        y,
+                        r,
+                        ~0,
+                        out _, out _);
+
+                    if (!hasLeftWall && !hasRightWall)
+                    {
+                        axisLock = 0;
+                    }
+
+                    pos.x = x;
+                    pos.y = y;
+                    return result;
+                }
+
+                if (axisLock == 2) // Horizontal only (X축만)
+                {
+                    int r = col.radius;
+
+                    int effectiveSteps = (int)math.round(math.sqrt(dx * dx + dy * dy));
+                    if (effectiveSteps <= 0)
+                        effectiveSteps = math.max(stepsX, stepsY);
+
+                    int beforeX = x;
+
+                    if (effectiveSteps > 0 && signX != 0)
+                    {
+                        MoveAxis(ref x, ref y, signX, effectiveSteps, vertical: false, r, in map, ref result);
+                    }
+
+                    int movedX     = math.abs(x - beforeX);
+                    int remainingX = effectiveSteps - movedX;
+
+                    if (result.HitWall && remainingX > 0)
+                    {
+                        bool slid = TryCornerSlideHorizontal(
+                            ref x,
+                            ref y,
+                            remainingX,
+                            r,
+                            in map,
+                            ref result
+                        );
+
+                        if (slid)
+                        {
+                            result.DidMove      = true;
+                            result.Slided       = true;
+                            result.CornerAssist = true;
+                        }
+                    }
+
+                    // 🔸 위/아래에 벽이 있는지 검사
+                    bool hasDownWall = TileCollision2D.CheckCircle(
+                        in map,
+                        x,
+                        y - r,
+                        r,
+                        ~0,
+                        out _, out _);
+
+                    bool hasUpWall = TileCollision2D.CheckCircle(
+                        in map,
+                        x,
+                        y + r,
+                        r,
+                        ~0,
+                        out _, out _);
+
+                    if (!hasDownWall && !hasUpWall)
+                    {
+                        axisLock = 0;
+                    }
+
+                    pos.x = x;
+                    pos.y = y;
+                    return result;
+                }
+            }
+
+            // 여기부터는 axisLock == 0 이거나 (축 고정 없음),
+            // 대각선이 아닌 경우(축 고정 해제 후) 일반 미로 + 코너 슬라이드 로직.
+
+            bool primaryVertical = math.abs(dy) >= math.abs(dx);
+
+            int radius = col.radius;
+
+            // 1) primary 축 이동
+            int beforePrimaryX = x;
+            int beforePrimaryY = y;
+
+            if (primaryVertical)
+            {
+                if (stepsY > 0 && signY != 0)
+                    MoveAxis(ref x, ref y, signY, stepsY, vertical: true, radius, in map, ref result);
+            }
+            else
+            {
+                if (stepsX > 0 && signX != 0)
+                    MoveAxis(ref x, ref y, signX, stepsX, vertical: false, radius, in map, ref result);
+            }
+
+            int movedPrimary = primaryVertical
+                ? math.abs(y - beforePrimaryY)
+                : math.abs(x - beforePrimaryX);
+
+            int primarySteps     = primaryVertical ? stepsY : stepsX;
+            int remainingPrimary = primarySteps - movedPrimary;
+
+            // 2) 코너 슬라이드 (순수 primary 입력일 때만)
+            bool didCornerSlide = false;
+
+            if (result.HitWall && remainingPrimary > 0)
+            {
+                if (primaryVertical && stepsX == 0 && signY != 0)
+                {
+                    // 순수 위/아래 입력 → 좌/우 슬라이드 시도
+                    didCornerSlide = TryCornerSlideVertical(
+                        ref x, ref y,
+                        remainingPrimary,
+                        radius,
+                        in map,
+                        ref result);
+                }
+                else if (!primaryVertical && stepsY == 0 && signX != 0)
+                {
+                    // 순수 좌/우 입력 → 위/아래 슬라이드 시도
+                    didCornerSlide = TryCornerSlideHorizontal(
+                        ref x, ref y,
+                        remainingPrimary,
+                        radius,
+                        in map,
+                        ref result);
+                }
+            }
+
+            if (didCornerSlide)
+            {
+                result.DidMove      = true;
+                result.Slided       = true;
+                result.CornerAssist = true;
+            }
+            else
+            {
+                // 3) secondary 축 이동 (고전적인 미로 스타일)
+                if (primaryVertical)
+                {
+                    if (stepsX > 0 && signX != 0)
+                        MoveAxis(ref x, ref y, signX, stepsX, vertical: false, radius, in map, ref result);
+                }
+                else
+                {
+                    if (stepsY > 0 && signY != 0)
+                        MoveAxis(ref x, ref y, signY, stepsY, vertical: true, radius, in map, ref result);
+                }
+            }
+
+            // 4) 대각선 입력인데 한 칸도 못 움직인 경우:
+            //    - 충돌한 타일과의 관계(법선)를 보고, 한 축만 살려서 다시 한 번 이동 시도 + axisLock 설정
+            if (!result.DidMove && result.HitWall && diagonalInput &&
+                result.LastHitTileX >= 0 && result.LastHitTileY >= 0)
+            {
+                // 히트된 타일 AABB (fixed 좌표)
+                int tileMinX = map.originX + result.LastHitTileX * map.tileSize;
+                int tileMaxX = tileMinX + map.tileSize;
+                int tileMinY = map.originY + result.LastHitTileY * map.tileSize;
+                int tileMaxY = tileMinY + map.tileSize;
+
+                int cx = startX;
+                int cy = startY;
+
+                // 정면 충돌인 경우: 축 선택 재시도 자체를 하지 않고 그대로 멈춘다.
+                bool frontHitVertical =
+                    primaryVertical &&
+                    cx >= tileMinX && cx <= tileMaxX;
+                bool frontHitHorizontal =
+                    !primaryVertical &&
+                    cy >= tileMinY && cy <= tileMaxY;
+
+                if (!(frontHitVertical || frontHitHorizontal))
+                {
+                    // 🔸 타일 AABB에 대해 최근접점 계산 → 충돌 법선(normal) 추출
+                    int closestX = math.clamp(cx, tileMinX, tileMaxX);
+                    int closestY = math.clamp(cy, tileMinY, tileMaxY);
+
+                    int nxPen = cx - closestX;
+                    int nyPen = cy - closestY;
+
+                    // 혹시라도 완전히 모서리 중앙에 걸렸다면(이론상 거의 없음) 축 선택은 primary 기준으로 처리
+                    if (nxPen == 0 && nyPen == 0)
+                    {
+                        // fallback: primary 축을 막힌 축으로 보고 반대축만 살리기
+                        bool keepVerticalFallback = !primaryVertical; // primary 막고 반대 축 살리기
+
+                        x = startX;
+                        y = startY;
+                        result = new KinematicMoveResult2D
+                        {
+                            LastHitTileX = -1,
+                            LastHitTileY = -1
+                        };
+
+                        if (keepVerticalFallback)
+                        {
+                            axisLock = 1; // Y만
+                            if (stepsY > 0 && signY != 0)
+                                MoveAxis(ref x, ref y, signY, stepsY, vertical: true, radius, in map, ref result);
+                        }
+                        else
+                        {
+                            axisLock = 2; // X만
+                            if (stepsX > 0 && signX != 0)
+                                MoveAxis(ref x, ref y, signX, stepsX, vertical: false, radius, in map, ref result);
+                        }
+
+                        pos.x = x;
+                        pos.y = y;
+                        return result;
+                    }
+
+                    // 🔸 법선의 절대값 비교로 "어느 축이 더 막혔는지" 판정
+                    int absNx = math.abs(nxPen);
+                    int absNy = math.abs(nyPen);
+
+                    bool keepVertical; // true면 Y축만, false면 X축만 살림
+
+                    if (absNx > absNy)
+                    {
+                        // 수평 성분이 더 크다 → X축 쪽으로 더 많이 겹침 → X가 막힌 축 → Y만 살리기
+                        keepVertical = true;
+                        axisLock     = 1; // 이후 틱에서도 Y만 사용
+                    }
+                    else if (absNy > absNx)
+                    {
+                        // 수직 성분이 더 크다 → Y축 쪽으로 더 많이 겹침 → Y가 막힌 축 → X만 살리기
+                        keepVertical = false;
+                        axisLock     = 2; // 이후 틱에서도 X만 사용
+                    }
+                    else
+                    {
+                        // 둘 다 비슷하면 primary 축을 막힌 축으로 본다.
+                        keepVertical = !primaryVertical;
+                        axisLock     = keepVertical ? 1 : 2;
+                    }
+
+                    x = startX;
+                    y = startY;
+                    result = new KinematicMoveResult2D
+                    {
+                        LastHitTileX = -1,
+                        LastHitTileY = -1
+                    };
+
+                    if (keepVertical)
+                    {
+                        if (stepsY > 0 && signY != 0)
+                            MoveAxis(ref x, ref y, signY, stepsY, vertical: true, radius, in map, ref result);
+                    }
+                    else
+                    {
+                        if (stepsX > 0 && signX != 0)
+                            MoveAxis(ref x, ref y, signX, stepsX, vertical: false, radius, in map, ref result);
+                    }
+                }
+            }
+
+            pos.x = x;
+            pos.y = y;
+            return result;
+        }
+
+        /// <summary>
+        /// 한 축에 대해 step 만큼 1칸씩 이동을 시도.
+        /// - 중간에 벽을 만나면 그 축 이동은 그 자리에서 종료.
+        /// - 한 칸이라도 이동하면 DidMove = true.
+        /// - 중간에 막히면 HitWall = true, LastHitTileX/Y 갱신.
+        /// </summary>
+        private static void MoveAxis(
+            ref int x,
+            ref int y,
+            int sign,
+            int steps,
+            bool vertical,
+            int radius,
+            in MapGrid2D map,
+            ref KinematicMoveResult2D result)
+        {
+            if (sign == 0 || steps <= 0)
+                return;
+
+            for (int i = 0; i < steps; i++)
+            {
+                int nx = vertical ? x          : x + sign;
+                int ny = vertical ? y + sign   : y;
+
+                if (TileCollision2D.CheckCircle(
+                        in map,
+                        nx, ny,
+                        radius,
+                        ~0,
+                        out int hitTileX,
+                        out int hitTileY))
+                {
+                    result.HitWall      = true;
+                    result.LastHitTileX = hitTileX;
+                    result.LastHitTileY = hitTileY;
+                    break;
+                }
+
+                x = nx;
+                y = ny;
+                result.DidMove = true;
+            }
+        }
+
+        private static bool TryCornerSlideVertical(
+            ref int x,
+            ref int y,
+            int remainingSteps,
+            int radius,
+            in MapGrid2D map,
+            ref KinematicMoveResult2D result)
+        {
+            if (!result.HitWall || result.LastHitTileX < 0 || result.LastHitTileY < 0)
+                return false;
+
+            int tileMinX = map.originX + result.LastHitTileX * map.tileSize;
+            int tileMaxX = tileMinX + map.tileSize;
+
+            int cx = x;
+
+            // 정면 충돌: X가 타일 가로폭 안이면 위/아래 평면에 박힌 것 → 슬라이드하지 않는다.
+            if (cx >= tileMinX && cx <= tileMaxX)
+                return false;
+
+            int slideSign = (cx < tileMinX) ? -1 : +1;
+
+            bool moved = false;
+
+            for (int i = 0; i < remainingSteps; i++)
+            {
+                int nx = x + slideSign;
+                int ny = y;
+
+                if (TileCollision2D.CheckCircle(
+                        in map,
+                        nx, ny,
+                        radius,
+                        ~0,
+                        out int _, out int _))
+                {
+                    break;
+                }
+
+                x = nx;
+                y = ny;
+                moved = true;
+            }
+
+            return moved;
+        }
+
+        private static bool TryCornerSlideHorizontal(
+            ref int x,
+            ref int y,
+            int remainingSteps,
+            int radius,
+            in MapGrid2D map,
+            ref KinematicMoveResult2D result)
+        {
+            if (!result.HitWall || result.LastHitTileX < 0 || result.LastHitTileY < 0)
+                return false;
+
+            int tileMinY = map.originY + result.LastHitTileY * map.tileSize;
+            int tileMaxY = tileMinY + map.tileSize;
+
+            int cy = y;
+
+            // 정면 충돌: Y가 타일 세로폭 안이면 좌/우 평면에 박힌 것 → 슬라이드하지 않는다.
+            if (cy >= tileMinY && cy <= tileMaxY)
+                return false;
+
+            int slideSign = (cy < tileMinY) ? -1 : +1;
+
+            bool moved = false;
+
+            for (int i = 0; i < remainingSteps; i++)
+            {
+                int nx = x;
+                int ny = y + slideSign;
+
+                if (TileCollision2D.CheckCircle(
+                        in map,
+                        nx, ny,
+                        radius,
+                        ~0,
+                        out int _, out int _))
+                {
+                    break;
+                }
+
+                x = nx;
+                y = ny;
+                moved = true;
+            }
+
+            return moved;
+        }
+    }
+
+    public struct KinematicMoveResult2D
+    {
+        public bool DidMove;
+        public bool HitWall;
+        public bool Slided;
+        public bool CornerAssist;
+
+        public int LastHitTileX;
+        public int LastHitTileY;
+
+        public static implicit operator bool(KinematicMoveResult2D r) => r.DidMove;
+    }
+}

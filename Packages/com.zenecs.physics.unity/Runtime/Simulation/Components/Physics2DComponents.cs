@@ -104,7 +104,12 @@ namespace ZenECS.Physics.Unity.Simulation.Components
         public int MoveInputX;
         public int MoveInputY;
 
-        public MovementStats2D(float moveSpeedUnityPerSecond, int unitsPerUnity, float fixedDeltaTime)
+        public int AxisLock; // 0 = 없음, 1 = Vertical only, 2 = Horizontal only
+
+        public MovementStats2D(float moveSpeedUnityPerSecond,
+            int unitsPerUnity,
+            float fixedDeltaTime,
+            int axisLock = 0)
         {
             MoveSpeedUnityPerSecond = moveSpeedUnityPerSecond;
             UnitsPerUnity = unitsPerUnity;
@@ -116,6 +121,8 @@ namespace ZenECS.Physics.Unity.Simulation.Components
 
             MoveInputX = 0;
             MoveInputY = 0;
+            
+            AxisLock = axisLock;
         }
 
         public static readonly MovementStats2D Default =

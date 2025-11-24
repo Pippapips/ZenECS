@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.Mathematics;
+using UnityEngine;
 using ZenECS.Core;
 using ZenECS.Core.Attributes;
 using ZenECS.Core.Systems;
@@ -19,8 +20,8 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
         {
             using var cmd = w.BeginWrite();
             
-            foreach (var (e, fpos, pos, stats) in
-                     w.Query<FixedPosition2D, Position2D, MovementStats2D>(_f))
+            foreach (var (e, fpos, pos, stats, frot) in
+                     w.Query<FixedPosition2D, Position2D, MovementStats2D, FixedRotation2D>(_f))
             {
                 var newStats = stats;
 

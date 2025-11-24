@@ -18,12 +18,12 @@
             int cx, int cy,
             int radius)
         {
-            // 모든 레이어 활성 (~0)
-            return CheckCircle(in map, cx, cy, radius, ~0);
+            // 모든 레이어 활성 (~0), 히트 위치는 무시
+            return CheckCircle(in map, cx, cy, radius, ~0, out _, out _);
         }
 
         /// <summary>
-        /// (신규 시그니처)
+        /// (구버전 시그니처)
         /// 원 중심 (cx, cy), 반지름 radius가
         /// 맵의 어떤 "solid" 타일과도 충돌하는지 검사한다.
         /// 
@@ -31,11 +31,6 @@
         ///   (예: bit0 = Ground, bit1 = Wall, bit2 = Water ...)
         /// - layerMask 와 AND 연산을 해서 0이 아니면 충돌 대상으로 간주한다.
         /// - layerMask 를 ~0 로 주면 모든 레이어를 대상으로 검사한다.
-        /// 
-        /// 충돌 조건:
-        /// - 맵이 비어있으면 false
-        /// - 타일 bounding box와 원의 최근접점만 계산 (solid 타일에만)
-        /// - dist^2 <= radius^2 인 경우 충돌
         /// </summary>
         public static bool CheckCircle(
             in MapGrid2D map,
@@ -43,6 +38,34 @@
             int radius,
             int layerMask)
         {
+            // 히트 위치는 필요 없을 때
+            return CheckCircle(in map, cx, cy, radius, layerMask, out _, out _);
+        }
+
+        /// <summary>
+        /// (신규 시그니처)
+        /// 원 중심 (cx, cy), 반지름 radius가
+        /// 맵의 어떤 "solid" 타일과도 충돌하는지 검사한다.
+        /// 
+        /// - collision 배열의 값이 0이 아니면 충돌 후보로 본다.
+        /// - layerMask 와 AND 연산을 해서 0이 아니면 충돌 대상으로 간주한다.
+        /// - layerMask 를 ~0 로 주면 모든 레이어를 대상으로 검사한다.
+        /// 
+        /// hitX, hitY:
+        /// - 충돌이 발생했을 경우, "히트된 타일의 타일 좌표(tx, ty)"를 반환한다.
+        /// - 충돌이 없으면 hitX, hitY 는 -1 로 설정된다.
+        /// </summary>
+        public static bool CheckCircle(
+            in MapGrid2D map,
+            int cx, int cy,
+            int radius,
+            int layerMask,
+            out int hitX,
+            out int hitY)
+        {
+            hitX = -1;
+            hitY = -1;
+
             if (map.collision == null || map.width <= 0 || map.height <= 0)
                 return false;
 
@@ -59,7 +82,7 @@
             // 맵 범위로 클램프
             if (minTileX < 0) minTileX = 0;
             if (minTileY < 0) minTileY = 0;
-            if (maxTileX >= map.width) maxTileX = map.width - 1;
+            if (maxTileX >= map.width)  maxTileX = map.width  - 1;
             if (maxTileY >= map.height) maxTileY = map.height - 1;
 
             if (minTileX > maxTileX || minTileY > maxTileY)
@@ -101,7 +124,12 @@
 
                     // 딱 닿는 것도 충돌로 간주 (<=)
                     if (dist2 <= r2)
+                    {
+                        // 🔹 여기서 "히트된 타일 좌표"를 out 파라미터로 반환
+                        hitX = tx;
+                        hitY = ty;
                         return true;
+                    }
                 }
             }
 

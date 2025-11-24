@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using Unity.Mathematics;
+using UnityEngine;
 using ZenECS.Core;
 using ZenECS.Core.Attributes;
 using ZenECS.Core.Systems;
@@ -32,8 +33,15 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
 
             using var cmd = w.BeginWrite();
 
-            foreach (var (e, stats, vel, rot) in w.Query<MovementStats2D, Velocity2D, FixedRotation2D>(_f))
+            foreach (var (e, stats, vel, rot, pos) in w.Query<MovementStats2D, Velocity2D, FixedRotation2D, FixedPosition2D>(_f))
             {
+                var fwd2d = rot.Forward();
+                var fwd = new Vector3(fwd2d.x, 0, fwd2d.y);
+                float sx = pos.x / 1000.0f;
+                float sy = pos.y / 1000.0f;
+                var origin = new Vector3(sx, 0, sy);
+                Debug.DrawRay(origin, fwd, Color.red);
+                
                 if (mag < DirectionEpsilon || math.lengthsq(dir) < DirectionEpsilon)
                 {
                     var stoppedVel = vel;
@@ -64,9 +72,9 @@ namespace ZenECS.Physics.Unity.Simulation.Systems
                 newVel.vy = vy;
                 cmd.ReplaceComponent(e, newVel);
 
-                var newRot = rot;
-                newRot.SetFromForward(n);
-                cmd.ReplaceComponent(e, newRot);
+                // var newRot = rot;
+                // newRot.SetFromForward(n);
+                // cmd.ReplaceComponent(e, newRot);
             }
         }
     }

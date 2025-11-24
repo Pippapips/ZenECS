@@ -9,7 +9,7 @@ namespace ZenECS.Physics.Unity.Simulation
         public int originX, originY;
         public byte[] collision;    // 0=Empty,1=Wall,...
 
-        public bool IsWall(int tx, int ty)
+        public readonly bool IsWall(int tx, int ty)
         {
             if (collision == null) return false;
             if (tx < 0 || ty < 0 || tx >= width || ty >= height) return false;
