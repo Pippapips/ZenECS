@@ -44,9 +44,10 @@ namespace ZenECS.Core.Internal.Systems
                 IReadOnlyList<ISystem>? fixedSimulation,
                 IReadOnlyList<ISystem>? fixedPost,
                 IReadOnlyList<ISystem>? frameInput,
+                IReadOnlyList<ISystem>? frameSync,
                 IReadOnlyList<ISystem>? frameView,
                 IReadOnlyList<ISystem>? frameUI,
-                IReadOnlyList<ISystem>? presentation)
+                IReadOnlyList<ISystem>? unknown)
             {
                 FixedInput      = fixedInput      ?? Array.Empty<ISystem>();
                 FixedDecision   = fixedDecision   ?? Array.Empty<ISystem>();
@@ -54,10 +55,10 @@ namespace ZenECS.Core.Internal.Systems
                 FixedPost       = fixedPost       ?? Array.Empty<ISystem>();
 
                 FrameInput      = frameInput      ?? Array.Empty<ISystem>();
+                FrameSync       = frameSync       ?? Array.Empty<ISystem>();
                 FrameView       = frameView       ?? Array.Empty<ISystem>();
                 FrameUI         = frameUI         ?? Array.Empty<ISystem>();
-
-                Presentation    = presentation    ?? Array.Empty<ISystem>();
+                Unknown         = unknown         ?? Array.Empty<ISystem>();
             }
 
             // ───── Fixed-step deterministic groups ─────
@@ -78,33 +79,28 @@ namespace ZenECS.Core.Internal.Systems
 
             /// <summary>Execution order for the <see cref="SystemGroup.FrameInput"/> phase.</summary>
             public IReadOnlyList<ISystem> FrameInput { get; }
-
-            /// <summary>Execution order for the <see cref="SystemGroup.FrameView"/> phase.</summary>
+            public IReadOnlyList<ISystem> FrameSync { get; }
             public IReadOnlyList<ISystem> FrameView { get; }
-
-            /// <summary>Execution order for the <see cref="SystemGroup.FrameUI"/> phase.</summary>
             public IReadOnlyList<ISystem> FrameUI { get; }
-
-            /// <summary>Execution order for the <see cref="SystemGroup.Presentation"/> phase.</summary>
-            public IReadOnlyList<ISystem> Presentation { get; }
+            public IReadOnlyList<ISystem> Unknown { get; }
 
             /// <summary>
             /// Combined forward execution order across all phases.
             /// <para>
             /// Order matches the typical runner pipeline:
-            /// FrameInput → FrameView → FixedInput → FixedDecision → FixedSimulation
-            /// → FixedPost → Presentation → FrameUI
+            /// FrameInput → FrameSync → FixedInput → FixedDecision → FixedSimulation
+            /// → FixedPost → FrameView → FrameUI
             /// </para>
             /// </summary>
             public IEnumerable<ISystem> AllInExecutionOrder =>
                 FrameInput
+                    .Concat(FrameSync)
                     .Concat(FrameView)
+                    .Concat(FrameUI)
                     .Concat(FixedInput)
                     .Concat(FixedDecision)
                     .Concat(FixedSimulation)
-                    .Concat(FixedPost)
-                    .Concat(Presentation)
-                    .Concat(FrameUI);
+                    .Concat(FixedPost);
 
             /// <summary>
             /// Ordered view of systems implementing <see cref="ISystemLifecycle"/> for initialization
@@ -135,16 +131,16 @@ namespace ZenECS.Core.Internal.Systems
 
             var buckets = new Dictionary<SystemGroup, List<(Type type, ISystem inst, HashSet<Type> before, HashSet<Type> after)>>()
             {
+                [SystemGroup.Unknown]         = new(),
                 [SystemGroup.FixedInput]      = new(),
                 [SystemGroup.FixedDecision]   = new(),
                 [SystemGroup.FixedSimulation] = new(),
                 [SystemGroup.FixedPost]       = new(),
 
                 [SystemGroup.FrameInput]      = new(),
+                [SystemGroup.FrameSync]       = new(),
                 [SystemGroup.FrameView]       = new(),
                 [SystemGroup.FrameUI]         = new(),
-
-                [SystemGroup.Presentation]    = new()
             };
 
             // 1) Classification + constraint collection
@@ -170,20 +166,26 @@ namespace ZenECS.Core.Internal.Systems
                     buckets[group] = list;
                 }
 
+                // 여기서 Unknown 그룹이면 경고 출력
+                if (group == SystemGroup.Unknown)
+                {
+                    EcsRuntimeOptions.Log.Warn($"[ZenECS][SystemPlanner] System ‘{t.FullName}’ belongs to the Unknown group and will not be executed. Please assign a valid SystemGroup attribute.");
+                }
+                
                 list.Add((t, s, before, after));
             }
 
             // 2) Sort each group independently
+            List<ISystem> unknown         = TopoSortWithinGroup(buckets[SystemGroup.Unknown]);
             List<ISystem> fixedInput      = TopoSortWithinGroup(buckets[SystemGroup.FixedInput]);
             List<ISystem> fixedDecision   = TopoSortWithinGroup(buckets[SystemGroup.FixedDecision]);
             List<ISystem> fixedSimulation = TopoSortWithinGroup(buckets[SystemGroup.FixedSimulation]);
             List<ISystem> fixedPost       = TopoSortWithinGroup(buckets[SystemGroup.FixedPost]);
 
             List<ISystem> frameInput      = TopoSortWithinGroup(buckets[SystemGroup.FrameInput]);
+            List<ISystem> frameSync       = TopoSortWithinGroup(buckets[SystemGroup.FrameSync]);
             List<ISystem> frameView       = TopoSortWithinGroup(buckets[SystemGroup.FrameView]);
             List<ISystem> frameUI         = TopoSortWithinGroup(buckets[SystemGroup.FrameUI]);
-
-            List<ISystem> presentation    = TopoSortWithinGroup(buckets[SystemGroup.Presentation]);
 
             return new Plan(
                 fixedInput,
@@ -191,9 +193,10 @@ namespace ZenECS.Core.Internal.Systems
                 fixedSimulation,
                 fixedPost,
                 frameInput,
+                frameSync,
                 frameView,
                 frameUI,
-                presentation);
+                unknown);
         }
 
         /// <summary>
@@ -205,17 +208,6 @@ namespace ZenECS.Core.Internal.Systems
         /// </exception>
         private static void ValidatePhaseMarkers(Type t)
         {
-            // A system must not implement more than one "phase" marker interface.
-            int phaseCount =
-                (typeof(IFixedSetupSystem).IsAssignableFrom(t)      ? 1 : 0) +
-                (typeof(IFixedRunSystem).IsAssignableFrom(t)        ? 1 : 0) +
-                (typeof(IFrameSetupSystem).IsAssignableFrom(t)      ? 1 : 0) +
-                (typeof(IFrameRunSystem).IsAssignableFrom(t)        ? 1 : 0) +
-                (typeof(IPresentationSystem).IsAssignableFrom(t)    ? 1 : 0);
-
-            if (phaseCount > 1)
-                throw new InvalidOperationException($"{t.Name} implements multiple phase marker interfaces.");
-
             // A system must not declare more than one SimulationGroupAttribute
             // (including derived attributes like FixedInputGroupAttribute, etc.).
             int groupAttrCount = t.GetCustomAttributes<SimulationGroupAttribute>(false).Count();

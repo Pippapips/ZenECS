@@ -88,7 +88,7 @@ namespace ZenECS.Core.Internal
 
             return _snapshotBoxedInvoker(t)(e);
         }
-        
+
         public bool SnapshotComponentTyped(Entity e, Type? t)
         {
             return t != null && _snapshotBoxedInvoker(t)(e);
@@ -150,8 +150,9 @@ namespace ZenECS.Core.Internal
             if (_replaceBoxedCache.TryGetValue(t, out var fn)) return fn;
 
             _miReplaceOpen ??= typeof(World).GetMethod(
-                nameof(ReplaceComponent),
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!; // ReplaceComponent<T>(Entity, in T)
+                    nameof(ReplaceComponent),
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                !; // ReplaceComponent<T>(Entity, in T)
 
             var closed = _miReplaceOpen.MakeGenericMethod(t);
             bool Wrapped(Entity e, object value) => (bool)closed.Invoke(this, new object[] { e, value })!;
@@ -190,6 +191,15 @@ namespace ZenECS.Core.Internal
         /// </summary>
         internal bool AddComponent<T>(Entity e, in T value) where T : struct
         {
+            // 1) Phase-level structural write 체크
+            if (!_writePolicy.CanStructuralWrite())
+            {
+                if (!HandleDenied(
+                        $"[Denied] Add<{typeof(T).Name}> e={e.Id} " +
+                        $"reason=Phase({_writePolicy.CurrentPhase})"))
+                    return false;
+            }
+
             if (!_permissionHook.EvaluateWritePermission(e, typeof(T)))
             {
                 if (!HandleDenied($"[Denied] Add<{typeof(T).Name}> e={e.Id} reason=WritePermission"))
@@ -215,7 +225,6 @@ namespace ZenECS.Core.Internal
             r = value;
 
             addSingletonIndex<T>(e);
-            
             _bindingRouter.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Added, value));
             return true;
         }
@@ -236,6 +245,15 @@ namespace ZenECS.Core.Internal
         /// </summary>
         internal bool ReplaceComponent<T>(Entity e, in T value) where T : struct
         {
+            // 1) Phase-level value write 체크 (Presentation에서도 OK)
+            if (!_writePolicy.CanValueWrite())
+            {
+                if (!HandleDenied(
+                        $"[Denied] Replace<{typeof(T).Name}> e={e.Id} " +
+                        $"reason=Phase({ _writePolicy.CurrentPhase })"))
+                    return false;
+            }
+            
             if (!_permissionHook.EvaluateWritePermission(e, typeof(T)))
             {
                 if (!HandleDenied($"[Denied] Replace<{typeof(T).Name}> e={e.Id} reason=WritePermission"))
@@ -266,6 +284,15 @@ namespace ZenECS.Core.Internal
         /// </summary>
         internal bool RemoveComponent<T>(Entity e) where T : struct
         {
+            // 1) Phase-level structural write 체크
+            if (!_writePolicy.CanStructuralWrite())
+            {
+                if (!HandleDenied(
+                        $"[Denied] Remove<{typeof(T).Name}> e={e.Id} " +
+                        $"reason=Phase({ _writePolicy.CurrentPhase })"))
+                    return false;
+            }
+            
             if (!_permissionHook.EvaluateWritePermission(e, typeof(T)))
             {
                 if (!HandleDenied($"[Denied] Remove<{typeof(T).Name}> e={e.Id} reason=WritePermission"))
@@ -274,6 +301,7 @@ namespace ZenECS.Core.Internal
 
             var pool = _componentPoolRepository.TryGetPool<T>();
             if (pool == null) return false;
+            
             pool.Remove(e.Id);
             removeSingletonIndex<T>(e);
             _bindingRouter.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Removed));
@@ -433,7 +461,7 @@ namespace ZenECS.Core.Internal
             entity = default;
             return false;
         }
-        
+
         internal void SetSingleton<T>(in T value) where T : struct, IWorldSingletonComponent
         {
             // Check if exists
@@ -474,14 +502,15 @@ namespace ZenECS.Core.Internal
                 value = ReadComponent<T>(e);
                 return true;
             }
+
             value = default;
             return false;
         }
-        
+
         private void clearSingletonIndex(Entity e)
         {
             List<Type>? toRemove = null;
-            
+
             // Remove from singleton index if owning any singleton components
             foreach (var kv in _singletonIndex)
             {
@@ -498,7 +527,7 @@ namespace ZenECS.Core.Internal
                     _singletonIndex.Remove(t);
             }
         }
- 
+
         private void addSingletonIndex<T>(Entity e) where T : struct
         {
             // After successful AddComponent<T>(e, value)

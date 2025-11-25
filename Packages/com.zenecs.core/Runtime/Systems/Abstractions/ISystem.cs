@@ -21,6 +21,8 @@ namespace ZenECS.Core.Systems
     
     public enum SystemGroup
     {
+        Unknown,
+        
         // Fixed-step deterministic simulation
         FixedInput,
         FixedDecision,
@@ -28,16 +30,20 @@ namespace ZenECS.Core.Systems
         FixedPost,
 
         // Variable-step frame run (non-deterministic)
+        
+        // begin
         FrameInput,   // Unity Input, 디바이스, 뷰 이벤트 수집
-        FrameView,    // 카메라, 클라 예측, 뷰 로직
-        Presentation, // 보간 + Transform/애니/메시 바인딩
+        FrameSync,    // 카메라, 클라 예측, 뷰 로직
+        
+        // late
+        FrameView,    // 보간 + Transform/애니/메시 바인딩
         FrameUI,      // UI/HUD/디버그
     }
     
     /// <summary>
     /// Base interface for all ECS systems. Specialized interfaces (e.g.,
     /// <see cref="IFrameSetupSystem"/>, <see cref="IFixedRunSystem"/>,
-    /// <see cref="IFrameRunSystem"/>, <see cref="IPresentationSystem"/>)
+    /// <see cref="IFrameSetupSystem"/>, <see cref="IFrameRunSystem"/>)
     /// refine the phase/semantics of <see cref="Run"/>.
     /// </summary>
     public interface ISystem    

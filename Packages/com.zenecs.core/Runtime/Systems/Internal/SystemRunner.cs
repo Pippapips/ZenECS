@@ -248,18 +248,37 @@ namespace ZenECS.Core.Internal.Systems
             ApplyPending(w);
             _bus.PumpAll();
 
+            var inner = w as World;
+            inner?.SetWritePhase(
+                WorldWritePhase.FrameInput,
+                denyAllWrites: false,
+                structuralChangesAllowed: true);
+            
             // 1) FrameInput: Unity Input, 디바이스, 창 크기 등
             RunGroup(SystemGroup.FrameInput, w, dt);
             _worker.RunScheduledJobs(w);
 
+            inner?.SetWritePhase(
+                WorldWritePhase.FrameSync,
+                denyAllWrites: false,
+                structuralChangesAllowed: false);
+
             // 2) FrameView: 카메라, 예측, 뷰용 로직
-            RunGroup(SystemGroup.FrameView, w, dt);
+            RunGroup(SystemGroup.FrameSync, w, dt);
             _worker.RunScheduledJobs(w);
         }
 
         /// <inheritdoc/>
         public void FixedStep(IWorld w, float fixedDelta)
         {
+            if (w is World inner)
+            {
+                inner.SetWritePhase(
+                    WorldWritePhase.Simulation,
+                    denyAllWrites: false,
+                    structuralChangesAllowed: true);
+            }
+            
             // Fixed-step deterministic pipeline:
             // FixedInput → FixedDecision → FixedSimulation → FixedPost
             RunFixedGroup(SystemGroup.FixedInput, w, fixedDelta);
@@ -287,13 +306,25 @@ namespace ZenECS.Core.Internal.Systems
             // Apply world → view deltas before presentation systems run
             _router.ApplyAll(w);
 
+            var inner = w as World;
+            inner?.SetWritePhase(
+                WorldWritePhase.FrameView,
+                denyAllWrites: false,
+                structuralChangesAllowed: false);
+
+            RunLateGroup(SystemGroup.FrameView, w, dt, interpolationAlpha);
+            _worker.RunScheduledJobs(w);
+
             using var guard = DenyWrites(_permissionHook);
 
-            // Presentation: 보간/뷰 바인딩 (IPresentationSystem)
-            RunLateGroup(SystemGroup.Presentation, w, dt, interpolationAlpha);
+            inner?.SetWritePhase(
+                WorldWritePhase.FrameUI,
+                denyAllWrites: true,      // ❗ UI에선 값 변경까지 막기
+                structuralChangesAllowed: false);
 
-            // FrameUI: HUD/디버그 (IFrameRunSystem, read-only 영역)
             RunLateGroup(SystemGroup.FrameUI, w, dt, interpolationAlpha);
+            
+            inner?.ClearWritePhase();
         }
 
         /// <summary>
@@ -324,45 +355,11 @@ namespace ZenECS.Core.Internal.Systems
             switch (g)
             {
                 case SystemGroup.FrameInput:
-                    foreach (IFrameSetupSystem s in _plan.FrameInput.OfType<IFrameSetupSystem>())
-                        s.Run(w, dt);
+                    foreach (var system in _plan.FrameInput) { system?.Run(w, dt); }
                     break;
 
-                case SystemGroup.FrameView:
-                    foreach (IFrameRunSystem s in _plan.FrameView.OfType<IFrameRunSystem>())
-                        s.Run(w, dt);
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Runs fixed-timestep systems for a specific execution group.
-        /// FixedInput / FixedDecision / FixedSimulation / FixedPost.
-        /// </summary>
-        private void RunFixedGroup(SystemGroup g, IWorld w, float dt)
-        {
-            if (_plan == null) return;
-
-            switch (g)
-            {
-                case SystemGroup.FixedInput:
-                    foreach (IFixedSetupSystem s in _plan.FixedInput.OfType<IFixedSetupSystem>())
-                        s.Run(w, dt);
-                    break;
-
-                case SystemGroup.FixedDecision:
-                    foreach (IFixedSetupSystem s in _plan.FixedDecision.OfType<IFixedSetupSystem>())
-                        s.Run(w, dt);
-                    break;
-
-                case SystemGroup.FixedSimulation:
-                    foreach (IFixedRunSystem s in _plan.FixedSimulation.OfType<IFixedRunSystem>())
-                        s.Run(w, dt);
-                    break;
-
-                case SystemGroup.FixedPost:
-                    foreach (IFixedRunSystem s in _plan.FixedPost.OfType<IFixedRunSystem>())
-                        s.Run(w, dt);
+                case SystemGroup.FrameSync:
+                    foreach (var system in _plan.FrameSync) { system?.Run(w, dt); }
                     break;
             }
         }
@@ -376,14 +373,40 @@ namespace ZenECS.Core.Internal.Systems
 
             switch (g)
             {
-                case SystemGroup.Presentation:
-                    foreach (IPresentationSystem s in _plan.Presentation.OfType<IPresentationSystem>())
-                        s.Run(w, dt, interpolationAlpha);
+                case SystemGroup.FrameView:
+                    foreach (var system in _plan.FrameView) { system?.Run(w, dt); }
+                    break;
+                
+                case SystemGroup.FrameUI:
+                    foreach (var system in _plan.FrameUI) { system?.Run(w, dt); }
+                    break;
+            }
+        }
+        
+        /// <summary>
+        /// Runs fixed-timestep systems for a specific execution group.
+        /// FixedInput / FixedDecision / FixedSimulation / FixedPost.
+        /// </summary>
+        private void RunFixedGroup(SystemGroup g, IWorld w, float dt)
+        {
+            if (_plan == null) return;
+
+            switch (g)
+            {
+                case SystemGroup.FixedInput:
+                    foreach (var system in _plan.FixedInput) { system?.Run(w, dt); }
                     break;
 
-                case SystemGroup.FrameUI:
-                    foreach (IFrameRunSystem s in _plan.FrameUI.OfType<IFrameRunSystem>())
-                        s.Run(w, dt);
+                case SystemGroup.FixedDecision:
+                    foreach (var system in _plan.FixedDecision) { system?.Run(w, dt); }
+                    break;
+
+                case SystemGroup.FixedSimulation:
+                    foreach (var system in _plan.FixedSimulation) { system?.Run(w, dt); }
+                    break;
+
+                case SystemGroup.FixedPost:
+                    foreach (var system in _plan.FixedPost) { system?.Run(w, dt); }
                     break;
             }
         }

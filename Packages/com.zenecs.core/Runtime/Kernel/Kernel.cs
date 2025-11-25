@@ -84,10 +84,6 @@ namespace ZenECS.Core
         public event Action<IWorld>? WorldDestroyed;
         public event Action<IWorld?>? CurrentWorldChanged;
 
-        public event Action<IWorld, float>? OnBeginFrame;
-        public event Action<IWorld, float>? OnFixedStep;
-        public event Action<IWorld, float, float>? OnLateFrame;
-
         // --- Internal root services (DI/bootstrap), not exposed -------------
         private readonly ServiceContainer? _root;
 
@@ -302,9 +298,9 @@ namespace ZenECS.Core
             {
                 if (!_current.IsPaused)
                 {
-                    OnBeginFrame?.Invoke(_current, dt);
+                    var internalWorld = _current as World;
+                    internalWorld?.BeginFrame(_current, dt);
                 }
-
                 return;
             }
 
@@ -312,7 +308,8 @@ namespace ZenECS.Core
             {
                 if (!w.IsPaused)
                 {
-                    OnBeginFrame?.Invoke(w, dt);
+                    var internalWorld = w as World;
+                    internalWorld?.BeginFrame(w, dt);
                 }
             }
         }
@@ -335,9 +332,9 @@ namespace ZenECS.Core
             {
                 if (!_current.IsPaused)
                 {
-                    OnFixedStep?.Invoke(_current, fixedDelta);
+                    var internalWorld = _current as World;
+                    internalWorld?.FixedStep(_current, fixedDelta);
                 }
-
                 return;
             }
 
@@ -345,7 +342,8 @@ namespace ZenECS.Core
             {
                 if (!w.IsPaused)
                 {
-                    OnFixedStep?.Invoke(w, fixedDelta);
+                    var internalWorld = w as World;
+                    internalWorld?.FixedStep(w, fixedDelta);
                 }
             }
         }
@@ -358,9 +356,9 @@ namespace ZenECS.Core
             {
                 if (!_current.IsPaused)
                 {
-                    OnLateFrame?.Invoke(_current, _delta, alpha);
+                    var internalWorld = _current as World;
+                    internalWorld?.LateFrame(_current, _delta, alpha);
                 }
-
                 return;
             }
 
@@ -368,7 +366,8 @@ namespace ZenECS.Core
             {
                 if (!w.IsPaused)
                 {
-                    OnLateFrame?.Invoke(w, _delta, alpha);
+                    var internalWorld = w as World;
+                    internalWorld?.LateFrame(w, _delta, alpha);
                 }
             }
         }

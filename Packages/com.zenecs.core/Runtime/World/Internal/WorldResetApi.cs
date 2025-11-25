@@ -68,6 +68,8 @@ namespace ZenECS.Core.Internal
 
             // Hooks / event queues
             _permissionHook.ClearAllHookQueues();
+            
+            ClearWritePhase();
 
             // Query / filter caches
             ResetQueryCaches();

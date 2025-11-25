@@ -111,10 +111,6 @@ namespace ZenECS.Core.Internal
             _permissionHook = _scope.GetRequired<IPermissionHook>();
             _runner = _scope.GetRequired<ISystemRunner>();
             _componentPoolRepository = _scope.GetRequired<IComponentPoolRepository>();
-
-            _kernel.OnBeginFrame += BeginFrame;
-            _kernel.OnFixedStep += FixedStep;
-            _kernel.OnLateFrame += LateFrame;
         }
 
         /// <summary>
@@ -124,10 +120,6 @@ namespace ZenECS.Core.Internal
         {
             if (_disposed) return;
             _disposed = true;
-
-            _kernel.OnBeginFrame -= BeginFrame;
-            _kernel.OnFixedStep  -= FixedStep;
-            _kernel.OnLateFrame  -= LateFrame;
 
             Reset(false);
             Resume();
@@ -140,7 +132,7 @@ namespace ZenECS.Core.Internal
         /// <summary>Resume stepping for this world.</summary>
         public void Resume() => _pause = false;
         
-        private void BeginFrame(IWorld w, float dt)
+        internal void BeginFrame(IWorld w, float dt)
         {
             if (w != this) return;
             if (IsPaused) return;
@@ -148,7 +140,7 @@ namespace ZenECS.Core.Internal
             _runner.BeginFrame(w, dt);
         }
 
-        private void FixedStep(IWorld w, float fixedDelta)
+        internal void FixedStep(IWorld w, float fixedDelta)
         {
             if (w != this) return;
             if (IsPaused) return;
@@ -156,7 +148,7 @@ namespace ZenECS.Core.Internal
             _runner.FixedStep(w, fixedDelta);
         }
 
-        private void LateFrame(IWorld w, float dt, float alpha = 1)
+        internal void LateFrame(IWorld w, float dt, float alpha = 1)
         {
             if (w != this) return;
             if (IsPaused) return;

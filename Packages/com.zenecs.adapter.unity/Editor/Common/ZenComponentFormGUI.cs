@@ -422,7 +422,7 @@ namespace ZenECS.EditorCommon
                     ft == typeof(Vector2) || ft == typeof(Vector3) || ft == typeof(Vector4) ||
                     ft == typeof(Quaternion) || ft == typeof(Color) ||
                     typeof(UnityEngine.Object).IsAssignableFrom(ft) ||
-                    ft == typeof(byte) || ft == typeof(Unity.Collections.FixedString64Bytes))
+                    ft == typeof(byte))
                 {
                     y += RowH(ft, rowHeight);
                     continue;
@@ -445,7 +445,7 @@ namespace ZenECS.EditorCommon
 
                 // 여기 목록은 DrawValue/TryDrawBuiltin/TryDrawMathVector에서 지원하는 타입과 일치시켜야 함
                 if (ft == typeof(int) || ft == typeof(float) || ft == typeof(bool) || ft == typeof(string) ||
-                    ft == typeof(byte) || ft == typeof(Unity.Collections.FixedString64Bytes) ||
+                    ft == typeof(byte) ||
                     ft == typeof(Vector2) || ft == typeof(Vector3) || ft == typeof(Vector4) ||
                     ft == typeof(Quaternion) || ft == typeof(Color) ||
                     typeof(UnityEngine.Object).IsAssignableFrom(ft) ||

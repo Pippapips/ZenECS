@@ -125,15 +125,6 @@ namespace ZenECS.Core
         /// <param name="alpha">Blend factor in [0,1] from accumulator/fixedDelta.</param>
         void LateFrame(float alpha = 1.0f);
 
-        /// <summary>Hook fired at the beginning of a frame for each stepped world.</summary>
-        event Action<IWorld, float>? OnBeginFrame;
-
-        /// <summary>Hook fired for each fixed step on each stepped world.</summary>
-        event Action<IWorld, float>? OnFixedStep;
-
-        /// <summary>Hook fired at the end of the frame for each stepped world (delta &amp; alpha provided).</summary>
-        event Action<IWorld, float, float>? OnLateFrame;
-
         /// <summary>
         /// Convenience helper that performs BeginFrame, then consumes the accumulator into up to
         /// <paramref name="maxSubSteps"/> FixedStep calls/>, and finally calls LateFrame.

@@ -22,9 +22,9 @@ namespace ZenECS.Core
         ///       <see cref="FixedSimulationGroupAttribute"/>,
         ///       <see cref="FixedPostGroupAttribute"/>,
         ///       <see cref="FrameInputGroupAttribute"/>,
-        ///       <see cref="FrameViewGroupAttribute"/>,
+        ///       <see cref="FrameSyncGroupAttribute"/>,
         ///       <see cref="FrameUIGroupAttribute"/>,
-        ///       <see cref="PresentationGroupAttribute"/> 등)
+        ///       <see cref="FrameViewGroupAttribute"/> 등)
         ///       을 가장 먼저 사용합니다.
         ///     </description>
         ///   </item>
@@ -61,34 +61,8 @@ namespace ZenECS.Core
             {
                 return sgAttr.Group;
             }
-
-            // 2) 마커 인터페이스 기반 fallback
-            //    (어트리뷰트 없이도 어느 정도 합리적인 디폴트 그룹을 추론)
-
-            // Presentation 시스템은 항상 Presentation 그룹
-            if (typeof(IPresentationSystem).IsAssignableFrom(t))
-                return SystemGroup.Presentation;
-
-            // Fixed-step 준비 단계: IFixedSetupSystem
-            // 기본값은 FixedInput 으로 두고, 필요 시 어트리뷰트로 FixedDecision 으로 보낼 수 있음.
-            if (typeof(IFixedSetupSystem).IsAssignableFrom(t))
-                return SystemGroup.FixedInput;
-
-            // Fixed-step 시뮬레이션 단계: IFixedRunSystem
-            if (typeof(IFixedRunSystem).IsAssignableFrom(t))
-                return SystemGroup.FixedSimulation;
-
-            // Variable-step 프레임 입력: IFrameSetupSystem
-            if (typeof(IFrameSetupSystem).IsAssignableFrom(t))
-                return SystemGroup.FrameInput;
-
-            // Variable-step 프레임 로직: IFrameRunSystem
-            // 기본값은 FrameView 로 두고, 필요 시 FrameUIGroupAttribute 등으로 덮어쓸 수 있음.
-            if (typeof(IFrameRunSystem).IsAssignableFrom(t))
-                return SystemGroup.FrameView;
-
-            // 3) 아무것도 매칭되지 않으면 결정론 코어 시뮬레이션으로 취급
-            return SystemGroup.FixedSimulation;
+            
+            return SystemGroup.Unknown;
         }
     }
 }

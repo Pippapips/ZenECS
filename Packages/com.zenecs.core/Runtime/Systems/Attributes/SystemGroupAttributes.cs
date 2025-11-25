@@ -13,14 +13,14 @@ namespace ZenECS.Core.Systems
     ///     <see cref="FixedSimulationGroupAttribute"/>,
     ///     <see cref="FixedPostGroupAttribute"/>,
     ///     <see cref="FrameInputGroupAttribute"/>,
-    ///     <see cref="FrameViewGroupAttribute"/>,
+    ///     <see cref="FrameSyncGroupAttribute"/>,
+    ///     <see cref="FrameViewGroupAttribute"/>.
     ///     <see cref="FrameUIGroupAttribute"/>,
-    ///     or <see cref="PresentationGroupAttribute"/>.
     ///   • This attribute is the generic, low-level form used by the planner.
     /// </para>
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public class SimulationGroupAttribute : Attribute
+    public abstract class SimulationGroupAttribute : Attribute
     {
         /// <summary>
         /// The group this system belongs to.
@@ -33,57 +33,6 @@ namespace ZenECS.Core.Systems
         public SimulationGroupAttribute(SystemGroup group)
         {
             Group = group;
-        }
-
-        /// <summary>
-        /// Backwards-compatible ctor for legacy usages without parameters.
-        /// Historically mapped to "Simulation" group; now defaults to <see cref="SystemGroup.FixedSimulation"/>.
-        /// </summary>
-        [Obsolete("Use the ctor with SystemGroup argument or a specific *GroupAttribute (e.g. [FixedSimulationGroup]).")]
-        public SimulationGroupAttribute()
-            : this(SystemGroup.FixedSimulation)
-        {
-        }
-    }
-
-    // ─────────────────────────────────────────────────────────────────────────
-    // Legacy aliases (for compatibility with older code)
-    // ─────────────────────────────────────────────────────────────────────────
-
-    /// <summary>
-    /// Legacy alias for a fixed pre-simulation group.
-    /// <para>
-    /// Historically used as "FrameSetup".
-    /// Now mapped to <see cref="SystemGroup.FixedInput"/>.
-    /// Prefer <see cref="FixedInputGroupAttribute"/> or <see cref="FixedDecisionGroupAttribute"/> for new code.
-    /// </para>
-    /// </summary>
-    [Obsolete("Use [FixedInputGroup] or [FixedDecisionGroup] instead.")]
-    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public sealed class SetupGroupAttribute : SimulationGroupAttribute
-    {
-        public SetupGroupAttribute()
-            : base(SystemGroup.FixedInput)
-        {
-        }
-    }
-
-    // 기존의 PresentationGroupAttribute 이름은 유지하면서
-    // 새 SystemGroup.Presentation에 매핑한다.
-    /// <summary>
-    /// Marks a system as part of the presentation/read-only stage.
-    /// <para>
-    /// Mapped to <see cref="SystemGroup.Presentation"/>.
-    /// Used for interpolation, view binding, and UI updates that read from the
-    /// deterministic core state without mutating it.
-    /// </para>
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public sealed class PresentationGroupAttribute : SimulationGroupAttribute
-    {
-        public PresentationGroupAttribute()
-            : base(SystemGroup.Presentation)
-        {
         }
     }
 
@@ -184,11 +133,28 @@ namespace ZenECS.Core.Systems
     }
 
     /// <summary>
-    /// Marks a system as belonging to the <see cref="SystemGroup.FrameView"/> group.
+    /// Marks a system as belonging to the <see cref="SystemGroup.FrameSync"/> group.
     /// <para>
     /// Typical usage:
     ///   • Camera follow/orbit, client-side prediction for visuals
     ///   • View-only logic that derives camera/viewport state from deterministic data.
+    /// </para>
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+    public sealed class FrameSyncGroupAttribute : SimulationGroupAttribute
+    {
+        public FrameSyncGroupAttribute()
+            : base(SystemGroup.FrameSync)
+        {
+        }
+    }
+
+    /// <summary>
+    /// Marks a system as part of the presentation/read-only stage.
+    /// <para>
+    /// Mapped to <see cref="SystemGroup.FrameView"/>.
+    /// Used for interpolation, view binding, and UI updates that read from the
+    /// deterministic core state without mutating it.
     /// </para>
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
@@ -199,7 +165,7 @@ namespace ZenECS.Core.Systems
         {
         }
     }
-
+    
     /// <summary>
     /// Marks a system as belonging to the <see cref="SystemGroup.FrameUI"/> group.
     /// <para>
