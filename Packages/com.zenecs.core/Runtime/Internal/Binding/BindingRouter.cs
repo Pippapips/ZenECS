@@ -183,6 +183,29 @@ namespace ZenECS.Core.Internal.Binding
             return null;
         }
         
+        /// <summary>
+        /// Returns true if entity <paramref name="e"/> has at least one binder
+        /// assignable to <typeparamref name="T"/>.
+        /// A binder matches when <c>typeof(T).IsAssignableFrom(binder.GetType())</c>.
+        /// </summary>
+        public bool Has<T>(Entity e) where T : class, IBinder
+        {
+            if (!_byEntity.TryGetValue(e, out var list) || list is null || list.Count == 0)
+                return false;
+
+            var targetType = typeof(T);
+            for (int i = 0; i < list.Count; i++)
+            {
+                var b = list[i];
+                if (b == null) continue;
+
+                if (targetType.IsAssignableFrom(b.GetType()))
+                    return true;
+            }
+
+            return false;
+        }
+        
         // ---- helpers -------------------------------------------------------------
 
         private void InsertOrdered(List<IBinder> list, IBinder binder)

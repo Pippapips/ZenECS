@@ -23,6 +23,8 @@ namespace ZenECS.Core.Internal.Binding
     /// </summary>
     internal interface IBindingRouter
     {
+        bool Has<T>(Entity e) where T : class, IBinder;
+        
         /// <summary>Attach a binder to the entity.</summary>
         void Attach(IWorld w, Entity e, IBinder? binder);
 

@@ -27,9 +27,9 @@ namespace ZenECS.Core.Events
     ///
     /// <para><b>Event order (when a full lifetime occurs):</b></para>
     /// <list type="number">
-    ///   <item><description><see cref="EntityCreated"/> — immediately after an entity is spawned.</description></item>
-    ///   <item><description><see cref="EntityDestroyRequested"/> — when a despawn is requested.</description></item>
-    ///   <item><description><see cref="EntityDestroyed"/> — after the entity has been fully despawned and removed.</description></item>
+    ///   <item><description><see cref="EntitySpawned"/> — immediately after an entity is spawned.</description></item>
+    ///   <item><description><see cref="EntityDespawnRequested"/> — when a despawn is requested.</description></item>
+    ///   <item><description><see cref="EntityDespawned"/> — after the entity has been fully despawned and removed.</description></item>
     /// </list>
     ///
     /// <para>
@@ -47,7 +47,7 @@ namespace ZenECS.Core.Events
         /// yet have any components. If you need to react to specific components being
         /// added, listen to your component/binder deltas instead.
         /// </remarks>
-        public static event Action<IWorld, Entity>? EntityCreated;
+        public static event Action<IWorld, Entity>? EntitySpawned;
 
         /// <summary>
         /// Raised when a despawn has been requested for an entity.
@@ -57,7 +57,7 @@ namespace ZenECS.Core.Events
         /// to preemptively invalidate caches or stop external processes that reference
         /// the entity. The entity may still be considered alive until removal completes.
         /// </remarks>
-        public static event Action<IWorld, Entity>? EntityDestroyRequested;
+        public static event Action<IWorld, Entity>? EntityDespawnRequested;
 
         /// <summary>
         /// Raised after an entity has been fully removed from the world.
@@ -66,39 +66,31 @@ namespace ZenECS.Core.Events
         /// At this point, the entity is no longer alive and its id may be recycled in
         /// the future. Do not attempt to access components from the supplied handle.
         /// </remarks>
-        public static event Action<IWorld, Entity>? EntityDestroyed;
+        public static event Action<IWorld, Entity>? EntityDespawned;
 
         /// <summary>
-        /// Raise the <see cref="EntityCreated"/> event.
+        /// Raise the <see cref="EntitySpawned"/> event.
         /// </summary>
         /// <param name="w">World in which the entity was created.</param>
         /// <param name="e">The created entity handle.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void RaiseSpawned(IWorld w, Entity e) => EntityCreated?.Invoke(w, e);
+        internal static void RaiseSpawned(IWorld w, Entity e) => EntitySpawned?.Invoke(w, e);
 
         /// <summary>
-        /// Raise the <see cref="EntityDestroyRequested"/> event.
+        /// Raise the <see cref="EntityDespawnRequested"/> event.
         /// </summary>
         /// <param name="w">World requesting the entity's destruction.</param>
         /// <param name="e">The target entity handle.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void RaiseDespawnRequested(IWorld w, Entity e) => EntityDestroyRequested?.Invoke(w, e);
+        internal static void RaiseDespawnRequested(IWorld w, Entity e) => EntityDespawnRequested?.Invoke(w, e);
 
         /// <summary>
-        /// Raise the <see cref="EntityDestroyed"/> event.
+        /// Raise the <see cref="EntityDespawned"/> event.
         /// </summary>
         /// <param name="w">World in which the entity was destroyed.</param>
         /// <param name="e">The destroyed entity handle.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void RaiseDespawned(IWorld w, Entity e) => EntityDestroyed?.Invoke(w, e);
-
-        /// <summary>
-        /// Raise the <see cref="EntityDestroyed"/> event.
-        /// </summary>
-        /// <param name="w">World in which the entity was destroyed.</param>
-        /// <param name="e">The destroyed entity handle.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void RaiseNewEntitiesFrame(IWorld w, Entity[]? entities) => NewEntitiesFrame?.Invoke(w, entities);
+        internal static void RaiseDespawned(IWorld w, Entity e) => EntityDespawned?.Invoke(w, e);
 
         /// <summary>
         /// Clears all subscribers to prevent leaks during domain reloads, test runs, or runtime restarts.
@@ -110,12 +102,9 @@ namespace ZenECS.Core.Events
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void Reset()
         {
-            EntityCreated = null;
-            EntityDestroyRequested = null;
-            EntityDestroyed = null;
-            NewEntitiesFrame = null;
+            EntitySpawned = null;
+            EntityDespawnRequested = null;
+            EntityDespawned = null;
         }
-        
-        public static event Action<IWorld, Entity[]?>? NewEntitiesFrame;
     }
 }

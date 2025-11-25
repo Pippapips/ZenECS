@@ -35,6 +35,8 @@ namespace ZenECS.Core
     /// </summary>
     public interface IWorldBinderApi
     {
+        bool HasBinder<T>(Entity e) where T : class, IBinder;
+        
         /// <summary>
         /// Attach a binder to an entity using the given policy.
         /// </summary>

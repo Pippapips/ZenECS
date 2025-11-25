@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using ZenECS.Core.Abstractions.Config;
 using ZenECS.Core.Binding;
+using ZenECS.Core.Events;
 using ZenECS.Core.Internal.ComponentPooling;
 
 namespace ZenECS.Core.Internal
@@ -226,6 +227,7 @@ namespace ZenECS.Core.Internal
 
             addSingletonIndex<T>(e);
             _bindingRouter.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Added, value));
+            ComponentEvents.RaiseAdded(this, e, value);
             return true;
         }
 
@@ -305,6 +307,7 @@ namespace ZenECS.Core.Internal
             pool.Remove(e.Id);
             removeSingletonIndex<T>(e);
             _bindingRouter.Dispatch(new ComponentDelta<T>(e, ComponentDeltaKind.Removed));
+            ComponentEvents.RaiseRemoved<T>(this, e);
             return true;
         }
 

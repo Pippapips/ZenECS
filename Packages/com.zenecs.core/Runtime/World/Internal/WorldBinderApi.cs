@@ -22,6 +22,8 @@ namespace ZenECS.Core.Internal
     /// </summary>
     internal sealed partial class World : IWorldBinderApi
     {
+        public bool HasBinder<T>(Entity e) where T : class, IBinder => _bindingRouter.Has<T>(e);
+        
         /// <summary>
         /// Attach a binder to an entity and optionally enforce strict context/permission checks.
         /// </summary>
