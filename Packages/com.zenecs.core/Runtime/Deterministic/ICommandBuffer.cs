@@ -100,6 +100,13 @@ namespace ZenECS.Core
         void RemoveSingleton<T>() where T : struct, IWorldSingletonComponent;
         
         /// <summary>
+        /// Record removal of a singleton component by runtime type.
+        /// If the singleton does not exist, this becomes a no-op.
+        /// </summary>
+        /// <param name="type">Singleton component type.</param>
+        void RemoveSingletonTyped(Type type);
+        
+        /// <summary>
         /// Record a command to despawn <b>all alive entities</b> in the world.
         /// Applied at the barrier, this will behave as if every entity had been
         /// despawned individually (events, router, binders included).

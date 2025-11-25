@@ -210,7 +210,7 @@ namespace ZenECS.Core.Internal.Systems
         {
             // A system must not declare more than one SimulationGroupAttribute
             // (including derived attributes like FixedInputGroupAttribute, etc.).
-            int groupAttrCount = t.GetCustomAttributes<SimulationGroupAttribute>(false).Count();
+            int groupAttrCount = t.GetCustomAttributes<GroupAttribute>(false).Count();
             if (groupAttrCount > 1)
                 throw new InvalidOperationException($"{t.Name} has multiple SimulationGroup-derived group attributes.");
 

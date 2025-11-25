@@ -52,5 +52,6 @@ namespace ZenECS.Core
         T GetSingleton<T>() where T : struct, IWorldSingletonComponent;
         bool TryGetSingleton<T>(out T value) where T : struct, IWorldSingletonComponent;
         bool HasSingleton(Entity e);
+        IEnumerable<(Type type, Entity owner)> GetAllSingletons();
     }
 }

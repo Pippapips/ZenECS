@@ -16,10 +16,10 @@ namespace ZenECS.Core
         /// <list type="number">
         ///   <item>
         ///     <description>
-        ///       타입에 직접 선언된 <see cref="SimulationGroupAttribute"/> (또는 파생형:
+        ///       타입에 직접 선언된 <see cref="GroupAttribute"/> (또는 파생형:
         ///       <see cref="FixedInputGroupAttribute"/>,
         ///       <see cref="FixedDecisionGroupAttribute"/>,
-        ///       <see cref="FixedSimulationGroupAttribute"/>,
+        ///       <see cref="FixedGroupAttribute"/>,
         ///       <see cref="FixedPostGroupAttribute"/>,
         ///       <see cref="FrameInputGroupAttribute"/>,
         ///       <see cref="FrameSyncGroupAttribute"/>,
@@ -56,8 +56,8 @@ namespace ZenECS.Core
         {
             // 1) 명시적인 SimulationGroupAttribute(또는 파생형)가 있으면 그것을 우선 사용
             //    (SetupGroupAttribute, FixedInputGroupAttribute, FrameInputGroupAttribute 등 포함)
-            if (Attribute.GetCustomAttribute(t, typeof(SimulationGroupAttribute), inherit: false)
-                is SimulationGroupAttribute sgAttr)
+            if (Attribute.GetCustomAttribute(t, typeof(GroupAttribute), inherit: false)
+                is GroupAttribute sgAttr)
             {
                 return sgAttr.Group;
             }

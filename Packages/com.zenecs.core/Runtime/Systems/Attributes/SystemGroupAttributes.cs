@@ -10,7 +10,7 @@ namespace ZenECS.Core.Systems
     ///   • For new code, use specific group attributes such as
     ///     <see cref="FixedInputGroupAttribute"/>,
     ///     <see cref="FixedDecisionGroupAttribute"/>,
-    ///     <see cref="FixedSimulationGroupAttribute"/>,
+    ///     <see cref="FixedGroupAttribute"/>,
     ///     <see cref="FixedPostGroupAttribute"/>,
     ///     <see cref="FrameInputGroupAttribute"/>,
     ///     <see cref="FrameSyncGroupAttribute"/>,
@@ -20,7 +20,7 @@ namespace ZenECS.Core.Systems
     /// </para>
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public abstract class SimulationGroupAttribute : Attribute
+    public abstract class GroupAttribute : Attribute
     {
         /// <summary>
         /// The group this system belongs to.
@@ -30,7 +30,7 @@ namespace ZenECS.Core.Systems
         /// <summary>
         /// Creates a new group attribute with the specified <see cref="SystemGroup"/>.
         /// </summary>
-        public SimulationGroupAttribute(SystemGroup group)
+        public GroupAttribute(SystemGroup group)
         {
             Group = group;
         }
@@ -50,7 +50,7 @@ namespace ZenECS.Core.Systems
     /// </para>
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public sealed class FixedInputGroupAttribute : SimulationGroupAttribute
+    public sealed class FixedInputGroupAttribute : GroupAttribute
     {
         public FixedInputGroupAttribute()
             : base(SystemGroup.FixedInput)
@@ -68,7 +68,7 @@ namespace ZenECS.Core.Systems
     /// </para>
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public sealed class FixedDecisionGroupAttribute : SimulationGroupAttribute
+    public sealed class FixedDecisionGroupAttribute : GroupAttribute
     {
         public FixedDecisionGroupAttribute()
             : base(SystemGroup.FixedDecision)
@@ -86,9 +86,9 @@ namespace ZenECS.Core.Systems
     /// </para>
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public sealed class FixedSimulationGroupAttribute : SimulationGroupAttribute
+    public sealed class FixedGroupAttribute : GroupAttribute
     {
-        public FixedSimulationGroupAttribute()
+        public FixedGroupAttribute()
             : base(SystemGroup.FixedSimulation)
         {
         }
@@ -103,7 +103,7 @@ namespace ZenECS.Core.Systems
     /// </para>
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public sealed class FixedPostGroupAttribute : SimulationGroupAttribute
+    public sealed class FixedPostGroupAttribute : GroupAttribute
     {
         public FixedPostGroupAttribute()
             : base(SystemGroup.FixedPost)
@@ -124,7 +124,7 @@ namespace ZenECS.Core.Systems
     /// </para>
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public sealed class FrameInputGroupAttribute : SimulationGroupAttribute
+    public sealed class FrameInputGroupAttribute : GroupAttribute
     {
         public FrameInputGroupAttribute()
             : base(SystemGroup.FrameInput)
@@ -141,7 +141,7 @@ namespace ZenECS.Core.Systems
     /// </para>
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public sealed class FrameSyncGroupAttribute : SimulationGroupAttribute
+    public sealed class FrameSyncGroupAttribute : GroupAttribute
     {
         public FrameSyncGroupAttribute()
             : base(SystemGroup.FrameSync)
@@ -158,7 +158,7 @@ namespace ZenECS.Core.Systems
     /// </para>
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public sealed class FrameViewGroupAttribute : SimulationGroupAttribute
+    public sealed class FrameViewGroupAttribute : GroupAttribute
     {
         public FrameViewGroupAttribute()
             : base(SystemGroup.FrameView)
@@ -175,7 +175,7 @@ namespace ZenECS.Core.Systems
     /// </para>
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public sealed class FrameUIGroupAttribute : SimulationGroupAttribute
+    public sealed class FrameUIGroupAttribute : GroupAttribute
     {
         public FrameUIGroupAttribute()
             : base(SystemGroup.FrameUI)

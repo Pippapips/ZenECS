@@ -116,6 +116,11 @@ namespace ZenECS.Core.Internal
         {
             _q.Enqueue(new RemoveSingletonOp<T>());
         }
+        
+        public void RemoveSingletonTyped(Type type)
+        {
+            _q.Enqueue(new RemoveSingletonTypedOp(type));
+        }
 
         public void DespawnAllEntities()
         {
@@ -322,6 +327,24 @@ namespace ZenECS.Core.Internal
                 //  • 싱글톤 엔티티가 있다면 전용 엔티티 통째로 Despawn
                 //  • 없다면 no-op
                 world.RemoveSingleton<T>();
+            }
+        }
+
+        private sealed class RemoveSingletonTypedOp : IOp
+        {
+            private readonly Type _type;
+
+            public RemoveSingletonTypedOp(Type type)
+            {
+                _type = type;
+            }
+
+            public void Apply(IWorld w)
+            {
+                if (w is not World world) return;
+
+                // World 쪽에 RemoveSingletonTyped(Type) 이 있다고 가정
+                world.RemoveSingletonTyped(_type);
             }
         }
         

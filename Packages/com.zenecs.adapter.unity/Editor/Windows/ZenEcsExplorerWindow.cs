@@ -40,14 +40,21 @@ namespace ZenECS.EditorWindows
         int? _findEntityGen = null; // current target ID (null => list mode)
         private bool _findEntityFoldBackup;
 
-        bool _findMode = false; // single view mode on/off
-        Entity _foundEntity; // resolved entity
+        bool _findMode = false;   // single view mode on/off
+        Entity _foundEntity;      // resolved entity
         bool _foundValid = false; // found in world?
         bool _findWatchedSystemsFold = false;
 
         // --- Other UI/layout state ---
         Vector2 _left, _right;
         int _selSystem = -1;
+
+
+        // 현재 선택된 싱글톤 (좌측 Singletons 섹션)
+        Entity _selectedSingletonEntity;
+        Type? _selectedSingletonType;
+        bool _hasSelectedSingleton = false;
+
         readonly List<Entity> _cache = new(256);
         double _nextRepaint;
         private int _selSysEntityCount;
@@ -66,7 +73,8 @@ namespace ZenECS.EditorWindows
         bool _nonDeterministicFold = true;
         bool _beginFold = true;
         bool _lateFold = true;
-        bool _unknownFold = true; // 👈 추가
+        bool _unknownFold = true;    // 👈 기존
+        bool _singletonsFold = true; // Singletons 섹션 Foldout
 
         // Fixed / Variable / Presentation 구분
         enum PhaseKind
@@ -79,10 +87,10 @@ namespace ZenECS.EditorWindows
         // System.Enabled 리플렉션 캐시
         static readonly Dictionary<Type, PropertyInfo?> _systemEnabledPropCache = new();
 
-        readonly Dictionary<Entity, bool> _entityFold = new(); // entityId → fold
+        readonly Dictionary<Entity, bool> _entityFold = new();    // entityId → fold
         readonly Dictionary<string, bool> _componentFold = new(); // $"{entityId}:{typeName}" → fold
-        readonly Dictionary<string, bool> _binderFold = new(); // $"{entityId}:{typeName}" → fold
-        readonly Dictionary<string, bool> _contextFold = new(); // $"{entityId}:{typeName}:CTX" → fold
+        readonly Dictionary<string, bool> _binderFold = new();    // $"{entityId}:{typeName}" → fold
+        readonly Dictionary<string, bool> _contextFold = new();   // $"{entityId}:{typeName}:CTX" → fold
         bool _editMode = true;
 
         static EcsDriver? _driver;
@@ -113,6 +121,7 @@ namespace ZenECS.EditorWindows
         void OnBeforeReload()
         {
             _selSystem = -1;
+            _hasSelectedSingleton = false;
             _selSysEntityCount = 0;
             _cache.Clear();
             _entityFold.Clear();
@@ -135,6 +144,7 @@ namespace ZenECS.EditorWindows
             if (s is PlayModeStateChange.ExitingPlayMode or PlayModeStateChange.EnteredEditMode)
             {
                 _selSystem = -1;
+                _hasSelectedSingleton = false;
                 _selSysEntityCount = 0;
                 _cache.Clear();
                 _findMode = false;
@@ -234,8 +244,7 @@ namespace ZenECS.EditorWindows
                                 using (new EditorGUILayout.VerticalScope("box"))
                                 {
                                     var leftFoldoutStyle = new GUIStyle(EditorStyles.foldout)
-                                    {
-                                    };
+                                        { };
 
                                     leftFoldoutStyle.focused.textColor = systemMetaTextColor;
                                     leftFoldoutStyle.onFocused.textColor = systemMetaTextColor;
@@ -373,6 +382,7 @@ namespace ZenECS.EditorWindows
                                 GUILayout.Height(24)))
                         {
                             _selSystem = -1;
+                            _hasSelectedSingleton = false;
                             _selSysEntityCount = 0;
                             _entityFold.Clear();
                             _binderFold.Clear();
@@ -424,23 +434,39 @@ namespace ZenECS.EditorWindows
                                      _selSystem >= 0 &&
                                      _selSystem < (systems?.Count ?? 0);
 
-                    if (!hasSystem)
+                    bool hasSingleton = false;
+                    if (_hasSelectedSingleton && world != null)
                     {
-                        // 시스템 선택 없음 → 안내 메시지만
+                        hasSingleton = world.IsAlive(_selectedSingletonEntity.Id, _selectedSingletonEntity.Gen);
+                        if (!hasSingleton)
+                        {
+                            // 소멸된 싱글톤 엔티티는 선택 해제
+                            _hasSelectedSingleton = false;
+                        }
+                    }
+                    
+                    if (!hasSystem && !hasSingleton)
+                    {
+                        // 시스템/싱글톤 선택 없음 → 안내 메시지만
                         GUILayout.FlexibleSpace();
                         using (new EditorGUILayout.HorizontalScope())
                         {
                             GUILayout.FlexibleSpace();
 
                             EditorGUILayout.HelpBox(
-                                "Select a system from the left panel.\n" +
-                                "The System Meta and its Entities will be shown here.",
+                                "Select a system or singleton from the left panel.\n" +
+                                "The System Meta or Singleton Entity will be shown here.",
                                 MessageType.Info);
 
                             GUILayout.FlexibleSpace();
                         }
 
                         GUILayout.FlexibleSpace();
+                    }
+                    else if (hasSingleton && !hasSystem && world != null)
+                    {
+                        // ===== 싱글톤 선택 모드 =====
+                        DrawSingletonDetail(world, _selectedSingletonType, _selectedSingletonEntity);
                     }
                     else
                     {
@@ -588,13 +614,21 @@ namespace ZenECS.EditorWindows
             };
 
             // Execution Group + 대표 인터페이스
-            string execLabel = "";
-            string execDetail = "";
+            string execLabel = "Unknown";
 
-            if (group == SystemGroup.FrameInput)
+            if (group == SystemGroup.FrameInput ||
+                group == SystemGroup.FrameSync ||
+                group == SystemGroup.FrameView ||
+                group == SystemGroup.FrameUI)
+            {
+                execLabel = "Non-deterministic";
+            }
+            else if (group == SystemGroup.FixedInput ||
+                     group == SystemGroup.FixedDecision ||
+                     group == SystemGroup.FixedSimulation ||
+                     group == SystemGroup.FixedPost)
             {
                 execLabel = "Deterministic";
-                execDetail = group.ToString();
             }
 
             // Order Before/After (Attribute 기반)
@@ -725,11 +759,6 @@ namespace ZenECS.EditorWindows
 
                 EditorGUILayout.Space(2);
 
-                // Group / Execution (세로 두 줄로)
-                string execFull = string.IsNullOrEmpty(execDetail)
-                    ? execLabel
-                    : $"{execLabel} ({execDetail})";
-
                 // 조금 눈에 잘 들어오도록 라벨 스타일 준비
                 var leftLabelStyle = new GUIStyle(EditorStyles.miniLabel)
                 {
@@ -753,7 +782,7 @@ namespace ZenECS.EditorWindows
 
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Execution", leftLabelStyle, GUILayout.Width(70));
-                EditorGUILayout.LabelField(execFull, valueStyle);
+                EditorGUILayout.LabelField(execLabel, valueStyle);
                 EditorGUILayout.EndHorizontal();
 
                 // Order (Before/After)
@@ -927,7 +956,7 @@ namespace ZenECS.EditorWindows
                 }
             }
 
-            Debug.Log($"EcsExplorer: Could not locate script asset for component type {t.FullName}");
+            Debug.Log($"EcsExplorer: Unable to locate a script asset for component type {t.FullName}.\nIt may not exist, or a matching type name is required to ping the script source.");
         }
 
         static void PingSystemType(Type t)
@@ -1374,7 +1403,7 @@ namespace ZenECS.EditorWindows
                     {
                         // Unity 툴바 Pause랑 비슷한 파란색
                         GUI.backgroundColor = EditorGUIUtility.isProSkin
-                            ? new Color(0.24f, 0.48f, 0.90f, 1f) // Dark Skin
+                            ? new Color(0.24f, 0.48f, 0.90f, 1f)  // Dark Skin
                             : new Color(0.20f, 0.45f, 0.90f, 1f); // Light Skin
 
                         GUI.contentColor = Color.white;
@@ -2044,7 +2073,7 @@ namespace ZenECS.EditorWindows
             {
                 StatusKind.Present => "#27ae60", // green
                 StatusKind.Available => "#27ae60",
-                StatusKind.Absent => "#bdc3c7", // gray
+                StatusKind.Absent => "#bdc3c7",  // gray
                 StatusKind.Missing => "#e74c3c", // red
                 _ => "#ffffff"
             };
@@ -2384,7 +2413,7 @@ namespace ZenECS.EditorWindows
                                     {
                                         // Unity 툴바 Pause랑 비슷한 파란색
                                         GUI.backgroundColor = EditorGUIUtility.isProSkin
-                                            ? new Color(0.24f, 0.48f, 0.90f, 1f) // Dark Skin
+                                            ? new Color(0.24f, 0.48f, 0.90f, 1f)  // Dark Skin
                                             : new Color(0.20f, 0.45f, 0.90f, 1f); // Light Skin
 
                                         GUI.contentColor = Color.white;
@@ -2600,9 +2629,7 @@ namespace ZenECS.EditorWindows
                                 cmd.ReplaceComponentBoxed(e, obj);
                             }
                         }
-                        catch (KeyNotFoundException)
-                        {
-                        }
+                        catch (KeyNotFoundException) { }
                     }
                 }
             }
@@ -2864,9 +2891,9 @@ namespace ZenECS.EditorWindows
         static class ContextApi
         {
             static MethodInfo? _miGetAllContexts; // (Entity) -> (Type, object)[] 또는 IEnumerable
-            static MethodInfo? _miAddFromAsset; // (Entity, ContextAsset) -> void
-            static MethodInfo? _miAttachContext; // (Entity, IContext) -> void
-            static MethodInfo? _miRemoveContext; // (Entity, Type) -> void
+            static MethodInfo? _miAddFromAsset;   // (Entity, ContextAsset) -> void
+            static MethodInfo? _miAttachContext;  // (Entity, IContext) -> void
+            static MethodInfo? _miRemoveContext;  // (Entity, Type) -> void
 
             static readonly Dictionary<(Type, string, int), MethodInfo> _cache = new();
 
@@ -3588,6 +3615,7 @@ namespace ZenECS.EditorWindows
             if (clicked && !selected)
             {
                 _selSystem = index;
+                _hasSelectedSingleton = false;
                 _selSysEntityCount = 0;
                 _entityFold.Clear();
                 _binderFold.Clear();
@@ -3653,6 +3681,7 @@ namespace ZenECS.EditorWindows
                         world.RemoveSystem(tSys);
 
                         _selSystem = -1;
+                        _hasSelectedSingleton = false;
                         _selSysEntityCount = 0;
                         _cache.Clear();
                         _entityFold.Clear();
@@ -3904,7 +3933,67 @@ namespace ZenECS.EditorWindows
             EditorGUILayout.Space(4);
 
             // ─────────────────────────────────────────
-            // 3. Unknown (SystemGroup.Unknown)
+// 3. Singletons
+// ─────────────────────────────────────────
+            if (world != null)
+            {
+                IEnumerable<(Type type, Entity owner)>? singletons = null;
+                try
+                {
+                    singletons = world.GetAllSingletons();
+                }
+                catch (Exception ex)
+                {
+                    // GetAllSingletons가 예외를 던져도 다른 UI에 영향을 주지 않도록 방어
+                    Debug.LogException(ex);
+                }
+
+                if (singletons != null)
+                {
+                    var singletonList = singletons.ToList();
+                    if (singletonList.Count > 0)
+                    {
+                        EditorGUI.indentLevel = 0;
+                        _singletonsFold = EditorGUILayout.Foldout(_singletonsFold, "Singletons", true, foldStyle);
+                        if (_singletonsFold)
+                        {
+                            EditorGUI.indentLevel++;
+                            foreach (var (type, owner) in singletonList)
+                            {
+                                DrawSingletonRow(type, owner, world);
+                            }
+
+                            EditorGUI.indentLevel--;
+                        }
+                    }
+                    else
+                    {
+                        using (new EditorGUI.DisabledScope(true))
+                        {
+                            EditorGUILayout.Foldout(false, "Singletons", true, foldStyle);
+                        }
+                    }
+                }
+                else
+                {
+                    using (new EditorGUI.DisabledScope(true))
+                    {
+                        EditorGUILayout.Foldout(false, "Singletons", true, foldStyle);
+                    }
+                }
+            }
+            else
+            {
+                using (new EditorGUI.DisabledScope(true))
+                {
+                    EditorGUILayout.Foldout(false, "Singletons", true, foldStyle);
+                }
+            }
+
+            EditorGUILayout.Space(4);
+
+            // ─────────────────────────────────────────
+            // 4. Unknown (SystemGroup.Unknown)
             // ─────────────────────────────────────────
             if (!groupTree.TryGetValue(PhaseKind.Unknown, out var unknownGroups) ||
                 unknownGroups.Values.All(l => l == null || l.Count == 0))
@@ -4084,6 +4173,148 @@ namespace ZenECS.EditorWindows
             }
         }
 
+        void DrawSingletonRow(Type type, Entity owner, IWorld world)
+        {
+            var typeName = type.Name;
+
+            // === 한 줄 Rect 계산 ===
+            var rowHeight = EditorGUIUtility.singleLineHeight + 4f;
+            var rowRect = GUILayoutUtility.GetRect(0, rowHeight, GUILayout.ExpandWidth(true));
+
+            // Indent 반영
+            rowRect = EditorGUI.IndentedRect(rowRect);
+
+            const float iconW = 24f;
+            const float gap = 1f;
+
+            // 오른쪽 끝: X
+            var removeRect = new Rect(rowRect.xMax - iconW, rowRect.y, iconW, rowRect.height);
+            var pingRect = new Rect(removeRect.x - iconW, rowRect.y, iconW, rowRect.height);
+
+            // 가운데: Singleton 버튼
+            float sysX = rowRect.x;
+            float sysRight = pingRect.x - gap;
+            float sysW = Mathf.Max(0f, sysRight - sysX);
+            var sysRect = new Rect(sysX, rowRect.y, sysW, rowHeight);
+
+            // ===== Singleton 버튼 =====
+            string label = $"{typeName}  (Entity #{owner.Id}:{owner.Gen})";
+
+            GUIStyle btnStyle = new GUIStyle(GUI.skin.button)
+            {
+                alignment = TextAnchor.MiddleLeft,
+                fontSize = 10
+            };
+
+            bool selected =
+                _hasSelectedSingleton &&
+                _selectedSingletonType == type &&
+                _selectedSingletonEntity.Id == owner.Id &&
+                _selectedSingletonEntity.Gen == owner.Gen;
+
+            bool clicked = GUI.Toggle(sysRect, selected, label, btnStyle);
+            if (clicked && !selected)
+            {
+                _selSystem = -1;
+                _hasSelectedSingleton = true;
+                _selectedSingletonType = type;
+                _selectedSingletonEntity = owner;
+
+                _selSysEntityCount = 0;
+                _entityFold.Clear();
+                _binderFold.Clear();
+                _componentFold.Clear();
+                _contextFold.Clear();
+                _watchedFold.Clear();
+                _cache.Clear();
+            }
+
+            // ===== 돋보기 버튼 (컴포넌트 타입 핑) =====
+            {
+                var pingBtnRect = new Rect(
+                    pingRect.x,
+                    pingRect.y + 1f,
+                    pingRect.width,
+                    pingRect.height - 2f
+                );
+
+                var searchContent = GetSearchIconContent("Ping singleton component script asset");
+                var iconStyle = new GUIStyle(GUI.skin.button)
+                {
+                    alignment = TextAnchor.MiddleCenter,
+                    padding = new RectOffset(3, 3, 3, 3),
+                    margin = new RectOffset(0, 0, 0, 0),
+                    fontSize = 10
+                };
+
+                if (GUI.Button(pingBtnRect, searchContent, iconStyle))
+                {
+                    PingComponentType(type);
+                }
+            }
+            
+            // 🔸 삭제 버튼 (기존 그대로)
+            using (new EditorGUI.DisabledScope(!_editMode || !BinderApi.CanRemove(world)))
+            {
+                var gcDel = new GUIContent("X", "Remove this Binder from Entity");
+                if (GUI.Button(removeRect, gcDel, EditorStyles.iconButton))
+                {
+                    if (EditorUtility.DisplayDialog(
+                            "Remove Singleton",
+                            $"Remove this single?\n\n{label}",
+                            "Yes", "No"))
+                    {
+                        using var cmd = world.BeginWrite();
+                        cmd.RemoveSingletonTyped(type);
+                        Repaint();
+                    }
+                }
+            }
+        }
+
+        void DrawSingletonDetail(IWorld world, Type? type, Entity owner)
+        {
+            // 간단한 Meta 박스
+            using (new EditorGUILayout.VerticalScope("box"))
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    using (new EditorGUILayout.VerticalScope())
+                    {
+                        string title = type != null ? type.Name : "Singleton";
+                        EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
+
+                        if (type != null)
+                        {
+                            string ns = string.IsNullOrEmpty(type.Namespace) ? "(global)" : type.Namespace;
+                            EditorGUILayout.LabelField(ns, EditorStyles.miniLabel);
+                        }
+
+                        EditorGUILayout.LabelField(
+                            $"Entity #{owner.Id}:{owner.Gen}",
+                            EditorStyles.miniLabel);
+                    }
+
+                    GUILayout.FlexibleSpace();
+
+                    if (type != null)
+                    {
+                        var pingContent = GetSearchIconContent("Ping singleton component script asset");
+                        if (GUILayout.Button(pingContent, EditorStyles.iconButton, GUILayout.Width(20),
+                                GUILayout.Height(18)))
+                        {
+                            PingComponentType(type);
+                        }
+                    }
+                }
+            }
+
+            EditorGUILayout.Space(4);
+
+            // 실제 엔티티 정보는 기존 DrawOneEntity를 재사용
+            DrawOneEntity(world, owner);
+        }
+
         void ShowSystemPresetPicker(Rect activatorRectGui, IWorld world)
         {
             ZenSystemPresetPickerWindow.Show(
@@ -4145,6 +4376,7 @@ namespace ZenECS.EditorWindows
 
                         // 캐시 클리어 & UI 갱신
                         _selSystem = -1;
+                        _hasSelectedSingleton = false;
                         _selSysEntityCount = 0;
                         _cache.Clear();
                         _entityFold.Clear();

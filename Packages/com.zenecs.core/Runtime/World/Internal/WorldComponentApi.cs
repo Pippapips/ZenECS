@@ -566,5 +566,23 @@ namespace ZenECS.Core.Internal
         {
             return _singletonIndex.Select(keyValuePair => keyValuePair.Value).Any(se => se.Equals(e));
         }
+        
+        /// <summary>
+        /// Returns all singleton components currently registered in this world.
+        /// Tuple: (component type, owning entity).
+        /// </summary>
+        public IEnumerable<(Type type, Entity owner)> GetAllSingletons()
+        {
+            foreach (var kv in _singletonIndex)
+                yield return (kv.Key, kv.Value);
+        }
+
+        internal void RemoveSingletonTyped(Type? singletonType)
+        {
+            if (singletonType != null)
+            {
+                _singletonIndex.Remove(singletonType);
+            }
+        }
     }
 }
