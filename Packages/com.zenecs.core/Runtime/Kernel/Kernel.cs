@@ -82,7 +82,8 @@ namespace ZenECS.Core
 
         public event Action<IWorld>? WorldCreated;
         public event Action<IWorld>? WorldDestroyed;
-        public event Action<IWorld?>? CurrentWorldChanged;
+        public event Action<IWorld?, IWorld?>? CurrentWorldChanged;
+        public event Action? Disposed;
 
         // --- Internal root services (DI/bootstrap), not exposed -------------
         private readonly ServiceContainer? _root;
@@ -115,6 +116,7 @@ namespace ZenECS.Core
             IsRunning = false;
             IsPaused = false;
             _totalSimulatedSeconds = 0;
+            Disposed?.Invoke();
         }
 
         // --- World Management ------------------------------------------------
@@ -268,16 +270,16 @@ namespace ZenECS.Core
             var w = handle.ResolveOrThrow();
             if (!ReferenceEquals(_current, w))
             {
+                CurrentWorldChanged?.Invoke(_current, w);
                 _current = w;
-                CurrentWorldChanged?.Invoke(_current);
             }
         }
 
         public void ClearCurrentWorld()
         {
             if (_current is null) return;
+            CurrentWorldChanged?.Invoke(_current, null);
             _current = null;
-            CurrentWorldChanged?.Invoke(null);
         }
 
         // --- Update  ---------------------------------------------------------

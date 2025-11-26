@@ -26,7 +26,7 @@ namespace ZenECS.EditorInspectors
             var icon = EditorGUIUtility.ObjectContent(target, target.GetType()).image;
 
             // ZenECS 헤더 추가
-            ZenEcsEditorHeader.DrawHeader(
+            ZenEcsGUIHeader.DrawHeader(
                 "Per-Entity Context",
                 "Creates a unique context instance for every spawned entity.",
                 new[] { "Context", "Per-Entity", "Runtime Factory" }

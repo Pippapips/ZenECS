@@ -66,7 +66,9 @@ namespace ZenECS.Core
         event Action<IWorld>? WorldDestroyed;
 
         /// <summary>Raised whenever <see cref="CurrentWorld"/> changes (argument may be null).</summary>
-        event Action<IWorld?>? CurrentWorldChanged;
+        event Action<IWorld?, IWorld?>? CurrentWorldChanged;
+        
+        event Action? Disposed;
 
         /// <summary>
         /// Create a new world (and its DI scope).

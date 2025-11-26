@@ -107,7 +107,7 @@ namespace ZenECS.EditorInspectors
         {
             var icon = EditorGUIUtility.ObjectContent(target, target.GetType()).image;
 
-            ZenEcsEditorHeader.DrawHeader(
+            ZenEcsGUIHeader.DrawHeader(
                 "System Preset",
                 "Defines a reusable group of systems that can be registered to a world in a single operation.",
                 new[]

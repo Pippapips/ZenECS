@@ -27,7 +27,7 @@ namespace ZenECS.EditorInspectors
         {
             var icon = EditorGUIUtility.ObjectContent(target, target.GetType()).image;
 
-            ZenEcsEditorHeader.DrawHeader(
+            ZenEcsGUIHeader.DrawHeader(
                 "Shared Context",
                 "Declares a world-level context type that is instantiated once and shared across all entities.",
                 new[]

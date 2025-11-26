@@ -1,5 +1,7 @@
 ﻿#nullable enable
 using System;
+using UnityEditor;
+using UnityEngine;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
 using ZenECS.Adapter.Unity.Install;
 using ZenECS.Core;
@@ -24,6 +26,18 @@ namespace ZenECS.Adapter.Unity
         /// access to the current kernel, if any.
         /// Editor and runtime can plug their own provider.
         /// </summary>
-        public static IKernel? Kernel { get; set; }
+        public static IKernel? Kernel { get; private set; } = null;
+
+        public static event Action<IKernel>? KernelCreated;
+        
+        public static void SetKernel(IKernel? kernel)
+        {
+            Kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
+            KernelCreated?.Invoke(kernel);
+            kernel.CurrentWorldChanged += (prev, next) =>
+            {
+                prev?.ClearDelegates();
+            };
+        }
     }
 }

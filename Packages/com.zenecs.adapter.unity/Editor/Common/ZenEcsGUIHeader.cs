@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ZenECS.EditorCommon
 {
-    internal static class ZenEcsEditorHeader
+    internal static class ZenEcsGUIHeader
     {
         static GUIStyle _titleStyle;
         static GUIStyle _descStyle;

@@ -56,6 +56,8 @@ namespace ZenECS.Core
         /// <summary>Whether this world is disposing</summary>
         bool IsDisposing { get; }
 
+        event Action<long>? EnteredDeterministic;
+        
         /// <summary>Pause stepping for this world only.</summary>
         void Pause();
 
@@ -75,5 +77,7 @@ namespace ZenECS.Core
         /// Get the current generation value for an internal entity id (for handle validation).
         /// </summary>
         int GenerationOf(int id);
+
+        void ClearDelegates();
     }
 }

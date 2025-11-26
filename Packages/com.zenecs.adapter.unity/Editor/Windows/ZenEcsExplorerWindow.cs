@@ -15,7 +15,9 @@ using ZenECS.Core;
 using ZenECS.Core.Attributes;
 using ZenECS.Core.Binding;
 using ZenECS.Core.Systems;
+using ZenECS.EditorCommands;
 using ZenECS.EditorCommon;
+using ZenECS.EditorRoot;
 using ZenECS.EditorTools;
 using Object = UnityEngine.Object;
 
@@ -93,8 +95,6 @@ namespace ZenECS.EditorWindows
         readonly Dictionary<string, bool> _contextFold = new();   // $"{entityId}:{typeName}:CTX" → fold
         bool _editMode = true;
 
-        static EcsDriver? _driver;
-
         void OnEnable()
         {
             EditorApplication.update += OnEditorUpdate;
@@ -167,27 +167,17 @@ namespace ZenECS.EditorWindows
 
         void OnGUI()
         {
-            IWorld? world = null;
-            if (!_driver)
-            {
-                _driver = Object.FindFirstObjectByType<EcsDriver>(FindObjectsInactive.Exclude);
-            }
-
-            bool kernelReady = _driver && _driver.Kernel != null;
-            if (kernelReady)
-            {
-                world = _driver!.Kernel?.CurrentWorld;
-            }
-
-            // Kernel이 아직 준비되지 않은 경우: 전체 창을 안내 메시지로 덮고 종료
-            if (!kernelReady)
+            var kernel = ZenEcsUnityBridge.Kernel;
+            if (kernel == null || !kernel.GetAllWorld().Any())
             {
                 DrawKernelNotReadyOverlay();
                 return;
             }
 
+            var world = kernel.CurrentWorld;
+
             // 🔹 맨 위 상단 바
-            DrawTopToolbar();
+            DrawTopToolbar(kernel);
             EditorGUILayout.Space(2);
 
             var systems = world?.GetAllSystems(); // running system only (not init/deinit)
@@ -352,7 +342,7 @@ namespace ZenECS.EditorWindows
                 }
 
                 GUILayout.Space(4);
-                DrawFooter();
+                DrawFooter(kernel);
                 return;
             }
 
@@ -523,7 +513,7 @@ namespace ZenECS.EditorWindows
             }
 
             GUILayout.Space(4);
-            DrawFooter();
+            DrawFooter(kernel);
         }
 
         static void PingSystemTypeNoSelect(Type t)
@@ -984,28 +974,18 @@ namespace ZenECS.EditorWindows
             Debug.Log($"EcsExplorer: Could not locate script asset for system type {t.FullName}");
         }
 
-        void DrawTopToolbar()
+        void DrawTopToolbar(IKernel? kernel)
         {
+            if (kernel == null || !kernel.GetAllWorld().Any()) return;
+            
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
             {
-                // ─────────────────────────────────────
-                // Kernel & World 목록 준비
-                // ─────────────────────────────────────
-                var kernel = _driver != null ? _driver.Kernel : null;
-                IWorld? currentWorld = kernel?.CurrentWorld;
-                List<IWorld> worlds = kernel != null
-                    ? kernel.GetAllWorld().ToList()
-                    : new List<IWorld>();
+                List<IWorld> worlds = kernel.GetAllWorld().ToList();
 
                 // ─────────────────────────────────────
                 // World Select 드롭다운
                 // ─────────────────────────────────────
-                if (kernel == null)
-                {
-                    // 커널이 null인 경우 (이론상 OnGUI에서 걸러지지만 방어 코드)
-                    EditorGUILayout.LabelField("Kernel not ready", EditorStyles.miniLabel);
-                }
-                else if (worlds.Count == 0)
+                if (worlds.Count == 0)
                 {
                     // 월드가 하나도 없을 때
                     using (new EditorGUI.DisabledScope(true))
@@ -1028,7 +1008,7 @@ namespace ZenECS.EditorWindows
                     centeredLabelStyle.fontSize = 10;
                     centeredLabelStyle.richText = true;
 
-                    var worldCount = _driver?.Kernel?.GetAllWorld().Count();
+                    var worldCount = worlds.Count;
                     string countString = $"({worldCount})";
                     centeredLabelStyle.alignment = TextAnchor.LowerCenter;
                     GUILayout.Label(countString, centeredLabelStyle);
@@ -1036,11 +1016,12 @@ namespace ZenECS.EditorWindows
                     GUILayout.Space(2);
 
                     // currentWorld가 없으면 첫 번째 월드를 기본 선택으로 설정 (1회만)
-                    if (currentWorld == null)
+                    if (kernel.CurrentWorld == null)
                     {
-                        currentWorld = worlds[0];
-                        kernel.SetCurrentWorld(currentWorld);
+                        kernel.SetCurrentWorld(worlds[0]);
                     }
+
+                    var currentWorld = kernel.CurrentWorld;
 
                     // 현재 월드 인덱스
                     int currentIndex = worlds.FindIndex(w => ReferenceEquals(w, currentWorld));
@@ -1107,7 +1088,7 @@ namespace ZenECS.EditorWindows
 
                 if (GUI.Button(rPlus, plusContent, EditorStyles.iconButton))
                 {
-                    ShowPlusContextMenu(rPlus, currentWorld);
+                    ShowPlusContextMenu(rPlus, kernel.CurrentWorld);
                 }
             }
         }
@@ -1348,32 +1329,23 @@ namespace ZenECS.EditorWindows
             return gc;
         }
 
-        private void DrawFooter()
+        private void DrawFooter(IKernel? kernel)
         {
-            IWorld? world = null;
-            if (!_driver)
-            {
-                _driver = Object.FindFirstObjectByType<EcsDriver>(FindObjectsInactive.Exclude);
-            }
-
-            if (_driver && _driver.Kernel != null)
-            {
-                world = _driver.Kernel.CurrentWorld;
-            }
-
+            if (kernel?.CurrentWorld == null) return;
+            
+            var world = kernel.CurrentWorld;
             var systems = world?.GetAllSystems(); // running system only (not init/deinit)
 
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
             {
-// ===== Global Pause 토글 버튼 (커널 기반, System Pause와 동일 스타일) =====
-                var hasKernel = _driver != null && _driver.Kernel != null;
-                var isPaused = hasKernel && _driver!.Kernel!.IsPaused;
+                // ===== Global Pause 토글 버튼 (커널 기반, System Pause와 동일 스타일) =====
+                var isPaused = kernel.IsPaused;
 
                 // 툴바 라인 높이에 맞춘 Rect
                 var rowHeight = EditorGUIUtility.singleLineHeight + 2f;
                 var pauseRect = GUILayoutUtility.GetRect(24f, rowHeight, GUILayout.Width(24f));
 
-                using (new EditorGUI.DisabledScope(!hasKernel))
+                using (new EditorGUI.DisabledScope(false))
                 {
                     // System 리스트에서 쓰는 것과 동일한 버튼 영역 보정
                     var btnRect = new Rect(
@@ -1399,7 +1371,7 @@ namespace ZenECS.EditorWindows
                     var oldBg = GUI.backgroundColor;
                     var oldCont = GUI.contentColor;
 
-                    if (hasKernel && isPaused)
+                    if (isPaused)
                     {
                         // Unity 툴바 Pause랑 비슷한 파란색
                         GUI.backgroundColor = EditorGUIUtility.isProSkin
@@ -1411,10 +1383,7 @@ namespace ZenECS.EditorWindows
 
                     if (GUI.Button(btnRect, pauseContent, pauseStyle))
                     {
-                        if (hasKernel)
-                        {
-                            _driver!.Kernel!.TogglePause();
-                        }
+                        kernel.TogglePause();
                     }
 
                     GUI.backgroundColor = oldBg;
@@ -1424,10 +1393,7 @@ namespace ZenECS.EditorWindows
                 GUILayout.Space(4);
 
                 // ===== 기존 정보 라벨들 =====
-                var elapsed = _driver?.Kernel?.SimulationAccumulatorSeconds ?? 0;
-                var worldCount = _driver?.Kernel?.GetAllWorld().Count();
-                var systemCount = systems?.Count ?? 0;
-                var entityCount = world?.GetAllEntities()?.Count ?? 0;
+                var elapsed = kernel.SimulationAccumulatorSeconds;
 
                 // Create a custom GUIStyle for the label
                 GUIStyle centeredLabelStyle = new GUIStyle(GUI.skin.label);
@@ -1436,10 +1402,6 @@ namespace ZenECS.EditorWindows
                 centeredLabelStyle.fontSize = 10;
 
                 GUILayout.Label($"Since running in seconds: {elapsed:0}", centeredLabelStyle);
-                GUILayout.Space(10);
-                // GUILayout.Label($"Systems: {systemCount}", centeredLabelStyle);
-                // GUILayout.Space(10);
-                //GUILayout.Label($"Active Entities: {entityCount}", centeredLabelStyle);
 
                 GUILayout.FlexibleSpace();
 
@@ -1606,8 +1568,8 @@ namespace ZenECS.EditorWindows
                                     msg,
                                     "Yes", "No"))
                             {
-                                using var cmd = world.BeginWrite();
-                                cmd.DespawnEntity(e);
+                                ZenEcsEditor.CommandQueue.Enqueue(EditorCommand.DespawnEntity(e));
+                                
                                 _entityFold[_foundEntity] = _findEntityFoldBackup;
 
                                 _entityIdText = "";
@@ -1699,9 +1661,13 @@ namespace ZenECS.EditorWindows
                                 disabled,
                                 picked =>
                                 {
-                                    using var cmd = world.BeginWrite();
                                     var inst = ZenDefaults.CreateWithDefaults(picked);
-                                    cmd.AddComponentBoxed(e, inst);
+                                    if (inst != null)
+                                    {
+                                        ZenEcsEditor.CommandQueue.Enqueue(
+                                            EditorCommand.AddComponent(e, inst.GetType(), inst));
+                                    }
+
                                     Repaint();
                                 },
                                 rAddComp, // 이제 Components 줄 오른쪽 Rect 기준으로
@@ -2546,8 +2512,8 @@ namespace ZenECS.EditorWindows
                                                     $"Remove this component?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}Component",
                                                     "Yes", "No"))
                                             {
-                                                using var cmd = world.BeginWrite();
-                                                cmd.RemoveComponentTyped(e, t);
+                                                ZenEcsEditor.CommandQueue.Enqueue(EditorCommand.RemoveComponent(e, t));
+                                                
                                                 _componentFold.Remove(ck);
                                                 Repaint();
                                             }
@@ -2562,9 +2528,10 @@ namespace ZenECS.EditorWindows
                                                 //         $"Reset to defaults?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}Component",
                                                 //         "Yes", "No"))
                                                 {
-                                                    using var cmd = world.BeginWrite();
                                                     var def = ZenDefaults.CreateWithDefaults(t);
-                                                    cmd.ReplaceComponentBoxed(e, def);
+                                                    ZenEcsEditor.CommandQueue.Enqueue(
+                                                        EditorCommand.ReplaceComponent(e, t, def));
+                                                    
                                                     Repaint();
                                                 }
                                             }
@@ -2587,9 +2554,9 @@ namespace ZenECS.EditorWindows
                                                 //         $"Reset to defaults?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}Component",
                                                 //         "Yes", "No"))
                                                 {
-                                                    using var cmd = world.BeginWrite();
                                                     var def = ZenDefaults.CreateWithDefaults(t);
-                                                    cmd.ReplaceComponentBoxed(e, def);
+                                                    ZenEcsEditor.CommandQueue.Enqueue(
+                                                        EditorCommand.ReplaceComponent(e, t, def));
                                                     Repaint();
                                                 }
                                             }
@@ -2625,8 +2592,7 @@ namespace ZenECS.EditorWindows
                             ZenComponentFormGUI.DrawObject(bodyInner, obj, t);
                             if (EditorGUI.EndChangeCheck() && _editMode)
                             {
-                                using var cmd = world.BeginWrite();
-                                cmd.ReplaceComponentBoxed(e, obj);
+                                ZenEcsEditor.CommandQueue.Enqueue(EditorCommand.ReplaceComponent(e, t, obj));
                             }
                         }
                         catch (KeyNotFoundException) { }
@@ -2842,14 +2808,17 @@ namespace ZenECS.EditorWindows
         // external call (ex: EcsExplorerBridge)
         public void SelectEntity(IWorld world, int entityId, int entityGen)
         {
+            var kernel = ZenEcsUnityBridge.Kernel;
+            if (kernel == null) return;
+            
             _findEntityId = entityId;
             _findEntityGen = entityGen;
 
             // Explorer에서 현재 선택된 World로 검사한다.
-            var currentWorld = _driver!.Kernel?.CurrentWorld;
-            if (currentWorld == null || currentWorld != world)
+            var currentWorld = kernel.CurrentWorld;
+            if (currentWorld == null || currentWorld.Id != world.Id)
             {
-                _driver!.Kernel?.SetCurrentWorld(world);
+                kernel.SetCurrentWorld(world);
                 currentWorld = world;
             }
 
@@ -4264,8 +4233,8 @@ namespace ZenECS.EditorWindows
                             $"Remove this single?\n\n{label}",
                             "Yes", "No"))
                     {
-                        using var cmd = world.BeginWrite();
-                        cmd.RemoveSingletonTyped(type);
+                        ZenEcsEditor.CommandQueue.Enqueue(
+                            EditorCommand. RemoveSingleton(type));
                         Repaint();
                     }
                 }

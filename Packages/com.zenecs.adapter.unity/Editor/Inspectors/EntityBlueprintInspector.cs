@@ -114,7 +114,7 @@ namespace ZenECS.EditorInspectors
 
         public override void OnInspectorGUI()
         {
-            ZenEcsEditorHeader.DrawHeader(
+            ZenEcsGUIHeader.DrawHeader(
                 "Entity Blueprint",
                 "Defines components, contexts, and binders used to spawn a fully configured entity.",
                 new[]

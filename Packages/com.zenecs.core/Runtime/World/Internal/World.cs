@@ -62,6 +62,8 @@ namespace ZenECS.Core.Internal
         /// <inheritdoc/>
         public bool IsDisposing => _disposed;
         
+        public event Action<long>? EnteredDeterministic;
+        
         private bool _pause;
         private bool _disposed;
 
@@ -145,6 +147,8 @@ namespace ZenECS.Core.Internal
             if (w != this) return;
             if (IsPaused) return;
             Tick++;
+            EnteredDeterministic?.Invoke(Tick);
+            _worker.RunScheduledJobs(w);
             _runner.FixedStep(w, fixedDelta);
         }
 
@@ -153,6 +157,11 @@ namespace ZenECS.Core.Internal
             if (w != this) return;
             if (IsPaused) return;
             _runner.LateFrame(w, dt, alpha);
+        }
+
+        public void ClearDelegates()
+        {
+            EnteredDeterministic = null;
         }
     }
 }

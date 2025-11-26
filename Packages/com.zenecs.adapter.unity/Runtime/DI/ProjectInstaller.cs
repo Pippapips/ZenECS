@@ -12,7 +12,8 @@ namespace ZenECS.Adapter.Unity.DI
     {
         public override void InstallBindings()
         {
-            ZenEcsUnityBridge.Kernel = KernelLocator.CreateEcsDriverWithKernel();
+            var kernel = KernelLocator.CreateEcsDriverWithKernel();
+            ZenEcsUnityBridge.SetKernel(kernel);
             ZenEcsUnityBridge.SharedContextResolver = new WorldSharedContextResolver(Container);
             ZenEcsUnityBridge.SystemPresetResolver = new SystemPresetResolver(Container);
             

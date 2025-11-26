@@ -164,7 +164,7 @@ namespace ZenECS.EditorInspectors
 
             var icon = EditorGUIUtility.ObjectContent(target, target.GetType()).image;
 
-            ZenEcsEditorHeader.DrawHeader(
+            ZenEcsGUIHeader.DrawHeader(
                 "World System Installer",
                 "Creates or resolves a world, assigns tags, and installs systems from presets and installer-local types.",
                 new[]
