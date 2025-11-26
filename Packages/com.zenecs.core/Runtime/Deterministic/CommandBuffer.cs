@@ -58,7 +58,7 @@ namespace ZenECS.Core.Internal
         }
         
         /// <inheritdoc/>
-        public Entity SpawnEntity()
+        public Entity CreateEntity()
         {
             // World는 internal sealed partial 이고, 같은 어셈블리라 캐스트 가능
             if (_world is not World world)
@@ -66,12 +66,12 @@ namespace ZenECS.Core.Internal
 
             // 아직 alive 아님. SpawnOp가 배리어에서 SpawnReserved를 호출.
             var e = world.ReserveEntity();
-            _q.Enqueue(new SpawnOp(e));
+            _q.Enqueue(new CreateOp(e));
             return e;
         }
 
         /// <inheritdoc/>
-        public void DespawnEntity(Entity e)
+        public void DestroyEntity(Entity e)
             => _q.Enqueue(new DestroyOp(e));
 
         // ──────────────────────────────────────────────────────────────────
@@ -127,9 +127,9 @@ namespace ZenECS.Core.Internal
             _q.Enqueue(new RemoveSingletonTypedOp(type));
         }
 
-        public void DespawnAllEntities()
+        public void DestroyAllEntities()
         {
-            _q.Enqueue(new DespawnAllEntitiesOp());
+            _q.Enqueue(new DestroyAllEntitiesOp());
         }
 
         // ──────────────────────────────────────────────────────────────────
@@ -264,11 +264,11 @@ namespace ZenECS.Core.Internal
             }
         }
 
-        private sealed class SpawnOp : IOp
+        private sealed class CreateOp : IOp
         {
             private readonly Entity _e;
 
-            public SpawnOp(Entity e)
+            public CreateOp(Entity e)
             {
                 _e = e;
             }
@@ -277,7 +277,7 @@ namespace ZenECS.Core.Internal
             {
                 // World로 캐스트해서 SpawnReserved 호출
                 if (w is not World world) return;
-                world.SpawnReserved(_e);
+                world.CreateReserved(_e);
             }
         }
 
@@ -295,7 +295,7 @@ namespace ZenECS.Core.Internal
                 if (!w.IsAlive(_e)) return;
                 if (w is not World world) return;
 
-                world.DespawnEntity(_e);
+                world.DestroyEntity(_e);
             }
         }
 
@@ -372,7 +372,7 @@ namespace ZenECS.Core.Internal
             }
         }
         
-        private sealed class DespawnAllEntitiesOp : IOp
+        private sealed class DestroyAllEntitiesOp : IOp
         {
             public void Apply(IWorld w)
             {
@@ -381,7 +381,7 @@ namespace ZenECS.Core.Internal
                 // 내부 RemoveSingleton 구현은:
                 //  • 싱글톤 엔티티가 있다면 전용 엔티티 통째로 Despawn
                 //  • 없다면 no-op
-                world.DespawnAllEntities();
+                world.DestryoAllEntities();
             }
         }
     }

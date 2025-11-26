@@ -1,7 +1,7 @@
 ﻿// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Core — World subsystem (Entity API)
 // File: WorldEntityApi.cs
-// Purpose: Entity lifetime & indexing: spawn/despawn, alive checks, enumeration.
+// Purpose: Entity lifetime & indexing: create/destroy, alive checks, enumeration.
 // Key concepts:
 //   • Stable handles: (id, generation) prevent zombie references.
 //   • Capacity growth policy: step-based or doubling with floor increments.
@@ -87,10 +87,10 @@ namespace ZenECS.Core.Internal
         /// </summary>
         /// <param name="fixedId">Optional explicit id to claim.</param>
         /// <returns>A live <see cref="Entity"/> handle (id + current generation).</returns>
-        internal Entity SpawnEntity(int? fixedId = null)
+        internal Entity CreateEntity(int? fixedId = null)
         {
             var e = ReserveEntity(fixedId);
-            SpawnReserved(e);
+            CreateReserved(e);
             return e;
         }
         
@@ -129,7 +129,7 @@ namespace ZenECS.Core.Internal
         /// Transition a previously reserved entity into the alive state
         /// and fire spawn events.
         /// </summary>
-        internal void SpawnReserved(Entity e)
+        internal void CreateReserved(Entity e)
         {
             // Already alive? then do nothing (idempotent guard)
             if (IsAlive(e))
@@ -137,18 +137,18 @@ namespace ZenECS.Core.Internal
 
             // Mark as alive and raise events
             _alive.Set(e.Id, true);
-            EntityEvents.RaiseSpawned(this, e);
+            EntityEvents.RaiseCreated(this, e);
         }
         
         /// <summary>
         /// Destroy a live entity. Dispatches binder/context teardown and events.
         /// </summary>
         /// <param name="e">Entity to destroy.</param>
-        internal void DespawnEntity(Entity e)
+        internal void DestroyEntity(Entity e)
         {
             if (!IsAlive(e)) return;
 
-            EntityEvents.RaiseDespawnRequested(this, e);
+            EntityEvents.RaiseDestroyRequested(this, e);
 
             clearSingletonIndex(e);
             
@@ -160,7 +160,7 @@ namespace ZenECS.Core.Internal
             _generation[e.Id]++;
             _freeIds.Push(e.Id);
 
-            EntityEvents.RaiseDespawned(this, e);
+            EntityEvents.RaiseDestroy(this, e);
         }
 
         /// <summary>
@@ -170,12 +170,12 @@ namespace ZenECS.Core.Internal
         /// If <see langword="true"/>, per-entity events are fired (slower).
         /// If <see langword="false"/>, uses a fast reset path.
         /// </param>
-        internal void DespawnAllEntities()
+        internal void DestryoAllEntities()
         {
             for (int id = 1; id < _alive.Length; id++)
             {
                 if (_alive.Get(id))
-                    DespawnEntity(new Entity(id, GenerationOf(id)));
+                    DestroyEntity(new Entity(id, GenerationOf(id)));
             }
         }
     }

@@ -21,8 +21,8 @@ namespace ZenECS.EditorCommands
     /// </summary>
     public enum EditorCommandKind
     {
-        SpawnEntity,
-        DespawnEntity,
+        CreateEntity,
+        DestroyEntity,
 
         AddComponent,
         ReplaceComponent,
@@ -49,7 +49,7 @@ namespace ZenECS.EditorCommands
         /// <summary>
         /// Target entity, if applicable.
         /// <para>
-        /// For <see cref="EditorCommandKind.SpawnEntity"/> this field is not used.
+        /// For <see cref="EditorCommandKind.CreateEntity"/> this field is not used.
         /// </para>
         /// </summary>
         public Entity Entity { get; }
@@ -68,20 +68,20 @@ namespace ZenECS.EditorCommands
         /// Optional callback invoked when a spawn command is applied and the
         /// new entity handle is known.
         /// </summary>
-        public Action<Entity>? SpawnCallback { get; }
+        public Action<Entity>? CreatedCallback { get; }
 
         private EditorCommand(
             EditorCommandKind kind,
             Entity entity,
             Type? componentType,
             object? componentBoxed,
-            Action<Entity>? spawnCallback)
+            Action<Entity>? createdCallback)
         {
             Kind = kind;
             Entity = entity;
             ComponentType = componentType;
             ComponentBoxed = componentBoxed;
-            SpawnCallback = spawnCallback;
+            CreatedCallback = createdCallback;
         }
 
         // ──────────────────────────────────────────────────────────────────
@@ -91,28 +91,28 @@ namespace ZenECS.EditorCommands
         /// <summary>
         /// Request spawning a new entity.
         /// </summary>
-        /// <param name="onSpawn">
+        /// <param name="onCreated">
         /// Optional callback invoked with the created entity when the command
         /// is flushed to a world command buffer.
         /// </param>
-        public static EditorCommand SpawnEntity(Action<Entity>? onSpawn = null)
+        public static EditorCommand CreateEntity(Action<Entity>? onCreated = null)
             => new(
-                kind: EditorCommandKind.SpawnEntity,
+                kind: EditorCommandKind.CreateEntity,
                 entity: Entity.None,
                 componentType: null,
                 componentBoxed: null,
-                spawnCallback: onSpawn);
+                createdCallback: onCreated);
 
         /// <summary>
         /// Request despawning <paramref name="entity"/>.
         /// </summary>
-        public static EditorCommand DespawnEntity(Entity entity)
+        public static EditorCommand DestroyEntity(Entity entity)
             => new(
-                kind: EditorCommandKind.DespawnEntity,
+                kind: EditorCommandKind.DestroyEntity,
                 entity: entity,
                 componentType: null,
                 componentBoxed: null,
-                spawnCallback: null);
+                createdCallback: null);
 
         /// <summary>
         /// Request adding a component to an entity.
@@ -130,7 +130,7 @@ namespace ZenECS.EditorCommands
                 entity: entity,
                 componentType: componentType,
                 componentBoxed: boxed,
-                spawnCallback: null);
+                createdCallback: null);
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace ZenECS.EditorCommands
                 entity: entity,
                 componentType: componentType,
                 componentBoxed: boxed,
-                spawnCallback: null);
+                createdCallback: null);
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace ZenECS.EditorCommands
                 entity: entity,
                 componentType: componentType,
                 componentBoxed: null,
-                spawnCallback: null);
+                createdCallback: null);
         }
 
         public static EditorCommand SetSingleton(Type componentType, object? boxed)
@@ -181,7 +181,7 @@ namespace ZenECS.EditorCommands
                 entity: Entity.None,
                 componentType: componentType,
                 componentBoxed: boxed,
-                spawnCallback: null);
+                createdCallback: null);
         }
 
         public static EditorCommand RemoveSingleton(Type componentType)
@@ -194,7 +194,7 @@ namespace ZenECS.EditorCommands
                 entity: Entity.None,
                 componentType: componentType,
                 componentBoxed: null,
-                spawnCallback: null);
+                createdCallback: null);
         }
     }
 }

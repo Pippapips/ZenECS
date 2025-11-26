@@ -1,0 +1,95 @@
+﻿#if UNITY_EDITOR
+#nullable enable
+using UnityEditor;
+using UnityEngine;
+using ZenECS.Core;
+using ZenECS.Adapter.Unity.Linking;
+using ZenECS.EditorCommon;
+using ZenECS.EditorTools;
+
+namespace ZenECS.EditorInspectors
+{
+    /// <summary>
+    /// EntityLink의 런타임 메타를 인스펙터에서 표시 + ExplorerWindow 연동 버튼 제공.
+    /// </summary>
+    [CustomEditor(typeof(EntityLink))]
+    public sealed class EntityLinkInspector : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            var link = (EntityLink)target;
+            var icon = EditorGUIUtility.ObjectContent(target, target.GetType()).image;
+
+            // ─────────────────────────────────────────────
+            // ZenECS Header (NEW)
+            // ─────────────────────────────────────────────
+            ZenEcsGUIHeader.DrawHeader(
+                "Entity Link",
+                "Links this GameObject to an ECS entity, providing world/entity metadata and debugging utilities.",
+                new[]
+                {
+                    "Runtime Metadata",
+                    "Debug Tool",
+                    "Unity ↔ ECS Bridge"
+                }
+            );
+            
+            // (2) 메타 패널
+            DrawMetaBox(link);
+
+            EditorGUILayout.Space(6);
+            EditorGUILayout.LabelField("Actions", EditorStyles.boldLabel);
+
+            using (new EditorGUI.DisabledScope(!link || link.World == null))
+            {
+                // ExplorerWindow로 선택
+                if (GUILayout.Button("Select Linked Entity in Explorer", GUILayout.Height(24)))
+                {
+                    if (!TrySelectInExplorer(link))
+                        EditorUtility.DisplayDialog("Explorer",
+                            "ExplorerWindow를 찾을 수 없거나 SelectEntity 메서드를 호출할 수 없습니다.\n" +
+                            "창/이름/네임스페이스를 확인하세요.", "OK");
+                }
+            }
+        }
+
+        private static void DrawMetaBox(EntityLink link)
+        {
+            var alive = link && link.World != null && link.IsAlive;
+            var style = new GUIStyle(EditorStyles.helpBox) { richText = true };
+            EditorGUILayout.BeginVertical(style);
+            {
+                EditorGUILayout.LabelField("EntityLink Metadata", EditorStyles.boldLabel);
+
+                if (!link || link.World == null)
+                {
+                    EditorGUILayout.HelpBox("World가 연결되지 않았습니다. (링크 미설정)", MessageType.Info);
+                }
+                else
+                {
+                    var e = link.Entity;
+                    var worldName = SafeWorldName(link.World);
+                    EditorGUILayout.LabelField("World", worldName);
+                    EditorGUILayout.LabelField("Entity", alive ? $"{e.Id}:{e.Gen}" : "(invalid)");
+                    EditorGUILayout.LabelField("IsAlive", alive ? "True" : "False");
+                }
+            }
+            EditorGUILayout.EndVertical();
+        }
+
+        private static string SafeWorldName(IWorld w)
+        {
+            try { return string.IsNullOrEmpty(w.Name) ? "(unnamed)" : w.Name; }
+            catch { return "(unknown)"; }
+        }
+
+        private static bool TrySelectInExplorer(EntityLink? link)
+        {
+            if (link == null || link.World == null || !link.IsAlive) return false;
+
+            var e = link.Entity;
+            return ZenEcsExplorerBridge.TryOpenAndSelect(link.World, e.Id, e.Gen);
+        }
+    }
+}
+#endif

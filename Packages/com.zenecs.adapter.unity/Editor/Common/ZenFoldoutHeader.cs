@@ -188,7 +188,14 @@ namespace ZenECS.EditorCommon
             else
             {
                 isOpen = false;
-                EditorGUI.LabelField(left, title, BoldLabel);
+                float arrowW = noMarginTitle ? 0 : 16;
+                var arrowRect = new Rect(left.x, left.y, arrowW, left.height);
+                var labelRect = new Rect(left.x + arrowW + 2f, left.y, left.width - arrowW - 2f, left.height);
+                var nameGc = new GUIContent(title);
+                var nsGc = new GUIContent($"[{nameSpace}]");
+                DrawTwoLineLabels(labelRect, nameGc, nsGc);
+                GUILayoutUtility.GetRect(1, 16);
+                //EditorGUI.LabelField(left, title, BoldLabel);
             }
 
             drawRightButtons?.Invoke(right);

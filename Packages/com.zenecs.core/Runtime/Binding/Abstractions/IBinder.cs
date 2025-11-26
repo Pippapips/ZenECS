@@ -72,7 +72,7 @@ namespace ZenECS.Core.Binding
         void Bind(IWorld world, Entity e, IContextLookup contextLookup);
 
         /// <summary>
-        /// Detach this binder from its entity. Called when the entity despawns or the binder is removed.
+        /// Detach this binder from its entity. Called when the entities destroy or the binder is removed.
         /// Must be safe to call multiple times (no-op after first detach).
         /// </summary>
         void Unbind();

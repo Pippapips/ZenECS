@@ -28,10 +28,10 @@ namespace ZenECS.Adapter.Unity.Blueprints
         /// Spawn an entity and apply only component snapshot.
         /// Binder/Context SO는 별도 BindingInstaller 등에서 적용하는 것을 권장.
         /// </summary>
-        public Entity Spawn(IWorld world, ISharedContextResolver sharedContextResolver)
+        public Entity Spawn(IWorld world, ISharedContextResolver? sharedContextResolver)
         {
             using var cmd = world.BeginWrite();
-            var e = cmd.SpawnEntity();
+            var e = cmd.CreateEntity();
             //cmd.EndWrite();
             _data?.ApplyTo(world, e, cmd);
 
@@ -43,8 +43,11 @@ namespace ZenECS.Adapter.Unity.Blueprints
                 {
                     case SharedContextAsset markerAsset:
                     {
-                        var ctx = sharedContextResolver.Resolve(markerAsset);
-                        world.RegisterContext(e, ctx);
+                        if (sharedContextResolver != null)
+                        {
+                            var ctx = sharedContextResolver.Resolve(markerAsset);
+                            world.RegisterContext(e, ctx);
+                        }
                         break;
                     }
                     case PerEntityContextAsset perEntityAsset:

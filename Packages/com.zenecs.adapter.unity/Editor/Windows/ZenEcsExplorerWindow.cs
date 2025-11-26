@@ -1283,15 +1283,15 @@ namespace ZenECS.EditorWindows
         {
             ZenBlueprintPickerWindow.Show(
                 activatorRectGui,
-                onPick: SpawnEntityFromBlueprint,
-                title: "Spawn Entity from Blueprint"
+                onPick: CreateEntityFromBlueprint,
+                title: "Create Entity from Blueprint"
             );
         }
 
         /// <summary>
         /// 선택된 EntityBlueprint로 현재 Kernel.World에 Entity를 Spawn.
         /// </summary>
-        void SpawnEntityFromBlueprint(EntityBlueprint blueprint)
+        void CreateEntityFromBlueprint(EntityBlueprint blueprint)
         {
             if (blueprint == null) return;
 
@@ -1624,7 +1624,7 @@ namespace ZenECS.EditorWindows
                                     msg,
                                     "Yes", "No"))
                             {
-                                ZenEcsEditor.CommandQueue.Enqueue(EditorCommand.DespawnEntity(e));
+                                ZenEcsEditor.CommandQueue.Enqueue(EditorCommand.DestroyEntity(e));
                                 
                                 _entityFold[_foundEntity] = _findEntityFoldBackup;
 
@@ -2554,8 +2554,6 @@ namespace ZenECS.EditorWindows
                                 var rR0 = new Rect(rRight.xMax - wBtn, yBtn, wBtn, hBtn);
                                 var rR1 = new Rect(rR0.x - gap - wBtn, yBtn, wBtn, hBtn);
                                 var rR2 = new Rect(rR1.x - gap - wBtn, yBtn, wBtn, hBtn);
-
-                                // CKWORK
 
                                 using (new EditorGUI.DisabledScope(!_editMode))
                                 {

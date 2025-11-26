@@ -32,14 +32,14 @@ namespace ZenECS.Core
         /// An <see cref="Entity"/> handle that can be used to record further
         /// operations (components, tags, etc.) in the same buffer.
         /// </returns>
-        Entity SpawnEntity();
+        Entity CreateEntity();
 
         /// <summary>
         /// Record the despawn of an entity.
         /// The entity will be removed and all components destroyed when the
         /// buffer is applied at a barrier.
         /// </summary>
-        void DespawnEntity(Entity e);
+        void DestroyEntity(Entity e);
 
         // ──────────────────────────────────────────────────────────────────
         // Component operations
@@ -118,6 +118,6 @@ namespace ZenECS.Core
         /// Applied at the barrier, this will behave as if every entity had been
         /// despawned individually (events, router, binders included).
         /// </summary>
-        void DespawnAllEntities();
+        void DestroyAllEntities();
     }
 }

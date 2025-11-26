@@ -91,16 +91,16 @@ namespace ZenECS.EditorCommands
         {
             switch (cmd.Kind)
             {
-                case EditorCommandKind.SpawnEntity:
+                case EditorCommandKind.CreateEntity:
                 {
-                    var e = buffer.SpawnEntity();
-                    cmd.SpawnCallback?.Invoke(e);
+                    var e = buffer.CreateEntity();
+                    cmd.CreatedCallback?.Invoke(e);
                     break;
                 }
 
-                case EditorCommandKind.DespawnEntity:
+                case EditorCommandKind.DestroyEntity:
                 {
-                    buffer.DespawnEntity(cmd.Entity);
+                    buffer.DestroyEntity(cmd.Entity);
                     break;
                 }
 

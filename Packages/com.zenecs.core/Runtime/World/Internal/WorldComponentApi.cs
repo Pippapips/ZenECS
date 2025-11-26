@@ -476,7 +476,7 @@ namespace ZenECS.Core.Internal
             }
 
             // Create new
-            var newEntity = SpawnEntity();
+            var newEntity = CreateEntity();
             AddComponent(newEntity, value);
             _singletonIndex[typeof(T)] = newEntity;
         }
@@ -589,7 +589,7 @@ namespace ZenECS.Core.Internal
             }
             
             // Create new
-            var newEntity = SpawnEntity();
+            var newEntity = CreateEntity();
             AddComponentBoxed(newEntity, boxed);
             _singletonIndex[singletonType] = newEntity;
         }
