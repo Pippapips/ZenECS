@@ -289,9 +289,6 @@ namespace ZenECS.Core.Internal.Systems
         /// <inheritdoc/>
         public void LateFrame(IWorld w, float dt, float interpolationAlpha = 1f)
         {
-            // Apply world → view deltas before presentation systems run
-            _router.ApplyAll(w);
-
             var inner = w as World;
             inner?.SetWritePhase(
                 WorldWritePhase.FrameView,
@@ -309,6 +306,9 @@ namespace ZenECS.Core.Internal.Systems
                 structuralChangesAllowed: false);
 
             RunLateGroup(SystemGroup.FrameUI, w, dt, interpolationAlpha);
+            
+            // Apply world → view deltas
+            _router.ApplyAll(w);
             
             inner?.ClearWritePhase();
         }
