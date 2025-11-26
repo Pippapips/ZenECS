@@ -93,6 +93,13 @@ namespace ZenECS.Core
         void SetSingleton<T>(in T value) where T : struct, IWorldSingletonComponent;
 
         /// <summary>
+        /// Record removal of a singleton component by runtime type.
+        /// If the singleton does not exist, this becomes a no-op.
+        /// </summary>
+        /// <param name="type">Singleton component type.</param>
+        void SetSingletonTyped(Type type, object? boxed);
+
+        /// <summary>
         /// Record removal of a singleton component and its dedicated entity.
         /// If the singleton does not exist, this becomes a no-op.
         /// </summary>

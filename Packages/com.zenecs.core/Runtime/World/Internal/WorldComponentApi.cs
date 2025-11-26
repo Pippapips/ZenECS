@@ -577,11 +577,29 @@ namespace ZenECS.Core.Internal
                 yield return (kv.Key, kv.Value);
         }
 
+        internal void SetSingletonTyped(Type? singletonType, object? boxed)
+        {
+            if (singletonType == null) return;
+ 
+            if (_singletonIndex.TryGetValue(singletonType, out var owner))
+            {
+                ReplaceComponentBoxed(owner, boxed);
+                _singletonIndex[singletonType] = owner;
+                return;
+            }
+            
+            // Create new
+            var newEntity = SpawnEntity();
+            AddComponentBoxed(newEntity, boxed);
+            _singletonIndex[singletonType] = newEntity;
+        }
+
         internal void RemoveSingletonTyped(Type? singletonType)
         {
-            if (singletonType != null)
+            if (singletonType == null) return;
+            if (_singletonIndex.TryGetValue(singletonType, out var owner))
             {
-                _singletonIndex.Remove(singletonType);
+                RemoveComponentTyped(owner, singletonType);
             }
         }
     }

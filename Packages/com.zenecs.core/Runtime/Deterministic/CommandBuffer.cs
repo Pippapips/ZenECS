@@ -110,6 +110,11 @@ namespace ZenECS.Core.Internal
             _q.Enqueue(new SetSingletonOp<T>(value));
         }
 
+        public void SetSingletonTyped(Type type, object? boxed)
+        {
+            _q.Enqueue(new SetSingletonTypedOp(type, boxed));
+        }
+
         /// <inheritdoc/>
         public void RemoveSingleton<T>()
             where T : struct, IWorldSingletonComponent
@@ -313,6 +318,25 @@ namespace ZenECS.Core.Internal
                 //  • 존재하면 값 교체
                 //  • 없으면 전용 엔티티 생성 후 부착
                 world.SetSingleton(_value);
+            }
+        }
+
+        private sealed class SetSingletonTypedOp : IOp
+        {
+            private readonly Type _type;
+            private readonly object? _boxed;
+
+            public SetSingletonTypedOp(Type type, object? boxed)
+            {
+                _type = type;
+                _boxed = boxed;
+            }
+
+            public void Apply(IWorld w)
+            {
+                if (w is not World world) return;
+
+                world.SetSingletonTyped(_type, _boxed);
             }
         }
 

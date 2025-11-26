@@ -148,7 +148,6 @@ namespace ZenECS.Core.Internal
             if (IsPaused) return;
             Tick++;
             EnteredDeterministic?.Invoke(Tick);
-            _worker.RunScheduledJobs(w);
             _runner.FixedStep(w, fixedDelta);
         }
 

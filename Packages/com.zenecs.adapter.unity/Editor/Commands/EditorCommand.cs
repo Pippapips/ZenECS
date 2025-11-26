@@ -27,6 +27,7 @@ namespace ZenECS.EditorCommands
         AddComponent,
         ReplaceComponent,
         RemoveComponent,
+        SetSingleton,
         RemoveSingleton,
     }
 
@@ -169,12 +170,20 @@ namespace ZenECS.EditorCommands
                 componentBoxed: null,
                 spawnCallback: null);
         }
-        
-        /// <summary>
-        /// Request removing a component from an entity.
-        /// </summary>
-        /// <param name="entity">Target entity.</param>
-        /// <param name="componentType">Component type.</param>
+
+        public static EditorCommand SetSingleton(Type componentType, object? boxed)
+        {
+            if (componentType is null)
+                throw new ArgumentNullException(nameof(componentType));
+
+            return new(
+                kind: EditorCommandKind.SetSingleton,
+                entity: Entity.None,
+                componentType: componentType,
+                componentBoxed: boxed,
+                spawnCallback: null);
+        }
+
         public static EditorCommand RemoveSingleton(Type componentType)
         {
             if (componentType is null)

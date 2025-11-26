@@ -128,6 +128,15 @@ namespace ZenECS.EditorCommands
                     break;
                 }
 
+                case EditorCommandKind.SetSingleton:
+                {
+                    if (cmd.ComponentType is not null)
+                    {
+                        buffer.SetSingletonTyped(cmd.ComponentType, cmd.ComponentBoxed);
+                    }
+                    break;
+                }
+
                 case EditorCommandKind.RemoveSingleton:
                 {
                     if (cmd.ComponentType is not null)

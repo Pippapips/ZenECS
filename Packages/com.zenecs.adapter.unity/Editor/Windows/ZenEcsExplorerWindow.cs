@@ -1108,6 +1108,62 @@ namespace ZenECS.EditorWindows
                     () => { ShowEntityBlueprintPicker(activatorRectGui); });
             }
 
+            // --- Add Singleton ---
+            if (world == null)
+            {
+                menu.AddDisabledItem(new GUIContent("Add Singleton... (no current World)"));
+            }
+            else
+            {
+                menu.AddItem(new GUIContent("Add Singleton..."), false, () =>
+                {
+                    // 전체 싱글톤 struct 타입 수집
+                    var allSingletons = SingletonTypeFinder.All();
+
+                    // 이미 world에 존재하는 싱글톤 타입들은 disabled 처리
+                    var disabled = new HashSet<Type>();
+                    try
+                    {
+                        foreach (var (t, _) in world.GetAllSingletons())
+                        {
+                            if (t != null) disabled.Add(t);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogException(ex);
+                    }
+
+                    ZenSingletonPickerWindow.Show(
+                        allSingletonTypes: allSingletons,
+                        disabled: disabled,
+                        onPick: pickedType =>
+                        {
+                            try
+                            {
+                                // 기본값 생성 후 EditorCommand를 통해 추가
+                                // (RemoveSingleton과 대칭되는 AddSingleton은
+                                //  EditorCommand 쪽에 구현되어 있어야 한다고 가정)
+                                var inst = ZenDefaults.CreateWithDefaults(pickedType);
+                                ZenEcsEditor.CommandQueue.Enqueue(EditorCommand.SetSingleton(pickedType, inst));
+
+                                // 싱글톤 섹션 갱신
+                                _hasSelectedSingleton = false;
+                                _selectedSingletonType = null;
+                                _selectedSingletonEntity = default;
+                                Repaint();
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.LogException(ex);
+                            }
+                        },
+                        activatorRectGui: activatorRectGui,
+                        title: "Add Singleton"
+                    );
+                });
+            }
+            
             if (world == null)
             {
                 // 월드 없으면 비활성 상태로만 노출
@@ -3619,7 +3675,7 @@ namespace ZenECS.EditorWindows
             }
 
             // ===== X 삭제 버튼 =====
-            using (new EditorGUI.DisabledScope(world == null))
+            using (new EditorGUI.DisabledScope(!_editMode))
             {
                 var delBtnRect = new Rect(
                     delRect.x,
@@ -4142,6 +4198,61 @@ namespace ZenECS.EditorWindows
             }
         }
 
+        /// <summary>
+        /// Find all struct types that implement IWorldSingletonComponent.
+        /// </summary>
+        static class SingletonTypeFinder
+        {
+            private static List<Type>? _cache;
+
+            public static IEnumerable<Type> All()
+            {
+                if (_cache != null) return _cache;
+
+                var list = new List<Type>(128);
+                var asms = AppDomain.CurrentDomain.GetAssemblies();
+
+                foreach (var asm in asms)
+                {
+                    var n = asm.GetName().Name;
+                    if (n.StartsWith("UnityEditor", StringComparison.OrdinalIgnoreCase)) continue;
+                    if (n.StartsWith("System", StringComparison.OrdinalIgnoreCase)) continue;
+                    if (n.StartsWith("mscorlib", StringComparison.OrdinalIgnoreCase)) continue;
+                    if (n.StartsWith("netstandard", StringComparison.OrdinalIgnoreCase)) continue;
+
+                    Type[] types;
+                    try
+                    {
+                        types = asm.GetTypes();
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+
+                    foreach (var t in types)
+                    {
+                        if (t == null) continue;
+                        if (!t.IsValueType) continue;          // struct only
+                        if (t.IsAbstract) continue;
+                        if (t.IsGenericTypeDefinition) continue;
+                        if (t.Namespace != null && t.Namespace.EndsWith(".Editor", StringComparison.Ordinal)) continue;
+
+                        if (!typeof(IWorldSingletonComponent).IsAssignableFrom(t)) continue;
+
+                        list.Add(t);
+                    }
+                }
+
+                _cache = list
+                    .Distinct()
+                    .OrderBy(t => t.FullName)
+                    .ToList();
+
+                return _cache;
+            }
+        }
+        
         void DrawSingletonRow(Type type, Entity owner, IWorld world)
         {
             var typeName = type.Name;
@@ -4223,18 +4334,26 @@ namespace ZenECS.EditorWindows
             }
             
             // 🔸 삭제 버튼 (기존 그대로)
-            using (new EditorGUI.DisabledScope(!_editMode || !BinderApi.CanRemove(world)))
+            using (new EditorGUI.DisabledScope(!_editMode))
             {
-                var gcDel = new GUIContent("X", "Remove this Binder from Entity");
-                if (GUI.Button(removeRect, gcDel, EditorStyles.iconButton))
+                var delStyle = new GUIStyle(GUI.skin.button)
+                {
+                    alignment = TextAnchor.MiddleCenter,
+                    padding = new RectOffset(0, 0, 0, 0),
+                    margin = new RectOffset(0, 0, 0, 0),
+                    fontStyle = FontStyle.Normal,
+                    fontSize = 10
+                };
+
+                var gcDel = new GUIContent("X", "Remove this singleton from Entity");
+                if (GUI.Button(removeRect, gcDel, delStyle))
                 {
                     if (EditorUtility.DisplayDialog(
                             "Remove Singleton",
-                            $"Remove this single?\n\n{label}",
+                            $"Remove this {label} singleton?",
                             "Yes", "No"))
                     {
-                        ZenEcsEditor.CommandQueue.Enqueue(
-                            EditorCommand. RemoveSingleton(type));
+                        ZenEcsEditor.CommandQueue.Enqueue(EditorCommand. RemoveSingleton(type));
                         Repaint();
                     }
                 }

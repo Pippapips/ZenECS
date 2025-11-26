@@ -268,6 +268,9 @@ namespace ZenECS.Core.Internal.Systems
                     structuralChangesAllowed: true);
             }
             
+            // external scheduled jobs in deterministic for structural change
+            _worker.RunScheduledJobs(w);
+
             // Fixed-step deterministic pipeline:
             // FixedInput → FixedDecision → FixedSimulation → FixedPost
             RunFixedGroup(SystemGroup.FixedInput, w, fixedDelta);
