@@ -7,7 +7,7 @@
 //   • Pure value semantics: equality/hash based solely on the underlying Guid.
 //   • Serialization-friendly: stable, compact, framework-agnostic.
 //   • Readability: explicit intent in APIs (WorldId vs Guid).
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

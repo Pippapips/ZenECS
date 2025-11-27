@@ -6,7 +6,7 @@
 //   • Permission & validation hooks: read/write gates + typed/object validators.
 //   • Router deltas: binder layer notified on add/change/remove.
 //   • Pools repository: fast ref access and presence checks per component type.
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-
@@ -45,7 +45,7 @@ namespace ZenECS.Core.Internal
 
         /// <summary>
         /// Per-component-type singleton owner index.
-        /// Ensures each singleton component type T has exactly one entity owner.
+        /// Ensures each singleton component type <c>T</c> has exactly one entity owner.
         /// </summary>
         private readonly Dictionary<Type, Entity> _singletonIndex = new();
 
@@ -57,6 +57,21 @@ namespace ZenECS.Core.Internal
             return componentType is not null && _hasInvoker(componentType)(e);
         }
 
+        /// <summary>
+        /// Adds a boxed component value to an entity, if the value is a struct.
+        /// </summary>
+        /// <param name="e">Target entity.</param>
+        /// <param name="boxed">
+        /// Boxed component value. Must be a non-null value type; otherwise an
+        /// exception is thrown or the call is ignored.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if the component was added; otherwise
+        /// <see langword="false"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="boxed"/> is not a value type.
+        /// </exception>
         internal bool AddComponentBoxed(Entity e, object? boxed)
         {
             if (boxed is null) return false;
@@ -67,6 +82,21 @@ namespace ZenECS.Core.Internal
             return _addBoxedInvoker(t)(e, boxed);
         }
 
+        /// <summary>
+        /// Replaces a boxed component value on an entity, if the value is a struct.
+        /// </summary>
+        /// <param name="e">Target entity.</param>
+        /// <param name="boxed">
+        /// Boxed component value. Must be a non-null value type; otherwise an
+        /// exception is thrown or the call is ignored.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if the component was replaced; otherwise
+        /// <see langword="false"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="boxed"/> is not a value type.
+        /// </exception>
         internal bool ReplaceComponentBoxed(Entity e, object? boxed)
         {
             if (boxed is null) return false;
@@ -77,9 +107,33 @@ namespace ZenECS.Core.Internal
             return _replaceBoxedInvoker(t)(e, boxed);
         }
 
+        /// <summary>
+        /// Removes a component from an entity using a runtime type.
+        /// </summary>
+        /// <param name="e">Target entity.</param>
+        /// <param name="componentType">Component value type.</param>
+        /// <returns>
+        /// <see langword="true"/> if a component of the given type was removed;
+        /// otherwise <see langword="false"/>.
+        /// </returns>
         internal bool RemoveComponentTyped(Entity e, Type? componentType)
             => componentType is not null && _removeInvoker(componentType)(e);
 
+        /// <summary>
+        /// Dispatches a snapshot delta for a boxed component value on an entity.
+        /// </summary>
+        /// <param name="e">Target entity.</param>
+        /// <param name="boxed">
+        /// Boxed component value (used to derive the component type). Must be a
+        /// non-null value type; otherwise the call is ignored or throws.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if a snapshot delta was dispatched;
+        /// otherwise <see langword="false"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="boxed"/> is not a value type.
+        /// </exception>
         public bool SnapshotComponentBoxed(Entity e, object? boxed)
         {
             if (boxed is null) return false;
@@ -90,6 +144,15 @@ namespace ZenECS.Core.Internal
             return _snapshotBoxedInvoker(t)(e);
         }
 
+        /// <summary>
+        /// Dispatches a snapshot delta for a component determined by runtime type.
+        /// </summary>
+        /// <param name="e">Target entity.</param>
+        /// <param name="t">Component value type.</param>
+        /// <returns>
+        /// <see langword="true"/> if a snapshot delta was dispatched;
+        /// otherwise <see langword="false"/>.
+        /// </returns>
         public bool SnapshotComponentTyped(Entity e, Type? t)
         {
             return t != null && _snapshotBoxedInvoker(t)(e);
@@ -97,6 +160,12 @@ namespace ZenECS.Core.Internal
 
         // ── Invoker builders (cached) ───────────────────────────────────────
 
+        /// <summary>
+        /// Resolves or builds a cached <c>HasComponent</c> invoker for
+        /// the specified component type.
+        /// </summary>
+        /// <param name="t">Component value type.</param>
+        /// <returns>Invoker delegate that checks component presence on an entity.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Func<Entity, bool> _hasInvoker(Type t)
         {
@@ -113,6 +182,12 @@ namespace ZenECS.Core.Internal
             return Wrapped;
         }
 
+        /// <summary>
+        /// Resolves or builds a cached boxed AddComponent invoker for
+        /// the specified component type.
+        /// </summary>
+        /// <param name="t">Component value type.</param>
+        /// <returns>Invoker delegate that adds the boxed component to an entity.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Func<Entity, object, bool> _addBoxedInvoker(Type t)
         {
@@ -129,6 +204,12 @@ namespace ZenECS.Core.Internal
             return Wrapped;
         }
 
+        /// <summary>
+        /// Resolves or builds a cached boxed SnapshotComponent invoker for
+        /// the specified component type.
+        /// </summary>
+        /// <param name="t">Component value type.</param>
+        /// <returns>Invoker delegate that dispatches a snapshot delta.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Func<Entity, bool> _snapshotBoxedInvoker(Type t)
         {
@@ -145,15 +226,20 @@ namespace ZenECS.Core.Internal
             return Wrapped;
         }
 
+        /// <summary>
+        /// Resolves or builds a cached boxed ReplaceComponent invoker for
+        /// the specified component type.
+        /// </summary>
+        /// <param name="t">Component value type.</param>
+        /// <returns>Invoker delegate that replaces an existing component.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Func<Entity, object, bool> _replaceBoxedInvoker(Type t)
         {
             if (_replaceBoxedCache.TryGetValue(t, out var fn)) return fn;
 
             _miReplaceOpen ??= typeof(World).GetMethod(
-                    nameof(ReplaceComponent),
-                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                !; // ReplaceComponent<T>(Entity, in T)
+                nameof(ReplaceComponent),
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!; // ReplaceComponent<T>(Entity, in T)
 
             var closed = _miReplaceOpen.MakeGenericMethod(t);
             bool Wrapped(Entity e, object value) => (bool)closed.Invoke(this, new object[] { e, value })!;
@@ -162,6 +248,12 @@ namespace ZenECS.Core.Internal
             return Wrapped;
         }
 
+        /// <summary>
+        /// Resolves or builds a cached RemoveComponent invoker for
+        /// the specified component type.
+        /// </summary>
+        /// <param name="t">Component value type.</param>
+        /// <returns>Invoker delegate that removes the component from an entity.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Func<Entity, bool> _removeInvoker(Type t)
         {
@@ -179,8 +271,14 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Check if the entity currently has the component.
+        /// Checks whether the entity currently has the component.
         /// </summary>
+        /// <typeparam name="T">Component value type.</typeparam>
+        /// <param name="e">Target entity.</param>
+        /// <returns>
+        /// <see langword="true"/> if the entity has a component of type
+        /// <typeparamref name="T"/>; otherwise <see langword="false"/>.
+        /// </returns>
         public bool HasComponent<T>(Entity e) where T : struct
         {
             var pool = _componentPoolRepository.TryGetPool<T>();
@@ -188,11 +286,18 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Add a component to an entity if absent, honoring permission/validation hooks.
+        /// Adds a component to an entity if absent, honoring permission and validation hooks.
         /// </summary>
+        /// <typeparam name="T">Component value type.</typeparam>
+        /// <param name="e">Target entity.</param>
+        /// <param name="value">Component value to add.</param>
+        /// <returns>
+        /// <see langword="true"/> if the component was added; otherwise
+        /// <see langword="false"/>.
+        /// </returns>
         internal bool AddComponent<T>(Entity e, in T value) where T : struct
         {
-            // 1) Phase-level structural write 체크
+            // 1) Phase-level structural write check
             if (!_writePolicy.CanStructuralWrite())
             {
                 if (!HandleDenied(
@@ -232,8 +337,22 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Snapshot a component value in-place and dispatch a “Changed” delta.
+        /// Dispatches a snapshot delta for an existing component without modifying its value.
         /// </summary>
+        /// <typeparam name="T">Component value type.</typeparam>
+        /// <param name="e">Target entity.</param>
+        /// <returns>
+        /// <see langword="true"/> if the entity has the component and a snapshot
+        /// delta was dispatched; otherwise <see langword="false"/>.
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// Snapshot deltas are typically used by binders to pull the current value
+        /// into the presentation layer. Conceptually this is the "Snapshot" kind
+        /// of <see cref="ComponentDeltaKind"/>, i.e., the value is pushed as-is
+        /// without treating it as a semantic "change".
+        /// </para>
+        /// </remarks>
         public bool SnapshotComponent<T>(Entity e) where T : struct
         {
             if (!HasComponent<T>(e)) return false;
@@ -243,11 +362,18 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Replace a component value in-place and dispatch a “Changed” delta.
+        /// Replaces a component value in-place and dispatches a “Changed” delta.
         /// </summary>
+        /// <typeparam name="T">Component value type.</typeparam>
+        /// <param name="e">Target entity.</param>
+        /// <param name="value">New component value.</param>
+        /// <returns>
+        /// <see langword="true"/> if the component was replaced; otherwise
+        /// <see langword="false"/>.
+        /// </returns>
         internal bool ReplaceComponent<T>(Entity e, in T value) where T : struct
         {
-            // 1) Phase-level value write 체크 (Presentation에서도 OK)
+            // 1) Phase-level value write check (allowed in presentation if configured)
             if (!_writePolicy.CanValueWrite())
             {
                 if (!HandleDenied(
@@ -282,11 +408,17 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Remove a component from an entity and dispatch a “Removed” delta.
+        /// Removes a component from an entity and dispatches a “Removed” delta.
         /// </summary>
+        /// <typeparam name="T">Component value type.</typeparam>
+        /// <param name="e">Target entity.</param>
+        /// <returns>
+        /// <see langword="true"/> if a component of type <typeparamref name="T"/>
+        /// was removed; otherwise <see langword="false"/>.
+        /// </returns>
         internal bool RemoveComponent<T>(Entity e) where T : struct
         {
-            // 1) Phase-level structural write 체크
+            // 1) Phase-level structural write check
             if (!_writePolicy.CanStructuralWrite())
             {
                 if (!HandleDenied(
@@ -312,8 +444,11 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Get a <c>ref</c> to a component on an entity (creates storage if missing).
+        /// Gets a <c>ref</c> to a component on an entity, creating storage if missing.
         /// </summary>
+        /// <typeparam name="T">Component value type.</typeparam>
+        /// <param name="e">Target entity.</param>
+        /// <returns>A reference to the component storage for the entity.</returns>
         private ref T RefComponent<T>(Entity e) where T : struct
         {
             var pool = (ComponentPool<T>)_componentPoolRepository.GetPool<T>();
@@ -321,8 +456,14 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Get a <c>ref</c> to an existing component; throws if the component is absent.
+        /// Gets a <c>ref</c> to an existing component or throws if the component is absent.
         /// </summary>
+        /// <typeparam name="T">Component value type.</typeparam>
+        /// <param name="e">Target entity.</param>
+        /// <returns>A reference to the existing component storage.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when the entity does not have a component of the specified type.
+        /// </exception>
         private ref T RefComponentExisting<T>(Entity e) where T : struct
         {
             var pool = _componentPoolRepository.TryGetPool<T>();
@@ -332,16 +473,29 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Read component by ref (alias of <see cref="RefComponent{T}(Entity)"/>).
+        /// Reads a component value by value (non-ref) from an entity.
         /// </summary>
+        /// <typeparam name="T">Component value type.</typeparam>
+        /// <param name="e">Target entity.</param>
+        /// <returns>The current component value.</returns>
         public T ReadComponent<T>(Entity e) where T : struct
         {
             return RefComponent<T>(e);
         }
 
         /// <summary>
-        /// Try to read a component by value (non-ref); returns <see langword="false"/> if absent.
+        /// Tries to read a component by value (non-ref) from an entity.
         /// </summary>
+        /// <typeparam name="T">Component value type.</typeparam>
+        /// <param name="e">Target entity.</param>
+        /// <param name="value">
+        /// When this method returns, contains the component value if present;
+        /// otherwise the default value of <typeparamref name="T"/>.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if the entity has the component; otherwise
+        /// <see langword="false"/>.
+        /// </returns>
         public bool TryReadComponent<T>(Entity e, out T value) where T : struct
         {
             if (!HasComponent<T>(e))
@@ -355,8 +509,13 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Enumerate all components currently present on the entity (boxed values).
+        /// Enumerates all components currently present on the entity as boxed values.
         /// </summary>
+        /// <param name="e">Target entity.</param>
+        /// <returns>
+        /// A sequence of tuples where <c>type</c> is the component type and
+        /// <c>boxed</c> is the boxed component value.
+        /// </returns>
         public IEnumerable<(Type type, object? boxed)> GetAllComponents(Entity e)
         {
             foreach (var kv in _componentPoolRepository.Pools)
@@ -364,6 +523,15 @@ namespace ZenECS.Core.Internal
                     yield return (kv.Key, kv.Value.GetBoxed(e.Id));
         }
 
+        /// <summary>
+        /// Handles denied write operations according to the configured
+        /// <see cref="EcsRuntimeOptions.WritePolicy"/>.
+        /// </summary>
+        /// <param name="reason">Diagnostic message describing why the write failed.</param>
+        /// <returns>
+        /// Always <see langword="false"/>; this method is intended to be used
+        /// inside guard clauses.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool HandleDenied(string reason)
         {
@@ -380,10 +548,21 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Ensure only one entity in this world has component type T.
-        /// Throws if more than one exists.
-        /// This method also updates the _singletonIndex accordingly.
+        /// Ensures that only one entity in this world has component type <typeparamref name="T"/>.
+        /// Also keeps the singleton index consistent with the current state.
         /// </summary>
+        /// <typeparam name="T">Singleton component value type.</typeparam>
+        /// <param name="has">
+        /// When this method returns, <see langword="true"/> if a singleton entity
+        /// exists; otherwise <see langword="false"/>.
+        /// </param>
+        /// <returns>
+        /// The singleton entity if it exists; otherwise <see langword="null"/>.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when more than one entity in the world has component type
+        /// <typeparamref name="T"/>.
+        /// </exception>
         private Entity? EnsureSingletonConsistency<T>(out bool has) where T : struct
         {
             var type = typeof(T);
@@ -436,8 +615,14 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Get singleton entity for T. Throws if missing or multiple.
+        /// Gets the singleton entity for component type <typeparamref name="T"/>.
+        /// Throws if missing or if multiple entities contain the component.
         /// </summary>
+        /// <typeparam name="T">Singleton component value type.</typeparam>
+        /// <returns>The owning entity.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when there is no singleton or multiple entities contain the component.
+        /// </exception>
         internal Entity GetSingletonEntityInternal<T>() where T : struct
         {
             var e = EnsureSingletonConsistency<T>(out bool has);
@@ -448,10 +633,17 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Try get singleton entity for T.
-        /// No creation performed.
-        /// Returns false if missing.
+        /// Tries to get the singleton entity for component type <typeparamref name="T"/>.
         /// </summary>
+        /// <typeparam name="T">Singleton component value type.</typeparam>
+        /// <param name="entity">
+        /// When this method returns, contains the owning entity if it exists;
+        /// otherwise the default value.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if a singleton entity exists; otherwise
+        /// <see langword="false"/>.
+        /// </returns>
         internal bool TryGetSingletonEntityInternal<T>(out Entity entity) where T : struct
         {
             var e = EnsureSingletonConsistency<T>(out bool has);
@@ -465,6 +657,14 @@ namespace ZenECS.Core.Internal
             return false;
         }
 
+        /// <summary>
+        /// Sets a singleton component of type <typeparamref name="T"/>.
+        /// Creates or updates the singleton entity as needed.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Component value type implementing <see cref="IWorldSingletonComponent"/>.
+        /// </typeparam>
+        /// <param name="value">Singleton component value.</param>
         internal void SetSingleton<T>(in T value) where T : struct, IWorldSingletonComponent
         {
             // Check if exists
@@ -481,12 +681,29 @@ namespace ZenECS.Core.Internal
             _singletonIndex[typeof(T)] = newEntity;
         }
 
+        /// <summary>
+        /// Gets the singleton component value for type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Component value type implementing <see cref="IWorldSingletonComponent"/>.
+        /// </typeparam>
+        /// <returns>The singleton component value.</returns>
         public T GetSingleton<T>() where T : struct, IWorldSingletonComponent
         {
             var e = GetSingletonEntityInternal<T>();
             return ReadComponent<T>(e);
         }
 
+        /// <summary>
+        /// Removes the singleton component of type <typeparamref name="T"/>, if present.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Component value type implementing <see cref="IWorldSingletonComponent"/>.
+        /// </typeparam>
+        /// <returns>
+        /// <see langword="true"/> if a singleton existed and was removed; otherwise
+        /// <see langword="false"/>.
+        /// </returns>
         internal bool RemoveSingleton<T>() where T : struct, IWorldSingletonComponent
         {
             if (TryGetSingletonEntityInternal<T>(out var e))
@@ -498,6 +715,20 @@ namespace ZenECS.Core.Internal
             return false;
         }
 
+        /// <summary>
+        /// Tries to get the singleton component value for type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Component value type implementing <see cref="IWorldSingletonComponent"/>.
+        /// </typeparam>
+        /// <param name="value">
+        /// When this method returns, contains the singleton value if present;
+        /// otherwise the default value for <typeparamref name="T"/>.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if a singleton exists; otherwise
+        /// <see langword="false"/>.
+        /// </returns>
         public bool TryGetSingleton<T>(out T value) where T : struct, IWorldSingletonComponent
         {
             if (TryGetSingletonEntityInternal<T>(out var e))
@@ -510,6 +741,10 @@ namespace ZenECS.Core.Internal
             return false;
         }
 
+        /// <summary>
+        /// Clears entries from the singleton index for the specified entity.
+        /// </summary>
+        /// <param name="e">Entity that is being removed or reset.</param>
         private void clearSingletonIndex(Entity e)
         {
             List<Type>? toRemove = null;
@@ -531,6 +766,11 @@ namespace ZenECS.Core.Internal
             }
         }
 
+        /// <summary>
+        /// Updates the singleton index after a successful <c>AddComponent&lt;T&gt;</c>.
+        /// </summary>
+        /// <typeparam name="T">Component value type.</typeparam>
+        /// <param name="e">Entity that received the component.</param>
         private void addSingletonIndex<T>(Entity e) where T : struct
         {
             // After successful AddComponent<T>(e, value)
@@ -553,6 +793,11 @@ namespace ZenECS.Core.Internal
             }
         }
 
+        /// <summary>
+        /// Updates the singleton index after a successful <c>RemoveComponent&lt;T&gt;</c>.
+        /// </summary>
+        /// <typeparam name="T">Component value type.</typeparam>
+        /// <param name="e">Entity that lost the component.</param>
         private void removeSingletonIndex<T>(Entity e) where T : struct
         {
             // If removing singleton type → remove from index
@@ -562,21 +807,36 @@ namespace ZenECS.Core.Internal
             }
         }
 
+        /// <summary>
+        /// Checks whether the specified entity owns any singleton component.
+        /// </summary>
+        /// <param name="e">Entity to inspect.</param>
+        /// <returns>
+        /// <see langword="true"/> if the entity is the owner of at least one
+        /// singleton component; otherwise <see langword="false"/>.
+        /// </returns>
         public bool HasSingleton(Entity e)
         {
             return _singletonIndex.Select(keyValuePair => keyValuePair.Value).Any(se => se.Equals(e));
         }
-        
+
         /// <summary>
         /// Returns all singleton components currently registered in this world.
-        /// Tuple: (component type, owning entity).
         /// </summary>
+        /// <returns>
+        /// A sequence of tuples containing the component type and the owning entity.
+        /// </returns>
         public IEnumerable<(Type type, Entity owner)> GetAllSingletons()
         {
             foreach (var kv in _singletonIndex)
                 yield return (kv.Key, kv.Value);
         }
 
+        /// <summary>
+        /// Sets a singleton component using runtime types and boxed values.
+        /// </summary>
+        /// <param name="singletonType">Component value type marked as singleton.</param>
+        /// <param name="boxed">Boxed component value.</param>
         internal void SetSingletonTyped(Type? singletonType, object? boxed)
         {
             if (singletonType == null) return;
@@ -594,6 +854,10 @@ namespace ZenECS.Core.Internal
             _singletonIndex[singletonType] = newEntity;
         }
 
+        /// <summary>
+        /// Removes a singleton component using a runtime component type.
+        /// </summary>
+        /// <param name="singletonType">Component value type to remove from singleton index.</param>
         internal void RemoveSingletonTyped(Type? singletonType)
         {
             if (singletonType == null) return;

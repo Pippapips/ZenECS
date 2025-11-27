@@ -6,7 +6,7 @@
 //   • Frame-bound mutations: add/remove/enable are queued and applied at frame start.
 //   • Discovery: try-get to query active systems.
 //   • Adapter-agnostic: no DI framework types leak into the Core surface.
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-

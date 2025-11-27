@@ -5,7 +5,7 @@
 // Notes:
 //   • Used by tools like EcsExplorer to request changes safely
 //   • Commands are later flushed via ExternalEditorCommandQueue at a barrier
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

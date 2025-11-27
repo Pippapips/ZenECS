@@ -5,8 +5,7 @@
 // Key concepts:
 //   • Excluded from runtime builds (guarded by UNITY_EDITOR).
 //   • Optional StableId can be used for save/load or networking pipelines.
-//
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

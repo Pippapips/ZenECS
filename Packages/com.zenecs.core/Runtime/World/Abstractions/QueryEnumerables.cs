@@ -8,7 +8,7 @@
 //   • QueryEnumerable<T1..T8>: zero-allocation foreach enumerators
 //   • QuerySeed: chooses smallest pool as iteration seed for efficiency
 //   • MeetsFilter: per-entity evaluation via World.ResolvedFilter
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
@@ -29,9 +29,11 @@ namespace ZenECS.Core
     /// Immutable value describing a query filter with include/exclude constraints.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// Filters are created via the fluent <see cref="Builder"/> exposed by
     /// <see cref="New"/>. Use them to refine queries passed into
     /// <c>world.Query&lt;...&gt;(filter)</c>.
+    /// </para>
     /// </remarks>
     public readonly struct Filter
     {
@@ -57,8 +59,10 @@ namespace ZenECS.Core
         /// Fluent, immutable builder used to compose <see cref="Filter"/> instances.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// Each method returns a new builder that includes the requested constraint;
         /// the original builder remains unchanged.
+        /// </para>
         /// </remarks>
         public readonly struct Builder
         {
@@ -78,30 +82,39 @@ namespace ZenECS.Core
             /// <summary>
             /// Requires that entities include component <typeparamref name="T"/>.
             /// </summary>
+            /// <typeparam name="T">Component type that must be present.</typeparam>
+            /// <returns>A new builder that includes this constraint.</returns>
             public Builder With<T>() where T : struct =>
                 new(Append(wa, typeof(T)), wo, wan, won);
 
             /// <summary>
             /// Requires that entities exclude component <typeparamref name="T"/>.
             /// </summary>
+            /// <typeparam name="T">Component type that must be absent.</typeparam>
+            /// <returns>A new builder that includes this constraint.</returns>
             public Builder Without<T>() where T : struct =>
                 new(wa, Append(wo, typeof(T)), wan, won);
 
             /// <summary>
             /// Adds an OR group: entity passes if it contains <em>any one</em> of these types.
             /// </summary>
+            /// <param name="types">Component types that form the OR group.</param>
+            /// <returns>A new builder that includes this OR-group constraint.</returns>
             public Builder WithAny(params Type[] types) =>
                 new(wa, wo, AppendBucket(wan, types), won);
 
             /// <summary>
             /// Adds a NOT-OR group: entity fails if it contains <em>any one</em> of these types.
             /// </summary>
+            /// <param name="types">Component types that form the NOT-OR group.</param>
+            /// <returns>A new builder that includes this NOT-OR-group constraint.</returns>
             public Builder WithoutAny(params Type[] types) =>
                 new(wa, wo, wan, AppendBucket(won, types));
 
             /// <summary>
             /// Finalizes this builder into an immutable <see cref="Filter"/>.
             /// </summary>
+            /// <returns>A fully constructed <see cref="Filter"/>.</returns>
             public Filter Build() =>
                 new Filter(
                     wa?.ToArray() ?? Array.Empty<Type>(),
@@ -150,12 +163,20 @@ namespace ZenECS.Core
     // QUERY SEED PICKER
     // --------------------------------------------------------------------------
 
+    /// <summary>
+    /// Helper for selecting the smallest component pool as the iteration seed.
+    /// </summary>
     internal static class QuerySeed
     {
         /// <summary>
         /// Chooses the smallest-capacity component pool as the seed for iteration.
         /// Null pools are ignored.
         /// </summary>
+        /// <param name="pools">Candidate pools for seeding iteration.</param>
+        /// <returns>
+        /// The pool with the smallest capacity, or <see langword="null"/> if all are
+        /// <see langword="null"/>.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IComponentPool? Pick(params IComponentPool?[] pools)
         {
@@ -202,11 +223,20 @@ namespace ZenECS.Core
 
     #region T1
 
+    /// <summary>
+    /// Internal context for single-component queries.
+    /// </summary>
     internal readonly struct QueryCtx1<T1> where T1 : struct
     {
+        /// <summary>Primary component pool.</summary>
         public readonly IComponentPool? A;
+
+        /// <summary>Resolved filter instance for fast evaluation.</summary>
         public readonly World.ResolvedFilter RF;
 
+        /// <summary>
+        /// Creates a new query context for single-component queries.
+        /// </summary>
         public QueryCtx1(IComponentPool? a, World.ResolvedFilter rf)
         {
             A  = a;
@@ -217,10 +247,19 @@ namespace ZenECS.Core
     /// <summary>
     /// Single-component query enumerable.
     /// Each item represents an entity and its <typeparamref name="T1"/> component.
-    /// 
-    /// Usage:
-    ///   foreach (var (e, c1) in world.Query&lt;T1&gt;()) { ... }
     /// </summary>
+    /// <typeparam name="T1">Component type to query for.</typeparam>
+    /// <remarks>
+    /// <para>
+    /// Typical usage:
+    /// </para>
+    /// <code language="csharp"><![CDATA[
+    /// foreach (var (e, c1) in world.Query<T1>())
+    /// {
+    ///     // Use e and c1
+    /// }
+    /// ]]></code>
+    /// </remarks>
     public readonly struct QueryEnumerable<T1> where T1 : struct
     {
         private readonly World _w;
@@ -238,15 +277,26 @@ namespace ZenECS.Core
         /// </summary>
         public readonly struct Result
         {
+            /// <summary>The entity handle.</summary>
             public readonly Entity Entity;
-            public readonly T1     Component;
 
+            /// <summary>The component value for <typeparamref name="T1"/>.</summary>
+            public readonly T1 Component;
+
+            /// <summary>
+            /// Creates a new result with entity and component value.
+            /// </summary>
+            /// <param name="entity">Entity handle.</param>
+            /// <param name="component">Component value.</param>
             public Result(in Entity entity, in T1 component)
             {
                 Entity    = entity;
                 Component = component;
             }
 
+            /// <summary>
+            /// Deconstructs this result into its components.
+            /// </summary>
             public void Deconstruct(out Entity entity, out T1 component)
             {
                 entity   = Entity;
@@ -254,8 +304,14 @@ namespace ZenECS.Core
             }
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates over matching entities.
+        /// </summary>
         public Enumerator GetEnumerator() => new Enumerator(_w, _ctx);
 
+        /// <summary>
+        /// Enumerator for <see cref="QueryEnumerable{T1}"/>.
+        /// </summary>
         public struct Enumerator
         {
             private readonly World _w;
@@ -281,6 +337,13 @@ namespace ZenECS.Core
             /// </summary>
             public Result Current => _cur;
 
+            /// <summary>
+            /// Advances to the next matching entity, if any.
+            /// </summary>
+            /// <returns>
+            /// <see langword="true"/> if another entity is available; otherwise
+            /// <see langword="false"/>.
+            /// </returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool MoveNext()
             {
@@ -288,12 +351,12 @@ namespace ZenECS.Core
                 {
                     int id = _it.CurrentId;
 
-                    // Pool 존재 및 필터 검사
+                    // Pool existence and filter check.
                     if ((_a == null || _a.Has(id)) &&
                         World.MeetsFilter(id, in _rf))
                     {
                         var entity = new Entity(id, _w.GenerationOf(id));
-                        // World 보장이 있으므로 여기서 직접 컴포넌트를 읽어온다.
+                        // World guarantees component existence, so it is safe to read.
                         var value  = _w.ReadComponent<T1>(entity);
                         _cur = new Result(entity, value);
                         return true;
@@ -309,12 +372,24 @@ namespace ZenECS.Core
 
     #region T1,T2
 
+    /// <summary>
+    /// Internal context for two-component queries.
+    /// </summary>
     internal readonly struct QueryCtx2<T1, T2>
         where T1 : struct where T2 : struct
     {
-        public readonly IComponentPool? A, B;
+        /// <summary>First component pool.</summary>
+        public readonly IComponentPool? A;
+
+        /// <summary>Second component pool.</summary>
+        public readonly IComponentPool? B;
+
+        /// <summary>Resolved filter instance for fast evaluation.</summary>
         public readonly World.ResolvedFilter RF;
 
+        /// <summary>
+        /// Creates a new query context for two-component queries.
+        /// </summary>
         public QueryCtx2(IComponentPool? a, IComponentPool? b, World.ResolvedFilter rf)
         {
             A  = a;
@@ -325,11 +400,20 @@ namespace ZenECS.Core
 
     /// <summary>
     /// Two-component query enumerable.
-    /// Each item represents an entity and its <typeparamref name="T1"/> and <typeparamref name="T2"/> components.
-    ///
-    /// Usage:
-    ///   foreach (var (e, c1, c2) in world.Query&lt;T1, T2&gt;()) { ... }
+    /// Each item represents an entity and its <typeparamref name="T1"/>
+    /// and <typeparamref name="T2"/> components.
     /// </summary>
+    /// <typeparam name="T1">First component type.</typeparam>
+    /// <typeparam name="T2">Second component type.</typeparam>
+    /// <remarks>
+    /// <para>Usage:</para>
+    /// <code language="csharp"><![CDATA[
+    /// foreach (var (e, c1, c2) in world.Query<T1, T2>())
+    /// {
+    ///     // Use e, c1, c2
+    /// }
+    /// ]]></code>
+    /// </remarks>
     public readonly struct QueryEnumerable<T1, T2>
         where T1 : struct where T2 : struct
     {
@@ -348,10 +432,18 @@ namespace ZenECS.Core
         /// </summary>
         public readonly struct Result
         {
+            /// <summary>The entity handle.</summary>
             public readonly Entity Entity;
-            public readonly T1     Component1;
-            public readonly T2     Component2;
 
+            /// <summary>The first component value.</summary>
+            public readonly T1 Component1;
+
+            /// <summary>The second component value.</summary>
+            public readonly T2 Component2;
+
+            /// <summary>
+            /// Creates a new result container.
+            /// </summary>
             public Result(in Entity entity, in T1 c1, in T2 c2)
             {
                 Entity     = entity;
@@ -359,6 +451,9 @@ namespace ZenECS.Core
                 Component2 = c2;
             }
 
+            /// <summary>
+            /// Deconstructs this result into its values.
+            /// </summary>
             public void Deconstruct(out Entity entity, out T1 c1, out T2 c2)
             {
                 entity = Entity;
@@ -367,8 +462,14 @@ namespace ZenECS.Core
             }
         }
 
+        /// <summary>
+        /// Returns an enumerator over the query results.
+        /// </summary>
         public Enumerator GetEnumerator() => new Enumerator(_w, _ctx);
 
+        /// <summary>
+        /// Enumerator for <see cref="QueryEnumerable{T1,T2}"/>.
+        /// </summary>
         public struct Enumerator
         {
             private readonly World _w;
@@ -397,9 +498,14 @@ namespace ZenECS.Core
                 _cur = default;
             }
 
-            /// <summary>Current (Entity, T1, T2) triple.</summary>
+            /// <summary>
+            /// Current (Entity, T1, T2) triple.
+            /// </summary>
             public Result Current => _cur;
 
+            /// <summary>
+            /// Advances to the next matching entity, if any.
+            /// </summary>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool MoveNext()
             {
@@ -429,12 +535,18 @@ namespace ZenECS.Core
 
     #region T1..T3
 
+    /// <summary>
+    /// Internal context for three-component queries.
+    /// </summary>
     internal readonly struct QueryCtx3<T1, T2, T3>
         where T1 : struct where T2 : struct where T3 : struct
     {
         public readonly IComponentPool? A, B, C;
         public readonly World.ResolvedFilter RF;
 
+        /// <summary>
+        /// Creates a new query context for three-component queries.
+        /// </summary>
         public QueryCtx3(IComponentPool? a, IComponentPool? b, IComponentPool? c, World.ResolvedFilter rf)
         {
             A  = a;
@@ -446,9 +558,19 @@ namespace ZenECS.Core
 
     /// <summary>
     /// Three-component query enumerable.
-    /// Usage:
-    ///   foreach (var (e, c1, c2, c3) in world.Query&lt;T1, T2, T3&gt;()) { ... }
     /// </summary>
+    /// <typeparam name="T1">First component type.</typeparam>
+    /// <typeparam name="T2">Second component type.</typeparam>
+    /// <typeparam name="T3">Third component type.</typeparam>
+    /// <remarks>
+    /// <para>Usage:</para>
+    /// <code language="csharp"><![CDATA[
+    /// foreach (var (e, c1, c2, c3) in world.Query<T1, T2, T3>())
+    /// {
+    ///     // ...
+    /// }
+    /// ]]></code>
+    /// </remarks>
     public readonly struct QueryEnumerable<T1, T2, T3>
         where T1 : struct where T2 : struct where T3 : struct
     {
@@ -461,6 +583,9 @@ namespace ZenECS.Core
             _ctx = ctx;
         }
 
+        /// <summary>
+        /// Result item for three-component queries.
+        /// </summary>
         public readonly struct Result
         {
             public readonly Entity Entity;
@@ -468,6 +593,9 @@ namespace ZenECS.Core
             public readonly T2     Component2;
             public readonly T3     Component3;
 
+            /// <summary>
+            /// Creates a new result container.
+            /// </summary>
             public Result(in Entity entity, in T1 c1, in T2 c2, in T3 c3)
             {
                 Entity     = entity;
@@ -476,6 +604,9 @@ namespace ZenECS.Core
                 Component3 = c3;
             }
 
+            /// <summary>
+            /// Deconstructs this result into its values.
+            /// </summary>
             public void Deconstruct(out Entity entity, out T1 c1, out T2 c2, out T3 c3)
             {
                 entity = Entity;
@@ -485,8 +616,12 @@ namespace ZenECS.Core
             }
         }
 
+        /// <summary>Returns an enumerator over results.</summary>
         public Enumerator GetEnumerator() => new Enumerator(_w, _ctx);
 
+        /// <summary>
+        /// Enumerator for <see cref="QueryEnumerable{T1,T2,T3}"/>.
+        /// </summary>
         public struct Enumerator
         {
             private readonly World _w;
@@ -518,6 +653,7 @@ namespace ZenECS.Core
             /// <summary>Current (Entity, T1, T2, T3) tuple.</summary>
             public Result Current => _cur;
 
+            /// <summary>Moves to the next result if available.</summary>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool MoveNext()
             {
@@ -548,12 +684,18 @@ namespace ZenECS.Core
 
     #region T1..T4
 
+    /// <summary>
+    /// Internal context for four-component queries.
+    /// </summary>
     internal readonly struct QueryCtx4<T1, T2, T3, T4>
         where T1 : struct where T2 : struct where T3 : struct where T4 : struct
     {
         public readonly IComponentPool? A, B, C, D;
         public readonly World.ResolvedFilter RF;
 
+        /// <summary>
+        /// Creates a new query context for four-component queries.
+        /// </summary>
         public QueryCtx4(
             IComponentPool? a,
             IComponentPool? b,
@@ -571,9 +713,20 @@ namespace ZenECS.Core
 
     /// <summary>
     /// Four-component query enumerable.
-    /// Usage:
-    ///   foreach (var (e, c1, c2, c3, c4) in world.Query&lt;T1, T2, T3, T4&gt;()) { ... }
     /// </summary>
+    /// <typeparam name="T1">First component type.</typeparam>
+    /// <typeparam name="T2">Second component type.</typeparam>
+    /// <typeparam name="T3">Third component type.</typeparam>
+    /// <typeparam name="T4">Fourth component type.</typeparam>
+    /// <remarks>
+    /// <para>Usage:</para>
+    /// <code language="csharp"><![CDATA[
+    /// foreach (var (e, c1, c2, c3, c4) in world.Query<T1, T2, T3, T4>())
+    /// {
+    ///     // ...
+    /// }
+    /// ]]></code>
+    /// </remarks>
     public readonly struct QueryEnumerable<T1, T2, T3, T4>
         where T1 : struct where T2 : struct where T3 : struct where T4 : struct
     {
@@ -586,6 +739,9 @@ namespace ZenECS.Core
             _ctx = ctx;
         }
 
+        /// <summary>
+        /// Result item for four-component queries.
+        /// </summary>
         public readonly struct Result
         {
             public readonly Entity Entity;
@@ -594,6 +750,9 @@ namespace ZenECS.Core
             public readonly T3     Component3;
             public readonly T4     Component4;
 
+            /// <summary>
+            /// Creates a new result container.
+            /// </summary>
             public Result(in Entity entity, in T1 c1, in T2 c2, in T3 c3, in T4 c4)
             {
                 Entity     = entity;
@@ -603,6 +762,9 @@ namespace ZenECS.Core
                 Component4 = c4;
             }
 
+            /// <summary>
+            /// Deconstructs the result into its values.
+            /// </summary>
             public void Deconstruct(out Entity entity, out T1 c1, out T2 c2, out T3 c3, out T4 c4)
             {
                 entity = Entity;
@@ -613,8 +775,12 @@ namespace ZenECS.Core
             }
         }
 
+        /// <summary>Returns an enumerator over results.</summary>
         public Enumerator GetEnumerator() => new Enumerator(_w, _ctx);
 
+        /// <summary>
+        /// Enumerator for <see cref="QueryEnumerable{T1,T2,T3,T4}"/>.
+        /// </summary>
         public struct Enumerator
         {
             private readonly World _w;
@@ -644,9 +810,14 @@ namespace ZenECS.Core
                 _cur = default;
             }
 
-            /// <summary>Current (Entity, T1..T4) tuple.</summary>
+            /// <summary>
+            /// Current (Entity, T1..T4) tuple.
+            /// </summary>
             public Result Current => _cur;
 
+            /// <summary>
+            /// Moves to the next matching entity, if any.
+            /// </summary>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool MoveNext()
             {
@@ -679,12 +850,18 @@ namespace ZenECS.Core
 
     #region T1..T5
 
+    /// <summary>
+    /// Internal context for five-component queries.
+    /// </summary>
     internal readonly struct QueryCtx5<T1, T2, T3, T4, T5>
         where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct
     {
         public readonly IComponentPool? A, B, C, D, E;
         public readonly World.ResolvedFilter RF;
 
+        /// <summary>
+        /// Creates a new query context for five-component queries.
+        /// </summary>
         public QueryCtx5(
             IComponentPool? a,
             IComponentPool? b,
@@ -704,9 +881,20 @@ namespace ZenECS.Core
 
     /// <summary>
     /// Five-component query enumerable.
-    /// Usage:
-    ///   foreach (var (e, c1, c2, c3, c4, c5) in world.Query&lt;T1, T2, T3, T4, T5&gt;()) { ... }
     /// </summary>
+    /// <typeparam name="T1">First component type.</typeparam>
+    /// <typeparam name="T2">Second component type.</typeparam>
+    /// <typeparam name="T3">Third component type.</typeparam>
+    /// <typeparam name="T4">Fourth component type.</typeparam>
+    /// <typeparam name="T5">Fifth component type.</typeparam>
+    /// <remarks>
+    /// <code language="csharp"><![CDATA[
+    /// foreach (var (e, c1, c2, c3, c4, c5) in world.Query<T1, T2, T3, T4, T5>())
+    /// {
+    ///     // ...
+    /// }
+    /// ]]></code>
+    /// </remarks>
     public readonly struct QueryEnumerable<T1, T2, T3, T4, T5>
         where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct
     {
@@ -719,6 +907,9 @@ namespace ZenECS.Core
             _ctx = ctx;
         }
 
+        /// <summary>
+        /// Result item for five-component queries.
+        /// </summary>
         public readonly struct Result
         {
             public readonly Entity Entity;
@@ -728,6 +919,9 @@ namespace ZenECS.Core
             public readonly T4     Component4;
             public readonly T5     Component5;
 
+            /// <summary>
+            /// Creates a new result container.
+            /// </summary>
             public Result(in Entity entity, in T1 c1, in T2 c2, in T3 c3, in T4 c4, in T5 c5)
             {
                 Entity     = entity;
@@ -738,6 +932,9 @@ namespace ZenECS.Core
                 Component5 = c5;
             }
 
+            /// <summary>
+            /// Deconstructs this result into its values.
+            /// </summary>
             public void Deconstruct(out Entity entity, out T1 c1, out T2 c2, out T3 c3, out T4 c4, out T5 c5)
             {
                 entity = Entity;
@@ -749,8 +946,12 @@ namespace ZenECS.Core
             }
         }
 
+        /// <summary>Returns an enumerator over results.</summary>
         public Enumerator GetEnumerator() => new Enumerator(_w, _ctx);
 
+        /// <summary>
+        /// Enumerator for <see cref="QueryEnumerable{T1,T2,T3,T4,T5}"/>.
+        /// </summary>
         public struct Enumerator
         {
             private readonly World _w;
@@ -781,9 +982,14 @@ namespace ZenECS.Core
                 _cur = default;
             }
 
-            /// <summary>Current (Entity, T1..T5) tuple.</summary>
+            /// <summary>
+            /// Current (Entity, T1..T5) tuple.
+            /// </summary>
             public Result Current => _cur;
 
+            /// <summary>
+            /// Moves to the next matching entity, if any.
+            /// </summary>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool MoveNext()
             {
@@ -818,6 +1024,9 @@ namespace ZenECS.Core
 
     #region T1..T6
 
+    /// <summary>
+    /// Internal context for six-component queries.
+    /// </summary>
     internal readonly struct QueryCtx6<T1, T2, T3, T4, T5, T6>
         where T1 : struct where T2 : struct where T3 : struct where T4 : struct
         where T5 : struct where T6 : struct
@@ -825,6 +1034,9 @@ namespace ZenECS.Core
         public readonly IComponentPool? A, B, C, D, E, F;
         public readonly World.ResolvedFilter RF;
 
+        /// <summary>
+        /// Creates a new query context for six-component queries.
+        /// </summary>
         public QueryCtx6(
             IComponentPool? a,
             IComponentPool? b,
@@ -846,9 +1058,21 @@ namespace ZenECS.Core
 
     /// <summary>
     /// Six-component query enumerable.
-    /// Usage:
-    ///   foreach (var (e, c1..c6) in world.Query&lt;T1, T2, T3, T4, T5, T6&gt;()) { ... }
     /// </summary>
+    /// <typeparam name="T1">First component type.</typeparam>
+    /// <typeparam name="T2">Second component type.</typeparam>
+    /// <typeparam name="T3">Third component type.</typeparam>
+    /// <typeparam name="T4">Fourth component type.</typeparam>
+    /// <typeparam name="T5">Fifth component type.</typeparam>
+    /// <typeparam name="T6">Sixth component type.</typeparam>
+    /// <remarks>
+    /// <code language="csharp"><![CDATA[
+    /// foreach (var (e, c1..c6) in world.Query<T1, T2, T3, T4, T5, T6>())
+    /// {
+    ///     // ...
+    /// }
+    /// ]]></code>
+    /// </remarks>
     public readonly struct QueryEnumerable<T1, T2, T3, T4, T5, T6>
         where T1 : struct where T2 : struct where T3 : struct where T4 : struct
         where T5 : struct where T6 : struct
@@ -862,6 +1086,9 @@ namespace ZenECS.Core
             _ctx = ctx;
         }
 
+        /// <summary>
+        /// Result item for six-component queries.
+        /// </summary>
         public readonly struct Result
         {
             public readonly Entity Entity;
@@ -872,6 +1099,9 @@ namespace ZenECS.Core
             public readonly T5     Component5;
             public readonly T6     Component6;
 
+            /// <summary>
+            /// Creates a new result container.
+            /// </summary>
             public Result(
                 in Entity entity,
                 in T1 c1,
@@ -890,6 +1120,9 @@ namespace ZenECS.Core
                 Component6 = c6;
             }
 
+            /// <summary>
+            /// Deconstructs this result into its values.
+            /// </summary>
             public void Deconstruct(
                 out Entity entity,
                 out T1 c1,
@@ -909,8 +1142,12 @@ namespace ZenECS.Core
             }
         }
 
+        /// <summary>Returns an enumerator over results.</summary>
         public Enumerator GetEnumerator() => new Enumerator(_w, _ctx);
 
+        /// <summary>
+        /// Enumerator for <see cref="QueryEnumerable{T1,T2,T3,T4,T5,T6}"/>.
+        /// </summary>
         public struct Enumerator
         {
             private readonly World _w;
@@ -943,9 +1180,14 @@ namespace ZenECS.Core
                 _cur = default;
             }
 
-            /// <summary>Current (Entity, T1..T6) tuple.</summary>
+            /// <summary>
+            /// Current (Entity, T1..T6) tuple.
+            /// </summary>
             public Result Current => _cur;
 
+            /// <summary>
+            /// Moves to the next matching entity, if any.
+            /// </summary>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool MoveNext()
             {
@@ -982,6 +1224,9 @@ namespace ZenECS.Core
 
     #region T1..T7
 
+    /// <summary>
+    /// Internal context for seven-component queries.
+    /// </summary>
     internal readonly struct QueryCtx7<T1, T2, T3, T4, T5, T6, T7>
         where T1 : struct where T2 : struct where T3 : struct where T4 : struct
         where T5 : struct where T6 : struct where T7 : struct
@@ -989,6 +1234,9 @@ namespace ZenECS.Core
         public readonly IComponentPool? A, B, C, D, E, F, G;
         public readonly World.ResolvedFilter RF;
 
+        /// <summary>
+        /// Creates a new query context for seven-component queries.
+        /// </summary>
         public QueryCtx7(
             IComponentPool? a,
             IComponentPool? b,
@@ -1012,9 +1260,14 @@ namespace ZenECS.Core
 
     /// <summary>
     /// Seven-component query enumerable.
-    /// Usage:
-    ///   foreach (var (e, c1..c7) in world.Query&lt;T1..T7&gt;()) { ... }
     /// </summary>
+    /// <typeparam name="T1">First component type.</typeparam>
+    /// <typeparam name="T2">Second component type.</typeparam>
+    /// <typeparam name="T3">Third component type.</typeparam>
+    /// <typeparam name="T4">Fourth component type.</typeparam>
+    /// <typeparam name="T5">Fifth component type.</typeparam>
+    /// <typeparam name="T6">Sixth component type.</typeparam>
+    /// <typeparam name="T7">Seventh component type.</typeparam>
     public readonly struct QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>
         where T1 : struct where T2 : struct where T3 : struct where T4 : struct
         where T5 : struct where T6 : struct where T7 : struct
@@ -1028,6 +1281,9 @@ namespace ZenECS.Core
             _ctx = ctx;
         }
 
+        /// <summary>
+        /// Result item for seven-component queries.
+        /// </summary>
         public readonly struct Result
         {
             public readonly Entity Entity;
@@ -1039,6 +1295,9 @@ namespace ZenECS.Core
             public readonly T6     Component6;
             public readonly T7     Component7;
 
+            /// <summary>
+            /// Creates a new result container.
+            /// </summary>
             public Result(
                 in Entity entity,
                 in T1 c1,
@@ -1059,6 +1318,9 @@ namespace ZenECS.Core
                 Component7 = c7;
             }
 
+            /// <summary>
+            /// Deconstructs this result into its values.
+            /// </summary>
             public void Deconstruct(
                 out Entity entity,
                 out T1 c1,
@@ -1080,8 +1342,12 @@ namespace ZenECS.Core
             }
         }
 
+        /// <summary>Returns an enumerator over results.</summary>
         public Enumerator GetEnumerator() => new Enumerator(_w, _ctx);
 
+        /// <summary>
+        /// Enumerator for <see cref="QueryEnumerable{T1,T2,T3,T4,T5,T6,T7}"/>.
+        /// </summary>
         public struct Enumerator
         {
             private readonly World _w;
@@ -1115,9 +1381,14 @@ namespace ZenECS.Core
                 _cur = default;
             }
 
-            /// <summary>Current (Entity, T1..T7) tuple.</summary>
+            /// <summary>
+            /// Current (Entity, T1..T7) tuple.
+            /// </summary>
             public Result Current => _cur;
 
+            /// <summary>
+            /// Moves to the next matching entity, if any.
+            /// </summary>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool MoveNext()
             {
@@ -1156,6 +1427,9 @@ namespace ZenECS.Core
 
     #region T1..T8
 
+    /// <summary>
+    /// Internal context for eight-component queries.
+    /// </summary>
     internal readonly struct QueryCtx8<T1, T2, T3, T4, T5, T6, T7, T8>
         where T1 : struct where T2 : struct where T3 : struct where T4 : struct
         where T5 : struct where T6 : struct where T7 : struct where T8 : struct
@@ -1163,6 +1437,9 @@ namespace ZenECS.Core
         public readonly IComponentPool? A, B, C, D, E, F, G, H;
         public readonly World.ResolvedFilter RF;
 
+        /// <summary>
+        /// Creates a new query context for eight-component queries.
+        /// </summary>
         public QueryCtx8(
             IComponentPool? a,
             IComponentPool? b,
@@ -1188,9 +1465,15 @@ namespace ZenECS.Core
 
     /// <summary>
     /// Eight-component query enumerable.
-    /// Usage:
-    ///   foreach (var (e, c1..c8) in world.Query&lt;T1..T8&gt;()) { ... }
     /// </summary>
+    /// <typeparam name="T1">First component type.</typeparam>
+    /// <typeparam name="T2">Second component type.</typeparam>
+    /// <typeparam name="T3">Third component type.</typeparam>
+    /// <typeparam name="T4">Fourth component type.</typeparam>
+    /// <typeparam name="T5">Fifth component type.</typeparam>
+    /// <typeparam name="T6">Sixth component type.</typeparam>
+    /// <typeparam name="T7">Seventh component type.</typeparam>
+    /// <typeparam name="T8">Eighth component type.</typeparam>
     public readonly struct QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>
         where T1 : struct where T2 : struct where T3 : struct where T4 : struct
         where T5 : struct where T6 : struct where T7 : struct where T8 : struct
@@ -1204,6 +1487,9 @@ namespace ZenECS.Core
             _ctx = ctx;
         }
 
+        /// <summary>
+        /// Result item for eight-component queries.
+        /// </summary>
         public readonly struct Result
         {
             public readonly Entity Entity;
@@ -1216,6 +1502,9 @@ namespace ZenECS.Core
             public readonly T7     Component7;
             public readonly T8     Component8;
 
+            /// <summary>
+            /// Creates a new result container.
+            /// </summary>
             public Result(
                 in Entity entity,
                 in T1 c1,
@@ -1238,6 +1527,9 @@ namespace ZenECS.Core
                 Component8 = c8;
             }
 
+            /// <summary>
+            /// Deconstructs this result into its values.
+            /// </summary>
             public void Deconstruct(
                 out Entity entity,
                 out T1 c1,
@@ -1261,8 +1553,12 @@ namespace ZenECS.Core
             }
         }
 
+        /// <summary>Returns an enumerator over results.</summary>
         public Enumerator GetEnumerator() => new Enumerator(_w, _ctx);
 
+        /// <summary>
+        /// Enumerator for <see cref="QueryEnumerable{T1,T2,T3,T4,T5,T6,T7,T8}"/>.
+        /// </summary>
         public struct Enumerator
         {
             private readonly World _w;
@@ -1297,9 +1593,14 @@ namespace ZenECS.Core
                 _cur = default;
             }
 
-            /// <summary>Current (Entity, T1..T8) tuple.</summary>
+            /// <summary>
+            /// Current (Entity, T1..T8) tuple.
+            /// </summary>
             public Result Current => _cur;
 
+            /// <summary>
+            /// Moves to the next matching entity, if any.
+            /// </summary>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool MoveNext()
             {

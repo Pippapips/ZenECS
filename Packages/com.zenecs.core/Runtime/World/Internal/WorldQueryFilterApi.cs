@@ -6,7 +6,7 @@
 //   • WithAll/WithoutAll & WithAny/WithoutAny bucket semantics (AND of ORs).
 //   • Order-independent FilterKey hashing for cache lookups.
 //   • ResolvedFilter stores pool arrays for branchless membership tests.
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-

@@ -8,7 +8,7 @@
 //   • Entity id/generation: stable handles; 0 is reserved as “null”.
 //   • Pause per world: Kernel may step selected worlds only.
 //   • Reset paths: fast capacity-preserving reset for bulk despawn.
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-

@@ -6,7 +6,7 @@
 //   • Dual surface: non-generic (boxed) and generic (typed) contracts.
 //   • Backend-agnostic: works with any ISnapshotBackend implementation.
 //   • Symmetry & tolerance: Write ↔ Read symmetry; version tolerance recommended.
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

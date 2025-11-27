@@ -8,7 +8,7 @@
 //   • Safety: avoids use-after-dispose by resolving through IKernel each time.
 //   • Ergonomics: TryResolve / ResolveOrThrow / IsAlive convenience APIs.
 //   • Value semantics: equality compares (kernel instance, world id).
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

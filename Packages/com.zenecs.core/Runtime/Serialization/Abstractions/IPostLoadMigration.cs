@@ -6,7 +6,7 @@
 //   • Idempotent: multiple runs yield the same final state.
 //   • Ordered: ascending Order, then type-name tie-break for determinism.
 //   • Scope: world-wide fixups (rebinding, index rebuilds, data corrections). 
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

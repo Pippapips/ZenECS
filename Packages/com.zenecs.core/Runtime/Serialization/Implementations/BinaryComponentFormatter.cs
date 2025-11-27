@@ -6,7 +6,7 @@
 //   • Bridges typed formatter API to boxed IComponentFormatter calls.
 //   • Single code path: boxed Read/Write forward to typed implementations.
 //   • Versioning: encourage explicit field layout / headers for resilience.
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

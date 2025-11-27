@@ -1,5 +1,5 @@
 ﻿// ──────────────────────────────────────────────────────────────────────────────
-// ZenECS Core
+// ZenECS Core — Events
 // File: EntityEvents.cs
 // Purpose: Global event hub for entity lifecycle notifications.
 // Key concepts:
@@ -7,7 +7,7 @@
 //   • Ordering: Spawned → DestroyRequested → Destroyed (when applicable).
 //   • Hygiene: Reset() clears all listeners to avoid leaks on reloads/tests.
 //   • Scope: Events fire per-world and carry the target IWorld + Entity handle.
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
@@ -21,17 +21,31 @@ namespace ZenECS.Core.Events
     /// Global event hub for entity lifecycle notifications.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// These events are raised by the world implementation to inform tools and
     /// observers about entity lifetime transitions. They are <b>not</b> intended to
     /// be used for gameplay logic; prefer systems and message buses for that.
-    ///
-    /// <para><b>Event order (when a full lifetime occurs):</b></para>
+    /// </para>
+    /// <para>
+    /// <b>Event order (when a full lifetime occurs):</b>
+    /// </para>
     /// <list type="number">
-    ///   <item><description><see cref="EntityCreated"/> — immediately after an entity is spawned.</description></item>
-    ///   <item><description><see cref="EntityDestroyRequested"/> — when a despawn is requested.</description></item>
-    ///   <item><description><see cref="EntityDestroy"/> — after the entity has been fully despawned and removed.</description></item>
+    ///   <item>
+    ///     <description>
+    ///       <see cref="EntityCreated"/> — immediately after an entity is spawned.
+    ///     </description>
+    ///   </item>
+    ///   <item>
+    ///     <description>
+    ///       <see cref="EntityDestroyRequested"/> — when a despawn is requested.
+    ///     </description>
+    ///   </item>
+    ///   <item>
+    ///     <description>
+    ///       <see cref="EntityDestroy"/> — after the entity has been fully despawned and removed.
+    ///     </description>
+    ///   </item>
     /// </list>
-    ///
     /// <para>
     /// Handlers should be <i>exception-safe</i>. Exceptions thrown from subscribers
     /// will propagate to the caller that raised the event.

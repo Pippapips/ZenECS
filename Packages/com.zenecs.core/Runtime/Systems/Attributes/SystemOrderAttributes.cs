@@ -8,7 +8,7 @@
 //   • The planner is expected to interpret these constraints WITHIN the same
 //     high-level SystemGroup (FixedInput, FixedDecision, FixedSimulation,
 //     FixedPost, FrameInput, FrameView, FrameUI, Presentation, ...).
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

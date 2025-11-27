@@ -6,7 +6,7 @@
 //   • Snapshot resolution: used during save/load to map ids to types/formatters.
 //   • Strictness: optional StableId validation for component ↔ formatter pairs.
 //   • Editor aid: capture declared StableId from a formatter attribute (when available). 
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

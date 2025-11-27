@@ -5,8 +5,7 @@
 // Key concepts:
 //   • Caches reflection-based getters to amortize lookup cost.
 //   • Falls back to Activator.CreateInstance when no Default is exposed.
-//
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

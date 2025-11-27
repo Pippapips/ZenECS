@@ -5,7 +5,7 @@
 // Key concepts:
 //   • Thin delegation: world forwards to its runner.
 //   • Encapsulation: runner remains internal to the world.
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-

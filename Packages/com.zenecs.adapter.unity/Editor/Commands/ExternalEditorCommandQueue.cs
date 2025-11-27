@@ -7,7 +7,7 @@
 //   • EcsExplorer and other tools enqueue EditorCommand instances here
 //   • World driver / kernel calls FlushTo(...) at a safe time slice
 //   • Uses boxed/typed ICommandBuffer APIs to avoid reflection in tools layer
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

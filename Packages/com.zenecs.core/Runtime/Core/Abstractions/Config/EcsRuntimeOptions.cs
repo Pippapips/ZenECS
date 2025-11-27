@@ -6,11 +6,10 @@
 //   • Pluggable logger: bridge to your engine/framework logging.
 //   • Write failure policy: Throw / Log / Ignore on denied structural writes.
 //   • Error funnel: single place to report non-fatal exceptions (safe guards).
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
-
 #nullable enable
 using System;
 using ZenECS.Core.Abstractions.Diagnostics;
@@ -93,13 +92,19 @@ namespace ZenECS.Core.Abstractions.Config
                 else
                     Log.Error(ex.ToString());
             }
-            catch { /* swallow logging failures */ }
+            catch
+            {
+                // Swallow logging failures to avoid cascading errors.
+            }
 
             try
             {
                 OnUnhandledError?.Invoke(ex);
             }
-            catch { /* swallow callback failures */ }
+            catch
+            {
+                // Swallow callback failures to keep reporting safe.
+            }
         }
     }
 }

@@ -6,7 +6,7 @@
 //   • Thread-safe queue; Execute jobs on caller thread
 //   • Barrier-friendly: invoke RunScheduledJobs() at a deterministic point
 //   • ClearAllScheduledJobs() for teardown or scene changes
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
@@ -16,10 +16,20 @@ using System.Collections.Concurrent;
 namespace ZenECS.Core.Internal.Scheduling
 {
     /// <summary>
-    /// Default <see cref="IWorker"/> implementation backed by a thread-safe queue.
+    /// Default <see cref="IWorker"/> implementation backed by a thread-safe FIFO queue.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Jobs are scheduled from any thread via <see cref="Schedule"/> and executed on
+    /// the thread that calls <see cref="RunScheduledJobs"/>. This makes it suitable
+    /// as a world-local barrier runner for deferred work such as command buffers.
+    /// </para>
+    /// </remarks>
     internal sealed class Worker : IWorker
     {
+        /// <summary>
+        /// Internal queue storing scheduled jobs in FIFO order.
+        /// </summary>
         private readonly ConcurrentQueue<IJob> _jobQueue = new();
 
         /// <inheritdoc/>

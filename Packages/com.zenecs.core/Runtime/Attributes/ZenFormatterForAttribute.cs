@@ -6,8 +6,7 @@
 //   • Excluded from runtime builds (guarded by UNITY_EDITOR).
 //   • Associates a component type with a stable serialization format identifier.
 //   • Supports marking the latest/default format used when saving.
-// 
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

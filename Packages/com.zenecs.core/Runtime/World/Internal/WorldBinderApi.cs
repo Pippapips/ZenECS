@@ -6,7 +6,7 @@
 //   • Decoupled view/binding layer: attach/detach binders per entity.
 //   • Router-based dispatch: World delegates binder operations to IBindingRouter.
 //   • Safety on despawn: World tears down binders when entities are destroyed.
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

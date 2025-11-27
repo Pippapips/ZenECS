@@ -6,7 +6,7 @@
 //   • Struct messages only (no boxing on Publish)
 //   • Deterministic per-frame delivery via PumpAll()
 //   • Lock-free queues; synchronized subscriber list snapshots
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
@@ -19,28 +19,69 @@ namespace ZenECS.Core.Internal.Messaging
 {
     /// <summary>
     /// Thread-safe implementation of <see cref="IMessageBus"/> using per-type
-    /// queues and subscriber lists.
+    /// topics backed by lock-free queues and subscriber lists.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Each message type <typeparamref name="T"/> gets its own <c>Topic&lt;T&gt;</c>
+    /// instance containing a concurrent queue and a list of subscribers.
+    /// </para>
+    /// <para>
+    /// <see cref="Publish{T}(in T)"/> enqueues messages without blocking subscribers.
+    /// Actual delivery occurs when <see cref="PumpAll"/> is called, on the caller's thread.
+    /// </para>
+    /// </remarks>
     internal sealed class MessageBus : IMessageBus
     {
-        private interface ITopic { int Pump(); }
+        /// <summary>
+        /// Minimal topic abstraction for pumpable message queues.
+        /// </summary>
+        private interface ITopic
+        {
+            /// <summary>
+            /// Pumps all queued messages for this topic.
+            /// </summary>
+            /// <returns>
+            /// Number of messages processed during this pump.
+            /// </returns>
+            int Pump();
+        }
 
+        /// <summary>
+        /// Topic implementation for messages of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">Struct message type implementing <see cref="IMessage"/>.</typeparam>
         private sealed class Topic<T> : ITopic where T : struct, IMessage
         {
             private readonly ConcurrentQueue<T> _queue = new();
             private readonly List<Action<T>> _subscribers = new();
 
-            /// <summary>Enqueue a message instance.</summary>
+            /// <summary>
+            /// Enqueues a message instance for later delivery.
+            /// </summary>
+            /// <param name="message">Message to enqueue.</param>
             public void Publish(in T message) => _queue.Enqueue(message);
 
-            /// <summary>Register a subscriber for <typeparamref name="T"/>.</summary>
+            /// <summary>
+            /// Registers a subscriber for message type <typeparamref name="T"/>.
+            /// </summary>
+            /// <param name="handler">Callback invoked for each delivered message.</param>
+            /// <returns>
+            /// An <see cref="IDisposable"/> token; dispose it to unsubscribe
+            /// <paramref name="handler"/>.
+            /// </returns>
             public IDisposable Subscribe(Action<T> handler)
             {
                 lock (_subscribers) _subscribers.Add(handler);
                 return new Unsub(this, handler);
             }
 
-            /// <summary>Deliver all queued messages to a snapshot of subscribers.</summary>
+            /// <summary>
+            /// Delivers all queued messages to a snapshot of subscribers.
+            /// </summary>
+            /// <returns>
+            /// Number of messages processed during this pump.
+            /// </returns>
             public int Pump()
             {
                 Action<T>[] handlers;
@@ -56,14 +97,28 @@ namespace ZenECS.Core.Internal.Messaging
                 return count;
             }
 
+            /// <summary>
+            /// Disposable token that removes a handler from the parent topic.
+            /// </summary>
             private sealed class Unsub : IDisposable
             {
                 private readonly Topic<T> _owner;
                 private readonly Action<T> _handler;
+
+                /// <summary>
+                /// Creates a new unsubscribe token.
+                /// </summary>
+                /// <param name="owner">Owning topic.</param>
+                /// <param name="handler">Handler to remove on dispose.</param>
                 public Unsub(Topic<T> owner, Action<T> handler)
                 {
-                    _owner = owner; _handler = handler;
+                    _owner = owner;
+                    _handler = handler;
                 }
+
+                /// <summary>
+                /// Removes the handler from the topic's subscriber list.
+                /// </summary>
                 public void Dispose()
                 {
                     lock (_owner._subscribers) _owner._subscribers.Remove(_handler);
@@ -71,6 +126,9 @@ namespace ZenECS.Core.Internal.Messaging
             }
         }
 
+        /// <summary>
+        /// Per-message-type topic map.
+        /// </summary>
         private readonly ConcurrentDictionary<Type, ITopic> _topics = new();
 
         /// <inheritdoc/>

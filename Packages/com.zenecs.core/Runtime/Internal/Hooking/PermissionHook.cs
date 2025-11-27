@@ -6,7 +6,7 @@
 //   • List-based predicates; all must pass (AND) to allow the operation
 //   • Per-type validator cache to avoid boxing on hot paths
 //   • Clear… helpers to reset during teardown or tests
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
@@ -20,6 +20,18 @@ namespace ZenECS.Core.Internal.Hooking
     /// <summary>
     /// Default implementation of <see cref="IPermissionHook"/> used by the world.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// All registered predicates and validators are combined using logical AND:
+    /// if any predicate returns <see langword="false"/>, the corresponding
+    /// operation (read, write, or validation) is rejected.
+    /// </para>
+    /// <para>
+    /// This implementation is intentionally simple and allocation-friendly:
+    /// it uses plain lists for hook storage and a small dictionary for typed
+    /// validator caches.
+    /// </para>
+    /// </remarks>
     internal sealed class PermissionHook : IPermissionHook
     {
         // ---- Hook storage ----------------------------------------------------
@@ -28,6 +40,7 @@ namespace ZenECS.Core.Internal.Hooking
         private readonly List<Func<object, bool>>       _objValidators = new(2);
 
         // ---- Write permissions ----------------------------------------------
+
         /// <inheritdoc/>
         public void AddWritePermission(Func<Entity, Type, bool> hook)
         {
@@ -42,6 +55,7 @@ namespace ZenECS.Core.Internal.Hooking
         public void ClearWritePermissions() => _writePerms.Clear();
 
         // ---- Read permissions ------------------------------------------------
+
         /// <inheritdoc/>
         public void AddReadPermission(Func<Entity, Type, bool> hook)
         {
@@ -56,6 +70,7 @@ namespace ZenECS.Core.Internal.Hooking
         public void ClearReadPermissions() => _readPerms.Clear();
 
         // ---- Object-level validators ----------------------------------------
+
         /// <inheritdoc/>
         public void AddValidator(Func<object, bool> hook)
         {
@@ -70,18 +85,57 @@ namespace ZenECS.Core.Internal.Hooking
         public void ClearValidators() => _objValidators.Clear();
 
         // ---- Typed validators cache -----------------------------------------
-        private interface IBoxedTypeValidator { bool InvokeBoxed(object value); }
 
+        /// <summary>
+        /// Internal interface for invoking typed validators through a boxed path.
+        /// </summary>
+        private interface IBoxedTypeValidator
+        {
+            /// <summary>
+            /// Invokes the validator with a boxed value.
+            /// </summary>
+            /// <param name="value">Boxed value to validate.</param>
+            /// <returns>
+            /// <see langword="true"/> if all validators accept the value;
+            /// otherwise <see langword="false"/>.
+            /// </returns>
+            bool InvokeBoxed(object value);
+        }
+
+        /// <summary>
+        /// Typed validator bucket for a specific value type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">Component value type.</typeparam>
         private sealed class TypeValidator<T> : IBoxedTypeValidator where T : struct
         {
             private readonly List<Func<T, bool>> _preds = new(2);
 
+            /// <summary>
+            /// Adds a new predicate to this validator bucket.
+            /// </summary>
+            /// <param name="p">Predicate to add.</param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void Add(Func<T, bool> p) => _preds.Add(p);
 
+            /// <summary>
+            /// Removes a predicate from this validator bucket.
+            /// </summary>
+            /// <param name="p">Predicate to remove.</param>
+            /// <returns>
+            /// <see langword="true"/> if the predicate was found and removed;
+            /// otherwise <see langword="false"/>.
+            /// </returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool Remove(Func<T, bool> p) => _preds.Remove(p);
 
+            /// <summary>
+            /// Invokes all validators against the typed value.
+            /// </summary>
+            /// <param name="v">Value to validate.</param>
+            /// <returns>
+            /// <see langword="true"/> if all predicates accept the value;
+            /// otherwise <see langword="false"/>.
+            /// </returns>
             public bool Invoke(in T v)
             {
                 for (int i = 0; i < _preds.Count; i++)
@@ -89,12 +143,21 @@ namespace ZenECS.Core.Internal.Hooking
                 return true;
             }
 
+            /// <inheritdoc/>
             bool IBoxedTypeValidator.InvokeBoxed(object value)
                 => value is T v && Invoke(in v);
         }
 
+        /// <summary>
+        /// Cache of per-type validator buckets keyed by value type.
+        /// </summary>
         private readonly Dictionary<Type, object> _typedValidators = new(64);
 
+        /// <summary>
+        /// Ensures that a <see cref="TypeValidator{T}"/> exists for the given
+        /// type <typeparamref name="T"/> and returns it.
+        /// </summary>
+        /// <typeparam name="T">Component value type.</typeparam>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private TypeValidator<T> EnsureTypeValidator<T>() where T : struct
         {
@@ -121,6 +184,7 @@ namespace ZenECS.Core.Internal.Hooking
         public void ClearTypedValidators() => _typedValidators.Clear();
 
         // ---- Evaluators ------------------------------------------------------
+
         /// <inheritdoc/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool EvaluateWritePermission(Entity e, Type t)
@@ -158,6 +222,7 @@ namespace ZenECS.Core.Internal.Hooking
         }
 
         // ---- Maintenance -----------------------------------------------------
+
         /// <inheritdoc/>
         public void ClearAllHookQueues()
         {

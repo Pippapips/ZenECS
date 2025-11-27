@@ -7,7 +7,7 @@
 //   • Three-phase ticking: BeginFrame (variable) / FixedStep (fixed) / LateFrame (presentation).
 //   • Deterministic order: runner executes in the order provided by the planner.
 //   • World-scoped: a runner always acts on a single IWorld instance.
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

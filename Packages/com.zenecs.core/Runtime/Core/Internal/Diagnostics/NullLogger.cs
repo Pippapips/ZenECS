@@ -6,11 +6,10 @@
 //   • Always available: avoids null checks in core code paths.
 //   • Replace at bootstrap with your real logger.
 //   • Intentionally silent in all methods.
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
-
 #nullable enable
 using ZenECS.Core.Abstractions.Diagnostics;
 
@@ -22,12 +21,18 @@ namespace ZenECS.Core.Internal.Diagnostics
     internal sealed class NullLogger : IEcsLogger
     {
         /// <inheritdoc/>
-        public void Info(string message) { }
+        public void Info(string message)
+        {
+        }
 
         /// <inheritdoc/>
-        public void Warn(string message) { }
+        public void Warn(string message)
+        {
+        }
 
         /// <inheritdoc/>
-        public void Error(string message) { }
+        public void Error(string message)
+        {
+        }
     }
 }

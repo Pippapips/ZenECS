@@ -7,7 +7,7 @@
 //   • Singletons & factories (transient or cached singleton) with ownership.
 //   • Freeze (Seal) after composition for safety and predictability.
 //   • Introspection: Verify / Dump / Contains / GetAll helpers for tooling/tests.
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
@@ -47,7 +47,9 @@ namespace ZenECS.Core.Internal.DI
         /// </summary>
         private sealed class FactoryEntry
         {
-            /// <summary>Factory function that creates the service instance.</summary>
+            /// <summary>
+            /// Factory function that creates the service instance.
+            /// </summary>
             public Func<ServiceContainer, object> Factory = default!;
 
             /// <summary>
@@ -56,13 +58,19 @@ namespace ZenECS.Core.Internal.DI
             /// </summary>
             public bool AsSingleton;
 
-            /// <summary>Whether the container should track and dispose the created instance.</summary>
+            /// <summary>
+            /// Whether the container should track and dispose the created instance.
+            /// </summary>
             public bool TakeOwnership;
 
-            /// <summary>Indicates that a cached instance was already created.</summary>
+            /// <summary>
+            /// Indicates that a cached instance was already created.
+            /// </summary>
             public bool Cached;
 
-            /// <summary>The cached instance for singleton factories.</summary>
+            /// <summary>
+            /// The cached instance for singleton factories.
+            /// </summary>
             public object? Cache;
         }
 
@@ -230,9 +238,7 @@ namespace ZenECS.Core.Internal.DI
             return this;
         }
 
-        // ---------------------------
-        // Resolve (single)
-        // ---------------------------
+        // --------------------------- Resolve (single) ---------------------------
 
         /// <summary>
         /// Resolve type <typeparamref name="T"/> or throw if missing.
@@ -313,9 +319,7 @@ namespace ZenECS.Core.Internal.DI
             return false;
         }
 
-        // ---------------------------
-        // Resolve (multiple)
-        // ---------------------------
+        // --------------------------- Resolve (multiple) ---------------------------
 
         /// <summary>
         /// Resolve all registrations for type <typeparamref name="T"/> in this scope and parents.
@@ -385,13 +389,12 @@ namespace ZenECS.Core.Internal.DI
             return obj;
         }
 
-        // ---------------------------
-        // Introspection / Verify / Dump
-        // ---------------------------
+        // --------------------------- Introspection / Verify / Dump ---------------------------
 
         /// <summary>
         /// Returns <see langword="true"/> if type <typeparamref name="T"/> is registered locally (in this scope only).
         /// </summary>
+        /// <typeparam name="T">Service contract type.</typeparam>
         public bool ContainsLocal<T>() where T : class
         {
             var t = typeof(T);
@@ -401,6 +404,7 @@ namespace ZenECS.Core.Internal.DI
         /// <summary>
         /// Returns <see langword="true"/> if type <typeparamref name="T"/> can be resolved from this container or any parent.
         /// </summary>
+        /// <typeparam name="T">Service contract type.</typeparam>
         public bool Contains<T>() where T : class => TryGet(typeof(T), out _);
 
         /// <summary>
@@ -438,9 +442,7 @@ namespace ZenECS.Core.Internal.DI
             return sb.ToString();
         }
 
-        // ---------------------------
-        // Dispose (deterministic reverse)
-        // ---------------------------
+        // --------------------------- Dispose (deterministic reverse) ---------------------------
 
         /// <summary>
         /// Dispose child scopes first, then owned instances in reverse registration order.

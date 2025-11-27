@@ -7,7 +7,7 @@
 //   • Hard reset: discard storage; recreate from initial configuration.
 //   • Subsystem hooks: pre/post reset partials to coordinate services.
 //   • Safety: flush jobs/cmd buffers; clear caches and hook queues before reuse.
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
@@ -26,11 +26,11 @@ namespace ZenECS.Core.Internal
     internal sealed partial class World : IWorldResetApi
     {
         /// <summary>
-        /// Reset the world either by preserving current capacity (fast) or by fully rebuilding (hard).
+        /// Resets the world either by preserving current capacity (fast) or by fully rebuilding (hard).
         /// </summary>
         /// <param name="keepCapacity">
-        /// <see langword="true"/> to keep current array capacities and just clear/reinit;
-        /// <see langword="false"/> to discard storage and rebuild from initial config.
+        /// <see langword="true"/> to keep current array capacities and just clear/reinitialize;
+        /// <see langword="false"/> to discard storage and rebuild from the initial configuration.
         /// </param>
         public void Reset(bool keepCapacity)
         {
@@ -39,23 +39,28 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Called <b>before</b> the reset sequence — subsystems can cleanup transient state.
+        /// Called <b>before</b> the reset sequence so subsystems can clean up transient state.
         /// </summary>
-        /// <param name="keepCapacity">Mirror of <see cref="Reset(bool)"/>; see remarks on strategy.</param>
+        /// <param name="keepCapacity">
+        /// Mirror of <see cref="Reset(bool)"/>; indicates whether the fast or hard strategy
+        /// will be used.
+        /// </param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         partial void OnBeforeWorldReset(bool keepCapacity);
 
         /// <summary>
-        /// Called <b>after</b> the reset sequence — subsystems can rebuild caches or state.
+        /// Called <b>after</b> the reset sequence so subsystems can rebuild caches or state.
         /// </summary>
-        /// <param name="keepCapacity">Mirror of <see cref="Reset(bool)"/>; indicates path taken.</param>
+        /// <param name="keepCapacity">
+        /// Mirror of <see cref="Reset(bool)"/>; indicates which path was taken.
+        /// </param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         partial void OnAfterWorldReset(bool keepCapacity);
         
         /// <summary>
-        /// Reset cross-cutting subsystems (jobs, command buffers, hooks, caches, events).
+        /// Resets cross-cutting subsystems (jobs, command buffers, hooks, caches, events).
         /// </summary>
-        /// <param name="keepCapacity">Whether the fast path was chosen.</param>
+        /// <param name="keepCapacity">Whether the fast reset path was chosen.</param>
         private void ResetSubsystems(bool keepCapacity)
         {
             OnBeforeWorldReset(keepCapacity);
@@ -81,7 +86,7 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Fast reset: retain capacity, clear data, and recreate empty pools sized to current cap.
+        /// Fast reset: retain capacity, clear data, and recreate empty pools sized to the current capacity.
         /// </summary>
         private void ResetButKeepCapacity()
         {
@@ -128,7 +133,7 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Create a new empty component pool for <paramref name="compType"/> sized to <paramref name="cap"/>.
+        /// Creates a new empty component pool for <paramref name="compType"/> sized to <paramref name="cap"/>.
         /// </summary>
         /// <param name="compType">Component type to allocate a pool for.</param>
         /// <param name="cap">Desired capacity (entity slots).</param>

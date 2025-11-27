@@ -2,16 +2,18 @@
 // ZenECS Core — Systems
 // File: SystemRunner.cs
 // Purpose: Execute ECS systems per phase with lifecycle hooks and barrier
-//          coordination against a world’s worker/router/permission hooks.
+//          coordination against a world's worker/router/permission hooks.
 // Key concepts:
 //   • Three-phase flow: BeginFrame (variable), FixedStep (fixed), LateFrame (presentation).
 //   • FixedStep is split into: FixedInput → FixedDecision → FixedSimulation → FixedPost.
-//   • Frame flow: FrameInput → FrameView, then Presentation + FrameUI in LateFrame.
-//   • Barrier points: scheduler flush between phase buckets; router apply before Late.
+//   • Frame flow: FrameInput → FrameSync; LateFrame: FrameView → FrameUI + binder ApplyAll.
+//   • Barrier points: worker flush between phase buckets; router apply before Late exit.
 //   • Read-only presentation: temporary write-deny guard during LateFrame.
-//   • Deterministic: respects order planned by SystemPlanner.
-// ─────────────────────────────────────────────────────────────────────────────-
-
+//   • Deterministic: respects order planned by SystemPlanner.Plan.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -26,25 +28,41 @@ using ZenECS.Core.Systems;
 namespace ZenECS.Core.Internal.Systems
 {
     /// <summary>
-    /// Coordinates system execution for a single world across FrameInput/FrameView,
-    /// FixedInput/FixedDecision/FixedSimulation/FixedPost, and Presentation/FrameUI
-    /// phases. Handles lifecycle, barrier flushing, and frame-safe runtime mutations
-    /// (add/remove/enable).
+    /// Coordinates system execution for a single world across
+    /// FrameInput/FrameSync, FixedInput/FixedDecision/FixedSimulation/FixedPost, and
+    /// FrameView/FrameUI phases. Handles lifecycle, barrier flushing, and
+    /// frame-safe runtime mutations (add/remove/enable).
     /// </summary>
     internal sealed class SystemRunner : ISystemRunner, IDisposable
     {
+        /// <summary>
+        /// Deterministic execution plan built by <see cref="SystemPlanner"/>.
+        /// </summary>
         private SystemPlanner.Plan? _plan;
 
-        // Authoritative list of active systems
+        /// <summary>
+        /// Authoritative list of active systems currently known to the runner.
+        /// </summary>
         private readonly List<ISystem> _active = new();
 
-        // Track which systems have received Initialize
+        /// <summary>
+        /// Systems that have successfully received <see cref="ISystemLifecycle.Initialize"/>.
+        /// </summary>
         private readonly HashSet<ISystem> _initialized = new();
 
-        // Pending mutations (applied only at frame boundary)
+        /// <summary>
+        /// Systems queued for addition; applied at the next call to <see cref="ApplyPending"/>.
+        /// </summary>
         private readonly List<ISystem> _pendingAdd = new();
+
+        /// <summary>
+        /// System types queued for removal; applied at the next call to <see cref="ApplyPending"/>.
+        /// </summary>
         private readonly List<Type> _pendingRemove = new();
 
+        /// <summary>
+        /// Indicates whether there are pending mutations requiring plan rebuild.
+        /// </summary>
         private bool _dirty;
 
         private readonly IMessageBus _bus;
@@ -53,8 +71,17 @@ namespace ZenECS.Core.Internal.Systems
         private readonly IPermissionHook _permissionHook;
 
         /// <summary>
-        /// Creates a system runner bound to world-scoped services.
+        /// Initializes a new instance of the <see cref="SystemRunner"/> class
+        /// bound to world-scoped services.
         /// </summary>
+        /// <param name="bus">Message bus used to pump world messages each frame.</param>
+        /// <param name="worker">Worker used to execute scheduled jobs between phases.</param>
+        /// <param name="router">
+        /// Binding router that flushes presentation deltas at the end of LateFrame.
+        /// </param>
+        /// <param name="permissionHook">
+        /// Permission hook used to temporarily deny structural writes during presentation.
+        /// </param>
         public SystemRunner(IMessageBus bus, IWorker worker, IBindingRouter router, IPermissionHook permissionHook)
         {
             _permissionHook = permissionHook;
@@ -64,10 +91,12 @@ namespace ZenECS.Core.Internal.Systems
         }
 
         /// <summary>
-        /// Disposes the runner, issuing Shutdown to systems in reverse order.
+        /// Disposes the runner, issuing <see cref="ISystemLifecycle.Shutdown"/> to
+        /// systems in the planner-defined shutdown order.
         /// </summary>
         /// <remarks>
-        /// This does not dispose the injected world services.
+        /// The injected world services (<see cref="IMessageBus"/>, <see cref="IWorker"/>,
+        /// <see cref="IBindingRouter"/>, <see cref="IPermissionHook"/>) are not disposed.
         /// </remarks>
         public void Dispose()
         {
@@ -100,11 +129,13 @@ namespace ZenECS.Core.Internal.Systems
         public void RequestAddRange(IEnumerable<ISystem> systems)
         {
             if (systems == null) return;
+
             foreach (var s in systems)
             {
                 if (s != null)
                     _pendingAdd.Add(s);
             }
+
             _dirty = true;
         }
 
@@ -130,6 +161,18 @@ namespace ZenECS.Core.Internal.Systems
             return system != null;
         }
 
+        /// <summary>
+        /// Attempts to get a system instance by its exact runtime type.
+        /// </summary>
+        /// <param name="t">Concrete system type to look up.</param>
+        /// <param name="system">
+        /// When this method returns, contains the matching system instance or
+        /// <see langword="null"/> if not found.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if a matching system instance was found; otherwise
+        /// <see langword="false"/>.
+        /// </returns>
         public bool TryGet(Type t, out ISystem? system)
         {
             system = _active.FirstOrDefault(s => s.GetType() == t);
@@ -175,6 +218,7 @@ namespace ZenECS.Core.Internal.Systems
         /// Applies queued mutations, rebuilds the deterministic plan, and performs
         /// delta Initialize/Shutdown as needed. Call at the frame boundary.
         /// </summary>
+        /// <param name="w">World for which the runner is executing.</param>
         private void ApplyPending(IWorld w)
         {
             if (!_dirty) return;
@@ -234,7 +278,10 @@ namespace ZenECS.Core.Internal.Systems
         /// <inheritdoc/>
         public void BeginFrame(IWorld w, float dt)
         {
+            // 1) Apply pending add/remove/enable operations and build plan.
             ApplyPending(w);
+
+            // 2) Pump messages once at the start of the frame.
             _bus.PumpAll();
 
             var inner = w as World;
@@ -242,8 +289,8 @@ namespace ZenECS.Core.Internal.Systems
                 WorldWritePhase.FrameInput,
                 denyAllWrites: false,
                 structuralChangesAllowed: true);
-            
-            // 1) FrameInput: Unity Input, 디바이스, 창 크기 등
+
+            // 3) FrameInput: engine input, device, window events, etc.
             RunGroup(SystemGroup.FrameInput, w, dt);
             _worker.RunScheduledJobs(w);
 
@@ -252,7 +299,7 @@ namespace ZenECS.Core.Internal.Systems
                 denyAllWrites: false,
                 structuralChangesAllowed: false);
 
-            // 2) FrameView: 카메라, 예측, 뷰용 로직
+            // 4) FrameSync: camera, view-space, non-deterministic sync logic.
             RunGroup(SystemGroup.FrameSync, w, dt);
             _worker.RunScheduledJobs(w);
         }
@@ -267,8 +314,8 @@ namespace ZenECS.Core.Internal.Systems
                     denyAllWrites: false,
                     structuralChangesAllowed: true);
             }
-            
-            // external scheduled jobs in deterministic for structural change
+
+            // External scheduled jobs in deterministic phase for structural changes.
             _worker.RunScheduledJobs(w);
 
             // Fixed-step deterministic pipeline:
@@ -295,27 +342,35 @@ namespace ZenECS.Core.Internal.Systems
                 denyAllWrites: false,
                 structuralChangesAllowed: false);
 
+            // 1) FrameView: interpolation, transforms, animation, view binding.
             RunLateGroup(SystemGroup.FrameView, w, dt, interpolationAlpha);
             _worker.RunScheduledJobs(w);
 
+            // 2) Temporarily deny structural writes during UI and binder ApplyAll.
             using var guard = DenyWrites(_permissionHook);
 
             inner?.SetWritePhase(
                 WorldWritePhase.FrameUI,
-                denyAllWrites: true,      // ❗ UI에선 값 변경까지 막기
+                denyAllWrites: true,      // UI should be read-only from the world POV
                 structuralChangesAllowed: false);
 
+            // 3) FrameUI: HUD, overlays, debug UI.
             RunLateGroup(SystemGroup.FrameUI, w, dt, interpolationAlpha);
-            
-            // Apply world → view deltas
+
+            // 4) Apply world → view deltas (binders).
             _router.ApplyAll(w);
-            
+
+            // 5) Clear write phase back to neutral.
             inner?.ClearWritePhase();
         }
 
         /// <summary>
         /// Creates a temporary guard that denies Add/Replace/Remove during presentation.
         /// </summary>
+        /// <param name="hook">Permission hook used to register the guard predicate.</param>
+        /// <returns>
+        /// An <see cref="IDisposable"/> token that, when disposed, removes the guard.
+        /// </returns>
         private static IDisposable DenyWrites(IPermissionHook hook)
         {
             Func<Entity, Type, bool> token = static (_, __) => false;
@@ -323,17 +378,32 @@ namespace ZenECS.Core.Internal.Systems
             return new DisposableAction(() => hook.RemoveWritePermission(token));
         }
 
+        /// <summary>
+        /// Simple disposable action wrapper used by <see cref="DenyWrites"/>.
+        /// </summary>
         private sealed class DisposableAction : IDisposable
         {
             private readonly Action _onDispose;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DisposableAction"/> class.
+            /// </summary>
+            /// <param name="onDispose">Callback to invoke on <see cref="Dispose"/>.</param>
             public DisposableAction(Action onDispose) => _onDispose = onDispose;
+
+            /// <summary>
+            /// Invokes the configured dispose callback.
+            /// </summary>
             public void Dispose() => _onDispose();
         }
 
         /// <summary>
-        /// Runs variable-timestep systems for a specific execution group.
-        /// FrameInput / FrameView.
+        /// Runs variable-timestep systems for a specific execution group
+        /// (<see cref="SystemGroup.FrameInput"/> or <see cref="SystemGroup.FrameSync"/>).
         /// </summary>
+        /// <param name="g">System group to execute.</param>
+        /// <param name="w">World instance.</param>
+        /// <param name="dt">Frame delta time in seconds.</param>
         private void RunGroup(SystemGroup g, IWorld w, float dt)
         {
             if (_plan == null) return;
@@ -341,11 +411,17 @@ namespace ZenECS.Core.Internal.Systems
             switch (g)
             {
                 case SystemGroup.FrameInput:
-                    foreach (var system in _plan.FrameInput) { system?.Run(w, dt); }
+                    foreach (var system in _plan.FrameInput)
+                    {
+                        system?.Run(w, dt);
+                    }
                     break;
 
                 case SystemGroup.FrameSync:
-                    foreach (var system in _plan.FrameSync) { system?.Run(w, dt); }
+                    foreach (var system in _plan.FrameSync)
+                    {
+                        system?.Run(w, dt);
+                    }
                     break;
             }
         }
@@ -353,6 +429,12 @@ namespace ZenECS.Core.Internal.Systems
         /// <summary>
         /// Runs read-only presentation and frame UI systems.
         /// </summary>
+        /// <param name="g">System group to execute (FrameView or FrameUI).</param>
+        /// <param name="w">World instance.</param>
+        /// <param name="dt">Frame delta time in seconds.</param>
+        /// <param name="interpolationAlpha">
+        /// Interpolation factor in [0,1], typically derived from accumulator/fixedDelta.
+        /// </param>
         private void RunLateGroup(SystemGroup g, IWorld w, float dt, float interpolationAlpha = 1.0f)
         {
             if (_plan == null) return;
@@ -360,19 +442,28 @@ namespace ZenECS.Core.Internal.Systems
             switch (g)
             {
                 case SystemGroup.FrameView:
-                    foreach (var system in _plan.FrameView) { system?.Run(w, dt); }
+                    foreach (var system in _plan.FrameView)
+                    {
+                        system?.Run(w, dt);
+                    }
                     break;
-                
+
                 case SystemGroup.FrameUI:
-                    foreach (var system in _plan.FrameUI) { system?.Run(w, dt); }
+                    foreach (var system in _plan.FrameUI)
+                    {
+                        system?.Run(w, dt);
+                    }
                     break;
             }
         }
-        
+
         /// <summary>
-        /// Runs fixed-timestep systems for a specific execution group.
-        /// FixedInput / FixedDecision / FixedSimulation / FixedPost.
+        /// Runs fixed-timestep systems for a specific execution group:
+        /// FixedInput, FixedDecision, FixedSimulation, or FixedPost.
         /// </summary>
+        /// <param name="g">System group to execute.</param>
+        /// <param name="w">World instance.</param>
+        /// <param name="dt">Fixed timestep in seconds.</param>
         private void RunFixedGroup(SystemGroup g, IWorld w, float dt)
         {
             if (_plan == null) return;
@@ -380,19 +471,31 @@ namespace ZenECS.Core.Internal.Systems
             switch (g)
             {
                 case SystemGroup.FixedInput:
-                    foreach (var system in _plan.FixedInput) { system?.Run(w, dt); }
+                    foreach (var system in _plan.FixedInput)
+                    {
+                        system?.Run(w, dt);
+                    }
                     break;
 
                 case SystemGroup.FixedDecision:
-                    foreach (var system in _plan.FixedDecision) { system?.Run(w, dt); }
+                    foreach (var system in _plan.FixedDecision)
+                    {
+                        system?.Run(w, dt);
+                    }
                     break;
 
                 case SystemGroup.FixedSimulation:
-                    foreach (var system in _plan.FixedSimulation) { system?.Run(w, dt); }
+                    foreach (var system in _plan.FixedSimulation)
+                    {
+                        system?.Run(w, dt);
+                    }
                     break;
 
                 case SystemGroup.FixedPost:
-                    foreach (var system in _plan.FixedPost) { system?.Run(w, dt); }
+                    foreach (var system in _plan.FixedPost)
+                    {
+                        system?.Run(w, dt);
+                    }
                     break;
             }
         }
