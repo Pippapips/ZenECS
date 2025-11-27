@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace ZenECS.Adapter.Unity.Util
+namespace ZenECS.Adapter.Unity
 {
     /// <summary>
     /// PropertyDrawer가 있는 필드의 타입 선택을 제한하기 위한 필터 속성.

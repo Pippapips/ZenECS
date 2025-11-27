@@ -6,8 +6,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
-using ZenECS.Adapter.Unity.Install;
-using ZenECS.Adapter.Unity.Util;
+using ZenECS.Adapter.Unity;
 using ZenECS.Core.Systems;
 using ZenECS.EditorCommon;
 

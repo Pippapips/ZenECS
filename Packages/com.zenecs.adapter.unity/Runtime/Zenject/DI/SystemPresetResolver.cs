@@ -2,12 +2,10 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using ZenECS.Core;
-using ZenECS.Core.Binding;
 using ZenECS.Core.Systems;
 using Zenject;
 
-namespace ZenECS.Adapter.Unity.Install
+namespace ZenECS.Adapter.Unity.DI
 {
     public sealed class SystemPresetResolver : ISystemPresetResolver
     {

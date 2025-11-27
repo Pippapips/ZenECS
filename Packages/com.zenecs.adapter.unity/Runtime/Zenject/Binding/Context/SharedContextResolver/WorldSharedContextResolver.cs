@@ -1,7 +1,8 @@
-﻿using ZenECS.Core.Binding;
+﻿using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
+using ZenECS.Core.Binding;
 using Zenject;
 
-namespace ZenECS.Adapter.Unity.Binding.Contexts.Assets
+namespace ZenECS.Adapter.Unity.DI
 {
     public sealed class WorldSharedContextResolver : ISharedContextResolver
     {

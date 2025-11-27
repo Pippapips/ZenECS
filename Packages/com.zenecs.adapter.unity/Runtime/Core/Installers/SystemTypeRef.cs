@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace ZenECS.Adapter.Unity.Util
+namespace ZenECS.Adapter.Unity
 {
     /// <summary>
     /// 런타임 안전한 타입 참조(AssemblyQualifiedName 보관).

@@ -1,8 +1,4 @@
-using System;
-using UnityEngine;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
-using ZenECS.Adapter.Unity.Install;
-using ZenECS.Core;
 
 namespace ZenECS.Adapter.Unity.DI
 {

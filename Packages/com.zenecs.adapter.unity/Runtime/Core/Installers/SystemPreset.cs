@@ -3,10 +3,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
-using ZenECS.Adapter.Unity.Util;
 using ZenECS.Core.Systems;
 
-namespace ZenECS.Adapter.Unity.Install
+namespace ZenECS.Adapter.Unity
 {
     [CreateAssetMenu(fileName = "SystemsPreset", menuName = "ZenECS/Systems Preset")]
     public sealed class SystemsPreset : ScriptableObject

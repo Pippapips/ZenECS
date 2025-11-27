@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using ZenECS.Core.Systems;
 
-namespace ZenECS.Adapter.Unity.Install
+namespace ZenECS.Adapter.Unity
 {
     public interface ISystemPresetResolver
     {

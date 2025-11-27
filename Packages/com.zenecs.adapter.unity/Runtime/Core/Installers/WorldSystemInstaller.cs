@@ -6,14 +6,12 @@ using ZenECS.Core;
 using ZenECS.Core.Systems;
 using ZenECS.Adapter.Unity;
 using ZenECS.Adapter.Unity.DI;
-using ZenECS.Adapter.Unity.Util;
-using ZenECS.Adapter.Unity.Install; // SystemsPreset
 #if ZENECS_ZENJECT
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
 using Zenject;
 #endif
 
-namespace ZenECS.Adapter.Unity.Install
+namespace ZenECS.Adapter.Unity
 {
 #if ZENECS_ZENJECT
     /// <summary>

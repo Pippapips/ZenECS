@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using ZenECS.Adapter.Unity.Util;
+using ZenECS.Adapter.Unity;
 
 namespace ZenECS.EditorUtils
 {
