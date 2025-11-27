@@ -1,9 +1,11 @@
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
+#if ZENECS_ZENJECT 
+using Zenject;
+#endif
 
 namespace ZenECS.Adapter.Unity.DI
 {
 #if ZENECS_ZENJECT
-    using Zenject;
     public sealed class ProjectInstaller : MonoInstaller
     {
         public override void InstallBindings()
