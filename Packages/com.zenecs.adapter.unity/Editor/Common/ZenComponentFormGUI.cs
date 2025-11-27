@@ -15,9 +15,9 @@ namespace ZenECS.EditorCommon
         {
             // 멤버나 타입에 [ReadOnlyInInspector]가 붙었는가?
             return System.Attribute.IsDefined(member,
-                       typeof(ZenECS.Adapter.Unity.Attributes.ZenReadOnlyInInspectorAttribute), inherit: true)
+                       typeof(ZenECS.Adapter.Unity.ZenReadOnlyInInspectorAttribute), inherit: true)
                    || System.Attribute.IsDefined(componentType,
-                       typeof(ZenECS.Adapter.Unity.Attributes.ZenReadOnlyInInspectorAttribute), inherit: true);
+                       typeof(ZenECS.Adapter.Unity.ZenReadOnlyInInspectorAttribute), inherit: true);
         }
 
         public static float DrawObject(Rect area, object obj, Type typeOverride = null, bool rowHeight = true)

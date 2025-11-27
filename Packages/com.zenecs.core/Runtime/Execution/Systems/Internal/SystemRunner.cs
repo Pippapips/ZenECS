@@ -13,7 +13,7 @@
 // Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
-// ──────────────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────-
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -312,10 +312,8 @@ namespace ZenECS.Core.Systems.Internal
                     WorldWritePhase.Simulation,
                     denyAllWrites: false,
                     structuralChangesAllowed: true);
+                inner.ExternalCommandFlushTo();
             }
-
-            // External scheduled jobs in deterministic phase for structural changes.
-            _worker.RunScheduledJobs(w);
 
             // Fixed-step deterministic pipeline:
             // FixedInput → FixedDecision → FixedSimulation → FixedPost

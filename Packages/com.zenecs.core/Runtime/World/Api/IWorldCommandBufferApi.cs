@@ -16,7 +16,7 @@
 namespace ZenECS.Core
 {
     /// <summary>
-    /// World-side API for beginning command buffers.
+    /// World-side API for beginning command buffers and managing external commands.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -24,6 +24,12 @@ namespace ZenECS.Core
     /// tick barriers (for example, at the end of the fixed-step or frame-step
     /// pipelines). This decouples mutation recording from the moment mutations
     /// are actually applied.
+    /// </para>
+    /// <para>
+    /// External commands provide an additional queue that can be fed from
+    /// outside the simulation loop (for example, networking, UI, or tools),
+    /// which are then translated into command-buffer operations at a safe
+    /// simulation barrier.
     /// </para>
     /// </remarks>
     public interface IWorldCommandBufferApi
@@ -40,5 +46,29 @@ namespace ZenECS.Core
         /// </remarks>
         /// <returns>A new command buffer bound to the world.</returns>
         ICommandBuffer BeginWrite();
+
+        /// <summary>
+        /// Gets the number of pending external commands currently queued
+        /// for this world.
+        /// </summary>
+        int ExternalCommandCount { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether there is at least one pending
+        /// external command in the queue.
+        /// </summary>
+        bool HasExternalCommand { get; }
+
+        /// <summary>
+        /// Enqueues an <see cref="ExternalCommand"/> to be flushed into a command
+        /// buffer at the next external-command flush point.
+        /// </summary>
+        /// <param name="command">Command to enqueue.</param>
+        void ExternalCommandEnqueue(ExternalCommand command);
+
+        /// <summary>
+        /// Clears all pending external commands without applying them.
+        /// </summary>
+        void ExternalCommandClear();
     }
 }

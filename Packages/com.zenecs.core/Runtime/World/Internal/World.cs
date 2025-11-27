@@ -43,50 +43,78 @@ namespace ZenECS.Core.Internal
         private readonly IMessageBus _bus;
         private readonly IWorker _worker;
 
+        /// <inheritdoc/>
         public IKernel Kernel => _kernel;
-        
+
         /// <inheritdoc/>
         public WorldId Id { get; }
+
         /// <inheritdoc/>
         public string Name { get; set; }
+
         /// <inheritdoc/>
         public IReadOnlyCollection<string> Tags { get; }
 
+        /// <inheritdoc/>
         public long FrameCount { get; private set; }
+
+        /// <inheritdoc/>
         public long Tick { get; private set; }
 
         /// <inheritdoc/>
         public bool IsPaused => _pause;
+
         /// <inheritdoc/>
         public bool IsDisposing => _disposed;
-        
-        public event Action<long>? EnteredDeterministic;
-        
+
         private bool _pause;
         private bool _disposed;
 
         private readonly WorldConfig _cfg;
 
-        /// <summary>Bitset of occupied entity slots (alive flags).</summary>
+        /// <summary>
+        /// Bitset of occupied entity slots (alive flags).
+        /// </summary>
         private BitSet _alive;
 
-        /// <summary>Next id to issue for newly created entities (1-based; 0 reserved).</summary>
+        /// <summary>
+        /// Next id to issue for newly created entities (1-based; 0 reserved).
+        /// </summary>
         private int _nextId = 1;
 
-        /// <summary>Recycled ids of destroyed entities (LIFO).</summary>
+        /// <summary>
+        /// Recycled ids of destroyed entities (LIFO).
+        /// </summary>
         private Stack<int> _freeIds;
 
-        /// <summary>Per-slot generation counter preventing stale handles.</summary>
+        /// <summary>
+        /// Per-slot generation counter preventing stale handles.
+        /// </summary>
         private int[] _generation;
 
-        /// <summary>Get current generation value for the given internal id.</summary>
+        /// <summary>
+        /// Gets the current generation value for the given internal id.
+        /// </summary>
+        /// <param name="id">Internal entity id.</param>
+        /// <returns>Generation value for the slot.</returns>
         public int GenerationOf(int id) => _generation[id];
 
         /// <summary>
         /// Construct a world with a configuration, identity metadata, and a DI scope.
         /// Subscribes to kernel tick events and composes per-world services.
         /// </summary>
-        public World(WorldConfig cfg, WorldId id, string name, IReadOnlyCollection<string> tags, IKernel kernel,
+        /// <param name="cfg">World storage and growth configuration.</param>
+        /// <param name="id">Stable identifier for this world.</param>
+        /// <param name="name">Human-readable world name.</param>
+        /// <param name="tags">Tags attached to this world.</param>
+        /// <param name="kernel">Owning kernel instance.</param>
+        /// <param name="scope">Per-world service container.</param>
+        public World(
+            WorldConfig cfg,
+            WorldId id,
+            string name,
+            IReadOnlyCollection<string> tags,
+            IKernel kernel,
             ServiceContainer scope)
         {
             _cfg = cfg;
@@ -114,7 +142,7 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Dispose the world: shutdown systems, unsubscribe from kernel ticks, reset storage, and dispose DI scope.
+        /// Dispose the world: shutdown systems, reset storage, and dispose DI scope.
         /// </summary>
         public void Dispose()
         {
@@ -126,39 +154,60 @@ namespace ZenECS.Core.Internal
             _scope.Dispose();
         }
 
-        /// <summary>Pause stepping for this world.</summary>
+        /// <summary>
+        /// Pause stepping for this world.
+        /// </summary>
         public void Pause() => _pause = true;
 
-        /// <summary>Resume stepping for this world.</summary>
+        /// <summary>
+        /// Resume stepping for this world.
+        /// </summary>
         public void Resume() => _pause = false;
-        
+
+        /// <summary>
+        /// Kernel callback: begin-frame hook for this world.
+        /// </summary>
+        /// <param name="w">World instance to step.</param>
+        /// <param name="dt">Frame delta time in seconds.</param>
         internal void BeginFrame(IWorld w, float dt)
         {
             if (w != this) return;
             if (IsPaused) return;
+
             FrameCount++;
+
             _runner.BeginFrame(w, dt);
         }
 
+        /// <summary>
+        /// Kernel callback: fixed-step hook for this world.
+        /// </summary>
+        /// <param name="w">World instance to step.</param>
+        /// <param name="fixedDelta">Fixed timestep in seconds.</param>
         internal void FixedStep(IWorld w, float fixedDelta)
         {
             if (w != this) return;
             if (IsPaused) return;
+
             Tick++;
-            EnteredDeterministic?.Invoke(Tick);
+
             _runner.FixedStep(w, fixedDelta);
         }
 
+        /// <summary>
+        /// Kernel callback: late-frame (presentation) hook for this world.
+        /// </summary>
+        /// <param name="w">World instance to step.</param>
+        /// <param name="dt">Frame delta time in seconds.</param>
+        /// <param name="alpha">
+        /// Interpolation factor in [0,1] used by view/presentation systems.
+        /// </param>
         internal void LateFrame(IWorld w, float dt, float alpha = 1)
         {
             if (w != this) return;
             if (IsPaused) return;
-            _runner.LateFrame(w, dt, alpha);
-        }
 
-        public void ClearDelegates()
-        {
-            EnteredDeterministic = null;
+            _runner.LateFrame(w, dt, alpha);
         }
     }
 }

@@ -7,15 +7,13 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity;
-using ZenECS.Adapter.Unity.Attributes;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
 using ZenECS.Adapter.Unity.Blueprints;
 using ZenECS.Core;
 using ZenECS.Core.Binding;
 using ZenECS.Core.Systems;
-using ZenECS.EditorCommands;
 using ZenECS.EditorCommon;
-using ZenECS.EditorRoot;
+using ZenECS.EditorUtils;
 
 namespace ZenECS.EditorWindows
 {
@@ -492,7 +490,7 @@ namespace ZenECS.EditorWindows
                         {
                             _cache.Clear();
 
-                            if (!ZenECS.Adapter.Unity.Infrastructure.WatchQueryRunner.TryCollectByWatch(sys, world,
+                            if (!WatchQueryRunner.TryCollectByWatch(sys, world,
                                     _cache))
                                 EditorGUILayout.HelpBox(
                                     "No inspector. Implement IInspectableSystem or add [Watch].",
@@ -1141,7 +1139,7 @@ namespace ZenECS.EditorWindows
                                 // (RemoveSingleton과 대칭되는 AddSingleton은
                                 //  EditorCommand 쪽에 구현되어 있어야 한다고 가정)
                                 var inst = ZenDefaults.CreateWithDefaults(pickedType);
-                                ZenEcsEditor.CommandQueue.Enqueue(EditorCommand.SetSingleton(pickedType, inst));
+                                world.ExternalCommandEnqueue(ExternalCommand.SetSingleton(pickedType, inst));
 
                                 // 싱글톤 섹션 갱신
                                 _hasSelectedSingleton = false;
@@ -1620,7 +1618,7 @@ namespace ZenECS.EditorWindows
                                     msg,
                                     "Yes", "No"))
                             {
-                                ZenEcsEditor.CommandQueue.Enqueue(EditorCommand.DestroyEntity(e));
+                                world.ExternalCommandEnqueue(ExternalCommand.DestroyEntity(e));
                                 
                                 _entityFold[_foundEntity] = _findEntityFoldBackup;
 
@@ -1716,8 +1714,7 @@ namespace ZenECS.EditorWindows
                                     var inst = ZenDefaults.CreateWithDefaults(picked);
                                     if (inst != null)
                                     {
-                                        ZenEcsEditor.CommandQueue.Enqueue(
-                                            EditorCommand.AddComponent(e, inst.GetType(), inst));
+                                        world.ExternalCommandEnqueue(ExternalCommand.AddComponent(e, inst.GetType(), inst));
                                     }
 
                                     Repaint();
@@ -2562,7 +2559,7 @@ namespace ZenECS.EditorWindows
                                                     $"Remove this component?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}Component",
                                                     "Yes", "No"))
                                             {
-                                                ZenEcsEditor.CommandQueue.Enqueue(EditorCommand.RemoveComponent(e, t));
+                                                world.ExternalCommandEnqueue(ExternalCommand.RemoveComponent(e, t));
                                                 
                                                 _componentFold.Remove(ck);
                                                 Repaint();
@@ -2579,8 +2576,7 @@ namespace ZenECS.EditorWindows
                                                 //         "Yes", "No"))
                                                 {
                                                     var def = ZenDefaults.CreateWithDefaults(t);
-                                                    ZenEcsEditor.CommandQueue.Enqueue(
-                                                        EditorCommand.ReplaceComponent(e, t, def));
+                                                    world.ExternalCommandEnqueue(ExternalCommand.ReplaceComponent(e, t, def));
                                                     
                                                     Repaint();
                                                 }
@@ -2605,8 +2601,7 @@ namespace ZenECS.EditorWindows
                                                 //         "Yes", "No"))
                                                 {
                                                     var def = ZenDefaults.CreateWithDefaults(t);
-                                                    ZenEcsEditor.CommandQueue.Enqueue(
-                                                        EditorCommand.ReplaceComponent(e, t, def));
+                                                    world.ExternalCommandEnqueue(ExternalCommand.ReplaceComponent(e, t, def));
                                                     Repaint();
                                                 }
                                             }
@@ -2642,7 +2637,7 @@ namespace ZenECS.EditorWindows
                             ZenComponentFormGUI.DrawObject(bodyInner, obj, t);
                             if (EditorGUI.EndChangeCheck() && _editMode)
                             {
-                                ZenEcsEditor.CommandQueue.Enqueue(EditorCommand.ReplaceComponent(e, t, obj));
+                                world.ExternalCommandEnqueue(ExternalCommand.ReplaceComponent(e, t, obj));
                             }
                         }
                         catch (KeyNotFoundException) { }
@@ -3620,7 +3615,7 @@ namespace ZenECS.EditorWindows
             }
 
             // ===== System 버튼 (Watched Count) =====
-            var watchedCount = ZenECS.Adapter.Unity.Infrastructure.WatchQueryRunner.TryCountByWatch(sys, world);
+            var watchedCount = WatchQueryRunner.TryCountByWatch(sys, world);
             if (watchedCount > 0)
                 typeName = $"{typeName} ({watchedCount})";
 
@@ -4124,7 +4119,7 @@ namespace ZenECS.EditorWindows
 
                 // WatchQueryRunner를 통해 이 시스템이 감시하는 엔티티 목록 수집
                 var tmp = new List<Entity>();
-                if (!ZenECS.Adapter.Unity.Infrastructure.WatchQueryRunner.TryCollectByWatch(sys, world, tmp))
+                if (!WatchQueryRunner.TryCollectByWatch(sys, world, tmp))
                     continue;
 
                 // 현재 Find 뷰의 엔티티가 포함되어 있으면 목록에 추가
@@ -4347,7 +4342,7 @@ namespace ZenECS.EditorWindows
                             $"Remove this {label} singleton?",
                             "Yes", "No"))
                     {
-                        ZenEcsEditor.CommandQueue.Enqueue(EditorCommand. RemoveSingleton(type));
+                        world.ExternalCommandEnqueue(ExternalCommand.RemoveSingleton(type));
                         Repaint();
                     }
                 }

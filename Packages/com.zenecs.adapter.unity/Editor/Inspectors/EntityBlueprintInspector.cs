@@ -214,7 +214,7 @@ namespace ZenECS.EditorInspectors
                 for (int i = 0; i < _compEntriesProp.arraySize; i++)
                 {
                     var tname = _compEntriesProp.GetArrayElementAtIndex(i).FindPropertyRelative("typeName").stringValue;
-                    var rt = BlueprintData.Resolve(tname);
+                    var rt = EntityBlueprintData.Resolve(tname);
                     if (rt != null) disabled.Add(rt);
                 }
 
@@ -229,7 +229,7 @@ namespace ZenECS.EditorInspectors
                         elem.FindPropertyRelative("typeName").stringValue = pickedType.AssemblyQualifiedName;
 
                         var inst = ZenDefaults.CreateWithDefaults(pickedType);
-                        elem.FindPropertyRelative("json").stringValue = ComponentJson.Serialize(inst, pickedType);
+                        elem.FindPropertyRelative("json").stringValue = EntityBlueprintComponentJson.Serialize(inst, pickedType);
 
                         serializedObject.ApplyModifiedProperties();
                         EditorUtility.SetDirty(target);
@@ -255,7 +255,7 @@ namespace ZenECS.EditorInspectors
                 bool open = _fold.TryGetValue(key, out var o) ? o : true;
                 if (!open) return headerH;
 
-                var t = BlueprintData.Resolve(tname);
+                var t = EntityBlueprintData.Resolve(tname);
                 bool hasFields = t != null && ZenComponentFormGUI.HasDrawableFields(t);
                 if (!hasFields) return headerH;
 
@@ -268,7 +268,7 @@ namespace ZenECS.EditorInspectors
                 }
 
                 var jsonProp = e.FindPropertyRelative("json");
-                var obj = ComponentJson.Deserialize(jsonProp.stringValue, t);
+                var obj = EntityBlueprintComponentJson.Deserialize(jsonProp.stringValue, t);
                 float bodyH = ZenComponentFormGUI.CalcHeightForObject(obj, t);
 
                 return headerH // Foldout 헤더
@@ -283,7 +283,7 @@ namespace ZenECS.EditorInspectors
                 var e = _compEntriesProp.GetArrayElementAtIndex(index);
                 var pType = e.FindPropertyRelative("typeName");
                 var pJson = e.FindPropertyRelative("json");
-                var t = BlueprintData.Resolve(pType.stringValue);
+                var t = EntityBlueprintData.Resolve(pType.stringValue);
 
                 var key = $"comp:{index}:{pType.stringValue}";
                 if (!_fold.ContainsKey(key)) _fold[key] = true;
@@ -330,7 +330,7 @@ namespace ZenECS.EditorInspectors
 
                         // ZenDefaults로 새 인스턴스 생성 후 다시 JSON 직렬화
                         var inst = ZenDefaults.CreateWithDefaults(t);
-                        pJson.stringValue = ComponentJson.Serialize(inst, t);
+                        pJson.stringValue = EntityBlueprintComponentJson.Serialize(inst, t);
 
                         serializedObject.ApplyModifiedProperties();
                         EditorUtility.SetDirty(target);
@@ -369,13 +369,13 @@ namespace ZenECS.EditorInspectors
 
                 if (t != null)
                 {
-                    var obj = ComponentJson.Deserialize(pJson.stringValue, t);
+                    var obj = EntityBlueprintComponentJson.Deserialize(pJson.stringValue, t);
                     EditorGUI.BeginChangeCheck();
                     ZenComponentFormGUI.DrawObject(rBody, obj, t, false);
                     if (EditorGUI.EndChangeCheck())
                     {
                         Undo.RecordObject(target, "Edit Blueprint Component");
-                        pJson.stringValue = ComponentJson.Serialize(obj, t);
+                        pJson.stringValue = EntityBlueprintComponentJson.Serialize(obj, t);
                         serializedObject.ApplyModifiedProperties();
                         EditorUtility.SetDirty(target);
                     }

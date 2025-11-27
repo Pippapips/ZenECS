@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
-using ZenECS.Adapter.Unity.Attributes;
+using ZenECS.Adapter.Unity;
 
 namespace ZenECS.EditorInspectors
 {

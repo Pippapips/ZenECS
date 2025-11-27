@@ -136,22 +136,6 @@ namespace ZenECS.Core
         bool IsDisposing { get; }
 
         /// <summary>
-        /// Raised when the world enters deterministic simulation from a non-deterministic context.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// Consumers can use this event to reset or snapshot state that should be
-        /// evaluated only once per deterministic segment (for example, before
-        /// replaying or resimulating fixed steps).
-        /// </para>
-        /// <para>
-        /// The event argument is typically a tick or frame counter that identifies
-        /// the deterministic entry point.
-        /// </para>
-        /// </remarks>
-        event Action<long>? EnteredDeterministic;
-
-        /// <summary>
         /// Pauses stepping for this world only.
         /// </summary>
         /// <remarks>
@@ -211,21 +195,5 @@ namespace ZenECS.Core
         /// </para>
         /// </remarks>
         int GenerationOf(int id);
-
-        /// <summary>
-        /// Clears world-level delegates, callbacks, and event handlers.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// This is a maintenance API primarily intended for teardown and tests,
-        /// ensuring that no user-registered delegates keep the world or its
-        /// entities alive via captured references.
-        /// </para>
-        /// <para>
-        /// Implementations should clear any world-scoped event handlers they own,
-        /// but must not touch external subscribers that maintain their own state.
-        /// </para>
-        /// </remarks>
-        void ClearDelegates();
     }
 }
