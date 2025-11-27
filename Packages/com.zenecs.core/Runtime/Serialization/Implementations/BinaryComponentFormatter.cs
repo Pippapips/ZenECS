@@ -13,7 +13,7 @@
 #nullable enable
 using System;
 
-namespace ZenECS.Core.Serialization.Formats.Binary
+namespace ZenECS.Core.Serialization
 {
     /// <summary>
     /// Base class for binary component formatters providing a strongly-typed

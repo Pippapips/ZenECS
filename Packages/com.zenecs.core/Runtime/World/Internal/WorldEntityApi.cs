@@ -13,7 +13,6 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
-using ZenECS.Core.Events;
 
 namespace ZenECS.Core.Internal
 {

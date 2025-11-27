@@ -1,11 +1,10 @@
 #nullable enable
 using UnityEngine;
 using ZenECS.Core;
-using ZenECS.Core.Abstractions.Diagnostics;
+using ZenECS.Core.Config;
 #if ZENECS_ZENJECT
 using Zenject;
 #endif
-using Kernel = ZenECS.Core.Kernel;
 
 namespace ZenECS.Adapter.Unity
 {
@@ -26,7 +25,7 @@ namespace ZenECS.Adapter.Unity
         public IKernel CreateKernel()
         {
             if (Kernel != null) return Kernel;
-            Kernel ??= new Kernel(new KernelOptions { AutoSelectNewWorld = false }, new Logger());
+            Kernel ??= new ZenECS.Core.Kernel(new KernelOptions { AutoSelectNewWorld = false }, new Logger());
             KernelLocator.Attach(Kernel);
             return Kernel;
         }

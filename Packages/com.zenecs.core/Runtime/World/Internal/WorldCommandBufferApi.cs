@@ -11,7 +11,6 @@
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-
 #nullable enable
-using ZenECS.Core.Internal.Scheduling;
 
 namespace ZenECS.Core.Internal
 {

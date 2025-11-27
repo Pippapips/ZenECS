@@ -1,11 +1,7 @@
 ﻿using System;
-using Unity.Mathematics;
-using ZenECS.Adapter.Unity.Attributes;
 using static Unity.Mathematics.math;
 using ZenECS.Core;
-using ZenECS.Core.Attributes;
 using ZenECS.Core.Serialization;
-using ZenECS.Core.Serialization.Formats.Binary;
 using float3 = Unity.Mathematics.float3;
 
 namespace ZenECS.Adapter.Unity.Components.Common

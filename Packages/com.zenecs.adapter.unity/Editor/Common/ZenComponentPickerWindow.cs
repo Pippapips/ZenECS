@@ -1,13 +1,11 @@
-﻿// Assets/.../Editor/ZEN/ZenComponentPickerWindow.cs
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using ZenECS.Adapter.Unity.Attributes;
-using ZenECS.Core.Attributes;
+using ZenECS.Core;
 
 namespace ZenECS.EditorCommon
 {

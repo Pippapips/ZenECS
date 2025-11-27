@@ -15,8 +15,8 @@
 using System;
 using System.IO;
 using System.Text;
-using ZenECS.Core.Internal.Serialization;
 using ZenECS.Core.Serialization;
+using ZenECS.Core.Serialization.Internal;
 
 namespace ZenECS.Core.Internal
 {

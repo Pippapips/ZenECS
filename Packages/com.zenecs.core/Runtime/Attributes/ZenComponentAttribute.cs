@@ -11,9 +11,9 @@
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 using System;
-using System.Diagnostics; // Conditional
+using System.Diagnostics;
 
-namespace ZenECS.Core.Attributes
+namespace ZenECS.Core
 {
     /// <summary>
     /// Attribute used by editor/tooling to collect component metadata.

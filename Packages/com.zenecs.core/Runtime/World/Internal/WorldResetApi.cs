@@ -15,8 +15,8 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using ZenECS.Core.Events;
-using ZenECS.Core.Internal.ComponentPooling;
+using ZenECS.Core.ComponentPooling.Internal;
+using ZenECS.Core.Infrastructure.Internal;
 
 namespace ZenECS.Core.Internal
 {

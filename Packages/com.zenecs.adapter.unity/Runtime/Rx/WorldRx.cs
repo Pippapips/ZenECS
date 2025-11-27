@@ -2,6 +2,7 @@
 using System;
 using UniRx;
 using ZenECS.Core;
+using ZenECS.Core.Messaging;
 
 namespace ZenECS.Adapter.Unity.Rx
 {

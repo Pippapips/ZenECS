@@ -17,10 +17,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using ZenECS.Core.Abstractions.Config;
 using ZenECS.Core.Binding;
-using ZenECS.Core.Events;
-using ZenECS.Core.Internal.ComponentPooling;
+using ZenECS.Core.Config;
+using ZenECS.Core.ComponentPooling.Internal;
 
 namespace ZenECS.Core.Internal
 {

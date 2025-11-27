@@ -6,9 +6,8 @@ using System.Reflection;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
-using ZenECS.Adapter.Unity.Attributes;
 using ZenECS.Adapter.Unity.Blueprints;
-using ZenECS.Core.Attributes;
+using ZenECS.Core;
 using ZenECS.Core.Binding;
 using ZenECS.EditorCommon;
 

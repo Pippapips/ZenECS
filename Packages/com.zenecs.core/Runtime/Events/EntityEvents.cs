@@ -15,7 +15,7 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace ZenECS.Core.Events
+namespace ZenECS.Core
 {
     /// <summary>
     /// Global event hub for entity lifecycle notifications.

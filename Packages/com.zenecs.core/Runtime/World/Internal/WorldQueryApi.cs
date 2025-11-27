@@ -11,6 +11,7 @@
 // SPDX-License-Identifier: MIT
 // ─────────────────────────────────────────────────────────────────────────────-
 #nullable enable
+
 namespace ZenECS.Core.Internal
 {
     /// <summary>

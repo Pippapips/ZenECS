@@ -15,15 +15,13 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
-using ZenECS.Core.Internal.Binding;
-using ZenECS.Core.Internal.ComponentPooling;
-using ZenECS.Core.Internal.Contexts;
-using ZenECS.Core.Internal.DI;
-using ZenECS.Core.Internal.Hooking;
-using ZenECS.Core.Internal.Messaging;
-using ZenECS.Core.Internal.Scheduling;
-using ZenECS.Core.Internal.Systems;
-using ZenECS.Core.Systems;
+using ZenECS.Core.Binding.Internal;
+using ZenECS.Core.ComponentPooling.Internal;
+using ZenECS.Core.Hooking.Internal;
+using ZenECS.Core.Infrastructure.Internal;
+using ZenECS.Core.Messaging.Internal;
+using ZenECS.Core.Scheduling.Internal;
+using ZenECS.Core.Systems.Internal;
 
 namespace ZenECS.Core.Internal
 {

@@ -14,7 +14,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ZenECS.Core.Serialization;
 
 namespace ZenECS.Core.Serialization
 {

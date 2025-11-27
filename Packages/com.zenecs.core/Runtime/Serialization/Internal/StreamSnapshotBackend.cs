@@ -15,9 +15,8 @@ using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
-using ZenECS.Core.Serialization;
 
-namespace ZenECS.Core.Internal.Serialization
+namespace ZenECS.Core.Serialization.Internal
 {
     /// <summary>
     /// Stream-backed snapshot backend used for reading and writing component data.

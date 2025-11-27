@@ -13,7 +13,7 @@
 #nullable enable
 using System;
 using System.Collections.Concurrent;
-using ZenECS.Core.Internal.Scheduling;
+using ZenECS.Core.Scheduling.Internal;
 
 namespace ZenECS.Core.Internal
 {

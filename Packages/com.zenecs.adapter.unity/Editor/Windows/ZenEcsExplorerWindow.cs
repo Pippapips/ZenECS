@@ -8,18 +8,14 @@ using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity;
 using ZenECS.Adapter.Unity.Attributes;
-using ZenECS.Adapter.Unity.Binding.Contexts;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
 using ZenECS.Adapter.Unity.Blueprints;
 using ZenECS.Core;
-using ZenECS.Core.Attributes;
 using ZenECS.Core.Binding;
 using ZenECS.Core.Systems;
 using ZenECS.EditorCommands;
 using ZenECS.EditorCommon;
 using ZenECS.EditorRoot;
-using ZenECS.EditorTools;
-using Object = UnityEngine.Object;
 
 namespace ZenECS.EditorWindows
 {

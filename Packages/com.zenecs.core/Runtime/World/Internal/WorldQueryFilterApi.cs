@@ -13,10 +13,8 @@
 #nullable enable
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
-using ZenECS.Core.Internal;
-using ZenECS.Core.Internal.ComponentPooling;
+using ZenECS.Core.ComponentPooling.Internal;
 
 namespace ZenECS.Core.Internal
 {

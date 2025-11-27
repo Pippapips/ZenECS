@@ -14,7 +14,7 @@
 using System;
 using System.Diagnostics;
 
-namespace ZenECS.Core.Attributes
+namespace ZenECS.Core
 {
     /// <summary>
     /// Declares a simple editor-only watch query for a system.

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Unity.Collections;                  // ★ FixedString64Bytes
+using Unity.Collections;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Attributes;
 using ZenECS.Core;
-using ZenECS.Core.Attributes; // ★ ZenDefaults.CreateWithDefaults
 
 namespace ZenECS.Adapter.Unity.Blueprints
 {

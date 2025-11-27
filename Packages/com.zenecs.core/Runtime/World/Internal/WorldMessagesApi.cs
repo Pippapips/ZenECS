@@ -12,6 +12,8 @@
 // ─────────────────────────────────────────────────────────────────────────────-
 #nullable enable
 using System;
+using ZenECS.Core.Messaging;
+using ZenECS.Core.Messaging.Internal;
 
 namespace ZenECS.Core.Internal
 {
