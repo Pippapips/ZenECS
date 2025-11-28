@@ -2990,7 +2990,8 @@ namespace ZenECS.EditorWindows
                         if (resolver != null)
                         {
                             var ctx = resolver.Resolve(markerAsset);
-                            w.RegisterContext(e, ctx);
+                            if (ctx != null)
+                                w.RegisterContext(e, ctx);
                         }
 
                         break;

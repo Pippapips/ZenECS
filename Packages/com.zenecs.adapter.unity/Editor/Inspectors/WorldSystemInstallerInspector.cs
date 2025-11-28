@@ -7,6 +7,8 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using ZenECS.Adapter.Unity;
+using ZenECS.Adapter.Unity.DI;
+using ZenECS.Adapter.Unity.SystemPresets;
 using ZenECS.Core.Systems;
 using ZenECS.EditorCommon;
 
