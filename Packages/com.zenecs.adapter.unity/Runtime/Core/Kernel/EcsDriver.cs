@@ -15,10 +15,7 @@ namespace ZenECS.Adapter.Unity
         public void Error(string m) => Debug.LogError(m);
     }
 
-#if !ZENECS_ZENJECT
-    [DefaultExecutionOrder(-10000)]
-#endif
-    public sealed class EcsDriver : MonoBehaviour
+    sealed class EcsDriver : MonoBehaviour
     {
         public IKernel? Kernel { get; private set; }
 
@@ -29,6 +26,15 @@ namespace ZenECS.Adapter.Unity
             KernelLocator.Attach(Kernel);
             return Kernel;
         }
+    
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            // 이 컴포넌트를 인스펙터에서 편집 불가로 설정
+            hideFlags |= HideFlags.NotEditable;
+            hideFlags |= HideFlags.HideAndDontSave;
+        }
+#endif        
         
         void Awake()
         {

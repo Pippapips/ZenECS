@@ -39,30 +39,27 @@ namespace ZenECS.Adapter.Unity
             }
         }
 
-        public static EcsDriver CreateEcsDriver(bool dontDestroyOnLoad = true)
+        public static IKernel? CreateEcsDriver(bool dontDestroyOnLoad = true, bool createKernal = true)
         {
-#if UNITY_2022_2_OR_NEWER
-            var drv = UnityEngine.Object.FindFirstObjectByType<EcsDriver>(FindObjectsInactive.Include);
-#else
-            var drv = UnityEngine.Object.FindObjectOfType<EcsDriver>(true);
-#endif
-            if (drv == null)
-            {
-                var go = new GameObject("[ZenECS] EcsDriver (auto)");
-                drv = go.AddComponent<EcsDriver>();
-            }
+            var go = new GameObject("[ZenECS] EcsDriver (auto)");
+            var drv = go.AddComponent<EcsDriver>();
 
             if (dontDestroyOnLoad)
             {
                 UnityEngine.Object.DontDestroyOnLoad(drv.gameObject);
             }
 
-            return drv;
+            if (createKernal)
+            {
+                return drv.CreateKernel();
+            }
+
+            return null;
         }
 
-        public static IKernel CreateEcsDriverWithKernel(bool dontDestroyOnLoad = true)
+        public static IKernel? CreateEcsDriverWithKernel(bool dontDestroyOnLoad = true)
         {
-            return CreateEcsDriver(dontDestroyOnLoad).CreateKernel();
+            return CreateEcsDriver(dontDestroyOnLoad);
         }
 
         public static IWorld CurrentWorld =>

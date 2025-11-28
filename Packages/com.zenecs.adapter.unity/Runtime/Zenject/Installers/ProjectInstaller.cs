@@ -1,3 +1,4 @@
+using UnityEngine;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
 #if ZENECS_ZENJECT 
 using Zenject;
@@ -11,7 +12,7 @@ namespace ZenECS.Adapter.Unity.DI
         public override void InstallBindings()
         {
             ZenEcsUnityBridge.Kernel = KernelLocator.CreateEcsDriverWithKernel();
-            ZenEcsUnityBridge.SharedContextResolver = new WorldSharedContextResolver(Container);
+            ZenEcsUnityBridge.SharedContextResolver = new SharedContextResolver(Container);
             ZenEcsUnityBridge.SystemPresetResolver = new SystemPresetResolver(Container);
             
             Container.BindInstance(ZenEcsUnityBridge.Kernel);
@@ -19,11 +20,14 @@ namespace ZenECS.Adapter.Unity.DI
         }
     }
 #else
-    public sealed class ProjectInstaller : UnityEngine.MonoBehaviour
+    [DefaultExecutionOrder(-10000)]
+    public sealed class ProjectInstaller : MonoBehaviour
     {
         private void Awake()
         {
-            KernelLocator.CreateEcsDriverWithKernel();
+            ZenEcsUnityBridge.Kernel = KernelLocator.CreateEcsDriverWithKernel();
+            ZenEcsUnityBridge.SharedContextResolver = new SharedContextResolver();
+            ZenEcsUnityBridge.SystemPresetResolver = new SystemPresetResolver();
         }
     }
 #endif
