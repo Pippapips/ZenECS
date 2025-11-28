@@ -12,6 +12,7 @@ namespace ZenECS.EditorWindows
         private void DrawFooter(IKernel? kernel)
         {
             if (kernel?.CurrentWorld == null) return;
+            
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
             {
                 // ===== Global Pause 토글 버튼 (커널 기반, System Pause와 동일 스타일) =====
@@ -168,7 +169,7 @@ namespace ZenECS.EditorWindows
                     Repaint();
                 }
 
-                _editMode = GUILayout.Toggle(_editMode, "Edit", centeredButtonStyle, GUILayout.Width(60));
+                _ui.EditMode = GUILayout.Toggle(_ui.EditMode, "Edit", centeredButtonStyle, GUILayout.Width(60));
             }
         }
     }

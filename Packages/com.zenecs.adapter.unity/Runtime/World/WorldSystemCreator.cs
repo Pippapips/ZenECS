@@ -25,14 +25,14 @@ using ZenECS.Core.Systems;
 using Zenject;
 #endif
 
-namespace ZenECS.Adapter.Unity.DI
+namespace ZenECS.Adapter.Unity
 {
     /// <summary>
     /// Ensures a world exists, tags it, and registers systems for it.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// <see cref="WorldSystemInstaller"/> is a scene-level bootstrap that:
+    /// <see cref="WorldSystemCreator"/> is a scene-level bootstrap that:
     /// </para>
     /// <list type="number">
     /// <item><description>
@@ -57,11 +57,7 @@ namespace ZenECS.Adapter.Unity.DI
     /// <see cref="Activator.CreateInstance(Type)"/> for system construction.
     /// </para>
     /// </remarks>
-#if ZENECS_ZENJECT
-    public sealed class WorldSystemInstaller : MonoInstaller
-#else
-    public sealed class WorldSystemInstaller : MonoBehaviour
-#endif
+    public sealed class WorldSystemCreator : MonoBehaviour
     {
         /// <summary>
         /// Name passed to <see cref="KernelLocator.EnsureWorld(string,System.Collections.Generic.IEnumerable{string},bool)"/>.
@@ -144,28 +140,13 @@ namespace ZenECS.Adapter.Unity.DI
         /// are instantiated in <see cref="Awake"/>.
         /// </para>
         /// </remarks>
-        public override void InstallBindings()
+        [Inject]
+        void ctor([InjectOptional] ISystemPresetResolver worldPresetResolver)
         {
-            _world = ResolveWorld();
+            _worldPresetResolver = worldPresetResolver;
         }
-
-        /// <summary>
-        /// Unity lifecycle callback used to resolve the
-        /// <see cref="ISystemPresetResolver"/> and register systems.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// When using Zenject, the preset resolver is obtained from the
-        /// <see cref="DiContainer"/> and then passed to
-        /// <see cref="AddSystems"/> for system instantiation.
-        /// </para>
-        /// </remarks>
-        private void Awake()
-        {
-            _worldPresetResolver = Container.Resolve<ISystemPresetResolver>();
-            AddSystems();
-        }
-#else
+#endif
+        
         /// <summary>
         /// Unity lifecycle callback used to resolve the world and register
         /// systems when Zenject is not in use.
@@ -181,7 +162,6 @@ namespace ZenECS.Adapter.Unity.DI
             _world = ResolveWorld();
             AddSystems();
         }
-#endif
 
         // ───────────────────────────────── World resolution ─────────────────────────────────
 
@@ -252,12 +232,8 @@ namespace ZenECS.Adapter.Unity.DI
             if (types.Count == 0)
                 return;
 
-#if ZENECS_ZENJECT
             // Prefer the central SystemPresetResolver if available.
             var instances = _worldPresetResolver?.InstantiateSystems(types) ?? InstantiateSystemsActivator(types);
-#else
-            var instances = InstantiateSystemsActivator(types);
-#endif
             if (instances.Count > 0)
             {
                 // Systems will be activated on the next BeginFrame.

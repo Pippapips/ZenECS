@@ -15,14 +15,14 @@ using ZenECS.EditorCommon;
 namespace ZenECS.EditorInspectors
 {
     /// <summary>
-    /// Custom inspector for <see cref="WorldSystemInstaller"/>.
+    /// Custom inspector for <see cref="WorldSystemCreator"/>.
     /// - World Name + World Tags UX (with accent colors)
     /// - Multiple SystemsPreset assets selection via ZenSystemPresetPickerWindow
     /// - Installer-local systemTypes list via ReorderableList
     /// - At runtime, all presets + local types are merged and deduplicated
     /// </summary>
-    [CustomEditor(typeof(WorldSystemInstaller))]
-    public sealed class WorldSystemInstallerInspector : Editor
+    [CustomEditor(typeof(WorldSystemCreator))]
+    public sealed class WorldSystemCreatorInspector : Editor
     {
         private ReorderableList? _list;
         private SerializedProperty? _propTypes;
@@ -166,11 +166,11 @@ namespace ZenECS.EditorInspectors
             var icon = EditorGUIUtility.ObjectContent(target, target.GetType()).image;
 
             ZenEcsGUIHeader.DrawHeader(
-                "World System Installer",
+                "World System Creator",
                 "Creates or resolves a world, assigns tags, and installs systems from presets and installer-local types.",
                 new[]
                 {
-                    "Installer",
+                    "Create",
                     "World Setup",
                     "System Registration"
                 }
