@@ -40,52 +40,54 @@ namespace ZenECS.EditorWindows
         [Serializable]
         sealed class ExplorerFindState
         {
-            public const string LabelEntityId = "Entity ID:GEN ";       // LABEL_ENTITY_ID
-            public const string BtnFind = "Find";                       // BTN_FIND
-            public const string BtnClear = "Clear";                     // BTN_CLEAR_FILTER
+            public const string LabelEntityId = "Entity ID:GEN "; // LABEL_ENTITY_ID
+            public const string BtnFind = "Find";                 // BTN_FIND
+            public const string BtnClear = "Clear";               // BTN_CLEAR_FILTER
 
-            public const string TipFind =   // TIP_FIND
+            public const string TipFind = // TIP_FIND
                 "Show only the entity with this ID (no system switching).";
 
-            public const string TipClear =  // TIP_CLEAR
+            public const string TipClear = // TIP_CLEAR
                 "Exit single-entity view and show all entities.";
 
             // 입력 문자열
-            public string EntityIdText = string.Empty;      // _entityIdText
-            public string EntityGenText = "0";              // _entityGenText
+            public string EntityIdText = string.Empty; // _entityIdText
+            public string EntityGenText = "0";         // _entityGenText
 
             // 파싱된 타겟
-            public int? EntityId;               // _findEntityId
-            public int? EntityGen;              // _findEntityGen
+            public int? EntityId;  // _findEntityId
+            public int? EntityGen; // _findEntityGen
 
             // UI 상태
-            public bool IsFindMode;             // _findMode
-            public bool FoundValid;             // _foundValid
-            public bool WatchedSystemsFold;     // _findWatchedSystemsFold
-            public bool EntityFoldBackup;       // _findEntityFoldBackup
+            public bool IsFindMode;         // _findMode
+            public bool FoundValid;         // _foundValid
+            public bool WatchedSystemsFold; // _findWatchedSystemsFold
+            public bool EntityFoldBackup;   // _findEntityFoldBackup
 
-            public Entity FoundEntity;          // _foundEntity
+            public Entity FoundEntity; // _foundEntity
         }
 
         [Serializable]
-        sealed class ExplorerUiState
+        sealed class ExplorerCoreState
         {
-            // 선택
+            /// <summary>
+            /// Global edit mode flag. When false, UI is read-only.
+            /// </summary>
+            public bool EditMode = true;
+        }
+
+        /// <summary>
+        /// ViewModel for the left system tree panel.
+        /// </summary>
+        [Serializable]
+        sealed class ExplorerSystemTreeState
+        {
+            // 선택된 시스템
             public int SelectedSystemIndex = -1;
             public int SelectedSystemEntityCount;
-            public bool HasSelectedSingleton;
-            public Entity SelectedSingletonEntity;
-            public Type? SelectedSingletonType;
 
             // 스크롤
-            public Vector2 LeftScroll;      // _left
-            public Vector2 RightScroll;     // _right
-
-            // 편집 모드
-            public bool EditMode = true;
-
-            // Watched / Foldout
-            public readonly Dictionary<string, bool> WatchedFold = new();
+            public Vector2 Scroll;
 
             // System Tree Foldout
             public readonly Dictionary<SystemGroup, bool> GroupFold = new();
@@ -98,27 +100,18 @@ namespace ZenECS.EditorWindows
             public bool UnknownFold = true;
             public bool SingletonsFold = true;
 
-            // Entity / Component / Binder / Context Foldout
-            public readonly Dictionary<Entity, bool> EntityFold = new();
-            public readonly Dictionary<string, bool> ComponentFold = new();
-            public readonly Dictionary<string, bool> BinderFold = new();
-            public readonly Dictionary<string, bool> ContextFold = new();
-
+            /// <summary>
+            /// Reset selection and counters.
+            /// </summary>
             public void ClearSelection()
             {
                 SelectedSystemIndex = -1;
                 SelectedSystemEntityCount = 0;
-                HasSelectedSingleton = false;
-                SelectedSingletonEntity = default;
-                SelectedSingletonType = null;
-
-                EntityFold.Clear();
-                BinderFold.Clear();
-                ComponentFold.Clear();
-                ContextFold.Clear();
-                WatchedFold.Clear();
             }
 
+            /// <summary>
+            /// Clear cached tree foldouts.
+            /// </summary>
             public void ClearTreeFoldouts()
             {
                 GroupFold.Clear();
@@ -126,9 +119,66 @@ namespace ZenECS.EditorWindows
             }
         }
 
+        /// <summary>
+        /// ViewModel for the right entity/singleton panel.
+        /// </summary>
+        [Serializable]
+        sealed class ExplorerEntityPanelState
+        {
+            // 스크롤
+            public Vector2 Scroll;
+
+            // Foldouts per entity / context
+            public readonly Dictionary<Entity, bool> EntityFold = new();
+            public readonly Dictionary<Entity, bool> BinderFold = new();
+            public readonly Dictionary<Entity, bool> ComponentFold = new();
+            public readonly Dictionary<string, bool> ContextFold = new();
+
+            // Watched foldouts (key: system name or other key)
+            public readonly Dictionary<string, bool> WatchedFold = new();
+
+            // Singleton selection
+            public bool HasSelectedSingleton;
+            public Entity SelectedSingletonEntity;
+            public Type? SelectedSingletonType;
+
+            /// <summary>
+            /// Clear all entity-related foldouts.
+            /// </summary>
+            public void ClearEntityFoldouts()
+            {
+                EntityFold.Clear();
+                BinderFold.Clear();
+                ComponentFold.Clear();
+                ContextFold.Clear();
+                WatchedFold.Clear();
+            }
+
+            /// <summary>
+            /// Clear singleton selection.
+            /// </summary>
+            public void ClearSingletonSelection()
+            {
+                HasSelectedSingleton = false;
+                SelectedSingletonEntity = default;
+                SelectedSingletonType = null;
+            }
+
+            /// <summary>
+            /// Clear selection for the entity panel (entities + singleton).
+            /// </summary>
+            public void ClearSelection()
+            {
+                ClearSingletonSelection();
+                ClearEntityFoldouts();
+            }
+        }
+
         // 실제 상태 인스턴스
         readonly ExplorerFindState _findState = new();
-        readonly ExplorerUiState _uiState = new();
+        readonly ExplorerCoreState _coreState = new();
+        readonly ExplorerSystemTreeState _systemTree = new();
+        readonly ExplorerEntityPanelState _entityPanel = new();
 
         // =====================================================================
         //  기타 캐시 / enum
@@ -141,7 +191,7 @@ namespace ZenECS.EditorWindows
             Deterministic,
             NonDeterministic,
         }
-        
+
         private double _nextRepaint;
         private const float _repaintInterval = 0.25f;
 
@@ -151,19 +201,26 @@ namespace ZenECS.EditorWindows
 
         void ClearState(bool repaint = true)
         {
-            _uiState.ClearSelection();
+            // 좌측 트리 / 우측 엔티티 패널 상태 리셋
+            _systemTree.ClearSelection();
+            _systemTree.ClearTreeFoldouts();
+            _systemTree.Scroll = Vector2.zero;
 
-            _findState.IsFindMode         = false;
-            _findState.EntityId           = null;
-            _findState.EntityGen          = null;
-            _findState.FoundValid         = false;
+            _entityPanel.ClearSelection();
+            _entityPanel.Scroll = Vector2.zero;
+
+            // Find 모드 리셋
+            _findState.IsFindMode = false;
+            _findState.EntityId = null;
+            _findState.EntityGen = null;
+            _findState.FoundValid = false;
             _findState.WatchedSystemsFold = false;
 
-            _uiState.ClearTreeFoldouts();
-            
-            if (repaint) Repaint();
+            // EditMode는 사용자가 토글하는 값이니 강제 초기화는 안 함
+            if (repaint)
+                Repaint();
         }
-        
+
         void OnEnable()
         {
             EditorApplication.update += OnEditorUpdate;
@@ -172,7 +229,7 @@ namespace ZenECS.EditorWindows
 
             ClearState();
 
-            _nextRepaint = EditorApplication.timeSinceStartup + _repaintInterval;            
+            _nextRepaint = EditorApplication.timeSinceStartup + _repaintInterval;
         }
 
         void OnDisable()
@@ -236,7 +293,7 @@ namespace ZenECS.EditorWindows
                 DrawFindMode(kernel, world, systems);
                 return;
             }
-            
+
             // 🔹 일반 모드
             DrawMainLayout(kernel, world, systems);
         }
@@ -317,9 +374,9 @@ namespace ZenECS.EditorWindows
         {
             using (new EditorGUILayout.HorizontalScope())
             {
-                using (var sv = new EditorGUILayout.ScrollViewScope(_uiState.RightScroll))
+                using (var sv = new EditorGUILayout.ScrollViewScope(_entityPanel.Scroll))
                 {
-                    _uiState.RightScroll = sv.scrollPosition;
+                    _entityPanel.Scroll = sv.scrollPosition;
 
                     EditorGUILayout.Space(4);
 
@@ -345,7 +402,7 @@ namespace ZenECS.EditorWindows
                     }
                 }
             }
-            
+
             GUILayout.Space(4);
             DrawFooter(kernel);
         }
@@ -353,7 +410,7 @@ namespace ZenECS.EditorWindows
         void TryResolveFindTarget(IWorld? world)
         {
             if (world == null) return;
-            
+
             _findState.FoundValid = false;
 
             if (!int.TryParse(_findState.EntityIdText, out var id))
@@ -362,7 +419,7 @@ namespace ZenECS.EditorWindows
             if (!int.TryParse(_findState.EntityGenText, out var gen))
                 gen = 0;
 
-            _findState.EntityId  = id;
+            _findState.EntityId = id;
             _findState.EntityGen = gen;
 
             var e = new Entity(id, gen);
@@ -373,13 +430,13 @@ namespace ZenECS.EditorWindows
             }
 
             _findState.FoundEntity = e;
-            _findState.FoundValid  = true;
+            _findState.FoundValid = true;
         }
 
         void DrawFindResult(IWorld? world, IReadOnlyList<ISystem>? systems)
         {
             if (world == null) return;
-            
+
             if (!_findState.EntityId.HasValue || !_findState.EntityGen.HasValue)
             {
                 EditorGUILayout.HelpBox("Enter a valid Entity ID and GEN.",
@@ -457,45 +514,36 @@ namespace ZenECS.EditorWindows
             DrawFooter(kernel);
         }
 
-        void DrawVerticalSeparator()
-        {
-            var sepRect = GUILayoutUtility.GetRect(
-                1f, 1f,
-                GUILayout.ExpandHeight(true),
-                GUILayout.Width(1f));
-
-            var sepColor = Color.black;
-            EditorGUI.DrawRect(sepRect, sepColor);
-        }
-        
         // =====================================================================
         //  DRAW: 좌 System / 우 Entity / 하단 Footer)
         // =====================================================================
 
         private void DrawLeftSystemTreePanel(IWorld? world, IReadOnlyList<ISystem>? systems)
         {
-            using var sv = new EditorGUILayout.ScrollViewScope(_uiState.LeftScroll, GUILayout.Width(300));
-            _uiState.LeftScroll = sv.scrollPosition;
-            
+            using var sv = new EditorGUILayout.ScrollViewScope(_systemTree.Scroll, GUILayout.Width(300));
+            _systemTree.Scroll = sv.scrollPosition;
+
             EditorGUILayout.Space(4);
-            
+
+            // 헤더 + ClearSelection 버튼
             using (new EditorGUILayout.HorizontalScope())
             {
-                EditorGUILayout.LabelField(
-                    $"Systems ({systems?.Count}) Entities ({world?.GetAllEntities().Count})",
-                    EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("Systems", EditorStyles.boldLabel);
                 GUILayout.FlexibleSpace();
-            
-                GUIStyle buttonStyle = new GUIStyle(EditorStyles.miniButton);
-                buttonStyle.alignment = TextAnchor.LowerCenter;
-            
-                if (GUILayout.Button(new GUIContent("R", "Clear Selection"), buttonStyle, GUILayout.Width(24),
-                        GUILayout.Height(24)))
+
+                var buttonStyle = new GUIStyle(EditorStyles.miniButton)
                 {
-                    _uiState.ClearSelection();
+                    alignment = TextAnchor.LowerCenter
+                };
+
+                if (GUILayout.Button(new GUIContent("R", "Clear Selection"),
+                        buttonStyle, GUILayout.Width(24), GUILayout.Height(24)))
+                {
+                    _systemTree.ClearSelection();
+                    _entityPanel.ClearSelection();
                 }
             }
-            
+
             if (systems == null || systems.Count == 0)
             {
                 EditorGUILayout.HelpBox("No systems registered.", MessageType.Info);
@@ -510,26 +558,25 @@ namespace ZenECS.EditorWindows
 
         private void DrawRightEntityPanel(IWorld? world, IReadOnlyList<ISystem>? systems)
         {
-            using var sv = new EditorGUILayout.ScrollViewScope(_uiState.RightScroll);
-            _uiState.RightScroll = sv.scrollPosition;
+            using var sv = new EditorGUILayout.ScrollViewScope(_entityPanel.Scroll);
+            _entityPanel.Scroll = sv.scrollPosition;
 
             EditorGUILayout.Space(4);
 
             bool hasSystem = systems != null &&
-                             _uiState.SelectedSystemIndex >= 0 &&
-                             _uiState.SelectedSystemIndex < (systems?.Count ?? 0);
+                             _systemTree.SelectedSystemIndex >= 0 &&
+                             _systemTree.SelectedSystemIndex < (systems?.Count ?? 0);
 
             bool hasSingleton = false;
-            if (_uiState.HasSelectedSingleton && world != null)
+            if (_entityPanel.HasSelectedSingleton && world != null)
             {
-                hasSingleton = world.IsAlive(_uiState.SelectedSingletonEntity);
+                hasSingleton = world.IsAlive(_entityPanel.SelectedSingletonEntity);
                 if (!hasSingleton)
                 {
-                    // 소멸된 싱글톤 엔티티는 선택 해제
-                    _uiState.HasSelectedSingleton = false;
+                    _entityPanel.ClearSingletonSelection();
                 }
             }
-
+            
             if (!hasSystem && !hasSingleton)
             {
                 // 시스템/싱글톤 선택 없음 → 안내 메시지만
@@ -551,7 +598,7 @@ namespace ZenECS.EditorWindows
             else if (hasSingleton && !hasSystem && world != null)
             {
                 // ===== 싱글톤 선택 모드 =====
-                DrawSingletonDetail(world, _uiState.SelectedSingletonType, _uiState.SelectedSingletonEntity);
+                DrawSingletonDetail(world, _entityPanel.SelectedSingletonType, _entityPanel.SelectedSingletonEntity);
             }
             else
             {
@@ -559,7 +606,7 @@ namespace ZenECS.EditorWindows
                 // 정상 리스트 모드 (시스템 선택 있음)
                 // =========================
 
-                var sys = systems![_uiState.SelectedSystemIndex];
+                var sys = systems![_systemTree.SelectedSystemIndex];
 
                 // 🔹 1) System Meta 박스
                 DrawSystemMeta(sys, world);
@@ -569,8 +616,8 @@ namespace ZenECS.EditorWindows
                 // 🔹 2) Entities 헤더 + 리스트
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    if (_uiState.SelectedSystemEntityCount > 0)
-                        EditorGUILayout.LabelField($"Entities ({_uiState.SelectedSystemEntityCount})", EditorStyles.boldLabel);
+                    if (_systemTree.SelectedSystemEntityCount > 0)
+                        EditorGUILayout.LabelField($"Entities ({_systemTree.SelectedSystemEntityCount})", EditorStyles.boldLabel);
                     else
                         EditorGUILayout.LabelField("Entities", EditorStyles.boldLabel);
 
@@ -586,15 +633,15 @@ namespace ZenECS.EditorWindows
                         "No inspector. Implement IInspectableSystem or add [Watch].",
                         MessageType.Info);
 
-                _uiState.SelectedSystemEntityCount = tmp.Count;
+                _systemTree.SelectedSystemEntityCount = tmp.Count;
 
                 foreach (var e in tmp.Distinct())
                     if (world != null)
                         DrawOneEntity(world, e);
             }
         }
-        
-        
+
+
         // =====================================================================
         //  HELPER: SYSTEM META 박스 (우측 상단 System 정보)
         // =====================================================================
@@ -843,7 +890,7 @@ namespace ZenECS.EditorWindows
                 {
                     // 시스템 타입별로 Foldout 상태를 저장
                     var key = t.FullName ?? t.Name;
-                    if (!_uiState.WatchedFold.TryGetValue(key, out var open))
+                    if (!_entityPanel.WatchedFold.TryGetValue(key, out var open))
                         open = false;
 
                     using (new EditorGUILayout.HorizontalScope())
@@ -855,7 +902,7 @@ namespace ZenECS.EditorWindows
                             true,
                             leftFoldoutStyle
                         );
-                        _uiState.WatchedFold[key] = open;
+                        _entityPanel.WatchedFold[key] = open;
 
                         GUILayout.FlexibleSpace();
 
@@ -1034,7 +1081,7 @@ namespace ZenECS.EditorWindows
         void ShowPlusContextMenu(Rect activatorRectGui, IWorld? world)
         {
             if (world == null) return;
-            
+
             var menu = new GenericMenu();
 
             menu.AddItem(new GUIContent("Add Entity from Blueprint..."), false,
@@ -1363,15 +1410,15 @@ namespace ZenECS.EditorWindows
 
                 if (_findState.FoundValid)
                 {
-                    if (_uiState.EntityFold.TryGetValue(_findState.FoundEntity, out var fold))
+                    if (_entityPanel.EntityFold.TryGetValue(_findState.FoundEntity, out var fold))
                     {
                         _findState.EntityFoldBackup = fold;
-                        _uiState.EntityFold[_findState.FoundEntity] = true;
+                        _entityPanel.EntityFold[_findState.FoundEntity] = true;
                     }
                     else
                     {
                         _findState.EntityFoldBackup = false;
-                        _uiState.EntityFold.TryAdd(_findState.FoundEntity, true);
+                        _entityPanel.EntityFold.TryAdd(_findState.FoundEntity, true);
                     }
                 }
 

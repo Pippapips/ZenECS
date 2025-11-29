@@ -51,18 +51,18 @@ namespace ZenECS.EditorWindows
             };
 
             bool selected =
-                _uiState.HasSelectedSingleton &&
-                _uiState.SelectedSingletonType == type &&
-                _uiState.SelectedSingletonEntity.Id == owner.Id &&
-                _uiState.SelectedSingletonEntity.Gen == owner.Gen;
+                _entityPanel.HasSelectedSingleton &&
+                _entityPanel.SelectedSingletonType == type &&
+                _entityPanel.SelectedSingletonEntity.Id == owner.Id &&
+                _entityPanel.SelectedSingletonEntity.Gen == owner.Gen;
 
             bool clicked = GUI.Toggle(sysRect, selected, label, btnStyle);
             if (clicked && !selected)
             {
                 ClearState();
-                _uiState.HasSelectedSingleton = true;
-                _uiState.SelectedSingletonType = type;
-                _uiState.SelectedSingletonEntity = owner;
+                _entityPanel.HasSelectedSingleton = true;
+                _entityPanel.SelectedSingletonType = type;
+                _entityPanel.SelectedSingletonEntity = owner;
             }
 
             // ===== 돋보기 버튼 (컴포넌트 타입 핑) =====
@@ -90,7 +90,7 @@ namespace ZenECS.EditorWindows
             }
             
             // 🔸 삭제 버튼 (기존 그대로)
-            using (new EditorGUI.DisabledScope(!_uiState.EditMode))
+            using (new EditorGUI.DisabledScope(!_coreState.EditMode))
             {
                 var delStyle = new GUIStyle(GUI.skin.button)
                 {

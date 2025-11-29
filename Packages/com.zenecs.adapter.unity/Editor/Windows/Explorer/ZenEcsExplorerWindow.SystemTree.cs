@@ -143,12 +143,12 @@ namespace ZenECS.EditorWindows
             centeredLabelStyle.fontStyle = FontStyle.Normal;
             centeredLabelStyle.fontSize = 10;
 
-            bool selected = _uiState.SelectedSystemIndex == index;
+            bool selected = _systemTree.SelectedSystemIndex == index;
             bool clicked = GUI.Toggle(sysRect, selected, typeName, centeredLabelStyle);
             if (clicked && !selected)
             {
                 ClearState();
-                _uiState.SelectedSystemIndex = index;
+                _systemTree.SelectedSystemIndex = index;
             }
 
             // ===== 돋보기 버튼 (Ping, Selection 변경 없음) =====
@@ -176,7 +176,7 @@ namespace ZenECS.EditorWindows
             }
 
             // ===== X 삭제 버튼 =====
-            using (new EditorGUI.DisabledScope(!_uiState.EditMode))
+            using (new EditorGUI.DisabledScope(!_coreState.EditMode))
             {
                 var delBtnRect = new Rect(
                     delRect.x,
@@ -245,11 +245,11 @@ namespace ZenECS.EditorWindows
                 return;
             }
 
-            if (!_uiState.GroupFold.TryGetValue(group, out var openGroup))
+            if (!_systemTree.GroupFold.TryGetValue(group, out var openGroup))
                 openGroup = true;
 
             openGroup = EditorGUILayout.Foldout(openGroup, label, true, systemTreeToggleStyle);
-            _uiState.GroupFold[group] = openGroup;
+            _systemTree.GroupFold[group] = openGroup;
             if (!openGroup) return;
 
             // 여기서는 "바로 위 Foldout 헤더"와 Leaf의 x를 맞추는 게 목표
@@ -300,11 +300,11 @@ namespace ZenECS.EditorWindows
             systemTreeToggleStyle.onNormal.textColor = systemTreeTextColor;
 
             var key = (group, phase);
-            if (!_uiState.PhaseFold.TryGetValue(key, out var openPhase))
+            if (!_systemTree.PhaseFold.TryGetValue(key, out var openPhase))
                 openPhase = true;
 
             openPhase = EditorGUILayout.Foldout(openPhase, label, true, systemTreeToggleStyle);
-            _uiState.PhaseFold[key] = openPhase;
+            _systemTree.PhaseFold[key] = openPhase;
             if (!openPhase) return;
 
             // Phase 헤더와 System 버튼이 같은 x에서 시작하도록 추가 들여쓰기 제거
@@ -373,9 +373,10 @@ namespace ZenECS.EditorWindows
             else
             {
                 EditorGUI.indentLevel = 0;
-                _uiState.DeterministicFold = EditorGUILayout.Foldout(_uiState.DeterministicFold, "Deterministic", true, foldStyle);
 
-                if (_uiState.DeterministicFold)
+                FoldoutHeader(ref _systemTree.DeterministicFold, "Deterministic", null, null, foldStyle);
+
+                if (_systemTree.DeterministicFold)
                 {
                     EditorGUI.indentLevel++;
 
@@ -404,10 +405,10 @@ namespace ZenECS.EditorWindows
             else
             {
                 EditorGUI.indentLevel = 0;
-                _uiState.NonDeterministicFold =
-                    EditorGUILayout.Foldout(_uiState.NonDeterministicFold, "Non-deterministic", true, foldStyle);
+                _systemTree.NonDeterministicFold =
+                    EditorGUILayout.Foldout(_systemTree.NonDeterministicFold, "Non-deterministic", true, foldStyle);
 
-                if (_uiState.NonDeterministicFold)
+                if (_systemTree.NonDeterministicFold)
                 {
                     EditorGUI.indentLevel++;
 
@@ -415,8 +416,8 @@ namespace ZenECS.EditorWindows
                     bool hasBegin = HasAny(nonDetGroups, SystemGroup.FrameInput, SystemGroup.FrameSync);
                     if (hasBegin)
                     {
-                        _uiState.BeginFold = EditorGUILayout.Foldout(_uiState.BeginFold, "Begin", true, foldStyle);
-                        if (_uiState.BeginFold)
+                        _systemTree.BeginFold = EditorGUILayout.Foldout(_systemTree.BeginFold, "Begin", true, foldStyle);
+                        if (_systemTree.BeginFold)
                         {
                             EditorGUI.indentLevel++;
                             DrawGroupLeaf(SystemGroup.FrameInput, "Input", nonDetGroups, world, foldStyle);
@@ -429,8 +430,8 @@ namespace ZenECS.EditorWindows
                     bool hasLate = HasAny(nonDetGroups, SystemGroup.FrameView, SystemGroup.FrameUI);
                     if (hasLate)
                     {
-                        _uiState.LateFold = EditorGUILayout.Foldout(_uiState.LateFold, "Late", true, foldStyle);
-                        if (_uiState.LateFold)
+                        _systemTree.LateFold = EditorGUILayout.Foldout(_systemTree.LateFold, "Late", true, foldStyle);
+                        if (_systemTree.LateFold)
                         {
                             EditorGUI.indentLevel++;
                             DrawGroupLeaf(SystemGroup.FrameView, "View", nonDetGroups, world, foldStyle);
@@ -467,8 +468,8 @@ namespace ZenECS.EditorWindows
                     if (singletonList.Count > 0)
                     {
                         EditorGUI.indentLevel = 0;
-                        _uiState.SingletonsFold = EditorGUILayout.Foldout(_uiState.SingletonsFold, "Singletons", true, foldStyle);
-                        if (_uiState.SingletonsFold)
+                        _systemTree.SingletonsFold = EditorGUILayout.Foldout(_systemTree.SingletonsFold, "Singletons", true, foldStyle);
+                        if (_systemTree.SingletonsFold)
                         {
                             EditorGUI.indentLevel++;
                             foreach (var (type, owner) in singletonList)
@@ -519,9 +520,9 @@ namespace ZenECS.EditorWindows
             else
             {
                 EditorGUI.indentLevel = 0;
-                _uiState.UnknownFold = EditorGUILayout.Foldout(_uiState.UnknownFold, "Unknown", true, foldStyle);
+                _systemTree.UnknownFold = EditorGUILayout.Foldout(_systemTree.UnknownFold, "Unknown", true, foldStyle);
 
-                if (_uiState.UnknownFold)
+                if (_systemTree.UnknownFold)
                 {
                     EditorGUI.indentLevel++;
 
@@ -571,11 +572,11 @@ namespace ZenECS.EditorWindows
             if (!map.TryGetValue(group, out var list) || list.Count == 0)
                 return;
 
-            if (!_uiState.GroupFold.TryGetValue(group, out var open))
+            if (!_systemTree.GroupFold.TryGetValue(group, out var open))
                 open = true;
 
             open = EditorGUILayout.Foldout(open, label, true, foldStyle);
-            _uiState.GroupFold[group] = open;
+            _systemTree.GroupFold[group] = open;
             if (!open) return;
 
             int prevIndent = EditorGUI.indentLevel;

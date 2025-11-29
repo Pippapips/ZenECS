@@ -384,7 +384,7 @@ namespace ZenECS.EditorWindows
                 // - 키가 없거나
                 // - false 이면
                 //   => "다 안 열려 있음"으로 판단
-                if (!_uiState.ContextFold.TryGetValue(key, out var open) || !open)
+                if (!_entityPanel.ContextFold.TryGetValue(key, out var open) || !open)
                     return false;
             }
 
@@ -544,7 +544,7 @@ namespace ZenECS.EditorWindows
                 if (boxed != null && !CanShowBinderBody(t, boxed)) continue;
                 any = true;
                 var key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}:BINDER";
-                if (!_uiState.BinderFold.TryGetValue(key, out bool open) || !open)
+                if (!_entityPanel.BinderFold.TryGetValue(e, out bool open) || !open)
                     return false;
             }
 
@@ -773,6 +773,49 @@ namespace ZenECS.EditorWindows
                     GUILayout.Width(width)
                 );
             }
+        }
+        
+        // =====================================================================
+        //  GUI HELPERS
+        // =====================================================================
+
+        /// <summary>
+        /// Draws a vertical separator line that stretches to fill the available height.
+        /// </summary>
+        void DrawVerticalSeparator(float width = 1f, float alpha = 0.2f)
+        {
+            var sepRect = GUILayoutUtility.GetRect(
+                width, width,
+                GUILayout.ExpandHeight(true),
+                GUILayout.Width(width));
+
+            var c = new Color(0f, 0f, 0f, alpha);
+            EditorGUI.DrawRect(sepRect, c);
+        }
+        
+        /// <summary>
+        /// Draws a foldout header with an optional right-side area (e.g. counter, buttons).
+        /// Returns the new foldout state.
+        /// </summary>
+        bool FoldoutHeader(
+            ref bool isOpen,
+            string label,
+            string? rightLabel = null,
+            Action? rightGui = null,
+            GUIStyle? style = null)
+        {
+            style ??= EditorStyles.foldoutHeader;
+
+            isOpen = EditorGUILayout.Foldout(isOpen, label, true, style);
+
+            if (!string.IsNullOrEmpty(rightLabel))
+            {
+                EditorGUILayout.LabelField(rightLabel, EditorStyles.miniLabel, GUILayout.ExpandWidth(false));
+            }
+
+            rightGui?.Invoke();
+
+            return isOpen;
         }
     }
 }

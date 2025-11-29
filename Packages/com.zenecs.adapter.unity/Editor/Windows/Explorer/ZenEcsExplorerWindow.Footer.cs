@@ -124,15 +124,15 @@ namespace ZenECS.EditorWindows
 
                         if (_findState.FoundValid)
                         {
-                            if (_uiState.EntityFold.TryGetValue(_findState.FoundEntity, out var fold))
+                            if (_entityPanel.EntityFold.TryGetValue(_findState.FoundEntity, out var fold))
                             {
                                 _findState.EntityFoldBackup = fold;
-                                _uiState.EntityFold[_findState.FoundEntity] = true;
+                                _entityPanel.EntityFold[_findState.FoundEntity] = true;
                             }
                             else
                             {
                                 _findState.EntityFoldBackup = false;
-                                _uiState.EntityFold.TryAdd(_findState.FoundEntity, true);
+                                _entityPanel.EntityFold.TryAdd(_findState.FoundEntity, true);
                             }
                         }
 
@@ -156,7 +156,7 @@ namespace ZenECS.EditorWindows
                 {
                     if (_findState.IsFindMode)
                     {
-                        _uiState.EntityFold[_findState.FoundEntity] = _findState.EntityFoldBackup;
+                        _entityPanel.EntityFold[_findState.FoundEntity] = _findState.EntityFoldBackup;
                     }
 
                     _findState.EntityIdText = "";
@@ -169,7 +169,7 @@ namespace ZenECS.EditorWindows
                     Repaint();
                 }
 
-                _uiState.EditMode = GUILayout.Toggle(_uiState.EditMode, "Edit", centeredButtonStyle, GUILayout.Width(60));
+                _coreState.EditMode = GUILayout.Toggle(_coreState.EditMode, "Edit", centeredButtonStyle, GUILayout.Width(60));
             }
         }
     }

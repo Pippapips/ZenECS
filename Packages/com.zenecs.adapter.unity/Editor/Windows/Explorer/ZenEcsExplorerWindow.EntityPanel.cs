@@ -32,14 +32,14 @@ namespace ZenECS.EditorWindows
 
         void DrawOneEntity(IWorld world, Entity e)
         {
-            _uiState.EntityFold.TryAdd(e, false);
+            _entityPanel.EntityFold.TryAdd(e, false);
 
             using (new EditorGUILayout.VerticalScope("box"))
             {
                 // ===== Entity header =====
                 var headRect = GUILayoutUtility.GetRect(10, EditorGUIUtility.singleLineHeight + 6f,
                     GUILayout.ExpandWidth(true));
-                bool openE = _uiState.EntityFold[e];
+                bool openE = _entityPanel.EntityFold[e];
 
                 var entityTitle = $"Entity #{e.Id}:{e.Gen}";
                 var isSingleton = world.HasSingleton(e);
@@ -62,7 +62,7 @@ namespace ZenECS.EditorWindows
 
                     // 맨 오른쪽: 삭제 X
                     var rDel = new Rect(right - wBtn, yBtn, wBtn, hBtn);
-                    using (new EditorGUI.DisabledScope(!_uiState.EditMode))
+                    using (new EditorGUI.DisabledScope(!_coreState.EditMode))
                     {
                         if (GUI.Button(rDel, "X", style))
                         {
@@ -78,14 +78,14 @@ namespace ZenECS.EditorWindows
                                     "Yes", "No"))
                             {
                                 world.ExternalCommandEnqueue(ExternalCommand.DestroyEntity(e));
-                                _uiState.EntityFold[_findState.FoundEntity] = _findState.EntityFoldBackup;
+                                _entityPanel.EntityFold[_findState.FoundEntity] = _findState.EntityFoldBackup;
                                 ClearState();
                             }
                         }
                     }
                 }, true, false);
 
-                _uiState.EntityFold[e] = openE;
+                _entityPanel.EntityFold[e] = openE;
 
                 if (!openE) return;
 
@@ -138,7 +138,7 @@ namespace ZenECS.EditorWindows
 
                 if (!isSingleton)
                 {
-                    using (new EditorGUI.DisabledScope(!_uiState.EditMode))
+                    using (new EditorGUI.DisabledScope(!_coreState.EditMode))
                     {
                         if (GUI.Button(rAddComp, GetPlusIconContent(), EditorStyles.iconButton))
                         {
@@ -206,7 +206,7 @@ namespace ZenECS.EditorWindows
                         EditorGUI.LabelField(rLabelC, $"Contexts: {ctxs.Length}");
 
                         // Add Context 버튼 (기존 로직 유지)
-                        using (new EditorGUI.DisabledScope(!_uiState.EditMode))
+                        using (new EditorGUI.DisabledScope(!_coreState.EditMode))
                         {
                             if (GUI.Button(rAddC, GetPlusIconContent(), EditorStyles.iconButton))
                             {
@@ -281,7 +281,7 @@ namespace ZenECS.EditorWindows
                         EditorGUI.LabelField(rLabel2, $"Binders: {binders.Length}");
 
                         // Add Binder 버튼
-                        using (new EditorGUI.DisabledScope(!_uiState.EditMode || !BinderApi.CanAdd(world)))
+                        using (new EditorGUI.DisabledScope(!_coreState.EditMode || !BinderApi.CanAdd(world)))
                         {
                             if (GUI.Button(rAdd, GetPlusIconContent(), EditorStyles.iconButton))
                             {
@@ -320,8 +320,7 @@ namespace ZenECS.EditorWindows
             {
                 foreach (var (t, boxed) in compsArray)
                 {
-                    var ck = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}";
-                    if (!_uiState.ComponentFold.ContainsKey(ck)) _uiState.ComponentFold[ck] = false;
+                    if (!_entityPanel.ComponentFold.ContainsKey(e)) _entityPanel.ComponentFold[e] = false;
 
                     bool hasFields = ZenComponentFormGUI.HasDrawableFields(t);
 
@@ -329,7 +328,7 @@ namespace ZenECS.EditorWindows
                     {
                         // ===== Component header =====
                         var headRectC = GUILayoutUtility.GetRect(10, line + 6f, GUILayout.ExpandWidth(true));
-                        bool openC = _uiState.ComponentFold[ck];
+                        bool openC = _entityPanel.ComponentFold[e];
 
                         ZenFoldoutHeader.DrawRow(
                             ref openC,
@@ -347,7 +346,7 @@ namespace ZenECS.EditorWindows
                                 var rR1 = new Rect(rR0.x - gap - wBtn, yBtn, wBtn, hBtn);
                                 var rR2 = new Rect(rR1.x - gap - wBtn, yBtn, wBtn, hBtn);
 
-                                using (new EditorGUI.DisabledScope(!_uiState.EditMode))
+                                using (new EditorGUI.DisabledScope(!_coreState.EditMode))
                                 {
                                     if (!isSingleton)
                                     {
@@ -360,7 +359,7 @@ namespace ZenECS.EditorWindows
                                             {
                                                 world.ExternalCommandEnqueue(ExternalCommand.RemoveComponent(e, t));
                                                 
-                                                _uiState.ComponentFold.Remove(ck);
+                                                _entityPanel.ComponentFold.Remove(e);
                                                 Repaint();
                                             }
                                         }
@@ -418,10 +417,10 @@ namespace ZenECS.EditorWindows
                             false
                         );
 
-                        _uiState.ComponentFold[ck] = hasFields && openC;
+                        _entityPanel.ComponentFold[e] = hasFields && openC;
 
                         // ===== body =====
-                        if (!hasFields || !_uiState.ComponentFold[ck]) continue;
+                        if (!hasFields || !_entityPanel.ComponentFold[e]) continue;
 
                         try
                         {
@@ -434,7 +433,7 @@ namespace ZenECS.EditorWindows
 
                             EditorGUI.BeginChangeCheck();
                             ZenComponentFormGUI.DrawObject(bodyInner, obj, t);
-                            if (EditorGUI.EndChangeCheck() && _uiState.EditMode)
+                            if (EditorGUI.EndChangeCheck() && _coreState.EditMode)
                             {
                                 world.ExternalCommandEnqueue(ExternalCommand.ReplaceComponent(e, t, obj));
                             }
@@ -452,7 +451,7 @@ namespace ZenECS.EditorWindows
             {
                 if (!ZenComponentFormGUI.HasDrawableFields(t)) continue;
                 var key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}";
-                _uiState.ComponentFold[key] = open;
+                _entityPanel.ComponentFold[e] = open;
             }
         }
 
@@ -464,7 +463,7 @@ namespace ZenECS.EditorWindows
                 if (!ZenComponentFormGUI.HasDrawableFields(t)) continue;
                 any = true;
                 var key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}";
-                if (!_uiState.ComponentFold.TryGetValue(key, out bool open) || !open)
+                if (!_entityPanel.ComponentFold.TryGetValue(e, out bool open) || !open)
                     return false;
             }
 
@@ -479,8 +478,7 @@ namespace ZenECS.EditorWindows
             {
                 foreach (var (t, boxed) in bindersArray)
                 {
-                    var ck = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}:BINDER";
-                    if (!_uiState.BinderFold.ContainsKey(ck)) _uiState.BinderFold[ck] = false;
+                    if (!_entityPanel.BinderFold.ContainsKey(e)) _entityPanel.BinderFold[e] = false;
 
                     bool hasFields = ZenComponentFormGUI.HasDrawableFields(t);
                     bool hasMetaOrFields = boxed != null && CanShowBinderBody(t, boxed);
@@ -496,7 +494,7 @@ namespace ZenECS.EditorWindows
                     using (new EditorGUILayout.VerticalScope("box"))
                     {
                         var headRectB = GUILayoutUtility.GetRect(10, line + 6f, GUILayout.ExpandWidth(true));
-                        bool openB = _uiState.BinderFold[ck];
+                        bool openB = _entityPanel.BinderFold[e];
 
                         // 헤더 이름 색상: Disabled면 짙은 회색
                         var prevHeaderColor = GUI.color;
@@ -532,7 +530,7 @@ namespace ZenECS.EditorWindows
                                 // binder 활성 상태
                                 var hasBinder = binder != null;
                                 bool isEnabled = hasBinder && binder is { Enabled: true };
-                                bool canToggle = hasBinder && _uiState.EditMode; // 읽기전용일 땐 토글 비활성
+                                bool canToggle = hasBinder && _coreState.EditMode; // 읽기전용일 땐 토글 비활성
 
                                 var icon = GetSearchIconContent("Ping script asset");
                                 if (GUI.Button(rR2, icon, EditorStyles.iconButton))
@@ -584,7 +582,7 @@ namespace ZenECS.EditorWindows
                                 }
 
                                 // 🔸 삭제 버튼 (기존 그대로)
-                                using (new EditorGUI.DisabledScope(!_uiState.EditMode || !BinderApi.CanRemove(world)))
+                                using (new EditorGUI.DisabledScope(!_coreState.EditMode || !BinderApi.CanRemove(world)))
                                 {
                                     var gcDel = new GUIContent("X", "Remove this Binder from Entity");
                                     if (GUI.Button(rR0, gcDel, style))
@@ -595,7 +593,7 @@ namespace ZenECS.EditorWindows
                                                 "Yes", "No"))
                                         {
                                             BinderApi.Remove(world, e, t);
-                                            _uiState.BinderFold.Remove(ck);
+                                            _entityPanel.BinderFold.Remove(e);
                                             Repaint();
                                         }
                                     }
@@ -606,9 +604,9 @@ namespace ZenECS.EditorWindows
                         );
 
                         GUI.color = prevHeaderColor;
-                        _uiState.BinderFold[ck] = openB;
+                        _entityPanel.BinderFold[e] = openB;
 
-                        if (!_uiState.BinderFold[ck]) continue;
+                        if (!_entityPanel.BinderFold[e]) continue;
 
                         // ===== body =====
                         var prevBodyColor = GUI.color;
@@ -633,7 +631,7 @@ namespace ZenECS.EditorWindows
 
                                 EditorGUI.BeginChangeCheck();
                                 ZenComponentFormGUI.DrawObject(bodyInner, obj, t);
-                                if (EditorGUI.EndChangeCheck() && _uiState.EditMode && BinderApi.CanReplace(world))
+                                if (EditorGUI.EndChangeCheck() && _coreState.EditMode && BinderApi.CanReplace(world))
                                     BinderApi.Replace(world, e, obj);
                             }
                         }
@@ -654,7 +652,7 @@ namespace ZenECS.EditorWindows
             foreach (var (t, boxed) in arr)
             {
                 var key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}:BINDER";
-                _uiState.BinderFold[key] = open;
+                _entityPanel.BinderFold[e] = open;
             }
         }
 
@@ -690,7 +688,7 @@ namespace ZenECS.EditorWindows
                         // 무시하고 0 사용
                     }
 
-                    using (new EditorGUI.DisabledScope(!_uiState.EditMode))
+                    using (new EditorGUI.DisabledScope(!_coreState.EditMode))
                     {
                         // 한 줄짜리 Rect를 직접 받아서 x 좌표를 제어
                         var lineRect = EditorGUILayout.GetControlRect();
@@ -804,7 +802,7 @@ namespace ZenECS.EditorWindows
             {
                 if (t == null) continue;
                 var key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}:CTX";
-                _uiState.ContextFold[key] = open;
+                _entityPanel.ContextFold[key] = open;
             }
         }
 
@@ -820,10 +818,10 @@ namespace ZenECS.EditorWindows
 
                     var ck = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}:CTX";
 
-                    if (!_uiState.ContextFold.TryGetValue(ck, out var open))
+                    if (!_entityPanel.ContextFold.TryGetValue(ck, out var open))
                     {
                         open = false;
-                        _uiState.ContextFold[ck] = open;
+                        _entityPanel.ContextFold[ck] = open;
                     }
 
                     using (new EditorGUILayout.VerticalScope("box"))
@@ -855,7 +853,7 @@ namespace ZenECS.EditorWindows
                                 var rR2 = new Rect(rR1.x - gap - wBtn, yBtn, wBtn, hBtn);
 
                                 // CKWORK
-                                using (new EditorGUI.DisabledScope(!_uiState.EditMode))
+                                using (new EditorGUI.DisabledScope(!_coreState.EditMode))
                                 {
                                     if (GUI.Button(rR0, "X", EditorStyles.miniButton))
                                     {
@@ -867,7 +865,7 @@ namespace ZenECS.EditorWindows
                                             if (inst is IContext ctxInstance)
                                             {
                                                 ContextApi.Remove(world, e, ctxInstance);
-                                                _uiState.ContextFold.Remove(ck);
+                                                _entityPanel.ContextFold.Remove(ck);
                                             }
 
                                             Repaint();
@@ -925,7 +923,7 @@ namespace ZenECS.EditorWindows
                             noMarginTitle: false // ← 화살표 + 2줄(이름/네임스페이스) 레이아웃
                         );
 
-                        _uiState.ContextFold[ck] = open;
+                        _entityPanel.ContextFold[ck] = open;
 
                         // 닫혀 있으면 필드 목록은 안 그림 (하지만 이름/네임스페이스는 항상 출력됨)
                         if (!open || inst == null)
