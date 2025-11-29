@@ -179,6 +179,7 @@ namespace ZenECS.Adapter.Unity
 
             KernelLocator.Detach(Kernel);
             Kernel.Dispose();
+            ZenEcsUnityBridge.Clear();
             Kernel = null;
         }
 

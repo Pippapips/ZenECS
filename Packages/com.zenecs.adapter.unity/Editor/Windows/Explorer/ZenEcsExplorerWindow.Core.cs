@@ -24,10 +24,6 @@ namespace ZenECS.EditorWindows
     public sealed partial class ZenEcsExplorerWindow : EditorWindow
     {
         // =====================================================================
-        //  MENU & STATIC OPEN
-        // =====================================================================
-
-// =====================================================================
         //  MENU
         // =====================================================================
 
@@ -44,31 +40,31 @@ namespace ZenECS.EditorWindows
         [Serializable]
         sealed class ExplorerFindState
         {
-            public const string LabelEntityId = "Entity ID:GEN ";
-            public const string BtnFind = "Find";
-            public const string BtnClear = "Clear";
+            public const string LabelEntityId = "Entity ID:GEN ";       // LABEL_ENTITY_ID
+            public const string BtnFind = "Find";                       // BTN_FIND
+            public const string BtnClear = "Clear";                     // BTN_CLEAR_FILTER
 
-            public const string TipFind =
+            public const string TipFind =   // TIP_FIND
                 "Show only the entity with this ID (no system switching).";
 
-            public const string TipClear =
+            public const string TipClear =  // TIP_CLEAR
                 "Exit single-entity view and show all entities.";
 
             // 입력 문자열
-            public string EntityIdText = string.Empty;
-            public string EntityGenText = "0";
+            public string EntityIdText = string.Empty;      // _entityIdText
+            public string EntityGenText = "0";              // _entityGenText
 
             // 파싱된 타겟
-            public int? EntityId;
-            public int? EntityGen;
+            public int? EntityId;               // _findEntityId
+            public int? EntityGen;              // _findEntityGen
 
             // UI 상태
-            public bool IsFindMode;
-            public bool FoundValid;
-            public bool WatchedSystemsFold;
-            public bool EntityFoldBackup;
+            public bool IsFindMode;             // _findMode
+            public bool FoundValid;             // _foundValid
+            public bool WatchedSystemsFold;     // _findWatchedSystemsFold
+            public bool EntityFoldBackup;       // _findEntityFoldBackup
 
-            public Entity FoundEntity;
+            public Entity FoundEntity;          // _foundEntity
         }
 
         [Serializable]
@@ -82,8 +78,8 @@ namespace ZenECS.EditorWindows
             public Type? SelectedSingletonType;
 
             // 스크롤
-            public Vector2 LeftScroll;
-            public Vector2 RightScroll;
+            public Vector2 LeftScroll;      // _left
+            public Vector2 RightScroll;     // _right
 
             // 편집 모드
             public bool EditMode = true;
@@ -131,17 +127,12 @@ namespace ZenECS.EditorWindows
         }
 
         // 실제 상태 인스턴스
-        readonly ExplorerFindState _find = new();
-        readonly ExplorerUiState _ui = new();
+        readonly ExplorerFindState _findState = new();
+        readonly ExplorerUiState _uiState = new();
 
         // =====================================================================
         //  기타 캐시 / enum
         // =====================================================================
-
-        readonly List<Entity> _cache = new(256);
-        double _nextRepaint;
-        static GUIStyle? _bigPlusButton;
-        static bool _bigPlusReady;
 
         // Fixed / Variable / Presentation 구분
         enum PhaseKind
@@ -150,86 +141,38 @@ namespace ZenECS.EditorWindows
             Deterministic,
             NonDeterministic,
         }
-
-        // System.Enabled 리플렉션 캐시
-        static readonly Dictionary<Type, PropertyInfo?> _systemEnabledPropCache = new();
-
-        // =====================================================================
-        //  FIELDS (발췌: 기존 ZenEcsExplorerWindow.cs 상단의 모든 필드/상수/enum)
-        // =====================================================================
-
-        // --- UI labels/tooltips (English) ---
-        const string LABEL_ENTITY_ID = "Entity ID:GEN ";
-        const string BTN_FIND = "Find";
-        const string BTN_CLEAR_FILTER = "Clear";
-        const string TIP_FIND = "Show only the entity with this ID (no system switching).";
-        const string TIP_CLEAR = "Exit single-entity view and show all entities.";
-
-        // --- Single-entity Find mode state ---
-        string _entityIdText = "";
-        int? _findEntityId = null; // current target ID (null => list mode)
-        string _entityGenText = "0";
-        int? _findEntityGen = null; // current target ID (null => list mode)
-        private bool _findEntityFoldBackup;
-
-        bool _findMode = false;   // single view mode on/off
-        Entity _foundEntity;      // resolved entity
-        bool _foundValid = false; // found in world?
-        bool _findWatchedSystemsFold = false;
-
-        // --- Other UI/layout state ---
-        Vector2 _left, _right;
-        int _selSystem = -1;
-
-
-        // 현재 선택된 싱글톤 (좌측 Singletons 섹션)
-        Entity _selectedSingletonEntity;
-        Type? _selectedSingletonType;
-        bool _hasSelectedSingleton = false;
-
-        private int _selSysEntityCount;
-
-        // 👇 Watched Components Foldout 상태 (시스템 타입별)
-        readonly Dictionary<string, bool> _watchedFold = new();
-
-        // 👇 System 트리용 Foldout 상태
-        readonly Dictionary<SystemGroup, bool> _groupFold = new();
-        readonly Dictionary<(SystemGroup group, PhaseKind phase), bool> _phaseFold = new();
-
-        // Phase 상위/하위 섹션 Foldout 상태
-        bool _deterministicFold = true;
-        bool _nonDeterministicFold = true;
-        bool _beginFold = true;
-        bool _lateFold = true;
-        bool _unknownFold = true;    // 👈 기존
-        bool _singletonsFold = true; // Singletons 섹션 Foldout
-
-        readonly Dictionary<Entity, bool> _entityFold = new();    // entityId → fold
-        readonly Dictionary<string, bool> _componentFold = new(); // $"{entityId}:{typeName}" → fold
-        readonly Dictionary<string, bool> _binderFold = new();    // $"{entityId}:{typeName}" → fold
-        readonly Dictionary<string, bool> _contextFold = new();   // $"{entityId}:{typeName}:CTX" → fold
-        //bool _ui.EditMode = true;
+        
+        private double _nextRepaint;
+        private const float _repaintInterval = 0.25f;
 
         // =====================================================================
         //  UNITY LIFECYCLE
         // =====================================================================
 
+        void ClearState(bool repaint = true)
+        {
+            _uiState.ClearSelection();
+
+            _findState.IsFindMode         = false;
+            _findState.EntityId           = null;
+            _findState.EntityGen          = null;
+            _findState.FoundValid         = false;
+            _findState.WatchedSystemsFold = false;
+
+            _uiState.ClearTreeFoldouts();
+            
+            if (repaint) Repaint();
+        }
+        
         void OnEnable()
         {
             EditorApplication.update += OnEditorUpdate;
             EditorApplication.playModeStateChanged += OnPlayModeChanged;
             AssemblyReloadEvents.beforeAssemblyReload += OnBeforeReload;
-            
-            _ui.ClearSelection();
-            _ui.ClearTreeFoldouts();
 
-            _find.IsFindMode          = false;
-            _find.EntityId            = null;
-            _find.EntityGen           = null;
-            _find.FoundValid          = false;
-            _find.WatchedSystemsFold  = false;
+            ClearState();
 
-            _nextRepaint = EditorApplication.timeSinceStartup + 0.25;            
+            _nextRepaint = EditorApplication.timeSinceStartup + _repaintInterval;            
         }
 
         void OnDisable()
@@ -243,82 +186,21 @@ namespace ZenECS.EditorWindows
         {
             if (EditorApplication.timeSinceStartup > _nextRepaint)
             {
-                _nextRepaint = EditorApplication.timeSinceStartup + 0.25f;
+                _nextRepaint = EditorApplication.timeSinceStartup + _repaintInterval;
                 Repaint();
             }
         }
 
         void OnBeforeReload()
         {
-            _ui.ClearSelection();
-            _cache.Clear();
-
-            _find.IsFindMode         = false;
-            _find.EntityId           = null;
-            _find.EntityGen          = null;
-            _find.FoundValid         = false;
-            _find.WatchedSystemsFold = false;
-
-            _ui.ClearTreeFoldouts();
-            
-            // old
-            _selSystem = -1;
-            _hasSelectedSingleton = false;
-            _selSysEntityCount = 0;
-            _cache.Clear();
-            _entityFold.Clear();
-            _binderFold.Clear();
-            _componentFold.Clear();
-            _contextFold.Clear();
-            _watchedFold.Clear();
-            _findMode = false;
-            _findEntityId = null;
-            _foundValid = false;
-            _findWatchedSystemsFold = false;
-
-            // 👇 시스템 트리 Foldout 초기화
-            _groupFold.Clear();
-            _phaseFold.Clear();
+            ClearState();
         }
 
         void OnPlayModeChanged(PlayModeStateChange s)
         {
             if (s is PlayModeStateChange.ExitingPlayMode or PlayModeStateChange.EnteredEditMode)
             {
-                _ui.ClearSelection();
-                _cache.Clear();
-
-                _find.IsFindMode         = false;
-                _find.EntityId           = null;
-                _find.EntityGen          = null;
-                _find.FoundValid         = false;
-                _find.WatchedSystemsFold = false;
-
-                _ui.ClearTreeFoldouts();
-
-                Repaint();                
-                
-                // old
-                
-                _selSystem = -1;
-                _hasSelectedSingleton = false;
-                _selSysEntityCount = 0;
-                _cache.Clear();
-                _findMode = false;
-                _findEntityId = null;
-                _foundValid = false;
-                _findWatchedSystemsFold = false;
-                _entityFold.Clear();
-                _binderFold.Clear();
-                _componentFold.Clear();
-                _contextFold.Clear();
-                _watchedFold.Clear();
-
-                // 👇 시스템 트리 Foldout 초기화
-                _groupFold.Clear();
-                _phaseFold.Clear();
-
-                Repaint();
+                ClearState();
             }
         }
 
@@ -329,9 +211,15 @@ namespace ZenECS.EditorWindows
         void OnGUI()
         {
             var kernel = ZenEcsUnityBridge.Kernel;
-            if (kernel == null || !kernel.GetAllWorld().Any())
+            if (kernel == null)
             {
                 DrawKernelNotReadyOverlay();
+                return;
+            }
+
+            if (!kernel.GetAllWorld().Any())
+            {
+                DrawNoWorldOverlay();
                 return;
             }
 
@@ -343,7 +231,7 @@ namespace ZenECS.EditorWindows
             EditorGUILayout.Space(2);
 
             // 🔹 FIND MODE
-            if (_find.IsFindMode)
+            if (_findState.IsFindMode)
             {
                 DrawFindMode(kernel, world, systems);
                 return;
@@ -351,341 +239,6 @@ namespace ZenECS.EditorWindows
             
             // 🔹 일반 모드
             DrawMainLayout(kernel, world, systems);
-            
-            #region old
-            // // =====================================================
-            // // 1) FIND MODE: 좌/우 패널 없이 전체 폭으로 Find 뷰만
-            // // =====================================================
-            // if (_findMode)
-            // {
-            //     using (var sv = new EditorGUILayout.ScrollViewScope(_right))
-            //     {
-            //         _right = sv.scrollPosition;
-            //
-            //         EditorGUILayout.Space(4);
-            //
-            //         using (new EditorGUILayout.VerticalScope("box"))
-            //         {
-            //             // 🔹 맨 위 가운데 Close 버튼
-            //             using (new EditorGUILayout.HorizontalScope())
-            //             {
-            //                 GUIStyle centeredButtonStyle = EditorStyles.toolbarButton;
-            //                 centeredButtonStyle.fontStyle = FontStyle.Normal;
-            //                 centeredButtonStyle.fontSize = 20;
-            //
-            //                 GUILayout.FlexibleSpace();
-            //                 if (GUILayout.Button("BACK", centeredButtonStyle, GUILayout.Width(80)))
-            //                 {
-            //                     _entityFold[_foundEntity] = _findEntityFoldBackup;
-            //
-            //                     _entityIdText = "";
-            //                     _findEntityId = null;
-            //
-            //                     _entityGenText = "0";
-            //                     _findEntityGen = null;
-            //
-            //                     _findWatchedSystemsFold = false;
-            //                     _foundValid = false;
-            //                     _findMode = false;
-            //                     Repaint();
-            //                     return;
-            //                 }
-            //
-            //                 GUILayout.FlexibleSpace();
-            //             }
-            //
-            //             EditorGUILayout.Space(6);
-            //
-            //             // 🔹 Watched Systems 목록 (Back 버튼 바로 아래)
-            //             if (world != null && systems != null && _foundValid)
-            //             {
-            //                 var watchedList = CollectWatchedSystemsForEntity(world, _foundEntity, systems);
-            //                 if (watchedList.Count > 0)
-            //                 {
-            //                     using (new EditorGUILayout.VerticalScope("box"))
-            //                     {
-            //                         var leftFoldoutStyle = new GUIStyle(EditorStyles.foldout)
-            //                             { };
-            //
-            //                         leftFoldoutStyle.focused.textColor = systemMetaTextColor;
-            //                         leftFoldoutStyle.onFocused.textColor = systemMetaTextColor;
-            //                         leftFoldoutStyle.hover.textColor = systemMetaTextColor;
-            //                         leftFoldoutStyle.onHover.textColor = systemMetaTextColor;
-            //                         leftFoldoutStyle.active.textColor = systemMetaTextColor;
-            //                         leftFoldoutStyle.onActive.textColor = systemMetaTextColor;
-            //                         leftFoldoutStyle.normal.textColor = systemMetaTextColor;
-            //                         leftFoldoutStyle.onNormal.textColor = systemMetaTextColor;
-            //
-            //                         // Foldout 헤더: "Watched Systems (N)"
-            //                         _findWatchedSystemsFold = EditorGUILayout.Foldout(
-            //                             _findWatchedSystemsFold,
-            //                             $"Watched Systems ({watchedList.Count})",
-            //                             true,
-            //                             leftFoldoutStyle
-            //                         );
-            //
-            //                         if (_findWatchedSystemsFold)
-            //                         {
-            //                             EditorGUI.indentLevel++;
-            //
-            //                             // Watched Components와 동일한 회색 네임스페이스 스타일
-            //                             var nsStyle = new GUIStyle(EditorStyles.miniLabel)
-            //                             {
-            //                                 wordWrap = true,
-            //                                 fontSize = 10,
-            //                                 padding = new RectOffset(0, 0, 0, 0),
-            //                                 richText = true,
-            //                                 normal =
-            //                                 {
-            //                                     textColor = systemMetaTextColor
-            //                                 }
-            //                             };
-            //
-            //                             foreach (var (sys, tSys) in watchedList)
-            //                             {
-            //                                 if (tSys == null) continue;
-            //                                 string ns = string.IsNullOrEmpty(tSys.Namespace)
-            //                                     ? "(global)"
-            //                                     : tSys.Namespace;
-            //
-            //                                 using (new EditorGUILayout.HorizontalScope())
-            //                                 {
-            //                                     // System 이름
-            //                                     EditorGUILayout.LabelField($"{tSys.Name} <color=#707070>[{ns}]</color>",
-            //                                         nsStyle);
-            //                                     // EditorGUILayout.LabelField(tSys.Name, GUILayout.ExpandWidth(false));
-            //                                     //
-            //                                     // // [namespace] 어두운 회색
-            //                                     // EditorGUILayout.LabelField($"[{ns}]", nsStyle, GUILayout.ExpandWidth(true));
-            //
-            //                                     // 돋보기 아이콘 (우측 끝)
-            //                                     var icon = GetSearchIconContent("Ping system script asset");
-            //                                     if (GUILayout.Button(icon, EditorStyles.iconButton, GUILayout.Width(18),
-            //                                             GUILayout.Height(16)))
-            //                                     {
-            //                                         // 선택은 유지하고 Ping만
-            //                                         PingSystemTypeNoSelect(tSys);
-            //                                     }
-            //                                 }
-            //                             }
-            //
-            //                             EditorGUI.indentLevel--;
-            //                         }
-            //                     }
-            //
-            //                     EditorGUILayout.Space(6);
-            //                 }
-            //             }
-            //
-            //             // 아래는 기존 Entity 표시 로직 그대로
-            //             if (world == null)
-            //             {
-            //                 EditorGUILayout.HelpBox("World not attached.", MessageType.Warning);
-            //             }
-            //             else if (_findEntityId.HasValue && _findEntityGen.HasValue)
-            //             {
-            //                 if (_foundValid)
-            //                 {
-            //                     EditorGUILayout.LabelField(
-            //                         $"Entity #{_findEntityId.Value}:{_findEntityGen.Value}",
-            //                         EditorStyles.boldLabel);
-            //
-            //                     GUILayout.Space(2);
-            //
-            //                     DrawOneEntity(world, _foundEntity);
-            //                 }
-            //                 else
-            //                 {
-            //                     EditorGUILayout.HelpBox(
-            //                         $"No entity with ID {_findEntityId.Value}:{_findEntityGen.Value} in {world.Name} World.",
-            //                         MessageType.Info
-            //                     );
-            //                 }
-            //             }
-            //             else
-            //             {
-            //                 EditorGUILayout.HelpBox(
-            //                     "Please enter a valid positive numeric Entity ID/GEN.",
-            //                     MessageType.Warning
-            //                 );
-            //             }
-            //         }
-            //     }
-            //
-            //     GUILayout.Space(4);
-            //     DrawFooter(kernel);
-            //     return;
-            // }
-            //
-            // // =====================================================
-            // // 2) 일반 모드: 좌측 Systems + 세로 구분선 + 우측 Entities
-            // // =====================================================
-            // using (new EditorGUILayout.HorizontalScope())
-            // {
-            //     // ---------- Left: Systems ----------
-            //     using (var sv = new EditorGUILayout.ScrollViewScope(_left, GUILayout.Width(300)))
-            //     {
-            //         _left = sv.scrollPosition;
-            //
-            //         EditorGUILayout.Space(4);
-            //
-            //         using (new EditorGUILayout.HorizontalScope())
-            //         {
-            //             EditorGUILayout.LabelField(
-            //                 $"Systems ({systems?.Count}) Entities ({world?.GetAllEntities().Count})",
-            //                 EditorStyles.boldLabel);
-            //             GUILayout.FlexibleSpace();
-            //
-            //             GUIStyle buttonStyle = new GUIStyle(EditorStyles.miniButton);
-            //             buttonStyle.alignment = TextAnchor.LowerCenter;
-            //
-            //             if (GUILayout.Button(new GUIContent("R", "Clear Selection"), buttonStyle, GUILayout.Width(24),
-            //                     GUILayout.Height(24)))
-            //             {
-            //                 _selSystem = -1;
-            //                 _hasSelectedSingleton = false;
-            //                 _selSysEntityCount = 0;
-            //                 _entityFold.Clear();
-            //                 _binderFold.Clear();
-            //                 _componentFold.Clear();
-            //                 _contextFold.Clear();
-            //                 _watchedFold.Clear();
-            //                 _cache.Clear();
-            //             }
-            //         }
-            //
-            //         //EditorGUILayout.Space(2);
-            //
-            //         if (systems == null || systems.Count == 0)
-            //         {
-            //             EditorGUILayout.HelpBox("No systems registered.", MessageType.Info);
-            //         }
-            //         else
-            //         {
-            //             DrawSystemTree(systems, world);
-            //         }
-            //     }
-            //
-            //     EditorGUILayout.Space(4);
-            //
-            //     // ---------- Vertical Separator ----------
-            //     {
-            //         var sepRect = GUILayoutUtility.GetRect(
-            //             1f, 1f,
-            //             GUILayout.ExpandHeight(true),
-            //             GUILayout.Width(1f)
-            //         );
-            //
-            //         var sepColor = EditorGUIUtility.isProSkin
-            //             ? new Color(0.22f, 0.22f, 0.22f, 1f)
-            //             : new Color(0.6f, 0.6f, 0.6f, 1f);
-            //
-            //         sepColor = Color.black;
-            //         EditorGUI.DrawRect(sepRect, sepColor);
-            //     }
-            //
-            //     // ---------- Right: Entities ----------
-            //     using (var sv = new EditorGUILayout.ScrollViewScope(_right))
-            //     {
-            //         _right = sv.scrollPosition;
-            //
-            //         EditorGUILayout.Space(4);
-            //
-            //         bool hasSystem = systems != null &&
-            //                          _selSystem >= 0 &&
-            //                          _selSystem < (systems?.Count ?? 0);
-            //
-            //         bool hasSingleton = false;
-            //         if (_hasSelectedSingleton && world != null)
-            //         {
-            //             hasSingleton = world.IsAlive(_selectedSingletonEntity.Id, _selectedSingletonEntity.Gen);
-            //             if (!hasSingleton)
-            //             {
-            //                 // 소멸된 싱글톤 엔티티는 선택 해제
-            //                 _hasSelectedSingleton = false;
-            //             }
-            //         }
-            //
-            //         if (!hasSystem && !hasSingleton)
-            //         {
-            //             // 시스템/싱글톤 선택 없음 → 안내 메시지만
-            //             GUILayout.FlexibleSpace();
-            //             using (new EditorGUILayout.HorizontalScope())
-            //             {
-            //                 GUILayout.FlexibleSpace();
-            //
-            //                 EditorGUILayout.HelpBox(
-            //                     "Select a system or singleton from the left panel.\n" +
-            //                     "The System Meta or Singleton Entity will be shown here.",
-            //                     MessageType.Info);
-            //
-            //                 GUILayout.FlexibleSpace();
-            //             }
-            //
-            //             GUILayout.FlexibleSpace();
-            //         }
-            //         else if (hasSingleton && !hasSystem && world != null)
-            //         {
-            //             // ===== 싱글톤 선택 모드 =====
-            //             DrawSingletonDetail(world, _selectedSingletonType, _selectedSingletonEntity);
-            //         }
-            //         else
-            //         {
-            //             // =========================
-            //             // 정상 리스트 모드 (시스템 선택 있음)
-            //             // =========================
-            //
-            //             var sys = systems![_selSystem];
-            //
-            //             // 🔹 1) System Meta 박스
-            //             DrawSystemMeta(sys, world);
-            //
-            //             EditorGUILayout.Space(6);
-            //
-            //             // 🔹 2) Entities 헤더 + 리스트
-            //             using (new EditorGUILayout.HorizontalScope())
-            //             {
-            //                 if (_selSysEntityCount > 0)
-            //                     EditorGUILayout.LabelField($"Entities ({_selSysEntityCount})", EditorStyles.boldLabel);
-            //                 else
-            //                     EditorGUILayout.LabelField("Entities", EditorStyles.boldLabel);
-            //
-            //                 GUILayout.FlexibleSpace();
-            //             }
-            //
-            //             EditorGUILayout.Space(4);
-            //
-            //             var done = false;
-            //
-            //             if (!done && world == null)
-            //             {
-            //                 EditorGUILayout.HelpBox("World not attached.", MessageType.Warning);
-            //                 done = true;
-            //             }
-            //
-            //             if (!done)
-            //             {
-            //                 _cache.Clear();
-            //
-            //                 if (!WatchQueryRunner.TryCollectByWatch(sys, world,
-            //                         _cache))
-            //                     EditorGUILayout.HelpBox(
-            //                         "No inspector. Implement IInspectableSystem or add [Watch].",
-            //                         MessageType.Info);
-            //
-            //                 _selSysEntityCount = _cache.Count;
-            //
-            //                 foreach (var e in _cache.Distinct())
-            //                     if (world != null)
-            //                         DrawOneEntity(world, e);
-            //             }
-            //         }
-            //     }
-            // }
-            //
-            // GUILayout.Space(4);
-            // DrawFooter(kernel);
-            #endregion
         }
 
         // =====================================================================
@@ -727,138 +280,123 @@ namespace ZenECS.EditorWindows
             GUILayout.FlexibleSpace();
         }
 
+        void DrawNoWorldOverlay()
+        {
+            var titleStyle = new GUIStyle(EditorStyles.boldLabel)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fontSize = EditorStyles.boldLabel.fontSize + 2,
+                wordWrap = true
+            };
+            var bodyStyle = new GUIStyle(EditorStyles.label)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                wordWrap = true
+            };
+
+            GUILayout.FlexibleSpace();
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.FlexibleSpace();
+                using (new EditorGUILayout.VerticalScope(GUILayout.MaxWidth(420)))
+                {
+                    GUILayout.Label("ZenECS No active world.", titleStyle);
+                }
+
+                GUILayout.FlexibleSpace();
+            }
+
+            GUILayout.FlexibleSpace();
+        }
+
         // =====================================================================
         //  DRAW: FIND MODE
         // =====================================================================
 
         void DrawFindMode(IKernel kernel, IWorld? world, IReadOnlyList<ISystem>? systems)
         {
-            using (var sv = new EditorGUILayout.ScrollViewScope(_ui.RightScroll))
+            using (new EditorGUILayout.HorizontalScope())
             {
-                _ui.RightScroll = sv.scrollPosition;
-
-                EditorGUILayout.Space(4);
-
-                using (new EditorGUILayout.VerticalScope("box"))
+                using (var sv = new EditorGUILayout.ScrollViewScope(_uiState.RightScroll))
                 {
-                    // 상단 Close 버튼
-                    using (new EditorGUILayout.HorizontalScope())
-                    {
-                        GUILayout.FlexibleSpace();
-
-                        if (GUILayout.Button("Close", GUILayout.Width(80)))
-                        {
-                            _find.IsFindMode = false;
-                            _find.EntityId   = null;
-                            _find.EntityGen  = null;
-                            _find.FoundValid = false;
-                            return;
-                        }
-                    }
+                    _uiState.RightScroll = sv.scrollPosition;
 
                     EditorGUILayout.Space(4);
 
-                    // Entity ID / GEN 입력
-                    using (new EditorGUILayout.HorizontalScope())
+                    using (new EditorGUILayout.VerticalScope("box"))
                     {
-                        EditorGUILayout.LabelField(ExplorerFindState.LabelEntityId,
-                            GUILayout.Width(100));
-
-                        _find.EntityIdText = EditorGUILayout.TextField(_find.EntityIdText,
-                            GUILayout.Width(80));
-                        _find.EntityGenText = EditorGUILayout.TextField(_find.EntityGenText,
-                            GUILayout.Width(60));
-
-                        GUILayout.FlexibleSpace();
-
-                        using (new EditorGUI.DisabledScope(world == null))
+                        // 상단 Close 버튼
+                        using (new EditorGUILayout.HorizontalScope())
                         {
-                            if (GUILayout.Button(
-                                    new GUIContent(ExplorerFindState.BtnFind,
-                                        ExplorerFindState.TipFind),
-                                    GUILayout.Width(60)))
+                            GUILayout.FlexibleSpace();
+
+                            if (GUILayout.Button("Close", GUILayout.Width(80)))
                             {
-                                TryResolveFindTarget(world);
+                                _findState.IsFindMode = false;
+                                _findState.EntityId = null;
+                                _findState.EntityGen = null;
+                                _findState.FoundValid = false;
+                                return;
                             }
                         }
 
-                        if (GUILayout.Button(
-                                new GUIContent(ExplorerFindState.BtnClear,
-                                    ExplorerFindState.TipClear),
-                                GUILayout.Width(60)))
-                        {
-                            _find.IsFindMode = false;
-                            _find.EntityId   = null;
-                            _find.EntityGen  = null;
-                            _find.FoundValid = false;
-                            _ui.ClearSelection();
-                        }
+                        // 결과 표시
+                        DrawFindResult(world, systems);
                     }
-
-                    EditorGUILayout.Space(4);
-
-                    // 결과 표시
-                    DrawFindResult(world, systems);
                 }
             }
-
+            
             GUILayout.Space(4);
             DrawFooter(kernel);
         }
 
         void TryResolveFindTarget(IWorld? world)
         {
-            _find.FoundValid = false;
+            if (world == null) return;
+            
+            _findState.FoundValid = false;
 
-            if (world == null)
+            if (!int.TryParse(_findState.EntityIdText, out var id))
                 return;
 
-            if (!int.TryParse(_find.EntityIdText, out var id))
-                return;
-
-            if (!int.TryParse(_find.EntityGenText, out var gen))
+            if (!int.TryParse(_findState.EntityGenText, out var gen))
                 gen = 0;
 
-            _find.EntityId  = id;
-            _find.EntityGen = gen;
+            _findState.EntityId  = id;
+            _findState.EntityGen = gen;
 
             var e = new Entity(id, gen);
             if (!world.IsAlive(e))
             {
-                _find.FoundValid = false;
+                _findState.FoundValid = false;
                 return;
             }
 
-            _find.FoundEntity = e;
-            _find.FoundValid  = true;
+            _findState.FoundEntity = e;
+            _findState.FoundValid  = true;
         }
 
         void DrawFindResult(IWorld? world, IReadOnlyList<ISystem>? systems)
         {
-            if (!_find.EntityId.HasValue || !_find.EntityGen.HasValue)
+            if (world == null) return;
+            
+            if (!_findState.EntityId.HasValue || !_findState.EntityGen.HasValue)
             {
                 EditorGUILayout.HelpBox("Enter a valid Entity ID and GEN.",
                     MessageType.Info);
                 return;
             }
 
-            if (world == null)
-            {
-                EditorGUILayout.HelpBox("World not attached.",
-                    MessageType.Warning);
-                return;
-            }
-
-            if (!_find.FoundValid)
+            if (!_findState.FoundValid)
             {
                 EditorGUILayout.HelpBox(
-                    $"Entity #{_find.EntityId.Value}:{_find.EntityGen.Value} not found.",
+                    $"Entity #{_findState.EntityId.Value}:{_findState.EntityGen.Value} not found.",
                     MessageType.Warning);
                 return;
             }
 
             EditorGUILayout.LabelField(
-                $"Entity #{_find.EntityId.Value}:{_find.EntityGen.Value}",
+                $"Entity #{_findState.EntityId.Value}:{_findState.EntityGen.Value}",
                 EditorStyles.boldLabel);
 
             GUILayout.Space(2);
@@ -866,20 +404,20 @@ namespace ZenECS.EditorWindows
             // Watched Systems (위쪽)
             if (systems != null)
             {
-                var watchedList = CollectWatchedSystemsForEntity(world, _find.FoundEntity, systems);
+                var watchedList = CollectWatchedSystemsForEntity(world, _findState.FoundEntity, systems);
                 if (watchedList.Count > 0)
                 {
                     using (new EditorGUILayout.VerticalScope("box"))
                     {
                         var foldStyle = new GUIStyle(EditorStyles.foldout);
 
-                        _find.WatchedSystemsFold = EditorGUILayout.Foldout(
-                            _find.WatchedSystemsFold,
+                        _findState.WatchedSystemsFold = EditorGUILayout.Foldout(
+                            _findState.WatchedSystemsFold,
                             $"Watched Systems ({watchedList.Count})",
                             true,
                             foldStyle);
 
-                        if (_find.WatchedSystemsFold)
+                        if (_findState.WatchedSystemsFold)
                         {
                             foreach (var (sys, t) in watchedList)
                             {
@@ -899,7 +437,7 @@ namespace ZenECS.EditorWindows
             GUILayout.Space(4);
 
             // 실제 Entity Inspect
-            DrawOneEntity(world, _find.FoundEntity);
+            DrawOneEntity(world, _findState.FoundEntity);
         }
 
         // =====================================================================
@@ -908,14 +446,6 @@ namespace ZenECS.EditorWindows
 
         void DrawMainLayout(IKernel kernel, IWorld? world, IReadOnlyList<ISystem>? systems)
         {
-            if (world == null)
-            {
-                EditorGUILayout.HelpBox("No active World.", MessageType.Info);
-                GUILayout.Space(4);
-                DrawFooter(kernel);
-                return;
-            }
-
             using (new EditorGUILayout.HorizontalScope())
             {
                 DrawLeftSystemTreePanel(world, systems);
@@ -944,8 +474,8 @@ namespace ZenECS.EditorWindows
 
         private void DrawLeftSystemTreePanel(IWorld? world, IReadOnlyList<ISystem>? systems)
         {
-            using var sv = new EditorGUILayout.ScrollViewScope(_left, GUILayout.Width(300));
-            _left = sv.scrollPosition;
+            using var sv = new EditorGUILayout.ScrollViewScope(_uiState.LeftScroll, GUILayout.Width(300));
+            _uiState.LeftScroll = sv.scrollPosition;
             
             EditorGUILayout.Space(4);
             
@@ -962,19 +492,9 @@ namespace ZenECS.EditorWindows
                 if (GUILayout.Button(new GUIContent("R", "Clear Selection"), buttonStyle, GUILayout.Width(24),
                         GUILayout.Height(24)))
                 {
-                    _selSystem = -1;
-                    _hasSelectedSingleton = false;
-                    _selSysEntityCount = 0;
-                    _entityFold.Clear();
-                    _binderFold.Clear();
-                    _componentFold.Clear();
-                    _contextFold.Clear();
-                    _watchedFold.Clear();
-                    _cache.Clear();
+                    _uiState.ClearSelection();
                 }
             }
-            
-            //EditorGUILayout.Space(2);
             
             if (systems == null || systems.Count == 0)
             {
@@ -990,23 +510,23 @@ namespace ZenECS.EditorWindows
 
         private void DrawRightEntityPanel(IWorld? world, IReadOnlyList<ISystem>? systems)
         {
-            using var sv = new EditorGUILayout.ScrollViewScope(_right);
-            _right = sv.scrollPosition;
+            using var sv = new EditorGUILayout.ScrollViewScope(_uiState.RightScroll);
+            _uiState.RightScroll = sv.scrollPosition;
 
             EditorGUILayout.Space(4);
 
             bool hasSystem = systems != null &&
-                             _selSystem >= 0 &&
-                             _selSystem < (systems?.Count ?? 0);
+                             _uiState.SelectedSystemIndex >= 0 &&
+                             _uiState.SelectedSystemIndex < (systems?.Count ?? 0);
 
             bool hasSingleton = false;
-            if (_hasSelectedSingleton && world != null)
+            if (_uiState.HasSelectedSingleton && world != null)
             {
-                hasSingleton = world.IsAlive(_selectedSingletonEntity.Id, _selectedSingletonEntity.Gen);
+                hasSingleton = world.IsAlive(_uiState.SelectedSingletonEntity);
                 if (!hasSingleton)
                 {
                     // 소멸된 싱글톤 엔티티는 선택 해제
-                    _hasSelectedSingleton = false;
+                    _uiState.HasSelectedSingleton = false;
                 }
             }
 
@@ -1031,7 +551,7 @@ namespace ZenECS.EditorWindows
             else if (hasSingleton && !hasSystem && world != null)
             {
                 // ===== 싱글톤 선택 모드 =====
-                DrawSingletonDetail(world, _selectedSingletonType, _selectedSingletonEntity);
+                DrawSingletonDetail(world, _uiState.SelectedSingletonType, _uiState.SelectedSingletonEntity);
             }
             else
             {
@@ -1039,7 +559,7 @@ namespace ZenECS.EditorWindows
                 // 정상 리스트 모드 (시스템 선택 있음)
                 // =========================
 
-                var sys = systems![_selSystem];
+                var sys = systems![_uiState.SelectedSystemIndex];
 
                 // 🔹 1) System Meta 박스
                 DrawSystemMeta(sys, world);
@@ -1049,8 +569,8 @@ namespace ZenECS.EditorWindows
                 // 🔹 2) Entities 헤더 + 리스트
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    if (_selSysEntityCount > 0)
-                        EditorGUILayout.LabelField($"Entities ({_selSysEntityCount})", EditorStyles.boldLabel);
+                    if (_uiState.SelectedSystemEntityCount > 0)
+                        EditorGUILayout.LabelField($"Entities ({_uiState.SelectedSystemEntityCount})", EditorStyles.boldLabel);
                     else
                         EditorGUILayout.LabelField("Entities", EditorStyles.boldLabel);
 
@@ -1059,30 +579,18 @@ namespace ZenECS.EditorWindows
 
                 EditorGUILayout.Space(4);
 
-                var done = false;
+                var tmp = new List<Entity>();
+                if (!WatchQueryRunner.TryCollectByWatch(sys, world,
+                        tmp))
+                    EditorGUILayout.HelpBox(
+                        "No inspector. Implement IInspectableSystem or add [Watch].",
+                        MessageType.Info);
 
-                if (!done && world == null)
-                {
-                    EditorGUILayout.HelpBox("World not attached.", MessageType.Warning);
-                    done = true;
-                }
+                _uiState.SelectedSystemEntityCount = tmp.Count;
 
-                if (!done)
-                {
-                    _cache.Clear();
-
-                    if (!WatchQueryRunner.TryCollectByWatch(sys, world,
-                            _cache))
-                        EditorGUILayout.HelpBox(
-                            "No inspector. Implement IInspectableSystem or add [Watch].",
-                            MessageType.Info);
-
-                    _selSysEntityCount = _cache.Count;
-
-                    foreach (var e in _cache.Distinct())
-                        if (world != null)
-                            DrawOneEntity(world, e);
-                }
+                foreach (var e in tmp.Distinct())
+                    if (world != null)
+                        DrawOneEntity(world, e);
             }
         }
         
@@ -1314,7 +822,7 @@ namespace ZenECS.EditorWindows
                 leftFoldoutStyle.normal.textColor = systemMetaTextColor;
                 leftFoldoutStyle.onNormal.textColor = systemMetaTextColor;
 
-// Watched 대상이 하나도 없으면 간단히 표시만
+                // Watched 대상이 하나도 없으면 간단히 표시만
                 if (watchedDistinct.Count == 0)
                 {
                     using (new EditorGUILayout.HorizontalScope())
@@ -1335,7 +843,7 @@ namespace ZenECS.EditorWindows
                 {
                     // 시스템 타입별로 Foldout 상태를 저장
                     var key = t.FullName ?? t.Name;
-                    if (!_watchedFold.TryGetValue(key, out var open))
+                    if (!_uiState.WatchedFold.TryGetValue(key, out var open))
                         open = false;
 
                     using (new EditorGUILayout.HorizontalScope())
@@ -1347,7 +855,7 @@ namespace ZenECS.EditorWindows
                             true,
                             leftFoldoutStyle
                         );
-                        _watchedFold[key] = open;
+                        _uiState.WatchedFold[key] = open;
 
                         GUILayout.FlexibleSpace();
 
@@ -1475,13 +983,7 @@ namespace ZenECS.EditorWindows
                     int newIndex = EditorGUILayout.Popup(currentIndex, options, GUILayout.MaxWidth(220));
                     if (newIndex != currentIndex)
                     {
-                        _entityIdText = "";
-                        _entityGenText = "0";
-                        _findEntityId = null;
-                        _findEntityGen = null;
-                        _foundValid = false;
-                        _findWatchedSystemsFold = false;
-                        _findMode = false;
+                        ClearState();
 
                         var selected = worlds[newIndex];
                         kernel.SetCurrentWorld(selected);
@@ -1531,62 +1033,97 @@ namespace ZenECS.EditorWindows
 
         void ShowPlusContextMenu(Rect activatorRectGui, IWorld? world)
         {
+            if (world == null) return;
+            
             var menu = new GenericMenu();
 
-            if (world == null)
-            {
-                // 월드 없으면 비활성 상태로만 노출
-                menu.AddDisabledItem(new GUIContent("Add Entity from Blueprint... (no current World)"));
-            }
-            else
-            {
-                menu.AddItem(new GUIContent("Add Entity from Blueprint..."), false,
-                    () => { ShowEntityBlueprintPicker(activatorRectGui); });
-            }
+            menu.AddItem(new GUIContent("Add Entity from Blueprint..."), false,
+                () => { ShowEntityBlueprintPicker(activatorRectGui); });
 
             // --- Add Singleton ---
-            if (world == null)
+            menu.AddItem(new GUIContent("Add Singleton..."), false, () =>
             {
-                menu.AddDisabledItem(new GUIContent("Add Singleton... (no current World)"));
-            }
-            else
-            {
-                menu.AddItem(new GUIContent("Add Singleton..."), false, () =>
-                {
-                    // 전체 싱글톤 struct 타입 수집
-                    var allSingletons = SingletonTypeFinder.All();
+                // 전체 싱글톤 struct 타입 수집
+                var allSingletons = SingletonTypeFinder.All();
 
-                    // 이미 world에 존재하는 싱글톤 타입들은 disabled 처리
-                    var disabled = new HashSet<Type>();
-                    try
+                // 이미 world에 존재하는 싱글톤 타입들은 disabled 처리
+                var disabled = new HashSet<Type>();
+                try
+                {
+                    foreach (var (t, _) in world.GetAllSingletons())
                     {
-                        foreach (var (t, _) in world.GetAllSingletons())
+                        if (t != null) disabled.Add(t);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogException(ex);
+                }
+
+                ZenSingletonPickerWindow.Show(
+                    allSingletonTypes: allSingletons,
+                    disabled: disabled,
+                    onPick: pickedType =>
+                    {
+                        try
                         {
-                            if (t != null) disabled.Add(t);
+                            // 기본값 생성 후 EditorCommand를 통해 추가
+                            // (RemoveSingleton과 대칭되는 AddSingleton은
+                            //  EditorCommand 쪽에 구현되어 있어야 한다고 가정)
+                            var inst = ZenDefaults.CreateWithDefaults(pickedType);
+                            world.ExternalCommandEnqueue(ExternalCommand.SetSingleton(pickedType, inst));
+                            Repaint();
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.LogException(ex);
+                        }
+                    },
+                    activatorRectGui: activatorRectGui,
+                    title: "Add Singleton"
+                );
+            });
+
+            menu.AddItem(
+                new GUIContent("Add System..."),
+                false,
+                () =>
+                {
+                    // 전체 System 타입 목록
+                    var allSystemTypes = SystemTypeFinder.All().ToList();
+
+                    // 이미 등록된 System 타입들은 disabled 처리
+                    var disabled = new HashSet<Type>();
+                    var existing = world.GetAllSystems();
+                    if (existing != null)
+                    {
+                        foreach (var s in existing)
+                        {
+                            if (s == null) continue;
+                            disabled.Add(s.GetType());
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        Debug.LogException(ex);
-                    }
 
-                    ZenSingletonPickerWindow.Show(
-                        allSingletonTypes: allSingletons,
+                    // Picker 오픈
+                    ZenSystemPickerWindow.Show(
+                        allSystemTypes: allSystemTypes,
                         disabled: disabled,
-                        onPick: pickedType =>
+                        onPick: t =>
                         {
                             try
                             {
-                                // 기본값 생성 후 EditorCommand를 통해 추가
-                                // (RemoveSingleton과 대칭되는 AddSingleton은
-                                //  EditorCommand 쪽에 구현되어 있어야 한다고 가정)
-                                var inst = ZenDefaults.CreateWithDefaults(pickedType);
-                                world.ExternalCommandEnqueue(ExternalCommand.SetSingleton(pickedType, inst));
+                                var inst = Activator.CreateInstance(t) as ISystem;
+                                if (inst == null)
+                                {
+                                    Debug.LogError(
+                                        $"ZenECS Explorer: Cannot create system of type {t.FullName}. " +
+                                        "System must have a public parameterless constructor.");
+                                    return;
+                                }
 
-                                // 싱글톤 섹션 갱신
-                                _hasSelectedSingleton = false;
-                                _selectedSingletonType = null;
-                                _selectedSingletonEntity = default;
+                                // 실제 등록
+                                world.AddSystem(inst);
+
                                 Repaint();
                             }
                             catch (Exception ex)
@@ -1595,107 +1132,13 @@ namespace ZenECS.EditorWindows
                             }
                         },
                         activatorRectGui: activatorRectGui,
-                        title: "Add Singleton"
+                        title: "Add System",
+                        onCancel: null
                     );
                 });
-            }
-
-            if (world == null)
-            {
-                // 월드 없으면 비활성 상태로만 노출
-                menu.AddDisabledItem(new GUIContent("Add System (no current World)"));
-            }
-            else
-            {
-                menu.AddItem(
-                    new GUIContent("Add System..."),
-                    false,
-                    () =>
-                    {
-                        // 전체 System 타입 목록
-                        var allSystemTypes = SystemTypeFinder.All().ToList();
-
-                        // 이미 등록된 System 타입들은 disabled 처리
-                        var disabled = new HashSet<Type>();
-                        var existing = world.GetAllSystems();
-                        if (existing != null)
-                        {
-                            foreach (var s in existing)
-                            {
-                                if (s == null) continue;
-                                disabled.Add(s.GetType());
-                            }
-                        }
-
-                        // Picker 오픈
-                        ZenSystemPickerWindow.Show(
-                            allSystemTypes: allSystemTypes,
-                            disabled: disabled,
-                            onPick: t =>
-                            {
-                                if (world == null) return; // 안전장치
-
-                                try
-                                {
-                                    var inst = Activator.CreateInstance(t) as ISystem;
-                                    if (inst == null)
-                                    {
-                                        Debug.LogError(
-                                            $"ZenECS Explorer: Cannot create system of type {t.FullName}. " +
-                                            "System must have a public parameterless constructor.");
-                                        return;
-                                    }
-
-                                    // 실제 등록
-                                    world.AddSystem(inst);
-
-                                    // 선택 상태를 새로 추가된 System으로 이동
-                                    var systems = world.GetAllSystems();
-                                    if (systems != null)
-                                    {
-                                        int idx = -1;
-                                        for (int i = 0; i < systems.Count; i++)
-                                        {
-                                            if (ReferenceEquals(systems[i], inst))
-                                            {
-                                                idx = i;
-                                                break;
-                                            }
-                                        }
-
-                                        if (idx >= 0)
-                                        {
-                                            _selSystem = idx;
-                                            _selSysEntityCount = 0;
-                                            _entityFold.Clear();
-                                            _binderFold.Clear();
-                                            _componentFold.Clear();
-                                            _contextFold.Clear();
-                                            _watchedFold.Clear();
-                                            _cache.Clear();
-                                        }
-                                    }
-
-                                    Repaint();
-                                }
-                                catch (Exception ex)
-                                {
-                                    Debug.LogException(ex);
-                                }
-                            },
-                            activatorRectGui: activatorRectGui,
-                            title: "Add System",
-                            onCancel: null
-                        );
-                    });
-            }
 
             // ───────────── Add System Preset… ─────────────
-            if (world == null)
-            {
-                menu.AddDisabledItem(new GUIContent("Add System Preset (no current World)"));
-            }
-            else if (ZenEcsUnityBridge.SystemPresetResolver == null)
+            if (ZenEcsUnityBridge.SystemPresetResolver == null)
             {
                 menu.AddDisabledItem(new GUIContent("Add System Preset (no SystemPresetResolver)"));
             }
@@ -1896,8 +1339,8 @@ namespace ZenECS.EditorWindows
             var kernel = ZenEcsUnityBridge.Kernel;
             if (kernel == null) return;
 
-            _findEntityId = entityId;
-            _findEntityGen = entityGen;
+            _findState.EntityId = entityId;
+            _findState.EntityGen = entityGen;
 
             // Explorer에서 현재 선택된 World로 검사한다.
             var currentWorld = kernel.CurrentWorld;
@@ -1907,39 +1350,39 @@ namespace ZenECS.EditorWindows
                 currentWorld = world;
             }
 
-            _foundValid = currentWorld?.IsAlive(entityId, entityGen) ?? false;
-            if (_foundValid)
+            _findState.FoundValid = currentWorld?.IsAlive(entityId, entityGen) ?? false;
+            if (_findState.FoundValid)
             {
-                _entityIdText = entityId.ToString();
-                _entityGenText = entityGen.ToString();
-                _findEntityId = entityId;
-                _findEntityGen = entityGen;
-                _foundEntity = _foundValid
+                _findState.EntityIdText = entityId.ToString();
+                _findState.EntityGenText = entityGen.ToString();
+                _findState.EntityId = entityId;
+                _findState.EntityGen = entityGen;
+                _findState.FoundEntity = _findState.FoundValid
                     ? (Entity)Activator.CreateInstance(typeof(Entity), entityId, entityGen)
                     : default;
 
-                if (_foundValid)
+                if (_findState.FoundValid)
                 {
-                    if (_entityFold.TryGetValue(_foundEntity, out var fold))
+                    if (_uiState.EntityFold.TryGetValue(_findState.FoundEntity, out var fold))
                     {
-                        _findEntityFoldBackup = fold;
-                        _entityFold[_foundEntity] = true;
+                        _findState.EntityFoldBackup = fold;
+                        _uiState.EntityFold[_findState.FoundEntity] = true;
                     }
                     else
                     {
-                        _findEntityFoldBackup = false;
-                        _entityFold.TryAdd(_foundEntity, true);
+                        _findState.EntityFoldBackup = false;
+                        _uiState.EntityFold.TryAdd(_findState.FoundEntity, true);
                     }
                 }
 
-                _findMode = true;
+                _findState.IsFindMode = true;
                 Repaint();
                 return;
             }
 
-            _foundValid = false;
-            _findWatchedSystemsFold = false;
-            _findMode = true; // still enter to show guidance
+            _findState.FoundValid = false;
+            _findState.WatchedSystemsFold = false;
+            _findState.IsFindMode = true;
         }
     }
 }

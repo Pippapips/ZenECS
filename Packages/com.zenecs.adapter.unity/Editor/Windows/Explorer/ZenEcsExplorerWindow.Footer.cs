@@ -82,22 +82,22 @@ namespace ZenECS.EditorWindows
 
                 GUILayout.FlexibleSpace();
 
-                GUILayout.Label(LABEL_ENTITY_ID, centeredLabelStyle, GUILayout.Width(70));
+                GUILayout.Label(ExplorerFindState.LabelEntityId, centeredLabelStyle, GUILayout.Width(70));
 
                 GUIStyle tfStyle = new GUIStyle(GUI.skin.textField);
                 tfStyle.alignment = TextAnchor.LowerLeft;
                 tfStyle.fontStyle = FontStyle.Normal;
                 tfStyle.fontSize = 10;
 
-                _entityIdText = GUILayout.TextField(_entityIdText, tfStyle, GUILayout.Width(40));
-                _entityIdText = new string(_entityIdText.Where(char.IsDigit).ToArray());
+                _findState.EntityIdText = GUILayout.TextField(_findState.EntityIdText, tfStyle, GUILayout.Width(40));
+                _findState.EntityIdText = new string(_findState.EntityIdText.Where(char.IsDigit).ToArray());
 
-                _entityGenText = GUILayout.TextField(_entityGenText, tfStyle, GUILayout.Width(40));
-                _entityGenText = new string(_entityGenText.Where(char.IsDigit).ToArray());
+                _findState.EntityGenText = GUILayout.TextField(_findState.EntityGenText, tfStyle, GUILayout.Width(40));
+                _findState.EntityGenText = new string(_findState.EntityGenText.Where(char.IsDigit).ToArray());
 
-                if (int.TryParse(_entityGenText, out var gen))
+                if (int.TryParse(_findState.EntityGenText, out var gen))
                 {
-                    if (gen < 0) _entityGenText = "0";
+                    if (gen < 0) _findState.EntityGenText = "0";
                 }
 
                 GUIStyle centeredButtonStyle = new GUIStyle(GUI.skin.button);
@@ -105,71 +105,71 @@ namespace ZenECS.EditorWindows
                 centeredButtonStyle.fontStyle = FontStyle.Normal;
                 centeredButtonStyle.fontSize = 10;
                 // Find => enter single-entity view (no system switching)
-                var contentFind = new GUIContent(BTN_FIND, TIP_FIND);
+                var contentFind = new GUIContent(ExplorerFindState.BtnFind, ExplorerFindState.TipFind);
                 if (GUILayout.Button(contentFind, centeredButtonStyle, GUILayout.Width(56)))
                 {
-                    if (int.TryParse(_entityIdText, out var id) && id > 0)
+                    if (int.TryParse(_findState.EntityIdText, out var id) && id > 0)
                     {
-                        _findEntityId = id;
+                        _findState.EntityId = id;
 
-                        if (int.TryParse(_entityGenText, out var gen2))
+                        if (int.TryParse(_findState.EntityGenText, out var gen2))
                         {
-                            _findEntityGen = gen2;
+                            _findState.EntityGen = gen2;
                         }
 
                         var world = kernel.CurrentWorld;
-                        _foundValid = world?.IsAlive(id, gen2) ?? false;
-                        _foundEntity =
-                            _foundValid ? (Entity)Activator.CreateInstance(typeof(Entity), id, gen) : default;
+                        _findState.FoundValid = world?.IsAlive(id, gen2) ?? false;
+                        _findState.FoundEntity =
+                            _findState.FoundValid ? (Entity)Activator.CreateInstance(typeof(Entity), id, gen) : default;
 
-                        if (_foundValid)
+                        if (_findState.FoundValid)
                         {
-                            if (_entityFold.TryGetValue(_foundEntity, out var fold))
+                            if (_uiState.EntityFold.TryGetValue(_findState.FoundEntity, out var fold))
                             {
-                                _findEntityFoldBackup = fold;
-                                _entityFold[_foundEntity] = true;
+                                _findState.EntityFoldBackup = fold;
+                                _uiState.EntityFold[_findState.FoundEntity] = true;
                             }
                             else
                             {
-                                _findEntityFoldBackup = false;
-                                _entityFold.TryAdd(_foundEntity, true);
+                                _findState.EntityFoldBackup = false;
+                                _uiState.EntityFold.TryAdd(_findState.FoundEntity, true);
                             }
                         }
 
-                        _findMode = true;
+                        _findState.IsFindMode = true;
                     }
                     else
                     {
-                        _findEntityId = null;
-                        _findEntityGen = null;
-                        _foundValid = false;
-                        _findWatchedSystemsFold = false;
-                        _findMode = true; // still enter to show guidance
+                        _findState.EntityId = null;
+                        _findState.EntityGen = null;
+                        _findState.FoundValid = false;
+                        _findState.WatchedSystemsFold = false;
+                        _findState.IsFindMode = true; // still enter to show guidance
                     }
 
                     Repaint();
                 }
 
                 // Clear Filter => exit single-entity view
-                var contentClear = new GUIContent(BTN_CLEAR_FILTER, TIP_CLEAR);
+                var contentClear = new GUIContent(ExplorerFindState.BtnClear, ExplorerFindState.TipClear);
                 if (GUILayout.Button(contentClear, centeredButtonStyle, GUILayout.Width(60)))
                 {
-                    if (_findMode)
+                    if (_findState.IsFindMode)
                     {
-                        _entityFold[_foundEntity] = _findEntityFoldBackup;
+                        _uiState.EntityFold[_findState.FoundEntity] = _findState.EntityFoldBackup;
                     }
 
-                    _entityIdText = "";
-                    _entityGenText = "0";
-                    _findEntityId = null;
-                    _findEntityGen = null;
-                    _foundValid = false;
-                    _findWatchedSystemsFold = false;
-                    _findMode = false;
+                    _findState.EntityIdText = "";
+                    _findState.EntityGenText = "0";
+                    _findState.EntityId = null;
+                    _findState.EntityGen = null;
+                    _findState.FoundValid = false;
+                    _findState.WatchedSystemsFold = false;
+                    _findState.IsFindMode = false;
                     Repaint();
                 }
 
-                _ui.EditMode = GUILayout.Toggle(_ui.EditMode, "Edit", centeredButtonStyle, GUILayout.Width(60));
+                _uiState.EditMode = GUILayout.Toggle(_uiState.EditMode, "Edit", centeredButtonStyle, GUILayout.Width(60));
             }
         }
     }

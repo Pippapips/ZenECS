@@ -384,7 +384,7 @@ namespace ZenECS.EditorWindows
                 // - 키가 없거나
                 // - false 이면
                 //   => "다 안 열려 있음"으로 판단
-                if (!_contextFold.TryGetValue(key, out var open) || !open)
+                if (!_uiState.ContextFold.TryGetValue(key, out var open) || !open)
                     return false;
             }
 
@@ -544,7 +544,7 @@ namespace ZenECS.EditorWindows
                 if (boxed != null && !CanShowBinderBody(t, boxed)) continue;
                 any = true;
                 var key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}:BINDER";
-                if (!_binderFold.TryGetValue(key, out bool open) || !open)
+                if (!_uiState.BinderFold.TryGetValue(key, out bool open) || !open)
                     return false;
             }
 

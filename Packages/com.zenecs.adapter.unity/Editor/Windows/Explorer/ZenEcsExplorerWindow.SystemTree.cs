@@ -143,19 +143,12 @@ namespace ZenECS.EditorWindows
             centeredLabelStyle.fontStyle = FontStyle.Normal;
             centeredLabelStyle.fontSize = 10;
 
-            bool selected = _selSystem == index;
+            bool selected = _uiState.SelectedSystemIndex == index;
             bool clicked = GUI.Toggle(sysRect, selected, typeName, centeredLabelStyle);
             if (clicked && !selected)
             {
-                _selSystem = index;
-                _hasSelectedSingleton = false;
-                _selSysEntityCount = 0;
-                _entityFold.Clear();
-                _binderFold.Clear();
-                _componentFold.Clear();
-                _contextFold.Clear();
-                _watchedFold.Clear();
-                _cache.Clear();
+                ClearState();
+                _uiState.SelectedSystemIndex = index;
             }
 
             // ===== 돋보기 버튼 (Ping, Selection 변경 없음) =====
@@ -183,7 +176,7 @@ namespace ZenECS.EditorWindows
             }
 
             // ===== X 삭제 버튼 =====
-            using (new EditorGUI.DisabledScope(!_ui.EditMode))
+            using (new EditorGUI.DisabledScope(!_uiState.EditMode))
             {
                 var delBtnRect = new Rect(
                     delRect.x,
@@ -213,17 +206,7 @@ namespace ZenECS.EditorWindows
                     {
                         world.RemoveSystem(tSys);
 
-                        _selSystem = -1;
-                        _hasSelectedSingleton = false;
-                        _selSysEntityCount = 0;
-                        _cache.Clear();
-                        _entityFold.Clear();
-                        _binderFold.Clear();
-                        _componentFold.Clear();
-                        _contextFold.Clear();
-                        _watchedFold.Clear();
-
-                        Repaint();
+                        ClearState();
                         GUIUtility.ExitGUI();
                     }
                 }
@@ -262,11 +245,11 @@ namespace ZenECS.EditorWindows
                 return;
             }
 
-            if (!_groupFold.TryGetValue(group, out var openGroup))
+            if (!_uiState.GroupFold.TryGetValue(group, out var openGroup))
                 openGroup = true;
 
             openGroup = EditorGUILayout.Foldout(openGroup, label, true, systemTreeToggleStyle);
-            _groupFold[group] = openGroup;
+            _uiState.GroupFold[group] = openGroup;
             if (!openGroup) return;
 
             // 여기서는 "바로 위 Foldout 헤더"와 Leaf의 x를 맞추는 게 목표
@@ -317,11 +300,11 @@ namespace ZenECS.EditorWindows
             systemTreeToggleStyle.onNormal.textColor = systemTreeTextColor;
 
             var key = (group, phase);
-            if (!_phaseFold.TryGetValue(key, out var openPhase))
+            if (!_uiState.PhaseFold.TryGetValue(key, out var openPhase))
                 openPhase = true;
 
             openPhase = EditorGUILayout.Foldout(openPhase, label, true, systemTreeToggleStyle);
-            _phaseFold[key] = openPhase;
+            _uiState.PhaseFold[key] = openPhase;
             if (!openPhase) return;
 
             // Phase 헤더와 System 버튼이 같은 x에서 시작하도록 추가 들여쓰기 제거
@@ -390,9 +373,9 @@ namespace ZenECS.EditorWindows
             else
             {
                 EditorGUI.indentLevel = 0;
-                _deterministicFold = EditorGUILayout.Foldout(_deterministicFold, "Deterministic", true, foldStyle);
+                _uiState.DeterministicFold = EditorGUILayout.Foldout(_uiState.DeterministicFold, "Deterministic", true, foldStyle);
 
-                if (_deterministicFold)
+                if (_uiState.DeterministicFold)
                 {
                     EditorGUI.indentLevel++;
 
@@ -421,10 +404,10 @@ namespace ZenECS.EditorWindows
             else
             {
                 EditorGUI.indentLevel = 0;
-                _nonDeterministicFold =
-                    EditorGUILayout.Foldout(_nonDeterministicFold, "Non-deterministic", true, foldStyle);
+                _uiState.NonDeterministicFold =
+                    EditorGUILayout.Foldout(_uiState.NonDeterministicFold, "Non-deterministic", true, foldStyle);
 
-                if (_nonDeterministicFold)
+                if (_uiState.NonDeterministicFold)
                 {
                     EditorGUI.indentLevel++;
 
@@ -432,8 +415,8 @@ namespace ZenECS.EditorWindows
                     bool hasBegin = HasAny(nonDetGroups, SystemGroup.FrameInput, SystemGroup.FrameSync);
                     if (hasBegin)
                     {
-                        _beginFold = EditorGUILayout.Foldout(_beginFold, "Begin", true, foldStyle);
-                        if (_beginFold)
+                        _uiState.BeginFold = EditorGUILayout.Foldout(_uiState.BeginFold, "Begin", true, foldStyle);
+                        if (_uiState.BeginFold)
                         {
                             EditorGUI.indentLevel++;
                             DrawGroupLeaf(SystemGroup.FrameInput, "Input", nonDetGroups, world, foldStyle);
@@ -446,8 +429,8 @@ namespace ZenECS.EditorWindows
                     bool hasLate = HasAny(nonDetGroups, SystemGroup.FrameView, SystemGroup.FrameUI);
                     if (hasLate)
                     {
-                        _lateFold = EditorGUILayout.Foldout(_lateFold, "Late", true, foldStyle);
-                        if (_lateFold)
+                        _uiState.LateFold = EditorGUILayout.Foldout(_uiState.LateFold, "Late", true, foldStyle);
+                        if (_uiState.LateFold)
                         {
                             EditorGUI.indentLevel++;
                             DrawGroupLeaf(SystemGroup.FrameView, "View", nonDetGroups, world, foldStyle);
@@ -484,8 +467,8 @@ namespace ZenECS.EditorWindows
                     if (singletonList.Count > 0)
                     {
                         EditorGUI.indentLevel = 0;
-                        _singletonsFold = EditorGUILayout.Foldout(_singletonsFold, "Singletons", true, foldStyle);
-                        if (_singletonsFold)
+                        _uiState.SingletonsFold = EditorGUILayout.Foldout(_uiState.SingletonsFold, "Singletons", true, foldStyle);
+                        if (_uiState.SingletonsFold)
                         {
                             EditorGUI.indentLevel++;
                             foreach (var (type, owner) in singletonList)
@@ -536,9 +519,9 @@ namespace ZenECS.EditorWindows
             else
             {
                 EditorGUI.indentLevel = 0;
-                _unknownFold = EditorGUILayout.Foldout(_unknownFold, "Unknown", true, foldStyle);
+                _uiState.UnknownFold = EditorGUILayout.Foldout(_uiState.UnknownFold, "Unknown", true, foldStyle);
 
-                if (_unknownFold)
+                if (_uiState.UnknownFold)
                 {
                     EditorGUI.indentLevel++;
 
@@ -588,11 +571,11 @@ namespace ZenECS.EditorWindows
             if (!map.TryGetValue(group, out var list) || list.Count == 0)
                 return;
 
-            if (!_groupFold.TryGetValue(group, out var open))
+            if (!_uiState.GroupFold.TryGetValue(group, out var open))
                 open = true;
 
             open = EditorGUILayout.Foldout(open, label, true, foldStyle);
-            _groupFold[group] = open;
+            _uiState.GroupFold[group] = open;
             if (!open) return;
 
             int prevIndent = EditorGUI.indentLevel;
@@ -668,16 +651,7 @@ namespace ZenECS.EditorWindows
                         world.AddSystems(systems);
 
                         // 캐시 클리어 & UI 갱신
-                        _selSystem = -1;
-                        _hasSelectedSingleton = false;
-                        _selSysEntityCount = 0;
-                        _cache.Clear();
-                        _entityFold.Clear();
-                        _binderFold.Clear();
-                        _componentFold.Clear();
-                        _contextFold.Clear();
-                        _watchedFold.Clear();
-                        Repaint();
+                        ClearState();
                     }
                     catch (Exception ex)
                     {

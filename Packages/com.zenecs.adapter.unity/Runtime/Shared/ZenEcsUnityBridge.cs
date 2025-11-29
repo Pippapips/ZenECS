@@ -124,5 +124,12 @@ namespace ZenECS.Adapter.Unity
         /// </list>
         /// </remarks>
         public static IKernel? Kernel { get; set; }
+
+        internal static void Clear()
+        {
+            Kernel = null;
+            SharedContextResolver = null;
+            SystemPresetResolver = null;
+        }
     }
 }
