@@ -369,7 +369,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                     GUI.contentColor = Color.white;
                 }
 
-                if (GUI.Button(btnRect, ZenGUIContents.IconPlus(), ZenGUIStyles.ButtonPadding))
+                if (GUI.Button(btnRect, ZenGUIContents.IconPause(), ZenGUIStyles.ButtonPadding))
                 {
                     if (hasEnabled)
                     {
@@ -383,7 +383,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             }
 
             bool selected = _systemTree.SelectedSystemIndex == index;
-            bool clicked = GUI.Toggle(sysRect, selected, typeName, ZenGUIStyles.LabelLCNormal10);
+            bool clicked = GUI.Toggle(sysRect, selected, typeName, ZenGUIStyles.ButtonMLNormal10);
             if (clicked && !selected)
             {
                 ClearState();
@@ -397,7 +397,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 pingRect.height - 2f
             );
 
-            if (GUI.Button(pingBtnRect, ZenGUIContents.IconSearch(), ZenGUIStyles.ButtonPadding))
+            if (GUI.Button(pingBtnRect, ZenGUIContents.IconPing(), ZenGUIStyles.ButtonPadding))
             {
                 PingSystemTypeNoSelect(tSys);
             }

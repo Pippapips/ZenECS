@@ -66,7 +66,6 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             // Find 모드 리셋
             _findState.Reset();
 
-            // EditMode는 사용자가 토글하는 값이니 강제 초기화는 안 함
             if (repaint)
                 Repaint();
         }
@@ -130,65 +129,33 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 
         void DrawKernelNotReadyOverlay()
         {
-            var titleStyle = new GUIStyle(EditorStyles.boldLabel)
-            {
-                alignment = TextAnchor.MiddleCenter,
-                fontSize = EditorStyles.boldLabel.fontSize + 2,
-                wordWrap = true
-            };
-            var bodyStyle = new GUIStyle(EditorStyles.label)
-            {
-                alignment = TextAnchor.MiddleCenter,
-                wordWrap = true
-            };
-
             GUILayout.FlexibleSpace();
             using (new EditorGUILayout.HorizontalScope())
             {
                 GUILayout.FlexibleSpace();
                 using (new EditorGUILayout.VerticalScope(GUILayout.MaxWidth(420)))
                 {
-                    GUILayout.Label("ZenECS Kernel is not active yet.", titleStyle);
+                    GUILayout.Label(ZenStringTable.ZenECSKernelNotActiveYet, ZenGUIStyles.TitleStyle);
                     GUILayout.Space(8);
-                    GUILayout.Label(
-                        "Enter Play Mode to initialize the EcsDriver and Kernel.\n\n" +
-                        "When the Kernel becomes active, you can inspect Systems and Entities\n" +
-                        "through the ZenECS Explorer.",
-                        bodyStyle);
+                    GUILayout.Label(ZenStringTable.ZenECSKernelNotActiveYetDesc, ZenGUIStyles.BodyStyle);
                 }
-
                 GUILayout.FlexibleSpace();
             }
-
             GUILayout.FlexibleSpace();
         }
 
         void DrawNoCurrentWorldOverlay()
         {
-            var titleStyle = new GUIStyle(EditorStyles.boldLabel)
-            {
-                alignment = TextAnchor.MiddleCenter,
-                fontSize = EditorStyles.boldLabel.fontSize + 2,
-                wordWrap = true
-            };
-            var bodyStyle = new GUIStyle(EditorStyles.label)
-            {
-                alignment = TextAnchor.MiddleCenter,
-                wordWrap = true
-            };
-
             GUILayout.FlexibleSpace();
             using (new EditorGUILayout.HorizontalScope())
             {
                 GUILayout.FlexibleSpace();
                 using (new EditorGUILayout.VerticalScope(GUILayout.MaxWidth(420)))
                 {
-                    GUILayout.Label("ZenECS No current world set in kernel.", titleStyle);
+                    GUILayout.Label(ZenStringTable.ZenECSNoCurrentWorld, ZenGUIStyles.TitleStyle);
                 }
-
                 GUILayout.FlexibleSpace();
             }
-
             GUILayout.FlexibleSpace();
         }
 

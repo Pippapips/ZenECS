@@ -21,6 +21,11 @@ namespace ZenECS.Adapter.Unity.Editor.Common
         public const string Yes = "Yes";
         public const string No = "No";
         public const string Component = "Component";
+        public const string ZenECSKernelNotActiveYet = "ZenECS Kernel is not active yet.";
+        public const string ZenECSKernelNotActiveYetDesc = "Enter Play Mode to initialize the EcsDriver and Kernel.\n\n" +
+                                                           "When the Kernel becomes active, you can inspect Systems and Entities\n" +
+                                                           "through the ZenECS Explorer.";
+        public const string ZenECSNoCurrentWorld = "ZenECS No current world set in kernel.";
 
         public static string GetSinceRunning(float elapsed)
         {

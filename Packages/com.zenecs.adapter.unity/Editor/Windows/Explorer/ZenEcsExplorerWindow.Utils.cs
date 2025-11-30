@@ -348,7 +348,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 if (t == null) continue;
 
                 any = true;
-                var key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}:CTX";
+                var key = new EntityTypeKey(e, t);
 
                 // 컴포넌트와 동일 패턴:
                 // - 키가 없거나
@@ -513,7 +513,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             {
                 if (boxed != null && !CanShowBinderBody(t, boxed)) continue;
                 any = true;
-                string key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}";
+                var key = new EntityTypeKey(e, t);
                 if (!_entityPanel.BinderFold.TryGetValue(key, out bool open) || !open)
                     return false;
             }
@@ -521,7 +521,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             return any && true;
         }
         
-        static bool CanShowBinderBody(Type t, object boxed)
+        static bool CanShowBinderBody(Type t, object? boxed)
         {
             // 1) 에디터 폼으로 그릴 수 있는 필드가 있거나
             if (ZenComponentFormGUI.HasDrawableFields(t))
@@ -533,7 +533,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 
             return false;
         }
-
+        
         static class BinderIntrospection
         {
             static bool IsBindsInterface(Type t)

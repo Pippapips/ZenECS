@@ -7,7 +7,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
 {
     public static class ZenGUIContents
     {
-        public static GUIContent IconSearch()
+        public static GUIContent IconPing()
         {
             // Unity 기본 검색 아이콘
             var gc = EditorGUIUtility.IconContent("d_Search Icon");

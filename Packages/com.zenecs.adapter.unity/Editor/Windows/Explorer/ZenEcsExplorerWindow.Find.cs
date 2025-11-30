@@ -117,7 +117,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                                     var line = EditorGUIUtility.singleLineHeight;
                                     var r = GUILayoutUtility.GetRect(10, line, GUILayout.ExpandWidth(true));
                                     var marginRight = new Rect(r.xMax - 20, r.y, 20, r.height);
-                                    if (GUI.Button(marginRight, ZenGUIContents.IconSearch(), EditorStyles.iconButton))
+                                    if (GUI.Button(marginRight, ZenGUIContents.IconPing(), EditorStyles.iconButton))
                                     {
                                         PingSystemType(t);
                                     }

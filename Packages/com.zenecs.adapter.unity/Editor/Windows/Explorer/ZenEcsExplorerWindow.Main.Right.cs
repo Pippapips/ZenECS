@@ -14,6 +14,42 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
     public sealed partial class ZenEcsExplorerWindow
     {
         /// <summary>
+        /// (Entity, Type) 조합을 키로 쓰기 위한 구조체.
+        /// 기존 string 기반 키("{id}:{gen}:{type}") 대신 사용해서
+        /// 매 프레임 string 할당을 제거하고 Dictionary 조회 비용을 줄인다.
+        /// </summary>
+        readonly struct EntityTypeKey : IEquatable<EntityTypeKey>
+        {
+            public readonly int Id;
+            public readonly int Gen;
+            public readonly Type Type;
+
+            public EntityTypeKey(Entity entity, Type type)
+            {
+                Id = entity.Id;
+                Gen = entity.Gen;
+                Type = type;
+            }
+
+            public bool Equals(EntityTypeKey other)
+                => Id == other.Id && Gen == other.Gen && Type == other.Type;
+
+            public override bool Equals(object? obj)
+                => obj is EntityTypeKey other && Equals(other);
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    var hashCode = Id;
+                    hashCode = (hashCode * 397) ^ Gen;
+                    hashCode = (hashCode * 397) ^ (Type != null ? Type.GetHashCode() : 0);
+                    return hashCode;
+                }
+            }
+        }
+
+        /// <summary>
         /// ViewModel for the right entity/singleton panel.
         /// </summary>
         [Serializable]
@@ -24,9 +60,9 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 
             // Foldouts per entity / context
             public readonly Dictionary<Entity, bool> EntityFold = new();
-            public readonly Dictionary<string, bool> BinderFold = new();
-            public readonly Dictionary<string, bool> ComponentFold = new();
-            public readonly Dictionary<string, bool> ContextFold = new();
+            public readonly Dictionary<EntityTypeKey, bool> BinderFold = new();
+            public readonly Dictionary<EntityTypeKey, bool> ComponentFold = new();
+            public readonly Dictionary<EntityTypeKey, bool> ContextFold = new();
 
             // Watched foldouts (key: system name or other key)
             public readonly Dictionary<string, bool> WatchedFold = new();
@@ -39,7 +75,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             /// <summary>
             /// Clear all entity-related foldouts.
             /// </summary>
-            public void ClearEntityFoldouts()
+            public void ClearEntityView()
             {
                 EntityFold.Clear();
                 BinderFold.Clear();
@@ -57,19 +93,19 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 SelectedSingletonEntity = default;
                 SelectedSingletonType = null;
             }
-
+            
             /// <summary>
             /// Clear selection for the entity panel (entities + singleton).
             /// </summary>
             public void ClearSelection()
             {
                 ClearSingletonSelection();
-                ClearEntityFoldouts();
+                ClearEntityView();
             }
         }
-        
-        readonly ExplorerEntityPanelState _entityPanel = new();
 
+        readonly ExplorerEntityPanelState _entityPanel = new();
+        
         private void DrawRightEntityPanel()
         {
             if (_world == null) return;
@@ -312,15 +348,19 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                     // 이름 + 네임스페이스를 한 덩어리로 왼쪽에 붙여서 표시
                     using (new EditorGUILayout.VerticalScope())
                     {
-                        EditorGUILayout.LabelField(t.Name, EditorStyles.boldLabel);
+                        EditorGUILayout.LabelField(t.Name, EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
                         EditorGUILayout.LabelField($"[{ns}]", nsStyle);
                     }
 
-                    GUILayout.FlexibleSpace();
+                    //GUILayout.FlexibleSpace();
+                    
 
-                    var searchContent = ZenGUIContents.IconSearch();
-                    if (GUILayout.Button(searchContent, EditorStyles.iconButton, GUILayout.Width(20),
-                            GUILayout.Height(18)))
+                    var line = EditorGUIUtility.singleLineHeight;
+                    var r = GUILayoutUtility.GetRect(10, line, GUILayout.ExpandWidth(true));
+                    var marginRight = new Rect(r.xMax - 20, r.y, 20, r.height);
+                    
+                    var searchContent = ZenGUIContents.IconPing();
+                    if (GUI.Button(marginRight, searchContent, EditorStyles.iconButton))
                     {
                         PingSystemType(t);
                     }
@@ -458,7 +498,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                                 // EditorGUILayout.LabelField($"[{cns}]", nsStyle);
 
                                 // 돋보기 아이콘 (우측 끝)
-                                var icon = ZenGUIContents.IconSearch();
+                                var icon = ZenGUIContents.IconPing();
                                 if (GUILayout.Button(icon, EditorStyles.iconButton, GUILayout.Width(18),
                                         GUILayout.Height(16)))
                                 {

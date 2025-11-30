@@ -7,6 +7,50 @@ namespace ZenECS.Adapter.Unity.Editor.Common
 {
     public static class ZenGUIStyles
     {
+        private static GUIStyle _titleStyle;
+        public static GUIStyle TitleStyle
+        {
+            get
+            {
+                _titleStyle ??= new GUIStyle(EditorStyles.boldLabel)
+                {
+                    alignment = TextAnchor.MiddleCenter,
+                    fontSize = EditorStyles.boldLabel.fontSize + 2,
+                    wordWrap = true
+                };
+                return _titleStyle;
+            }
+        }
+        
+        private static GUIStyle _bodyStyle;
+        public static GUIStyle BodyStyle
+        {
+            get
+            {
+                _bodyStyle ??= new GUIStyle(EditorStyles.label)
+                {
+                    alignment = TextAnchor.MiddleCenter,
+                    wordWrap = true
+                };
+                return _bodyStyle;
+            }
+        }
+        
+        private static GUIStyle _buttonMLNormal10;
+        public static GUIStyle ButtonMLNormal10
+        {
+            get
+            {
+                _buttonMLNormal10 ??= new GUIStyle(GUI.skin.button)
+                {
+                    alignment = TextAnchor.MiddleLeft,
+                    fontStyle = FontStyle.Normal,
+                    fontSize = 10
+                };
+                return _buttonMLNormal10;
+            }
+        }
+        
         private static GUIStyle _buttonMCNormal10;
         public static GUIStyle ButtonMCNormal10
         {

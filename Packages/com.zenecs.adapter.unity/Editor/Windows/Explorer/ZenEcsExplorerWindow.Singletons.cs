@@ -75,7 +75,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                     pingRect.height - 2f
                 );
 
-                var searchContent = ZenGUIContents.IconSearch();
+                var searchContent = ZenGUIContents.IconPing();
                 var iconStyle = new GUIStyle(GUI.skin.button)
                 {
                     alignment = TextAnchor.MiddleCenter,
@@ -148,7 +148,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 
                     if (type != null)
                     {
-                        var pingContent = ZenGUIContents.IconSearch();
+                        var pingContent = ZenGUIContents.IconPing();
                         if (GUILayout.Button(pingContent, EditorStyles.iconButton, GUILayout.Width(20),
                                 GUILayout.Height(18)))
                         {
