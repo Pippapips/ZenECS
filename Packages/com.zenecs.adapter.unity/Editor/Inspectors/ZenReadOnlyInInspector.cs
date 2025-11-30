@@ -3,7 +3,7 @@ using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 using ZenECS.Adapter.Unity;
 
-namespace ZenECS.EditorInspectors
+namespace ZenECS.Adapter.Unity.Editor.Inspectors
 {
     [CustomPropertyDrawer(typeof(ZenReadOnlyInInspectorAttribute), useForChildren: true)]
     public sealed class ZenReadOnlyInInspector : PropertyDrawer

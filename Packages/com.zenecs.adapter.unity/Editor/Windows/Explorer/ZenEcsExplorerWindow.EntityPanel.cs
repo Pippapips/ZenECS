@@ -9,13 +9,13 @@ using UnityEngine;
 using ZenECS.Adapter.Unity;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
 using ZenECS.Adapter.Unity.Blueprints;
+using ZenECS.Adapter.Unity.Editor.Common;
+using ZenECS.Adapter.Unity.Editor.GUIs;
 using ZenECS.Core;
 using ZenECS.Core.Binding;
 using ZenECS.Core.Systems;
-using ZenECS.EditorCommon;
-using ZenECS.EditorUtils;
 
-namespace ZenECS.EditorWindows
+namespace ZenECS.Adapter.Unity.Editor.Windows
 {
     /// <summary>
     /// Right side entity inspector panel of the ZenECS Explorer:
@@ -34,18 +34,18 @@ namespace ZenECS.EditorWindows
         {
             _entityPanel.EntityFold.TryAdd(e, false);
 
-            using (new EditorGUILayout.VerticalScope("box"))
+            using (new EditorGUILayout.VerticalScope(GUI.skin.box))
             {
                 // ===== Entity header =====
                 var headRect = GUILayoutUtility.GetRect(10, EditorGUIUtility.singleLineHeight + 6f,
                     GUILayout.ExpandWidth(true));
                 bool openE = _entityPanel.EntityFold[e];
 
-                var entityTitle = $"Entity #{e.Id}:{e.Gen}";
+                var entityTitle = ZenStringTable.GetEntityTitle(e);
                 var isSingleton = world.HasSingleton(e);
                 if (isSingleton)
                 {
-                    entityTitle += " <color=#999900><size=10>SINGLETON</size></color>";
+                    entityTitle += ZenStringTable.SINGLETON;
                 }
 
                 ZenFoldoutHeader.DrawRow(ref openE, headRect, entityTitle, "", rRight =>
@@ -66,16 +66,16 @@ namespace ZenECS.EditorWindows
                     {
                         if (GUI.Button(rDel, "X", style))
                         {
-                            var msg = $"Remove this entity?\n\nEntity #{e.Id}:{e.Gen}";
+                            var msg = ZenStringTable.GetRemoveThisEntity(e);
                             if (isSingleton)
                             {
-                                msg = $"Remove this singleton?\n\nSingleton Entity #{e.Id}:{e.Gen}";
+                                msg = ZenStringTable.GetRemoveThisSingletonEntity(e);
                             }
 
                             if (EditorUtility.DisplayDialog(
-                                    "Remove Entity",
+                                    ZenStringTable.RemoveEntity,
                                     msg,
-                                    "Yes", "No"))
+                                    ZenStringTable.Yes, ZenStringTable.No))
                             {
                                 world.ExternalCommandEnqueue(ExternalCommand.DestroyEntity(e));
                                 _entityPanel.EntityFold[_findState.FoundEntity] = _findState.EntityFoldBackup;
@@ -129,20 +129,20 @@ namespace ZenECS.EditorWindows
                 // 라벨
                 if (isSingleton)
                 {
-                    EditorGUI.LabelField(rLabel, $"Component");
+                    EditorGUI.LabelField(rLabel, ZenStringTable.Component);
                 }
                 else
                 {
-                    EditorGUI.LabelField(rLabel, $"Components: {arr.Length}");
+                    EditorGUI.LabelField(rLabel, ZenStringTable.GetComponents(arr.Length));
                 }
 
                 if (!isSingleton)
                 {
                     using (new EditorGUI.DisabledScope(!_coreState.EditMode))
                     {
-                        if (GUI.Button(rAddComp, GetPlusIconContent(), EditorStyles.iconButton))
+                        if (GUI.Button(rAddComp, ZenGUIContents.IconPlus(), EditorStyles.iconButton))
                         {
-                            var all = ZenECS.EditorCommon.ZenComponentPickerWindow.FindAllZenComponents().ToList();
+                            var all = ZenComponentPickerWindow.FindAllZenComponents().ToList();
                             var disabled = new HashSet<Type>();
                             foreach (var (tHave, _) in world.GetAllComponents(e))
                                 disabled.Add(tHave);
@@ -161,7 +161,7 @@ namespace ZenECS.EditorWindows
                                     Repaint();
                                 },
                                 rAddComp, // 이제 Components 줄 오른쪽 Rect 기준으로
-                                $"Entity #{e.Id}:{e.Gen} Add Component"
+                                ZenStringTable.GetAddComponent(e)
                             );
                         }
                     }
@@ -208,7 +208,7 @@ namespace ZenECS.EditorWindows
                         // Add Context 버튼 (기존 로직 유지)
                         using (new EditorGUI.DisabledScope(!_coreState.EditMode))
                         {
-                            if (GUI.Button(rAddC, GetPlusIconContent(), EditorStyles.iconButton))
+                            if (GUI.Button(rAddC, ZenGUIContents.IconPlus(), EditorStyles.iconButton))
                             {
                                 // 이미 붙어있는 컨텍스트 타입 집합
                                 var disabledCtxTypes = new HashSet<Type>(ctxs.Select(c => c.type));
@@ -283,7 +283,7 @@ namespace ZenECS.EditorWindows
                         // Add Binder 버튼
                         using (new EditorGUI.DisabledScope(!_coreState.EditMode || !BinderApi.CanAdd(world)))
                         {
-                            if (GUI.Button(rAdd, GetPlusIconContent(), EditorStyles.iconButton))
+                            if (GUI.Button(rAdd, ZenGUIContents.IconPlus(), EditorStyles.iconButton))
                             {
                                 // 전체 바인더 타입 수집
                                 var allBinders = BinderTypeFinder.All();
@@ -320,7 +320,8 @@ namespace ZenECS.EditorWindows
             {
                 foreach (var (t, boxed) in compsArray)
                 {
-                    if (!_entityPanel.ComponentFold.ContainsKey(e)) _entityPanel.ComponentFold[e] = false;
+                    string key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}";
+                    _entityPanel.ComponentFold.TryAdd(key, false);
 
                     bool hasFields = ZenComponentFormGUI.HasDrawableFields(t);
 
@@ -328,7 +329,7 @@ namespace ZenECS.EditorWindows
                     {
                         // ===== Component header =====
                         var headRectC = GUILayoutUtility.GetRect(10, line + 6f, GUILayout.ExpandWidth(true));
-                        bool openC = _entityPanel.ComponentFold[e];
+                        bool openC = _entityPanel.ComponentFold[key];
 
                         ZenFoldoutHeader.DrawRow(
                             ref openC,
@@ -359,7 +360,7 @@ namespace ZenECS.EditorWindows
                                             {
                                                 world.ExternalCommandEnqueue(ExternalCommand.RemoveComponent(e, t));
                                                 
-                                                _entityPanel.ComponentFold.Remove(e);
+                                                _entityPanel.ComponentFold.Remove(key);
                                                 Repaint();
                                             }
                                         }
@@ -381,7 +382,7 @@ namespace ZenECS.EditorWindows
                                             }
                                         }
 
-                                        var icon = GetSearchIconContent("Ping script asset");
+                                        var icon = ZenGUIContents.IconSearch();
                                         if (GUI.Button(rR2, icon, EditorStyles.iconButton))
                                         {
                                             PingContextType(t);
@@ -405,7 +406,7 @@ namespace ZenECS.EditorWindows
                                             }
                                         }
 
-                                        var icon = GetSearchIconContent("Ping script asset");
+                                        var icon = ZenGUIContents.IconSearch();
                                         if (GUI.Button(rR1, icon, EditorStyles.iconButton))
                                         {
                                             PingContextType(t);
@@ -417,10 +418,10 @@ namespace ZenECS.EditorWindows
                             false
                         );
 
-                        _entityPanel.ComponentFold[e] = hasFields && openC;
+                        _entityPanel.ComponentFold[key] = hasFields && openC;
 
                         // ===== body =====
-                        if (!hasFields || !_entityPanel.ComponentFold[e]) continue;
+                        if (!hasFields || !_entityPanel.ComponentFold[key]) continue;
 
                         try
                         {
@@ -450,8 +451,8 @@ namespace ZenECS.EditorWindows
             foreach (var (t, _) in comps)
             {
                 if (!ZenComponentFormGUI.HasDrawableFields(t)) continue;
-                var key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}";
-                _entityPanel.ComponentFold[e] = open;
+                string key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}";
+                _entityPanel.ComponentFold[key] = open;
             }
         }
 
@@ -462,8 +463,8 @@ namespace ZenECS.EditorWindows
             {
                 if (!ZenComponentFormGUI.HasDrawableFields(t)) continue;
                 any = true;
-                var key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}";
-                if (!_entityPanel.ComponentFold.TryGetValue(e, out bool open) || !open)
+                string key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}";
+                if (!_entityPanel.ComponentFold.TryGetValue(key, out bool open) || !open)
                     return false;
             }
 
@@ -478,14 +479,15 @@ namespace ZenECS.EditorWindows
             {
                 foreach (var (t, boxed) in bindersArray)
                 {
-                    if (!_entityPanel.BinderFold.ContainsKey(e)) _entityPanel.BinderFold[e] = false;
+                    string key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}";
+                    _entityPanel.BinderFold.TryAdd(key, false);
 
                     bool hasFields = ZenComponentFormGUI.HasDrawableFields(t);
                     bool hasMetaOrFields = boxed != null && CanShowBinderBody(t, boxed);
 
                     // IBinder + Disabled 판정
                     var binder = boxed as IBinder;
-                    bool isDisabled = binder != null && !binder.Enabled;
+                    bool isDisabled = binder is { Enabled: false };
 
                     string binderTitle = t.Name;
                     if (isDisabled)
@@ -494,7 +496,7 @@ namespace ZenECS.EditorWindows
                     using (new EditorGUILayout.VerticalScope("box"))
                     {
                         var headRectB = GUILayoutUtility.GetRect(10, line + 6f, GUILayout.ExpandWidth(true));
-                        bool openB = _entityPanel.BinderFold[e];
+                        bool openB = _entityPanel.BinderFold[key];
 
                         // 헤더 이름 색상: Disabled면 짙은 회색
                         var prevHeaderColor = GUI.color;
@@ -532,7 +534,7 @@ namespace ZenECS.EditorWindows
                                 bool isEnabled = hasBinder && binder is { Enabled: true };
                                 bool canToggle = hasBinder && _coreState.EditMode; // 읽기전용일 땐 토글 비활성
 
-                                var icon = GetSearchIconContent("Ping script asset");
+                                var icon = ZenGUIContents.IconSearch();
                                 if (GUI.Button(rR2, icon, EditorStyles.iconButton))
                                 {
                                     PingContextType(t);
@@ -593,7 +595,7 @@ namespace ZenECS.EditorWindows
                                                 "Yes", "No"))
                                         {
                                             BinderApi.Remove(world, e, t);
-                                            _entityPanel.BinderFold.Remove(e);
+                                            _entityPanel.BinderFold.Remove(key);
                                             Repaint();
                                         }
                                     }
@@ -604,9 +606,9 @@ namespace ZenECS.EditorWindows
                         );
 
                         GUI.color = prevHeaderColor;
-                        _entityPanel.BinderFold[e] = openB;
+                        _entityPanel.BinderFold[key] = openB;
 
-                        if (!_entityPanel.BinderFold[e]) continue;
+                        if (!_entityPanel.BinderFold[key]) continue;
 
                         // ===== body =====
                         var prevBodyColor = GUI.color;
@@ -651,8 +653,8 @@ namespace ZenECS.EditorWindows
             if (!BinderApi.TryGetAll(world, e, out var arr)) return;
             foreach (var (t, boxed) in arr)
             {
-                var key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}:BINDER";
-                _entityPanel.BinderFold[e] = open;
+                string key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}";
+                _entityPanel.BinderFold[key] = open;
             }
         }
 
@@ -903,7 +905,7 @@ namespace ZenECS.EditorWindows
                                             Debug.Log(s);
                                         }
 
-                                        var icon = GetSearchIconContent("Ping script asset");
+                                        var icon = ZenGUIContents.IconSearch();
                                         if (GUI.Button(rR2, icon, pingStyle))
                                         {
                                             PingContextType(t);
@@ -911,7 +913,7 @@ namespace ZenECS.EditorWindows
                                     }
                                     else
                                     {
-                                        var icon = GetSearchIconContent("Ping script asset");
+                                        var icon = ZenGUIContents.IconSearch();
                                         if (GUI.Button(rR1, icon, pingStyle))
                                         {
                                             PingContextType(t);

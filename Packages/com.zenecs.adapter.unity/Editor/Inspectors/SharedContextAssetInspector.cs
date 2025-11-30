@@ -6,9 +6,9 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
-using ZenECS.EditorCommon;
+using ZenECS.Adapter.Unity.Editor.GUIs;
 
-namespace ZenECS.EditorInspectors
+namespace ZenECS.Adapter.Unity.Editor.Inspectors
 {
     /// <summary>
     /// Inspector for SharedContextMarkerAsset.
@@ -21,7 +21,7 @@ namespace ZenECS.EditorInspectors
     ///   6) Unity default inspector (excluding m_Script)
     /// </summary>
     [CustomEditor(typeof(SharedContextAsset), editorForChildClasses: true)]
-    public sealed class SharedContextAssetInspector : Editor
+    public sealed class SharedContextAssetInspector : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

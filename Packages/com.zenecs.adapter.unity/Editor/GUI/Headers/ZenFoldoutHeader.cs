@@ -3,14 +3,14 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace ZenECS.EditorCommon
+namespace ZenECS.Adapter.Unity.Editor.GUIs
 {
     /// 통일된 접이식 헤더(화살표+제목+우측 버튼 슬롯)
     public static class ZenFoldoutHeader
     {
         static GUIStyle _foldout;
 
-        static GUIStyle FoldoutStyle
+        public static GUIStyle FoldoutStyle
         {
             get
             {
@@ -201,7 +201,7 @@ namespace ZenECS.EditorCommon
             drawRightButtons?.Invoke(right);
         }
 
-        static void DrawTwoLineLabels(Rect rect,
+        public static void DrawTwoLineLabels(Rect rect,
             GUIContent line1, GUIContent line2,
             GUIStyle style1 = null, GUIStyle style2 = null,
             float vGap = 2f)

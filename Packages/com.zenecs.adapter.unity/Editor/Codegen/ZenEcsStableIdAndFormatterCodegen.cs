@@ -13,7 +13,7 @@ using UnityEngine;
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 using PackageSource = UnityEditor.PackageManager.PackageSource;
 
-namespace ZenECS.Codegens
+namespace ZenECS.Adapter.Unity.Editor.Codegen
 {
     /// <summary>
     /// ZenComponent(StableId) + IComponentFormatter 자동 등록 g.cs 코드젠 (ZenFormatterForAttribute 확장).

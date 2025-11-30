@@ -1,0 +1,65 @@
+﻿using System;
+using UnityEditor;
+using UnityEngine;
+using ZenECS.Core;
+
+namespace ZenECS.Adapter.Unity.Editor.Common
+{
+    public static class ZenStringTable
+    {
+        public const string LabelEntityId = "Entity ID:GEN ";
+        public const string BtnFind = "Find";
+        public const string BtnClear = "Clear";
+        public const string BtnClose = "Close";
+        public const string TipFind = "Show only the entity with this ID (no system switching).";
+        public const string TipClear = "Exit single-entity view and show all entities.";
+        public const string BtnEdit = "Edit";
+        public const string EntityNotFound = "Entity Not Found";
+        public const string NoWatchedSystem = "No Watched System";
+        public const string SINGLETON = " <color=#999900><size=10>SINGLETON</size></color>";
+        public const string RemoveEntity = "Remove Entity";
+        public const string Yes = "Yes";
+        public const string No = "No";
+        public const string Component = "Component";
+
+        public static string GetSinceRunning(float elapsed)
+        {
+            return $"Since running in {elapsed:0} seconds";
+        }
+
+        public static string GetFoundEntityTitle(Entity e)
+        {
+            return $"Found Entity #{e.Id}:{e.Gen}";
+        }
+
+        public static string GetEntityTitle(Entity e)
+        {
+            return $"Entity #{e.Id}:{e.Gen}";
+        }
+
+        public static string GetWatchedSystems(int count)
+        {
+            return $"Watched Systems ({count})";
+        }
+
+        public static string GetRemoveThisEntity(Entity e)
+        {
+            return $"Remove this entity?\n\nEntity #{e.Id}:{e.Gen}";
+        }
+
+        public static string GetRemoveThisSingletonEntity(Entity e)
+        {
+            return $"Remove this singleton?\n\nSingleton Entity #{e.Id}:{e.Gen}";
+        }
+
+        public static string GetComponents(int conut)
+        {
+            return $"Components: {conut}";
+        }
+
+        public static string GetAddComponent(Entity e)
+        {
+            return $"Entity #{e.Id}:{e.Gen} Add Component";
+        }
+    }
+}

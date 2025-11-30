@@ -7,7 +7,7 @@ using UnityEngine;
 using ZenECS.Adapter.Unity;
 using ZenECS.Adapter.Unity.SystemPresets;
 
-namespace ZenECS.EditorUtils
+namespace ZenECS.Adapter.Unity.Editor.Utils
 {
     [CustomPropertyDrawer(typeof(SystemTypeRef))]
     public class SystemTypeRefDrawer : PropertyDrawer

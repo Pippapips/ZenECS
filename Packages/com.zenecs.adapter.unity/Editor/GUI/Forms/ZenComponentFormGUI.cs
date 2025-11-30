@@ -6,7 +6,7 @@ using Unity.Collections; // ★ FixedString64Bytes
 using UnityEditor;
 using UnityEngine;
 
-namespace ZenECS.EditorCommon
+namespace ZenECS.Adapter.Unity.Editor.GUIs
 {
     /// IMGUI 공용 폼 드로어: 기본형/Unity 타입 + Unity.Mathematics(float2/3/4,int/uint/bool2/3/4, quaternion)
     public static class ZenComponentFormGUI

@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using ZenECS.Core;
 
-namespace ZenECS.EditorTools
+namespace ZenECS.Adapter.Unity.Editor.Tools
 {
     /// <summary>
     /// ExplorerWindow와 느슨하게 연결하기 위한 브리지.

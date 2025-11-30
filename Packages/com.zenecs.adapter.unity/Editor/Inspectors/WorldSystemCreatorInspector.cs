@@ -8,11 +8,11 @@ using UnityEditorInternal;
 using UnityEngine;
 using ZenECS.Adapter.Unity;
 using ZenECS.Adapter.Unity.DI;
+using ZenECS.Adapter.Unity.Editor.GUIs;
 using ZenECS.Adapter.Unity.SystemPresets;
 using ZenECS.Core.Systems;
-using ZenECS.EditorCommon;
 
-namespace ZenECS.EditorInspectors
+namespace ZenECS.Adapter.Unity.Editor.Inspectors
 {
     /// <summary>
     /// Custom inspector for <see cref="WorldSystemCreator"/>.
@@ -22,7 +22,7 @@ namespace ZenECS.EditorInspectors
     /// - At runtime, all presets + local types are merged and deduplicated
     /// </summary>
     [CustomEditor(typeof(WorldSystemCreator))]
-    public sealed class WorldSystemCreatorInspector : Editor
+    public sealed class WorldSystemCreatorInspector : UnityEditor.Editor
     {
         private ReorderableList? _list;
         private SerializedProperty? _propTypes;

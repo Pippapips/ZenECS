@@ -3,7 +3,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace ZenECS.EditorCommon
+namespace ZenECS.Adapter.Unity.Editor.GUIs
 {
     internal static class ZenEcsGUIHeader
     {

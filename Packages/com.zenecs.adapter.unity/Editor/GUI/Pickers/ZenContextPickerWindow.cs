@@ -6,25 +6,19 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace ZenECS.EditorCommon
+namespace ZenECS.Adapter.Unity.Editor.GUIs
 {
-    public sealed class ZenContextPickerWindow : EditorWindow
+    /// <summary>
+    /// Dropdown picker window for context types.
+    /// </summary>
+    internal sealed class ZenContextPickerWindow : ZenPickerWindowBase<Type>
     {
-        private const float ROW_HEIGHT = 22f;
-        private const float PADDING = 6f;
-
-        private string _search = "";
-        private Vector2 _scroll;
-        private List<Type> _all = new();
+        private readonly List<Type> _all = new();
         private HashSet<Type> _disabled = new();
         private Action<Type> _onPick = _ => { };
-        private int _hover = -1;
-        private GUIStyle? _rowStyle;
-        private GUIStyle? _rowDisabledStyle;
-        private GUIStyle? _searchStyle;
-        string _title = "Add Context";
 
-        public static void Show(IEnumerable<Type> allContextTypes,
+        public static void Show(
+            IEnumerable<Type> allContextTypes,
             HashSet<Type> disabled,
             Action<Type> onPick,
             Rect activatorRectGui,
@@ -32,164 +26,76 @@ namespace ZenECS.EditorCommon
             Vector2? size = null)
         {
             var win = CreateInstance<ZenContextPickerWindow>();
-            win.titleContent = new GUIContent(title);
             win._title = title;
-            win._all = allContextTypes?.ToList() ?? new List<Type>();
-            win._disabled = disabled ?? new HashSet<Type>();
+            win.titleContent = new GUIContent(title);
             win._onPick = onPick ?? (_ => { });
+            win._closeOnLostFocus = true;
+
+            win._all.Clear();
+            win._all.AddRange(allContextTypes ?? Array.Empty<Type>());
+            win._disabled = disabled ?? new HashSet<Type>();
 
             var w = size?.x ?? 420f;
             var h = size?.y ?? 360f;
 
-            // Convert GUI rect to screen rect and show as dropdown near the button
-            var screenPos = GUIUtility.GUIToScreenPoint(new Vector2(activatorRectGui.x, activatorRectGui.y));
-            var screenRect = new Rect(screenPos.x, screenPos.y, activatorRectGui.width, activatorRectGui.height);
+            var screenPos = GUIUtility.GUIToScreenPoint(
+                new Vector2(activatorRectGui.x, activatorRectGui.y));
+            var screenRect = new Rect(
+                screenPos.x,
+                screenPos.y,
+                activatorRectGui.width,
+                activatorRectGui.height);
 
             win.ShowAsDropDown(screenRect, new Vector2(w, h));
             win.Focus();
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+            // Simplified row style similar to PR Label
             _rowStyle = new GUIStyle("PR Label")
             {
                 alignment = TextAnchor.MiddleLeft,
                 fixedHeight = ROW_HEIGHT
             };
-            _rowDisabledStyle = new GUIStyle(_rowStyle)
-            {
-                normal =
-                {
-                    textColor = EditorGUIUtility.isProSkin ? new Color(1f, 1f, 1f, 0.35f) : new Color(0, 0, 0, 0.45f)
-                }
-            };
-            _searchStyle = "ToolbarSearchTextField";
-            wantsMouseMove = true;
         }
 
-        private void OnGUI()
+        protected override IEnumerable<Type> GetSourceItems() => _all;
+
+        protected override bool IsDisabled(Type item) => _disabled.Contains(item);
+
+        protected override bool MatchesSearch(Type t, string search)
         {
-            DrawSearchBar();
-            EditorGUILayout.Space(2);
+            if (t == null) return false;
+            var label = t.FullName ?? t.Name ?? string.Empty;
+            return label.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
 
-            var filtered = Filtered().ToList();
+        protected override IEnumerable<Type> OrderItems(IEnumerable<Type> items)
+        {
+            return items.Where(t => t != null).OrderBy(t => t.FullName);
+        }
 
-            var viewRect = GUILayoutUtility.GetRect(0, 100000, 0, 100000, GUILayout.ExpandWidth(true),
-                GUILayout.ExpandHeight(true));
-            var contentRect = new Rect(0, 0, viewRect.width - 16, filtered.Count * ROW_HEIGHT + PADDING * 2);
+        protected override string GetEmptyMessage() => "No matching contexts found.";
 
-            _scroll = GUI.BeginScrollView(viewRect, _scroll, contentRect);
-            var y = PADDING;
-            var i = 0;
-            foreach (var t in filtered)
+        protected override GUIContent GetItemContent(Type t, bool disabled)
+        {
+            var label = t.FullName ?? t.Name ?? string.Empty;
+            if (disabled)
             {
-                var r = new Rect(PADDING, y, contentRect.width - PADDING * 2, ROW_HEIGHT);
-                var isDisabled = _disabled.Contains(t);
-                var style = isDisabled ? _rowDisabledStyle : _rowStyle;
-
-                // Hover
-                if (r.Contains(Event.current.mousePosition))
-                    _hover = i;
-
-                // Background hover highlight
-                if (_hover == i && !isDisabled)
-                {
-                    var bg = EditorGUIUtility.isProSkin ? new Color(1, 1, 1, 0.06f) : new Color(0, 0, 0, 0.06f);
-                    EditorGUI.DrawRect(r, bg);
-                }
-
-                // Label: FullName, and disabled tag
-                var label = t.FullName ?? t.Name;
-                if (isDisabled) label += "  (already added)";
-
-                using (new EditorGUI.DisabledScope(isDisabled))
-                {
-                    if (GUI.Button(r, label, style))
-                    {
-                        if (!isDisabled)
-                        {
-                            _onPick(t);
-                            Close();
-                        }
-                    }
-                }
-
-                y += ROW_HEIGHT;
-                i++;
+                label = $"<color=#888888>{label}  (already added)</color>";
             }
 
-            GUI.EndScrollView();
-
-            HandleKeyboard(filtered);
-            if (Event.current.type == EventType.MouseMove) Repaint();
+            return new GUIContent(label, t.FullName);
         }
 
-        private void DrawSearchBar()
+        protected override void OnItemPicked(Type item)
         {
-            using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
-            {
-                EditorGUILayout.LabelField(_title, EditorStyles.boldLabel);
-                GUI.SetNextControlName("ZenContextPickerSearch");
-                _search = GUILayout.TextField(_search, _searchStyle, GUILayout.ExpandWidth(true));
-                if (GUILayout.Button("×", EditorStyles.toolbarButton, GUILayout.Width(24)))
-                {
-                    _search = "";
-                    GUI.FocusControl("ZenContextPickerSearch");
-                }
-            }
+            _onPick(item);
         }
 
-        private IEnumerable<Type> Filtered()
-        {
-            IEnumerable<Type> src = _all;
-            if (!string.IsNullOrEmpty(_search))
-            {
-                var s = _search.Trim();
-                src = src.Where(t =>
-                    (t.FullName ?? t.Name).IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0);
-            }
-
-            return src.OrderBy(t => t.FullName);
-        }
-
-        private void HandleKeyboard(List<Type> filtered)
-        {
-            var e = Event.current;
-            if (e.type != EventType.KeyDown) return;
-
-            switch (e.keyCode)
-            {
-                case KeyCode.UpArrow:
-                    _hover = Mathf.Clamp((_hover < 0 ? filtered.Count : _hover) - 1, 0,
-                        Mathf.Max(0, filtered.Count - 1));
-                    e.Use();
-                    Repaint();
-                    break;
-                case KeyCode.DownArrow:
-                    _hover = Mathf.Clamp(_hover + 1, 0, Mathf.Max(0, filtered.Count - 1));
-                    e.Use();
-                    Repaint();
-                    break;
-                case KeyCode.Return:
-                case KeyCode.KeypadEnter:
-                    if (_hover >= 0 && _hover < filtered.Count)
-                    {
-                        var t = filtered[_hover];
-                        if (!_disabled.Contains(t))
-                        {
-                            _onPick(t);
-                            Close();
-                            e.Use();
-                        }
-                    }
-
-                    break;
-                case KeyCode.Escape:
-                    Close();
-                    e.Use();
-                    break;
-            }
-        }
+        private void OnGUI() => DrawDefaultGUI();
     }
 }
 #endif

@@ -2,18 +2,18 @@
 #nullable enable
 using UnityEditor;
 using UnityEngine;
+using ZenECS.Adapter.Unity.Editor.GUIs;
+using ZenECS.Adapter.Unity.Editor.Tools;
 using ZenECS.Core;
 using ZenECS.Adapter.Unity.Linking;
-using ZenECS.EditorCommon;
-using ZenECS.EditorTools;
 
-namespace ZenECS.EditorInspectors
+namespace ZenECS.Adapter.Unity.Editor.Inspectors
 {
     /// <summary>
     /// EntityLink의 런타임 메타를 인스펙터에서 표시 + ExplorerWindow 연동 버튼 제공.
     /// </summary>
     [CustomEditor(typeof(EntityLink))]
-    public sealed class EntityLinkInspector : Editor
+    public sealed class EntityLinkInspector : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

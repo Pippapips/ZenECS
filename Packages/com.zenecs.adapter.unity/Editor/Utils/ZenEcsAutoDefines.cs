@@ -11,7 +11,7 @@ using UnityEditor.Build; // NamedBuildTarget
 using UnityEditor.Compilation;
 using UnityEngine;
 
-namespace ZenECS.EditorUtils
+namespace ZenECS.Adapter.Unity.Editor.Utils
 {
     /// <summary>
     /// 자동 전처리기 정의 관리기

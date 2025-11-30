@@ -8,52 +8,22 @@ using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
+using ZenECS.Adapter.Unity.Editor.GUIs;
 using ZenECS.Core;
 using ZenECS.Core.Binding;
 using ZenECS.Core.Systems;
-using ZenECS.EditorCommon;
-using ZenECS.EditorUtils;
 
-namespace ZenECS.EditorWindows
+namespace ZenECS.Adapter.Unity.Editor.Windows
 {
     public sealed partial class ZenEcsExplorerWindow
     {
         private Color systemMetaTextColor = Color.lightGray;
         private Color systemTreeTextColor = Color.lightGray;
 
-        static GUIContent GetSearchIconContent(string tooltip)
-        {
-            // Unity 기본 검색 아이콘
-            var gc = EditorGUIUtility.IconContent("d_Search Icon");
-            if (gc == null || gc.image == null)
-                gc = EditorGUIUtility.IconContent("Search Icon");
-
-            // 혹시 아이콘을 못 찾았을 경우 텍스트로 fallback
-            if (gc == null)
-                gc = new GUIContent("🔍", tooltip);
-            else
-                gc.tooltip = tooltip;
-
-            return gc;
-        }
-
-        static GUIContent GetPlusIconContent()
-        {
-            // Unity 기본 검색 아이콘
-            var gc = EditorGUIUtility.IconContent("d_CreateAddNew");
-            if (gc == null || gc.image == null)
-                gc = EditorGUIUtility.IconContent("CreateAddNew");
-
-            if (gc == null)
-                gc = new GUIContent("+");
-
-            return gc;
-        }
-
-        List<(ISystem sys, Type type)> CollectWatchedSystemsForEntity(
+        private List<(ISystem sys, Type type)> CollectWatchedSystemsForEntity(
             IWorld world,
             Entity entity,
-            IReadOnlyList<ISystem> systems)
+            IReadOnlyList<ISystem>? systems)
         {
             var result = new List<(ISystem, Type)>();
 
@@ -81,7 +51,7 @@ namespace ZenECS.EditorWindows
 
                 // WatchQueryRunner를 통해 이 시스템이 감시하는 엔티티 목록 수집
                 var tmp = new List<Entity>();
-                if (!WatchQueryRunner.TryCollectByWatch(sys, world, tmp))
+                if (!TryCollectEntitiesBySystemWatched(world, sys, tmp))
                     continue;
 
                 // 현재 Find 뷰의 엔티티가 포함되어 있으면 목록에 추가
@@ -543,8 +513,8 @@ namespace ZenECS.EditorWindows
             {
                 if (boxed != null && !CanShowBinderBody(t, boxed)) continue;
                 any = true;
-                var key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}:BINDER";
-                if (!_entityPanel.BinderFold.TryGetValue(e, out bool open) || !open)
+                string key = $"{e.Id}:{e.Gen}:{t.AssemblyQualifiedName}";
+                if (!_entityPanel.BinderFold.TryGetValue(key, out bool open) || !open)
                     return false;
             }
 
@@ -780,20 +750,6 @@ namespace ZenECS.EditorWindows
         // =====================================================================
 
         /// <summary>
-        /// Draws a vertical separator line that stretches to fill the available height.
-        /// </summary>
-        void DrawVerticalSeparator(float width = 1f, float alpha = 0.2f)
-        {
-            var sepRect = GUILayoutUtility.GetRect(
-                width, width,
-                GUILayout.ExpandHeight(true),
-                GUILayout.Width(width));
-
-            var c = new Color(0f, 0f, 0f, alpha);
-            EditorGUI.DrawRect(sepRect, c);
-        }
-        
-        /// <summary>
         /// Draws a foldout header with an optional right-side area (e.g. counter, buttons).
         /// Returns the new foldout state.
         /// </summary>
@@ -816,6 +772,112 @@ namespace ZenECS.EditorWindows
             rightGui?.Invoke();
 
             return isOpen;
+        }
+        
+        void PingSystemTypeNoSelect(Type t)
+        {
+            if (t == null) return;
+
+            var scripts = Resources.FindObjectsOfTypeAll<MonoScript>();
+            foreach (var ms in scripts)
+            {
+                if (ms == null) continue;
+                try
+                {
+                    if (ms.GetClass() == t)
+                    {
+                        // Selection은 건드리지 않고 Ping만
+                        EditorGUIUtility.PingObject(ms);
+                        return;
+                    }
+                }
+                catch
+                {
+                    // 무시
+                }
+            }
+
+            Debug.Log($"ZenECS Explorer: Could not locate script asset for system type {t.FullName}");
+        }
+
+        void PingSystemType(Type t)
+        {
+            // 현재 로드된 모든 MonoScript 중에서 이 타입을 가진 스크립트 찾기
+            var scripts = Resources.FindObjectsOfTypeAll<MonoScript>();
+            foreach (var ms in scripts)
+            {
+                if (ms == null) continue;
+                try
+                {
+                    if (ms.GetClass() == t)
+                    {
+                        EditorGUIUtility.PingObject(ms);
+                        Selection.activeObject = ms;
+                        return;
+                    }
+                }
+                catch
+                {
+                    // 일부 스크립트는 GetClass() 호출 시 예외 날 수 있음 → 무시
+                }
+            }
+
+            Debug.Log($"EcsExplorer: Could not locate script asset for system type {t.FullName}");
+        }
+
+        void PingComponentType(Type t)
+        {
+            if (t == null) return;
+
+            // 시스템 Ping과 동일하게 MonoScript에서 타입을 찾아 Ping
+            var scripts = Resources.FindObjectsOfTypeAll<MonoScript>();
+            foreach (var ms in scripts)
+            {
+                if (ms == null) continue;
+                try
+                {
+                    if (ms.GetClass() == t)
+                    {
+                        // Selection은 유지하고 Ping만
+                        EditorGUIUtility.PingObject(ms);
+                        return;
+                    }
+                }
+                catch
+                {
+                    // 일부 스크립트는 GetClass() 호출시 예외 발생 가능 → 무시
+                }
+            }
+
+            Debug.Log(
+                $"EcsExplorer: Unable to locate a script asset for component type {t.FullName}.\nIt may not exist, or a matching type name is required to ping the script source.");
+        }
+
+        void PingContextType(Type t)
+        {
+            if (t == null) return;
+
+            // 시스템 Ping과 동일하게 MonoScript에서 타입을 찾아 Ping
+            var scripts = Resources.FindObjectsOfTypeAll<MonoScript>();
+            foreach (var ms in scripts)
+            {
+                if (ms == null) continue;
+                try
+                {
+                    if (ms.GetClass() == t)
+                    {
+                        // Selection은 유지하고 Ping만
+                        EditorGUIUtility.PingObject(ms);
+                        return;
+                    }
+                }
+                catch
+                {
+                    // 일부 스크립트는 GetClass() 호출시 예외 발생 가능 → 무시
+                }
+            }
+
+            Debug.Log($"EcsExplorer: Could not locate script asset for component type {t.FullName}");
         }
     }
 }

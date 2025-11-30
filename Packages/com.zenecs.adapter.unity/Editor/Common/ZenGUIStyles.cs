@@ -1,0 +1,172 @@
+﻿using System;
+using UnityEditor;
+using UnityEngine;
+using ZenECS.Core;
+
+namespace ZenECS.Adapter.Unity.Editor.Common
+{
+    public static class ZenGUIStyles
+    {
+        private static GUIStyle _buttonMCNormal10;
+        public static GUIStyle ButtonMCNormal10
+        {
+            get
+            {
+                _buttonMCNormal10 ??= new GUIStyle(GUI.skin.button)
+                {
+                    alignment = TextAnchor.MiddleCenter,
+                    fontStyle = FontStyle.Normal,
+                    fontSize = 10
+                };
+                return _buttonMCNormal10;
+            }
+        }
+
+        private static GUIStyle _labelBold14;
+        public static GUIStyle LabelBold14
+        {
+            get
+            {
+                _labelBold14 ??= new GUIStyle(GUI.skin.label)
+                {
+                    fontStyle = FontStyle.Bold,
+                    fontSize = 14,
+                    richText = true
+                };
+                return _labelBold14;
+            }
+        }
+
+        private static GUIStyle _labelLCNormal10;
+        public static GUIStyle LabelLCNormal10
+        {
+            get
+            {
+                _labelLCNormal10 ??= new GUIStyle(GUI.skin.label)
+                {
+                    alignment = TextAnchor.LowerCenter,
+                    fontStyle = FontStyle.Normal,
+                    fontSize = 10,
+                    richText = true
+                };
+                return _labelLCNormal10;
+            }
+        }
+
+        private static GUIStyle _labelMLNormal10;
+        public static GUIStyle LabelMLNormal10
+        {
+            get
+            {
+                _labelMLNormal10 ??= new GUIStyle(GUI.skin.label)
+                {
+                    alignment = TextAnchor.MiddleLeft,
+                    fontStyle = FontStyle.Normal,
+                    fontSize = 10
+                };
+                return _labelMLNormal10;
+            }
+        }
+
+        private static GUIStyle _labelMLNormal9;
+        public static GUIStyle LabelMLNormal9
+        {
+            get
+            {
+                _labelMLNormal9 ??= new GUIStyle(GUI.skin.label)
+                {
+                    alignment = TextAnchor.MiddleLeft,
+                    fontStyle = FontStyle.Normal,
+                    fontSize = 9
+                };
+                return _labelMLNormal9;
+            }
+        }
+
+        private static GUIStyle _labelMLNormal9Gray;
+        public static GUIStyle LabelMLNormal9Gray
+        {
+            get
+            {
+                _labelMLNormal9Gray ??= new GUIStyle(GUI.skin.label)
+                {
+                    alignment = TextAnchor.MiddleLeft,
+                    fontStyle = FontStyle.Normal,
+                    fontSize = 9,
+                    normal = new GUIStyleState { textColor = Color.darkGray },
+                };
+                return _labelMLNormal9Gray;
+            }
+        }
+
+        private static GUIStyle _textFieldLFNormal10;
+        public static GUIStyle TextFieldLFNormal10
+        {
+            get
+            {
+                _textFieldLFNormal10 ??= new GUIStyle(GUI.skin.textField)
+                {
+                    alignment = TextAnchor.LowerLeft,
+                    fontStyle = FontStyle.Normal,
+                    fontSize = 10
+                };
+                return _textFieldLFNormal10;
+            }
+        }
+        
+        private static GUIStyle _foldoutNormal;
+        public static GUIStyle FoldoutNormal
+        {
+            get
+            {
+                _foldoutNormal ??= new GUIStyle(EditorStyles.foldout)
+                {
+                    fontStyle = FontStyle.Bold,
+                    fontSize = 11,
+                    margin = new RectOffset(1, 0, 0, 0),
+                    contentOffset = new Vector2(4, 0),
+                };
+                return _foldoutNormal;
+            }
+        }
+
+        private static GUIStyle _systemFoldout;
+        public static GUIStyle SystemFoldout
+        {
+            get
+            {
+                _systemFoldout ??= new GUIStyle(EditorStyles.foldout)
+                {
+                    fontStyle = FontStyle.Normal,
+                    fontSize = 11,
+                    richText = false,
+                    alignment = TextAnchor.MiddleLeft,
+                    normal = new GUIStyleState { textColor = Color.lightGray },
+                    onNormal = new GUIStyleState { textColor = Color.lightGray },
+                    focused = new GUIStyleState { textColor = Color.lightGray },
+                    onFocused = new GUIStyleState { textColor = Color.lightGray },
+                    hover = new GUIStyleState { textColor = Color.lightGray },
+                    onHover = new GUIStyleState { textColor = Color.lightGray },
+                    active = new GUIStyleState { textColor = Color.lightGray },
+                    onActive = new GUIStyleState { textColor = Color.lightGray },
+                };
+                return _systemFoldout;
+            }
+        }
+
+        private static GUIStyle _buttonPadding;
+        public static GUIStyle ButtonPadding
+        {
+            get
+            {
+                _buttonPadding = new GUIStyle(GUI.skin.button)
+                {
+                    alignment = TextAnchor.MiddleCenter,
+                    padding = new RectOffset(3, 3, 3, 3),
+                    margin = new RectOffset(0, 0, 0, 0)
+                };
+                return _buttonPadding;
+            }
+        }
+    }
+}

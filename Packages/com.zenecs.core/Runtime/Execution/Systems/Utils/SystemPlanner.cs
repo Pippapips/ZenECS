@@ -27,7 +27,7 @@ namespace ZenECS.Core.Systems.Internal
     /// grouped by phase, validated for marker/attribute consistency, and then
     /// topologically sorted within each group.
     /// </summary>
-    internal static class SystemPlanner
+    public static class SystemPlanner
     {
         /// <summary>
         /// Immutable plan describing execution order per phase and lifecycle views.

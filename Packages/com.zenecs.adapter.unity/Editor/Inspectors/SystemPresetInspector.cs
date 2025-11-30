@@ -7,15 +7,15 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using ZenECS.Adapter.Unity;
+using ZenECS.Adapter.Unity.Editor.GUIs;
 using ZenECS.Adapter.Unity.SystemPresets;
 using ZenECS.Core;
 using ZenECS.Core.Systems;
-using ZenECS.EditorCommon;
 
-namespace ZenECS.EditorInspectors
+namespace ZenECS.Adapter.Unity.Editor.Inspectors
 {
     [CustomEditor(typeof(SystemsPreset))]
-    public sealed class SystemsPresetInspector : Editor
+    public sealed class SystemsPresetInspector : UnityEditor.Editor
     {
         ReorderableList? _list;
         SerializedProperty? _propTypes;

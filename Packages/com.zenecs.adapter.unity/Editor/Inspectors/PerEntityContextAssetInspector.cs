@@ -4,9 +4,9 @@ using System;
 using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
-using ZenECS.EditorCommon;
+using ZenECS.Adapter.Unity.Editor.GUIs;
 
-namespace ZenECS.EditorInspectors
+namespace ZenECS.Adapter.Unity.Editor.Inspectors
 {
     /// <summary>
     /// Inspector for ModelContextAsset (Per-entity context asset).
@@ -17,7 +17,7 @@ namespace ZenECS.EditorInspectors
     ///   4) Unity default inspector (excluding m_Script)
     /// </summary>
     [CustomEditor(typeof(PerEntityContextAsset), editorForChildClasses: true)]
-    public sealed class PerEntityContextAssetInspector : Editor
+    public sealed class PerEntityContextAssetInspector : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

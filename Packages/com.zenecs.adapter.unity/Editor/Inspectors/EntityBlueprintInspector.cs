@@ -7,14 +7,14 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Blueprints;
+using ZenECS.Adapter.Unity.Editor.GUIs;
 using ZenECS.Core;
 using ZenECS.Core.Binding;
-using ZenECS.EditorCommon;
 
-namespace ZenECS.EditorInspectors
+namespace ZenECS.Adapter.Unity.Editor.Inspectors
 {
     [CustomEditor(typeof(EntityBlueprint))]
-    public sealed class EntityBlueprintInspector : Editor
+    public sealed class EntityBlueprintInspector : UnityEditor.Editor
     {
         // ───────── Components (BlueprintData) ─────────
         SerializedProperty _dataProp; // _data

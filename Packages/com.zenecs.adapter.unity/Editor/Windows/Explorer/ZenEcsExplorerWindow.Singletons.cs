@@ -3,10 +3,11 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using ZenECS.Adapter.Unity.Editor.Common;
 using ZenECS.Core;
 using ZenECS.Core.Systems;
 
-namespace ZenECS.EditorWindows
+namespace ZenECS.Adapter.Unity.Editor.Windows
 {
     /// <summary>
     /// Singletons section in the systems tree and singleton entity detail view.
@@ -74,7 +75,7 @@ namespace ZenECS.EditorWindows
                     pingRect.height - 2f
                 );
 
-                var searchContent = GetSearchIconContent("Ping singleton component script asset");
+                var searchContent = ZenGUIContents.IconSearch();
                 var iconStyle = new GUIStyle(GUI.skin.button)
                 {
                     alignment = TextAnchor.MiddleCenter,
@@ -147,7 +148,7 @@ namespace ZenECS.EditorWindows
 
                     if (type != null)
                     {
-                        var pingContent = GetSearchIconContent("Ping singleton component script asset");
+                        var pingContent = ZenGUIContents.IconSearch();
                         if (GUILayout.Button(pingContent, EditorStyles.iconButton, GUILayout.Width(20),
                                 GUILayout.Height(18)))
                         {

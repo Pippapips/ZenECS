@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Linking;
 
-namespace ZenECS.EditorTools
+namespace ZenECS.Adapter.Unity.Editor.Inspectors
 {
     /// <summary>
     /// Hierarchy에서 EntityLink가 달린 GameObject 오른쪽 끝에

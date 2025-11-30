@@ -9,7 +9,7 @@ using UnityEditor.Compilation;
 using UnityEditor.PackageManager;
 using UnityEngine;
 
-namespace ZenECS.EditorUtils
+namespace ZenECS.Adapter.Unity.Editor.Utils
 {
     [InitializeOnLoad]
     public static class ZenECSGitUrlDependencyInstaller
