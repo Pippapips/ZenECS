@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 #nullable enable
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity;
@@ -27,12 +28,12 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
         {
             using (new EditorGUILayout.VerticalScope(GUI.skin.box))
             {
+                bool isSingleton = world.HasSingleton(e);
+                
                 // ===== Entity header =====
-                DrawEntityHeader(world, e, out bool entityOpen);
+                DrawEntityHeader(world, e, isSingleton, out bool entityOpen);
                 if (!entityOpen)
                     return;
-
-                bool isSingleton = world.HasSingleton(e);
 
                 // ===== 1) Components =====
                 DrawEntityComponentsSection(world, e, isSingleton);
@@ -48,7 +49,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
         /// <summary>
         /// Entity 헤더 + 접기 상태 + 삭제 버튼까지 처리.
         /// </summary>
-        void DrawEntityHeader(IWorld world, Entity e, out bool isOpen)
+        void DrawEntityHeader(IWorld world, Entity e, bool isSingleton, out bool isOpen)
         {
             var line = EditorGUIUtility.singleLineHeight;
             var headRect = GUILayoutUtility.GetRect(
@@ -57,18 +58,16 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 GUILayout.ExpandWidth(true));
 
             // foldout 상태 초기화
-            if (!_entityPanel.EntityFold.TryGetValue(e, out var open))
-                open = true;
+            var open = _entityPanel.EntityFold.GetValueOrDefault(e, false);
 
-            bool isSingleton = world.HasSingleton(e);
-            var title = ZenStringTable.GetEntityTitle(e);
+            var entityTitle = ZenStringTable.GetEntityTitle(e);
             if (isSingleton)
-                title += ZenStringTable.SINGLETON;
+                entityTitle += ZenStringTable.SINGLETON;
 
             ZenFoldoutHeader.DrawRow(
                 ref open,
                 headRect,
-                title,
+                entityTitle,
                 nameSpace: string.Empty,
                 drawRightButtons: rectRight =>
                 {
