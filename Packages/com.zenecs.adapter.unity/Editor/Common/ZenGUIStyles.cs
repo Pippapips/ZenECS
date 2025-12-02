@@ -7,6 +7,36 @@ namespace ZenECS.Adapter.Unity.Editor.Common
 {
     public static class ZenGUIStyles
     {
+        private static GUIStyle _linkLabel;
+        public static GUIStyle LinkLabel
+        {
+            get
+            {
+                if (_linkLabel == null)
+                {
+                    _linkLabel = new GUIStyle(EditorStyles.label)
+                    {
+                        fontStyle = FontStyle.Bold,
+                        richText = false
+                    };
+
+                    _linkLabel.normal.textColor = Color.lightGray;
+                    _linkLabel.hover.textColor  = Color.orangeRed;
+                    _linkLabel.active.textColor = Color.orangeRed;   // 클릭 중
+                    _linkLabel.focused.textColor = Color.orangeRed;  // 키보드 focus
+                    _linkLabel.alignment = TextAnchor.MiddleLeft;
+
+                    // 배경은 없애서 “버튼처럼” 안 보이게
+                    _linkLabel.normal.background  = null;
+                    _linkLabel.hover.background   = null;
+                    _linkLabel.active.background  = null;
+                    _linkLabel.focused.background = null;
+                }
+
+                return _linkLabel;
+            }
+        }
+        
         private static GUIStyle _titleStyle;
         public static GUIStyle TitleStyle
         {
@@ -171,6 +201,30 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                     contentOffset = new Vector2(4, 0),
                 };
                 return _foldoutNormal;
+            }
+        }
+
+        private static GUIStyle _systemFoldout10;
+        public static GUIStyle SystemFoldout10
+        {
+            get
+            {
+                _systemFoldout10 ??= new GUIStyle(EditorStyles.foldout)
+                {
+                    fontStyle = FontStyle.Normal,
+                    fontSize = 10,
+                    richText = true,
+                    alignment = TextAnchor.MiddleLeft,
+                    normal = new GUIStyleState { textColor = Color.lightGray },
+                    onNormal = new GUIStyleState { textColor = Color.lightGray },
+                    focused = new GUIStyleState { textColor = Color.lightGray },
+                    onFocused = new GUIStyleState { textColor = Color.lightGray },
+                    hover = new GUIStyleState { textColor = Color.lightGray },
+                    onHover = new GUIStyleState { textColor = Color.lightGray },
+                    active = new GUIStyleState { textColor = Color.lightGray },
+                    onActive = new GUIStyleState { textColor = Color.lightGray },
+                };
+                return _systemFoldout10;
             }
         }
 
