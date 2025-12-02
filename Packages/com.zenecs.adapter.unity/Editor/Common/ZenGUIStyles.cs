@@ -183,7 +183,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                 {
                     fontStyle = FontStyle.Normal,
                     fontSize = 11,
-                    richText = false,
+                    richText = true,
                     alignment = TextAnchor.MiddleLeft,
                     normal = new GUIStyleState { textColor = Color.lightGray },
                     onNormal = new GUIStyleState { textColor = Color.lightGray },
