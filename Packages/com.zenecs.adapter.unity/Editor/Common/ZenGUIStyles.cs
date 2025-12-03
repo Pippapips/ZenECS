@@ -8,6 +8,42 @@ namespace ZenECS.Adapter.Unity.Editor.Common
 {
     public static class ZenGUIStyles
     {
+        public readonly struct LabelScope : IDisposable
+        {
+            private readonly GUIStyle _backupStyle;
+            private readonly float _backupLabelWidth;
+            private readonly bool _hasCustomWidth;
+
+            public LabelScope(GUIStyle style, float? labelWidth = null)
+            {
+                _backupStyle = new GUIStyle(EditorStyles.label);
+                _backupLabelWidth = EditorGUIUtility.labelWidth;
+                _hasCustomWidth = labelWidth.HasValue;
+
+                ApplyStyle(style);
+
+                if (labelWidth.HasValue)
+                    EditorGUIUtility.labelWidth = labelWidth.Value;
+            }
+
+            private static void ApplyStyle(GUIStyle src)
+            {
+                EditorStyles.label.font = src.font;
+                EditorStyles.label.fontSize = src.fontSize;
+                EditorStyles.label.fontStyle = src.fontStyle;
+                EditorStyles.label.alignment = src.alignment;
+                EditorStyles.label.normal.textColor = src.normal.textColor;
+                EditorStyles.label.richText = src.richText;
+            }
+
+            public void Dispose()
+            {
+                ApplyStyle(_backupStyle);
+                if (_hasCustomWidth)
+                    EditorGUIUtility.labelWidth = _backupLabelWidth;
+            }
+        }
+        
         private static GUIStyle _linkLabel;
         public static GUIStyle LinkLabel
         {
@@ -137,7 +173,8 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                 {
                     alignment = TextAnchor.MiddleLeft,
                     fontStyle = FontStyle.Normal,
-                    fontSize = 10
+                    fontSize = 10,
+                    richText = true
                 };
                 return _labelMLNormal10;
             }

@@ -13,7 +13,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
     {
         public static float LineHeight = 16f;
         
-        public static void DrawSmallForm(Rect bodyInner, object obj, Type t)
+        public static void DrawSmallForm(Rect bodyInner, object obj, Type t, int fontSize = 10, float fontHeight = 14)
         {
             // 1) 백업
             var labelBackup = new GUIStyle(EditorStyles.label);
@@ -23,17 +23,17 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             try
             {
                 // 2) 라벨 폰트 (이미 줄여놨다면 이 부분은 패스 가능)
-                EditorStyles.label.fontSize = 9;
+                EditorStyles.label.fontSize = fontSize;
 
                 // 3) 값(TextField/IntField) 폰트 줄이기
-                EditorStyles.textField.fontSize = 9;
-                EditorStyles.numberField.fontSize = 9;
+                EditorStyles.textField.fontSize = fontSize;
+                EditorStyles.numberField.fontSize = fontSize;
 
                 // 필요하면 popup, toggle 등도 추가
                 // EditorStyles.popup.fontSize = 9;
 
                 // 4) 우리 폼 라인 높이 줄이기
-                LineHeight = 14f;
+                LineHeight = fontHeight;
 
                 // 5) 실제 Draw
                 DrawObject(bodyInner, obj, t);

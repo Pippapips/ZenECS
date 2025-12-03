@@ -83,6 +83,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 
         private readonly Dictionary<EntityTypeKey, bool> _debugComponentFold = new();
         private readonly Dictionary<EntityTypeKey, bool> _debugContextFold = new();
+        private readonly Dictionary<EntityTypeKey, bool> _debugBinderFold = new();
 
         void DrawRightDebug()
         {
@@ -125,10 +126,43 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 EditorGUI.indentLevel = 0;
 
                 DebugFoldoutHeader(ref _debugFold, "Entity", null, null, ZenGUIStyles.SystemFoldout);
+                
                 if (_debugFold)
                 {
                     EditorGUI.indentLevel++;
 
+                    var rowRect = GUILayoutUtility.GetRect(0, EditorGUIUtility.singleLineHeight,
+                        GUILayout.ExpandWidth(true));
+
+                    // Indent 반영
+                    rowRect = EditorGUI.IndentedRect(rowRect);
+
+                    const float iconW = 20f; // 돋보기 / X 공통 폭
+                    const float gap = 1f;
+
+                    var rL0 = new Rect(rowRect.x, rowRect.y, iconW, rowRect.height);
+                    var rL1 = new Rect(rL0.x + gap + iconW, rowRect.y, iconW, rowRect.height);
+                    var rL2 = new Rect(rL1.x + gap + iconW, rowRect.y, iconW, rowRect.height);
+                    
+                    var rR0 = new Rect(rowRect.xMax - iconW, rowRect.y, iconW, rowRect.height);
+                    var rR1 = new Rect(rR0.x - gap - iconW, rowRect.y, iconW, rowRect.height);
+                    var rR2 = new Rect(rR1.x - gap - iconW, rowRect.y, iconW, rowRect.height);
+
+                    if (GUI.Button(rL0, "X", ZenGUIStyles.ButtonMCNormal10))
+                    {
+                        Debug.Log("R2 clicked");
+                    }
+
+                    if (GUI.Button(rL1, "▼", ZenGUIStyles.ButtonMCNormal10))
+                    {
+                        Debug.Log("R1 clicked");
+                    }
+
+                    if (GUI.Button(rL2, "▲", ZenGUIStyles.ButtonMCNormal10))
+                    {
+                        Debug.Log("R0 clicked");
+                    }
+                    
                     DebugDrawGroupLeaf(EEntitySection.Components, "Components", _debugMap, ZenGUIStyles.SystemFoldout);
                     DebugDrawGroupLeaf(EEntitySection.Contexts, "Contexts", _debugMap, ZenGUIStyles.SystemFoldout);
                     DebugDrawGroupLeaf(EEntitySection.Binders, "Binders", _debugMap, ZenGUIStyles.SystemFoldout);
@@ -184,56 +218,15 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             {
                 DebugDrawContexts();
             }
-            else
+            else if (section == EEntitySection.Binders)
             {
-                DebugDrawComponents();
+                DebugDrawBinders();
             }
 
             // foreach (string? s in list)
             //     DebugDrawSystemRow(s);
 
             EditorGUI.indentLevel = prevIndent;
-        }
-
-        bool DrawFoldoutWithRightButtons(
-            ref bool isOpen,
-            string label,
-            Action rightButtonsGui,
-            GUIStyle foldStyle)
-        {
-            var rowRect = GUILayoutUtility.GetRect(
-                0,
-                EditorGUIUtility.singleLineHeight,
-                GUILayout.ExpandWidth(true));
-
-            rowRect = EditorGUI.IndentedRect(rowRect);
-
-            const float buttonWidth = 20f;
-            const float gap = 2f;
-
-            // 오른쪽 버튼들 자리 확보
-            var rightRect = new Rect(
-                rowRect.xMax - buttonWidth,
-                rowRect.y,
-                buttonWidth,
-                rowRect.height);
-
-            // foldout은 오른쪽 버튼 영역을 제외한 왼쪽만 사용
-            var foldRect = new Rect(
-                rowRect.x,
-                rowRect.y,
-                rowRect.width - buttonWidth - gap,
-                rowRect.height);
-
-            // toggleOnLabelClick은 true로 써도 괜찮음 (foldRect 안에서만 먹음)
-            isOpen = EditorGUI.Foldout(foldRect, isOpen, label, true, foldStyle);
-
-            // 오른쪽 버튼은 foldout rect와 안 겹치므로 클릭이 정상 작동
-            GUILayout.BeginArea(rightRect);
-            rightButtonsGui?.Invoke();
-            GUILayout.EndArea();
-
-            return isOpen;
         }
 
         void DebugDrawComponents()
@@ -244,36 +237,72 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             bool valid = _world.IsAlive(id, gen);
             if (!valid) return;
 
+            {
+                var rowRect = GUILayoutUtility.GetRect(0, EditorGUIUtility.singleLineHeight,
+                    GUILayout.ExpandWidth(true));
+
+                // Indent 반영
+                rowRect = EditorGUI.IndentedRect(rowRect);
+
+                const float iconW = 20f; // 돋보기 / X 공통 폭
+                const float gap = 1f;
+
+                var rL0 = new Rect(rowRect.x, rowRect.y, iconW, rowRect.height);
+                var rL1 = new Rect(rL0.x + gap + iconW, rowRect.y, iconW, rowRect.height);
+                var rL2 = new Rect(rL1.x + gap + iconW, rowRect.y, iconW, rowRect.height);
+
+                var rR0 = new Rect(rowRect.xMax - iconW, rowRect.y, iconW, rowRect.height);
+                var rR1 = new Rect(rR0.x - gap - iconW, rowRect.y, iconW, rowRect.height);
+                var rR2 = new Rect(rR1.x - gap - iconW, rowRect.y, iconW, rowRect.height);
+
+                if (GUI.Button(rL0, ZenGUIContents.IconPlus(), ZenGUIStyles.ButtonPadding))
+                {
+                    Debug.Log("R2 clicked");
+                }
+
+                if (GUI.Button(rL1, "▼", ZenGUIStyles.ButtonMCNormal10))
+                {
+                    Debug.Log("R1 clicked");
+                }
+
+                if (GUI.Button(rL2, "▲", ZenGUIStyles.ButtonMCNormal10))
+                {
+                    Debug.Log("R0 clicked");
+                }
+            }
+            
             ZenGUIContents.DrawLine();
 
             using (new EditorGUI.DisabledScope(false))
             {
                 var e = (Entity)Activator.CreateInstance(typeof(Entity), id, gen);
-                var comps = _world.GetAllComponents(e).ToArray();
-                foreach (var (t, boxed) in comps)
+                var contents = _world.GetAllComponents(e).ToArray();
+                foreach (var (t, boxed) in contents)
                 {
                     var hasFields = ZenComponentFormGUI.HasDrawableFields(t);
                     var ns = string.IsNullOrEmpty(t.Namespace) ? "Global" : t.Namespace;
                     var foldoutName = $"{t.Name} <size=9><color=#707070>[{ns}]</color></size>";
 
-                    if (!hasFields)
+                    if (!hasFields || boxed == null)
                     {
-                        EditorGUILayout.LabelField(foldoutName + "<no-fields>", ZenGUIStyles.LabelMLNormal9);
+                        var prevIndent = EditorGUI.indentLevel;
+                        EditorGUI.indentLevel++;
+                        EditorGUILayout.LabelField(foldoutName + " <no-fields>", ZenGUIStyles.LabelMLNormal10);
+                        EditorGUI.indentLevel = prevIndent;
                     }
-
-                    if (hasFields && boxed != null)
+                    else
                     {
                         var key = new EntityTypeKey(e, t);
-                        var isOpen = _debugComponentFold.GetValueOrDefault(key, true);
+                        var isOpen = _debugComponentFold.GetValueOrDefault(key, false);
                         isOpen = EditorGUILayout.Foldout(isOpen, foldoutName, true, ZenGUIStyles.SystemFoldout10);
                         _debugComponentFold[key] = isOpen;
 
-                        var prevIndent = EditorGUI.indentLevel;
-                        EditorGUI.indentLevel++;
-
                         if (isOpen)
                         {
-                            using (new LabelScope(ZenGUIStyles.LabelMLNormal9, 300))
+                            var prevIndent = EditorGUI.indentLevel;
+                            EditorGUI.indentLevel++;
+                            
+                            using (new ZenGUIStyles.LabelScope(ZenGUIStyles.LabelMLNormal10, 300))
                             {
                                 try
                                 {
@@ -296,9 +325,9 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                                     // 컴포넌트 타입이 레지스트리에 없는 경우는 무시
                                 }
                             }
+                            
+                            EditorGUI.indentLevel = prevIndent;
                         }
-
-                        EditorGUI.indentLevel = prevIndent;
                     }
 
                     // === 한 줄 Rect 계산 ===
@@ -311,21 +340,25 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                     const float iconW = 20f; // 돋보기 / X 공통 폭
                     const float gap = 1f;
 
+                    var rL0 = new Rect(rowRect.x, rowRect.y, iconW, rowRect.height);
+                    var rL1 = new Rect(rL0.x + gap + iconW, rowRect.y, iconW, rowRect.height);
+                    var rL2 = new Rect(rL1.x + gap + iconW, rowRect.y, iconW, rowRect.height);
+                    
                     var rR0 = new Rect(rowRect.xMax - iconW, rowRect.y, iconW, rowRect.height);
                     var rR1 = new Rect(rR0.x - gap - iconW, rowRect.y, iconW, rowRect.height);
                     var rR2 = new Rect(rR1.x - gap - iconW, rowRect.y, iconW, rowRect.height);
 
-                    if (GUI.Button(rR2, ZenGUIContents.IconPing(), ZenGUIStyles.ButtonPadding))
+                    if (GUI.Button(rL2, ZenGUIContents.IconPing(), ZenGUIStyles.ButtonPadding))
                     {
                         Debug.Log("R2 clicked");
                     }
 
-                    if (GUI.Button(rR1, "R", ZenGUIStyles.ButtonMCNormal10))
+                    if (GUI.Button(rL1, "R", ZenGUIStyles.ButtonMCNormal10))
                     {
                         Debug.Log("R1 clicked");
                     }
 
-                    if (GUI.Button(rR0, "X", ZenGUIStyles.ButtonMCNormal10))
+                    if (GUI.Button(rL0, "X", ZenGUIStyles.ButtonMCNormal10))
                     {
                         Debug.Log("R0 clicked");
                     }
@@ -338,7 +371,6 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             }
         }
 
-
         void DebugDrawContexts()
         {
             if (_kernel == null || _world == null) return;
@@ -347,26 +379,14 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             bool valid = _world.IsAlive(id, gen);
             if (!valid) return;
 
+            ZenGUIContents.DrawLine();
+            
             using (new EditorGUI.DisabledScope(false))
             {
                 var e = (Entity)Activator.CreateInstance(typeof(Entity), id, gen);
-                if (!ContextApi.TryGetAll(_world, e, out var ctxs))
+                var contents = _world.GetAllContexts(e);
+                foreach (var (t, boxed) in contents)
                 {
-                    EditorGUILayout.HelpBox("Contexts API has been disconnected.", MessageType.None);
-                    return;
-                }
-
-                foreach (var (t, boxed) in ctxs)
-                {
-                    string ns = string.IsNullOrEmpty(t.Namespace) ? "Global" : t.Namespace;
-                    string fname = $"{t.Name} <size=9><color=#707070>[{ns}]</color></size>";
-                    var key = new EntityTypeKey(e, t);
-                    var isOpen = _debugContextFold.GetValueOrDefault(key, true);
-                    isOpen = EditorGUILayout.Foldout(isOpen, fname, true, ZenGUIStyles.SystemFoldout10);
-                    _debugContextFold[key] = isOpen;
-                    //bool hasFields = ZenComponentFormGUI.HasDrawableFields(t);
-                    if (!isOpen || boxed == null) continue;
-
                     var ctxType = t;
                     var members = new List<(string name, Type type, Func<object?> getter)>();
 
@@ -412,113 +432,215 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                         ));
                     }
 
-                    if (members.Count == 0)
+                    bool hasFields = members.Count > 0;
+                    string ns = string.IsNullOrEmpty(t.Namespace) ? "Global" : t.Namespace;
+                    string foldoutName = $"{t.Name} <size=9><color=#707070>[{ns}]</color></size>";
+
+                    if (!hasFields)
                     {
-                        EditorGUILayout.LabelField("— (no public fields / properties)");
-                        continue;
+                        int prevIndent = EditorGUI.indentLevel;
+                        EditorGUI.indentLevel++;
+                        EditorGUILayout.LabelField(foldoutName + " <no-fields>", ZenGUIStyles.LabelMLNormal10);
+                        EditorGUI.indentLevel = prevIndent;
                     }
-
-                    int prevIndent = EditorGUI.indentLevel;
-                    EditorGUI.indentLevel++;
-
-                    using (new LabelScope(ZenGUIStyles.LabelMLNormal9, 300))
+                    else
                     {
-                        foreach (var (ctxName, mType, getter) in members)
+                        var key = new EntityTypeKey(e, t);
+                        var isOpen = _debugContextFold.GetValueOrDefault(key, false);
+                        isOpen = EditorGUILayout.Foldout(isOpen, foldoutName, true, ZenGUIStyles.SystemFoldout10);
+                        _debugContextFold[key] = isOpen;
+                        if (isOpen)
                         {
-                            object? value = null;
-                            try
+                            int prevIndent = EditorGUI.indentLevel;
+                            EditorGUI.indentLevel++;
+
+                            using (new ZenGUIStyles.LabelScope(ZenGUIStyles.LabelMLNormal10, 300))
                             {
-                                value = getter();
-                            }
-                            catch
-                            {
-                                /* ignore */
-                            }
-
-                            var rect = GUILayoutUtility.GetRect(
-                                0,
-                                EditorGUIUtility.singleLineHeight,
-                                GUILayout.ExpandWidth(true));
-
-                            var labelRect = new Rect(rect.x, rect.y, EditorGUIUtility.labelWidth, rect.height);
-                            var valRect = new Rect(
-                                rect.x + EditorGUIUtility.labelWidth,
-                                rect.y,
-                                rect.width - EditorGUIUtility.labelWidth,
-                                rect.height);
-
-                            EditorGUI.LabelField(labelRect, ctxName);
-
-                            if (typeof(UnityEngine.Object).IsAssignableFrom(mType))
-                            {
-                                var obj = value as UnityEngine.Object;
-                                var content = EditorGUIUtility.ObjectContent(obj, mType);
-
-                                // 링크 커서
-                                EditorGUIUtility.AddCursorRect(valRect, MouseCursor.Link);
-
-                                // 여기에서 LabelField 대신 Button으로 그린다 = hover 색 적용됨
-                                if (GUI.Button(valRect, content, ZenGUIStyles.LinkLabel))
+                                #region CONTENTS
+                                foreach (var (ctxName, mType, getter) in members)
                                 {
-                                    if (obj != null)
+                                    object? value = null;
+                                    try
                                     {
-                                        Selection.activeObject = obj;
-                                        EditorGUIUtility.PingObject(obj);
+                                        value = getter();
+                                    }
+                                    catch
+                                    {
+                                        /* ignore */
+                                    }
+
+                                    var rect = GUILayoutUtility.GetRect(
+                                        0,
+                                        EditorGUIUtility.singleLineHeight,
+                                        GUILayout.ExpandWidth(true));
+
+                                    var labelRect = new Rect(rect.x, rect.y, EditorGUIUtility.labelWidth, rect.height);
+                                    var valRect = new Rect(
+                                        rect.x + EditorGUIUtility.labelWidth,
+                                        rect.y,
+                                        rect.width - EditorGUIUtility.labelWidth,
+                                        rect.height);
+
+                                    EditorGUI.LabelField(labelRect, ctxName);
+
+                                    if (typeof(UnityEngine.Object).IsAssignableFrom(mType))
+                                    {
+                                        var obj = value as UnityEngine.Object;
+                                        var content = EditorGUIUtility.ObjectContent(obj, mType);
+
+                                        // 링크 커서
+                                        EditorGUIUtility.AddCursorRect(valRect, MouseCursor.Link);
+
+                                        // 여기에서 LabelField 대신 Button으로 그린다 = hover 색 적용됨
+                                        if (GUI.Button(valRect, content, ZenGUIStyles.LinkLabel))
+                                        {
+                                            if (obj != null)
+                                            {
+                                                Selection.activeObject = obj;
+                                                EditorGUIUtility.PingObject(obj);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var text = value != null ? (value.ToString() ?? "null") : "null";
+                                        EditorGUI.LabelField(valRect, text);
                                     }
                                 }
+                                #endregion
                             }
-                            else
-                            {
-                                var text = value != null ? (value.ToString() ?? "null") : "null";
-                                EditorGUI.LabelField(valRect, text);
-                            }
+
+                            EditorGUI.indentLevel = prevIndent;
                         }
                     }
+                    
+                    // === 한 줄 Rect 계산 ===
+                    var rowRect = GUILayoutUtility.GetRect(0, EditorGUIUtility.singleLineHeight,
+                        GUILayout.ExpandWidth(true));
 
-                    EditorGUI.indentLevel = prevIndent;
+                    // Indent 반영
+                    rowRect = EditorGUI.IndentedRect(rowRect);
+
+                    const float iconW = 20f; // 돋보기 / X 공통 폭
+                    const float gap = 1f;
+
+                    var rR0 = new Rect(rowRect.xMax - iconW, rowRect.y, iconW, rowRect.height);
+                    var rR1 = new Rect(rR0.x - gap - iconW, rowRect.y, iconW, rowRect.height);
+                    var rR2 = new Rect(rR1.x - gap - iconW, rowRect.y, iconW, rowRect.height);
+
+                    if (GUI.Button(rR2, ZenGUIContents.IconPing(), ZenGUIStyles.ButtonPadding))
+                    {
+                        Debug.Log("R2 clicked");
+                    }
+
+                    if (GUI.Button(rR1, "R", ZenGUIStyles.ButtonMCNormal10))
+                    {
+                        Debug.Log("R1 clicked");
+                    }
+
+                    if (GUI.Button(rR0, "X", ZenGUIStyles.ButtonMCNormal10))
+                    {
+                        Debug.Log("R0 clicked");
+                    }
+
+                    ZenGUIContents.DrawLine();
+
+                    // 아래쪽 여유
+                    GUILayout.Space(2);
                 }
             }
         }
 
-        // STYLE
-
-        public readonly struct LabelScope : IDisposable
+        void DebugDrawBinders()
         {
-            private readonly GUIStyle _backupStyle;
-            private readonly float _backupLabelWidth;
-            private readonly bool _hasCustomWidth;
+            if (_kernel == null || _world == null) return;
+            int id = 1;
+            int gen = 0;
+            bool valid = _world.IsAlive(id, gen);
+            if (!valid) return;
 
-            public LabelScope(GUIStyle style, float? labelWidth = null)
+            ZenGUIContents.DrawLine();
+            
+            using (new EditorGUI.DisabledScope(false))
             {
-                _backupStyle = new GUIStyle(EditorStyles.label);
-                _backupLabelWidth = EditorGUIUtility.labelWidth;
-                _hasCustomWidth = labelWidth.HasValue;
+                var e = (Entity)Activator.CreateInstance(typeof(Entity), id, gen);
+                var contents = _world.GetAllBinders(e);
+                foreach (var (t, boxed) in contents)
+                {
+                    var hasFields = ZenComponentFormGUI.HasDrawableFields(t);
+                    string ns = string.IsNullOrEmpty(t.Namespace) ? "Global" : t.Namespace;
+                    string foldoutName = $"{t.Name} <size=9><color=#707070>[{ns}]</color></size>";
 
-                ApplyStyle(style);
+                    if (!hasFields)
+                    {
+                        int prevIndent = EditorGUI.indentLevel;
+                        EditorGUI.indentLevel++;
+                        EditorGUILayout.LabelField(foldoutName + " <no-fields>", ZenGUIStyles.LabelMLNormal10);
+                        EditorGUI.indentLevel = prevIndent;
+                    }
+                    else
+                    {
+                        var key = new EntityTypeKey(e, t);
+                        var isOpen = _debugBinderFold.GetValueOrDefault(key, false);
+                        isOpen = EditorGUILayout.Foldout(isOpen, foldoutName, true, ZenGUIStyles.SystemFoldout10);
+                        _debugBinderFold[key] = isOpen;
+                        if (isOpen)
+                        {
+                            int prevIndent = EditorGUI.indentLevel;
+                            EditorGUI.indentLevel++;
 
-                if (labelWidth.HasValue)
-                    EditorGUIUtility.labelWidth = labelWidth.Value;
-            }
+                            using (new ZenGUIStyles.LabelScope(ZenGUIStyles.LabelMLNormal10, 300))
+                            {
+                                #region CONTENTS
+             
+                                // apply order
+                                // observing binds
+                                
+                                #endregion
+                            }
 
-            private static void ApplyStyle(GUIStyle src)
-            {
-                EditorStyles.label.font = src.font;
-                EditorStyles.label.fontSize = src.fontSize;
-                EditorStyles.label.fontStyle = src.fontStyle;
-                EditorStyles.label.alignment = src.alignment;
-                EditorStyles.label.normal.textColor = src.normal.textColor;
-                EditorStyles.label.richText = src.richText;
-            }
+                            EditorGUI.indentLevel = prevIndent;
+                        }
+                    }
+                    
+                    // === 한 줄 Rect 계산 ===
+                    var rowRect = GUILayoutUtility.GetRect(0, EditorGUIUtility.singleLineHeight,
+                        GUILayout.ExpandWidth(true));
 
-            public void Dispose()
-            {
-                ApplyStyle(_backupStyle);
-                if (_hasCustomWidth)
-                    EditorGUIUtility.labelWidth = _backupLabelWidth;
+                    // Indent 반영
+                    rowRect = EditorGUI.IndentedRect(rowRect);
+
+                    const float iconW = 20f; // 돋보기 / X 공통 폭
+                    const float gap = 1f;
+
+                    var rR0 = new Rect(rowRect.xMax - iconW, rowRect.y, iconW, rowRect.height);
+                    var rR1 = new Rect(rR0.x - gap - iconW, rowRect.y, iconW, rowRect.height);
+                    var rR2 = new Rect(rR1.x - gap - iconW, rowRect.y, iconW, rowRect.height);
+
+                    if (GUI.Button(rR2, ZenGUIContents.IconPing(), ZenGUIStyles.ButtonPadding))
+                    {
+                        Debug.Log("R2 clicked");
+                    }
+
+                    if (GUI.Button(rR1, "R", ZenGUIStyles.ButtonMCNormal10))
+                    {
+                        Debug.Log("R1 clicked");
+                    }
+
+                    if (GUI.Button(rR0, "X", ZenGUIStyles.ButtonMCNormal10))
+                    {
+                        Debug.Log("R0 clicked");
+                    }
+
+                    ZenGUIContents.DrawLine();
+
+                    // 아래쪽 여유
+                    GUILayout.Space(2);
+                }
             }
         }
 
-        // COMPONENTS
+        #region EXPLORER_INTERNAL 
 
         static object CopyBox(object? src, Type t)
         {
@@ -540,174 +662,51 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 return System.Runtime.Serialization.FormatterServices.GetUninitializedObject(t);
             }
         }
+        
+        #endregion
 
-        // CONTEXTS
-
-        static class ContextApi
+        #region SYSTEM_DEBUG
+        
+        bool DrawFoldoutWithRightButtons(
+            ref bool isOpen,
+            string label,
+            Action rightButtonsGui,
+            GUIStyle foldStyle)
         {
-            static MethodInfo? _miGetAllContexts; // (Entity) -> (Type, object)[] 또는 IEnumerable
-            static MethodInfo? _miAddFromAsset; // (Entity, ContextAsset) -> void
-            static MethodInfo? _miAttachContext; // (Entity, IContext) -> void
-            static MethodInfo? _miRemoveContext; // (Entity, Type) -> void
+            var rowRect = GUILayoutUtility.GetRect(
+                0,
+                EditorGUIUtility.singleLineHeight,
+                GUILayout.ExpandWidth(true));
 
-            static readonly Dictionary<(Type, string, int), MethodInfo> _cache = new();
+            rowRect = EditorGUI.IndentedRect(rowRect);
 
-            static MethodInfo? Find(IWorld w, string name, int argc, Func<MethodInfo, bool>? pred = null)
-            {
-                var key = (w.GetType(), name, argc);
-                if (_cache.TryGetValue(key, out var hit)) return hit;
+            const float buttonWidth = 20f;
+            const float gap = 2f;
 
-                var mi = w.GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                    .FirstOrDefault(m => m.Name == name
-                                         && m.GetParameters().Length == argc
-                                         && (pred is null || pred(m)));
-                if (mi != null) _cache[key] = mi;
-                return mi;
-            }
+            // 오른쪽 버튼들 자리 확보
+            var rightRect = new Rect(
+                rowRect.xMax - buttonWidth,
+                rowRect.y,
+                buttonWidth,
+                rowRect.height);
 
-            public static bool TryGetAll(IWorld w, Entity e, out (Type type, object? boxed)[] contexts)
-            {
-                contexts = Array.Empty<(Type, object?)>();
+            // foldout은 오른쪽 버튼 영역을 제외한 왼쪽만 사용
+            var foldRect = new Rect(
+                rowRect.x,
+                rowRect.y,
+                rowRect.width - buttonWidth - gap,
+                rowRect.height);
 
-                _miGetAllContexts ??= Find(w, "GetAllContexts", 1, m =>
-                {
-                    var ps = m.GetParameters();
-                    return ps[0].ParameterType == typeof(Entity);
-                });
+            // toggleOnLabelClick은 true로 써도 괜찮음 (foldRect 안에서만 먹음)
+            isOpen = EditorGUI.Foldout(foldRect, isOpen, label, true, foldStyle);
 
-                if (_miGetAllContexts != null)
-                {
-                    var ret = _miGetAllContexts.Invoke(w, new object[] { e });
-                    if (ret is Array arr)
-                    {
-                        var list = new List<(Type, object)>(arr.Length);
-                        foreach (var item in arr)
-                        {
-                            var fs = item.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
-                            if (fs.Length >= 2 && fs[0].FieldType == typeof(Type))
-                            {
-                                list.Add(((Type)fs[0].GetValue(item), fs[1].GetValue(item)));
-                            }
-                        }
+            // 오른쪽 버튼은 foldout rect와 안 겹치므로 클릭이 정상 작동
+            GUILayout.BeginArea(rightRect);
+            rightButtonsGui?.Invoke();
+            GUILayout.EndArea();
 
-                        contexts = list.ToArray()!;
-                        return true;
-                    }
-
-                    if (ret is System.Collections.IEnumerable en)
-                    {
-                        var list = new List<(Type, object)>();
-                        foreach (var c in en)
-                        {
-                            if (c == null) continue;
-                            list.Add((c.GetType(), c));
-                        }
-
-                        contexts = list.ToArray()!;
-                        return true;
-                    }
-                }
-
-                // 마지막 대안: 없는 경우 실패
-                return false;
-            }
-
-            public static bool CanAdd(IWorld w)
-                => Find(w, "AddContextFromAsset", 2, m =>
-                       m.GetParameters()[0].ParameterType == typeof(Entity) &&
-                       typeof(ContextAsset).IsAssignableFrom(m.GetParameters()[1].ParameterType)) != null
-                   || Find(w, "AttachContext", 2, m =>
-                       m.GetParameters()[0].ParameterType == typeof(Entity) &&
-                       typeof(ZenECS.Core.Binding.IContext).IsAssignableFrom(m.GetParameters()[1].ParameterType)) !=
-                   null;
-
-            public static void AddFromAsset(IWorld w, Entity e, ContextAsset asset)
-            {
-                switch (asset)
-                {
-                    case SharedContextAsset markerAsset:
-                    {
-                        var resolver = ZenEcsUnityBridge.SharedContextResolver;
-                        if (resolver != null)
-                        {
-                            var ctx = resolver.Resolve(markerAsset);
-                            if (ctx != null)
-                                w.RegisterContext(e, ctx);
-                        }
-
-                        break;
-                    }
-                    case PerEntityContextAsset perEntityAsset:
-                    {
-                        var ctx = perEntityAsset.Create();
-                        w.RegisterContext(e, ctx);
-                        break;
-                    }
-                }
-
-
-                // // 1) World가 직접 (Entity, ContextAsset) 받는 경우
-                // _miAddFromAsset ??= Find(w, "AddContextFromAsset", 2, m =>
-                //     m.GetParameters()[0].ParameterType == typeof(Entity) &&
-                //     typeof(ContextAsset).IsAssignableFrom(m.GetParameters()[1].ParameterType));
-                //
-                // if (_miAddFromAsset != null)
-                // {
-                //     _miAddFromAsset.Invoke(w, new object[] { e, asset });
-                //     return;
-                // }
-                //
-                // // 2) Asset → IContext 인스턴스로 만들어 AttachContext(Entity, IContext)
-                // _miAttachContext ??= Find(w, "AttachContext", 2, m =>
-                //     m.GetParameters()[0].ParameterType == typeof(Entity) &&
-                //     typeof(ZenECS.Core.Binding.IContext).IsAssignableFrom(m.GetParameters()[1].ParameterType));
-                //
-                // if (_miAttachContext == null)
-                //     throw new MissingMethodException("World.AttachContext(Entity, IContext) not found.");
-                //
-                // // Asset에서 인스턴스 만드는 규약 탐색
-                // object? ctx = TryCreateContextInstance(asset, w, e);
-                // if (ctx == null)
-                //     throw new MissingMethodException("ContextAsset에서 컨텍스트 인스턴스를 만들 수 있는 팩토리를 찾지 못했습니다.");
-                //
-                // _miAttachContext.Invoke(w, new object[] { e, ctx });
-            }
-
-            static object? TryCreateContextInstance(ContextAsset asset, IWorld w, Entity e)
-            {
-                var aType = asset.GetType();
-                // 우선순위: Create(IWorld,Entity) -> Create(IWorld) -> Create() -> Build/Instantiate() 변형
-                var names = new[] { "Create", "Build", "Instantiate", "Make", "ToInstance" };
-                foreach (var name in names)
-                {
-                    var mi = aType.GetMethod(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
-                        null, new[] { typeof(IWorld), typeof(Entity) }, null);
-                    if (mi != null) return mi.Invoke(asset, new object[] { w, e });
-
-                    mi = aType.GetMethod(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
-                        null, new[] { typeof(IWorld) }, null);
-                    if (mi != null) return mi.Invoke(asset, new object[] { w });
-
-                    mi = aType.GetMethod(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
-                        null, Type.EmptyTypes, null);
-                    if (mi != null) return mi.Invoke(asset, Array.Empty<object>());
-                }
-
-                return null;
-            }
-
-            public static bool CanRemove(IWorld w)
-                => Find(w, "RemoveContext", 2, m =>
-                    m.GetParameters()[0].ParameterType == typeof(Entity) &&
-                    m.GetParameters()[1].ParameterType == typeof(Type)) != null;
-
-            public static void Remove(IWorld w, Entity e, IContext? ctx)
-            {
-                if (ctx == null) return;
-                w.RemoveContext(e, ctx);
-            }
+            return isOpen;
         }
-
 
         void DebugDrawSystemRow(string s)
         {
@@ -782,5 +781,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 }
             }
         }
+        
+        #endregion
     }
 }
