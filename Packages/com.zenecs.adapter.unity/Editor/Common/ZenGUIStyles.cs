@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEditor;
 using UnityEngine;
+using ZenECS.Adapter.Unity.Editor.GUIs;
 using ZenECS.Core;
 
 namespace ZenECS.Adapter.Unity.Editor.Common
@@ -17,7 +18,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                     _linkLabel = new GUIStyle(EditorStyles.label)
                     {
                         fontStyle = FontStyle.Bold,
-                        richText = false
+                        richText = false,
                     };
 
                     _linkLabel.normal.textColor = Color.lightGray;
@@ -151,7 +152,8 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                 {
                     alignment = TextAnchor.MiddleLeft,
                     fontStyle = FontStyle.Normal,
-                    fontSize = 9
+                    fontSize = 9,
+                    richText = true,
                 };
                 return _labelMLNormal9;
             }

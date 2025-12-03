@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using UnityEditor;
 using UnityEngine;
 using ZenECS.Core;
@@ -38,6 +39,20 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                 gc = new GUIContent("+");
 
             return gc;
+        }
+
+        public static void DrawLine(float height = 1, Color? color = null)
+        {
+            var lineRect = EditorGUILayout.GetControlRect(false, height);
+            lineRect = EditorGUI.IndentedRect(lineRect);
+            if (color != null)
+            {
+                EditorGUI.DrawRect(lineRect, color.Value);
+            }
+            else
+            {
+                EditorGUI.DrawRect(lineRect, new Color(0.3f, 0.3f, 0.3f, 1f));
+            }
         }
     }
 }

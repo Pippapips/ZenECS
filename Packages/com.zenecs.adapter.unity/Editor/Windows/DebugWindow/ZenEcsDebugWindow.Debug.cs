@@ -195,6 +195,47 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             EditorGUI.indentLevel = prevIndent;
         }
 
+        bool DrawFoldoutWithRightButtons(
+            ref bool isOpen,
+            string label,
+            Action rightButtonsGui,
+            GUIStyle foldStyle)
+        {
+            var rowRect = GUILayoutUtility.GetRect(
+                0,
+                EditorGUIUtility.singleLineHeight,
+                GUILayout.ExpandWidth(true));
+
+            rowRect = EditorGUI.IndentedRect(rowRect);
+
+            const float buttonWidth = 20f;
+            const float gap = 2f;
+
+            // 오른쪽 버튼들 자리 확보
+            var rightRect = new Rect(
+                rowRect.xMax - buttonWidth,
+                rowRect.y,
+                buttonWidth,
+                rowRect.height);
+
+            // foldout은 오른쪽 버튼 영역을 제외한 왼쪽만 사용
+            var foldRect = new Rect(
+                rowRect.x,
+                rowRect.y,
+                rowRect.width - buttonWidth - gap,
+                rowRect.height);
+
+            // toggleOnLabelClick은 true로 써도 괜찮음 (foldRect 안에서만 먹음)
+            isOpen = EditorGUI.Foldout(foldRect, isOpen, label, true, foldStyle);
+
+            // 오른쪽 버튼은 foldout rect와 안 겹치므로 클릭이 정상 작동
+            GUILayout.BeginArea(rightRect);
+            rightButtonsGui?.Invoke();
+            GUILayout.EndArea();
+
+            return isOpen;
+        }
+
         void DebugDrawComponents()
         {
             if (_kernel == null || _world == null) return;
@@ -203,24 +244,66 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             bool valid = _world.IsAlive(id, gen);
             if (!valid) return;
 
+            ZenGUIContents.DrawLine();
+
             using (new EditorGUI.DisabledScope(false))
             {
                 var e = (Entity)Activator.CreateInstance(typeof(Entity), id, gen);
                 var comps = _world.GetAllComponents(e).ToArray();
                 foreach (var (t, boxed) in comps)
                 {
-                    string ns = string.IsNullOrEmpty(t.Namespace) ? "Global" : t.Namespace;
-                    string fname = $"{t.Name} <size=9><color=#707070>[{ns}]</color></size>";
-                    var key = new EntityTypeKey(e, t);
-                    var isOpen = _debugComponentFold.GetValueOrDefault(key, true);
-                    isOpen = EditorGUILayout.Foldout(isOpen, fname, false, ZenGUIStyles.SystemFoldout10);
-                    _debugComponentFold[key] = isOpen;
-                    bool hasFields = ZenComponentFormGUI.HasDrawableFields(t);
-                    if (!isOpen || !hasFields || boxed == null) continue;
+                    var hasFields = ZenComponentFormGUI.HasDrawableFields(t);
+                    var ns = string.IsNullOrEmpty(t.Namespace) ? "Global" : t.Namespace;
+                    var foldoutName = $"{t.Name} <size=9><color=#707070>[{ns}]</color></size>";
+
+                    if (!hasFields)
+                    {
+                        EditorGUILayout.LabelField(foldoutName + "<no-fields>", ZenGUIStyles.LabelMLNormal9);
+                    }
+
+                    if (hasFields && boxed != null)
+                    {
+                        var key = new EntityTypeKey(e, t);
+                        var isOpen = _debugComponentFold.GetValueOrDefault(key, true);
+                        isOpen = EditorGUILayout.Foldout(isOpen, foldoutName, true, ZenGUIStyles.SystemFoldout10);
+                        _debugComponentFold[key] = isOpen;
+
+                        var prevIndent = EditorGUI.indentLevel;
+                        EditorGUI.indentLevel++;
+
+                        if (isOpen)
+                        {
+                            using (new LabelScope(ZenGUIStyles.LabelMLNormal9, 300))
+                            {
+                                try
+                                {
+                                    object obj = CopyBox(boxed, t);
+                                    float bodyH = ZenComponentFormGUI.CalcHeightForObject(obj, t);
+                                    bodyH = Mathf.Max(bodyH, EditorGUIUtility.singleLineHeight + 6f);
+
+                                    var body = GUILayoutUtility.GetRect(0, bodyH, GUILayout.ExpandWidth(true));
+                                    var bodyInner = new Rect(body.x, body.y, body.width, body.height + 4f);
+
+                                    EditorGUI.BeginChangeCheck();
+                                    ZenComponentFormGUI.DrawSmallForm(bodyInner, obj, t);
+                                    if (EditorGUI.EndChangeCheck())
+                                    {
+                                        _world.ExternalCommandEnqueue(ExternalCommand.ReplaceComponent(e, t, obj));
+                                    }
+                                }
+                                catch (KeyNotFoundException)
+                                {
+                                    // 컴포넌트 타입이 레지스트리에 없는 경우는 무시
+                                }
+                            }
+                        }
+
+                        EditorGUI.indentLevel = prevIndent;
+                    }
 
                     // === 한 줄 Rect 계산 ===
-                    var rowHeight = EditorGUIUtility.singleLineHeight;
-                    var rowRect = GUILayoutUtility.GetRect(0, rowHeight, GUILayout.ExpandWidth(true));
+                    var rowRect = GUILayoutUtility.GetRect(0, EditorGUIUtility.singleLineHeight,
+                        GUILayout.ExpandWidth(true));
 
                     // Indent 반영
                     rowRect = EditorGUI.IndentedRect(rowRect);
@@ -228,9 +311,9 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                     const float iconW = 20f; // 돋보기 / X 공통 폭
                     const float gap = 1f;
 
-                    var rR0 = new Rect(rowRect.xMax - iconW, rowRect.y - rowHeight + 4, iconW, rowRect.height);
-                    var rR1 = new Rect(rR0.x - gap - iconW, rowRect.y - rowHeight + 4, iconW, rowRect.height);
-                    var rR2 = new Rect(rR1.x - gap - iconW, rowRect.y - rowHeight + 4, iconW, rowRect.height);
+                    var rR0 = new Rect(rowRect.xMax - iconW, rowRect.y, iconW, rowRect.height);
+                    var rR1 = new Rect(rR0.x - gap - iconW, rowRect.y, iconW, rowRect.height);
+                    var rR2 = new Rect(rR1.x - gap - iconW, rowRect.y, iconW, rowRect.height);
 
                     if (GUI.Button(rR2, ZenGUIContents.IconPing(), ZenGUIStyles.ButtonPadding))
                     {
@@ -247,38 +330,14 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                         Debug.Log("R0 clicked");
                     }
 
-                    int prevIndent = EditorGUI.indentLevel;
-                    EditorGUI.indentLevel++;
+                    ZenGUIContents.DrawLine();
 
-                    using (new LabelScope(ZenGUIStyles.LabelMLNormal9, 300))
-                    {
-                        try
-                        {
-                            object obj = CopyBox(boxed, t);
-                            float bodyH = ZenComponentFormGUI.CalcHeightForObject(obj, t);
-                            bodyH = Mathf.Max(bodyH, EditorGUIUtility.singleLineHeight + 6f);
-
-                            var body = GUILayoutUtility.GetRect(0, bodyH - rowHeight, GUILayout.ExpandWidth(true));
-                            var bodyInner = new Rect(body.x, body.y - rowHeight + 4f, body.width, body.height + 4f);
-
-                            EditorGUI.BeginChangeCheck();
-                            ZenComponentFormGUI.DrawObject(bodyInner, obj, t);
-                            if (EditorGUI.EndChangeCheck())
-                            {
-                                _world.ExternalCommandEnqueue(ExternalCommand.ReplaceComponent(e, t, obj));
-                            }
-                        }
-                        catch (KeyNotFoundException)
-                        {
-                            // 컴포넌트 타입이 레지스트리에 없는 경우는 무시
-                        }
-                    }
-
-                    EditorGUI.indentLevel = prevIndent;
-                    EditorGUILayout.Space(4);
+                    // 아래쪽 여유
+                    GUILayout.Space(2);
                 }
             }
         }
+
 
         void DebugDrawContexts()
         {
@@ -303,7 +362,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                     string fname = $"{t.Name} <size=9><color=#707070>[{ns}]</color></size>";
                     var key = new EntityTypeKey(e, t);
                     var isOpen = _debugContextFold.GetValueOrDefault(key, true);
-                    isOpen = EditorGUILayout.Foldout(isOpen, fname, false, ZenGUIStyles.SystemFoldout10);
+                    isOpen = EditorGUILayout.Foldout(isOpen, fname, true, ZenGUIStyles.SystemFoldout10);
                     _debugContextFold[key] = isOpen;
                     //bool hasFields = ZenComponentFormGUI.HasDrawableFields(t);
                     if (!isOpen || boxed == null) continue;
@@ -362,57 +421,60 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                     int prevIndent = EditorGUI.indentLevel;
                     EditorGUI.indentLevel++;
 
-                    foreach (var (ctxName, mType, getter) in members)
+                    using (new LabelScope(ZenGUIStyles.LabelMLNormal9, 300))
                     {
-                        object? value = null;
-                        try
+                        foreach (var (ctxName, mType, getter) in members)
                         {
-                            value = getter();
-                        }
-                        catch
-                        {
-                            /* ignore */
-                        }
-
-                        var rect = GUILayoutUtility.GetRect(
-                            0,
-                            EditorGUIUtility.singleLineHeight,
-                            GUILayout.ExpandWidth(true));
-
-                        var labelRect = new Rect(rect.x, rect.y, EditorGUIUtility.labelWidth, rect.height);
-                        var valRect = new Rect(
-                            rect.x + EditorGUIUtility.labelWidth,
-                            rect.y,
-                            rect.width - EditorGUIUtility.labelWidth,
-                            rect.height);
-
-                        EditorGUI.LabelField(labelRect, ctxName);
-
-                        if (typeof(UnityEngine.Object).IsAssignableFrom(mType))
-                        {
-                            var obj = value as UnityEngine.Object;
-                            var content = EditorGUIUtility.ObjectContent(obj, mType);
-
-                            // 링크 커서
-                            EditorGUIUtility.AddCursorRect(valRect, MouseCursor.Link);
-
-                            // 여기에서 LabelField 대신 Button으로 그린다 = hover 색 적용됨
-                            if (GUI.Button(valRect, content, ZenGUIStyles.LinkLabel))
+                            object? value = null;
+                            try
                             {
-                                if (obj != null)
+                                value = getter();
+                            }
+                            catch
+                            {
+                                /* ignore */
+                            }
+
+                            var rect = GUILayoutUtility.GetRect(
+                                0,
+                                EditorGUIUtility.singleLineHeight,
+                                GUILayout.ExpandWidth(true));
+
+                            var labelRect = new Rect(rect.x, rect.y, EditorGUIUtility.labelWidth, rect.height);
+                            var valRect = new Rect(
+                                rect.x + EditorGUIUtility.labelWidth,
+                                rect.y,
+                                rect.width - EditorGUIUtility.labelWidth,
+                                rect.height);
+
+                            EditorGUI.LabelField(labelRect, ctxName);
+
+                            if (typeof(UnityEngine.Object).IsAssignableFrom(mType))
+                            {
+                                var obj = value as UnityEngine.Object;
+                                var content = EditorGUIUtility.ObjectContent(obj, mType);
+
+                                // 링크 커서
+                                EditorGUIUtility.AddCursorRect(valRect, MouseCursor.Link);
+
+                                // 여기에서 LabelField 대신 Button으로 그린다 = hover 색 적용됨
+                                if (GUI.Button(valRect, content, ZenGUIStyles.LinkLabel))
                                 {
-                                    Selection.activeObject = obj;
-                                    EditorGUIUtility.PingObject(obj);
+                                    if (obj != null)
+                                    {
+                                        Selection.activeObject = obj;
+                                        EditorGUIUtility.PingObject(obj);
+                                    }
                                 }
                             }
-                        }
-                        else
-                        {
-                            var text = value != null ? (value.ToString() ?? "null") : "null";
-                            EditorGUI.LabelField(valRect, text);
+                            else
+                            {
+                                var text = value != null ? (value.ToString() ?? "null") : "null";
+                                EditorGUI.LabelField(valRect, text);
+                            }
                         }
                     }
-                    
+
                     EditorGUI.indentLevel = prevIndent;
                 }
             }

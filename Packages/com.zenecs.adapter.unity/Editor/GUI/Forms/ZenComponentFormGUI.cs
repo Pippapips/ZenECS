@@ -11,6 +11,52 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
     /// IMGUI 공용 폼 드로어: 기본형/Unity 타입 + Unity.Mathematics(float2/3/4,int/uint/bool2/3/4, quaternion)
     public static class ZenComponentFormGUI
     {
+        public static float LineHeight = 16f;
+        
+        public static void DrawSmallForm(Rect bodyInner, object obj, Type t)
+        {
+            // 1) 백업
+            var labelBackup = new GUIStyle(EditorStyles.label);
+            var textBackup = new GUIStyle(EditorStyles.textField);
+            var numberBackup = new GUIStyle(EditorStyles.numberField);
+
+            try
+            {
+                // 2) 라벨 폰트 (이미 줄여놨다면 이 부분은 패스 가능)
+                EditorStyles.label.fontSize = 9;
+
+                // 3) 값(TextField/IntField) 폰트 줄이기
+                EditorStyles.textField.fontSize = 9;
+                EditorStyles.numberField.fontSize = 9;
+
+                // 필요하면 popup, toggle 등도 추가
+                // EditorStyles.popup.fontSize = 9;
+
+                // 4) 우리 폼 라인 높이 줄이기
+                LineHeight = 14f;
+
+                // 5) 실제 Draw
+                DrawObject(bodyInner, obj, t);
+            }
+            finally
+            {
+                // 6) 원복
+                CopyStyle(EditorStyles.label, labelBackup);
+                CopyStyle(EditorStyles.textField, textBackup);
+                CopyStyle(EditorStyles.numberField, numberBackup);
+            }
+        }
+
+        static void CopyStyle(GUIStyle dst, GUIStyle src)
+        {
+            dst.font = src.font;
+            dst.fontSize = src.fontSize;
+            dst.fontStyle = src.fontStyle;
+            dst.alignment = src.alignment;
+            dst.richText = src.richText;
+            dst.normal.textColor = src.normal.textColor;
+        }
+        
         static bool IsReadOnly(System.Type componentType, System.Reflection.MemberInfo member)
         {
             // 멤버나 타입에 [ReadOnlyInInspector]가 붙었는가?
@@ -383,7 +429,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 
         static float RowH(Type ft, bool rowHeight)
         {
-            float h = EditorGUIUtility.singleLineHeight;
+            float h = LineHeight;
             float pad = Mathf.Max(2f, EditorGUIUtility.standardVerticalSpacing);
             if (!rowHeight) return h + pad;
 
