@@ -339,7 +339,6 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             // 필드
             foreach (var f in ctxType.GetFields(BindingFlags.Public | BindingFlags.Instance))
             {
-                if (Attribute.IsDefined(f, typeof(ZenEcsExplorerHiddenAttribute), true)) continue;
                 if (Attribute.IsDefined(f, typeof(HideInInspector), true)) continue;
 
                 var lf = f;
@@ -355,7 +354,6 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             {
                 if (!p.CanRead) continue;
                 if (p.GetIndexParameters().Length > 0) continue;
-                if (Attribute.IsDefined(p, typeof(ZenEcsExplorerHiddenAttribute), true)) continue;
                 if (Attribute.IsDefined(p, typeof(HideInInspector), true)) continue;
 
                 var lp = p;

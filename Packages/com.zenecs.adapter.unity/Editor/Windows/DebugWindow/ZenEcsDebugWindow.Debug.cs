@@ -46,19 +46,21 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                         // 결과 표시
                         //DrawDebugResult();
 
-                        for (int i = 0; i < 2; i++)
+                        if (_world != null)
                         {
-                            var e = new Entity(i + 1, 0);
-
-                            if (!_debugEntityFoldoutInfos.TryGetValue(e, out var foldoutInfo))
+                            for (int i = 0; i < 2; i++)
                             {
-                                foldoutInfo = new ZenEntityForm.EntityFoldoutInfo();
-                                _debugEntityFoldoutInfos.Add(e, foldoutInfo);
-                            }
+                                var e = new Entity(i + 1, 0);
+                                if (_world.IsAlive(e))
+                                {
+                                    if (!_debugEntityFoldoutInfos.TryGetValue(e, out var foldoutInfo))
+                                    {
+                                        foldoutInfo = new ZenEntityForm.EntityFoldoutInfo();
+                                        _debugEntityFoldoutInfos.Add(e, foldoutInfo);
+                                    }
 
-                            if (_world != null)
-                            {
-                                ZenEntityForm.DrawEntity(_world, e, ref foldoutInfo);
+                                    ZenEntityForm.DrawEntity(_world, e, ref foldoutInfo);
+                                }
                             }
                         }
                     }

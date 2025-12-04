@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Editor.Common;
 using ZenECS.Core;
+using ZenECS.Core.Binding;
 
 #if UNITY_EDITOR
 namespace ZenECS.Adapter.Unity.Editor.GUIs
@@ -34,25 +35,31 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             }
         }
 
-        private static void drawContextMenus(IWorld w, Entity e, bool indent = false)
+        private static void drawContextMenus(IWorld w, Entity e, Type t, ref EntityFoldoutInfo foldoutInfo, object? ctx = null, bool indent = false)
         {
             if (indent) EditorGUI.indentLevel++;
 
-            var rects = new Rect[3];
+            var rects = new Rect[2];
             ZenGUIStyles.GetLeftIndentedSingleLineRects(20, 1, ref rects);
             if (GUI.Button(rects[0], "X", ZenGUIStyles.ButtonMCNormal10))
             {
-                Debug.Log("L0 clicked");
+                if (EditorUtility.DisplayDialog(
+                        "Remove Context",
+                        $"Remove this context?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}",
+                        "Yes",
+                        "No"))
+                {
+                    if (ctx != null)
+                    {
+                        w.RemoveContext(e, (IContext)ctx);
+                        foldoutInfo.RemoveFoldout(EEntitySection.Contexts, t);
+                    }
+                }
             }
 
-            if (GUI.Button(rects[1], "R", ZenGUIStyles.ButtonMCNormal10))
+            if (GUI.Button(rects[1], ZenGUIContents.IconPing(), ZenGUIStyles.ButtonPadding))
             {
-                Debug.Log("L1 clicked");
-            }
-
-            if (GUI.Button(rects[2], ZenGUIContents.IconPing(), ZenGUIStyles.ButtonPadding))
-            {
-                Debug.Log("L2 clicked");
+                ZenUtil.PingType(t);
             }
 
             if (indent) EditorGUI.indentLevel--;
@@ -72,7 +79,6 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                     foreach (var f in ctxType.GetFields(BindingFlags.Public | BindingFlags.Instance |
                                                         BindingFlags.DeclaredOnly))
                     {
-                        if (Attribute.IsDefined(f, typeof(ZenEcsExplorerHiddenAttribute), true)) continue;
                         if (Attribute.IsDefined(f, typeof(HideInInspector), true)) continue;
 
                         var lf = f;
@@ -89,7 +95,6 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                     {
                         if (!p.CanRead) continue;
                         if (p.GetIndexParameters().Length > 0) continue;
-                        if (Attribute.IsDefined(p, typeof(ZenEcsExplorerHiddenAttribute), true)) continue;
                         if (Attribute.IsDefined(p, typeof(HideInInspector), true)) continue;
 
                         var lp = p;
@@ -117,7 +122,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                     if (!hasFields)
                     {
                         EditorGUILayout.LabelField(foldoutName, ZenGUIStyles.LabelMLNormal10);
-                        drawContextMenus(w, e);
+                        drawContextMenus(w, e, t, ref foldoutInfo, boxed);
                     }
                     else
                     {
@@ -130,7 +135,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                             drawContextContent(w, e, members);
                         }
 
-                        drawContextMenus(w, e, true);
+                        drawContextMenus(w, e, t, ref foldoutInfo, boxed, true);
                     }
 
                     ZenGUIContents.DrawLine();

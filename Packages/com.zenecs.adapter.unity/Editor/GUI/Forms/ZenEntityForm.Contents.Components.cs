@@ -33,25 +33,39 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             }
         }
 
-        private static void drawComponentMenus(IWorld w, Entity e, bool indent = false)
+        private static void drawComponentMenus(IWorld w, Entity e, Type t, ref EntityFoldoutInfo foldoutInfo, bool indent = false)
         {
+            if (w.HasSingleton(e)) return;
+            
             if (indent) EditorGUI.indentLevel++;
             
             var rects = new Rect[3];
             ZenGUIStyles.GetLeftIndentedSingleLineRects(20, 1, ref rects);
             if (GUI.Button(rects[0], "X", ZenGUIStyles.ButtonMCNormal10))
             {
-                Debug.Log("L0 clicked");
+                if (EditorUtility.DisplayDialog(
+                        "Remove Component",
+                        $"Remove this component?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}",
+                        "Yes",
+                        "No"))
+                {
+                    w.ExternalCommandEnqueue(ExternalCommand.RemoveComponent(e, t));
+                    foldoutInfo.RemoveFoldout(EEntitySection.Components, t);
+                }
             }
                             
             if (GUI.Button(rects[1], "R", ZenGUIStyles.ButtonMCNormal10))
             {
-                Debug.Log("L1 clicked");
+                var instance = ZenDefaults.CreateWithDefaults(t);
+                if (instance != null)
+                {
+                    w.ExternalCommandEnqueue(ExternalCommand.ReplaceComponent(e, t, instance));
+                }
             }
 
             if (GUI.Button(rects[2], ZenGUIContents.IconPing(), ZenGUIStyles.ButtonPadding))
             {
-                Debug.Log("L2 clicked");
+                ZenUtil.PingType(t);
             }
 
             if (indent) EditorGUI.indentLevel--;
@@ -71,7 +85,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                     if (!hasFields || boxed == null)
                     {
                         EditorGUILayout.LabelField(foldoutName, ZenGUIStyles.LabelMLNormal10);
-                        drawComponentMenus(w, e);
+                        drawComponentMenus(w, e, t, ref foldoutInfo);
                     }
                     else
                     {
@@ -84,7 +98,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                             drawComponentContent(w, e, t, boxed);
                         }
                         
-                        drawComponentMenus(w, e, true);
+                        drawComponentMenus(w, e, t, ref foldoutInfo, true);
                     }
 
                     ZenGUIContents.DrawLine();

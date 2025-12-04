@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Editor.Common;
 using ZenECS.Core;
+using ZenECS.Core.Binding;
 
 #if UNITY_EDITOR
 namespace ZenECS.Adapter.Unity.Editor.GUIs
@@ -20,7 +21,19 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             ZenGUIStyles.GetLeftIndentedSingleLineRects(20, 1, ref rects);
             if (GUI.Button(rects[0], ZenGUIContents.IconPlus(), ZenGUIStyles.ButtonPadding))
             {
-                Debug.Log("L0 clicked");
+                var allBinders = ZenUtil.BinderTypeFinder.All();
+                var disabledB = new HashSet<Type>(w.GetAllBinders(e).Select(x => x.type));
+
+                ZenBinderPickerWindow.Show(
+                    allBinderTypes: allBinders,
+                    disabled: disabledB,
+                    onPick: picked =>
+                    {
+                        var inst = ZenDefaults.CreateWithDefaults(picked);
+                        if (inst != null) w.AttachBinder(e, (IBinder)inst);
+                    },
+                    activatorRectGui: rects[0],
+                    title: $"Entity #{e.Id}:{e.Gen} - Add Binder");
             }
 
             if (GUI.Button(rects[1], "▼", ZenGUIStyles.ButtonMCNormal10))
@@ -34,7 +47,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             }
         }
 
-        private static void drawBinderMenus(IWorld w, Entity e, bool indent = false)
+        private static void drawBinderMenus(IWorld w, Entity e, Type t, ref EntityFoldoutInfo foldoutInfo, BaseBinder? binder = null, bool indent = false)
         {
             if (indent) EditorGUI.indentLevel++;
 
@@ -42,17 +55,32 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             ZenGUIStyles.GetLeftIndentedSingleLineRects(20, 1, ref rects);
             if (GUI.Button(rects[0], "X", ZenGUIStyles.ButtonMCNormal10))
             {
-                Debug.Log("L0 clicked");
+                if (EditorUtility.DisplayDialog(
+                        "Remove Binder",
+                        $"Remove this binder?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}",
+                        "Yes",
+                        "No"))
+                {
+                    w.DetachBinder(e, t);
+                    foldoutInfo.RemoveFoldout(EEntitySection.Binders, t);
+                }
             }
 
-            if (GUI.Button(rects[1], "R", ZenGUIStyles.ButtonMCNormal10))
+            bool isDisabled = !(binder as BaseBinder).Enabled;
+            var prevBodyColor = GUI.color;
+            if (isDisabled) GUI.color = new Color(0.3f, 0.9f, 1.0f);
+            
+            if (GUI.Button(rects[1], ZenGUIContents.IconPause(), ZenGUIStyles.ButtonPadding))
             {
-                Debug.Log("L1 clicked");
+                binder.Enabled = !binder.Enabled;
+                Debug.Log("Binder enabled: " + binder.Enabled);
             }
+
+            GUI.color = prevBodyColor;
 
             if (GUI.Button(rects[2], ZenGUIContents.IconPing(), ZenGUIStyles.ButtonPadding))
             {
-                Debug.Log("L2 clicked");
+                ZenUtil.PingType(t);
             }
 
             if (indent) EditorGUI.indentLevel--;
@@ -72,7 +100,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                     if (!hasFields)
                     {
                         EditorGUILayout.LabelField(foldoutName, ZenGUIStyles.LabelMLNormal10);
-                        drawBinderMenus(w, e);
+                        drawBinderMenus(w, e, t, ref foldoutInfo, boxed as BaseBinder);
                     }
                     else
                     {
@@ -85,7 +113,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                             drawBinderContent(w, e, t, boxed);
                         }
 
-                        drawBinderMenus(w, e, true);
+                        drawBinderMenus(w, e, t, ref foldoutInfo, boxed as BaseBinder, true);
                     }
 
                     ZenGUIContents.DrawLine();

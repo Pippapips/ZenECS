@@ -196,6 +196,22 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                         break;
                 }
             }
+            
+            public void RemoveFoldout(EEntitySection sectionType, Type t)
+            {
+                switch (sectionType)
+                {
+                    case EEntitySection.Components:
+                        _componentFoldouts.Remove(t);
+                        break;
+                    case EEntitySection.Contexts:
+                        _contextFoldouts.Remove(t);
+                        break;
+                    case EEntitySection.Binders:
+                        _binderFoldouts.Remove(t);
+                        break;
+                }
+            }
             #endregion
         }
 
@@ -244,7 +260,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             }
         }
         
-        public static void DrawEntity(IWorld w, Entity e, ref EntityFoldoutInfo foldoutInfo)
+        public static void DrawEntity(IWorld w, Entity e, ref EntityFoldoutInfo foldoutInfo, Action? onRemoved = null)
         {
             initFoldouts(w, e, ref foldoutInfo);
 
@@ -252,8 +268,10 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             {
                 EditorGUI.indentLevel = 0;
 
+                bool isSingleton = w.HasSingleton(e);
+                
                 var open = foldoutInfo.Open;
-                open = EditorGUILayout.Foldout(open, $"Entity #{e.Id}:{e.Gen}", true, ZenGUIStyles.SystemFoldout);
+                open = EditorGUILayout.Foldout(open, $"Entity #{e.Id}:{e.Gen}" + (isSingleton ? " <color=yellow>SINGLETONE</color>" : ""), true, ZenGUIStyles.SystemFoldout);
                 foldoutInfo.Open = open;
 
                 int prevIndent = EditorGUI.indentLevel;
@@ -263,7 +281,16 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 ZenGUIStyles.GetLeftIndentedSingleLineRects(20, 1, ref rects);
                 if (GUI.Button(rects[0], "X", ZenGUIStyles.ButtonMCNormal10))
                 {
-                    Debug.Log("R2 clicked");
+                    string msg = isSingleton ? ZenStringTable.GetRemoveThisSingletonEntity(e) : ZenStringTable.GetRemoveThisEntity(e);
+                    if (EditorUtility.DisplayDialog(
+                            ZenStringTable.RemoveEntity,
+                            msg,
+                            ZenStringTable.Yes,
+                            ZenStringTable.No))
+                    {
+                        w.ExternalCommandEnqueue(ExternalCommand.DestroyEntity(e));
+                        onRemoved?.Invoke();
+                    }
                 }
 
                 if (GUI.Button(rects[1], "▼", ZenGUIStyles.ButtonMCNormal10))

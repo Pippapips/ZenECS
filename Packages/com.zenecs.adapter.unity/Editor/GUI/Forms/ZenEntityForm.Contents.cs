@@ -44,7 +44,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             switch (section)
             {
                 case EEntitySection.Components:
-                    drawComponentsMenus(w, e, ref foldoutInfo);
+                    if (!w.HasSingleton(e)) drawComponentsMenus(w, e, ref foldoutInfo);
                     break;
                 case EEntitySection.Contexts:
                     drawContextsMenus(w, e, ref foldoutInfo);

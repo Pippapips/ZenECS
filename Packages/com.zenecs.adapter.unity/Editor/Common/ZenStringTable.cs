@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+#nullable enable
+using System;
 using UnityEditor;
 using UnityEngine;
 using ZenECS.Core;
@@ -68,3 +70,4 @@ namespace ZenECS.Adapter.Unity.Editor.Common
         }
     }
 }
+#endif
