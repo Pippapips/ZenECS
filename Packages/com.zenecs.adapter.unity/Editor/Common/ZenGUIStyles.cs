@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Editor.GUIs;
@@ -8,6 +9,75 @@ namespace ZenECS.Adapter.Unity.Editor.Common
 {
     public static class ZenGUIStyles
     {
+        public static Rect GetSingleLineRect()
+        {
+            return GUILayoutUtility.GetRect(0, EditorGUIUtility.singleLineHeight, GUILayout.ExpandWidth(true));
+        }
+        
+        public static Rect GetIndentedSingleLineRect()
+        {
+            // Indent 반영
+            return EditorGUI.IndentedRect(GetSingleLineRect());
+        }
+
+        public static void GetLeftSingleLineRects(float width, float gap, ref Rect[] rects)
+        {
+            GetLeftRects(GetSingleLineRect(), width, gap, ref rects);
+        }
+
+        public static void GetRightSingleLineRects(float width, float gap, ref Rect[] rects)
+        {
+            GetRightRects(GetSingleLineRect(), width, gap, ref rects);
+        }
+        
+        public static void GetLeftIndentedSingleLineRects(float width, float gap, ref Rect[] rects)
+        {
+            GetLeftRects(GetIndentedSingleLineRect(), width, gap, ref rects);
+        }
+        
+        public static void TryGetRightIndentedSingleLineRects(float width, float gap, ref Rect[] rects)
+        {
+            GetRightRects(GetIndentedSingleLineRect(), width, gap, ref rects);
+        }
+
+        public static void GetLeftRects(Rect rowRect, float width, float gap, ref Rect[] rects)
+        {
+            if (rects.Length == 0) return;
+
+            int count = rects.Length;
+            for (int i = 0; i < count; i++)
+            {
+                if (i == 0)
+                {
+                    rects[i] = new Rect(rowRect.x, rowRect.y, width, rowRect.height);
+                }
+                else
+                {
+                    var rect = rects[i - 1];
+                    rects[i] = new Rect(rect.x + gap + width, rowRect.y, width, rowRect.height);
+                }
+            }
+        }
+
+        public static void GetRightRects(Rect rowRect, float width, float gap, ref Rect[] rects)
+        {
+            if (rects.Length == 0) return;
+
+            int count = rects.Length;
+            for (int i = 0; i < count; i++)
+            {
+                if (i == 0)
+                {
+                    rects[i] = new Rect(rowRect.xMax - width, rowRect.y, width, rowRect.height);
+                }
+                else
+                {
+                    var rect = rects[i - 1];
+                    rects[i] = new Rect(rect.x - gap - width, rowRect.y, width, rowRect.height);
+                }
+            }
+        }
+        
         public readonly struct LabelScope : IDisposable
         {
             private readonly GUIStyle _backupStyle;
@@ -44,7 +114,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
             }
         }
         
-        private static GUIStyle _linkLabel;
+        private static GUIStyle? _linkLabel;
         public static GUIStyle LinkLabel
         {
             get
@@ -74,7 +144,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
             }
         }
         
-        private static GUIStyle _titleStyle;
+        private static GUIStyle? _titleStyle;
         public static GUIStyle TitleStyle
         {
             get
@@ -89,7 +159,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
             }
         }
         
-        private static GUIStyle _bodyStyle;
+        private static GUIStyle? _bodyStyle;
         public static GUIStyle BodyStyle
         {
             get
@@ -103,7 +173,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
             }
         }
         
-        private static GUIStyle _buttonMLNormal10;
+        private static GUIStyle? _buttonMLNormal10;
         public static GUIStyle ButtonMLNormal10
         {
             get
@@ -118,7 +188,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
             }
         }
         
-        private static GUIStyle _buttonMCNormal10;
+        private static GUIStyle? _buttonMCNormal10;
         public static GUIStyle ButtonMCNormal10
         {
             get
@@ -133,7 +203,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
             }
         }
 
-        private static GUIStyle _labelBold14;
+        private static GUIStyle? _labelBold14;
         public static GUIStyle LabelBold14
         {
             get
@@ -148,7 +218,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
             }
         }
 
-        private static GUIStyle _labelLCNormal10;
+        private static GUIStyle? _labelLCNormal10;
         public static GUIStyle LabelLCNormal10
         {
             get
@@ -164,7 +234,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
             }
         }
 
-        private static GUIStyle _labelMLNormal10;
+        private static GUIStyle? _labelMLNormal10;
         public static GUIStyle LabelMLNormal10
         {
             get
@@ -180,7 +250,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
             }
         }
 
-        private static GUIStyle _labelMLNormal9;
+        private static GUIStyle? _labelMLNormal9;
         public static GUIStyle LabelMLNormal9
         {
             get
@@ -196,7 +266,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
             }
         }
 
-        private static GUIStyle _labelMLNormal9Gray;
+        private static GUIStyle? _labelMLNormal9Gray;
         public static GUIStyle LabelMLNormal9Gray
         {
             get
@@ -212,7 +282,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
             }
         }
 
-        private static GUIStyle _textFieldLFNormal10;
+        private static GUIStyle? _textFieldLFNormal10;
         public static GUIStyle TextFieldLFNormal10
         {
             get
@@ -227,7 +297,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
             }
         }
         
-        private static GUIStyle _foldoutNormal;
+        private static GUIStyle? _foldoutNormal;
         public static GUIStyle FoldoutNormal
         {
             get
@@ -243,7 +313,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
             }
         }
 
-        private static GUIStyle _systemFoldout10;
+        private static GUIStyle? _systemFoldout10;
         public static GUIStyle SystemFoldout10
         {
             get
@@ -255,19 +325,15 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                     richText = true,
                     alignment = TextAnchor.MiddleLeft,
                     normal = new GUIStyleState { textColor = Color.lightGray },
-                    onNormal = new GUIStyleState { textColor = Color.lightGray },
-                    focused = new GUIStyleState { textColor = Color.lightGray },
-                    onFocused = new GUIStyleState { textColor = Color.lightGray },
-                    hover = new GUIStyleState { textColor = Color.lightGray },
-                    onHover = new GUIStyleState { textColor = Color.lightGray },
-                    active = new GUIStyleState { textColor = Color.lightGray },
-                    onActive = new GUIStyleState { textColor = Color.lightGray },
+                    focused = new GUIStyleState { textColor = Color.lightBlue },
+                    hover = new GUIStyleState { textColor = Color.lightBlue },
+                    active = new GUIStyleState { textColor = Color.lightBlue },
                 };
                 return _systemFoldout10;
             }
         }
 
-        private static GUIStyle _systemFoldout;
+        private static GUIStyle? _systemFoldout;
         public static GUIStyle SystemFoldout
         {
             get
@@ -278,20 +344,17 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                     fontSize = 11,
                     richText = true,
                     alignment = TextAnchor.MiddleLeft,
+                    
                     normal = new GUIStyleState { textColor = Color.lightGray },
-                    onNormal = new GUIStyleState { textColor = Color.lightGray },
-                    focused = new GUIStyleState { textColor = Color.lightGray },
-                    onFocused = new GUIStyleState { textColor = Color.lightGray },
-                    hover = new GUIStyleState { textColor = Color.lightGray },
-                    onHover = new GUIStyleState { textColor = Color.lightGray },
-                    active = new GUIStyleState { textColor = Color.lightGray },
-                    onActive = new GUIStyleState { textColor = Color.lightGray },
+                    focused = new GUIStyleState { textColor = Color.lightBlue },
+                    hover = new GUIStyleState { textColor = Color.lightBlue },
+                    active = new GUIStyleState { textColor = Color.lightBlue },
                 };
                 return _systemFoldout;
             }
         }
 
-        private static GUIStyle _buttonPadding;
+        private static GUIStyle? _buttonPadding;
         public static GUIStyle ButtonPadding
         {
             get
