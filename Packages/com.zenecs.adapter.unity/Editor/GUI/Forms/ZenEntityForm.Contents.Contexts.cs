@@ -201,9 +201,46 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             ZenGUIStyles.GetLeftIndentedSingleLineRects(20, 1, ref rects);
             if (GUI.Button(rects[0], ZenGUIContents.IconPlus(), ZenGUIStyles.ButtonPadding))
             {
+                // var allContexts = ZenUtil.ContextTypeFinder.All();
+                // var disabledC = new HashSet<Type>(w.GetAllContexts(e).Select(c => c.type));
+                //
+                // ZenContextPickerWindow.Show(
+                //     allContextTypes: allContexts,
+                //     disabled: disabledC,
+                //     onPick: picked =>
+                //     {
+                //         var inst = ZenDefaults.CreateWithDefaults(picked);
+                //         if (inst != null)
+                //         {
+                //             switch (inst)
+                //             {
+                //                 case SharedContextAsset markerAsset:
+                //                 {
+                //                     var resolver = ZenEcsUnityBridge.SharedContextResolver;
+                //                     if (resolver != null)
+                //                     {
+                //                         var ctx = resolver.Resolve(markerAsset);
+                //                         if (ctx != null)
+                //                             w.RegisterContext(e, ctx);
+                //                     }
+                //
+                //                     break;
+                //                 }
+                //                 case PerEntityContextAsset perEntityAsset:
+                //                 {
+                //                     var ctx = perEntityAsset.Create();
+                //                     w.RegisterContext(e, ctx);
+                //                     break;
+                //                 }
+                //             }
+                //         }
+                //     },
+                //     activatorRectGui: rects[0],
+                //     title: $"Entity #{e.Id}:{e.Gen} - Add Context");
+
                 var ctxs = w.GetAllContexts(e);
                 var disabledCtxTypes = new HashSet<Type>(ctxs.Select(c => c.type));
-
+                
                 ContextAssetPickerWindow.Show(
                     activatorRectGui: rects[0],
                     onPick: asset =>
@@ -219,7 +256,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                                     if (ctx != null)
                                         w.RegisterContext(e, ctx);
                                 }
-
+                
                                 break;
                             }
                             case PerEntityContextAsset perEntityAsset:
@@ -267,7 +304,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 }
             }
 
-            if (GUI.Button(rects[1], ZenGUIContents.IconPing(), ZenGUIStyles.ButtonPadding))
+            if (GUI.Button(rects[1], ZenGUIContents.IconPing(), EditorStyles.iconButton))
             {
                 ZenUtil.PingType(t);
             }

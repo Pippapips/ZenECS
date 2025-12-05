@@ -21,7 +21,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
         private static void OnHierarchyGUI(int instanceID, Rect selectionRect)
         {
-            var go = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
+            var go = EditorUtility.EntityIdToObject(instanceID) as GameObject;
             if (go == null) return;
 
             if (!go.TryGetComponent<EntityLink>(out _))

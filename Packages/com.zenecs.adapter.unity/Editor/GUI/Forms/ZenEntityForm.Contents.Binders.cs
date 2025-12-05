@@ -66,19 +66,21 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 }
             }
 
-            bool isDisabled = !(binder as BaseBinder).Enabled;
+            var isDisabled = binder is { Enabled: false };
             var prevBodyColor = GUI.color;
             if (isDisabled) GUI.color = new Color(0.3f, 0.9f, 1.0f);
             
             if (GUI.Button(rects[1], ZenGUIContents.IconPause(), ZenGUIStyles.ButtonPadding))
             {
-                binder.Enabled = !binder.Enabled;
-                Debug.Log("Binder enabled: " + binder.Enabled);
+                if (binder != null)
+                {
+                    binder.Enabled = !binder.Enabled;
+                }
             }
 
             GUI.color = prevBodyColor;
 
-            if (GUI.Button(rects[2], ZenGUIContents.IconPing(), ZenGUIStyles.ButtonPadding))
+            if (GUI.Button(rects[2], ZenGUIContents.IconPing(), EditorStyles.iconButton))
             {
                 ZenUtil.PingType(t);
             }

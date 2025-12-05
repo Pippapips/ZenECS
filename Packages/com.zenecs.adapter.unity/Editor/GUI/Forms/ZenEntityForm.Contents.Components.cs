@@ -80,7 +80,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 }
             }
 
-            if (GUI.Button(rects[2], ZenGUIContents.IconPing(), ZenGUIStyles.ButtonPadding))
+            if (GUI.Button(rects[2], ZenGUIContents.IconPing(), EditorStyles.iconButton))
             {
                 ZenUtil.PingType(t);
             }
