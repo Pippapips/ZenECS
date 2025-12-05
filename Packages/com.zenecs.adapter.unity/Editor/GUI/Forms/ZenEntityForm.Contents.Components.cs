@@ -19,7 +19,24 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             ZenGUIStyles.GetLeftIndentedSingleLineRects(20, 1, ref rects);
             if (GUI.Button(rects[0], ZenGUIContents.IconPlus(), ZenGUIStyles.ButtonPadding))
             {
-                Debug.Log("L0 clicked");
+                var allTypes = ZenComponentPickerWindow.FindAllZenComponents().ToList();
+                var disabled = new HashSet<Type>();
+                foreach (var (tHave, _) in w.GetAllComponents(e))
+                    disabled.Add(tHave);
+
+                ZenComponentPickerWindow.Show(
+                    allTypes,
+                    disabled,
+                    picked =>
+                    {
+                        var inst = ZenDefaults.CreateWithDefaults(picked);
+                        if (inst != null)
+                        {
+                            w.ExternalCommandEnqueue(ExternalCommand.AddComponent(e, inst.GetType(), inst));
+                        }
+                    },
+                    rects[0],
+                    ZenStringTable.GetAddComponent(e));
             }
 
             if (GUI.Button(rects[1], "▼", ZenGUIStyles.ButtonMCNormal10))
