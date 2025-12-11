@@ -1,4 +1,4 @@
-﻿// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Core — Systems
 // File: SystemRunner.cs
 // Purpose: Execute ECS systems per phase with lifecycle hooks and barrier
@@ -283,8 +283,7 @@ namespace ZenECS.Core.Systems.Internal
             // 2) Pump messages once at the start of the frame.
             _bus.PumpAll();
 
-            var inner = w as World;
-            inner?.SetWritePhase(
+            w.SetWritePhaseInternal(
                 WorldWritePhase.FrameInput,
                 denyAllWrites: false,
                 structuralChangesAllowed: true);
@@ -293,7 +292,7 @@ namespace ZenECS.Core.Systems.Internal
             RunGroup(SystemGroup.FrameInput, w, dt);
             _worker.RunScheduledJobs(w);
 
-            inner?.SetWritePhase(
+            w.SetWritePhaseInternal(
                 WorldWritePhase.FrameSync,
                 denyAllWrites: false,
                 structuralChangesAllowed: false);
@@ -306,14 +305,11 @@ namespace ZenECS.Core.Systems.Internal
         /// <inheritdoc/>
         public void FixedStep(IWorld w, float fixedDelta)
         {
-            if (w is World inner)
-            {
-                inner.SetWritePhase(
-                    WorldWritePhase.Simulation,
-                    denyAllWrites: false,
-                    structuralChangesAllowed: true);
-                inner.ExternalCommandFlushTo();
-            }
+            w.SetWritePhaseInternal(
+                WorldWritePhase.Simulation,
+                denyAllWrites: false,
+                structuralChangesAllowed: true);
+            w.ExternalCommandFlushToInternal();
 
             // Fixed-step deterministic pipeline:
             // FixedInput → FixedDecision → FixedSimulation → FixedPost
@@ -333,8 +329,7 @@ namespace ZenECS.Core.Systems.Internal
         /// <inheritdoc/>
         public void LateFrame(IWorld w, float dt, float interpolationAlpha = 1f)
         {
-            var inner = w as World;
-            inner?.SetWritePhase(
+            w.SetWritePhaseInternal(
                 WorldWritePhase.FrameView,
                 denyAllWrites: false,
                 structuralChangesAllowed: false);
@@ -346,7 +341,7 @@ namespace ZenECS.Core.Systems.Internal
             // 2) Temporarily deny structural writes during UI and binder ApplyAll.
             using var guard = DenyWrites(_permissionHook);
 
-            inner?.SetWritePhase(
+            w.SetWritePhaseInternal(
                 WorldWritePhase.FrameUI,
                 denyAllWrites: true,      // UI should be read-only from the world POV
                 structuralChangesAllowed: false);
@@ -358,7 +353,7 @@ namespace ZenECS.Core.Systems.Internal
             _router.ApplyAll(w);
 
             // 5) Clear write phase back to neutral.
-            inner?.ClearWritePhase();
+            w.ClearWritePhaseInternal();
         }
 
         /// <summary>

@@ -389,8 +389,7 @@ namespace ZenECS.Core
             {
                 if (!_current.IsPaused)
                 {
-                    var internalWorld = _current as World;
-                    internalWorld?.BeginFrame(_current, dt);
+                    _current.BeginFrameInternal(_current, dt);
                 }
                 return;
             }
@@ -399,8 +398,7 @@ namespace ZenECS.Core
             {
                 if (!w.IsPaused)
                 {
-                    var internalWorld = w as World;
-                    internalWorld?.BeginFrame(w, dt);
+                    w.BeginFrameInternal(w, dt);
                 }
             }
         }
@@ -424,8 +422,7 @@ namespace ZenECS.Core
             {
                 if (!_current.IsPaused)
                 {
-                    var internalWorld = _current as World;
-                    internalWorld?.FixedStep(_current, fixedDelta);
+                    _current.FixedStepInternal(_current, fixedDelta);
                 }
                 return;
             }
@@ -434,8 +431,7 @@ namespace ZenECS.Core
             {
                 if (!w.IsPaused)
                 {
-                    var internalWorld = w as World;
-                    internalWorld?.FixedStep(w, fixedDelta);
+                    w.FixedStepInternal(w, fixedDelta);
                 }
             }
         }
@@ -449,8 +445,7 @@ namespace ZenECS.Core
             {
                 if (!_current.IsPaused)
                 {
-                    var internalWorld = _current as World;
-                    internalWorld?.LateFrame(_current, _delta, alpha);
+                    _current.LateFrameInternal(_current, _delta, alpha);
                 }
                 return;
             }
@@ -459,8 +454,7 @@ namespace ZenECS.Core
             {
                 if (!w.IsPaused)
                 {
-                    var internalWorld = w as World;
-                    internalWorld?.LateFrame(w, _delta, alpha);
+                    w.LateFrameInternal(w, _delta, alpha);
                 }
             }
         }

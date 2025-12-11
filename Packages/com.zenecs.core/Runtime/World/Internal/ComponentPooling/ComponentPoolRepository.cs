@@ -1,4 +1,4 @@
-﻿// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Core — World internals
 // File: ComponentPoolRepository.cs
 // Purpose: Map component Type → IComponentPool and create pools on demand.
@@ -62,7 +62,7 @@ namespace ZenECS.Core.ComponentPooling.Internal
         private static readonly ConcurrentDictionary<Type, Func<IComponentPool>> _poolFactories = new();
 
         /// <inheritdoc/>
-        public Dictionary<Type, IComponentPool> Pools => _pools;
+        public IReadOnlyDictionary<Type, IComponentPool> ReadOnlyPools => _pools;
 
         /// <inheritdoc/>
         public IComponentPool GetPool<T>() where T : struct
@@ -130,6 +130,18 @@ namespace ZenECS.Core.ComponentPooling.Internal
             Func<IComponentPool> factory = () => (IComponentPool)Activator.CreateInstance(closed)!;
 
             return _poolFactories.GetOrAdd(compType, factory);
+        }
+
+        /// <inheritdoc/>
+        public void SetPool(Type componentType, IComponentPool pool)
+        {
+            _pools[componentType] = pool;
+        }
+
+        /// <inheritdoc/>
+        public void ClearAllPools()
+        {
+            _pools.Clear();
         }
     }
 }
