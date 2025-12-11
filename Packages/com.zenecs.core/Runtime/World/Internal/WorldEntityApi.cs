@@ -1,4 +1,4 @@
-﻿// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Core — World subsystem (Entity API)
 // File: WorldEntityApi.cs
 // Purpose: Entity lifetime & indexing: create/destroy, alive checks, enumeration.

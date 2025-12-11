@@ -1,4 +1,4 @@
-﻿// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Core — World
 // File: World.cs
 // Purpose: Concrete per-world runtime host (entities, components, systems, IO).
