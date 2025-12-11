@@ -1,4 +1,4 @@
-﻿// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Core — World subsystem (Snapshot I/O)
 // File: WorldSnapshot.cs
 // Purpose: Serialize/deserialize full world state (metadata + component pools).
@@ -130,7 +130,7 @@ namespace ZenECS.Core.Internal
             LoadWorldMetaBinary(br);
 
             // Reset existing pools
-            foreach (var kv in _componentPoolRepository.Pools) kv.Value.ClearAll();
+            foreach (var kv in _componentPoolRepository.ReadOnlyPools) kv.Value.ClearAll();
 
             LoadAllComponentPoolsBinary(br);
 
@@ -230,9 +230,9 @@ namespace ZenECS.Core.Internal
         private void SaveAllComponentPoolsBinary(BinaryWriter bw)
         {
             var mask = _alive;
-            bw.Write(_componentPoolRepository.Pools.Count);
+            bw.Write(_componentPoolRepository.ReadOnlyPools.Count);
 
-            foreach (var (type, pool) in _componentPoolRepository.Pools)
+            foreach (var (type, pool) in _componentPoolRepository.ReadOnlyPools)
             {
                 IComponentFormatter? formatter = ComponentRegistry.GetFormatter(type);
                 if (formatter == null)
