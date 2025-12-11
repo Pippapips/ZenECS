@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Xunit;
+using ZenECS.Core;
 using ZenECS.Core.Systems;
 using ZenECS.Core.TestFramework;
 
@@ -49,15 +50,15 @@ public class SystemLifecycleAndEnableTests
         var sys = new ToggleSystem();
         host.World.AddSystem(sys);
 
-        host.TickFrame(); // apply + run once
+        host.TickFrame(dt: 0.016f); // apply + run once
         Assert.Equal(1, sys.Count);
 
         Assert.True(host.World.SetEnabledSystem<ToggleSystem>(false));
-        host.TickFrame();
+        host.TickFrame(dt: 0.016f);
         Assert.Equal(1, sys.Count);
 
         Assert.True(host.World.SetEnabledSystem<ToggleSystem>(true));
-        host.TickFrame();
+        host.TickFrame(dt: 0.016f);
         Assert.Equal(2, sys.Count);
     }
 }
