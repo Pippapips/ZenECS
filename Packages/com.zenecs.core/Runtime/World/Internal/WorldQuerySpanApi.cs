@@ -1,4 +1,4 @@
-﻿// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Core — World subsystem (Query • Span utilities)
 // File: WorldQuerySpanApi.cs
 // Purpose: Span-based zero-allocation entity collection and ref-processing utilities.
