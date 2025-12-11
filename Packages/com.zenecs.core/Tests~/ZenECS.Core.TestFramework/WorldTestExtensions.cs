@@ -1,4 +1,5 @@
 using System;
+using ZenECS.Core;
 
 namespace ZenECS.Core.TestFramework;
 
@@ -7,6 +8,7 @@ namespace ZenECS.Core.TestFramework;
 /// </summary>
 public static class WorldTestExtensions
 {
+
     /// <summary>
     /// Records commands into a buffer and immediately flushes scheduled jobs.
     /// </summary>
@@ -27,15 +29,17 @@ public static class WorldTestExtensions
     /// Creates an entity via command buffer, optionally chaining more commands, then flushes.
     /// </summary>
     /// <param name="world">Target world.</param>
-    /// <param name="afterCreate">Optional additional recording that uses the buffer.</param>
+    /// <param name="afterCreate">Optional additional recording that uses the buffer and created entity.</param>
     /// <returns>Created entity handle.</returns>
-    public static Entity CreateEntity(this IWorld world, Action<ICommandBuffer>? afterCreate = null)
+    public static Entity CreateEntity(this IWorld world, Action<ICommandBuffer, Entity>? afterCreate = null)
     {
+        if (world is null) throw new ArgumentNullException(nameof(world));
+
         Entity created = Entity.None;
         world.Apply(cmd =>
         {
             created = cmd.CreateEntity();
-            afterCreate?.Invoke(cmd);
+            afterCreate?.Invoke(cmd, created);
         });
         return created;
     }
@@ -49,4 +53,3 @@ public static class WorldTestExtensions
         return world.RunScheduledJobs();
     }
 }
-
