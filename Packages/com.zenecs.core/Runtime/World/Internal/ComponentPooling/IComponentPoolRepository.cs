@@ -33,13 +33,13 @@ namespace ZenECS.Core.ComponentPooling.Internal
     internal interface IComponentPoolRepository
     {
         /// <summary>
-        /// Gets access to the underlying pool map keyed by component <see cref="Type"/>.
+        /// Gets a read-only view of the underlying pool map keyed by component <see cref="Type"/>.
         /// </summary>
         /// <remarks>
         /// This collection is intended for internal and tooling use only.
-        /// Modifying the dictionary from outside the repository is not supported.
+        /// The dictionary is read-only and cannot be modified through this interface.
         /// </remarks>
-        Dictionary<Type, IComponentPool> Pools { get; }
+        IReadOnlyDictionary<Type, IComponentPool> ReadOnlyPools { get; }
 
         /// <summary>
         /// Gets a typed pool for component <typeparamref name="T"/>, creating it if necessary.
@@ -104,5 +104,23 @@ namespace ZenECS.Core.ComponentPooling.Internal
         /// if present.
         /// </remarks>
         void RemoveEntity(Entity e);
+
+        /// <summary>
+        /// Sets or replaces a pool for the specified component type.
+        /// </summary>
+        /// <param name="componentType">Component type to set a pool for.</param>
+        /// <param name="pool">Pool instance to associate with the component type.</param>
+        /// <remarks>
+        /// This method is intended for internal use only, such as during world reset operations.
+        /// </remarks>
+        void SetPool(Type componentType, IComponentPool pool);
+
+        /// <summary>
+        /// Clears all pools from the repository.
+        /// </summary>
+        /// <remarks>
+        /// This method is intended for internal use only, such as during world hard reset operations.
+        /// </remarks>
+        void ClearAllPools();
     }
 }

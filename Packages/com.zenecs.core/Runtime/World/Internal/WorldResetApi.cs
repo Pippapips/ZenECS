@@ -1,4 +1,4 @@
-﻿// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Core — World subsystem (Reset API)
 // File: WorldResetApi.cs
 // Purpose: Reset/rehydrate world storage and subsystems with/without capacity reuse.
@@ -107,10 +107,10 @@ namespace ZenECS.Core.Internal
                 _freeIds.Clear();
 
             // Recreate each component pool in an empty state (capacity retained)
-            var types = new List<Type>(_componentPoolRepository.Pools.Keys);
+            var types = new List<Type>(_componentPoolRepository.ReadOnlyPools.Keys);
             foreach (var t in types)
             {
-                _componentPoolRepository.Pools[t] = CreateEmptyPoolForType(t, entityCap);
+                _componentPoolRepository.SetPool(t, CreateEmptyPoolForType(t, entityCap));
             }
 
             ResetSubsystems(keepCapacity: true);
@@ -127,7 +127,7 @@ namespace ZenECS.Core.Internal
             _nextId = 1;
             _freeIds = new Stack<int>(_cfg.InitialFreeIdCapacity);
 
-            _componentPoolRepository.Pools.Clear();
+            _componentPoolRepository.ClearAllPools();
 
             ResetSubsystems(keepCapacity: false);
         }

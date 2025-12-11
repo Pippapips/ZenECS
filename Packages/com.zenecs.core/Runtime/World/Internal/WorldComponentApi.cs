@@ -1,4 +1,4 @@
-﻿// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Core — World subsystem (Component API)
 // File: WorldComponentApi.cs
 // Purpose: Typed component add/replace/remove and ref accessors.
@@ -517,7 +517,7 @@ namespace ZenECS.Core.Internal
         /// </returns>
         public IEnumerable<(Type type, object? boxed)> GetAllComponents(Entity e)
         {
-            foreach (var kv in _componentPoolRepository.Pools)
+            foreach (var kv in _componentPoolRepository.ReadOnlyPools)
                 if (kv.Value.Has(e.Id))
                     yield return (kv.Key, kv.Value.GetBoxed(e.Id));
         }
