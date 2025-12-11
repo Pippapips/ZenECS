@@ -29,6 +29,12 @@ namespace ZenECS.Core.Internal
     /// the scan set before applying the remaining pool membership tests and
     /// composable filter constraints, keeping iteration efficient.
     /// </para>
+    /// <para>
+    /// <b>Implementation Note:</b> While these methods follow a repetitive pattern,
+    /// they must remain as separate overloads due to C# generic type constraints.
+    /// Each method retrieves component pools, resolves the filter, creates a typed
+    /// context, and returns a strongly-typed enumerable for zero-allocation iteration.
+    /// </para>
     /// </remarks>
     internal sealed partial class World : IWorldQueryApi
     {
@@ -47,9 +53,9 @@ namespace ZenECS.Core.Internal
         /// </returns>
         public QueryEnumerable<T1> Query<T1>(Filter f = default) where T1 : struct
         {
-            var a  = _componentPoolRepository.TryGetPool<T1>();
-            var rf = ResolveFilter(f);
-            var ctx = new QueryCtx1<T1>(a, rf);
+            var pool = _componentPoolRepository.TryGetPool<T1>();
+            var resolvedFilter = ResolveFilter(f);
+            var ctx = new QueryCtx1<T1>(pool, resolvedFilter);
             return new QueryEnumerable<T1>(this, in ctx);
         }
 
@@ -68,10 +74,10 @@ namespace ZenECS.Core.Internal
         public QueryEnumerable<T1, T2> Query<T1, T2>(Filter f = default)
             where T1 : struct where T2 : struct
         {
-            var a  = _componentPoolRepository.TryGetPool<T1>();
-            var b  = _componentPoolRepository.TryGetPool<T2>();
-            var rf = ResolveFilter(f);
-            var ctx = new QueryCtx2<T1, T2>(a, b, rf);
+            var pool1 = _componentPoolRepository.TryGetPool<T1>();
+            var pool2 = _componentPoolRepository.TryGetPool<T2>();
+            var resolvedFilter = ResolveFilter(f);
+            var ctx = new QueryCtx2<T1, T2>(pool1, pool2, resolvedFilter);
             return new QueryEnumerable<T1, T2>(this, in ctx);
         }
 
@@ -92,11 +98,11 @@ namespace ZenECS.Core.Internal
         public QueryEnumerable<T1, T2, T3> Query<T1, T2, T3>(Filter f = default)
             where T1 : struct where T2 : struct where T3 : struct
         {
-            var a  = _componentPoolRepository.TryGetPool<T1>();
-            var b  = _componentPoolRepository.TryGetPool<T2>();
-            var c  = _componentPoolRepository.TryGetPool<T3>();
-            var rf = ResolveFilter(f);
-            var ctx = new QueryCtx3<T1, T2, T3>(a, b, c, rf);
+            var pool1 = _componentPoolRepository.TryGetPool<T1>();
+            var pool2 = _componentPoolRepository.TryGetPool<T2>();
+            var pool3 = _componentPoolRepository.TryGetPool<T3>();
+            var resolvedFilter = ResolveFilter(f);
+            var ctx = new QueryCtx3<T1, T2, T3>(pool1, pool2, pool3, resolvedFilter);
             return new QueryEnumerable<T1, T2, T3>(this, in ctx);
         }
 
@@ -117,12 +123,12 @@ namespace ZenECS.Core.Internal
         public QueryEnumerable<T1, T2, T3, T4> Query<T1, T2, T3, T4>(Filter f = default)
             where T1 : struct where T2 : struct where T3 : struct where T4 : struct
         {
-            var a  = _componentPoolRepository.TryGetPool<T1>();
-            var b  = _componentPoolRepository.TryGetPool<T2>();
-            var c  = _componentPoolRepository.TryGetPool<T3>();
-            var d  = _componentPoolRepository.TryGetPool<T4>();
-            var rf = ResolveFilter(f);
-            var ctx = new QueryCtx4<T1, T2, T3, T4>(a, b, c, d, rf);
+            var pool1 = _componentPoolRepository.TryGetPool<T1>();
+            var pool2 = _componentPoolRepository.TryGetPool<T2>();
+            var pool3 = _componentPoolRepository.TryGetPool<T3>();
+            var pool4 = _componentPoolRepository.TryGetPool<T4>();
+            var resolvedFilter = ResolveFilter(f);
+            var ctx = new QueryCtx4<T1, T2, T3, T4>(pool1, pool2, pool3, pool4, resolvedFilter);
             return new QueryEnumerable<T1, T2, T3, T4>(this, in ctx);
         }
 
@@ -144,13 +150,13 @@ namespace ZenECS.Core.Internal
         public QueryEnumerable<T1, T2, T3, T4, T5> Query<T1, T2, T3, T4, T5>(Filter f = default)
             where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct
         {
-            var a  = _componentPoolRepository.TryGetPool<T1>();
-            var b  = _componentPoolRepository.TryGetPool<T2>();
-            var c  = _componentPoolRepository.TryGetPool<T3>();
-            var d  = _componentPoolRepository.TryGetPool<T4>();
-            var e  = _componentPoolRepository.TryGetPool<T5>();
-            var rf = ResolveFilter(f);
-            var ctx = new QueryCtx5<T1, T2, T3, T4, T5>(a, b, c, d, e, rf);
+            var pool1 = _componentPoolRepository.TryGetPool<T1>();
+            var pool2 = _componentPoolRepository.TryGetPool<T2>();
+            var pool3 = _componentPoolRepository.TryGetPool<T3>();
+            var pool4 = _componentPoolRepository.TryGetPool<T4>();
+            var pool5 = _componentPoolRepository.TryGetPool<T5>();
+            var resolvedFilter = ResolveFilter(f);
+            var ctx = new QueryCtx5<T1, T2, T3, T4, T5>(pool1, pool2, pool3, pool4, pool5, resolvedFilter);
             return new QueryEnumerable<T1, T2, T3, T4, T5>(this, in ctx);
         }
 
@@ -174,14 +180,14 @@ namespace ZenECS.Core.Internal
             where T1 : struct where T2 : struct where T3 : struct where T4 : struct
             where T5 : struct where T6 : struct
         {
-            var a  = _componentPoolRepository.TryGetPool<T1>();
-            var b  = _componentPoolRepository.TryGetPool<T2>();
-            var c  = _componentPoolRepository.TryGetPool<T3>();
-            var d  = _componentPoolRepository.TryGetPool<T4>();
-            var e  = _componentPoolRepository.TryGetPool<T5>();
-            var f6 = _componentPoolRepository.TryGetPool<T6>();
-            var rf = ResolveFilter(f);
-            var ctx = new QueryCtx6<T1, T2, T3, T4, T5, T6>(a, b, c, d, e, f6, rf);
+            var pool1 = _componentPoolRepository.TryGetPool<T1>();
+            var pool2 = _componentPoolRepository.TryGetPool<T2>();
+            var pool3 = _componentPoolRepository.TryGetPool<T3>();
+            var pool4 = _componentPoolRepository.TryGetPool<T4>();
+            var pool5 = _componentPoolRepository.TryGetPool<T5>();
+            var pool6 = _componentPoolRepository.TryGetPool<T6>();
+            var resolvedFilter = ResolveFilter(f);
+            var ctx = new QueryCtx6<T1, T2, T3, T4, T5, T6>(pool1, pool2, pool3, pool4, pool5, pool6, resolvedFilter);
             return new QueryEnumerable<T1, T2, T3, T4, T5, T6>(this, in ctx);
         }
 
@@ -206,15 +212,15 @@ namespace ZenECS.Core.Internal
             where T1 : struct where T2 : struct where T3 : struct where T4 : struct
             where T5 : struct where T6 : struct where T7 : struct
         {
-            var a  = _componentPoolRepository.TryGetPool<T1>();
-            var b  = _componentPoolRepository.TryGetPool<T2>();
-            var c  = _componentPoolRepository.TryGetPool<T3>();
-            var d  = _componentPoolRepository.TryGetPool<T4>();
-            var e  = _componentPoolRepository.TryGetPool<T5>();
-            var f6 = _componentPoolRepository.TryGetPool<T6>();
-            var g  = _componentPoolRepository.TryGetPool<T7>();
-            var rf = ResolveFilter(f);
-            var ctx = new QueryCtx7<T1, T2, T3, T4, T5, T6, T7>(a, b, c, d, e, f6, g, rf);
+            var pool1 = _componentPoolRepository.TryGetPool<T1>();
+            var pool2 = _componentPoolRepository.TryGetPool<T2>();
+            var pool3 = _componentPoolRepository.TryGetPool<T3>();
+            var pool4 = _componentPoolRepository.TryGetPool<T4>();
+            var pool5 = _componentPoolRepository.TryGetPool<T5>();
+            var pool6 = _componentPoolRepository.TryGetPool<T6>();
+            var pool7 = _componentPoolRepository.TryGetPool<T7>();
+            var resolvedFilter = ResolveFilter(f);
+            var ctx = new QueryCtx7<T1, T2, T3, T4, T5, T6, T7>(pool1, pool2, pool3, pool4, pool5, pool6, pool7, resolvedFilter);
             return new QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>(this, in ctx);
         }
 
@@ -241,16 +247,16 @@ namespace ZenECS.Core.Internal
             where T1 : struct where T2 : struct where T3 : struct where T4 : struct
             where T5 : struct where T6 : struct where T7 : struct where T8 : struct
         {
-            var a  = _componentPoolRepository.TryGetPool<T1>();
-            var b  = _componentPoolRepository.TryGetPool<T2>();
-            var c  = _componentPoolRepository.TryGetPool<T3>();
-            var d  = _componentPoolRepository.TryGetPool<T4>();
-            var e  = _componentPoolRepository.TryGetPool<T5>();
-            var f6 = _componentPoolRepository.TryGetPool<T6>();
-            var g  = _componentPoolRepository.TryGetPool<T7>();
-            var h  = _componentPoolRepository.TryGetPool<T8>();
-            var rf = ResolveFilter(f);
-            var ctx = new QueryCtx8<T1, T2, T3, T4, T5, T6, T7, T8>(a, b, c, d, e, f6, g, h, rf);
+            var pool1 = _componentPoolRepository.TryGetPool<T1>();
+            var pool2 = _componentPoolRepository.TryGetPool<T2>();
+            var pool3 = _componentPoolRepository.TryGetPool<T3>();
+            var pool4 = _componentPoolRepository.TryGetPool<T4>();
+            var pool5 = _componentPoolRepository.TryGetPool<T5>();
+            var pool6 = _componentPoolRepository.TryGetPool<T6>();
+            var pool7 = _componentPoolRepository.TryGetPool<T7>();
+            var pool8 = _componentPoolRepository.TryGetPool<T8>();
+            var resolvedFilter = ResolveFilter(f);
+            var ctx = new QueryCtx8<T1, T2, T3, T4, T5, T6, T7, T8>(pool1, pool2, pool3, pool4, pool5, pool6, pool7, pool8, resolvedFilter);
             return new QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>(this, in ctx);
         }
     }

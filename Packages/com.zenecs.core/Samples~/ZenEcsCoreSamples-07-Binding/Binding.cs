@@ -122,13 +122,13 @@ namespace ZenECS.Binding.ConsoleSample
             kernel.SetCurrentWorld(world);
 
             // Create entity and associate with a console view
-            var e = world.SpawnEntity();
+            var e = world.CreateEntity();
             var view = new ConsoleViewBinder();
             world.AttachBinder(e, view);
 
             // Add and modify Position component
             world.AddComponent(e, new Position(1, 1));
-            world.ReplaceComponent(e, new Position(2.5f, 4));
+            world.SetComponent(e, new Position(2.5f, 4));
                     
             world.AddComponent(e, new Health(10, 100));
             

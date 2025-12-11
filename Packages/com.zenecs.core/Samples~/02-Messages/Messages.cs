@@ -16,9 +16,8 @@
 using System;
 using System.Diagnostics;
 using System.Threading;
-using ZenECS;      // Kernel
 using ZenECS.Core;
-using ZenECS.Core.Systems;        // IInitializeSystem, IVariableRunSystem, IPresentationSystem
+using ZenECS.Core.Systems;
 
 namespace ZenEcsCoreSamples.Messages
 {
@@ -70,7 +69,7 @@ namespace ZenEcsCoreSamples.Messages
 
                 var current = w.ReadComponent<Health>(m.Entity);
                 var updated = new Health(Math.Max(0, current.Value - m.Amount));
-                w.ReplaceComponent(m.Entity, updated);
+                w.SetComponent(m.Entity, updated);
 
                 Console.WriteLine($"[Logic] e:{m.Entity} took {m.Amount} → {updated}");
             });
@@ -121,8 +120,8 @@ namespace ZenEcsCoreSamples.Messages
             ]);
             
             // Seed entities with Health data
-            var e1 = world.SpawnEntity();
-            var e2 = world.SpawnEntity();
+            var e1 = world.CreateEntity();
+            var e2 = world.CreateEntity();
             world.AddComponent(e1, new Health(100));
             world.AddComponent(e2, new Health(75));
             

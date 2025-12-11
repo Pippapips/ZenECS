@@ -174,7 +174,7 @@ namespace ZenECS.Core
         /// <returns>
         /// <see langword="true"/> if a matching world was found; otherwise <see langword="false"/>.
         /// </returns>
-        bool TryGet(WorldId id, out IWorld world);
+        bool TryGet(WorldId id, out IWorld? world);
 
         /// <summary>
         /// Finds worlds by exact name.

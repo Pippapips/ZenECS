@@ -16,7 +16,6 @@ using System;
 using System.IO;
 using System.Diagnostics;
 using System.Threading;
-using ZenECS;
 using ZenECS.Core;
 using ZenECS.Core.Serialization;
 using ZenECS.Core.Serialization.Formats.Binary;
@@ -83,7 +82,7 @@ namespace ZenEcsCoreSamples.Snapshot
             foreach (var e in world.Query<PositionV1>())
             {
                 var old = world.ReadComponent<PositionV1>(e);
-                world.ReplaceComponent(e, new PositionV2(old.X, old.Y, layer: 1));
+                world.SetComponent(e, new PositionV2(old.X, old.Y, layer: 1));
                 world.RemoveComponent<PositionV1>(e);
             }
         }
@@ -129,7 +128,7 @@ namespace ZenEcsCoreSamples.Snapshot
             ComponentRegistry.RegisterFormatter(new PositionV2Formatter(), "com.zenecs.samples.position.v2");
 
             // Create data in V1
-            var e = world.SpawnEntity();
+            var e = world.CreateEntity();
             world.AddComponent(e, new PositionV1(3, 7));
 
             // Save snapshot (binary) into memory stream
@@ -137,7 +136,7 @@ namespace ZenEcsCoreSamples.Snapshot
             world.SaveFullSnapshotBinary(ms);
             Console.WriteLine($"Saved snapshot bytes: {ms.Length}");
             
-            world.ReplaceComponent(e, new PositionV1(103, 107));
+            world.SetComponent(e, new PositionV1(103, 107));
             
             
             // Load snapshot into a NEW world

@@ -52,11 +52,11 @@ namespace ZenECS.Core
         // id → world
         private readonly ConcurrentDictionary<WorldId, IWorld> _byId = new();
 
-        // name → set of world ids
+        // name → set of world ids (protected by _nameLock)
         private readonly ConcurrentDictionary<string, HashSet<WorldId>> _byName =
             new(StringComparer.Ordinal);
 
-        // tag → set of world ids
+        // tag → set of world ids (protected by _tagLock)
         private readonly ConcurrentDictionary<string, HashSet<WorldId>> _byTag =
             new(StringComparer.Ordinal);
 
@@ -132,7 +132,6 @@ namespace ZenECS.Core
         /// <param name="logger">Optional logger to plug into <see cref="EcsRuntimeOptions.Log"/>.</param>
         public Kernel(KernelOptions? options = null, IEcsLogger? logger = null)
         {
-            if (IsRunning) return;
             IsRunning = true;
             IsPaused = false;
             _simulationAccumulatorSeconds = 0;
@@ -172,6 +171,9 @@ namespace ZenECS.Core
             WorldId? presetId = null,
             bool setAsCurrent = false)
         {
+            if (!IsRunning)
+                throw new ObjectDisposedException(nameof(Kernel), "Kernel has been disposed.");
+
             if (Options == null)
                 throw new InvalidOperationException("Kernel has no options configured.");
 
@@ -223,25 +225,43 @@ namespace ZenECS.Core
         }
 
         /// <inheritdoc/>
-        public bool TryGet(WorldId id, out IWorld world)
-            => _byId.TryGetValue(id, out world!);
+        public bool TryGet(WorldId id, out IWorld? world)
+            => _byId.TryGetValue(id, out world);
 
         /// <inheritdoc/>
         public IEnumerable<IWorld> FindByName(string name)
         {
-            if (!_byName.TryGetValue(name, out var set)) yield break;
-            foreach (var id in set)
+            HashSet<WorldId>? snapshot;
+            lock (_nameLock)
+            {
+                if (!_byName.TryGetValue(name, out var set)) yield break;
+                // Create a snapshot to avoid modification during iteration
+                snapshot = new HashSet<WorldId>(set);
+            }
+
+            foreach (var id in snapshot)
+            {
                 if (_byId.TryGetValue(id, out var w))
                     yield return w;
+            }
         }
 
         /// <inheritdoc/>
         public IEnumerable<IWorld> FindByTag(string tag)
         {
-            if (!_byTag.TryGetValue(tag, out var set)) yield break;
-            foreach (var id in set)
+            HashSet<WorldId>? snapshot;
+            lock (_tagLock)
+            {
+                if (!_byTag.TryGetValue(tag, out var set)) yield break;
+                // Create a snapshot to avoid modification during iteration
+                snapshot = new HashSet<WorldId>(set);
+            }
+
+            foreach (var id in snapshot)
+            {
                 if (_byId.TryGetValue(id, out var w))
                     yield return w;
+            }
         }
 
         /// <inheritdoc/>
@@ -264,17 +284,23 @@ namespace ZenECS.Core
             // Prevent duplicates of the same WorldId in results
             var seen = new HashSet<WorldId>();
 
-            // ConcurrentDictionary snapshot with ToArray() is safe.
-            foreach (var kv in _byTag.ToArray())
+            // Use lock to create a single snapshot for thread-safety
+            List<KeyValuePair<string, HashSet<WorldId>>> snapshot;
+            lock (_tagLock)
+            {
+                snapshot = new List<KeyValuePair<string, HashSet<WorldId>>>(_byTag);
+            }
+
+            foreach (var kv in snapshot)
             {
                 var tag = kv.Key;
                 if (!allowed.Contains(tag))
                     continue;
 
-                // HashSet is not thread-safe; take a snapshot before iterating.
-                WorldId[] ids = kv.Value.ToArray();
+                // Create a snapshot of the HashSet to avoid modification during iteration
+                var idSnapshot = new HashSet<WorldId>(kv.Value);
 
-                foreach (var id in ids)
+                foreach (var id in idSnapshot)
                 {
                     if (!seen.Add(id))
                         continue;
@@ -294,15 +320,23 @@ namespace ZenECS.Core
             var p = prefix.Trim();
             var seen = new HashSet<WorldId>(); // avoid duplicates if a world matches multiple keys
 
-            // Snapshot iteration for thread-safety
-            foreach (var kv in _byName.ToArray())
+            // Use lock to create a single snapshot for thread-safety
+            List<KeyValuePair<string, HashSet<WorldId>>> snapshot;
+            lock (_nameLock)
+            {
+                snapshot = new List<KeyValuePair<string, HashSet<WorldId>>>(_byName);
+            }
+
+            foreach (var kv in snapshot)
             {
                 var name = kv.Key;
-                var idSet = kv.Value; // HashSet<WorldId>
                 if (name == null || !name.StartsWith(p, StringComparison.OrdinalIgnoreCase))
                     continue;
 
-                foreach (var wid in idSet.ToArray())
+                // Create a snapshot of the HashSet to avoid modification during iteration
+                var idSnapshot = new HashSet<WorldId>(kv.Value);
+
+                foreach (var wid in idSnapshot)
                 {
                     if (!seen.Add(wid)) continue;
                     if (_byId.TryGetValue(wid, out var world) && world != null)

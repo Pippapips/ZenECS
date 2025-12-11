@@ -16,10 +16,9 @@
 using System;
 using System.Diagnostics;
 using System.Threading;
-using ZenECS;              // Kernel
 using ZenECS.Core;
-using ZenECS.Core.Abstractions.Diagnostics;
-using ZenECS.Core.Systems;        // IVariableRunSystem, IPresentationSystem
+using ZenECS.Core.Config;
+using ZenECS.Core.Systems;
 
 namespace ZenEcsCoreSamples.CommandBuffer
 {
@@ -61,22 +60,21 @@ namespace ZenEcsCoreSamples.CommandBuffer
             Console.WriteLine("=== CommandBuffer demo (deferred + immediate) ===");
 
             // Create two entities
-            var e1 = w.SpawnEntity();
-            var e2 = w.SpawnEntity();
+            var e1 = w.CreateEntity();
+            var e2 = w.CreateEntity();
 
             // 1) Build a CB (thread-safe collection of ops)
-            var cb = w.BeginWrite();
-            cb.AddComponent(e1, new Health(100));
-            cb.AddComponent(e2, new Health(80));
-            cb.AddComponent(e2, new Stunned(1.5f));
+            // Command buffer operations are deferred and applied at the next barrier
+            using (var cb = w.BeginWrite())
+            {
+                cb.AddComponent(e1, new Health(100));
+                cb.AddComponent(e2, new Health(80));
+                cb.AddComponent(e2, new Stunned(1.5f));
 
-            // Replace and Remove are supported in CB
-            cb.ReplaceComponent(e2, new Health(75));
-            cb.RemoveComponent<Stunned>(e2);
-
-            // Defer application: schedule now, apply later at a safe point
-            w.Schedule(cb);
-            Console.WriteLine("Scheduled ops. Before apply, Has<Health>(e1): " + w.HasComponent<Health>(e1));
+                // Replace and Remove are supported in CB
+                cb.ReplaceComponent(e2, new Health(75));
+                cb.RemoveComponent<Stunned>(e2);
+            } // Buffer is applied at barrier (EndWrite called automatically)
 
             // Apply scheduled jobs explicitly (can also be done by your frame barrier)
             w.RunScheduledJobs();
@@ -84,7 +82,7 @@ namespace ZenEcsCoreSamples.CommandBuffer
             Console.WriteLine($"After apply (deferred): e1 Health={w.ReadComponent<Health>(e1).Value}, e2 Health={w.ReadComponent<Health>(e2).Value}, Has<Stunned>(e2)={w.HasComponent<Stunned>(e2)}");
 
             // 2) Immediate apply via EndWrite
-            using (var cb2 = w.BeginWrite(CommandBufferApplyMode.Immediate))
+            using (var cb2 = w.BeginWrite())
             {
                 cb2.ReplaceComponent(e1, new Health(42));
             }

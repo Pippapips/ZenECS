@@ -15,10 +15,8 @@
 using System;
 using System.Diagnostics;
 using System.Threading;
-using ZenECS;                    // Kernel
 using ZenECS.Core;
-using ZenECS.Core.Abstractions.Config;
-using ZenECS.Core.Abstractions.Diagnostics;
+using ZenECS.Core.Config;
 using ZenECS.Core.Systems;
 
 namespace ZenEcsCoreSamples.WorldHooks
@@ -61,8 +59,8 @@ namespace ZenEcsCoreSamples.WorldHooks
             world.AddValidator(_validator);
 
             // Create entities
-            var e1 = world.SpawnEntity(); // odd id
-            var e2 = world.SpawnEntity(); // even id
+            var e1 = world.CreateEntity(); // odd id
+            var e2 = world.CreateEntity(); // even id
 
             // Try to add/replace with various values
             TryAdd(world, e1, new Mana(10));  // should be rejected by write permission

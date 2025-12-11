@@ -74,15 +74,19 @@ namespace ZenECS.Core
         /// </summary>
         /// <param name="world">
         /// When this method returns, contains the live world if resolution succeeded;
-        /// otherwise the default value.
+        /// otherwise <see langword="null"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the world is currently alive in the kernel; otherwise <c>false</c>.
         /// </returns>
-        public bool TryResolve(out IWorld world)
+        public bool TryResolve(out IWorld? world)
         {
-            if (_kernel.TryGet(Id, out world!)) return true;
-            world = default!;
+            if (_kernel.TryGet(Id, out var w))
+            {
+                world = w;
+                return true;
+            }
+            world = null;
             return false;
         }
 

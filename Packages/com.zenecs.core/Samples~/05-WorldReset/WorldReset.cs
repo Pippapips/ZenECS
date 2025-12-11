@@ -16,9 +16,8 @@
 using System;
 using System.Diagnostics;
 using System.Threading;
-using ZenECS;              // Kernel
 using ZenECS.Core;
-using ZenECS.Core.Systems;        // IVariableRunSystem, IPresentationSystem
+using ZenECS.Core.Systems;
 
 namespace ZenEcsCoreSamples.WorldReset
 {
@@ -52,8 +51,8 @@ namespace ZenEcsCoreSamples.WorldReset
             Console.WriteLine("=== World.Reset demo (keepCapacity vs hard reset) ===");
 
             // Seed a few entities
-            var e1 = w.SpawnEntity();
-            var e2 = w.SpawnEntity();
+            var e1 = w.CreateEntity();
+            var e2 = w.CreateEntity();
             w.AddComponent(e1, new Health(100));
             w.AddComponent(e2, new Health(50));
 
@@ -64,7 +63,7 @@ namespace ZenEcsCoreSamples.WorldReset
             Console.WriteLine($"After Reset(keepCapacity:true): alive={w.AliveCount}");
 
             // Re-seed to verify the world still works and reuses capacity
-            var e3 = w.SpawnEntity();
+            var e3 = w.CreateEntity();
             w.AddComponent(e3, new Health(77));
             Console.WriteLine($"Re-seed: alive={w.AliveCount}, e3.Has(Health)={w.HasComponent<Health>(e3)}");
 

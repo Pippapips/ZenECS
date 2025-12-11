@@ -16,10 +16,8 @@
 using System;
 using System.Diagnostics;
 using System.Threading;
-using ZenECS;                    // Kernel
-using ZenECS.Core;               // World, WorldConfig
-using ZenECS.Core.Infrastructure;
-using ZenECS.Core.Systems;       // IVariableRunSystem, IPresentationSystem
+using ZenECS.Core;
+using ZenECS.Core.Systems;
 
 namespace ZenEcsCoreSamples.WriteHooks
 {

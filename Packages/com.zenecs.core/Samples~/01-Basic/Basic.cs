@@ -14,10 +14,8 @@
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 using System.Diagnostics;
-using ZenECS; // Kernel
 using ZenECS.Core;
-using ZenECS.Core.Abstractions.Config;
-using ZenECS.Core.Abstractions.Diagnostics;
+using ZenECS.Core.Config;
 using ZenECS.Core.Systems;
 
 namespace ZenEcsCoreSamples.Basic
@@ -59,9 +57,10 @@ namespace ZenEcsCoreSamples.Basic
         {
             foreach (var e in w.Query<Position, Velocity>())
             {
-                var p = w.ReadComponent<Position>(e);
-                var v = w.ReadComponent<Velocity>(e);
-                w.ReplaceComponent(e, new Position(p.X + v.X * dt, p.Y + v.Y * dt));
+                ref var pos = ref w.Ref<Position>(e);
+                var vel = w.Get<Velocity>(e);
+                pos.X += vel.X * dt;
+                pos.Y += vel.Y * dt;
             }
         }
     }
@@ -101,11 +100,11 @@ namespace ZenEcsCoreSamples.Basic
             ]);
 
             // Create sample entities with Position and Velocity
-            var e1 = world.SpawnEntity();
+            var e1 = world.CreateEntity();
             world.AddComponent(e1, new Position(0, 0));
             world.AddComponent(e1, new Velocity(1, 0)); // moves +X / sec
 
-            var e2 = world.SpawnEntity();
+            var e2 = world.CreateEntity();
             world.AddComponent(e2, new Position(2, 1));
             world.AddComponent(e2, new Velocity(0, -0.5f)); // moves -Y / sec
 
