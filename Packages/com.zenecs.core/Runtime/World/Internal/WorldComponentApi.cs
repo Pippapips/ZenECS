@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Linq.Expressions;
 using ZenECS.Core.Binding;
 using ZenECS.Core.Config;
 using ZenECS.Core.ComponentPooling.Internal;
@@ -175,10 +176,14 @@ namespace ZenECS.Core.Internal
                 BindingFlags.Instance | BindingFlags.Public)!; // HasComponent<T>(Entity)
 
             var closed = _miHasOpen.MakeGenericMethod(t);
-            bool Wrapped(Entity e) => (bool)closed.Invoke(this, new object[] { e })!;
 
-            _hasCache[t] = Wrapped;
-            return Wrapped;
+            var worldConst = Expression.Constant(this);
+            var eParam = Expression.Parameter(typeof(Entity), "e");
+            var call = Expression.Call(worldConst, closed, eParam);
+            var lambda = Expression.Lambda<Func<Entity, bool>>(call, eParam).Compile();
+
+            _hasCache[t] = lambda;
+            return lambda;
         }
 
         /// <summary>
@@ -197,10 +202,16 @@ namespace ZenECS.Core.Internal
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!; // AddComponent<T>(Entity, in T)
 
             var closed = _miAddOpen.MakeGenericMethod(t);
-            bool Wrapped(Entity e, object value) => (bool)closed.Invoke(this, new object[] { e, value })!;
 
-            _addBoxedCache[t] = Wrapped;
-            return Wrapped;
+            var worldConst = Expression.Constant(this);
+            var eParam = Expression.Parameter(typeof(Entity), "e");
+            var objParam = Expression.Parameter(typeof(object), "value");
+            var valueCast = Expression.Convert(objParam, t);
+            var call = Expression.Call(worldConst, closed, eParam, valueCast);
+            var lambda = Expression.Lambda<Func<Entity, object, bool>>(call, eParam, objParam).Compile();
+
+            _addBoxedCache[t] = lambda;
+            return lambda;
         }
 
         /// <summary>
@@ -219,10 +230,14 @@ namespace ZenECS.Core.Internal
                 BindingFlags.Instance | BindingFlags.Public)!; // SnapshotComponent<T>(Entity)
 
             var closed = _miSnapshotOpen.MakeGenericMethod(t);
-            bool Wrapped(Entity e) => (bool)closed.Invoke(this, new object[] { e })!;
 
-            _snapshotBoxedCache[t] = Wrapped;
-            return Wrapped;
+            var worldConst = Expression.Constant(this);
+            var eParam = Expression.Parameter(typeof(Entity), "e");
+            var call = Expression.Call(worldConst, closed, eParam);
+            var lambda = Expression.Lambda<Func<Entity, bool>>(call, eParam).Compile();
+
+            _snapshotBoxedCache[t] = lambda;
+            return lambda;
         }
 
         /// <summary>
@@ -241,10 +256,16 @@ namespace ZenECS.Core.Internal
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!; // ReplaceComponent<T>(Entity, in T)
 
             var closed = _miReplaceOpen.MakeGenericMethod(t);
-            bool Wrapped(Entity e, object value) => (bool)closed.Invoke(this, new object[] { e, value })!;
 
-            _replaceBoxedCache[t] = Wrapped;
-            return Wrapped;
+            var worldConst = Expression.Constant(this);
+            var eParam = Expression.Parameter(typeof(Entity), "e");
+            var objParam = Expression.Parameter(typeof(object), "value");
+            var valueCast = Expression.Convert(objParam, t);
+            var call = Expression.Call(worldConst, closed, eParam, valueCast);
+            var lambda = Expression.Lambda<Func<Entity, object, bool>>(call, eParam, objParam).Compile();
+
+            _replaceBoxedCache[t] = lambda;
+            return lambda;
         }
 
         /// <summary>
@@ -263,10 +284,14 @@ namespace ZenECS.Core.Internal
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!; // RemoveComponent<T>(Entity)
 
             var closed = _miRemoveOpen.MakeGenericMethod(t);
-            bool Wrapped(Entity e) => (bool)closed.Invoke(this, new object[] { e })!;
 
-            _removeCache[t] = Wrapped;
-            return Wrapped;
+            var worldConst = Expression.Constant(this);
+            var eParam = Expression.Parameter(typeof(Entity), "e");
+            var call = Expression.Call(worldConst, closed, eParam);
+            var lambda = Expression.Lambda<Func<Entity, bool>>(call, eParam).Compile();
+
+            _removeCache[t] = lambda;
+            return lambda;
         }
 
         /// <summary>
