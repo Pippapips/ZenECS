@@ -217,7 +217,7 @@ namespace ZenECS.Adapter.Unity
         /// <c>true</c> if a world with the given <paramref name="id"/> was
         /// found; otherwise <c>false</c>.
         /// </returns>
-        public static bool TryGetWorldById(WorldId id, out IWorld world)
+        public static bool TryGetWorldById(WorldId id, out IWorld? world)
             => Current.TryGet(id, out world);
 
         /// <summary>

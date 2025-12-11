@@ -121,7 +121,6 @@ namespace ZenECS.Core.Internal
                 for (int i = 0; i < types.Length; i++)
                 {
                     var p = _componentPoolRepository.GetOrCreatePoolByType(types[i]);
-                    if (p == null) return null;  // 아직 풀이 없음
                     arr[i] = p;
                 }
                 return arr;

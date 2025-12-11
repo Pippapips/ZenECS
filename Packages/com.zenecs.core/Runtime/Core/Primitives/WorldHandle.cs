@@ -97,7 +97,7 @@ namespace ZenECS.Core
         /// <exception cref="InvalidOperationException">
         /// Thrown if the referenced world was destroyed or has never been created.
         /// </exception>
-        public IWorld ResolveOrThrow()
+        public IWorld? ResolveOrThrow()
         {
             if (_kernel.TryGet(Id, out var w)) return w;
             throw new InvalidOperationException($"World {Id} is not alive (destroyed or never created).");
