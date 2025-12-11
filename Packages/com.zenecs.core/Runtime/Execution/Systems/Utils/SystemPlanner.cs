@@ -165,7 +165,7 @@ namespace ZenECS.Core.Systems.Internal
                     buckets[group] = list;
                 }
 
-                // 여기서 Unknown 그룹이면 경고 출력
+                // Emit a warning if this is still an Unknown group.
                 if (group == SystemGroup.Unknown)
                 {
                     EcsRuntimeOptions.Log.Warn($"[ZenECS][SystemPlanner] System ‘{t.FullName}’ belongs to the Unknown group and will not be executed. Please assign a valid SystemGroup attribute.");

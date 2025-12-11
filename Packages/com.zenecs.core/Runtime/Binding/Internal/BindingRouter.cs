@@ -163,7 +163,7 @@ namespace ZenECS.Core.Binding.Internal
                 for (int i = 0; i < list.Count; i++)
                 {
                     var b = list[i];
-                    // IBinder는 null이 아니어야 함(Attach 시점 보장)
+                    // IBinder must be non-null (guaranteed at Attach time).
                     arr[i] = (b.GetType(), (object)b);
                 }
                 return arr;

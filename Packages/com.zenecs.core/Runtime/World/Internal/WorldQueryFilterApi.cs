@@ -1,4 +1,4 @@
-﻿// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Core — World subsystem (Query Filter API)
 // File: WorldQueryFilterApi.cs
 // Purpose: Compose, resolve, and cache query filters against component pools.
@@ -158,7 +158,7 @@ namespace ZenECS.Core.Internal
                 withoutAny = withoutAny ?? Array.Empty<IComponentPool[]>(),
             };
 
-            // ★ 어떤 타입이라도 아직 풀이 없으면 캐시하지 않는다.
+            // Do not cache if any referenced component type does not yet have a pool.
             if (withAll == null || withoutAll == null || withAny == null || withoutAny == null)
                 return rf;
 
