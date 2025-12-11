@@ -40,29 +40,9 @@ namespace ZenECS.Core.Systems.Internal
         private SystemPlanner.Plan? _plan;
 
         /// <summary>
-        /// Authoritative list of active systems currently known to the runner.
+        /// State machine managing system lifecycle states.
         /// </summary>
-        private readonly List<ISystem> _active = new();
-
-        /// <summary>
-        /// Systems that have successfully received <see cref="ISystemLifecycle.Initialize"/>.
-        /// </summary>
-        private readonly HashSet<ISystem> _initialized = new();
-
-        /// <summary>
-        /// Systems queued for addition; applied at the next call to <see cref="ApplyPending"/>.
-        /// </summary>
-        private readonly List<ISystem> _pendingAdd = new();
-
-        /// <summary>
-        /// System types queued for removal; applied at the next call to <see cref="ApplyPending"/>.
-        /// </summary>
-        private readonly List<Type> _pendingRemove = new();
-
-        /// <summary>
-        /// Indicates whether there are pending mutations requiring plan rebuild.
-        /// </summary>
-        private bool _dirty;
+        private readonly SystemStateMachine _stateMachine = new();
 
         private readonly IMessageBus _bus;
         private readonly IWorker _worker;
@@ -101,15 +81,18 @@ namespace ZenECS.Core.Systems.Internal
         {
             if (_plan != null)
             {
-                foreach (ISystemLifecycle s in _plan.LifecycleShutdownOrder)
-                    s.Shutdown();
+                // Shutdown all initialized systems in reverse order
+                var systemsToShutdown = _stateMachine.GetSystemsNeedingShutdown(_plan.LifecycleShutdownOrder);
+                foreach (var system in systemsToShutdown)
+                {
+                    if (system is ISystemLifecycle lifecycle)
+                    {
+                        lifecycle.Shutdown();
+                    }
+                }
             }
 
-            _initialized.Clear();
-            _active.Clear();
-            _pendingAdd.Clear();
-            _pendingRemove.Clear();
-            _dirty = false;
+            _stateMachine.Clear();
         }
 
         // ─────────────────────────────────────────────────────────────────────
@@ -119,44 +102,32 @@ namespace ZenECS.Core.Systems.Internal
         /// <inheritdoc/>
         public void RequestAdd(ISystem system)
         {
-            if (system == null) return;
-            _pendingAdd.Add(system);
-            _dirty = true;
+            _stateMachine.QueueAdd(system);
         }
 
         /// <inheritdoc/>
         public void RequestAddRange(IEnumerable<ISystem> systems)
         {
-            if (systems == null) return;
-
-            foreach (var s in systems)
-            {
-                if (s != null)
-                    _pendingAdd.Add(s);
-            }
-
-            _dirty = true;
+            _stateMachine.QueueAddRange(systems);
         }
 
         /// <inheritdoc/>
         public void RequestRemove<T>() where T : ISystem
         {
-            _pendingRemove.Add(typeof(T));
-            _dirty = true;
+            _stateMachine.QueueRemove(typeof(T));
         }
 
         /// <inheritdoc/>
         public void RequestRemove(Type t)
         {
-            if (t == null) return;
-            _pendingRemove.Add(t);
-            _dirty = true;
+            _stateMachine.QueueRemove(t);
         }
 
         /// <inheritdoc/>
         public bool TryGet<T>(out T? system) where T : class, ISystem
         {
-            system = _active.OfType<T>().FirstOrDefault();
+            var activeSystems = _stateMachine.GetActiveSystems();
+            system = activeSystems.OfType<T>().FirstOrDefault();
             return system != null;
         }
 
@@ -174,20 +145,22 @@ namespace ZenECS.Core.Systems.Internal
         /// </returns>
         public bool TryGet(Type t, out ISystem? system)
         {
-            system = _active.FirstOrDefault(s => s.GetType() == t);
+            var activeSystems = _stateMachine.GetActiveSystems();
+            system = activeSystems.FirstOrDefault(s => s.GetType() == t);
             return system != null;
         }
 
         /// <inheritdoc/>
         public IReadOnlyList<ISystem> GetAllSystems()
         {
-            return _active;
+            return _stateMachine.GetActiveSystems();
         }
 
         /// <inheritdoc/>
         public bool SetEnabled<T>(bool enabled) where T : ISystem
         {
-            var s = _active.OfType<T>().FirstOrDefault();
+            var activeSystems = _stateMachine.GetActiveSystems();
+            var s = activeSystems.OfType<T>().FirstOrDefault();
             if (s is ISystemEnabledFlag f)
             {
                 f.Enabled = enabled;
@@ -200,7 +173,8 @@ namespace ZenECS.Core.Systems.Internal
         /// <inheritdoc/>
         public bool IsEnabled<T>() where T : ISystem
         {
-            var s = _active.OfType<T>().FirstOrDefault();
+            var activeSystems = _stateMachine.GetActiveSystems();
+            var s = activeSystems.OfType<T>().FirstOrDefault();
             if (s is ISystemEnabledFlag f) return f.Enabled;
             return false;
         }
@@ -208,7 +182,8 @@ namespace ZenECS.Core.Systems.Internal
         /// <inheritdoc/>
         public bool IsEnabled(Type t)
         {
-            var s = _active.FirstOrDefault(s => s.GetType() == t);
+            var activeSystems = _stateMachine.GetActiveSystems();
+            var s = activeSystems.FirstOrDefault(s => s.GetType() == t);
             if (s is ISystemEnabledFlag f) return f.Enabled;
             return false;
         }
@@ -220,58 +195,38 @@ namespace ZenECS.Core.Systems.Internal
         /// <param name="w">World for which the runner is executing.</param>
         private void ApplyPending(IWorld w)
         {
-            if (!_dirty) return;
+            if (!_stateMachine.HasPendingMutations) return;
 
-            // Remove by type (Shutdown if previously initialized)
-            if (_pendingRemove.Count > 0)
-            {
-                for (int i = _active.Count - 1; i >= 0; i--)
+            // Apply pending state transitions (additions and removals)
+            var newlyAdded = _stateMachine.ApplyPending(
+                onRemove: null, // Removal is handled by state machine
+                onShutdown: system =>
                 {
-                    var s = _active[i];
-                    var st = s.GetType();
-                    if (_pendingRemove.Any(t => t == st))
+                    if (system is ISystemLifecycle lifecycle)
                     {
-                        if (_initialized.Contains(s) && s is ISystemLifecycle life)
-                        {
-                            life.Shutdown();
-                            _initialized.Remove(s);
-                        }
-
-                        _active.RemoveAt(i);
+                        lifecycle.Shutdown();
                     }
-                }
+                });
 
-                _pendingRemove.Clear();
-            }
+            // Rebuild plan with all active systems
+            var activeSystems = _stateMachine.GetActiveSystems();
+            _plan = SystemPlanner.Build(w, activeSystems);
 
-            // Add new systems (avoid duplicate instances)
-            if (_pendingAdd.Count > 0)
-            {
-                foreach (var s in _pendingAdd)
-                {
-                    if (!_active.Contains(s))
-                        _active.Add(s);
-                }
-
-                _pendingAdd.Clear();
-            }
-
-            // Rebuild plan and Initialize only newly joined systems
-            _plan = SystemPlanner.Build(w, _active);
+            // Initialize newly added systems (transition Active → Initialized)
             if (_plan != null)
             {
-                foreach (var s in _plan.LifecycleInitializeOrder)
+                foreach (var lifecycleSystem in _plan.LifecycleInitializeOrder)
                 {
-                    var sys = (ISystem)s;
-                    if (!_initialized.Contains(sys))
+                    var system = (ISystem)lifecycleSystem;
+                    
+                    // Only initialize systems that are in Active state (not yet initialized)
+                    if (_stateMachine.GetState(system) == SystemState.Active)
                     {
-                        s.Initialize(w);
-                        _initialized.Add(sys);
+                        lifecycleSystem.Initialize(w);
+                        _stateMachine.TransitionToInitialized(system);
                     }
                 }
             }
-
-            _dirty = false;
         }
 
         /// <inheritdoc/>
