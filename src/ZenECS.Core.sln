@@ -12,10 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenEcsCoreSamples-04-Snapsh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenEcsCoreSamples-05-WorldReset", "..\Packages\com.zenecs.core\Samples~\05-WorldReset\ZenEcsCoreSamples-05-WorldReset.csproj", "{1E2C2907-4536-45F3-85BE-FA9EA80FF3C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenEcsCoreSamples-07-Binding", "..\Packages\com.zenecs.core\Samples~\ZenEcsCoreSamples-07-Binding\ZenEcsCoreSamples-07-Binding.csproj", "{918D64E2-C3E1-4C52-9C33-8539875BF176}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenEcsCoreSamples-06-WorldHooks", "..\Packages\com.zenecs.core\Samples~\WorldHooks\ZenEcsCoreSamples-06-WorldHooks.csproj", "{D58E6F23-6F7D-4650-A7BA-8F1A7D8C0431}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenECS.Core.Tests", "..\Packages\com.zenecs.core\Tests~\ZenECS.Core.Tests\ZenECS.Core.Tests.csproj", "{F58847EE-5514-46ED-821B-B4754C3BFA63}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenECS.Core.TestFramework", "..\Packages\com.zenecs.core\Tests~\ZenECS.Core.TestFramework\ZenECS.Core.TestFramework.csproj", "{70FC0544-D84A-47B1-9AC3-1FE5D14D89F3}"
@@ -50,14 +46,6 @@ Global
 		{1E2C2907-4536-45F3-85BE-FA9EA80FF3C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E2C2907-4536-45F3-85BE-FA9EA80FF3C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E2C2907-4536-45F3-85BE-FA9EA80FF3C0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{918D64E2-C3E1-4C52-9C33-8539875BF176}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{918D64E2-C3E1-4C52-9C33-8539875BF176}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{918D64E2-C3E1-4C52-9C33-8539875BF176}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{918D64E2-C3E1-4C52-9C33-8539875BF176}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D58E6F23-6F7D-4650-A7BA-8F1A7D8C0431}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D58E6F23-6F7D-4650-A7BA-8F1A7D8C0431}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D58E6F23-6F7D-4650-A7BA-8F1A7D8C0431}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D58E6F23-6F7D-4650-A7BA-8F1A7D8C0431}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F58847EE-5514-46ED-821B-B4754C3BFA63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F58847EE-5514-46ED-821B-B4754C3BFA63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F58847EE-5514-46ED-821B-B4754C3BFA63}.Release|Any CPU.ActiveCfg = Release|Any CPU
