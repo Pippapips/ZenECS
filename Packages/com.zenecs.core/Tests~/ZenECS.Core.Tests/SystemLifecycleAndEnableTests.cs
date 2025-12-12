@@ -52,17 +52,17 @@ public class SystemLifecycleAndEnableTests
 
         host.TickFrame(dt: 0.016f); // apply + run once
         Assert.Equal(1, sys.Count);
-        Assert.True(sys.Enabled); // 초기값 확인
+        Assert.True(sys.Enabled); // Verify initial value
 
         Assert.True(host.World.SetEnabledSystem<ToggleSystem>(false));
-        Assert.False(sys.Enabled); // 비활성화 확인
+        Assert.False(sys.Enabled); // Verify disabled state
         host.TickFrame(dt: 0.016f);
-        Assert.Equal(1, sys.Count); // 실행되지 않아야 함
+        Assert.Equal(1, sys.Count); // Should not execute
 
         Assert.True(host.World.SetEnabledSystem<ToggleSystem>(true));
-        Assert.True(sys.Enabled); // 재활성화 확인
+        Assert.True(sys.Enabled); // Verify re-enabled state
         host.TickFrame(dt: 0.016f);
-        Assert.Equal(2, sys.Count); // 실행되어야 함
+        Assert.Equal(2, sys.Count); // Should execute
     }
 }
 

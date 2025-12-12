@@ -5,7 +5,7 @@ using ZenECS.Core.Config;
 namespace ZenECS.Core.TestFramework;
 
 /// <summary>
-/// Core 전용 월드를 손쉽게 만들고 결정론적으로 스텝하기 위한 경량 테스트 호스트.
+/// Lightweight test host for easily creating and deterministically stepping a Core-only world.
 /// </summary>
 public sealed class TestWorldHost : IDisposable
 {
@@ -13,7 +13,7 @@ public sealed class TestWorldHost : IDisposable
     public IWorld World { get; }
 
     /// <summary>
-    /// <see cref="TickFixed"/> 또는 <see cref="TickFullFrame"/> 호출 시 기본으로 사용할 고정 델타.
+    /// Default fixed delta to use when calling <see cref="TickFixed"/> or <see cref="TickFullFrame"/>.
     /// </summary>
     public float DefaultFixedDelta { get; }
 
@@ -28,7 +28,7 @@ public sealed class TestWorldHost : IDisposable
     }
 
     /// <summary>
-    /// BeginFrame(메시지 펌프 포함) 후 LateFrame까지 한 프레임을 스텝합니다.
+    /// Steps one frame from BeginFrame (including message pump) through LateFrame.
     /// </summary>
     public void TickFrame(float dt = 0f, float lateAlpha = 1f)
     {
@@ -37,7 +37,7 @@ public sealed class TestWorldHost : IDisposable
     }
 
     /// <summary>
-    /// 고정 스텝 시뮬레이션을 한 번 실행합니다.
+    /// Executes one fixed-step simulation.
     /// </summary>
     public void TickFixed(float? fixedDelta = null)
     {
@@ -45,7 +45,7 @@ public sealed class TestWorldHost : IDisposable
     }
 
     /// <summary>
-    /// BeginFrame → N회 FixedStep → LateFrame까지 전체 프레임을 실행합니다.
+    /// Executes a full frame: BeginFrame → N times FixedStep → LateFrame.
     /// </summary>
     public void TickFullFrame(float dt = 0f, float? fixedDelta = null, int fixedSteps = 1, float lateAlpha = 1f)
     {

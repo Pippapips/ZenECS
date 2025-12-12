@@ -42,31 +42,71 @@ namespace ZenECS.Core
         bool TryGetSystem<T>(out T? system) where T : class, ISystem;
 
         /// <summary>
-        /// Attempts to retrieve the first active system of type>.
+        /// Attempts to retrieve the first active system of the specified type.
         /// </summary>
+        /// <param name="t">System type to retrieve.</param>
+        /// <param name="system">
+        /// When this method returns, contains the system instance if found;
+        /// otherwise <see langword="null"/>.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if a system of type <paramref name="t"/> was found;
+        /// otherwise <see langword="false"/>.
+        /// </returns>
         bool TryGetSystem(Type t, out ISystem? system);
 
         /// <summary>
-        /// Get all active systems.
+        /// Gets all currently active systems registered in this world.
         /// </summary>
+        /// <returns>
+        /// A read-only list containing all active systems, in the order they
+        /// are scheduled for execution.
+        /// </returns>
         IReadOnlyList<ISystem> GetAllSystems();
 
         /// <summary>
         /// Enables or disables execution of the first active system of type <typeparamref name="T"/>.
-        /// The system must implement <c>ISystemEnabledFlag</c>.
         /// </summary>
+        /// <typeparam name="T">System type that must implement <see cref="ISystemEnabledFlag"/>.</typeparam>
+        /// <param name="enabled">
+        /// <see langword="true"/> to enable the system; <see langword="false"/> to disable it.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if a system of type <typeparamref name="T"/> was found
+        /// and its enabled state was updated; otherwise <see langword="false"/>.
+        /// </returns>
+        /// <remarks>
+        /// The system must implement <see cref="ISystemEnabledFlag"/>. Systems that are
+        /// disabled will be skipped during execution by the system runner.
+        /// </remarks>
         bool SetEnabledSystem<T>(bool enabled) where T : ISystem;
         
         /// <summary>
-        /// Is enable system of type <typeparamref name="T"/>.
-        /// The system must implement <c>ISystemEnabledFlag</c>.
+        /// Checks whether the first active system of type <typeparamref name="T"/> is currently enabled.
         /// </summary>
+        /// <typeparam name="T">System type that must implement <see cref="ISystemEnabledFlag"/>.</typeparam>
+        /// <returns>
+        /// <see langword="true"/> if the system is enabled; <see langword="false"/> if it is
+        /// disabled or does not exist.
+        /// </returns>
+        /// <remarks>
+        /// The system must implement <see cref="ISystemEnabledFlag"/>. If the system does not
+        /// exist, this method returns <see langword="false"/>.
+        /// </remarks>
         bool IsEnabledSystem<T>() where T : ISystem;
         
         /// <summary>
-        /// Is enable system of type>.
-        /// The system must implement <c>ISystemEnabledFlag</c>.
+        /// Checks whether the first active system of the specified type is currently enabled.
         /// </summary>
+        /// <param name="t">System type that must implement <see cref="ISystemEnabledFlag"/>.</param>
+        /// <returns>
+        /// <see langword="true"/> if the system is enabled; <see langword="false"/> if it is
+        /// disabled or does not exist.
+        /// </returns>
+        /// <remarks>
+        /// The system must implement <see cref="ISystemEnabledFlag"/>. If the system does not
+        /// exist, this method returns <see langword="false"/>.
+        /// </remarks>
         bool IsEnabledSystem(Type t);
     }
 }
