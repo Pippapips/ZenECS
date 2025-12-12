@@ -66,8 +66,12 @@ public sealed class UpdateVelocitySystem : ISystem
 {
     public void Run(IWorld w, float dt)
     {
-        // Updates velocity from acceleration
-        // Runs BEFORE MoveSystem
+        using var cmd = w.BeginWrite();
+        foreach (var (e, vel, acc) in w.Query<Velocity, Acceleration>())
+        {
+            cmd.ReplaceComponent(e, new Velocity(vel.X + acc.X * dt, vel.Y + acc.Y * dt));
+        }
+        Console.WriteLine($"[System] UpdateVelocitySystem ran (dt={dt:0.000})");
     }
 }
 ```
@@ -81,8 +85,12 @@ public sealed class MoveSystem : ISystem
 {
     public void Run(IWorld w, float dt)
     {
-        // Moves position using velocity
-        // Runs AFTER UpdateVelocitySystem
+        using var cmd = w.BeginWrite();
+        foreach (var (e, pos, vel) in w.Query<Position, Velocity>())
+        {
+            cmd.ReplaceComponent(e, new Position(pos.X + vel.X * dt, pos.Y + vel.Y * dt));
+        }
+        Console.WriteLine($"[System] MoveSystem ran (dt={dt:0.000})");
     }
 }
 ```
@@ -105,7 +113,7 @@ public sealed class MoveSystem : ISystem { ... }
 ```bash
 dotnet restore
 dotnet build --no-restore
-dotnet run --project <your-console-sample-csproj>
+dotnet run --project ZenEcsCoreSamples-11-SystemOrdering.csproj
 ```
 
 Press **any key** to exit.
@@ -116,16 +124,17 @@ Press **any key** to exit.
 
 ```
 === ZenECS Core Sample - System Ordering (Kernel) ===
+System execution order (within FixedGroup):
+  1. UpdateVelocitySystem
+  2. MoveSystem
+  3. DampingSystem
+
+Running... press any key to exit.
 [System] UpdateVelocitySystem ran (dt=0.017)
 [System] MoveSystem ran (dt=0.017)
 [System] DampingSystem ran (dt=0.017)
 
 === Frame 60 ===
-Execution order (within FixedGroup):
-  1. UpdateVelocitySystem (updates velocity from acceleration)
-  2. MoveSystem (moves position using velocity)
-  3. DampingSystem (applies damping to velocity)
-
 Entity states:
   Entity   1: pos=(1.02, 0), vel=(1.01, 0), acc=(0.10, 0)
   Entity   2: pos=(5, 4.98), vel=(0, -0.48), acc=(0, 0.05)

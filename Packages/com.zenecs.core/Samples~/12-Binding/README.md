@@ -35,7 +35,7 @@ A **console** sample demonstrating view binding using Contexts and Binders.
 ```
 // Attach context (view data)
 var context = new ConsoleViewContext { DisplayName = "Entity1" };
-world.AttachContext(entity, context);
+world.RegisterContext(entity, context);
 
 // Attach binder (view updates)
 world.AttachBinder(entity, new PositionBinder());
@@ -62,9 +62,9 @@ Key excerpts:
 ```csharp
 public class ConsoleViewContext : IContext
 {
-    public string DisplayName { get; set; }
-    public ConsoleColor Color { get; set; }
-    public int LastUpdateFrame { get; set; }
+    public string DisplayName { get; set; } = "";
+    public ConsoleColor Color { get; set; } = ConsoleColor.White;
+    public long LastUpdateFrame { get; set; }
 }
 ```
 
@@ -75,16 +75,23 @@ public sealed class PositionBinder : BaseBinder, IBind<Position>
 {
     public void OnDelta(in ComponentDelta<Position> delta)
     {
+        if (Contexts == null || World == null) return;
+
         var context = Contexts.Get<ConsoleViewContext>(World, Entity);
         if (context != null)
         {
-            Console.WriteLine($"[Binder] {context.DisplayName}: Position {delta.Kind} to {delta.Value}");
+            context.LastUpdateFrame = World.FrameCount;
+            var kind = delta.Kind == ComponentDeltaKind.Added ? "added" :
+                      delta.Kind == ComponentDeltaKind.Changed ? "changed" :
+                      delta.Kind == ComponentDeltaKind.Removed ? "removed" : "snapshot";
+            Console.WriteLine($"[Binder] {context.DisplayName}: Position {kind} to {delta.Value}");
         }
     }
 
     protected override void OnApply(IWorld w, Entity e)
     {
         // Called at end of presentation phase
+        // Can perform final view updates here if needed
     }
 }
 ```
@@ -96,10 +103,12 @@ using (var cmd = world.BeginWrite())
 {
     var e = cmd.CreateEntity();
     cmd.AddComponent(e, new Position(0, 0));
+    cmd.AddComponent(e, new Health(100));
 
-    var context = new ConsoleViewContext { DisplayName = "Entity1" };
-    world.AttachContext(e, context);
+    var context = new ConsoleViewContext { DisplayName = "Entity1", Color = ConsoleColor.Green };
+    world.RegisterContext(e, context);
     world.AttachBinder(e, new PositionBinder());
+    world.AttachBinder(e, new HealthBinder());
 }
 ```
 
@@ -112,7 +121,7 @@ using (var cmd = world.BeginWrite())
 ```bash
 dotnet restore
 dotnet build --no-restore
-dotnet run --project <your-console-sample-csproj>
+dotnet run --project ZenEcsCoreSamples-12-Binding.csproj
 ```
 
 Press **any key** to exit.
@@ -145,7 +154,7 @@ Total entities: 2
 ## APIs highlighted
 
 * **Contexts:**
-    * `world.AttachContext(entity, context)` — attach context to entity
+    * `world.RegisterContext(entity, context)` — attach context to entity
     * `world.DetachContext<T>(entity)` — detach context from entity
     * `contexts.Get<T>(world, entity)` — get context from binder
 * **Binders:**

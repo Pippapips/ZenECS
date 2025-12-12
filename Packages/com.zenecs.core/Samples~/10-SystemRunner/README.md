@@ -65,23 +65,61 @@ double prev = sw.Elapsed.TotalSeconds;
 
 while (true)
 {
+    if (Console.KeyAvailable)
+    {
+        _ = Console.ReadKey(intercept: true);
+        break;
+    }
+
+    // Calculate frame delta time
     double now = sw.Elapsed.TotalSeconds;
     float dt = (float)(now - prev);
     prev = now;
 
+    // Manual frame loop using Kernel.PumpAndLateFrame
+    // This internally:
+    // 1. Calls BeginFrame(dt) - variable timestep systems
+    // 2. Accumulates dt into fixed timestep and calls FixedStep() multiple times
+    // 3. Calculates alpha for interpolation
+    // 4. Calls LateFrame(alpha) - presentation systems (read-only)
     kernel.PumpAndLateFrame(dt, fixedDelta, maxSubStepsPerFrame);
-    
+
     Thread.Sleep(1); // Frame rate limiting
 }
 ```
 
-### What PumpAndLateFrame Does
+### Systems
 
-Internally, `PumpAndLateFrame()` performs:
+```csharp
+[FixedGroup]
+public sealed class MoveSystem : ISystem
+{
+    public void Run(IWorld w, float dt)
+    {
+        using var cmd = w.BeginWrite();
+        foreach (var (e, pos, vel) in w.Query<Position, Velocity>())
+        {
+            cmd.ReplaceComponent(e, new Position(pos.X + vel.X * dt, pos.Y + vel.Y * dt));
+        }
+    }
+}
 
-1. **BeginFrame(dt)** — Runs variable-timestep systems (FrameInput, FrameSync)
-2. **FixedStep(fixedDelta) × N** — Accumulates `dt` into fixed timestep and runs fixed systems multiple times
-3. **LateFrame(alpha)** — Runs presentation systems (FrameView, FrameUI) with interpolation factor
+[FrameViewGroup]
+public sealed class PrintPositionsSystem : ISystem
+{
+    public void Run(IWorld w, float dt)
+    {
+        if (w.FrameCount % 60 == 0) // Print every second
+        {
+            Console.WriteLine($"\n=== Frame {w.FrameCount} (dt={dt:0.000}) ===");
+            foreach (var (e, pos) in w.Query<Position>())
+            {
+                Console.WriteLine($"  Entity {e.Id,3}: pos={pos}");
+            }
+        }
+    }
+}
+```
 
 ---
 
@@ -92,7 +130,7 @@ Internally, `PumpAndLateFrame()` performs:
 ```bash
 dotnet restore
 dotnet build --no-restore
-dotnet run --project <your-console-sample-csproj>
+dotnet run --project ZenEcsCoreSamples-10-SystemRunner.csproj
 ```
 
 Press **any key** to exit.
@@ -106,6 +144,7 @@ Press **any key** to exit.
 Running manual frame loop...
 Fixed timestep: 0.017s (60Hz)
 Max sub-steps per frame: 4
+Press any key to exit.
 
 === Frame 60 (dt=0.017) ===
   Entity   1: pos=(1.00, 0)

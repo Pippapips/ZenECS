@@ -2,23 +2,18 @@
 
 A **console** sample demonstrating **`World.Reset(keepCapacity)`** behaviors:
 
-* `Reset(true)`  : **fast clear** — removes all entities/components but **preserves** internal arrays/pools
-* `Reset(false)` : **hard reset** — rebuilds internal structures from the **initial config**
+* `Reset(keepCapacity: true)`  : **fast clear** — removes all entities/components but **preserves** internal arrays/pools
+* `Reset(keepCapacity: false)` : **hard reset** — rebuilds internal structures from the **initial config**
 
-- Component: `Health`
-- Systems:
-
-    * `WorldResetDemoSystem : IVariableRunSystem` — seeds, resets (keep vs hard), and logs results
-    * `PrintSummarySystem : IPresentationSystem` — read-only Late logs
-- Kernel loop:
-
-    * `EcsKernel.Start(...)` registers systems
-    * `Pump()` integrates variable + fixed steps
-    * `LateFrame()` runs presentation (read-only)
+* Component: `Health`
+* Systems: None (direct demonstration in Main)
+* Kernel loop:
+    * `Kernel.CreateWorld()` creates world
+    * `Kernel.PumpAndLateFrame()` integrates variable + fixed steps
 
 ---
 
-### What this sample shows
+## What this sample shows
 
 1. **Fast reset (keep capacity)**
    Clear all data while preserving memory pools and internal arrays for quick reuse.
@@ -26,12 +21,12 @@ A **console** sample demonstrating **`World.Reset(keepCapacity)`** behaviors:
 2. **Hard reset (reinitialize)**
    Rebuild internal storage to the initial configuration for a fully fresh world.
 
-3. **Read-only presentation**
-   Keep presentation in **Late** and **read-only** to maintain deterministic flow.
+3. **Entity lifecycle after reset**
+   Entities created before reset become invalid; new entities can be created after reset.
 
 ---
 
-### TL;DR flow
+## TL;DR flow
 
 ```
 Seed world (e1,e2 with Health)
@@ -40,11 +35,9 @@ Seed world (e1,e2 with Health)
 → Reset(keepCapacity:false)
 ```
 
-Presentation continuously prints a short summary in Late.
-
 ---
 
-### File layout
+## File layout
 
 ```
 WorldReset.cs
@@ -53,96 +46,93 @@ WorldReset.cs
 Key excerpts:
 
 ```csharp
-[SimulationGroup]
-public sealed class WorldResetDemoSystem : IVariableRunSystem
+var kernel = new Kernel();
+var world = kernel.CreateWorld();
+kernel.SetCurrentWorld(world);
+
+// Seed initial entities
+Entity e1, e2;
+using (var cmd = world.BeginWrite())
 {
-    public void Run(World w)
-    {
-        var e1 = w.CreateEntity();
-        var e2 = w.CreateEntity();
-        w.Add(e1, new Health(100));
-        w.Add(e2, new Health(50));
-
-        Console.WriteLine($"Before reset: alive={w.AliveCount}, e1.Has(Health)={w.Has<Health>(e1)}");
-
-        w.Reset(keepCapacity: true);
-        Console.WriteLine($"After Reset(keepCapacity:true): alive={w.AliveCount}");
-
-        var e3 = w.CreateEntity();
-        w.Add(e3, new Health(77));
-        Console.WriteLine($"Re-seed: alive={w.AliveCount}, e3.Has(Health)={w.Has<Health>(e3)}");
-
-        w.Reset(keepCapacity: false);
-        Console.WriteLine($"After Reset(keepCapacity:false): alive={w.AliveCount}");
-    }
+    e1 = cmd.CreateEntity();
+    e2 = cmd.CreateEntity();
+    cmd.AddComponent(e1, new Health(100));
+    cmd.AddComponent(e2, new Health(50));
 }
+kernel.PumpAndLateFrame(0, 0, 1);
+Console.WriteLine($"Before reset: alive={world.AliveCount}, e1.Has(Health)={world.HasComponent<Health>(e1)}");
 
-[PresentationGroup]
-public sealed class PrintSummarySystem : IPresentationSystem
+// Option A: Keep capacity (fast clear). Preserves internal arrays/pools.
+world.Reset(keepCapacity: true);
+Console.WriteLine($"After Reset(keepCapacity:true): alive={world.AliveCount}");
+// Note: e1 and e2 are now invalid after reset
+
+// Re-seed to verify the world still works and reuses capacity
+Entity e3;
+using (var cmd = world.BeginWrite())
 {
-    public void Run(World w, float alpha)
-        => Console.WriteLine($"[Late] Frame {w.FrameCount}, alive={w.AliveCount}");
+    e3 = cmd.CreateEntity();
+    cmd.AddComponent(e3, new Health(77));
 }
-```
+kernel.PumpAndLateFrame(0, 0, 1);
+Console.WriteLine($"Re-seed: alive={world.AliveCount}, e3.Has(Health)={world.HasComponent<Health>(e3)}");
 
-Frame driver (Basic style):
-
-```csharp
-const float fixedDelta = 1f / 60f; // 60Hz
-const int   maxSubSteps = 4;
-EcsKernel.Pump(dt, fixedDelta, maxSubSteps, out var alpha);
-EcsKernel.LateFrame(alpha);
+// Option B: Hard reset — rebuild internal structures from initial config
+world.Reset(keepCapacity: false);
+Console.WriteLine($"After Reset(keepCapacity:false): alive={world.AliveCount}");
+// Note: e3 is now invalid after reset
 ```
 
 ---
 
-### Build & Run
+## Build & Run
 
 **Prereqs:** .NET 8 SDK and ZenECS Core assemblies referenced.
 
 ```bash
 dotnet restore
 dotnet build --no-restore
-dotnet run --project <your-console-sample-csproj>
+dotnet run --project ZenEcsCoreSamples-05-WorldReset.csproj
 ```
 
 Press **any key** to exit.
 
 ---
 
-### Example output
+## Example output
 
 ```
-=== ZenECS Core Sample — World Reset (Kernel) ===
-Running... press any key to exit.
+=== ZenECS Core Sample - World Reset (Kernel) ===
 === World.Reset demo (keepCapacity vs hard reset) ===
 Before reset: alive=2, e1.Has(Health)=True
 After Reset(keepCapacity:true): alive=0
 Re-seed: alive=1, e3.Has(Health)=True
 After Reset(keepCapacity:false): alive=0
-[Late] Frame 1, alive=0
+Running... press any key to exit.
 Shutting down...
 Done.
 ```
 
 ---
 
-### APIs highlighted
+## APIs highlighted
 
-* **World reset:** `World.Reset(bool keepCapacity)`
-* **World ops:** `CreateEntity`, `Add<T>`, `Has<T>`, `AliveCount`
-* **Kernel loop:** `EcsKernel.Start`, `Pump`, `LateFrame`, `Shutdown`
-* **System phases:** `[SimulationGroup]` (writes), `[PresentationGroup]` (read-only)
+* **World reset:** `world.Reset(bool keepCapacity)`
+* **World ops:** `world.BeginWrite()`, `cmd.CreateEntity()`, `cmd.AddComponent()`, `world.HasComponent<T>()`, `world.AliveCount`
+* **Kernel loop:** `Kernel.CreateWorld()`, `Kernel.PumpAndLateFrame()`, `Kernel.Dispose()`
 
 ---
 
-### Notes & best practices
+## Notes & best practices
 
 * Prefer **`Reset(true)`** for scene/level transitions to reuse memory and reduce GC churn.
 * Use **`Reset(false)`** when you need a fully reinitialized world (e.g., config changes).
-* Keep presentation systems **read-only** and **Late** to avoid race conditions.
-* Consider exposing reset options in your game’s state manager (menus, editor tooling, etc.).
+* Entities created before reset become **invalid** after reset — do not use them.
+* Consider exposing reset options in your game's state manager (menus, editor tooling, etc.).
+* Always use `CommandBuffer` (via `BeginWrite()`) for entity creation and component modifications.
 
 ---
 
-더 필요한 샘플(예: `World.ClearAllComponents()`, `Snapshot + Reset` 조합 등)이 있으면 같은 형식으로 바로 만들어 드릴게요.
+## License
+
+MIT © 2025 Pippapips Limited.

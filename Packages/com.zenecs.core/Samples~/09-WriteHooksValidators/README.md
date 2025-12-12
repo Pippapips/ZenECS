@@ -58,36 +58,71 @@ Key excerpts:
 ### Write Permission Hook
 
 ```csharp
-world.AddWritePermission((entity, componentType) =>
+[FixedGroup]
+public sealed class HookSetupSystem : ISystemLifecycle
 {
-    if (world.HasComponent<Locked>(entity))
+    private Func<Entity, Type, bool>? _writePermissionHook;
+
+    public void Initialize(IWorld w)
     {
-        return false; // Deny write
+        _writePermissionHook = (entity, componentType) =>
+        {
+            if (w.HasComponent<Locked>(entity))
+            {
+                Console.WriteLine($"[Permission] Write denied: Entity {entity.Id} is Locked, cannot modify {componentType.Name}");
+                return false;
+            }
+            return true;
+        };
+        w.AddWritePermission(_writePermissionHook);
     }
-    return true; // Allow write
-});
+
+    public void Shutdown()
+    {
+        // Cleanup if needed
+    }
+
+    public void Run(IWorld w, float dt) { }
+}
 ```
 
 ### Typed Validator
 
 ```csharp
-world.AddValidator<Health>((health) =>
+public void Initialize(IWorld w)
 {
-    return health.Value >= 0 && health.Value <= 200;
-});
+    var healthValidator = (Health health) =>
+    {
+        if (health.Value < 0 || health.Value > 200)
+        {
+            Console.WriteLine($"[Validator] Health validation failed: {health.Value} (must be 0-200)");
+            return false;
+        }
+        return true;
+    };
+    w.AddValidator(healthValidator);
+}
 ```
 
 ### Object-Level Validator
 
 ```csharp
-world.AddValidator((object obj) =>
+public void Initialize(IWorld w)
 {
-    if (obj is Position pos)
+    w.AddValidator((object obj) =>
     {
-        return !float.IsNaN(pos.X) && !float.IsNaN(pos.Y);
-    }
-    return true;
-});
+        if (obj is Position pos)
+        {
+            if (float.IsNaN(pos.X) || float.IsNaN(pos.Y) || 
+                float.IsInfinity(pos.X) || float.IsInfinity(pos.Y))
+            {
+                Console.WriteLine($"[Validator] Position validation failed: ({pos.X}, {pos.Y}) (must be finite)");
+                return false;
+            }
+        }
+        return true;
+    });
+}
 ```
 
 ---
@@ -99,7 +134,7 @@ world.AddValidator((object obj) =>
 ```bash
 dotnet restore
 dotnet build --no-restore
-dotnet run --project <your-console-sample-csproj>
+dotnet run --project ZenEcsCoreSamples-09-WriteHooksValidators.csproj
 ```
 
 Press **any key** to exit.

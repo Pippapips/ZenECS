@@ -4,46 +4,43 @@ A **console** sample demonstrating the ZenECS **Kernel loop** with a minimal sim
 
 * Minimal components: `Position`, `Velocity`
 * Systems:
-
-    * `MoveSystem : IVariableRunSystem` — integrates `Position += Velocity * dt`
-    * `PrintPositionsSystem : IPresentationSystem` — prints entity positions (read-only)
+    * `MoveSystem : ISystem` — integrates `Position += Velocity * dt` (FixedGroup)
+    * `PrintPositionsSystem : ISystem` — prints entity positions (read-only, FrameViewGroup)
 * Kernel loop:
-
-    * `EcsKernel.Start(...)` registers systems
-    * `Pump()` performs variable-step + fixed-step integration
-    * `LateFrame()` runs presentation (read-only)
+    * `Kernel.CreateWorld()` creates the world
+    * `world.AddSystems()` registers systems
+    * `Kernel.PumpAndLateFrame()` performs variable-step + fixed-step integration
 
 ---
 
 ## What this sample shows
 
 1. **World creation and system registration**
-   The ECS world and systems are bootstrapped through `EcsKernel.Start`.
+   The ECS world is created via `Kernel.CreateWorld()` and systems are registered with `world.AddSystems()`.
 
 2. **Simulation → Presentation flow**
-   `MoveSystem` updates `Position` each tick (write phase), and
-   `PrintPositionsSystem` reads and prints entity positions in the Late phase.
+   `MoveSystem` updates `Position` each tick (write phase in FixedGroup), and
+   `PrintPositionsSystem` reads and prints entity positions in the Late phase (FrameViewGroup).
 
 3. **Variable + fixed timestep integration**
-   The frame loop combines variable delta and fixed simulation updates, ensuring smooth deterministic results.
+   The frame loop combines variable delta and fixed simulation updates using `Kernel.PumpAndLateFrame()`, ensuring smooth deterministic results.
 
 ---
 
 ## TL;DR flow
 
 ```
-[SimulationGroup] MoveSystem
+[FixedGroup] MoveSystem
     → integrates Position += Velocity * dt
 
-[PresentationGroup] PrintPositionsSystem
+[FrameViewGroup] PrintPositionsSystem
     → reads Position and prints results
 
-EcsKernel.Pump(dt, fixedDelta, maxSubSteps, out alpha)
-EcsKernel.LateFrame(alpha)
+Kernel.PumpAndLateFrame(dt, fixedDelta, maxSubStepsPerFrame)
 ```
 
 Simulation writes; Presentation reads.
-Presentation always runs in **Late** and is **read-only**.
+Presentation always runs in **FrameViewGroup** and is **read-only**.
 
 ---
 
@@ -75,31 +72,27 @@ public readonly struct Velocity
 ### Systems
 
 ```csharp
-[SimulationGroup]
-public sealed class MoveSystem : IVariableRunSystem
+[FixedGroup]
+public sealed class MoveSystem : ISystem
 {
-    public void Run(World w)
+    public void Run(IWorld w, float dt)
     {
-        var dt = w.DeltaTime;
-        foreach (var e in w.Query<Position, Velocity>())
+        using var cmd = w.BeginWrite();
+        foreach (var (e, pos, vel) in w.Query<Position, Velocity>())
         {
-            var p = w.Read<Position>(e);
-            var v = w.Read<Velocity>(e);
-            w.Replace(e, new Position(p.X + v.X * dt, p.Y + v.Y * dt));
+            cmd.ReplaceComponent(e, new Position(pos.X + vel.X * dt, pos.Y + vel.Y * dt));
         }
     }
 }
 
-[PresentationGroup]
-public sealed class PrintPositionsSystem : IPresentationSystem
+[FrameViewGroup]
+public sealed class PrintPositionsSystem : ISystem
 {
-    public void Run(World w, float alpha)
+    public void Run(IWorld w, float dt)
     {
-        Console.WriteLine($"-- FrameCount: {w.FrameCount} (alpha={alpha:0.00}) --");
-        foreach (var e in w.Query<Position>())
+        foreach (var (e, pos) in w.Query<Position>())
         {
-            var p = w.Read<Position>(e); // read-only access
-            Console.WriteLine($"Entity {e.Id,3}: pos={p}");
+            Console.WriteLine($"Entity {e.Id,3}: pos={pos}");
         }
     }
 }
@@ -108,11 +101,23 @@ public sealed class PrintPositionsSystem : IPresentationSystem
 ### Frame driver
 
 ```csharp
+var kernel = new Kernel(null, logger: new EcsLogger());
+var world = kernel.CreateWorld();
+kernel.SetCurrentWorld(world);
+
+world.AddSystems([
+    new MoveSystem(),
+    new PrintPositionsSystem()
+]);
+
 const float fixedDelta = 1f / 60f; // 60Hz simulation
 const int maxSubStepsPerFrame = 4;
 
-EcsKernel.Pump(dt, fixedDelta, maxSubStepsPerFrame, out var alpha);
-EcsKernel.LateFrame(alpha);
+while (true)
+{
+    float dt = CalculateDeltaTime();
+    kernel.PumpAndLateFrame(dt, fixedDelta, maxSubStepsPerFrame);
+}
 ```
 
 ---
@@ -124,7 +129,7 @@ EcsKernel.LateFrame(alpha);
 ```bash
 dotnet restore
 dotnet build --no-restore
-dotnet run --project <your-console-sample-csproj>
+dotnet run --project ZenEcsCoreSamples-01-Basic.csproj
 ```
 
 Press **any key** to exit.
@@ -134,14 +139,13 @@ Press **any key** to exit.
 ## Example output
 
 ```
-=== ZenECS Core Console Sample 01: Basic (Kernel) ===
+=== ZenECS Core Sample - Basic (Kernel) ===
+Hello World!
 Running... press any key to exit.
--- FrameCount: 1 (alpha=0.33) --
-Entity   1: pos=(0.02, 0)
-Entity   2: pos=(2, 1.00)
--- FrameCount: 2 (alpha=0.48) --
-Entity   1: pos=(0.04, 0)
+Entity   1: pos=(0.017, 0)
 Entity   2: pos=(2, 0.99)
+Entity   1: pos=(0.033, 0)
+Entity   2: pos=(2, 0.98)
 ...
 Shutting down...
 Done.
@@ -151,19 +155,20 @@ Done.
 
 ## APIs highlighted
 
-* **Kernel & loop:** `EcsKernel.Start`, `EcsKernel.Pump`, `EcsKernel.LateFrame`, `EcsKernel.Shutdown`
-* **World:** `CreateEntity`, `Add<T>`, `Read<T>`, `Replace<T>`, `Query<T>`
-* **Systems:** `[SimulationGroup]` for simulation writes, `[PresentationGroup]` for read-only display
+* **Kernel & loop:** `Kernel.CreateWorld()`, `Kernel.SetCurrentWorld()`, `Kernel.PumpAndLateFrame()`, `Kernel.Dispose()`
+* **World:** `world.BeginWrite()`, `cmd.CreateEntity()`, `cmd.AddComponent()`, `cmd.ReplaceComponent()`, `world.Query<T>()`
+* **Systems:** `[FixedGroup]` for simulation writes, `[FrameViewGroup]` for read-only display
 * **Timing:** Fixed timestep (`fixedDelta`) + variable delta for interpolation
 
 ---
 
 ## Notes & best practices
 
-* Separate systems into **Simulation** (write) and **Presentation** (read-only) groups.
-* Use **fixed timestep** for deterministic logic and physics; use **alpha** for interpolation or smoothing.
+* Separate systems into **FixedGroup** (write) and **FrameViewGroup** (read-only) groups.
+* Use **fixed timestep** for deterministic logic and physics.
 * Keep presentation code stateless; it should reflect the data, not modify it.
 * Add a small sleep (e.g., `Thread.Sleep(1)`) in console loops to reduce CPU load.
+* Always use `CommandBuffer` (via `BeginWrite()`) for entity and component modifications.
 
 ---
 

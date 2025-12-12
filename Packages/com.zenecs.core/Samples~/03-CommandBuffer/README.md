@@ -5,25 +5,23 @@ which enables thread-safe, batched component modifications — applied either **
 
 * Components: `Health`, `Stunned`
 * Systems:
-
-    * `CommandBufferDemoSystem : IVariableRunSystem` — demonstrates deferred & immediate CommandBuffer use
-    * `PrintStatusSystem : IPresentationSystem` — read-only view of current entity states
+    * `CommandBufferDemoSystem : ISystem` — demonstrates deferred & immediate CommandBuffer use
+    * `PrintStatusSystem : ISystem` — read-only view of current entity states (FrameViewGroup)
 * Kernel loop:
-
-    * `EcsKernel.Start(...)` bootstraps world and registers systems
-    * `Pump()` performs variable + fixed-step updates
-    * `LateFrame()` runs presentation (read-only)
+    * `Kernel.CreateWorld()` bootstraps world
+    * `world.AddSystems()` registers systems
+    * `Kernel.PumpAndLateFrame()` performs variable + fixed-step updates
 
 ---
 
 ## What this sample shows
 
-1. **Deferred execution (Schedule + RunScheduledJobs)**
-   Command operations (`Add`, `Replace`, `Remove`) are collected in a buffer via `BeginWrite()`,
-   then scheduled with `world.Schedule(cb)` and later applied all at once via `world.RunScheduledJobs()`.
+1. **Deferred execution (using BeginWrite)**
+   Command operations (`AddComponent`, `ReplaceComponent`, `RemoveComponent`) are collected in a buffer via `BeginWrite()`,
+   and applied when the buffer is disposed or when `RunScheduledJobs()` is called.
 
-2. **Immediate execution (ApplyMode.Immediate)**
-   A write scope created with `BeginWrite(World.ApplyMode.Immediate)` applies changes instantly on `Dispose()`.
+2. **Immediate execution**
+   A write scope created with `BeginWrite()` applies changes when disposed (implicit barrier).
 
 3. **Thread-safe batching**
    CommandBuffers allow multithreaded collection of component changes, safely synchronized at frame boundaries.
@@ -33,18 +31,18 @@ which enables thread-safe, batched component modifications — applied either **
 ## TL;DR flow
 
 ```
-World.BeginWrite()
-   → cb.Add / Replace / Remove
-   → world.Schedule(cb)
-   → world.RunScheduledJobs()   // deferred apply
+using (var cmd = world.BeginWrite())
+{
+    cmd.AddComponent(e, new Health(100));
+    cmd.ReplaceComponent(e, new Health(75));
+    cmd.RemoveComponent<Stunned>(e);
+} // Applied at disposal
 
-using (world.BeginWrite(World.ApplyMode.Immediate))
-   → cb.Replace(...)
-   // immediate apply on Dispose()
+world.RunScheduledJobs(); // Apply any scheduled jobs
 ```
 
-* **Deferred** = batched safely, applied later
-* **Immediate** = applied instantly
+* **Deferred** = batched safely, applied at disposal or via `RunScheduledJobs()`
+* **Immediate** = applied instantly when buffer is disposed
 
 ---
 
@@ -77,50 +75,50 @@ public readonly struct Stunned
 ### Systems
 
 ```csharp
-[SimulationGroup]
-public sealed class CommandBufferDemoSystem : IVariableRunSystem
+[FixedGroup]
+public sealed class CommandBufferDemoSystem : ISystem
 {
     private bool _done;
 
-    public void Run(World w)
+    public void Run(IWorld w, float dt)
     {
         if (_done) return;
 
-        // Create entities
-        var e1 = w.CreateEntity();
-        var e2 = w.CreateEntity();
+        using var cmd = w.BeginWrite();
+        var e1 = cmd.CreateEntity();
+        var e2 = cmd.CreateEntity();
 
         // Deferred apply
-        var cb = w.BeginWrite();
-        cb.Add(e1, new Health(100));
-        cb.Add(e2, new Health(80));
-        cb.Add(e2, new Stunned(1.5f));
-        cb.Replace(e2, new Health(75));
-        cb.Remove<Stunned>(e2);
-        w.Schedule(cb);
+        using (var cb = w.BeginWrite())
+        {
+            cb.AddComponent(e1, new Health(100));
+            cb.AddComponent(e2, new Health(80));
+            cb.AddComponent(e2, new Stunned(1.5f));
+            cb.ReplaceComponent(e2, new Health(75));
+            cb.RemoveComponent<Stunned>(e2);
+        } // Applied at disposal
+
         w.RunScheduledJobs();
 
         // Immediate apply
-        using (var cb2 = w.BeginWrite(World.ApplyMode.Immediate))
+        using (var cb2 = w.BeginWrite())
         {
-            cb2.Replace(e1, new Health(42));
-        }
+            cb2.ReplaceComponent(e1, new Health(42));
+        } // Applied immediately
 
         _done = true;
     }
 }
 
-[PresentationGroup]
-public sealed class PrintStatusSystem : IPresentationSystem
+[FrameViewGroup]
+public sealed class PrintStatusSystem : ISystem
 {
-    public void Run(World w, float alpha)
+    public void Run(IWorld w, float dt)
     {
-        Console.WriteLine($"-- Frame {w.FrameCount} (alpha={alpha:0.00}) --");
-        foreach (var e in w.Query<Health>())
+        foreach (var (e, health) in w.Query<Health>())
         {
-            var h = w.Read<Health>(e);
-            var stunned = w.Has<Stunned>(e) ? w.Read<Stunned>(e).ToString() : "no";
-            Console.WriteLine($"Entity {e.Id,2}: Health={h.Value}, Stunned={stunned}");
+            var stunned = w.HasComponent<Stunned>(e) ? w.ReadComponent<Stunned>(e).ToString() : "no";
+            Console.WriteLine($"Entity {e.Id,2}: Health={health.Value}, Stunned={stunned}");
         }
     }
 }
@@ -130,10 +128,9 @@ public sealed class PrintStatusSystem : IPresentationSystem
 
 ```csharp
 const float fixedDelta = 1f / 60f; // 60Hz
-const int   maxSubSteps = 4;
+const int maxSubStepsPerFrame = 4;
 
-EcsKernel.Pump(dt, fixedDelta, maxSubSteps, out var alpha);
-EcsKernel.LateFrame(alpha);
+kernel.PumpAndLateFrame(dt, fixedDelta, maxSubStepsPerFrame);
 ```
 
 ---
@@ -145,7 +142,7 @@ EcsKernel.LateFrame(alpha);
 ```bash
 dotnet restore
 dotnet build --no-restore
-dotnet run --project <your-console-sample-csproj>
+dotnet run --project ZenEcsCoreSamples-03-CommandBuffer.csproj
 ```
 
 Press **any key** to exit.
@@ -155,14 +152,13 @@ Press **any key** to exit.
 ## Example output
 
 ```
-=== ZenECS Core Sample — CommandBuffer (Kernel) ===
+=== ZenECS Core Sample - CommandBuffer (Kernel) ===
 === CommandBuffer demo (deferred + immediate) ===
-Scheduled ops. Before apply, Has<Health>(e1): False
 After apply (deferred): e1 Health=100, e2 Health=75, Has<Stunned>(e2)=False
 After immediate EndWrite: e1 Health=42
--- Frame 1 (alpha=0.33) --
 Entity  1: Health=42, Stunned=no
 Entity  2: Health=75, Stunned=no
+Running... press any key to exit.
 Shutting down...
 Done.
 ```
@@ -172,28 +168,23 @@ Done.
 ## APIs highlighted
 
 * **CommandBuffer API**
-
-    * `World.BeginWrite()`, `cb.Add`, `cb.Replace`, `cb.Remove`
-    * `World.Schedule(cb)`, `World.RunScheduledJobs()`
-    * `World.BeginWrite(World.ApplyMode.Immediate)` (immediate apply)
+    * `world.BeginWrite()`, `cmd.AddComponent()`, `cmd.ReplaceComponent()`, `cmd.RemoveComponent()`
+    * `world.RunScheduledJobs()` — apply scheduled jobs
 * **World**
-
-    * `CreateEntity`, `Has<T>`, `Read<T>`
+    * `cmd.CreateEntity()`, `world.HasComponent<T>()`, `world.ReadComponent<T>()`
 * **Systems**
-
-    * `[SimulationGroup]` (writes)
-    * `[PresentationGroup]` (read-only)
+    * `[FixedGroup]` (writes)
+    * `[FrameViewGroup]` (read-only)
 * **Kernel loop**
-
-    * `EcsKernel.Start`, `EcsKernel.Pump`, `EcsKernel.LateFrame`, `EcsKernel.Shutdown`
+    * `Kernel.CreateWorld()`, `Kernel.PumpAndLateFrame()`, `Kernel.Dispose()`
 
 ---
 
 ## Notes & best practices
 
-* Use **deferred buffers** for thread-safe, batched writes across systems or threads.
-  Apply them once per frame using `RunScheduledJobs()`.
-* Use **immediate buffers** when safe in single-threaded contexts for fast inline changes.
+* Use **CommandBuffer** (via `BeginWrite()`) for all entity and component modifications.
+* CommandBuffers are automatically applied when disposed (using pattern).
+* Use `RunScheduledJobs()` to explicitly flush scheduled operations.
 * Presentation systems must remain **read-only**.
 * CommandBuffers are automatically pooled; avoid long-term retention.
 

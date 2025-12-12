@@ -2,7 +2,7 @@
 
 A **console** sample demonstrating how to create and manage multiple independent worlds with the ZenECS Kernel.
 
-* Components: `Position`, `Velocity`, `WorldTag`
+* Components: `Position`, `Velocity`
 * Systems:
     * `MoveSystem : ISystem` — integrates `Position += Velocity * dt` (FixedGroup)
     * `PrintAllWorldsSystem : ISystem` — prints positions from all worlds (FrameViewGroup)
@@ -25,7 +25,7 @@ A **console** sample demonstrating how to create and manage multiple independent
    Each world maintains its own entities, components, and systems, running independently.
 
 4. **World lookup**
-   Access all worlds via `Kernel.GetAllWorld()` and query by name or tags.
+   Access all worlds via `Kernel.GetAllWorlds()` and query by name or tags.
 
 ---
 
@@ -53,9 +53,10 @@ Key excerpts:
 ### World Creation
 
 ```csharp
-var kernel = new Kernel();
+var kernel = new Kernel(null, logger: new EcsLogger());
 var world1 = kernel.CreateWorld(name: "GameWorld", tags: new[] { "game", "main" });
 var world2 = kernel.CreateWorld(name: "UISimulation", tags: new[] { "ui", "overlay" });
+var world3 = kernel.CreateWorld(name: "Background", tags: new[] { "background" });
 kernel.SetCurrentWorld(world1);
 ```
 
@@ -64,6 +65,8 @@ kernel.SetCurrentWorld(world1);
 ```csharp
 world1.AddSystems([new MoveSystem()]);
 world2.AddSystems([new MoveSystem()]);
+world3.AddSystems([new MoveSystem()]);
+world1.AddSystems([new PrintAllWorldsSystem(kernel)]);
 ```
 
 ### Entity Creation with CommandBuffer
@@ -92,7 +95,7 @@ kernel.PumpAndLateFrame(dt, fixedDelta, maxSubStepsPerFrame);
 ```bash
 dotnet restore
 dotnet build --no-restore
-dotnet run --project <your-console-sample-csproj>
+dotnet run --project ZenEcsCoreSamples-06-MultiWorld.csproj
 ```
 
 Press **[1]/[2]/[3]** to switch between worlds.
@@ -129,10 +132,10 @@ Created 3 worlds:
 * **Kernel & World Management:**
     * `Kernel.CreateWorld(name, tags)`
     * `Kernel.SetCurrentWorld(world)`
-    * `Kernel.GetAllWorld()`
+    * `Kernel.GetAllWorlds()`
     * `Kernel.PumpAndLateFrame(dt, fixedDelta, maxSubSteps)`
 * **CommandBuffer:**
-    * `World.BeginWrite()`, `cmd.CreateEntity()`, `cmd.AddComponent()`
+    * `world.BeginWrite()`, `cmd.CreateEntity()`, `cmd.AddComponent()`
 * **Systems:**
     * `[FixedGroup]` (simulation writes)
     * `[FrameViewGroup]` (read-only presentation)

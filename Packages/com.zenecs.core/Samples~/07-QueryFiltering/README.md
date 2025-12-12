@@ -56,30 +56,47 @@ Key excerpts:
 ### Basic Filter
 
 ```csharp
-var filter = Filter.New
-    .With<Position>()
-    .With<Velocity>()
-    .Without<Paused>()
-    .Build();
-
-foreach (var (e, pos, vel) in world.Query<Position, Velocity>(filter))
+[FixedGroup]
+public sealed class MoveSystem : ISystem
 {
-    // Only entities with Position + Velocity, but not Paused
+    public void Run(IWorld w, float dt)
+    {
+        var filter = Filter.New
+            .With<Position>()
+            .With<Velocity>()
+            .Without<Paused>()
+            .Build();
+
+        using var cmd = w.BeginWrite();
+        foreach (var (e, pos, vel) in w.Query<Position, Velocity>(filter))
+        {
+            cmd.ReplaceComponent(e, new Position(pos.X + vel.X * dt, pos.Y + vel.Y * dt));
+        }
+    }
 }
 ```
 
 ### WithAny Filter (OR-group)
 
 ```csharp
-var filter = Filter.New
-    .With<Health>()
-    .WithAny(typeof(Enemy))
-    .Without<Player>()
-    .Build();
-
-foreach (var (e, health) in world.Query<Health>(filter))
+[FixedGroup]
+public sealed class DamageEnemySystem : ISystem
 {
-    // Entities with Health AND (Enemy OR without Player)
+    public void Run(IWorld w, float dt)
+    {
+        var filter = Filter.New
+            .With<Health>()
+            .WithAny(typeof(Enemy))
+            .Without<Player>()
+            .Build();
+
+        using var cmd = w.BeginWrite();
+        foreach (var (e, health) in w.Query<Health>(filter))
+        {
+            var updated = new Health(health.Value - 1);
+            cmd.ReplaceComponent(e, updated);
+        }
+    }
 }
 ```
 
@@ -104,7 +121,7 @@ using (var cmd = world.BeginWrite())
 ```bash
 dotnet restore
 dotnet build --no-restore
-dotnet run --project <your-console-sample-csproj>
+dotnet run --project ZenEcsCoreSamples-07-QueryFiltering.csproj
 ```
 
 Press **any key** to exit.
@@ -147,7 +164,7 @@ Paused entities: 1
 * **Query:**
     * `world.Query<T1, T2>(filter)` — query with filter
 * **CommandBuffer:**
-    * `World.BeginWrite()`, `cmd.CreateEntity()`, `cmd.AddComponent()`
+    * `world.BeginWrite()`, `cmd.CreateEntity()`, `cmd.AddComponent()`
 * **Systems:**
     * `[FixedGroup]` (simulation writes)
     * `[FrameViewGroup]` (read-only presentation)

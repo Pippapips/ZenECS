@@ -15,10 +15,10 @@ A **console** sample demonstrating world-level hooks for entity and component li
 ## What this sample shows
 
 1. **Entity lifecycle hooks**
-   Subscribe to `EntityEvents.EntityCreated`, `EntityDestroyRequested`, and `EntityDestroy` to track entity lifetime.
+   Subscribe to `EntityEvents.EntityCreated`, `EntityEvents.EntityDestroyRequested`, and `EntityEvents.EntityDestroy` to track entity lifetime.
 
 2. **Component lifecycle hooks**
-   Subscribe to `ComponentEvents.ComponentAdded` and `ComponentRemoved` to track component changes.
+   Subscribe to `ComponentEvents.ComponentAdded` and `ComponentEvents.ComponentRemoved` to track component changes.
 
 3. **Event subscription and cleanup**
    Properly subscribe in `Initialize()` and unsubscribe in `Shutdown()` to prevent memory leaks.
@@ -53,20 +53,28 @@ Key excerpts:
 ### Event Subscription
 
 ```csharp
-public void Initialize(IWorld w)
+[FixedGroup]
+public sealed class HookSubscriberSystem : ISystemLifecycle
 {
-    EntityEvents.EntityCreated += OnEntityCreated;
-    EntityEvents.EntityDestroy += OnEntityDestroyed;
-    ComponentEvents.ComponentAdded += OnComponentAdded;
-    ComponentEvents.ComponentRemoved += OnComponentRemoved;
-}
+    public void Initialize(IWorld w)
+    {
+        EntityEvents.EntityCreated += OnEntityCreated;
+        EntityEvents.EntityDestroyRequested += OnEntityDestroyRequested;
+        EntityEvents.EntityDestroy += OnEntityDestroyed;
+        ComponentEvents.ComponentAdded += OnComponentAdded;
+        ComponentEvents.ComponentRemoved += OnComponentRemoved;
+    }
 
-public void Shutdown()
-{
-    EntityEvents.EntityCreated -= OnEntityCreated;
-    EntityEvents.EntityDestroy -= OnEntityDestroyed;
-    ComponentEvents.ComponentAdded -= OnComponentAdded;
-    ComponentEvents.ComponentRemoved -= OnComponentRemoved;
+    public void Shutdown()
+    {
+        EntityEvents.EntityCreated -= OnEntityCreated;
+        EntityEvents.EntityDestroyRequested -= OnEntityDestroyRequested;
+        EntityEvents.EntityDestroy -= OnEntityDestroyed;
+        ComponentEvents.ComponentAdded -= OnComponentAdded;
+        ComponentEvents.ComponentRemoved -= OnComponentRemoved;
+    }
+
+    public void Run(IWorld w, float dt) { }
 }
 ```
 
@@ -118,7 +126,7 @@ using (var cmd = w.BeginWrite())
 ```bash
 dotnet restore
 dotnet build --no-restore
-dotnet run --project <your-console-sample-csproj>
+dotnet run --project ZenEcsCoreSamples-08-WorldHook.csproj
 ```
 
 Press **any key** to exit.
@@ -164,7 +172,7 @@ Press **any key** to exit.
     * `ISystemLifecycle.Initialize()` — called once on system registration
     * `ISystemLifecycle.Shutdown()` — called when system is removed
 * **CommandBuffer:**
-    * `World.BeginWrite()`, `cmd.CreateEntity()`, `cmd.DestroyEntity()`, `cmd.AddComponent()`, `cmd.RemoveComponent()`
+    * `world.BeginWrite()`, `cmd.CreateEntity()`, `cmd.DestroyEntity()`, `cmd.AddComponent()`, `cmd.RemoveComponent()`
 
 ---
 

@@ -1,32 +1,27 @@
-# ZenECS Core — Sample 03: View→Data via MessageBus
+# ZenECS Core — Sample 02: View→Data via MessageBus
 
 A **console** sample that demonstrates the ZenECS philosophy where the **view never writes ECS data directly**.
 Instead, the view publishes **messages**; simulation systems consume them and mutate ECS state; presentation reads state (read-only).
 
 * Minimal component: `Health`
-
 * Message: `DamageRequest : IMessage`
-
 * Systems:
-
-    * `DamageSystem : IInitializeSystem, IVariableRunSystem` (Simulation — writes via messages)
-    * `PrintHealthSystem : IPresentationSystem` (Presentation — read-only)
-
+    * `DamageSystem : ISystemLifecycle` (FixedGroup — writes via messages)
+    * `PrintHealthSystem : ISystem` (FrameViewGroup — read-only)
 * Kernel loop:
-
-    * `EcsKernel.Start(...)` registers systems
-    * `Pump()` integrates variable step + fixed step
-    * `LateFrame()` runs presentation
+    * `Kernel.CreateWorld()` creates the world
+    * `world.AddSystems()` registers systems
+    * `Kernel.PumpAndLateFrame()` integrates variable step + fixed step
 
 ---
 
 ## What this sample shows
 
 1. **View → Message**
-   The “view” layer (here, console key input) never touches the world. It only calls `bus.Publish(new DamageRequest(...))`.
+   The "view" layer (here, console key input) never touches the world. It only calls `world.Publish(new DamageRequest(...))`.
 
 2. **Message → System → World**
-   `DamageSystem` subscribes to `DamageRequest`, then updates `Health` components in Simulation.
+   `DamageSystem` subscribes to `DamageRequest` in `Initialize()`, then updates `Health` components in Simulation.
 
 3. **World → Presentation (read-only)**
    `PrintHealthSystem` queries `Health` and prints it during Late (no writes).
@@ -37,11 +32,11 @@ Instead, the view publishes **messages**; simulation systems consume them and mu
 
 ```
 [View/Input] → publish(DamageRequest) → [MessageBus]
-      → [DamageSystem] (SimulationGroup) → update Health
-      → [PrintHealthSystem] (PresentationGroup) → print HP (read-only)
+      → [DamageSystem] (FixedGroup) → update Health
+      → [PrintHealthSystem] (FrameViewGroup) → print HP (read-only)
 ```
 
-All writes happen in **Simulation**; **Presentation** is read-only and runs in **Late**.
+All writes happen in **FixedGroup**; **FrameViewGroup** is read-only and runs in **Late**.
 
 ---
 
@@ -69,11 +64,11 @@ public readonly struct Health
 ```csharp
 public readonly struct DamageRequest : IMessage
 {
-    public readonly int EntityId;
+    public readonly Entity Entity;
     public readonly int Amount;
-    public DamageRequest(int entityId, int amount)
+    public DamageRequest(Entity entity, int amount)
     {
-        EntityId = entityId;
+        Entity = entity;
         Amount = amount;
     }
 }
@@ -82,35 +77,42 @@ public readonly struct DamageRequest : IMessage
 ### Systems
 
 ```csharp
-[SimulationGroup]
-public sealed class DamageSystem : IInitializeSystem, IVariableRunSystem
+[FixedGroup]
+public sealed class DamageSystem : ISystemLifecycle
 {
-    private MessageBus? _bus;
     private IDisposable? _sub;
 
-    public void Initialize(World w)
+    public void Initialize(IWorld w)
     {
-        _bus = EcsKernel.Bus;
-        _sub = _bus.Subscribe<DamageRequest>(m =>
+        _sub = w.Subscribe<DamageRequest>(m =>
         {
-            if (!w.Exists(m.EntityId) || !w.Has<Health>(m.EntityId)) return;
-            var hp = w.Read<Health>(m.EntityId);
-            w.Replace(m.EntityId, new Health(Math.Max(0, hp.Value - m.Amount)));
-            Console.WriteLine($"[Logic] e:{m.EntityId} took {m.Amount} → HP={Math.Max(0, hp.Value - m.Amount)}");
+            if (!w.IsAlive(m.Entity) || !w.HasComponent<Health>(m.Entity)) return;
+            
+            using var cmd = w.BeginWrite();
+            var current = w.ReadComponent<Health>(m.Entity);
+            var updated = new Health(Math.Max(0, current.Value - m.Amount));
+            cmd.ReplaceComponent(m.Entity, updated);
+            Console.WriteLine($"[Logic] e:{m.Entity} took {m.Amount} → {updated}");
         });
     }
 
-    public void Run(World w) => _bus?.PumpAll(); // drain messages per simulation tick
+    public void Shutdown()
+    {
+        _sub?.Dispose();
+    }
+
+    public void Run(IWorld w, float dt) { }
 }
 
-[PresentationGroup]
-public sealed class PrintHealthSystem : IPresentationSystem
+[FrameViewGroup]
+public sealed class PrintHealthSystem : ISystem
 {
-    public void Run(World w, float alpha)
+    public void Run(IWorld w, float dt)
     {
-        Console.WriteLine($"-- Frame {w.FrameCount} (alpha={alpha:0.00}) --");
-        foreach (var e in w.Query<Health>())
-            Console.WriteLine($"Entity {e.Id,2}: {w.Read<Health>(e)}");
+        foreach (var (e, health) in w.Query<Health>())
+        {
+            Console.WriteLine($"Entity {e.Id,2}: {health}");
+        }
     }
 }
 ```
@@ -118,11 +120,19 @@ public sealed class PrintHealthSystem : IPresentationSystem
 ### Frame driver
 
 ```csharp
-const float fixedDelta = 1f / 60f; // 60Hz
-const int   maxSubSteps = 4;
+var kernel = new Kernel();
+var world = kernel.CreateWorld();
+kernel.SetCurrentWorld(world);
 
-EcsKernel.Pump(dt, fixedDelta, maxSubSteps, out var alpha);
-EcsKernel.LateFrame(alpha);
+world.AddSystems([
+    new DamageSystem(),
+    new PrintHealthSystem()
+]);
+
+// View layer: publish messages only
+world.Publish(new DamageRequest(e1, rand.Next(5, 15)));
+
+kernel.PumpAndLateFrame(dt, fixedDelta, maxSubStepsPerFrame);
 ```
 
 ---
@@ -134,7 +144,7 @@ EcsKernel.LateFrame(alpha);
 ```bash
 dotnet restore
 dotnet build --no-restore
-dotnet run --project <your-console-sample-csproj>
+dotnet run --project ZenEcsCoreSamples-02-Messages.csproj
 ```
 
 Press **1** or **2** to publish `DamageRequest` to entity 1 or 2.
@@ -145,16 +155,14 @@ Press **ESC** to exit.
 ## Example output
 
 ```
-=== ZenECS Core Sample — View→Data via MessageBus (Kernel) ===
+=== ZenECS Core Sample - View→Data via MessageBus (Kernel) ===
 Running... press [1]/[2] to deal damage, [ESC] to quit.
 [View] Sent DamageRequest → e:1
 [Logic] e:1 took 12 → HP=88
--- Frame 5 (alpha=0.60) --
 Entity  1: HP=88
 Entity  2: HP=75
 [View] Sent DamageRequest → e:2
 [Logic] e:2 took 7 → HP=68
--- Frame 10 (alpha=0.41) --
 Entity  1: HP=88
 Entity  2: HP=68
 Shutting down...
@@ -165,10 +173,10 @@ Done.
 
 ## APIs highlighted
 
-* **Kernel & loop:** `EcsKernel.Start/ Pump/ LateFrame/ Shutdown`
-* **Bus:** `MessageBus.Publish`, `MessageBus.Subscribe<T>`, `PumpAll`
-* **World:** `CreateEntity`, `Add<T>`, `Has<T>`, `Read<T>`, `Replace<T>`, `Query<T>`
-* **Systems:** `[SimulationGroup]` (writes), `[PresentationGroup]` (read-only)
+* **Kernel & loop:** `Kernel.CreateWorld()`, `Kernel.PumpAndLateFrame()`, `Kernel.Dispose()`
+* **MessageBus:** `world.Publish<T>()`, `world.Subscribe<T>(handler)`
+* **World:** `world.BeginWrite()`, `cmd.CreateEntity()`, `cmd.AddComponent()`, `world.ReadComponent<T>()`, `cmd.ReplaceComponent()`, `world.Query<T>()`
+* **Systems:** `[FixedGroup]` (writes), `[FrameViewGroup]` (read-only), `ISystemLifecycle` for subscription management
 
 ---
 
@@ -176,8 +184,9 @@ Done.
 
 * UI/View code should **never** mutate ECS data directly—**always** publish messages.
 * Keep message handlers small and focused (one message → one responsibility).
-* Presentation is **Late** and **read-only** for determinism and clarity.
-* Use a fixed timestep for stable simulation; use `alpha` for interpolation if needed.
+* Presentation is **FrameViewGroup** and **read-only** for determinism and clarity.
+* Use a fixed timestep for stable simulation.
+* Always unsubscribe in `Shutdown()` to prevent memory leaks.
 
 ---
 
