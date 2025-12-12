@@ -178,3 +178,4 @@ All tests use xUnit and can be run via:
 - Tests use deterministic simulation steps via `TestWorldHost.TickFrame()`, `TickFixed()`, and `TickFullFrame()`
 - The test framework sets `WorldWritePhase` to `Simulation` during test execution to allow structural changes
 - Tests cover both happy paths and edge cases (empty worlds, destroyed entities, missing components, etc.)
+
