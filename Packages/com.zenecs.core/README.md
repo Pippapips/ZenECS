@@ -154,6 +154,20 @@ public sealed class MoveSystem : IFixedRunSystem
 
 ---
 
+## 📚 Namespaces
+
+The package is organized into the following namespaces:
+
+- `ZenECS.Core` — Core types, kernel, world API, primitives (Entity, WorldId), attributes
+- `ZenECS.Core.Systems` — System interfaces, attributes, utilities
+- `ZenECS.Core.Messaging` — Message bus contracts
+- `ZenECS.Core.Serialization` — Snapshot I/O, formatters, migrations
+- `ZenECS.Core.Binding` — Context and binder contracts for view integration
+- `ZenECS.Core.Config` — Configuration interfaces and options
+- `ZenECS.Core.Internal` — Internal implementation details (not part of public API)
+
+---
+
 ## 🧭 Core Concepts
 
 This section provides a comprehensive guide to the core concepts of ZenECS Core.
@@ -162,11 +176,58 @@ This section provides a comprehensive guide to the core concepts of ZenECS Core.
 
 The **Kernel** is the top-level manager that manages multiple worlds and orchestrates frame ticks.
 
+**Interface:** `ZenECS.Core.IKernel`  
+**Implementation:** `ZenECS.Core.Kernel`
+
 **Key Responsibilities:**
 - Create/destroy multiple worlds and lookup by ID/name/tag
 - Current world selection and change events
 - Pause/resume support
 - Thread-safe world indexing
+- Deterministic frame stepping
+
+**Key Properties:**
+- `bool IsRunning` — Whether the kernel is currently running
+- `bool IsPaused` — Whether the kernel is paused
+- `IWorld? CurrentWorld` — Currently selected world
+- `float SimulationAccumulatorSeconds` — Unconsumed delta time for fixed stepping
+- `long FrameCount` — Total number of frames processed
+- `long FixedFrameCount` — Total number of fixed steps processed
+- `double TotalSimulatedSeconds` — Accumulated simulated time
+
+**Key Methods:**
+```csharp
+// World management
+IWorld CreateWorld(WorldConfig? cfg = null, string? name = null, 
+                   IEnumerable<string>? tags = null, WorldId? presetId = null, 
+                   bool setAsCurrent = false);
+void DestroyWorld(IWorld world);
+bool TryGet(WorldId id, out IWorld? world);
+IEnumerable<IWorld> FindByName(string name);
+IEnumerable<IWorld> FindByTag(string tag);
+IEnumerable<IWorld> FindByAnyTag(params string[] tags);
+
+// Current world management
+void SetCurrentWorld(IWorld world);
+void ClearCurrentWorld();
+
+// Frame stepping
+void BeginFrame(float dt);
+void FixedStep(float fixedDelta);
+void LateFrame(float alpha = 1.0f);
+int PumpAndLateFrame(float dt, float fixedDelta, int maxSubSteps);
+
+// Control
+void Pause();
+void Resume();
+void TogglePause();
+```
+
+**Events:**
+- `event Action<IWorld>? WorldCreated`
+- `event Action<IWorld>? WorldDestroyed`
+- `event Action<IWorld?, IWorld?>? CurrentWorldChanged`
+- `event Action? Disposed`
 
 **Basic Usage:**
 
@@ -209,9 +270,33 @@ FixedStep × N (fixed timestep, simulation)
 LateFrame (presentation, read-only)
 ```
 
+### KernelOptions
+
+Configuration options for the kernel.
+
+**Type:** `ZenECS.Core.KernelOptions`
+
+**Properties:**
+- `bool AutoSelectNewWorld` — Automatically select newly created worlds as current
+- `bool StepOnlyCurrentWhenSelected` — Only step the current world when one is selected
+- `Func<WorldId> NewWorldId` — Factory function for generating new world IDs
+- `string AutoNamePrefix` — Prefix for auto-generated world names
+
 ### World
 
 **World** is the unified public API that integrates all ECS functionality. It represents a single simulation space.
+
+**Interface:** `ZenECS.Core.IWorld`
+
+**Key Properties:**
+- `IKernel Kernel` — The kernel that owns this world
+- `WorldId Id` — Stable identity of this world
+- `string Name` — Human-readable name
+- `IReadOnlyCollection<string> Tags` — Tags for discovery and grouping
+- `long FrameCount` — Number of frames processed
+- `long Tick` — World-local simulation tick counter
+- `bool IsPaused` — Whether this world is paused
+- `bool IsDisposing` — Whether this world is disposing
 
 **Key Features:**
 - **Entities**: Entity creation/destruction, lifecycle management
@@ -248,15 +333,46 @@ bool hasPos = world.HasComponent<Position>(entity);
 world.DestroyEntity(entity);
 ```
 
+**Aggregated APIs:**
+
+`IWorld` aggregates the following API surfaces:
+- `IWorldQueryApi` — Entity queries
+- `IWorldQuerySpanApi` — Query with span-based iteration
+- `IWorldEntityApi` — Entity creation/destruction
+- `IWorldComponentApi` — Component CRUD operations
+- `IWorldContextApi` — Context management for binders
+- `IWorldBinderApi` — Binder registration and management
+- `IWorldSnapshotApi` — Snapshot save/load
+- `IWorldMessagesApi` — Message bus operations
+- `IWorldHookApi` — Write hooks and validators
+- `IWorldCommandBufferApi` — Command buffer management
+- `IWorldWorkerApi` — Worker API
+- `IWorldSystemsApi` — System registration and management
+- `IWorldResetApi` — World reset operations
+
 ### Entity
 
-**Entity** is a container for components. It is represented as a simple ID and contains no data itself.
+**Entity** is a container for components. It is represented as a packed 64-bit handle containing a generation and an ID.
 
-**Characteristics:**
-- Entities have unique IDs
-- Entities themselves contain no data
-- Data is stored through components
-- Entities can be created/destroyed, and destroyed entities are not reused
+**Type:** `ZenECS.Core.Entity` (struct)
+
+**Structure:**
+```
+[ Gen (32 bits) | Id (32 bits) ]
+```
+
+**Key Properties:**
+- `ulong Handle` — Raw 64-bit handle value
+- `int Id` — Entity ID (lower 32 bits)
+- `int Gen` — Generation (upper 32 bits)
+- `bool IsNone` — Whether this is Entity.None (zero handle)
+- `bool IsValid` — Whether handle is non-zero (does not guarantee liveness)
+
+**Static Methods:**
+```csharp
+static ulong Pack(int id, int gen);
+static (int id, int gen) Unpack(ulong handle);
+```
 
 **Usage Example:**
 
@@ -273,6 +389,33 @@ if (world.IsAlive(player))
 
 // Access entity ID
 int id = player.Id;
+```
+
+### WorldId
+
+Stable, value-type identifier for a `IWorld`. Wraps a `Guid` to provide strong typing.
+
+**Type:** `ZenECS.Core.WorldId` (struct)
+
+**Properties:**
+- `Guid Value` — The underlying globally unique identifier
+
+**Usage:**
+```csharp
+var worldId = new WorldId(Guid.NewGuid());
+var world = kernel.CreateWorld(presetId: worldId);
+```
+
+### WorldHandle
+
+A safe handle that resolves to an `IWorld` instance.
+
+**Type:** `ZenECS.Core.WorldHandle`
+
+**Methods:**
+```csharp
+IWorld ResolveOrThrow();
+bool TryResolve(out IWorld? world);
 ```
 
 ### Component
@@ -340,6 +483,27 @@ world.RemoveComponent<Velocity>(entity);
 bool hasPos = world.HasComponent<Position>(entity);
 ```
 
+### IWorldSingletonComponent
+
+Components that implement this interface are treated as world-level singletons (at most one entity per world).
+
+```csharp
+public readonly struct Gravity : IWorldSingletonComponent
+{
+    public readonly float Value;
+    public Gravity(float value) { Value = value; }
+}
+
+// Set singleton
+world.SetSingleton(new Gravity(-9.8f));
+
+// Get singleton
+if (world.TryGetSingleton<Gravity>(out var gravity))
+{
+    // Use gravity.Value
+}
+```
+
 ### Systems
 
 **System** is a class that encapsulates game logic. It queries and modifies components to update game state.
@@ -359,8 +523,24 @@ ZenECS provides the following system interfaces:
 
 Systems are categorized into groups:
 
-- **`[SimulationGroup]`**: Simulation phase (FixedStep)
-- **`[PresentationGroup]`**: Presentation phase (LateFrame)
+**Enum:** `ZenECS.Core.Systems.SystemGroup`
+
+- `Unknown` — Unknown or not specified
+- `FixedInput` — Fixed-step input phase
+- `FixedDecision` — Fixed-step decision phase
+- `FixedSimulation` — Fixed-step simulation phase
+- `FixedPost` — Fixed-step post-simulation phase
+- `FrameInput` — Per-frame input phase
+- `FrameSync` — Per-frame sync phase
+- `FrameView` — Per-frame view phase
+- `FrameUI` — Per-frame UI phase
+
+**Attributes:**
+- **`[SimulationGroup]`**: Maps to FixedSimulation group
+- **`[PresentationGroup]`**: Maps to FrameView group
+- **`[OrderBefore(typeof(OtherSystem))]`**: Run before another system
+- **`[OrderAfter(typeof(OtherSystem))]`**: Run after another system
+- **`[Order(int priority)]`**: Order by priority value
 
 **System Ordering:**
 
@@ -431,6 +611,8 @@ world.AddSystems([
 
 **Query** is an efficient way to find entities that have specific components.
 
+**Interface:** `ZenECS.Core.IWorldQueryApi`
+
 **Basic Query:**
 
 ```csharp
@@ -446,6 +628,17 @@ foreach (var entity in world.Query<Position, Velocity>())
     ref var pos = ref world.Ref<Position>(entity);
     var vel = world.Get<Velocity>(entity);
 }
+```
+
+**Query Overloads:**
+
+The API provides overloads for queries with 1 to 8 component types:
+
+```csharp
+QueryEnumerable<T1> Query<T1>(Filter f = default);
+QueryEnumerable<T1, T2> Query<T1, T2>(Filter f = default);
+QueryEnumerable<T1, T2, T3> Query<T1, T2, T3>(Filter f = default);
+// ... up to T8
 ```
 
 **Filtering:**
@@ -476,10 +669,32 @@ foreach (var entity in world.Query<Position, Velocity>(filter))
 
 **Command Buffer** is a mechanism that buffers structural changes (entity creation/destruction, component add/remove) and applies them in batches at safe boundaries.
 
+**Interface:** `ZenECS.Core.ICommandBuffer`
+
 **Use Cases:**
 - Safely handle structural changes during system execution
 - Buffer changes in multi-threaded environments
 - Delay changes for deterministic execution
+
+**Key Methods:**
+```csharp
+// Entity lifecycle
+Entity CreateEntity();
+void DestroyEntity(Entity e);
+void DestroyAllEntities();
+
+// Component operations
+void AddComponent<T>(Entity e, in T value);
+void ReplaceComponent<T>(Entity e, in T value);
+void RemoveComponent<T>(Entity e);
+
+// Singleton operations
+void SetSingleton<T>(in T value) where T : struct, IWorldSingletonComponent;
+void RemoveSingleton<T>();
+
+// Control
+void EndWrite();
+```
 
 **Basic Usage:**
 
@@ -494,7 +709,7 @@ using (var cmd = world.BeginWrite())
     
     // ReplaceComponent is also supported
     cmd.ReplaceComponent(entity, new Health { Value = 75 });
-} // Automatically applied
+} // Automatically applied when disposed
 
 // Explicit application
 world.RunScheduledJobs();
@@ -514,6 +729,8 @@ using (var cmd = world.BeginWrite())
 
 **Message Bus** is a struct-based Pub/Sub messaging system. It implements unidirectional data flow from the view layer to the data layer.
 
+**Base Interface:** `ZenECS.Core.Messaging.IMessage`
+
 **Message Definition:**
 
 ```csharp
@@ -528,6 +745,14 @@ public readonly struct Damage : IMessage
         Amount = amount;
     }
 }
+```
+
+**IWorldMessagesApi Methods:**
+```csharp
+IDisposable Subscribe<T>(Action<T> handler) where T : struct, IMessage;
+void Publish<T>(in T msg) where T : struct, IMessage;
+int PumpAll();
+void Clear();
 ```
 
 **Subscribe and Publish:**
@@ -550,6 +775,9 @@ world.Publish(new Damage { Target = entity, Amount = 10 });
 
 // Unsubscribe
 subscription.Dispose();
+
+// Pump messages (typically called once per frame)
+world.PumpMessages();
 ```
 
 **Usage Pattern:**
@@ -563,6 +791,13 @@ The message bus implements **View → Data** unidirectional flow:
 ### Binding
 
 **Binding** is a system for view integration. It connects ECS data with views (Unity, UI, audio, etc.) through Contexts and Binders.
+
+**Interfaces:**
+- `ZenECS.Core.Binding.IContext` — Container for view-related data
+- `ZenECS.Core.Binding.IBinder` — Detects component changes and updates views
+- `ZenECS.Core.Binding.IBinds<T>` — Interface for binders that react to component changes
+- `ZenECS.Core.Binding.IRequireContext<T>` — Interface for binders that require a context
+- `ComponentDelta<T>` — Component change information (old value, new value)
 
 **Key Concepts:**
 - **Context**: Container for view-related data
@@ -638,9 +873,23 @@ world.SetComponent(entity, new Health { Value = -10 }); // Throws exception on v
 world.AddComponent(entity, new GodMode()); // Throws exception on permission check failure
 ```
 
+**IWorldHookApi:** Write hooks and validators for a world.
+
 ### Snapshot I/O
 
 **Snapshot I/O** is a feature for saving and loading world state. It supports pluggable backends and formatters.
+
+**Interfaces:**
+- `ZenECS.Core.Serialization.IComponentFormatter` — Formats components for serialization
+- `ZenECS.Core.Serialization.ISnapshotBackend` — Backend for snapshot storage
+- `ZenECS.Core.Serialization.IPostLoadMigration` — Performs data migration after loading
+
+**IWorldSnapshotApi Methods:**
+```csharp
+void Save(Stream stream, IComponentFormatter formatter);
+void Load(Stream stream, IComponentFormatter formatter, 
+          IEnumerable<IPostLoadMigration>? migrations = null);
+```
 
 **Save:**
 
@@ -683,6 +932,75 @@ public class V1ToV2Migration : IPostLoadMigration
     }
 }
 ```
+
+---
+
+## ⚙️ Configuration
+
+### WorldConfig
+
+Configuration for a world instance.
+
+**Type:** `ZenECS.Core.WorldConfig`
+
+### EcsRuntimeOptions
+
+Runtime options for ECS.
+
+**Type:** `ZenECS.Core.Config.EcsRuntimeOptions`
+
+**Properties:**
+- `IEcsLogger Log` — Logger instance
+
+### IEcsLogger
+
+Logger interface for ECS runtime.
+
+**Interface:** `ZenECS.Core.Config.IEcsLogger`
+
+---
+
+## 🏷️ Attributes
+
+### ZenComponentAttribute
+
+Marks a component type and provides metadata.
+
+**Type:** `ZenECS.Core.ZenComponentAttribute`
+
+### ZenFormatterForAttribute
+
+Specifies a formatter for a component type.
+
+**Type:** `ZenECS.Core.ZenFormatterForAttribute`
+
+### ZenDefaults
+
+Provides default values for components.
+
+**Type:** `ZenECS.Core.ZenDefaults`
+
+### ZenSystemWatchAttribute
+
+Marks a system to watch specific component types.
+
+**Type:** `ZenECS.Core.ZenSystemWatchAttribute`
+
+---
+
+## 📡 Events
+
+### EntityEvents
+
+Events for entity lifecycle.
+
+**Type:** `ZenECS.Core.EntityEvents`
+
+### ComponentEvents
+
+Events for component lifecycle.
+
+**Type:** `ZenECS.Core.ComponentEvents`
 
 ---
 
@@ -765,6 +1083,53 @@ ZenECS provides several extensibility points:
 
 ---
 
+## 📋 API Index
+
+### Core Namespace (`ZenECS.Core`)
+
+- `IKernel` / `Kernel` — Multi-world kernel
+- `IWorld` — World API surface
+- `Entity` — Entity handle
+- `WorldId` — World identifier
+- `WorldHandle` — Safe world handle
+- `WorldConfig` — World configuration
+- `KernelOptions` — Kernel configuration
+- `ICommandBuffer` — Command buffer interface
+- `ExternalCommand` — External command type
+
+### Systems Namespace (`ZenECS.Core.Systems`)
+
+- `ISystem` — Base system interface
+- `ISystemLifecycle` — System lifecycle hooks
+- `ISystemEnabledFlag` — Enable/disable flag
+- `SystemGroup` — System execution groups
+- System attribute classes
+
+### Messaging Namespace (`ZenECS.Core.Messaging`)
+
+- `IMessage` — Message interface
+
+### Serialization Namespace (`ZenECS.Core.Serialization`)
+
+- `IComponentFormatter` — Component formatter
+- `ISnapshotBackend` — Snapshot backend
+- `IPostLoadMigration` — Post-load migration
+
+### Binding Namespace (`ZenECS.Core.Binding`)
+
+- `IContext` — Context interface
+- `IBinder` — Binder interface
+- `IBinds<T>` — Component binder interface
+- `IRequireContext<T>` — Context requirement interface
+- `ComponentDelta<T>` — Component change delta
+
+### Config Namespace (`ZenECS.Core.Config`)
+
+- `IEcsLogger` — Logger interface
+- `EcsRuntimeOptions` — Runtime options
+
+---
+
 ## 🧩 Versioning & Compatibility
 
 - **Target Frameworks**: `.NET Standard 2.1` / `.NET 8` (samples)
@@ -774,47 +1139,5 @@ ZenECS provides several extensibility points:
 
 ---
 
-## 📖 Documentation
+For detailed documentation, contributing guidelines, license information, and support, please refer to the main repository documentation.
 
-For detailed documentation, see:
-
-- **Sample Code**: See `Packages/com.zenecs.core/Samples~/` folder
-- [API Reference](Docs/core/api-reference.md)
-- [Quick Start Guide](Docs/getting-started/quickstart-basic.md)
-- [Architecture Overview](Docs/overview/architecture.md)
-- [FAQ](Docs/overview/faq.md)
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please check:
-
-- [Contributing Guide](Docs/community/contributing.md)
-- [Code of Conduct](Docs/community/code-of-conduct.md)
-
----
-
-## ⚖️ License
-
-MIT © Pippapips Limited
-
-See the [LICENSE](../LICENSE) file for details.
-
----
-
-## 📞 Support
-
-- **Issues**: [GitHub Issues](https://github.com/Pippapips/ZenECS_deprecated/issues)
-- **Email**: ck@pippapips.com
-- **Website**: [pippapips.com](https://pippapips.com)
-
----
-
-## 🧾 Acknowledgements
-
-Built with love for data-driven games and tools. Feedback and PRs welcome!
-
----
-
-**Made with ❤️ by Pippapips Limited**
