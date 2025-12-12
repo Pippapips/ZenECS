@@ -1,4 +1,4 @@
-﻿// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Core Samples 04 Snapshot IO + Post Migration
 // File: SnapshotIO_PostMig.cs
 // Purpose: Demonstrates snapshot save/load and post-load migration using the
@@ -12,13 +12,13 @@
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
+
 using System;
 using System.IO;
 using System.Diagnostics;
 using System.Threading;
 using ZenECS.Core;
 using ZenECS.Core.Serialization;
-using ZenECS.Core.Serialization.Formats.Binary;
 using ZenECS.Core.Systems;
 
 namespace ZenEcsCoreSamples.Snapshot
@@ -29,7 +29,13 @@ namespace ZenEcsCoreSamples.Snapshot
     public readonly struct PositionV1
     {
         public readonly float X, Y;
-        public PositionV1(float x, float y) { X = x; Y = y; }
+
+        public PositionV1(float x, float y)
+        {
+            X = x;
+            Y = y;
+        }
+
         public override string ToString() => $"({X:0.##}, {Y:0.##})";
     }
 
@@ -37,10 +43,14 @@ namespace ZenEcsCoreSamples.Snapshot
     {
         public readonly float X, Y;
         public readonly int Layer;
+
         public PositionV2(float x, float y, int layer = 0)
         {
-            X = x; Y = y; Layer = layer;
+            X = x;
+            Y = y;
+            Layer = layer;
         }
+
         public override string ToString() => $"({X:0.##}, {Y:0.##}, layer:{Layer})";
     }
 
@@ -54,6 +64,7 @@ namespace ZenEcsCoreSamples.Snapshot
             b.WriteFloat(v.X);
             b.WriteFloat(v.Y);
         }
+
         public override PositionV1 ReadTyped(ISnapshotBackend b)
             => new PositionV1(b.ReadFloat(), b.ReadFloat());
     }
@@ -66,6 +77,7 @@ namespace ZenEcsCoreSamples.Snapshot
             b.WriteFloat(v.Y);
             b.WriteInt(v.Layer);
         }
+
         public override PositionV2 ReadTyped(ISnapshotBackend b)
             => new PositionV2(b.ReadFloat(), b.ReadFloat(), b.ReadInt());
     }
@@ -79,11 +91,12 @@ namespace ZenEcsCoreSamples.Snapshot
 
         public void Run(IWorld world)
         {
-            foreach (var e in world.Query<PositionV1>())
+            using var cmd = world.BeginWrite();
+
+            foreach (var (e, posV1) in world.Query<PositionV1>())
             {
-                var old = world.ReadComponent<PositionV1>(e);
-                world.SetComponent(e, new PositionV2(old.X, old.Y, layer: 1));
-                world.RemoveComponent<PositionV1>(e);
+                cmd.AddComponent(e, new PositionV2(posV1.X, posV1.Y, layer: 1));
+                cmd.RemoveComponent<PositionV1>(e);
             }
         }
     }
@@ -92,16 +105,20 @@ namespace ZenEcsCoreSamples.Snapshot
     // Systems
     // ──────────────────────────────────────────────────────────────────────────
 
-    [PresentationGroup]
-    public sealed class PrintSummarySystem : IPresentationSystem
+    [FrameViewGroup]
+    public sealed class PrintSummarySystem : ISystem
     {
-        public void Run(IWorld w, float dt, float alpha)
+        public void Run(IWorld w, float dt)
         {
             // read-only logging for demonstration
-            foreach (var e in w.Query<PositionV2>())
+            foreach (var (e, posV1) in w.Query<PositionV1>())
             {
-                var p = w.ReadComponent<PositionV2>(e);
-                Console.WriteLine($"Entity {e.Id}: PositionV2={p}");
+                Console.WriteLine($"Entity {e.Id}: PositionV1={posV1}");
+            }
+
+            foreach (var (e, posV2) in w.Query<PositionV2>())
+            {
+                Console.WriteLine($"Entity {e.Id}: PositionV2={posV2}");
             }
         }
     }
@@ -128,37 +145,59 @@ namespace ZenEcsCoreSamples.Snapshot
             ComponentRegistry.RegisterFormatter(new PositionV2Formatter(), "com.zenecs.samples.position.v2");
 
             // Create data in V1
-            var e = world.CreateEntity();
-            world.AddComponent(e, new PositionV1(3, 7));
+            Entity e;
+            using (var cmd = world.BeginWrite())
+            {
+                e = cmd.CreateEntity();
+                cmd.AddComponent(e, new PositionV1(3, 7));
+            }
+
+            kernel.PumpAndLateFrame(0, 0, 1);
 
             // Save snapshot (binary) into memory stream
             using var ms = new MemoryStream();
             world.SaveFullSnapshotBinary(ms);
             Console.WriteLine($"Saved snapshot bytes: {ms.Length}");
-            
-            world.SetComponent(e, new PositionV1(103, 107));
-            
-            
+
+            // Modify entity after save (to show snapshot contains original state)
+            using (var cmd2 = world.BeginWrite())
+            {
+                cmd2.AddComponent(e, new PositionV1(103, 107));
+            }
+
+            kernel.PumpAndLateFrame(0, 0, 1);
+
+            world.RemoveSystem<PrintSummarySystem>();
+
             // Load snapshot into a NEW world
             var world2 = kernel.CreateWorld(new WorldConfig(initialEntityCapacity: 8));
+            world2.AddSystems([
+                new PrintSummarySystem()
+            ]);
             ComponentRegistry.Register("com.zenecs.samples.position.v1", typeof(PositionV1));
             ComponentRegistry.Register("com.zenecs.samples.position.v2", typeof(PositionV2));
             ComponentRegistry.RegisterFormatter(new PositionV1Formatter(), "com.zenecs.samples.position.v1");
             ComponentRegistry.RegisterFormatter(new PositionV2Formatter(), "com.zenecs.samples.position.v2");
 
+            // Register migration - will be executed automatically by LoadFullSnapshotBinary
+            PostLoadMigrationRegistry.Register(new DemoPostLoadMigration());
+
             ms.Position = 0;
             world2.LoadFullSnapshotBinary(ms);
+            // LoadFullSnapshotBinary loads PositionV1 components and runs PostLoadMigrationRegistry.RunAll(world2)
+            // Migration uses CommandBuffer, so we need to flush it to apply changes
+            kernel.PumpAndLateFrame(0, 0, 1);
 
-            // Run migration
-            new DemoPostLoadMigration().Run(world2);
-
-            // Verify results
-            foreach (var e2 in world2.Query<PositionV2>())
+            // Verify migration results
+            foreach (var (e2, posV2) in world2.Query<PositionV2>())
             {
-                var p = world2.ReadComponent<PositionV2>(e2);
-                Console.WriteLine($"Migrated entity {e2.Id} → {p}");
+                Console.WriteLine($"Migrated entity {e2.Id} → {posV2}");
             }
-            
+
+            // Run systems to print current state (after migration)
+            kernel.PumpAndLateFrame(0, 0, 1);
+
+            world2.RemoveSystem<PrintSummarySystem>();
             
             const float fixedDelta = 1f / 60f;
             const int maxSubSteps = 4;
