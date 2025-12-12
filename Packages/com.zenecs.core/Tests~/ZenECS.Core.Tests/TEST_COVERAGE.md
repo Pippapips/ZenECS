@@ -55,6 +55,18 @@
    - ✅ 여러 번의 펌프
    - ✅ 빈 큐 처리
 
+9. **WorldSingletonTests.cs**
+   - ✅ SetSingleton<T>() - 싱글톤 설정
+   - ✅ GetSingleton<T>() - 싱글톤 가져오기
+   - ✅ TryGetSingleton<T>() - 싱글톤 시도 가져오기
+   - ✅ RemoveSingleton<T>() - 싱글톤 제거
+   - ✅ HasSingleton(Entity) - 엔티티가 싱글톤 소유자인지 확인
+   - ✅ GetAllSingletons() - 모든 싱글톤 가져오기
+   - ✅ 싱글톤 위반 감지 (여러 엔티티에 같은 싱글톤 컴포넌트)
+   - ✅ SetSingleton으로 업데이트
+   - ✅ CommandBuffer를 통한 SetSingleton/RemoveSingleton
+   - ✅ 엔티티 파괴 시 싱글톤 인덱스 업데이트
+
 ## 누락된 테스트 영역
 
 ### 1. Query API (IWorldQueryApi) - **완료**
@@ -75,14 +87,14 @@
    - ✅ 메시지 타입별 격리
    - ✅ 메시지 FIFO 순서
 
-### 3. Singleton Components (IWorldSingletonComponent) - **중간 우선순위**
-   - ❌ SetSingleton<T>()
-   - ❌ GetSingleton<T>()
-   - ❌ TryGetSingleton<T>()
-   - ❌ RemoveSingleton<T>()
-   - ❌ HasSingleton(Entity)
-   - ❌ GetAllSingletons()
-   - ❌ 싱글톤 위반 감지 (여러 엔티티에 같은 싱글톤 컴포넌트)
+### 3. Singleton Components (IWorldSingletonComponent) - **완료**
+   - ✅ SetSingleton<T>() - 싱글톤 설정
+   - ✅ GetSingleton<T>() - 싱글톤 가져오기
+   - ✅ TryGetSingleton<T>() - 싱글톤 시도 가져오기
+   - ✅ RemoveSingleton<T>() - 싱글톤 제거
+   - ✅ HasSingleton(Entity) - 엔티티가 싱글톤 소유자인지 확인
+   - ✅ GetAllSingletons() - 모든 싱글톤 가져오기
+   - ✅ 싱글톤 위반 감지 (여러 엔티티에 같은 싱글톤 컴포넌트)
 
 ### 4. QuerySpan API (IWorldQuerySpanApi) - **중간 우선순위**
    - ❌ QuerySpan<T1>() - 스팬 기반 쿼리
@@ -123,7 +135,7 @@
 
 1. ✅ **WorldQueryTests.cs** - Query API는 핵심 기능 (완료)
 2. ✅ **WorldMessagesTests.cs** - README에 언급된 기능 (완료)
-3. **WorldSingletonTests.cs** - 싱글톤 컴포넌트는 특수한 케이스 (다음 우선순위)
-4. **WorldQuerySpanTests.cs** - 성능 최적화된 쿼리
+3. ✅ **WorldSingletonTests.cs** - 싱글톤 컴포넌트는 특수한 케이스 (완료)
+4. **WorldQuerySpanTests.cs** - 성능 최적화된 쿼리 (다음 우선순위)
 5. 나머지는 필요에 따라 추가
 
