@@ -50,7 +50,13 @@ namespace ZenECS.Core.Internal
         /// <see langword="true"/> if the entity is alive and the generation
         /// matches; otherwise <see langword="false"/>.
         /// </returns>
-        public bool IsAlive(Entity e) => _alive.Get(e.Id) && _generation[e.Id] == e.Gen;
+        public bool IsAlive(Entity e)
+        {
+            // Check bounds to prevent IndexOutOfRangeException after Reset
+            if (e.Id < 0 || _generation == null || e.Id >= _generation.Length)
+                return false;
+            return _alive.Get(e.Id) && _generation[e.Id] == e.Gen;
+        }
 
         /// <summary>
         /// Checks whether a raw (id, generation) pair refers to a live entity

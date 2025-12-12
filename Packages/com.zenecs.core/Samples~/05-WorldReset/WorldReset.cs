@@ -33,77 +33,52 @@ namespace ZenEcsCoreSamples.WorldReset
     }
 
     // ──────────────────────────────────────────────────────────────────────────
-    // Systems
-    // ──────────────────────────────────────────────────────────────────────────
-
-    /// <summary>
-    /// Runs once to demonstrate World.Reset(keepCapacity) behaviors.
-    /// </summary>
-    [SimulationGroup]
-    public sealed class WorldResetDemoSystem : IVariableRunSystem
-    {
-        private bool _done;
-
-        public void Run(IWorld w, float dt)
-        {
-            if (_done) return;
-
-            Console.WriteLine("=== World.Reset demo (keepCapacity vs hard reset) ===");
-
-            // Seed a few entities
-            var e1 = w.CreateEntity();
-            var e2 = w.CreateEntity();
-            w.AddComponent(e1, new Health(100));
-            w.AddComponent(e2, new Health(50));
-
-            Console.WriteLine($"Before reset: alive={w.AliveCount}, e1.Has(Health)={w.HasComponent<Health>(e1)}");
-
-            // Option A: Keep capacity (fast clear). Preserves internal arrays/pools.
-            w.Reset(keepCapacity: true);
-            Console.WriteLine($"After Reset(keepCapacity:true): alive={w.AliveCount}");
-
-            // Re-seed to verify the world still works and reuses capacity
-            var e3 = w.CreateEntity();
-            w.AddComponent(e3, new Health(77));
-            Console.WriteLine($"Re-seed: alive={w.AliveCount}, e3.Has(Health)={w.HasComponent<Health>(e3)}");
-
-            // Option B: Hard reset — rebuild internal structures from initial config
-            w.Reset(keepCapacity: false);
-            Console.WriteLine($"After Reset(keepCapacity:false): alive={w.AliveCount}");
-
-            _done = true;
-        }
-    }
-
-    /// <summary>
-    /// Read-only presentation: prints a lightweight world summary each Late.
-    /// </summary>
-    [PresentationGroup]
-    public sealed class PrintSummarySystem : IPresentationSystem
-    {
-        public void Run(IWorld w, float dt, float alpha)
-        {
-        }
-    }
-
-    // ──────────────────────────────────────────────────────────────────────────
     // Program Entry — Basic.cs style Kernel loop
     // ──────────────────────────────────────────────────────────────────────────
     public static class Program
     {
         public static void Main()
         {
-            Console.WriteLine("=== ZenECS Core Sample — World Reset (Kernel) ===");
+            Console.WriteLine("=== ZenECS Core Sample - World Reset (Kernel) ===");
 
             var kernel = new Kernel();
             var world = kernel.CreateWorld();
             kernel.SetCurrentWorld(world);
             
-            world.AddSystems([
-                new WorldResetDemoSystem(),
-                new PrintSummarySystem()
-            ]);
+            Console.WriteLine("=== World.Reset demo (keepCapacity vs hard reset) ===");
 
+            // Seed initial entities
+            Entity e1, e2;
+            using (var cmd = world.BeginWrite())
+            {
+                e1 = cmd.CreateEntity();
+                e2 = cmd.CreateEntity();
+                cmd.AddComponent(e1, new Health(100));
+                cmd.AddComponent(e2, new Health(50));
+            }
+            kernel.PumpAndLateFrame(0, 0, 1);
+            Console.WriteLine($"Before reset: alive={world.AliveCount}, e1.Has(Health)={world.HasComponent<Health>(e1)}");
+
+            // Option A: Keep capacity (fast clear). Preserves internal arrays/pools.
+            world.Reset(keepCapacity: true);
+            Console.WriteLine($"After Reset(keepCapacity:true): alive={world.AliveCount}");
+            // Note: e1 and e2 are now invalid after reset
+
+            // Re-seed to verify the world still works and reuses capacity
+            Entity e3;
+            using (var cmd = world.BeginWrite())
+            {
+                e3 = cmd.CreateEntity();
+                cmd.AddComponent(e3, new Health(77));
+            }
+            kernel.PumpAndLateFrame(0, 0, 1);
+            Console.WriteLine($"Re-seed: alive={world.AliveCount}, e3.Has(Health)={world.HasComponent<Health>(e3)}");
+
+            // Option B: Hard reset — rebuild internal structures from initial config
+            world.Reset(keepCapacity: false);
+            Console.WriteLine($"After Reset(keepCapacity:false): alive={world.AliveCount}");
+            // Note: e3 is now invalid after reset
+            
             const float fixedDelta = 1f / 60f;   // 60Hz simulation
             const int   maxSubSteps = 4;
 
