@@ -21,6 +21,41 @@
 
 ---
 
+## Table of Contents
+
+- [Installation](#-installation)
+  - [Unity (UPM)](#unity-upm)
+  - [.NET (non-Unity)](#net-non-unity)
+- [Quick Start](#-quick-start)
+- [Namespaces](#-namespaces)
+- [Core Concepts](#-core-concepts)
+  - [Kernel](#kernel)
+  - [KernelOptions](#kerneloptions)
+  - [World](#world)
+  - [Entity](#entity)
+  - [WorldId](#worldid)
+  - [WorldHandle](#worldhandle)
+  - [Component](#component)
+  - [IWorldSingletonComponent](#iworldsingletoncomponent)
+  - [Systems](#systems)
+  - [Query](#query)
+  - [Command Buffer](#command-buffer)
+  - [Message Bus](#message-bus)
+  - [Binding](#binding)
+  - [Hooks & Validators](#hooks--validators)
+  - [Snapshot I/O](#snapshot-io)
+- [Configuration](#️-configuration)
+- [Attributes](#️-attributes)
+- [Events](#-events)
+- [Samples](#-samples)
+- [Architecture](#️-architecture)
+- [Extensibility Points](#-extensibility-points)
+- [ZenECS vs Other ECS Frameworks](#-zenecs-vs-other-ecs-frameworks)
+- [API Index](#-api-index)
+- [Versioning & Compatibility](#️-versioning--compatibility)
+
+---
+
 ## 📦 Installation
 
 ### Unity (UPM)
