@@ -1,4 +1,4 @@
-﻿// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Core Samples 01 Basic
 // File: Basic.cs
 // Purpose: Minimal ECS sample demonstrating Kernel usage with a simulation and
@@ -50,17 +50,15 @@ namespace ZenEcsCoreSamples.Basic
     /// <summary>
     /// Integrates: Position += Velocity * dt (Simulation phase)
     /// </summary>
-    [SimulationGroup]
-    public sealed class MoveSystem : IVariableRunSystem
+    [FixedGroup]
+    public sealed class MoveSystem : ISystem
     {
         public void Run(IWorld w, float dt)
         {
-            foreach (var e in w.Query<Position, Velocity>())
+            using var cmd = w.BeginWrite();
+            foreach (var (e, pos, vel) in w.Query<Position, Velocity>())
             {
-                ref var pos = ref w.Ref<Position>(e);
-                var vel = w.Get<Velocity>(e);
-                pos.X += vel.X * dt;
-                pos.Y += vel.Y * dt;
+                cmd.ReplaceComponent(e, new Position(pos.X + vel.X * dt, pos.Y + vel.Y * dt));
             }
         }
     }
@@ -68,15 +66,14 @@ namespace ZenEcsCoreSamples.Basic
     /// <summary>
     /// Read-only presentation: prints positions each frame (Late phase)
     /// </summary>
-    [PresentationGroup]
-    public sealed class PrintPositionsSystem : IPresentationSystem
+    [FrameViewGroup]
+    public sealed class PrintPositionsSystem : ISystem
     {
-        public void Run(IWorld w, float dt, float alpha)
+        public void Run(IWorld w, float dt)
         {
-            foreach (var e in w.Query<Position>())
+            foreach (var (e, pos) in w.Query<Position>())
             {
-                var p = w.ReadComponent<Position>(e); // read-only access
-                Console.WriteLine($"Entity {e.Id,3}: pos={p}");
+                Console.WriteLine($"Entity {e.Id,3}: pos={pos}");
             }
         }
     }
@@ -99,14 +96,17 @@ namespace ZenEcsCoreSamples.Basic
                 new PrintPositionsSystem()
             ]);
 
-            // Create sample entities with Position and Velocity
-            var e1 = world.CreateEntity();
-            world.AddComponent(e1, new Position(0, 0));
-            world.AddComponent(e1, new Velocity(1, 0)); // moves +X / sec
+            using (var cmd = world.BeginWrite())
+            {
+                // Create sample entities with Position and Velocity
+                var e1 = cmd.CreateEntity();
+                cmd.AddComponent(e1, new Position(0, 0));
+                cmd.AddComponent(e1, new Velocity(1, 0)); // moves +X / sec
 
-            var e2 = world.CreateEntity();
-            world.AddComponent(e2, new Position(2, 1));
-            world.AddComponent(e2, new Velocity(0, -0.5f)); // moves -Y / sec
+                var e2 = cmd.CreateEntity();
+                cmd.AddComponent(e2, new Position(2, 1));
+                cmd.AddComponent(e2, new Velocity(0, -0.5f)); // moves -Y / sec
+            }
 
             const float fixedDelta = 1f / 60f; // 60Hz simulation
             var sw = Stopwatch.StartNew();

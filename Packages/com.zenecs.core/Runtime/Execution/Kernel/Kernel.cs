@@ -464,7 +464,6 @@ namespace ZenECS.Core
         {
             if (!IsRunning || IsPaused)
             {
-                LateFrame(1);
                 return 0;
             }
 

@@ -1,4 +1,4 @@
-﻿// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Core Samples 03 CommandBuffer
 // File: CommandBuffer.cs
 // Purpose: Demonstrates deferred and immediate entity modifications using
@@ -48,8 +48,8 @@ namespace ZenEcsCoreSamples.CommandBuffer
     /// 1) Build a CB: Add/Replace/Remove → Schedule → RunScheduledJobs
     /// 2) Build another CB → EndWrite (immediate apply)
     /// </summary>
-    [SimulationGroup]
-    public sealed class CommandBufferDemoSystem : IVariableRunSystem
+    [FixedGroup]
+    public sealed class CommandBufferDemoSystem : ISystem
     {
         private bool _done;
 
@@ -59,9 +59,10 @@ namespace ZenEcsCoreSamples.CommandBuffer
 
             Console.WriteLine("=== CommandBuffer demo (deferred + immediate) ===");
 
+            using var cmd = w.BeginWrite();
             // Create two entities
-            var e1 = w.CreateEntity();
-            var e2 = w.CreateEntity();
+            var e1 = cmd.CreateEntity();
+            var e2 = cmd.CreateEntity();
 
             // 1) Build a CB (thread-safe collection of ops)
             // Command buffer operations are deferred and applied at the next barrier
@@ -95,16 +96,15 @@ namespace ZenEcsCoreSamples.CommandBuffer
     /// <summary>
     /// Read-only presentation that prints current Health/Stunned states each Late.
     /// </summary>
-    [PresentationGroup]
-    public sealed class PrintStatusSystem : IPresentationSystem
+    [FrameViewGroup]
+    public sealed class PrintStatusSystem : ISystem
     {
-        public void Run(IWorld w, float dt, float alpha)
+        public void Run(IWorld w, float dt)
         {
-            foreach (var e in w.Query<Health>())
+            foreach (var (e, health) in w.Query<Health>())
             {
-                var h = w.ReadComponent<Health>(e);
                 var stunned = w.HasComponent<Stunned>(e) ? w.ReadComponent<Stunned>(e).ToString() : "no";
-                Console.WriteLine($"Entity {e.Id,2}: Health={h.Value}, Stunned={stunned}");
+                Console.WriteLine($"Entity {e.Id,2}: Health={health.Value}, Stunned={stunned}");
             }
         }
     }

@@ -20,8 +20,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenECS.Core.Tests", "..\Pac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenECS.Core.TestFramework", "..\Packages\com.zenecs.core\Tests~\ZenECS.Core.TestFramework\ZenECS.Core.TestFramework.csproj", "{70FC0544-D84A-47B1-9AC3-1FE5D14D89F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenEcsCoreSamples-00-Start", "..\Packages\com.zenecs.core\Samples~\00-Start\ZenEcsCoreSamples-00-Start.csproj", "{493A09D8-25CF-468B-99BF-EC6F9E848221}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,9 +66,5 @@ Global
 		{70FC0544-D84A-47B1-9AC3-1FE5D14D89F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70FC0544-D84A-47B1-9AC3-1FE5D14D89F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70FC0544-D84A-47B1-9AC3-1FE5D14D89F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{493A09D8-25CF-468B-99BF-EC6F9E848221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{493A09D8-25CF-468B-99BF-EC6F9E848221}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{493A09D8-25CF-468B-99BF-EC6F9E848221}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{493A09D8-25CF-468B-99BF-EC6F9E848221}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

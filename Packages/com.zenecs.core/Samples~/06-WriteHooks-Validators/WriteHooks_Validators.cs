@@ -1,4 +1,4 @@
-﻿// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Core Samples 06 Write Hooks & Validators (Kernel style)
 // File: WriteHooks_Validators.cs
 // Purpose: Demonstrates per-world validators and write permissions:

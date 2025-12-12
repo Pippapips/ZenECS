@@ -4,39 +4,6 @@ using ZenECS.Core;
 namespace ZenEcsCoreSamples.Start
 {
     /// <summary>
-    /// Simple position component for demonstration.
-    /// </summary>
-    public readonly struct Position : IEquatable<Position>
-    {
-        public readonly float X, Y;
-        public Position(float x, float y)
-        {
-            X = x;
-            Y = y;
-        }
-        public bool Equals(Position other) => X.Equals(other.X) && Y.Equals(other.Y);
-        public override int GetHashCode() => HashCode.Combine(X, Y);
-        public override string ToString() => $"({X:0.##}, {Y:0.##})";
-    }
-
-    /// <summary>
-    /// Simple position component for demonstration.
-    /// </summary>
-    public readonly struct Health : IEquatable<Health>
-    {
-        public readonly int Hp, MaxHp;
-        public Health(int hp, int maxHp)
-        {
-            Hp = hp;
-            MaxHp = maxHp;
-        }
-        public bool Equals(Health other) => Hp == other.Hp && MaxHp == other.MaxHp;
-        public override bool Equals(object? obj) => obj is Health other && Equals(other);
-        public override int GetHashCode() => HashCode.Combine(Hp, MaxHp);
-        public override string ToString() => $"({Hp}, {MaxHp})";
-    }
-
-    /// <summary>
     /// Entry point demonstrating ZenECS kernel-driven loop.
     /// </summary>
     internal static class Program

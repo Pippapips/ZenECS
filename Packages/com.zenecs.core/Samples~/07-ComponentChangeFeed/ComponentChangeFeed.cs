@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using ZenECS.Core;
 using ZenECS.Core.Binding;
 using ZenECS.Core.Binding.Systems;
