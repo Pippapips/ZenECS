@@ -120,5 +120,37 @@ namespace ZenECS.Core.Internal
             }
         }
     }
+
+    /// <summary>
+    /// Test framework extensions for setting WritePhase in tests.
+    /// </summary>
+    public static class WorldTestExtensions
+    {
+        /// <summary>
+        /// Sets the write phase to Simulation for testing purposes. This allows test code to
+        /// configure WritePhase without accessing internal APIs.
+        /// </summary>
+        /// <param name="world">The world instance.</param>
+        /// <param name="denyAllWrites">Whether to deny all writes during this phase.</param>
+        /// <param name="structuralChangesAllowed">Whether structural changes are allowed.</param>
+        public static void SetWritePhaseForTest(
+            this IWorld world,
+            bool denyAllWrites = false,
+            bool structuralChangesAllowed = true)
+        {
+            // WorldWritePhase.Simulation = 1 (internal enum, so we use the value directly)
+            var simulationPhase = (WorldWritePhase)1;
+            WorldExtensions.SetWritePhaseInternal(world, simulationPhase, denyAllWrites, structuralChangesAllowed);
+        }
+
+        /// <summary>
+        /// Clears the write phase for testing purposes.
+        /// </summary>
+        /// <param name="world">The world instance.</param>
+        public static void ClearWritePhaseForTest(this IWorld world)
+        {
+            WorldExtensions.ClearWritePhaseInternal(world);
+        }
+    }
 }
 

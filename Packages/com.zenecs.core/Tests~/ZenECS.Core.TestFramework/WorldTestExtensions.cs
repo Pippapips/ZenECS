@@ -1,5 +1,6 @@
 using System;
 using ZenECS.Core;
+using ZenECS.Core.Internal;
 
 namespace ZenECS.Core.TestFramework;
 
@@ -8,9 +9,9 @@ namespace ZenECS.Core.TestFramework;
 /// </summary>
 public static class WorldTestExtensions
 {
-
     /// <summary>
     /// Records commands into a buffer and immediately flushes scheduled jobs.
+    /// Sets WritePhase to Simulation to allow structural changes during tests.
     /// </summary>
     /// <param name="world">Target world.</param>
     /// <param name="record">Command recording action.</param>
@@ -19,10 +20,19 @@ public static class WorldTestExtensions
         if (world is null) throw new ArgumentNullException(nameof(world));
         if (record is null) throw new ArgumentNullException(nameof(record));
 
-        using var cmd = world.BeginWrite();
-        record(cmd);
-        cmd.EndWrite();
-        world.RunScheduledJobs();
+        // Set WritePhase to Simulation to allow structural changes (like SystemRunner does)
+        world.SetWritePhaseForTest(denyAllWrites: false, structuralChangesAllowed: true);
+        try
+        {
+            using var cmd = world.BeginWrite();
+            record(cmd);
+            cmd.EndWrite();
+            world.RunScheduledJobs();
+        }
+        finally
+        {
+            world.ClearWritePhaseForTest();
+        }
     }
 
     /// <summary>

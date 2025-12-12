@@ -345,6 +345,19 @@ namespace ZenECS.Core.Systems.Internal
         }
 
         /// <summary>
+        /// Runs a system only when it is enabled (or has no enable flag).
+        /// </summary>
+        /// <param name="system">System instance to run.</param>
+        /// <param name="w">World passed to the system.</param>
+        /// <param name="dt">Delta time argument.</param>
+        private static void RunIfEnabled(ISystem? system, IWorld w, float dt)
+        {
+            if (system == null) return;
+            if (system is ISystemEnabledFlag flag && !flag.Enabled) return;
+            system.Run(w, dt);
+        }
+
+        /// <summary>
         /// Runs variable-timestep systems for a specific execution group
         /// (<see cref="SystemGroup.FrameInput"/> or <see cref="SystemGroup.FrameSync"/>).
         /// </summary>
@@ -360,14 +373,14 @@ namespace ZenECS.Core.Systems.Internal
                 case SystemGroup.FrameInput:
                     foreach (var system in _plan.FrameInput)
                     {
-                        system?.Run(w, dt);
+                        RunIfEnabled(system, w, dt);
                     }
                     break;
 
                 case SystemGroup.FrameSync:
                     foreach (var system in _plan.FrameSync)
                     {
-                        system?.Run(w, dt);
+                        RunIfEnabled(system, w, dt);
                     }
                     break;
             }
@@ -391,14 +404,14 @@ namespace ZenECS.Core.Systems.Internal
                 case SystemGroup.FrameView:
                     foreach (var system in _plan.FrameView)
                     {
-                        system?.Run(w, dt);
+                        RunIfEnabled(system, w, dt);
                     }
                     break;
 
                 case SystemGroup.FrameUI:
                     foreach (var system in _plan.FrameUI)
                     {
-                        system?.Run(w, dt);
+                        RunIfEnabled(system, w, dt);
                     }
                     break;
             }
@@ -420,28 +433,28 @@ namespace ZenECS.Core.Systems.Internal
                 case SystemGroup.FixedInput:
                     foreach (var system in _plan.FixedInput)
                     {
-                        system?.Run(w, dt);
+                        RunIfEnabled(system, w, dt);
                     }
                     break;
 
                 case SystemGroup.FixedDecision:
                     foreach (var system in _plan.FixedDecision)
                     {
-                        system?.Run(w, dt);
+                        RunIfEnabled(system, w, dt);
                     }
                     break;
 
                 case SystemGroup.FixedSimulation:
                     foreach (var system in _plan.FixedSimulation)
                     {
-                        system?.Run(w, dt);
+                        RunIfEnabled(system, w, dt);
                     }
                     break;
 
                 case SystemGroup.FixedPost:
                     foreach (var system in _plan.FixedPost)
                     {
-                        system?.Run(w, dt);
+                        RunIfEnabled(system, w, dt);
                     }
                     break;
             }
