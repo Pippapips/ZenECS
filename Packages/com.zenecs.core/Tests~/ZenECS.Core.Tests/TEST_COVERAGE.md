@@ -44,6 +44,17 @@
    - ✅ 컴포넌트 변경 후 쿼리 업데이트
    - ✅ 다중 컴포넌트 쿼리 + 필터 조합
 
+8. **WorldMessagesTests.cs**
+   - ✅ Subscribe<T>() - 메시지 구독
+   - ✅ Publish<T>() - 메시지 발행
+   - ✅ 구독 해제 (IDisposable)
+   - ✅ 다중 구독자
+   - ✅ World 간 메시지 격리
+   - ✅ 메시지 타입별 격리
+   - ✅ 메시지 FIFO 순서
+   - ✅ 여러 번의 펌프
+   - ✅ 빈 큐 처리
+
 ## 누락된 테스트 영역
 
 ### 1. Query API (IWorldQueryApi) - **완료**
@@ -55,13 +66,14 @@
    - ✅ 복합 필터 조합
    - ✅ 다중 컴포넌트 쿼리 (T1..T8) - 모두 테스트됨
 
-### 2. Messages API (IWorldMessagesApi) - **높은 우선순위**
-   - ❌ Subscribe<T>() - 메시지 구독
-   - ❌ Publish<T>() - 메시지 발행
-   - ❌ 구독 해제 (IDisposable)
-   - ❌ 다중 구독자
-   - ❌ World 간 메시지 격리
-   - ⚠️ README에 언급되어 있지만 테스트 파일이 없음
+### 2. Messages API (IWorldMessagesApi) - **완료**
+   - ✅ Subscribe<T>() - 메시지 구독
+   - ✅ Publish<T>() - 메시지 발행
+   - ✅ 구독 해제 (IDisposable)
+   - ✅ 다중 구독자
+   - ✅ World 간 메시지 격리
+   - ✅ 메시지 타입별 격리
+   - ✅ 메시지 FIFO 순서
 
 ### 3. Singleton Components (IWorldSingletonComponent) - **중간 우선순위**
    - ❌ SetSingleton<T>()
@@ -110,8 +122,8 @@
 ## 권장 테스트 추가 순서
 
 1. ✅ **WorldQueryTests.cs** - Query API는 핵심 기능 (완료)
-2. **WorldMessagesTests.cs** - README에 언급된 기능 (다음 우선순위)
-3. **WorldSingletonTests.cs** - 싱글톤 컴포넌트는 특수한 케이스
+2. ✅ **WorldMessagesTests.cs** - README에 언급된 기능 (완료)
+3. **WorldSingletonTests.cs** - 싱글톤 컴포넌트는 특수한 케이스 (다음 우선순위)
 4. **WorldQuerySpanTests.cs** - 성능 최적화된 쿼리
 5. 나머지는 필요에 따라 추가
 
