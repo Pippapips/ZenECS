@@ -118,9 +118,9 @@ Each test file focuses on a specific API or feature area, making it easy to loca
 
 ## Documentation
 
-- **[TEST_COVERAGE.md](./TEST_COVERAGE.md)** - Complete test coverage analysis
-- **[TESTING_GUIDE.md](./TESTING_GUIDE.md)** - Comprehensive guide for writing tests, including patterns and examples
-- **[BEST_PRACTICES.md](./BEST_PRACTICES.md)** - Best practices for writing and maintaining tests
+- **[docs/TEST_COVERAGE.md](./docs/TEST_COVERAGE.md)** - Complete test coverage analysis
+- **[docs/TESTING_GUIDE.md](./docs/TESTING_GUIDE.md)** - Comprehensive guide for writing tests, including patterns and examples
+- **[docs/BEST_PRACTICES.md](./docs/BEST_PRACTICES.md)** - Best practices for writing and maintaining tests
 - **[TestFramework README](../ZenECS.Core.TestFramework/README.md)** - TestFramework API reference
 
 ## Contributing
@@ -133,5 +133,5 @@ When adding new tests:
 5. Include edge cases (empty collections, null values, destroyed entities, etc.)
 
 For detailed guidance, see:
-- [TESTING_GUIDE.md](./TESTING_GUIDE.md) - How to write tests
-- [BEST_PRACTICES.md](./BEST_PRACTICES.md) - Best practices and common pitfalls
+- [docs/TESTING_GUIDE.md](./docs/TESTING_GUIDE.md) - How to write tests
+- [docs/BEST_PRACTICES.md](./docs/BEST_PRACTICES.md) - Best practices and common pitfalls
