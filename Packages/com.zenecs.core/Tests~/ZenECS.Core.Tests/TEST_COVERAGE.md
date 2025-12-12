@@ -67,6 +67,18 @@
    - ✅ CommandBuffer를 통한 SetSingleton/RemoveSingleton
    - ✅ 엔티티 파괴 시 싱글톤 인덱스 업데이트
 
+10. **WorldQuerySpanTests.cs**
+   - ✅ QueryToSpan<T1>() - 단일 컴포넌트 스팬 수집
+   - ✅ QueryToSpan<T1, T2>() - 다중 컴포넌트 스팬 수집
+   - ✅ QueryToSpan<T1, T2, T3, T4>() - 4개 컴포넌트 스팬 수집
+   - ✅ QueryToSpan과 Filter 조합
+   - ✅ Span 용량 제한 처리
+   - ✅ Process<T>() - ref로 컴포넌트 처리
+   - ✅ Process가 dead entity 스킵
+   - ✅ Process가 컴포넌트 없는 엔티티 스킵
+   - ✅ QueryToSpan + Process 워크플로우
+   - ✅ 빈 스팬 처리
+
 ## 누락된 테스트 영역
 
 ### 1. Query API (IWorldQueryApi) - **완료**
@@ -96,10 +108,13 @@
    - ✅ GetAllSingletons() - 모든 싱글톤 가져오기
    - ✅ 싱글톤 위반 감지 (여러 엔티티에 같은 싱글톤 컴포넌트)
 
-### 4. QuerySpan API (IWorldQuerySpanApi) - **중간 우선순위**
-   - ❌ QuerySpan<T1>() - 스팬 기반 쿼리
-   - ❌ QuerySpan<T1, T2>() 등
-   - ❌ Filter와 함께 사용
+### 4. QuerySpan API (IWorldQuerySpanApi) - **완료**
+   - ✅ QueryToSpan<T1>() - 스팬 기반 쿼리
+   - ✅ QueryToSpan<T1, T2>() 등 (최대 4개까지 테스트)
+   - ✅ Filter와 함께 사용
+   - ✅ Process<T>() - ref로 컴포넌트 처리
+   - ✅ Span 용량 제한 처리
+   - ✅ Dead entity 및 컴포넌트 없는 엔티티 스킵
 
 ### 5. Component API 추가 기능 - **낮은 우선순위**
    - ❌ SnapshotComponent<T>() - 스냅샷 델타 디스패치
@@ -136,6 +151,6 @@
 1. ✅ **WorldQueryTests.cs** - Query API는 핵심 기능 (완료)
 2. ✅ **WorldMessagesTests.cs** - README에 언급된 기능 (완료)
 3. ✅ **WorldSingletonTests.cs** - 싱글톤 컴포넌트는 특수한 케이스 (완료)
-4. **WorldQuerySpanTests.cs** - 성능 최적화된 쿼리 (다음 우선순위)
+4. ✅ **WorldQuerySpanTests.cs** - 성능 최적화된 쿼리 (완료)
 5. 나머지는 필요에 따라 추가
 
