@@ -103,6 +103,7 @@ using ZenECS.Core.Systems;
 // 1. Create kernel and world
 var kernel = new Kernel();
 var world = kernel.CreateWorld("Game");
+kernel.SetCurrentWorld(world);
 
 // 2. Define components
 public readonly struct Position 
@@ -118,31 +119,32 @@ public readonly struct Velocity
 }
 
 // 3. Write system
-[SimulationGroup]
-public sealed class MoveSystem : IFixedRunSystem
+[FixedGroup]
+public sealed class MoveSystem : ISystem
 {
-    public void Run(IWorld world, float fixedDelta)
+    public void Run(IWorld w, float dt)
     {
-        foreach (var entity in world.Query<Position, Velocity>())
+        using var cmd = w.BeginWrite();
+        foreach (var (e, pos, vel) in w.Query<Position, Velocity>())
         {
-            ref var pos = ref world.Ref<Position>(entity);
-            var vel = world.Get<Velocity>(entity);
-            
-            pos = new Position(
-                pos.X + vel.X * fixedDelta,
-                pos.Y + vel.Y * fixedDelta
-            );
+            cmd.ReplaceComponent(e, new Position(
+                pos.X + vel.X * dt,
+                pos.Y + vel.Y * dt
+            ));
         }
     }
 }
 
-// 4. Create entity and add components
-var entity = world.CreateEntity();
-world.AddComponent(entity, new Position(0, 0));
-world.AddComponent(entity, new Velocity(1, 0));
-
-// 5. Register systems
+// 4. Register systems
 world.AddSystems([new MoveSystem()]);
+
+// 5. Create entities and add components
+using (var cmd = world.BeginWrite())
+{
+    var entity = cmd.CreateEntity();
+    cmd.AddComponent(entity, new Position(0, 0));
+    cmd.AddComponent(entity, new Velocity(1, 0));
+}
 
 // 6. Game loop
 const float fixedDelta = 1f / 60f;
@@ -162,26 +164,19 @@ kernel.Dispose();
 using ZenECS.Core;
 using ZenECS.Core.Systems;
 
-[SimulationGroup]
+[FixedGroup]
 [OrderAfter(typeof(PhysicsSystem))]
-public sealed class MoveSystem : IFixedRunSystem
+public sealed class MoveSystem : ISystem
 {
-    public void Run(IWorld world, float fixedDelta)
+    public void Run(IWorld w, float dt)
     {
-        var filter = Filter.New
-            .With<Position>()
-            .With<Velocity>()
-            .Build();
-
-        foreach (var entity in world.Query<Position, Velocity>(filter))
+        using var cmd = w.BeginWrite();
+        foreach (var (e, pos, vel) in w.Query<Position, Velocity>())
         {
-            ref var pos = ref world.Ref<Position>(entity);
-            var vel = world.Get<Velocity>(entity);
-            
-            pos = new Position(
-                pos.X + vel.X * fixedDelta,
-                pos.Y + vel.Y * fixedDelta
-            );
+            cmd.ReplaceComponent(e, new Position(
+                pos.X + vel.X * dt,
+                pos.Y + vel.Y * dt
+            ));
         }
     }
 }
@@ -543,16 +538,20 @@ if (world.TryGetSingleton<Gravity>(out var gravity))
 
 **System** is a class that encapsulates game logic. It queries and modifies components to update game state.
 
-**System Types:**
+**System Interface:**
 
-ZenECS provides the following system interfaces:
+All systems implement the base `ISystem` interface:
 
-1. **`IFrameSetupSystem`**: One-time initialization per frame
-2. **`IFixedSetupSystem`**: One-time initialization per fixed step
-3. **`IVariableRunSystem`**: Variable timestep execution (BeginFrame)
-4. **`IFixedRunSystem`**: Fixed timestep execution (SimulationGroup)
-5. **`IPresentationSystem`**: Presentation phase (LateFrame)
-6. **`ISystemLifecycle`**: Lifecycle management (Initialize/Shutdown)
+```csharp
+public interface ISystem
+{
+    void Run(IWorld w, float dt);
+}
+```
+
+**Optional Interfaces:**
+- **`ISystemLifecycle`**: Lifecycle management (Initialize/Shutdown)
+- **`ISystemEnabledFlag`**: Enable/disable flag for systems
 
 **System Groups:**
 
@@ -571,8 +570,14 @@ Systems are categorized into groups:
 - `FrameUI` — Per-frame UI phase
 
 **Attributes:**
-- **`[SimulationGroup]`**: Maps to FixedSimulation group
-- **`[PresentationGroup]`**: Maps to FrameView group
+- **`[FixedGroup]`**: Maps to FixedSimulation group
+- **`[FixedInputGroup]`**: Maps to FixedInput group
+- **`[FixedDecisionGroup]`**: Maps to FixedDecision group
+- **`[FixedPostGroup]`**: Maps to FixedPost group
+- **`[FrameViewGroup]`**: Maps to FrameView group
+- **`[FrameInputGroup]`**: Maps to FrameInput group
+- **`[FrameSyncGroup]`**: Maps to FrameSync group
+- **`[FrameUIGroup]`**: Maps to FrameUI group
 - **`[OrderBefore(typeof(OtherSystem))]`**: Run before another system
 - **`[OrderAfter(typeof(OtherSystem))]`**: Run after another system
 - **`[Order(int priority)]`**: Order by priority value
@@ -580,12 +585,12 @@ Systems are categorized into groups:
 **System Ordering:**
 
 ```csharp
-[SimulationGroup]
+[FixedGroup]
 [OrderAfter(typeof(PhysicsSystem))]  // Run after PhysicsSystem
 [OrderBefore(typeof(RenderSystem))]   // Run before RenderSystem
-public sealed class MoveSystem : IFixedRunSystem
+public sealed class MoveSystem : ISystem
 {
-    public void Run(IWorld world, float fixedDelta)
+    public void Run(IWorld w, float dt)
     {
         // Movement logic
     }
@@ -598,36 +603,33 @@ public sealed class MoveSystem : IFixedRunSystem
 using ZenECS.Core;
 using ZenECS.Core.Systems;
 
-[SimulationGroup]
-public sealed class MoveSystem : IFixedRunSystem
+[FixedGroup]
+public sealed class MoveSystem : ISystem
 {
-    public void Run(IWorld world, float fixedDelta)
+    public void Run(IWorld w, float dt)
     {
-        // Query all entities with Position and Velocity
-        foreach (var entity in world.Query<Position, Velocity>())
+        using var cmd = w.BeginWrite();
+        // Query returns tuples: (entity, component1, component2, ...)
+        foreach (var (e, pos, vel) in w.Query<Position, Velocity>())
         {
-            ref var pos = ref world.Ref<Position>(entity);
-            var vel = world.Get<Velocity>(entity);
-            
-            // Update position
-            pos = new Position(
-                pos.X + vel.X * fixedDelta,
-                pos.Y + vel.Y * fixedDelta
-            );
+            // Update position using command buffer
+            cmd.ReplaceComponent(e, new Position(
+                pos.X + vel.X * dt,
+                pos.Y + vel.Y * dt
+            ));
         }
     }
 }
 
-[PresentationGroup]
-public sealed class PrintPositionsSystem : IPresentationSystem
+[FrameViewGroup]
+public sealed class PrintPositionsSystem : ISystem
 {
-    public void Run(IWorld world, float dt, float alpha)
+    public void Run(IWorld w, float dt)
     {
-        // Read-only query
-        foreach (var entity in world.Query<Position>())
+        // Read-only query (no command buffer needed)
+        foreach (var (e, pos) in w.Query<Position>())
         {
-            var pos = world.ReadComponent<Position>(entity);
-            Console.WriteLine($"Entity {entity.Id}: {pos}");
+            Console.WriteLine($"Entity {e.Id}: {pos}");
         }
     }
 }
@@ -651,17 +653,18 @@ world.AddSystems([
 **Basic Query:**
 
 ```csharp
-// Single component query
-foreach (var entity in world.Query<Position>())
+// Single component query (returns tuples)
+foreach (var (entity, pos) in world.Query<Position>())
 {
-    var pos = world.Get<Position>(entity);
+    // Use pos directly
+    Console.WriteLine($"Position: {pos.X}, {pos.Y}");
 }
 
 // Multiple component query
-foreach (var entity in world.Query<Position, Velocity>())
+foreach (var (entity, pos, vel) in world.Query<Position, Velocity>())
 {
-    ref var pos = ref world.Ref<Position>(entity);
-    var vel = world.Get<Velocity>(entity);
+    // Use pos and vel directly
+    // Note: To modify components, use command buffer with ReplaceComponent
 }
 ```
 
