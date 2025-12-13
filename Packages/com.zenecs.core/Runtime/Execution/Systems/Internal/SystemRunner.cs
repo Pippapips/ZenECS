@@ -328,6 +328,12 @@ namespace ZenECS.Core.Systems.Internal
         /// <summary>
         /// Simple disposable action wrapper used by <see cref="DenyWrites"/>.
         /// </summary>
+        /// <remarks>
+        /// This class provides a lightweight way to register a cleanup action
+        /// that will be executed when the disposable is disposed, typically
+        /// via a <c>using</c> statement. It is used to manage the lifetime
+        /// of write permission guards during presentation phases.
+        /// </remarks>
         private sealed class DisposableAction : IDisposable
         {
             private readonly Action _onDispose;

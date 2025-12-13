@@ -37,6 +37,17 @@ namespace ZenECS.Core.Binding.Internal
         /// <summary>
         /// Internal entry representing a single context registration.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Each entry stores a context instance along with its registration metadata.
+        /// The entry tracks whether the context has been initialized via
+        /// <see cref="IContextInitialize"/> lifecycle hooks.
+        /// </para>
+        /// <para>
+        /// Entries are keyed by the runtime type of the context instance, allowing
+        /// type-based lookup while supporting derived context types.
+        /// </para>
+        /// </remarks>
         private sealed class Entry
         {
             /// <summary>The context instance.</summary>

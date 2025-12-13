@@ -37,6 +37,11 @@ namespace ZenECS.Core.Messaging.Internal
         /// <summary>
         /// Minimal topic abstraction for pumpable message queues.
         /// </summary>
+        /// <remarks>
+        /// Each message type has its own topic instance that manages a queue
+        /// of pending messages and a list of subscribers. Topics are created
+        /// lazily when the first message of a given type is published.
+        /// </remarks>
         private interface ITopic
         {
             /// <summary>
@@ -52,6 +57,17 @@ namespace ZenECS.Core.Messaging.Internal
         /// Topic implementation for messages of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">Struct message type implementing <see cref="IMessage"/>.</typeparam>
+        /// <remarks>
+        /// <para>
+        /// Each topic maintains a lock-free queue for message publishing and a
+        /// synchronized list of subscribers. Messages are delivered to all
+        /// subscribers when <see cref="Pump"/> is called.
+        /// </para>
+        /// <para>
+        /// Subscribers are stored in a snapshot taken at pump time to allow
+        /// safe iteration even if the subscriber list is modified during delivery.
+        /// </para>
+        /// </remarks>
         private sealed class Topic<T> : ITopic where T : struct, IMessage
         {
             private readonly ConcurrentQueue<T> _queue = new();
@@ -101,6 +117,18 @@ namespace ZenECS.Core.Messaging.Internal
             /// <summary>
             /// Disposable token that removes a handler from the parent topic.
             /// </summary>
+            /// <remarks>
+            /// <para>
+            /// This token is returned when subscribing to a topic and can be
+            /// disposed to unsubscribe the handler. The unsubscribe operation
+            /// is thread-safe and removes the handler from the topic's subscriber
+            /// list.
+            /// </para>
+            /// <para>
+            /// Disposing the token multiple times is safe and has no effect after
+            /// the first disposal.
+            /// </para>
+            /// </remarks>
             private sealed class Unsub : IDisposable
             {
                 private readonly Topic<T> _owner;

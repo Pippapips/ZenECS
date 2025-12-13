@@ -89,6 +89,12 @@ namespace ZenECS.Core.Hooking.Internal
         /// <summary>
         /// Internal interface for invoking typed validators through a boxed path.
         /// </summary>
+        /// <remarks>
+        /// This interface allows the permission hook to store and invoke
+        /// strongly-typed validators (<see cref="TypeValidator{T}"/>) through
+        /// a common untyped interface, avoiding boxing on the hot path while
+        /// maintaining a unified storage mechanism.
+        /// </remarks>
         private interface IBoxedTypeValidator
         {
             /// <summary>
@@ -106,6 +112,17 @@ namespace ZenECS.Core.Hooking.Internal
         /// Typed validator bucket for a specific value type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">Component value type.</typeparam>
+        /// <remarks>
+        /// <para>
+        /// This class maintains a list of strongly-typed predicates for component
+        /// type <typeparamref name="T"/>. All predicates must return
+        /// <see langword="true"/> for a value to be considered valid.
+        /// </para>
+        /// <para>
+        /// The typed storage avoids boxing when validating values of type
+        /// <typeparamref name="T"/>, improving performance on hot paths.
+        /// </para>
+        /// </remarks>
         private sealed class TypeValidator<T> : IBoxedTypeValidator where T : struct
         {
             private readonly List<Func<T, bool>> _preds = new(2);

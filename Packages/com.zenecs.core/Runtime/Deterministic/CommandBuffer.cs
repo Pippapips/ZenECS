@@ -182,12 +182,23 @@ namespace ZenECS.Core.Internal
         /// <summary>
         /// Internal command interface for queued operations.
         /// </summary>
+        /// <remarks>
+        /// All structural operations (create/destroy entities, add/remove/replace
+        /// components, singleton operations) are represented as command objects
+        /// implementing this interface. Commands are queued during recording and
+        /// applied at a deterministic barrier when the buffer is executed.
+        /// </remarks>
         private interface IOp
         {
             /// <summary>
             /// Applies the command to the given world.
             /// </summary>
             /// <param name="w">Target world.</param>
+            /// <remarks>
+            /// Implementations should check if the target entity is still alive
+            /// before applying the operation, as entities may be destroyed between
+            /// command recording and execution.
+            /// </remarks>
             void Apply(IWorld w);
         }
 
