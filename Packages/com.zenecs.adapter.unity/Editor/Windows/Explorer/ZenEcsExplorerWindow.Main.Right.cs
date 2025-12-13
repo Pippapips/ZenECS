@@ -6,6 +6,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Editor.Common;
+using ZenECS.Adapter.Unity.Editor.GUIs;
 using ZenECS.Core;
 using ZenECS.Core.Systems;
 
@@ -58,6 +59,8 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             // 스크롤
             public Vector2 Scroll;
 
+            public Dictionary<Entity, ZenEntityForm.EntityFoldoutInfo> EntityFoldoutInfos = new();
+            
             // Foldouts per entity / context
             public readonly Dictionary<Entity, bool> EntityFold = new();
             public readonly Dictionary<EntityTypeKey, bool> BinderFold = new();
@@ -77,6 +80,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             /// </summary>
             public void ClearEntityView()
             {
+                EntityFoldoutInfos.Clear();
                 EntityFold.Clear();
                 BinderFold.Clear();
                 ComponentFold.Clear();
@@ -151,7 +155,20 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             else if (hasSingleton && !hasSystem)
             {
                 // ===== 싱글톤 선택 모드 =====
-                DrawSingletonDetail(_world, _entityPanel.SelectedSingletonType, _entityPanel.SelectedSingletonEntity);
+                //DrawSingletonDetail(_world, _entityPanel.SelectedSingletonType, _entityPanel.SelectedSingletonEntity);
+                //ZenEntityForm.DrawEntity(_world, _entityPanel.SelectedSingletonEntity);
+                var e = _entityPanel.SelectedSingletonEntity;
+                if (_world.IsAlive(e))
+                {
+                    if (!_entityPanel.EntityFoldoutInfos.TryGetValue(e, out var foldoutInfo))
+                    {
+                        foldoutInfo = new ZenEntityForm.EntityFoldoutInfo();
+                        foldoutInfo.ExpandAll();
+                        _entityPanel.EntityFoldoutInfos.Add(e, foldoutInfo);
+                    }
+
+                    ZenEntityForm.DrawEntity(_world, e, _coreState.EditMode, ref foldoutInfo);
+                }
             }
             else
             {
@@ -191,7 +208,18 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 
                 foreach (var e in tmp.Distinct())
                     if (_world != null)
-                        DrawOneEntity(_world, e);
+                    {
+                        if (_world.IsAlive(e))
+                        {
+                            if (!_entityPanel.EntityFoldoutInfos.TryGetValue(e, out var foldoutInfo))
+                            {
+                                foldoutInfo = new ZenEntityForm.EntityFoldoutInfo();
+                                _entityPanel.EntityFoldoutInfos.Add(e, foldoutInfo);
+                            }
+
+                            ZenEntityForm.DrawEntity(_world, e, _coreState.EditMode, ref foldoutInfo);
+                        }
+                    }
             }
         }
         
@@ -405,7 +433,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 EditorGUILayout.LabelField(afterText, valueStyle);
                 EditorGUILayout.EndHorizontal();
 
-// ==== Watched Components Foldout ====
+                // ==== Watched Components Foldout ====
 
                 var leftFoldoutStyle = new GUIStyle(EditorStyles.foldout)
                 {

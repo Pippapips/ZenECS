@@ -53,7 +53,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
         //  UNITY LIFECYCLE
         // =====================================================================
 
-        void ClearState(bool repaint = true)
+        void ClearState(bool repaint = true, bool resetFindStateRemoveTexts = true)
         {
             // 좌측 트리 / 우측 엔티티 패널 상태 리셋
             _systemTree.ClearSelection();
@@ -64,7 +64,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             _entityPanel.Scroll = Vector2.zero;
 
             // Find 모드 리셋
-            _findState.Reset();
+            _findState.Reset(resetFindStateRemoveTexts);
 
             if (repaint)
                 Repaint();

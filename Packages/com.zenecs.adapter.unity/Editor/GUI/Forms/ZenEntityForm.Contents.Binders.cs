@@ -15,25 +15,28 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 {
     public static partial class ZenEntityForm
     {
-        private static void drawBindersMenus(IWorld w, Entity e, ref EntityFoldoutInfo foldoutInfo)
+        private static void drawBindersMenus(IWorld w, Entity e, bool canEdit, ref EntityFoldoutInfo foldoutInfo)
         {
             var rects = new Rect[3];
             ZenGUIStyles.GetLeftIndentedSingleLineRects(20, 1, ref rects);
-            if (GUI.Button(rects[0], ZenGUIContents.IconPlus(), ZenGUIStyles.ButtonPadding))
+            using (new EditorGUI.DisabledScope(!canEdit))
             {
-                var allBinders = ZenUtil.BinderTypeFinder.All();
-                var disabledB = new HashSet<Type>(w.GetAllBinders(e).Select(x => x.type));
+                if (GUI.Button(rects[0], ZenGUIContents.IconPlus(), ZenGUIStyles.ButtonPadding))
+                {
+                    var allBinders = ZenUtil.BinderTypeFinder.All();
+                    var disabledB = new HashSet<Type>(w.GetAllBinders(e).Select(x => x.type));
 
-                ZenBinderPickerWindow.Show(
-                    allBinderTypes: allBinders,
-                    disabled: disabledB,
-                    onPick: picked =>
-                    {
-                        var inst = ZenDefaults.CreateWithDefaults(picked);
-                        if (inst != null) w.AttachBinder(e, (IBinder)inst);
-                    },
-                    activatorRectGui: rects[0],
-                    title: $"Entity #{e.Id}:{e.Gen} - Add Binder");
+                    ZenBinderPickerWindow.Show(
+                        allBinderTypes: allBinders,
+                        disabled: disabledB,
+                        onPick: picked =>
+                        {
+                            var inst = ZenDefaults.CreateWithDefaults(picked);
+                            if (inst != null) w.AttachBinder(e, (IBinder)inst);
+                        },
+                        activatorRectGui: rects[0],
+                        title: $"Entity #{e.Id}:{e.Gen} - Add Binder");
+                }
             }
 
             if (GUI.Button(rects[1], "▼", ZenGUIStyles.ButtonMCNormal10))
@@ -47,38 +50,44 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             }
         }
 
-        private static void drawBinderMenus(IWorld w, Entity e, Type t, ref EntityFoldoutInfo foldoutInfo, BaseBinder? binder = null, bool indent = false)
+        private static void drawBinderMenus(IWorld w, Entity e, Type t, bool canEdit, ref EntityFoldoutInfo foldoutInfo, BaseBinder? binder = null, bool indent = false)
         {
             if (indent) EditorGUI.indentLevel++;
 
             var rects = new Rect[3];
             ZenGUIStyles.GetLeftIndentedSingleLineRects(20, 1, ref rects);
-            if (GUI.Button(rects[0], "X", ZenGUIStyles.ButtonMCNormal10))
+            using (new EditorGUI.DisabledScope(!canEdit))
             {
-                if (EditorUtility.DisplayDialog(
-                        "Remove Binder",
-                        $"Remove this binder?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}",
-                        "Yes",
-                        "No"))
+                if (GUI.Button(rects[0], "X", ZenGUIStyles.ButtonMCNormal10))
                 {
-                    w.DetachBinder(e, t);
-                    foldoutInfo.RemoveFoldout(EEntitySection.Binders, t);
+                    if (EditorUtility.DisplayDialog(
+                            "Remove Binder",
+                            $"Remove this binder?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}",
+                            "Yes",
+                            "No"))
+                    {
+                        w.DetachBinder(e, t);
+                        foldoutInfo.RemoveFoldout(EEntitySection.Binders, t);
+                    }
                 }
             }
 
-            var isDisabled = binder is { Enabled: false };
-            var prevBodyColor = GUI.color;
-            if (isDisabled) GUI.color = new Color(0.3f, 0.9f, 1.0f);
-            
-            if (GUI.Button(rects[1], ZenGUIContents.IconPause(), ZenGUIStyles.ButtonPadding))
+            using (new EditorGUI.DisabledScope(!canEdit))
             {
-                if (binder != null)
-                {
-                    binder.Enabled = !binder.Enabled;
-                }
-            }
+                var isDisabled = binder is { Enabled: false };
+                var prevBodyColor = GUI.color;
+                if (isDisabled) GUI.color = new Color(0.3f, 0.9f, 1.0f);
 
-            GUI.color = prevBodyColor;
+                if (GUI.Button(rects[1], ZenGUIContents.IconPause(), ZenGUIStyles.ButtonPadding))
+                {
+                    if (binder != null)
+                    {
+                        binder.Enabled = !binder.Enabled;
+                    }
+                }
+
+                GUI.color = prevBodyColor;
+            }
 
             if (GUI.Button(rects[2], ZenGUIContents.IconPing(), EditorStyles.iconButton))
             {
@@ -88,44 +97,41 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             if (indent) EditorGUI.indentLevel--;
         }
 
-        private static void drawBinders(IWorld w, Entity e, ref EntityFoldoutInfo foldoutInfo)
+        private static void drawBinders(IWorld w, Entity e, bool canEdit, ref EntityFoldoutInfo foldoutInfo)
         {
-            using (new EditorGUI.DisabledScope(false))
+            var contents = w.GetAllBinders(e).ToArray();
+            foreach (var (t, boxed) in contents)
             {
-                var contents = w.GetAllBinders(e).ToArray();
-                foreach (var (t, boxed) in contents)
+                var hasFields = ZenComponentFormGUI.HasDrawableFields(t);
+                var ns = string.IsNullOrEmpty(t.Namespace) ? "Global" : t.Namespace;
+                var foldoutName = $"{t.Name} <size=9><color=#707070>[{ns}]</color></size>";
+
+                if (!hasFields)
                 {
-                    var hasFields = ZenComponentFormGUI.HasDrawableFields(t);
-                    var ns = string.IsNullOrEmpty(t.Namespace) ? "Global" : t.Namespace;
-                    var foldoutName = $"{t.Name} <size=9><color=#707070>[{ns}]</color></size>";
-
-                    if (!hasFields)
-                    {
-                        EditorGUILayout.LabelField(foldoutName, ZenGUIStyles.LabelMLNormal10);
-                        drawBinderMenus(w, e, t, ref foldoutInfo, boxed as BaseBinder);
-                    }
-                    else
-                    {
-                        var open = foldoutInfo.GetFoldout(EEntitySection.Contexts, t, false);
-                        open = EditorGUILayout.Foldout(open, foldoutName, true, ZenGUIStyles.SystemFoldout10);
-                        foldoutInfo.SetFoldout(EEntitySection.Contexts, t, open);
-
-                        if (open)
-                        {
-                            drawBinderContent(w, e, t, boxed);
-                        }
-
-                        drawBinderMenus(w, e, t, ref foldoutInfo, boxed as BaseBinder, true);
-                    }
-
-                    ZenGUIContents.DrawLine();
-
-                    GUILayout.Space(4);
+                    EditorGUILayout.LabelField(foldoutName, ZenGUIStyles.LabelMLNormal10);
+                    drawBinderMenus(w, e, t, canEdit, ref foldoutInfo, boxed as BaseBinder);
                 }
+                else
+                {
+                    var open = foldoutInfo.GetFoldout(EEntitySection.Contexts, t, false);
+                    open = EditorGUILayout.Foldout(open, foldoutName, true, ZenGUIStyles.SystemFoldout10);
+                    foldoutInfo.SetFoldout(EEntitySection.Contexts, t, open);
+
+                    if (open)
+                    {
+                        drawBinderContent(w, e, t, boxed, canEdit);
+                    }
+
+                    drawBinderMenus(w, e, t, canEdit, ref foldoutInfo, boxed as BaseBinder, true);
+                }
+
+                ZenGUIContents.DrawLine();
+
+                GUILayout.Space(4);
             }
         }
 
-        private static void drawBinderContent(IWorld w, Entity e, Type t, object boxed)
+        private static void drawBinderContent(IWorld w, Entity e, Type t, object boxed, bool canEdit)
         {
             var prevIndent = EditorGUI.indentLevel;
             EditorGUI.indentLevel++;

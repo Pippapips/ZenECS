@@ -59,7 +59,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                                         _debugEntityFoldoutInfos.Add(e, foldoutInfo);
                                     }
 
-                                    ZenEntityForm.DrawEntity(_world, e, ref foldoutInfo);
+                                    ZenEntityForm.DrawEntity(_world, e, true, ref foldoutInfo);
                                 }
                             }
                         }

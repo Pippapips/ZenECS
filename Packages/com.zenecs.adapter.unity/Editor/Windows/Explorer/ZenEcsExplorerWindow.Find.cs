@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Editor.Common;
+using ZenECS.Adapter.Unity.Editor.GUIs;
 using ZenECS.Core;
 using ZenECS.Core.Systems;
 
@@ -15,6 +16,8 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
         [Serializable]
         sealed class ExplorerFindState
         {
+            public ZenEntityForm.EntityFoldoutInfo? EntityFoldoutInfo;
+            
             // 입력 문자열
             public string EntityIdText = string.Empty;
             public string EntityGenText = "0";
@@ -27,10 +30,16 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 
             public Entity FoundEntity;
 
-            public void Reset()
+            public void Reset(bool removeTexts = true)
             {
-                EntityIdText = "";
-                EntityGenText = "0";
+                if (removeTexts)
+                {
+                    EntityIdText = "";
+                    EntityGenText = "0";
+                }
+                
+                EntityFoldoutInfo = null;
+
                 FoundValid = false;
                 WatchedSystemsFold = false;
                 IsFindMode = false;
@@ -58,7 +67,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 
                             if (GUILayout.Button(ZenStringTable.BtnClose, GUILayout.Width(80)))
                             {
-                                _findState.Reset();
+                                _findState.Reset(false);
                                 return;
                             }
                         }
@@ -131,7 +140,15 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             GUILayout.Space(4);
 
             // 실제 Entity Inspect
-            DrawOneEntity(_world, _findState.FoundEntity);
+            //DrawOneEntity(_world, _findState.FoundEntity);
+            
+            if (_findState.EntityFoldoutInfo == null)
+            {
+                _findState.EntityFoldoutInfo = new ZenEntityForm.EntityFoldoutInfo();
+                _findState.EntityFoldoutInfo.ExpandAll();
+            }
+            
+            ZenEntityForm.DrawEntity(_world, _findState.FoundEntity, _coreState.EditMode, ref _findState.EntityFoldoutInfo);
         }
 
         private void DrawFindMenu()
@@ -160,6 +177,8 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             {
                 if (int.TryParse(_findState.EntityIdText, out var id) && id > 0)
                 {
+                    _findState.Reset(false);
+                    
                     _findState.FoundValid = _world.IsAlive(id, gen);
                     _findState.FoundEntity =
                         _findState.FoundValid ? (Entity)Activator.CreateInstance(typeof(Entity), id, gen) : default;
@@ -182,7 +201,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 }
                 else
                 {
-                    _findState.Reset();
+                    _findState.Reset(false);
                     _findState.IsFindMode = true; // still enter to show guidance
                 }
 

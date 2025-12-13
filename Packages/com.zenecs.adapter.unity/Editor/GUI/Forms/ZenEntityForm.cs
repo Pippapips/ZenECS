@@ -215,52 +215,52 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             #endregion
         }
 
-        public static void DrawEntity(IWorld w, Entity e)
+        public static void DrawEntity(IWorld w, Entity e, bool canEdit)
         {
             var foldoutInfo = new EntityFoldoutInfo();
-            DrawEntity(w, e, ref foldoutInfo);
+            DrawEntity(w, e, canEdit, ref foldoutInfo);
         }
 
         private static void initFoldouts(IWorld w, Entity e, ref EntityFoldoutInfo foldoutInfo)
         {
             if (!foldoutInfo.TryGetSectionFoldout(EEntitySection.Components, out var componentSectionFoldout))
             {
-                foldoutInfo.SetSectionFoldout(EEntitySection.Components, false);
+                foldoutInfo.SetSectionFoldout(EEntitySection.Components, foldoutInfo.Open);
             }
             foreach (var tuple in w.GetAllComponents(e))
             {
                 if (!foldoutInfo.TryGetFoldout(EEntitySection.Components, tuple.type, out var foldout))
                 {
-                    foldoutInfo.SetFoldout(EEntitySection.Components, tuple.type, false);
+                    foldoutInfo.SetFoldout(EEntitySection.Components, tuple.type, foldoutInfo.Open);
                 }
             }
             
             if (!foldoutInfo.TryGetSectionFoldout(EEntitySection.Contexts, out var contextSectionFoldout))
             {
-                foldoutInfo.SetSectionFoldout(EEntitySection.Contexts, false);
+                foldoutInfo.SetSectionFoldout(EEntitySection.Contexts, foldoutInfo.Open);
             }
             foreach (var tuple in w.GetAllContexts(e))
             {
                 if (!foldoutInfo.TryGetFoldout(EEntitySection.Contexts, tuple.type, out var foldout))
                 {
-                    foldoutInfo.SetFoldout(EEntitySection.Contexts, tuple.type, false);
+                    foldoutInfo.SetFoldout(EEntitySection.Contexts, tuple.type, foldoutInfo.Open);
                 }
             }
             
             if (!foldoutInfo.TryGetSectionFoldout(EEntitySection.Binders, out var binderSectionFoldout))
             {
-                foldoutInfo.SetSectionFoldout(EEntitySection.Binders, false);
+                foldoutInfo.SetSectionFoldout(EEntitySection.Binders, foldoutInfo.Open);
             }
             foreach (var tuple in w.GetAllBinders(e))
             {
                 if (!foldoutInfo.TryGetFoldout(EEntitySection.Binders, tuple.type, out var foldout))
                 {
-                    foldoutInfo.SetFoldout(EEntitySection.Binders, tuple.type, false);
+                    foldoutInfo.SetFoldout(EEntitySection.Binders, tuple.type, foldoutInfo.Open);
                 }
             }
         }
         
-        public static void DrawEntity(IWorld w, Entity e, ref EntityFoldoutInfo foldoutInfo, Action? onRemoved = null)
+        public static void DrawEntity(IWorld w, Entity e, bool canEdit, ref EntityFoldoutInfo foldoutInfo, Action? onRemoved = null)
         {
             initFoldouts(w, e, ref foldoutInfo);
 
@@ -279,17 +279,22 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 
                 var rects = new Rect[3];
                 ZenGUIStyles.GetLeftIndentedSingleLineRects(20, 1, ref rects);
-                if (GUI.Button(rects[0], "X", ZenGUIStyles.ButtonMCNormal10))
+                using (new EditorGUI.DisabledScope(!canEdit))
                 {
-                    string msg = isSingleton ? ZenStringTable.GetRemoveThisSingletonEntity(e) : ZenStringTable.GetRemoveThisEntity(e);
-                    if (EditorUtility.DisplayDialog(
-                            ZenStringTable.RemoveEntity,
-                            msg,
-                            ZenStringTable.Yes,
-                            ZenStringTable.No))
+                    if (GUI.Button(rects[0], "X", ZenGUIStyles.ButtonMCNormal10))
                     {
-                        w.ExternalCommandEnqueue(ExternalCommand.DestroyEntity(e));
-                        onRemoved?.Invoke();
+                        string msg = isSingleton
+                            ? ZenStringTable.GetRemoveThisSingletonEntity(e)
+                            : ZenStringTable.GetRemoveThisEntity(e);
+                        if (EditorUtility.DisplayDialog(
+                                ZenStringTable.RemoveEntity,
+                                msg,
+                                ZenStringTable.Yes,
+                                ZenStringTable.No))
+                        {
+                            w.ExternalCommandEnqueue(ExternalCommand.DestroyEntity(e));
+                            onRemoved?.Invoke();
+                        }
                     }
                 }
 
@@ -305,27 +310,27 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 
                 if (foldoutInfo.Open)
                 {
-                    drawSections(w, e, ref foldoutInfo);
+                    drawSections(w, e, canEdit, ref foldoutInfo);
                 }
                 
                 EditorGUI.indentLevel = prevIndent;
             }
         }
 
-        private static void drawSections(IWorld w, Entity e, ref EntityFoldoutInfo foldoutInfo)
+        private static void drawSections(IWorld w, Entity e, bool canEdit, ref EntityFoldoutInfo foldoutInfo)
         {
-            drawSection(w, EEntitySection.Components, e, ref foldoutInfo);
-            drawSection(w, EEntitySection.Contexts, e, ref foldoutInfo);
-            drawSection(w, EEntitySection.Binders, e, ref foldoutInfo);
+            drawSection(w, EEntitySection.Components, e, canEdit, ref foldoutInfo);
+            drawSection(w, EEntitySection.Contexts, e, canEdit, ref foldoutInfo);
+            drawSection(w, EEntitySection.Binders, e, canEdit, ref foldoutInfo);
         }
 
-        private static void drawSection(IWorld w, EEntitySection section, Entity e, ref EntityFoldoutInfo foldoutInfo)
+        private static void drawSection(IWorld w, EEntitySection section, Entity e, bool canEdit, ref EntityFoldoutInfo foldoutInfo)
         {
-            var open = foldoutInfo.GetSectionFoldout(section, false);
+            var open = foldoutInfo.GetSectionFoldout(section, foldoutInfo.Open);
             open = EditorGUILayout.Foldout(open,  section.ToString() + $": {foldoutInfo.GetFoldoutCount(section)}",true, ZenGUIStyles.SystemFoldout);
             foldoutInfo.SetSectionFoldout(section, open);
 
-            drawContents(section, w, e, ref foldoutInfo);
+            drawContents(section, w, e, canEdit, ref foldoutInfo);
         }
     }
 }

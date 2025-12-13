@@ -4,6 +4,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Editor.Common;
+using ZenECS.Adapter.Unity.Editor.GUIs;
 using ZenECS.Core;
 using ZenECS.Core.Systems;
 
@@ -60,7 +61,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             bool clicked = GUI.Toggle(sysRect, selected, label, btnStyle);
             if (clicked && !selected)
             {
-                ClearState();
+                ClearState(true, false);
                 _entityPanel.HasSelectedSingleton = true;
                 _entityPanel.SelectedSingletonType = type;
                 _entityPanel.SelectedSingletonEntity = owner;
@@ -115,53 +116,6 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                     }
                 }
             }
-        }
-
-        // =====================================================================
-        //  RIGHT: Singleton 상세 (우측 패널)
-        // =====================================================================
-
-        void DrawSingletonDetail(IWorld world, Type? type, Entity owner)
-        {
-            // 간단한 Meta 박스
-            using (new EditorGUILayout.VerticalScope("box"))
-            {
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    using (new EditorGUILayout.VerticalScope())
-                    {
-                        string title = type != null ? type.Name : "Singleton";
-                        EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
-
-                        if (type != null)
-                        {
-                            string ns = string.IsNullOrEmpty(type.Namespace) ? "(global)" : type.Namespace;
-                            EditorGUILayout.LabelField(ns, EditorStyles.miniLabel);
-                        }
-
-                        EditorGUILayout.LabelField(
-                            $"Entity #{owner.Id}:{owner.Gen}",
-                            EditorStyles.miniLabel);
-                    }
-
-                    GUILayout.FlexibleSpace();
-
-                    if (type != null)
-                    {
-                        var pingContent = ZenGUIContents.IconPing();
-                        if (GUILayout.Button(pingContent, EditorStyles.iconButton, GUILayout.Width(20),
-                                GUILayout.Height(18)))
-                        {
-                            PingComponentType(type);
-                        }
-                    }
-                }
-            }
-
-            EditorGUILayout.Space(4);
-
-            // 실제 엔티티 정보는 기존 DrawOneEntity를 재사용
-            DrawOneEntity(world, owner);
         }
     }
 }

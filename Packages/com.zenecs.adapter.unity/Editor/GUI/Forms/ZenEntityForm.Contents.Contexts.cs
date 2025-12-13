@@ -195,80 +195,83 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             }
         }
         
-        private static void drawContextsMenus(IWorld w, Entity e, ref EntityFoldoutInfo foldoutInfo)
+        private static void drawContextsMenus(IWorld w, Entity e, bool canEdit, ref EntityFoldoutInfo foldoutInfo)
         {
             var rects = new Rect[3];
             ZenGUIStyles.GetLeftIndentedSingleLineRects(20, 1, ref rects);
-            if (GUI.Button(rects[0], ZenGUIContents.IconPlus(), ZenGUIStyles.ButtonPadding))
+            using (new EditorGUI.DisabledScope(!canEdit))
             {
-                // var allContexts = ZenUtil.ContextTypeFinder.All();
-                // var disabledC = new HashSet<Type>(w.GetAllContexts(e).Select(c => c.type));
-                //
-                // ZenContextPickerWindow.Show(
-                //     allContextTypes: allContexts,
-                //     disabled: disabledC,
-                //     onPick: picked =>
-                //     {
-                //         var inst = ZenDefaults.CreateWithDefaults(picked);
-                //         if (inst != null)
-                //         {
-                //             switch (inst)
-                //             {
-                //                 case SharedContextAsset markerAsset:
-                //                 {
-                //                     var resolver = ZenEcsUnityBridge.SharedContextResolver;
-                //                     if (resolver != null)
-                //                     {
-                //                         var ctx = resolver.Resolve(markerAsset);
-                //                         if (ctx != null)
-                //                             w.RegisterContext(e, ctx);
-                //                     }
-                //
-                //                     break;
-                //                 }
-                //                 case PerEntityContextAsset perEntityAsset:
-                //                 {
-                //                     var ctx = perEntityAsset.Create();
-                //                     w.RegisterContext(e, ctx);
-                //                     break;
-                //                 }
-                //             }
-                //         }
-                //     },
-                //     activatorRectGui: rects[0],
-                //     title: $"Entity #{e.Id}:{e.Gen} - Add Context");
+                if (GUI.Button(rects[0], ZenGUIContents.IconPlus(), ZenGUIStyles.ButtonPadding))
+                {
+                    // var allContexts = ZenUtil.ContextTypeFinder.All();
+                    // var disabledC = new HashSet<Type>(w.GetAllContexts(e).Select(c => c.type));
+                    //
+                    // ZenContextPickerWindow.Show(
+                    //     allContextTypes: allContexts,
+                    //     disabled: disabledC,
+                    //     onPick: picked =>
+                    //     {
+                    //         var inst = ZenDefaults.CreateWithDefaults(picked);
+                    //         if (inst != null)
+                    //         {
+                    //             switch (inst)
+                    //             {
+                    //                 case SharedContextAsset markerAsset:
+                    //                 {
+                    //                     var resolver = ZenEcsUnityBridge.SharedContextResolver;
+                    //                     if (resolver != null)
+                    //                     {
+                    //                         var ctx = resolver.Resolve(markerAsset);
+                    //                         if (ctx != null)
+                    //                             w.RegisterContext(e, ctx);
+                    //                     }
+                    //
+                    //                     break;
+                    //                 }
+                    //                 case PerEntityContextAsset perEntityAsset:
+                    //                 {
+                    //                     var ctx = perEntityAsset.Create();
+                    //                     w.RegisterContext(e, ctx);
+                    //                     break;
+                    //                 }
+                    //             }
+                    //         }
+                    //     },
+                    //     activatorRectGui: rects[0],
+                    //     title: $"Entity #{e.Id}:{e.Gen} - Add Context");
 
-                var ctxs = w.GetAllContexts(e);
-                var disabledCtxTypes = new HashSet<Type>(ctxs.Select(c => c.type));
-                
-                ContextAssetPickerWindow.Show(
-                    activatorRectGui: rects[0],
-                    onPick: asset =>
-                    {
-                        switch (asset)
+                    var ctxs = w.GetAllContexts(e);
+                    var disabledCtxTypes = new HashSet<Type>(ctxs.Select(c => c.type));
+
+                    ContextAssetPickerWindow.Show(
+                        activatorRectGui: rects[0],
+                        onPick: asset =>
                         {
-                            case SharedContextAsset markerAsset:
+                            switch (asset)
                             {
-                                var resolver = ZenEcsUnityBridge.SharedContextResolver;
-                                if (resolver != null)
+                                case SharedContextAsset markerAsset:
                                 {
-                                    var ctx = resolver.Resolve(markerAsset);
-                                    if (ctx != null)
-                                        w.RegisterContext(e, ctx);
+                                    var resolver = ZenEcsUnityBridge.SharedContextResolver;
+                                    if (resolver != null)
+                                    {
+                                        var ctx = resolver.Resolve(markerAsset);
+                                        if (ctx != null)
+                                            w.RegisterContext(e, ctx);
+                                    }
+
+                                    break;
                                 }
-                
-                                break;
+                                case PerEntityContextAsset perEntityAsset:
+                                {
+                                    var ctx = perEntityAsset.Create();
+                                    w.RegisterContext(e, ctx);
+                                    break;
+                                }
                             }
-                            case PerEntityContextAsset perEntityAsset:
-                            {
-                                var ctx = perEntityAsset.Create();
-                                w.RegisterContext(e, ctx);
-                                break;
-                            }
-                        }
-                    },
-                    disabledContextTypes: disabledCtxTypes,
-                    title: $"Entity #{e.Id}:{e.Gen} - Add Context");
+                        },
+                        disabledContextTypes: disabledCtxTypes,
+                        title: $"Entity #{e.Id}:{e.Gen} - Add Context");
+                }
             }
 
             if (GUI.Button(rects[1], "▼", ZenGUIStyles.ButtonMCNormal10))
@@ -282,24 +285,27 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             }
         }
 
-        private static void drawContextMenus(IWorld w, Entity e, Type t, ref EntityFoldoutInfo foldoutInfo, object? ctx = null, bool indent = false)
+        private static void drawContextMenus(IWorld w, Entity e, Type t, bool canEdit, ref EntityFoldoutInfo foldoutInfo, object? ctx = null, bool indent = false)
         {
             if (indent) EditorGUI.indentLevel++;
 
             var rects = new Rect[2];
             ZenGUIStyles.GetLeftIndentedSingleLineRects(20, 1, ref rects);
-            if (GUI.Button(rects[0], "X", ZenGUIStyles.ButtonMCNormal10))
+            using (new EditorGUI.DisabledScope(!canEdit))
             {
-                if (EditorUtility.DisplayDialog(
-                        "Remove Context",
-                        $"Remove this context?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}",
-                        "Yes",
-                        "No"))
+                if (GUI.Button(rects[0], "X", ZenGUIStyles.ButtonMCNormal10))
                 {
-                    if (ctx != null)
+                    if (EditorUtility.DisplayDialog(
+                            "Remove Context",
+                            $"Remove this context?\n\nEntity #{e.Id}:{e.Gen} - {t.Name}",
+                            "Yes",
+                            "No"))
                     {
-                        w.RemoveContext(e, (IContext)ctx);
-                        foldoutInfo.RemoveFoldout(EEntitySection.Contexts, t);
+                        if (ctx != null)
+                        {
+                            w.RemoveContext(e, (IContext)ctx);
+                            foldoutInfo.RemoveFoldout(EEntitySection.Contexts, t);
+                        }
                     }
                 }
             }
@@ -312,87 +318,84 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             if (indent) EditorGUI.indentLevel--;
         }
 
-        private static void drawContexts(IWorld w, Entity e, ref EntityFoldoutInfo foldoutInfo)
+        private static void drawContexts(IWorld w, Entity e, bool canEdit, ref EntityFoldoutInfo foldoutInfo)
         {
-            using (new EditorGUI.DisabledScope(false))
+            var contents = w.GetAllContexts(e).ToArray();
+            foreach (var (t, boxed) in contents)
             {
-                var contents = w.GetAllContexts(e).ToArray();
-                foreach (var (t, boxed) in contents)
+                var ctxType = t;
+                var members = new List<(string name, Type type, Func<object?> getter)>();
+
+                // 필드
+                foreach (var f in ctxType.GetFields(BindingFlags.Public | BindingFlags.Instance |
+                                                    BindingFlags.DeclaredOnly))
                 {
-                    var ctxType = t;
-                    var members = new List<(string name, Type type, Func<object?> getter)>();
+                    if (Attribute.IsDefined(f, typeof(HideInInspector), true)) continue;
 
-                    // 필드
-                    foreach (var f in ctxType.GetFields(BindingFlags.Public | BindingFlags.Instance |
-                                                        BindingFlags.DeclaredOnly))
-                    {
-                        if (Attribute.IsDefined(f, typeof(HideInInspector), true)) continue;
-
-                        var lf = f;
-                        members.Add((
-                            lf.Name,
-                            lf.FieldType,
-                            () => lf.GetValue(boxed)
-                        ));
-                    }
-
-                    // 프로퍼티
-                    foreach (var p in ctxType.GetProperties(BindingFlags.Public | BindingFlags.Instance |
-                                                            BindingFlags.DeclaredOnly))
-                    {
-                        if (!p.CanRead) continue;
-                        if (p.GetIndexParameters().Length > 0) continue;
-                        if (Attribute.IsDefined(p, typeof(HideInInspector), true)) continue;
-
-                        var lp = p;
-                        members.Add((
-                            lp.Name,
-                            lp.PropertyType,
-                            () =>
-                            {
-                                try
-                                {
-                                    return lp.GetValue(boxed);
-                                }
-                                catch
-                                {
-                                    return null;
-                                }
-                            }
-                        ));
-                    }
-
-                    var hasFields = members.Count > 0;
-                    var ns = string.IsNullOrEmpty(t.Namespace) ? "Global" : t.Namespace;
-                    var foldoutName = $"{t.Name} <size=9><color=#707070>[{ns}]</color></size>";
-
-                    if (!hasFields)
-                    {
-                        EditorGUILayout.LabelField(foldoutName, ZenGUIStyles.LabelMLNormal10);
-                        drawContextMenus(w, e, t, ref foldoutInfo, boxed);
-                    }
-                    else
-                    {
-                        var open = foldoutInfo.GetFoldout(EEntitySection.Contexts, t, false);
-                        open = EditorGUILayout.Foldout(open, foldoutName, true, ZenGUIStyles.SystemFoldout10);
-                        foldoutInfo.SetFoldout(EEntitySection.Contexts, t, open);
-
-                        if (open)
-                        {
-                            drawContextContent(w, e, members);
-                        }
-
-                        drawContextMenus(w, e, t, ref foldoutInfo, boxed, true);
-                    }
-
-                    ZenGUIContents.DrawLine();
-
-                    GUILayout.Space(4);
+                    var lf = f;
+                    members.Add((
+                        lf.Name,
+                        lf.FieldType,
+                        () => lf.GetValue(boxed)
+                    ));
                 }
+
+                // 프로퍼티
+                foreach (var p in ctxType.GetProperties(BindingFlags.Public | BindingFlags.Instance |
+                                                        BindingFlags.DeclaredOnly))
+                {
+                    if (!p.CanRead) continue;
+                    if (p.GetIndexParameters().Length > 0) continue;
+                    if (Attribute.IsDefined(p, typeof(HideInInspector), true)) continue;
+
+                    var lp = p;
+                    members.Add((
+                        lp.Name,
+                        lp.PropertyType,
+                        () =>
+                        {
+                            try
+                            {
+                                return lp.GetValue(boxed);
+                            }
+                            catch
+                            {
+                                return null;
+                            }
+                        }
+                    ));
+                }
+
+                var hasFields = members.Count > 0;
+                var ns = string.IsNullOrEmpty(t.Namespace) ? "Global" : t.Namespace;
+                var foldoutName = $"{t.Name} <size=9><color=#707070>[{ns}]</color></size>";
+
+                if (!hasFields)
+                {
+                    EditorGUILayout.LabelField(foldoutName, ZenGUIStyles.LabelMLNormal10);
+                    drawContextMenus(w, e, t, canEdit, ref foldoutInfo, boxed);
+                }
+                else
+                {
+                    var open = foldoutInfo.GetFoldout(EEntitySection.Contexts, t, false);
+                    open = EditorGUILayout.Foldout(open, foldoutName, true, ZenGUIStyles.SystemFoldout10);
+                    foldoutInfo.SetFoldout(EEntitySection.Contexts, t, open);
+
+                    if (open)
+                    {
+                        drawContextContent(w, e, canEdit, members);
+                    }
+
+                    drawContextMenus(w, e, t, canEdit, ref foldoutInfo, boxed, true);
+                }
+
+                ZenGUIContents.DrawLine();
+
+                GUILayout.Space(4);
             }
         }
 
-        private static void drawContextContent(IWorld w, Entity e, List<(string name, Type type, Func<object?> getter)> members)
+        private static void drawContextContent(IWorld w, Entity e, bool canEdit, List<(string name, Type type, Func<object?> getter)> members)
         {
             var prevIndent = EditorGUI.indentLevel;
             EditorGUI.indentLevel++;

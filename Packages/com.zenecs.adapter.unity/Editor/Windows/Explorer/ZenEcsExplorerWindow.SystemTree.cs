@@ -386,7 +386,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             bool clicked = GUI.Toggle(sysRect, selected, typeName, ZenGUIStyles.ButtonMLNormal10);
             if (clicked && !selected)
             {
-                ClearState();
+                ClearState(true, false);
                 _systemTree.SelectedSystemIndex = index;
             }
 

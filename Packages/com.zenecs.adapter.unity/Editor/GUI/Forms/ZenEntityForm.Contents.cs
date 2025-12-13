@@ -13,25 +13,25 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 {
     public static partial class ZenEntityForm
     {
-        private static void drawContents(EEntitySection section, IWorld w, Entity e, ref EntityFoldoutInfo foldoutInfo)
+        private static void drawContents(EEntitySection section, IWorld w, Entity e, bool canEdit, ref EntityFoldoutInfo foldoutInfo)
         {
             int prevIndent = EditorGUI.indentLevel;
             EditorGUI.indentLevel++;
 
-            drawContentsMenus(section, w, e, ref foldoutInfo);
+            drawContentsMenus(section, w, e, canEdit, ref foldoutInfo);
 
             if (foldoutInfo.GetSectionFoldout(section))
             {
                 switch (section)
                 {
                     case EEntitySection.Components:
-                        drawComponents(w, e, ref foldoutInfo);
+                        drawComponents(w, e, canEdit, ref foldoutInfo);
                         break;
                     case EEntitySection.Contexts:
-                        drawContexts(w, e, ref foldoutInfo);
+                        drawContexts(w, e, canEdit, ref foldoutInfo);
                         break;
                     case EEntitySection.Binders:
-                        drawBinders(w, e, ref foldoutInfo);
+                        drawBinders(w, e, canEdit, ref foldoutInfo);
                         break;
                 }
             }
@@ -39,18 +39,18 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             EditorGUI.indentLevel = prevIndent;
         }
 
-        private static void drawContentsMenus(EEntitySection section, IWorld w, Entity e, ref EntityFoldoutInfo foldoutInfo)
+        private static void drawContentsMenus(EEntitySection section, IWorld w, Entity e, bool canEdit, ref EntityFoldoutInfo foldoutInfo)
         {
             switch (section)
             {
                 case EEntitySection.Components:
-                    if (!w.HasSingleton(e)) drawComponentsMenus(w, e, ref foldoutInfo);
+                    if (!w.HasSingleton(e)) drawComponentsMenus(w, e, canEdit, ref foldoutInfo);
                     break;
                 case EEntitySection.Contexts:
-                    drawContextsMenus(w, e, ref foldoutInfo);
+                    drawContextsMenus(w, e, canEdit, ref foldoutInfo);
                     break;
                 case EEntitySection.Binders:
-                    drawBindersMenus(w, e, ref foldoutInfo);
+                    drawBindersMenus(w, e, canEdit, ref foldoutInfo);
                     break;
             }
         }
