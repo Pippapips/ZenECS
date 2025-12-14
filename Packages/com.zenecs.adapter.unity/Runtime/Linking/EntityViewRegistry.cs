@@ -81,30 +81,26 @@ namespace ZenECS.Adapter.Unity.Linking
         /// </summary>
         /// <remarks>
         /// <para>
-        /// This method is intended to be called periodically or when worlds are
-        /// disposed. Since <see cref="ConditionalWeakTable"/> automatically removes
-        /// entries when the key (world) is garbage collected, this method primarily
-        /// serves to clean up any remaining references in the registry dictionaries.
+        /// <b>Note:</b> This method currently performs no operation because
+        /// <see cref="ConditionalWeakTable"/> automatically removes entries when
+        /// the key (world) is garbage collected. The method is provided for API
+        /// consistency and potential future extensibility.
         /// </para>
         /// <para>
-        /// In practice, the <see cref="ConditionalWeakTable"/> handles most cleanup
-        /// automatically, but this method can be useful for explicit cleanup scenarios.
+        /// <see cref="ConditionalWeakTable"/> does not expose a way to enumerate
+        /// keys, so manual cleanup of dead entries is not possible. The garbage
+        /// collector handles cleanup automatically when worlds are no longer
+        /// referenced.
         /// </para>
         /// <para>
-        /// For cleaning up a specific world, use <see cref="CleanupWorld(IWorld)"/> instead.
+        /// For cleaning up a specific world's registry immediately, use
+        /// <see cref="CleanupWorld(IWorld)"/> instead.
         /// </para>
         /// </remarks>
         public static void CleanupDeadWorlds()
         {
-            // ConditionalWeakTable automatically removes entries when the key is GC'd,
-            // so we don't need to manually iterate. However, we can force a collection
-            // if needed by accessing the table (though this is generally not necessary).
-            // This method is provided for explicit cleanup scenarios where immediate
-            // cleanup is desired, though in practice the GC will handle it automatically.
-            
-            // Note: ConditionalWeakTable doesn't expose a way to enumerate keys,
-            // so we can't directly clean up dead entries. The GC will handle it.
-            // This method is kept for API consistency and future extensibility.
+            // No-op: ConditionalWeakTable automatically removes entries when keys are GC'd.
+            // This method is kept for API consistency and potential future extensibility.
         }
 
         /// <summary>
@@ -115,7 +111,11 @@ namespace ZenECS.Adapter.Unity.Linking
             /// <summary>
             /// Internal map from entity to link.
             /// </summary>
-            private readonly Dictionary<Entity, EntityLink?> _map = new();
+            /// <remarks>
+            /// Initial capacity is set to 128 to reduce reallocations for typical
+            /// entity counts. This is a reasonable default for most game scenarios.
+            /// </remarks>
+            private readonly Dictionary<Entity, EntityLink?> _map = new(128);
 
             /// <summary>
             /// Registers a link for the given entity.

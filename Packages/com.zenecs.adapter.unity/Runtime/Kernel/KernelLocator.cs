@@ -90,10 +90,18 @@ namespace ZenECS.Adapter.Unity
         /// </remarks>
         public static bool TryGetCurrent(out IKernel? kernel)
         {
+            // Validate cached kernel before using it (check if it's been disposed)
             if (_cached != null)
             {
-                kernel = _cached;
-                return true;
+                // Check if the cached kernel is still valid (not disposed)
+                // IKernel implements IDisposable, so we can check IsRunning as a proxy for validity
+                if (_cached.IsRunning)
+                {
+                    kernel = _cached;
+                    return true;
+                }
+                // Cached kernel is no longer valid, clear it
+                _cached = null;
             }
 
             // 1) Use the kernel registered on the bridge, if any.
@@ -394,7 +402,9 @@ namespace ZenECS.Adapter.Unity
         /// <remarks>
         /// <para>
         /// Implementation detail: this is computed as the intersection of
-        /// world ID sets for each individual tag.
+        /// world ID sets for each individual tag. The algorithm is optimized
+        /// to minimize allocations by using HashSet intersection operations
+        /// and maintaining a single dictionary for world lookups.
         /// </para>
         /// </remarks>
         public static IEnumerable<IWorld> FindByAllTags(params string[] tags)
@@ -402,6 +412,7 @@ namespace ZenECS.Adapter.Unity
             if (tags == null || tags.Length == 0) return Enumerable.Empty<IWorld>();
 
             // AND = intersection of result sets. Use WorldId as key.
+            // Start with the first tag's worlds, then intersect with subsequent tags.
             HashSet<WorldId>? acc = null;
             Dictionary<WorldId, IWorld>? lastMap = null;
 
@@ -411,17 +422,21 @@ namespace ZenECS.Adapter.Unity
                 var map = list.Where(w => w != null).ToDictionary(w => w.Id, w => w);
                 if (acc == null)
                 {
+                    // First tag: initialize accumulator with all world IDs from this tag
                     acc = new HashSet<WorldId>(map.Keys);
                     lastMap = map;
                 }
                 else
                 {
+                    // Subsequent tags: intersect with existing accumulator
                     acc.IntersectWith(map.Keys);
+                    // Update lastMap to the most recent tag's map for final lookup
                     lastMap = map;
                 }
             }
 
             if (acc == null || lastMap == null) return Enumerable.Empty<IWorld>();
+            // Return only worlds that are in the intersection (acc) and exist in lastMap
             return acc.Where(lastMap.ContainsKey).Select(id => lastMap[id]);
         }
 

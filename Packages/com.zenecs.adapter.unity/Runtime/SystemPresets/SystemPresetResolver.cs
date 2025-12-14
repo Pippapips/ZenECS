@@ -1,4 +1,4 @@
-﻿// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Adapter.Unity — System Presets
 // File: SystemPresetResolver.cs
 // Purpose: Default implementation of ISystemPresetResolver that instantiates
@@ -129,37 +129,28 @@ namespace ZenECS.Adapter.Unity.SystemPresets
         /// </remarks>
         public List<ISystem> InstantiateSystems(List<Type> types)
         {
-#if !ZENECS_ZENJECT
-            var kernel = ZenEcsUnityBridge.Kernel;
-            var list = new List<ISystem>(types.Count);
-
-            foreach (var t in types)
-            {
-                if (kernel is { CurrentWorld: not null })
-                {
-                    if (kernel.CurrentWorld.TryGetSystem(t, out ISystem? system))
-                        continue;
-                }
-
-                try
-                {
-                    list.Add((ISystem)Activator.CreateInstance(t));
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogWarning($"[SystemPresetResolver] instantiate failed: {t?.Name} — {ex.Message}");
-                }
-            }
-
-            return list;
-#else
+#if ZENECS_ZENJECT
             if (_container == null) return new List<ISystem>();
+            return InstantiateSystemsInternal(types, t => (ISystem)_container.Instantiate(t));
+#else
+            return InstantiateSystemsInternal(types, t => (ISystem)Activator.CreateInstance(t));
+#endif
+        }
 
+        /// <summary>
+        /// Internal helper that instantiates systems using the provided factory function.
+        /// </summary>
+        /// <param name="types">List of system types to instantiate.</param>
+        /// <param name="factory">Factory function that creates an ISystem instance from a Type.</param>
+        /// <returns>A list of successfully instantiated systems.</returns>
+        private static List<ISystem> InstantiateSystemsInternal(List<Type> types, Func<Type, ISystem> factory)
+        {
             var kernel = ZenEcsUnityBridge.Kernel;
             var list = new List<ISystem>(types.Count);
 
             foreach (var t in types)
             {
+                // Skip if system already exists in current world
                 if (kernel is { CurrentWorld: not null })
                 {
                     if (kernel.CurrentWorld.TryGetSystem(t, out ISystem? system))
@@ -168,7 +159,7 @@ namespace ZenECS.Adapter.Unity.SystemPresets
 
                 try
                 {
-                    list.Add((ISystem)_container.Instantiate(t));
+                    list.Add(factory(t));
                 }
                 catch (Exception ex)
                 {
@@ -177,7 +168,6 @@ namespace ZenECS.Adapter.Unity.SystemPresets
             }
 
             return list;
-#endif
         }
     }
 }

@@ -95,6 +95,8 @@ namespace ZenECS.Adapter.Unity
                 new Logger());
 
             // Subscribe to world destruction events to clean up EntityViewRegistry
+            // Unsubscribe first to prevent duplicate subscriptions (defensive coding)
+            Kernel.WorldDestroyed -= OnWorldDestroyed;
             Kernel.WorldDestroyed += OnWorldDestroyed;
 
             KernelLocator.Attach(Kernel);
@@ -166,18 +168,6 @@ namespace ZenECS.Adapter.Unity
         }
 
         /// <summary>
-        /// Unity lifecycle callback invoked when the component or its GameObject
-        /// is being destroyed.
-        /// </summary>
-        /// <remarks>
-        /// If a kernel instance is owned by this driver, it is:
-        /// <list type="bullet">
-        /// <item><description>Detached from <see cref="KernelLocator"/>.</description></item>
-        /// <item><description>Disposed to release any managed resources.</description></item>
-        /// <item><description>Cleared from <see cref="Kernel"/> to avoid reuse.</description></item>
-        /// </list>
-        /// </remarks>
-        /// <summary>
         /// Handles world destruction events to clean up EntityViewRegistry.
         /// </summary>
         /// <param name="world">The world that was destroyed.</param>
@@ -238,7 +228,9 @@ namespace ZenECS.Adapter.Unity
         /// </summary>
         /// <remarks>
         /// Forwards to <see cref="IKernel.LateFrame(float)"/> with the default
-        /// interpolation alpha when a kernel is present.
+        /// interpolation alpha (1.0f) when a kernel is present. The kernel
+        /// internally calculates the interpolation alpha based on the fixed-step
+        /// accumulator, so the default value is appropriate for Unity's LateUpdate.
         /// </remarks>
         private void LateUpdate()  => Kernel?.LateFrame();
     }

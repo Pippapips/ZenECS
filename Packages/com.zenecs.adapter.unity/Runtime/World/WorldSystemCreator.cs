@@ -130,18 +130,19 @@ namespace ZenECS.Adapter.Unity
 
 #if ZENECS_ZENJECT
         /// <summary>
-        /// Zenject hook used to ensure the world exists before system
+        /// Zenject injection hook used to resolve dependencies before system
         /// creation.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// This method resolves or creates the world by calling
-        /// <see cref="ResolveWorld"/> so that it is ready by the time systems
-        /// are instantiated in <see cref="Awake"/>.
+        /// This method is called by Zenject during dependency injection to
+        /// resolve the optional <see cref="ISystemPresetResolver"/>. The world
+        /// is resolved or created in <see cref="Awake"/> after all dependencies
+        /// have been injected.
         /// </para>
         /// </remarks>
         [Inject]
-        void ctor([InjectOptional] ISystemPresetResolver worldPresetResolver)
+        void Initialize([InjectOptional] ISystemPresetResolver worldPresetResolver)
         {
             _worldPresetResolver = worldPresetResolver;
         }
@@ -342,24 +343,24 @@ namespace ZenECS.Adapter.Unity
             }
 
             return list;
+        }
 
-            /// <summary>
-            /// Adds a system type to the list if it is valid and not yet seen.
-            /// </summary>
-            /// <param name="t">Candidate type to add.</param>
-            /// <param name="visited">Set of type keys that have already been added.</param>
-            /// <param name="dst">Destination list of system types.</param>
-            static void AddDistinct(Type? t, HashSet<string> visited, List<Type> dst)
-            {
-                if (t == null) return;
-                if (t.IsAbstract) return;
-                if (!typeof(ISystem).IsAssignableFrom(t)) return;
+        /// <summary>
+        /// Adds a system type to the list if it is valid and not yet seen.
+        /// </summary>
+        /// <param name="t">Candidate type to add.</param>
+        /// <param name="visited">Set of type keys that have already been added.</param>
+        /// <param name="dst">Destination list of system types.</param>
+        private static void AddDistinct(Type? t, HashSet<string> visited, List<Type> dst)
+        {
+            if (t == null) return;
+            if (t.IsAbstract) return;
+            if (!typeof(ISystem).IsAssignableFrom(t)) return;
 
-                var key = t.AssemblyQualifiedName ?? t.FullName;
-                if (string.IsNullOrEmpty(key)) return;
-                if (visited.Add(key))
-                    dst.Add(t);
-            }
+            var key = t.AssemblyQualifiedName ?? t.FullName;
+            if (string.IsNullOrEmpty(key)) return;
+            if (visited.Add(key))
+                dst.Add(t);
         }
 
         // ───────────────────────────────── System instantiation ─────────────────────────────────

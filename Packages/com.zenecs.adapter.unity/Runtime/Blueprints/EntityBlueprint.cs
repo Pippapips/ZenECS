@@ -184,12 +184,23 @@ namespace ZenECS.Adapter.Unity.Blueprints
         /// <summary>
         /// Applies binders to the entity by shallow-cloning them.
         /// </summary>
+        /// <remarks>
+        /// Each binder is shallow-copied to create a unique instance per entity.
+        /// The copied instance's ApplyOrder and the original binder's AttachOrder
+        /// are preserved and set on the cloned instance before attachment.
+        /// </remarks>
         private void ApplyBinders(IWorld world, Entity e)
         {
             foreach (var b in _binders)
             {
                 if (b == null) continue;
                 var inst = (IBinder)ShallowCopy(b, b.GetType());
+                if (inst == null)
+                {
+                    Debug.LogWarning($"[EntityBlueprint] Failed to clone binder of type '{b.GetType().FullName}'. Skipping.");
+                    continue;
+                }
+                // Preserve the cloned instance's ApplyOrder and original binder's AttachOrder
                 inst.SetApplyOrderAndAttachOrder(inst.ApplyOrder, b.AttachOrder);
                 world.AttachBinder(e, inst);
             }
@@ -258,7 +269,12 @@ namespace ZenECS.Adapter.Unity.Blueprints
             {
                 try
                 {
-                    return cloneable.Clone();
+                    var cloned = cloneable.Clone();
+                    if (cloned != null) return cloned;
+                    // If Clone() returns null, fall back to reflection-based copying
+                    Debug.LogWarning(
+                        $"[EntityBlueprint] ICloneable.Clone() returned null for type '{t.FullName}'. " +
+                        "Falling back to reflection-based copying.");
                 }
                 catch (Exception ex)
                 {
