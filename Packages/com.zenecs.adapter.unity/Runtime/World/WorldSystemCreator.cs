@@ -1,4 +1,4 @@
-﻿// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Adapter.Unity — DI
 // File: WorldSystemInstaller.cs
 // Purpose: Ensure a ZenECS world exists, tag it, and register systems from
@@ -228,9 +228,22 @@ namespace ZenECS.Adapter.Unity
                 return;
             }
 
-            var types = CollectDistinctTypes();
+            var types = CollectDistinctTypes(out var errors);
+            if (errors.Count > 0)
+            {
+                Debug.LogWarning(
+                    $"[WorldSystemCreator] Encountered {errors.Count} error(s) while collecting system types. " +
+                    "Some systems may not be registered. Check the console for details.");
+            }
+
             if (types.Count == 0)
+            {
+                if (errors.Count == 0)
+                {
+                    Debug.LogWarning("[WorldSystemCreator] No system types found to register.");
+                }
                 return;
+            }
 
             // Prefer the central SystemPresetResolver if available.
             var instances = _worldPresetResolver?.InstantiateSystems(types) ?? InstantiateSystemsActivator(types);
@@ -245,6 +258,10 @@ namespace ZenECS.Adapter.Unity
         /// Collects all concrete <see cref="ISystem"/> types from presets and
         /// installer-local settings, returning a distinct list.
         /// </summary>
+        /// <param name="errors">
+        /// When this method returns, contains a list of error messages encountered
+        /// during type collection. This list will be empty if no errors occurred.
+        /// </param>
         /// <returns>
         /// A list of distinct, non-abstract system types that implement
         /// <see cref="ISystem"/>.
@@ -267,9 +284,15 @@ namespace ZenECS.Adapter.Unity
         /// key. Abstract types or types not assignable to
         /// <see cref="ISystem"/> are ignored.
         /// </para>
+        /// <para>
+        /// Errors encountered during collection are logged and added to the
+        /// <paramref name="errors"/> list, but do not prevent the collection
+        /// process from continuing.
+        /// </para>
         /// </remarks>
-        private List<Type> CollectDistinctTypes()
+        private List<Type> CollectDistinctTypes(out List<string> errors)
         {
+            errors = new List<string>();
             var seen = new HashSet<string>(StringComparer.Ordinal);
             var list = new List<Type>();
 
@@ -288,9 +311,9 @@ namespace ZenECS.Adapter.Unity
                     }
                     catch (Exception ex)
                     {
-                        Debug.LogWarning(
-                            $"[WorldSystemInstaller] Failed to read SystemsPreset '{preset.name}': {ex.Message}",
-                            preset);
+                        var errorMsg = $"[WorldSystemCreator] Failed to read SystemsPreset '{preset.name}': {ex.Message}";
+                        errors.Add(errorMsg);
+                        Debug.LogWarning(errorMsg, preset);
                     }
                 }
             }
@@ -300,8 +323,17 @@ namespace ZenECS.Adapter.Unity
             {
                 foreach (var r in systemTypes)
                 {
-                    var t = r.Resolve();
-                    AddDistinct(t, seen, list);
+                    try
+                    {
+                        var t = r.Resolve();
+                        AddDistinct(t, seen, list);
+                    }
+                    catch (Exception ex)
+                    {
+                        var errorMsg = $"[WorldSystemCreator] Failed to resolve SystemTypeRef: {ex.Message}";
+                        errors.Add(errorMsg);
+                        Debug.LogWarning(errorMsg);
+                    }
                 }
             }
 
