@@ -167,7 +167,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 }
                 catch (Exception ex)
                 {
-                    // GetAllSingletons가 예외를 던져도 다른 UI에 영향을 주지 않도록 방어
+                    // Defensive: prevent GetAllSingletons exception from affecting other UI
                     Debug.LogException(ex);
                 }
 
@@ -235,7 +235,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 {
                     EditorGUI.indentLevel++;
 
-                    // Unknown 하위는 루트 하나: Unknown 섹션 안에 바로 시스템 리스트
+                    // Unknown has one root: system list directly inside Unknown section
                     if (unknownGroups.TryGetValue(SystemGroup.Unknown, out var list) && list != null)
                     {
                         foreach (var (index, sys, type) in list)
@@ -243,7 +243,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                     }
                     else
                     {
-                        // 혹시 다른 그룹 키로 들어온 경우가 있으면 전부 flatten 해서 출력
+                        // If there are cases with different group keys, flatten all and output
                         foreach (var kv in unknownGroups)
                         {
                             var list2 = kv.Value;
@@ -267,33 +267,33 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             bool hasEnabled = sys is ISystemEnabledFlag;
             bool enabledValue = hasEnabled && ((ISystemEnabledFlag)sys).Enabled;
 
-            // === 한 줄 Rect 계산 ===
+            // === Calculate one-line Rect ===
             var rowHeight = EditorGUIUtility.singleLineHeight + 4f;
             var rowRect = GUILayoutUtility.GetRect(0, rowHeight, GUILayout.ExpandWidth(true));
 
-            // Indent 반영
+            // Reflect indent
             rowRect = EditorGUI.IndentedRect(rowRect);
 
             const float pauseW = 24f;
-            const float iconW = 24f; // 돋보기 / X 공통 폭
+            const float iconW = 24f; // Ping / X common width
             const float gap = 1f;
 
-            // 왼쪽: Pause
+            // Left: Pause
             var pauseRect = new Rect(rowRect.x, rowRect.y, pauseW, rowRect.height);
 
-            // 오른쪽 끝: X
+            // Right end: X
             var delRect = new Rect(rowRect.xMax - iconW, rowRect.y, iconW, rowRect.height);
 
-            // 그 왼쪽: 돋보기
+            // Left of that: Ping
             var pingRect = new Rect(delRect.x - gap - iconW, rowRect.y, iconW, rowRect.height);
 
-            // 가운데: System 버튼
+            // Middle: System button
             float sysX = pauseRect.xMax + gap;
             float sysRight = pingRect.x - gap;
             float sysW = Mathf.Max(0f, sysRight - sysX);
             var sysRect = new Rect(sysX, rowRect.y, sysW, rowHeight);
 
-            // ===== Pause (Enabled 토글) =====
+            // ===== Pause (Enabled toggle) =====
             using (new EditorGUI.DisabledScope(!hasEnabled))
             {
                 var btnRect = new Rect(
@@ -347,7 +347,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 ZenUtil.PingType(tSys);
             }
 
-            // ===== X 삭제 버튼 =====
+            // ===== X Delete button =====
             using (new EditorGUI.DisabledScope(!_coreState.EditMode))
             {
                 var delBtnRect = new Rect(

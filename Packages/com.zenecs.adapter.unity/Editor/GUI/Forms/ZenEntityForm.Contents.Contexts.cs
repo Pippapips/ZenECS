@@ -124,7 +124,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 var ctxType = t;
                 var members = new List<(string name, Type type, Func<object?> getter)>();
 
-                // 필드
+                // Fields
                 foreach (var f in ctxType.GetFields(BindingFlags.Public | BindingFlags.Instance |
                                                     BindingFlags.DeclaredOnly))
                 {
@@ -138,7 +138,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                     ));
                 }
 
-                // 프로퍼티
+                // Properties
                 foreach (var p in ctxType.GetProperties(BindingFlags.Public | BindingFlags.Instance |
                                                         BindingFlags.DeclaredOnly))
                 {
@@ -233,10 +233,10 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                         var obj = value as UnityEngine.Object;
                         var content = EditorGUIUtility.ObjectContent(obj, mType);
 
-                        // 링크 커서
+                        // Link cursor
                         EditorGUIUtility.AddCursorRect(valRect, MouseCursor.Link);
 
-                        // 여기에서 LabelField 대신 Button으로 그린다 = hover 색 적용됨
+                        // Draw as Button instead of LabelField here = hover color applied
                         if (GUI.Button(valRect, content, ZenGUIStyles.LinkLabel))
                         {
                             if (obj != null)

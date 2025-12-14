@@ -48,10 +48,10 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
         readonly Dictionary<string, bool> _fold = new();
         const float PAD = 6f;
 
-        GUIStyle _obsOkStyle; // Assigned된 컴포넌트 이름
-        GUIStyle _obsMissingStyle; // Not-assigned 컴포넌트 이름
-        GUIStyle _obsCheckStyle; // ✔ 아이콘
-        GUIStyle _obsXStyle; // ✕ 아이콘
+        GUIStyle _obsOkStyle; // Assigned component name
+        GUIStyle _obsMissingStyle; // Not-assigned component name
+        GUIStyle _obsCheckStyle; // ✔ icon
+        GUIStyle _obsXStyle; // ✕ icon
         GUIStyle _namespaceStyle;
         bool _stylesReady;
 
@@ -106,21 +106,21 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 richText = true
             };
 
-            // 네임스페이스 스타일
+            // Namespace style
             _namespaceStyle = new GUIStyle(baseStyle)
             {
                 fontStyle = FontStyle.Normal,
                 richText = false,
             };
 
-            // ProSkin(다크테마)일 때는 밝은 회색
+            // Light gray when ProSkin (dark theme)
             if (EditorGUIUtility.isProSkin)
             {
-                _namespaceStyle.normal.textColor = new Color(0.78f, 0.78f, 0.78f); // #C7C7C7 정도
+                _namespaceStyle.normal.textColor = new Color(0.78f, 0.78f, 0.78f); // #C7C7C7 approximately
             }
             else
             {
-                // 라이트 테마에서는 중간 정도 회색
+                // Medium gray in light theme
                 _namespaceStyle.normal.textColor = new Color(0.25f, 0.25f, 0.25f);
             }
 
@@ -139,7 +139,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 }
             );
             
-            EnsureStylesReady(); // ← 반드시 가장 먼저
+            EnsureStylesReady(); // ← Must be called first
 
             serializedObject.Update();
 
@@ -194,7 +194,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
         }
 
         // =====================================================================
-        // Components (BlueprintData 그대로)
+        // Components (BlueprintData as-is)
         // =====================================================================
         void BuildComponentsList()
         {
@@ -275,11 +275,11 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 bool hasFields = t != null && ZenComponentFormGUI.HasDrawableFields(t);
                 if (!hasFields) return headerH;
 
-                // 네임스페이스 한 줄 높이
+                // Namespace one-line height
                 float nsH = 0f;
                 if (t != null && !string.IsNullOrEmpty(t.Namespace))
                 {
-                    // 1줄 + 위/아래 여백 약간
+                    // 1 line + slight top/bottom margins
                     nsH = EditorGUIUtility.singleLineHeight + 4f;
                 }
 
@@ -287,11 +287,11 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 var obj = EntityBlueprintComponentJson.Deserialize(jsonProp.stringValue, t);
                 float bodyH = ZenComponentFormGUI.CalcHeightForObject(obj, t);
 
-                return headerH // Foldout 헤더
-                       + nsH // 네임스페이스 라인
-                       + 6f // 헤더/네임스페이스와 바디 사이 여백
+                return headerH // Foldout header
+                       + nsH // Namespace line
+                       + 6f // Margin between header/namespace and body
                        + Mathf.Max(0f, bodyH)
-                       + 6f; // 마지막 여백
+                       + 6f; // Final margin
             };
 
             _componentsList.drawElementCallback = (rect, index, active, focused) =>
@@ -306,17 +306,17 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
                 bool hasFields = t != null && ZenComponentFormGUI.HasDrawableFields(t);
 
-                // ─ 헤더: Foldout + Reset(R) + Ping(돋보기) ─
+                // ─ Header: Foldout + Reset(R) + Ping (search icon) ─
                 float line = EditorGUIUtility.singleLineHeight;
                 var rHead = new Rect(rect.x + 4, rect.y + 3, rect.width - 8, line);
 
-                const float btnW = 20f; // Reset / Ping 둘 다 같은 폭
+                const float btnW = 20f; // Reset / Ping both same width
 
-                // 오른쪽 끝: 돋보기
+                // Right end: Ping
                 var rPing = new Rect(rHead.xMax - btnW, rHead.y, btnW, rHead.height);
-                // 그 왼쪽: Reset 버튼 (R)
+                // Left of that: Reset button (R)
                 var rReset = new Rect(rHead.xMax - btnW * 2f - 2f, rHead.y, btnW, rHead.height);
-                // 나머지 영역: Foldout
+                // Remaining area: Foldout
                 var rFold = new Rect(
                     rHead.x,
                     rHead.y,
@@ -336,7 +336,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 );
                 _fold[key] = hasFields && openNow;
 
-                // Reset(R) 버튼: 디폴트 값으로 초기화
+                // Reset(R) button: initialize to default values
                 using (new EditorGUI.DisabledScope(t == null))
                 {
                     if (GUI.Button(rReset, new GUIContent("R", "Reset component to defaults"),
@@ -344,7 +344,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                     {
                         Undo.RecordObject(target, "Reset Blueprint Component");
 
-                        // ZenDefaults로 새 인스턴스 생성 후 다시 JSON 직렬화
+                        // Create new instance with ZenDefaults then serialize to JSON again
                         var inst = ZenDefaults.CreateWithDefaults(t);
                         pJson.stringValue = EntityBlueprintComponentJson.Serialize(inst, t);
 
@@ -353,7 +353,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                     }
                 }
 
-                // 이름 옆 Ping 버튼 (돋보기)
+                // Ping button next to name (search icon)
                 using (new EditorGUI.DisabledScope(t == null))
                 {
                     var gcPing = GetSearchIconContent("Ping component script in Project");
@@ -365,12 +365,12 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
                 if (!hasFields || !_fold[key]) return;
 
-                // ─ 네임스페이스 + 바디는 기존 코드 유지 ─
+                // ─ Namespace + body keep existing code ─
                 float y = rHead.yMax;
 
                 if (t != null && !string.IsNullOrEmpty(t.Namespace))
                 {
-                    EnsureStylesReady(); // _namespaceStyle 사용
+                    EnsureStylesReady(); // Use _namespaceStyle
                     y += 2f;
                     var nsRect = new Rect(rect.x + 8, y, rect.width - 16, EditorGUIUtility.singleLineHeight);
                     EditorGUI.LabelField(nsRect, t.Namespace, _namespaceStyle);
@@ -409,7 +409,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
             _contextsList.drawHeaderCallback = r =>
                 EditorGUI.LabelField(r, "Contexts (Context Assets)", EditorStyles.boldLabel);
 
-            // 간단히: onAdd는 빈 슬롯 하나 추가하고, 사용자가 직접 SO를 드래그/선택
+            // Simply: onAdd adds one empty slot, user directly drags/selects SO
             _contextsList.onAddCallback = rl =>
             {
                 int idx = _contextsProp.arraySize;
@@ -437,11 +437,11 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 //     var path = AssetDatabase.GetAssetPath(obj);
                 //     if (!string.IsNullOrEmpty(path))
                 //     {
-                //         h += line + 4f; // 경로 한 줄
+                //         h += line + 4f; // Path one line
                 //     }
                 //     else
                 //     {
-                //         h += line + 4f; // "(Not saved asset)" 한 줄
+                //         h += line + 4f; // "(Not saved asset)" one line
                 //     }
                 // }
 
@@ -462,7 +462,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 if (obj == null)
                     return;
 
-                // // 2) SO 경로 라인
+                // // 2) SO path line
                 // var path = AssetDatabase.GetAssetPath(obj);
                 // if (string.IsNullOrEmpty(path))
                 // {
@@ -473,18 +473,18 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 //     path = $"[{path}]";
                 // }
                 //
-                // // 필드 시작 위치와 맞추고, 짙은 회색 miniLabel 스타일
+                // // Align with field start position, dark gray miniLabel style
                 // var rPath = new Rect(rect.x + 8, rField.yMax + 2f, rect.width - 16, line);
                 //
                 // var prevColor = GUI.color;
-                // GUI.color = new Color(0.45f, 0.45f, 0.45f); // 짙은 회색
+                // GUI.color = new Color(0.45f, 0.45f, 0.45f); // Dark gray
                 // EditorGUI.LabelField(rPath, path, EditorStyles.miniLabel);
                 // GUI.color = prevColor;
             };
         }
 
         // =====================================================================
-        // Binders (managed reference: 누락 컨텍스트 경고 배지 포함)
+        // Binders (managed reference: includes missing context warning badge)
         // =====================================================================
         void BuildBindersList()
         {
@@ -513,12 +513,12 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
             _bindersList.onAddDropdownCallback = (rect, list) =>
             {
-                // 1) 전체 바인더 타입 수집
+                // 1) Collect all binder types
                 IEnumerable<Type> AllBinders()
                     => UnityEditor.TypeCache.GetTypesDerivedFrom(typeof(IBinder))
                         .Where(t => !t.IsAbstract && t.GetConstructor(Type.EmptyTypes) != null);
 
-                // 2) 이미 추가된 바인더 타입은 disabled로 표시
+                // 2) Disable binder types already added
                 var disabled = new HashSet<Type>();
                 for (int i = 0; i < _bindersProp.arraySize; i++)
                 {
@@ -527,7 +527,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                     if (inst != null) disabled.Add(inst.GetType());
                 }
 
-                // 3) ZenBinderPickerWindow로 검색/선택 UI 표시
+                // 3) Show search/select UI with ZenBinderPickerWindow
                 ZenBinderPickerWindow.Show(
                     allBinderTypes: AllBinders(),
                     disabled: disabled,
@@ -564,33 +564,33 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 var inst = p?.managedReferenceValue;
                 var t = inst?.GetType();
 
-                float headerH = line + pad; // 헤더 한 줄
+                float headerH = line + pad; // Header one line
 
                 string key = $"binder:{index}";
                 bool open = _fold.TryGetValue(key, out var o) ? o : true;
                 if (!open)
                     return headerH + pad;
 
-                // 네임스페이스 한 줄
+                // Namespace one line
                 float nsH = 0f;
                 if (t != null && !string.IsNullOrEmpty(t.Namespace))
                     nsH = line + 4f;
                 else
                     nsH = pad;
 
-                // Priority / AttachOrder 두 줄
+                // Priority / AttachOrder two lines
                 float orderH = 0f;
                 if (inst is IBinder) orderH += line;
-                if (inst is IAttachOrderMarker) orderH += line + 4f; // 약간 여백
+                if (inst is IAttachOrderMarker) orderH += line + 4f; // Slight margin
 
-                // Observing(IBinds) 메타 높이
+                // Observing(IBinds) meta height
                 float metaH = 0f;
                 var observed = t != null ? ExtractObservedComponentTypes(t) : Array.Empty<Type>();
                 if (observed.Count > 0)
                 {
-                    // 제목 한 줄 + 항목들
+                    // Title one line + items
                     metaH = line; // "Observing (IBinds)"
-                    metaH += observed.Count * (line + 1f); // 각 컴포넌트 라인
+                    metaH += observed.Count * (line + 1f); // Each component line
                     metaH += pad;
                 }
 
@@ -613,25 +613,25 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 float y = rect.y + 3f;
                 float w = rect.width;
 
-                // IBinder / IAttachOrderMarker 캐스팅 (아래에서도 쓸 거라 미리 캐스팅)
+                // IBinder / IAttachOrderMarker casting (pre-cast as will use below)
                 var binder = inst as IBinder;
                 var marker = inst as IAttachOrderMarker;
 
-                // ─ 1) 헤더: Foldout + Reset(R) + 돋보기 Ping ─
+                // ─ 1) Header: Foldout + Reset(R) + Ping (search icon) ─
                 var rHead = new Rect(x + 4f, y, w - 8f, line);
 
                 const float btnW = 20f;
-                // 오른쪽 끝: 돋보기
+                // Right end: Ping
                 var rPing = new Rect(rHead.xMax - btnW, rHead.y, btnW, rHead.height);
-                // 그 왼쪽: Reset(R)
+                // Left of that: Reset(R)
                 var rReset = new Rect(rHead.xMax - btnW * 2f - 2f, rHead.y, btnW, rHead.height);
-                // 나머지: Foldout
+                // Rest: Foldout
                 var rFold = new Rect(rHead.x, rHead.y, rHead.width - (btnW * 2f + 6f), rHead.height);
 
                 bool open = EditorGUI.Foldout(rFold, _fold[key], title, true, EditorStyles.foldoutHeader);
                 _fold[key] = open;
 
-                // Reset 버튼: IBinder.Reset(withPriority: true)
+                // Reset button: IBinder.Reset(withPriority: true)
                 using (new EditorGUI.DisabledScope(binder == null))
                 {
                     if (GUI.Button(rReset, new GUIContent("R", "Reset binder (including priority)"),
@@ -643,13 +643,13 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                     }
                 }
 
-                // 돋보기 Ping 버튼: Binder 소스 Ping
+                // Ping button: Binder source Ping
                 using (new EditorGUI.DisabledScope(t == null))
                 {
                     var gcPing = GetSearchIconContent("Ping binder script in Project");
                     if (GUI.Button(rPing, gcPing, EditorStyles.iconButton) && t != null)
                     {
-                        PingTypeSource(t); // Project에서 해당 스크립트 Ping만
+                        PingTypeSource(t); // Ping only the script in Project
                     }
                 }
 
@@ -657,10 +657,10 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
                 y = rHead.yMax;
 
-                // ─ 2) 네임스페이스 한 줄 (Components 섹션과 동일 스타일) ─
+                // ─ 2) Namespace one line (same style as Components section) ─
                 if (t != null && !string.IsNullOrEmpty(t.Namespace))
                 {
-                    EnsureStylesReady(); // _namespaceStyle 준비
+                    EnsureStylesReady(); // Prepare _namespaceStyle
                     y += 2f;
                     var nsRect = new Rect(rect.x + 8f, y, rect.width - 16f, line);
                     EditorGUI.LabelField(nsRect, t.Namespace, _namespaceStyle);
@@ -671,8 +671,8 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                     y += 6f;
                 }
 
-                // ─ 3) Priority / AttachOrder 편집 (+/- 버튼 포함) ─
-                // 현재 값
+                // ─ 3) Priority / AttachOrder editing (+/- buttons included) ─
+                // Current values
                 int curPriority = binder != null ? binder.ApplyOrder : 0;
                 int curAttach = marker != null ? marker.AttachOrder : 0;
                 int newPriority = curPriority;
@@ -723,7 +723,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 {
                     var rPriBase = new Rect(rect.x + 12f, y, rect.width - 24f, line);
 
-                    // IntField 영역: 오른쪽에 버튼 두 개 자리 남겨두기
+                    // IntField area: leave room for two buttons on the right
                     var rPriField = new Rect(
                         rPriBase.x,
                         rPriBase.y,
@@ -733,7 +733,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                     var rPriMinus = new Rect(rPriField.xMax + btnGap, rPriBase.y, btnWidth, rPriBase.height);
                     var rPriPlus = new Rect(rPriMinus.xMax + btnGap, rPriBase.y, btnWidth, rPriBase.height);
 
-                    // 숫자 입력
+                    // Number input
                     EditorGUI.BeginChangeCheck();
                     newPriority = EditorGUI.IntField(
                         rPriField,
@@ -743,14 +743,14 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                     if (EditorGUI.EndChangeCheck())
                         changedOrder = true;
 
-                    // -1 버튼
+                    // -1 button
                     if (GUI.Button(rPriMinus, "-", EditorStyles.miniButton))
                     {
                         newPriority -= 1;
                         changedOrder = true;
                     }
 
-                    // +1 버튼
+                    // +1 button
                     if (GUI.Button(rPriPlus, "+", EditorStyles.miniButton))
                     {
                         newPriority += 1;
@@ -762,11 +762,11 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
                 if (changedOrder && binder != null)
                 {
-                    // Undo는 신경 안쓰고 바로 값만 반영
+                    // Don't worry about Undo, just apply value immediately
                     binder.SetApplyOrderAndAttachOrder(newPriority, newAttach);
                 }
 
-                // ─ 4) Observing (IBinds) 메타 블럭 (✔ / ✕ 포함) ─
+                // ─ 4) Observing (IBinds) meta block (✔ / ✕ included) ─
                 var observed = t != null ? ExtractObservedComponentTypes(t) : Array.Empty<Type>();
 
                 if (observed.Count > 0)
@@ -787,7 +787,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
                         bool hasComp = providedSet.Contains(ct);
 
-                        EnsureStylesReady(); // _obsOkStyle / _obsMissingStyle 등
+                        EnsureStylesReady(); // _obsOkStyle / _obsMissingStyle etc.
 
                         if (hasComp)
                         {
@@ -826,7 +826,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                     y += PAD;
                 }
 
-                // ─ 5) 바인더 본문 ─
+                // ─ 5) Binder body ─
                 var rBody = new Rect(rect.x + 8f, y, rect.width - 16f, rect.yMax - y - PAD);
                 EditorGUI.BeginChangeCheck();
                 DrawBinderBody(rBody, p);
@@ -851,10 +851,10 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 var p = contextsProp.GetArrayElementAtIndex(i);
                 var inst = p?.managedReferenceValue;
                 if (inst != null) list.Add(inst.GetType());
-                // NOTE: 현재 contextsProp는 ContextAsset(Object ref)이므로
-                // managedReferenceValue는 대부분 null일 것.
-                // 나중에 pill 배지를 부활시킬 때 ContextAsset → IContext 타입 매핑을
-                // 별도 메타 정보로 풀어주면 됨.
+                // NOTE: Currently contextsProp is ContextAsset (Object ref), so
+                // managedReferenceValue will mostly be null.
+                // When reviving pill badges later, resolve ContextAsset → IContext type mapping
+                // as separate metadata.
             }
 
             return list;
@@ -868,7 +868,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
             return false;
         }
 
-        // === Binder 메타 추출: IBind<T...> 에서 관찰 컴포넌트 타입 수집 ===
+        // === Binder meta extraction: collect observed component types from IBind<T...> ===
         static IReadOnlyList<Type> ExtractObservedComponentTypes(Type binderType)
         {
             static bool IsBindsInterface(Type t)
@@ -889,7 +889,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
             return set.OrderBy(t => t.Name).ToArray();
         }
 
-        // === Binder에서 [Context] 필드 타입 수집 ===
+        // === Collect [Context] field types from Binder ===
         static Type[] ExtractContextFieldTypes(object binderInstance)
         {
             if (binderInstance == null) return Array.Empty<Type>();
@@ -898,7 +898,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
             foreach (var f in t.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
             {
-                // [Context] 특성 붙은 필드만 인정
+                // Only accept fields with [Context] attribute
                 var hasAttr = f.GetCustomAttributes(inherit: true)
                     .Any(a => a.GetType().Name is "ContextAttribute");
                 if (!hasAttr) continue;
@@ -932,7 +932,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
         static void DrawContextPills(Rect area, Type[] required, IReadOnlyList<Type> providedTypes)
         {
-            // pill UI 현재 비활성화 상태 (필요시 ContextAsset 기반으로 다시 구현)
+            // pill UI currently disabled (reimplement based on ContextAsset if needed)
         }
 
         void DrawBinderBody(Rect area, SerializedProperty root)

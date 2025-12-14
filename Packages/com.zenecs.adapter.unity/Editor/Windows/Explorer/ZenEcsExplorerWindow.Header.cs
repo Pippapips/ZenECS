@@ -37,11 +37,11 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 var worlds = _kernel.GetAllWorld().ToList();
 
                 // ─────────────────────────────────────
-                // World Select 드롭다운
+                // World Select dropdown
                 // ─────────────────────────────────────
                 if (worlds.Count == 0)
                 {
-                    // 월드가 하나도 없을 때
+                    // When no worlds exist
                     using (new EditorGUI.DisabledScope(true))
                     {
                         EditorGUILayout.Popup(0, new[] { "No World (create in your bootstrap)" },
@@ -55,11 +55,11 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 
                     GUILayout.Space(2);
 
-                    // 현재 월드 인덱스
+                    // Current world index
                     int currentIndex = worlds.FindIndex(w => ReferenceEquals(w, _world));
                     if (currentIndex < 0) currentIndex = 0;
 
-                    // 드롭다운 옵션: World 이름 (없으면 Id 문자열)
+                    // Dropdown options: World name (or Id string if none)
                     string[] options = worlds
                         .Select(w =>
                         {
@@ -96,7 +96,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 GUILayout.FlexibleSpace();
 
                 // ─────────────────────────────────────
-                // 우측 끝: + 버튼 (기존 기능 유지)
+                // Right end: + button (maintains existing functionality)
                 // ─────────────────────────────────────
                 var plusContent = ZenGUIContents.IconPlus();
 
@@ -128,10 +128,10 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             // --- Add Singleton ---
             menu.AddItem(new GUIContent("Add Singleton..."), false, () =>
             {
-                // 전체 싱글톤 struct 타입 수집
+                // Collect all singleton struct types
                 var allSingletons = ZenUtil.SingletonTypeFinder.All();
 
-                // 이미 world에 존재하는 싱글톤 타입들은 disabled 처리
+                // Disable singleton types that already exist in world
                 var disabled = new HashSet<Type>();
                 try
                 {
@@ -171,10 +171,10 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 false,
                 () =>
                 {
-                    // 전체 System 타입 목록
+                    // Full System type list
                     var allSystemTypes = ZenUtil.SystemTypeFinder.All().ToList();
 
-                    // 이미 등록된 System 타입들은 disabled 처리
+                    // Disable System types that are already registered
                     var disabled = new HashSet<Type>();
                     var existing = world.GetAllSystems();
                     if (existing.Count > 0)
@@ -202,7 +202,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                                     return;
                                 }
 
-                                // 실제 등록
+                                // Actual registration
                                 world.AddSystem(inst);
 
                                 Repaint();
@@ -232,7 +232,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 );
             }
 
-            // 버튼 기준으로 컨텍스트 드롭다운
+            // Context dropdown based on button
             menu.DropDown(activatorRectGui);
         }
         
@@ -265,7 +265,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 
                     try
                     {
-                        // SystemsPreset.GetValidTypes() 리플렉션으로 호출
+                        // Call SystemsPreset.GetValidTypes() via reflection
                         var mi = preset.GetType().GetMethod(
                             "GetValidTypes",
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
@@ -303,10 +303,10 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                             return;
                         }
 
-                        // world.AddSystems(systems)로 일괄 등록
+                        // Batch register via world.AddSystems(systems)
                         world.AddSystems(systems);
 
-                        // 캐시 클리어 & UI 갱신
+                        // Clear cache & refresh UI
                         ClearState();
                     }
                     catch (Exception ex)
@@ -358,11 +358,11 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 
             try
             {
-                // EntityBlueprint API에 맞게 Spawn 호출
-                // (이미 EntityBlueprintInspector에서 사용하던 Spawn 시그니처 기준)
+                // Call Spawn to match EntityBlueprint API
+                // (Based on Spawn signature already used in EntityBlueprintInspector)
                 blueprint.Spawn(world, resolver);
 
-                // 필요하면 Explorer 갱신
+                // Refresh Explorer if needed
                 //RefreshEntityListForCurrentSystem();
             }
             catch (Exception ex)

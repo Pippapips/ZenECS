@@ -56,7 +56,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             }
             catch
             {
-                // 구버전이나 리플렉션 실패는 조용히 무시
+                // Silently ignore if older version or reflection fails
             }
 
             var watchedDistinct = watchedTypes
@@ -86,16 +86,16 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 
                     using (new EditorGUILayout.HorizontalScope())
                     {
-                        // 컴포넌트명
+                        // Component name
                         EditorGUILayout.LabelField($"{compType.Name} <size=9><color=#707070>[{cns}]</color></size>",
                             ZenGUIStyles.LabelMLNormal10);
 
-                        // 돋보기 아이콘 (우측 끝)
+                        // Ping icon (right end)
                         var icon = ZenGUIContents.IconPing();
                         if (GUILayout.Button(icon, EditorStyles.iconButton, GUILayout.Width(18),
                                 GUILayout.Height(16)))
                         {
-                            // 선택은 유지하고 Ping만
+                            // Keep selection and only ping
                             ZenUtil.PingType(compType);
                         }
                     }

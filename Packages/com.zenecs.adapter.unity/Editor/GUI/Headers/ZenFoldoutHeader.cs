@@ -19,11 +19,21 @@ using UnityEngine;
 
 namespace ZenECS.Adapter.Unity.Editor.GUIs
 {
-    /// 통일된 접이식 헤더(화살표+제목+우측 버튼 슬롯)
+    /// <summary>
+    /// Static utility class that provides a unified foldable header (arrow + title + right button slot).
+    /// </summary>
     public static class ZenFoldoutHeader
     {
         static GUIStyle _foldout;
 
+        /// <summary>
+        /// Gets the foldout style.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Foldout style with bold font applied. Created on first access and then cached.
+        /// </para>
+        /// </remarks>
         public static GUIStyle FoldoutStyle
         {
             get
@@ -32,7 +42,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 {
                     _foldout = new GUIStyle(EditorStyles.foldout)
                     {
-                        fontStyle = FontStyle.Bold, // 제목은 굵게 유지
+                        fontStyle = FontStyle.Bold, // Keep title bold
                     };
                 }
 
@@ -42,6 +52,15 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 
         static GUIStyle _boldLabel;
 
+        /// <summary>
+        /// Gets the bold label style.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Bold label style with left alignment, clipping, and rich text enabled.
+        /// Created on first access and then cached.
+        /// </para>
+        /// </remarks>
         public static GUIStyle BoldLabel
         {
             get
@@ -62,6 +81,15 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 
         static GUIStyle _miniLabel;
 
+        /// <summary>
+        /// Gets the mini label style.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Small label style with left alignment and clipping applied.
+        /// Created on first access and then cached.
+        /// </para>
+        /// </remarks>
         public static GUIStyle MiniLabel
         {
             get
@@ -81,20 +109,54 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 
         static readonly float _rowH = EditorGUIUtility.singleLineHeight;
 
+        /// <summary>
+        /// Structure that represents the scope of a foldout header.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Use with a <see cref="using"/> statement to define the body area of the header.
+        /// Automatically ends the vertical layout when the scope exits.
+        /// </para>
+        /// </remarks>
         public struct Scope : IDisposable
         {
+            /// <summary>
+            /// Initializes a new instance of <see cref="Scope"/>.
+            /// </summary>
+            /// <param name="opened">Whether the header is open. Currently unused.</param>
             public Scope(bool opened)
             {
-                /* noop, 현재는 레이아웃만 마무리 */
+                /* noop, currently only finishes layout */
             }
 
+            /// <summary>
+            /// Ends the scope and finishes the vertical layout.
+            /// </summary>
             public void Dispose() => EditorGUILayout.EndVertical();
         }
 
         /// <summary>
-        /// 헤더를 그리고, body는 호출측에서 바로 이어서 그리면 됨.
-        /// foldable=false 이면 화살표 없이 굵은 라벨만 출력되고 isOpen은 강제로 false.
+        /// Begins drawing a foldout header.
         /// </summary>
+        /// <param name="isOpen">
+        /// The open/close state of the header. This value is updated based on user interaction.
+        /// </param>
+        /// <param name="title">The title to display on the header.</param>
+        /// <param name="drawRightButtons">
+        /// Action that draws buttons on the right side of the header. If <c>null</c>, the button area is empty.
+        /// </param>
+        /// <param name="foldable">
+        /// Whether the header can be folded. If <c>false</c>, only a bold label is displayed without an arrow,
+        /// and <paramref name="isOpen"/> is forced to <c>false</c>.
+        /// </param>
+        /// <returns>
+        /// A <see cref="Scope"/> structure that can be used with a <see cref="using"/> statement.
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// Draws the header, and the body should be drawn immediately after within the returned <see cref="Scope"/>.
+        /// </para>
+        /// </remarks>
         public static Scope Begin(ref bool isOpen, string title, Action drawRightButtons = null, bool foldable = true)
         {
             EditorGUILayout.BeginVertical("box");
@@ -109,12 +171,12 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             }
             else
             {
-                // 접힘 불가: 아이콘 없이 라벨만, 펼침은 항상 false
+                // Not foldable: label only without icon, always false for expansion
                 isOpen = false;
                 EditorGUI.LabelField(left, title, BoldLabel);
             }
 
-            // 우측 버튼 영역
+            // Right button area
             var oldIndent = EditorGUI.indentLevel;
             EditorGUI.indentLevel = 0;
             GUILayout.BeginArea(right);
@@ -130,18 +192,53 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             return new Scope(isOpen);
         }
 
+        /// <summary>
+        /// Draws a toggle button.
+        /// </summary>
+        /// <param name="state">The current state of the button.</param>
+        /// <param name="label">The label to display on the button.</param>
+        /// <param name="width">The width of the button. Default is 60 pixels.</param>
+        /// <returns>The new state of the button.</returns>
         public static bool ToggleButton(bool state, string label, float width = 60f)
             => GUILayout.Toggle(state, label, "Button", GUILayout.Width(width));
 
+        /// <summary>
+        /// Draws a small button.
+        /// </summary>
+        /// <param name="label">The label to display on the button.</param>
+        /// <param name="width">The width of the button. Default is 56 pixels.</param>
+        /// <returns>Returns <c>true</c> if the button was clicked.</returns>
         public static bool SmallButton(string label, float width = 56f)
             => GUILayout.Button(label, GUILayout.Width(width));
 
-        // === 절대좌표 버전(리스트 요소용) =========================================
+        // === Absolute coordinate version (for list elements) =========================================
+        
+        /// <summary>
+        /// The width of the button area on the right side of the header.
+        /// </summary>
         public const float RightButtonsWidth = 186f;
 
         /// <summary>
-        /// 리스트/절대좌표 버전의 헤더. foldable=false 이면 화살표 없이 라벨만 그립니다.
+        /// Draws a header using the list/absolute coordinate version.
         /// </summary>
+        /// <param name="isOpen">
+        /// The open/close state of the header. This value is updated based on user interaction.
+        /// </param>
+        /// <param name="fullRect">The full area where the header will be drawn.</param>
+        /// <param name="title">The title to display on the header.</param>
+        /// <param name="nameSpace">The namespace to display on the header.</param>
+        /// <param name="drawRightButtons">
+        /// Action that draws buttons on the right side of the header. If <c>null</c>, the button area is empty.
+        /// </param>
+        /// <param name="foldable">
+        /// Whether the header can be folded. If <c>false</c>, only a label is drawn without an arrow.
+        /// </param>
+        /// <param name="noMarginTitle">Whether to omit margins around the title.</param>
+        /// <remarks>
+        /// <para>
+        /// Used when drawing a header arranged like a list element using absolute coordinates.
+        /// </para>
+        /// </remarks>
         public static void DrawRow(ref bool isOpen, Rect fullRect, string title, string nameSpace,
             Action<Rect> drawRightButtons = null,
             bool foldable = true, bool noMarginTitle = true)
@@ -152,12 +249,12 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 
             if (foldable)
             {
-                // 화살표 영역과 라벨 영역을 분리
+                // Separate arrow area and label area
                 float arrowW = noMarginTitle ? 0 : 16;
                 var arrowRect = new Rect(left.x, left.y, arrowW, left.height);
                 var labelRect = new Rect(left.x + arrowW + 2f, left.y, left.width - arrowW - 2f, left.height);
 
-                // 라벨클릭으로는 토글되지 않도록 false
+                // Set to false so label click doesn't toggle
                 isOpen = EditorGUI.Foldout(arrowRect, isOpen, GUIContent.none, false, FoldoutStyle);
 
                 if (!string.IsNullOrEmpty(nameSpace))
@@ -215,6 +312,15 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             drawRightButtons?.Invoke(right);
         }
 
+        /// <summary>
+        /// Draws a two-line label.
+        /// </summary>
+        /// <param name="rect">The area where the label will be drawn.</param>
+        /// <param name="line1">The content to display on the first line.</param>
+        /// <param name="line2">The content to display on the second line.</param>
+        /// <param name="style1">The style to use for the first line. If <c>null</c>, uses the default label style.</param>
+        /// <param name="style2">The style to use for the second line. If <c>null</c>, uses the default mini label style.</param>
+        /// <param name="vGap">The vertical spacing between the two lines. Default is 2 pixels.</param>
         public static void DrawTwoLineLabels(Rect rect,
             GUIContent line1, GUIContent line2,
             GUIStyle style1 = null, GUIStyle style2 = null,
@@ -239,23 +345,23 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             float gap = 6f,
             GUIStyle leftStyle = null, GUIStyle rightStyle = null)
         {
-            leftStyle ??= EditorStyles.label; // 필요시 EditorStyles.boldLabel 등 지정
-            rightStyle ??= EditorStyles.miniLabel; // 네임스페이스처럼 옅은 글씨에 좋아요
+            leftStyle ??= EditorStyles.label; // Specify EditorStyles.boldLabel etc. if needed
+            rightStyle ??= EditorStyles.miniLabel; // Good for light text like namespace
 
-            // 1) 왼쪽 라벨의 실제 필요폭 계산 (클리핑 전에)
+            // 1) Calculate actual required width of left label (before clipping)
             var leftSize = leftStyle.CalcSize(left);
             float leftW = Mathf.Min(leftSize.x, lineRect.width);
 
-            // 2) 좌/우 Rect 계산
+            // 2) Calculate left/right Rects
             var rLeft = new Rect(lineRect.x, lineRect.y, leftW, lineRect.height);
             var rRight = new Rect(rLeft.xMax + gap, lineRect.y,
                 Mathf.Max(0, lineRect.xMax - (rLeft.xMax + gap)),
                 lineRect.height);
 
-            // 3) 오른쪽은 클리핑을 켭니다 (넘치면 깔끔히 잘림)
+            // 3) Enable clipping for the right side (cleanly cuts off if overflow)
             var rightClipped = new GUIStyle(rightStyle) { clipping = TextClipping.Clip };
 
-            // 4) 그리기
+            // 4) Draw
             EditorGUI.LabelField(rLeft, left, leftStyle);
             if (rRight.width > 1f)
                 EditorGUI.LabelField(rRight, right, rightClipped);

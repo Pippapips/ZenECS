@@ -63,7 +63,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 
             win._disabled = disabled ?? new HashSet<Type>();
 
-            var width = 560f; // ComponentPicker와 동일한 크기
+            var width = 560f; // Same size as ComponentPicker
             var height = 400f;
 
             var topLeft = GUIUtility.GUIToScreenPoint(
@@ -132,7 +132,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             string nsStr = string.IsNullOrEmpty(t.Namespace) ? "(global)" : t.Namespace!;
             string label;
 
-            // ComponentPicker 스타일: 이름 / namespace 형태
+            // ComponentPicker style: name / namespace format
             label = $"{t.Name}   <size=9><color=#888888>— {nsStr}</color></size>";
 
             if (disabled)

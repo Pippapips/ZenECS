@@ -26,16 +26,44 @@ using ZenECS.Core.Systems;
 
 namespace ZenECS.Adapter.Unity.Editor.Common
 {
-    // Fixed / Variable / Presentation distinction
+    /// <summary>
+    /// Represents the kind of system execution phase.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Enumeration that represents the distinction between Fixed / Variable / Presentation phases.
+    /// </para>
+    /// </remarks>
     public enum PhaseKind
     {
+        /// <summary>
+        /// Unknown phase.
+        /// </summary>
         Unknown,
+        
+        /// <summary>
+        /// Deterministic phase. Represents Fixed tick phase.
+        /// </summary>
         Deterministic,
+        
+        /// <summary>
+        /// Non-deterministic phase. Represents Frame-based phase.
+        /// </summary>
         NonDeterministic,
     }
     
     public static class ZenUtil
     {
+        /// <summary>
+        /// Finds and pings the MonoScript corresponding to the given type in the Unity editor.
+        /// </summary>
+        /// <param name="t">The type to ping. If <c>null</c>, no operation is performed.</param>
+        /// <remarks>
+        /// <para>
+        /// Finds the MonoScript corresponding to the type and selects and highlights it in the Project window.
+        /// If not found, outputs a warning message to the Unity console.
+        /// </para>
+        /// </remarks>
         public static void PingType(Type? t)
         {
             if (t == null) return;
@@ -140,8 +168,22 @@ namespace ZenECS.Adapter.Unity.Editor.Common
             }
         }
         
+        /// <summary>
+        /// Static utility class for finding singleton component types.
+        /// </summary>
         public static class SingletonTypeFinder
         {
+            /// <summary>
+            /// Returns all singleton component types.
+            /// </summary>
+            /// <returns>
+            /// An enumeration of all value types (structs) that implement <see cref="IWorldSingletonComponent"/>.
+            /// </returns>
+            /// <remarks>
+            /// <para>
+            /// Results are cached, and subsequent calls return the cached results.
+            /// </para>
+            /// </remarks>
             public static IEnumerable<Type> All() =>
                 TypeFinderCore.FindTypes(
                     cacheKey: "Singleton",
@@ -150,8 +192,23 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                     initialCapacity: 128);
         }
         
+        /// <summary>
+        /// Static utility class for finding system types.
+        /// </summary>
         public static class SystemTypeFinder
         {
+            /// <summary>
+            /// Returns all system types.
+            /// </summary>
+            /// <returns>
+            /// An enumeration of all concrete types that implement <see cref="ISystem"/>.
+            /// Only types with parameterless constructors are returned.
+            /// </returns>
+            /// <remarks>
+            /// <para>
+            /// Results are cached, and subsequent calls return the cached results.
+            /// </para>
+            /// </remarks>
             public static IEnumerable<Type> All() =>
                 TypeFinderCore.FindTypes(
                     cacheKey: "System",
@@ -160,8 +217,23 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                     initialCapacity: 256);
         }
         
+        /// <summary>
+        /// Static utility class for finding binder types.
+        /// </summary>
         public static class BinderTypeFinder
         {
+            /// <summary>
+            /// Returns all binder types.
+            /// </summary>
+            /// <returns>
+            /// An enumeration of all concrete types that implement <see cref="IBinder"/>.
+            /// Only types with parameterless constructors are returned.
+            /// </returns>
+            /// <remarks>
+            /// <para>
+            /// Results are cached, and subsequent calls return the cached results.
+            /// </para>
+            /// </remarks>
             public static IEnumerable<Type> All() =>
                 TypeFinderCore.FindTypes(
                     cacheKey: "Binder",
@@ -170,8 +242,23 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                     initialCapacity: 256);
         }
         
+        /// <summary>
+        /// Static utility class for finding context asset types.
+        /// </summary>
         public static class ContextTypeFinder
         {
+            /// <summary>
+            /// Returns all context asset types.
+            /// </summary>
+            /// <returns>
+            /// An enumeration of all concrete types that inherit from <see cref="ContextAsset"/>.
+            /// Only types with parameterless constructors are returned.
+            /// </returns>
+            /// <remarks>
+            /// <para>
+            /// Results are cached, and subsequent calls return the cached results.
+            /// </para>
+            /// </remarks>
             public static IEnumerable<Type> All() =>
                 TypeFinderCore.FindTypes(
                     cacheKey: "Context",
@@ -180,11 +267,50 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                     initialCapacity: 256);
         }
         
+        /// <summary>
+        /// Loads all context assets.
+        /// </summary>
+        /// <returns>
+        /// A list of all <see cref="ContextAsset"/> instances in the project.
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// Finds and loads all assets of type <see cref="ContextAsset"/> from the Unity asset database.
+        /// </para>
+        /// </remarks>
         public static List<ContextAsset> LoadAllAssets()
         {
             return ZenAssetDatabase.FindAndLoadAllAssets<ContextAsset>();
         }
         
+        /// <summary>
+        /// Determines the system group and execution phase from a system type.
+        /// </summary>
+        /// <param name="t">The system type to analyze.</param>
+        /// <param name="group">
+        /// When this method returns, contains the <see cref="SystemGroup"/> of the system.
+        /// </param>
+        /// <param name="phase">
+        /// When this method returns, contains the <see cref="PhaseKind"/> of the system.
+        /// </param>
+        /// <remarks>
+        /// <para>
+        /// The execution phase is determined based on the system group:
+        /// </para>
+        /// <list type="bullet">
+        /// <item><description>
+        /// Fixed groups (FixedInput, FixedDecision, FixedSimulation, FixedPost) →
+        /// <see cref="PhaseKind.Deterministic"/>
+        /// </description></item>
+        /// <item><description>
+        /// Frame groups (FrameInput, FrameSync, FrameView, FrameUI) →
+        /// <see cref="PhaseKind.NonDeterministic"/>
+        /// </description></item>
+        /// <item><description>
+        /// Others → <see cref="PhaseKind.Unknown"/>
+        /// </description></item>
+        /// </list>
+        /// </remarks>
         public static void ResolveSystemGroupAndPhase(Type t, out SystemGroup group, out PhaseKind phase)
         {
             group = SystemUtil.ResolveGroup(t);
@@ -214,7 +340,27 @@ namespace ZenECS.Adapter.Unity.Editor.Common
             }
         }
         
-        /// <summary>Collects entities that have all AllOf components from [Watch] (always active)</summary>
+        /// <summary>
+        /// Collects entities that have all AllOf components specified in the system's [Watch] attribute.
+        /// </summary>
+        /// <param name="w">The world to search for entities.</param>
+        /// <param name="system">The system instance to check for [Watch] attributes.</param>
+        /// <param name="outList">
+        /// When this method returns, contains a list of entities that satisfy the conditions.
+        /// </param>
+        /// <returns>
+        /// Returns <c>true</c> if one or more entities were collected; otherwise, <c>false</c>.
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// Examines the <see cref="ZenSystemWatchAttribute"/> applied to the system type to
+        /// retrieve the list of AllOf components. Among all entities in the world, only
+        /// entities that have all of those components are collected.
+        /// </para>
+        /// <para>
+        /// Duplicate entities are automatically removed.
+        /// </para>
+        /// </remarks>
         public static bool TryCollectEntitiesBySystemWatched(IWorld w, object system, List<Entity> outList)
         {
             var attrs = system.GetType().GetCustomAttributes(typeof(ZenSystemWatchAttribute), false)
@@ -253,6 +399,23 @@ namespace ZenECS.Adapter.Unity.Editor.Common
             return outList.Count > 0;
         }
         
+        /// <summary>
+        /// Collects systems that observe the specified entity.
+        /// </summary>
+        /// <param name="world">The world that the entity belongs to.</param>
+        /// <param name="entity">The entity to check for observation.</param>
+        /// <param name="systems">
+        /// The list of systems to examine. Returns an empty list if <c>null</c> or empty.
+        /// </param>
+        /// <returns>
+        /// A list of tuples containing systems and their types that observe the entity.
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// Checks each system's <see cref="ZenSystemWatchAttribute"/> to determine
+        /// if the entity is included in the list of entities observed by the system.
+        /// </para>
+        /// </remarks>
         public static List<(ISystem sys, Type type)> CollectWatchedSystemsForEntity(
             IWorld world,
             Entity entity,
@@ -276,7 +439,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                 }
                 catch (Exception ex)
                 {
-                    // 리플렉션 실패 시 로깅하고 계속 진행
+                    // Log and continue if reflection fails
                     Debug.LogWarning($"[ZenUtil] Failed to get custom attributes for type {tSys.FullName}: {ex.Message}");
                 }
 

@@ -39,7 +39,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
             var icon = EditorGUIUtility.ObjectContent(target, target.GetType()).image;
 
-            // ZenECS 헤더 추가
+            // Add ZenECS header
             ZenEcsGUIHeader.DrawHeader(
                 "Per-Entity Context",
                 "Creates a unique context instance for every spawned entity.",
@@ -50,7 +50,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
             var ctxType = asset.ContextType;
 
             // // ─────────────────────────────────────────────
-            // // 1) Script (항상 맨 첫 줄, 읽기 전용)
+            // // 1) Script (always first line, read-only)
             // // ─────────────────────────────────────────────
             // var scriptProp = serializedObject.FindProperty("m_Script");
             // if (scriptProp != null)
@@ -63,11 +63,11 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
             //
             // EditorGUILayout.Space(4f);
 
-            // ContextType이 유효한 경우에만 Context 정보 표시
+            // Display Context info only if ContextType is valid
             if (ctxType != null)
             {
                 // ─────────────────────────────────────────
-                // 2) ContextType명 헤더 + 우측 돋보기 아이콘
+                // 2) ContextType name header + right-side ping icon
                 // ─────────────────────────────────────────
                 var headerRect = EditorGUILayout.GetControlRect();
                 const float pingW = 20f;
@@ -84,10 +84,10 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                     pingW,
                     headerRect.height);
 
-                // 클래스명 헤더 (굵게)
+                // Class name header (bold)
                 EditorGUI.LabelField(headerLabelRect, ctxType.Name, EditorStyles.boldLabel);
 
-                // 돋보기 아이콘 버튼 → 소스 Ping (Selection 변경 없음)
+                // Ping icon button → source Ping (no Selection change)
                 using (new EditorGUI.DisabledScope(false))
                 {
                     var gcPing = GetSearchIconContent("Ping context script in Project");
@@ -98,7 +98,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 }
 
                 // ─────────────────────────────────────────
-                // 3) Context Type / Namespace 정보
+                // 3) Context Type / Namespace info
                 // ─────────────────────────────────────────
                 var typeRect = EditorGUILayout.GetControlRect();
                 EditorGUI.LabelField(typeRect, "Context Type", "Per Entity Context");
@@ -118,13 +118,13 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
             }
 
             // ─────────────────────────────────────────────
-            // 4) Properties 헤더
+            // 4) Properties header
             // ─────────────────────────────────────────────
             EditorGUILayout.LabelField("Properties", EditorStyles.boldLabel);
 
             // ─────────────────────────────────────────────
-            // 5) 나머지는 Unity 기본 인스펙터 그대로
-            //    (Script(m_Script)만 제외)
+            // 5) Rest uses Unity default inspector as-is
+            //    (Script(m_Script) only excluded)
             // ─────────────────────────────────────────────
             EditorGUILayout.Space(2f);
 
@@ -134,7 +134,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
         }
 
         // ─────────────────────────────────────────────
-        // Helpers (SharedContextMarker 스타일과 동일)
+        // Helpers (same style as SharedContextMarker)
         // ─────────────────────────────────────────────
 
         static void PingTypeSource(Type? t)

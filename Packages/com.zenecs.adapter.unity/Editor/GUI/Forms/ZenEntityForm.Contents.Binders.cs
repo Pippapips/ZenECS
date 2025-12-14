@@ -151,7 +151,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 {
                     var currentOrder = binder.ApplyOrder;
 
-                    // +/- 버튼을 가로로 배치
+                    // Arrange +/- buttons horizontally
                     EditorGUILayout.BeginHorizontal();
                     var rects = new Rect[3];
                     ZenGUIStyles.GetLeftIndentedSingleLineRects(20, 1, ref rects);

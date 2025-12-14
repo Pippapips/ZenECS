@@ -30,9 +30,19 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
     /// </summary>
     internal sealed class ZenComponentPickerWindow : ZenPickerWindowBase<Type>
     {
+        /// <summary>
+        /// Represents the mode in which the component picker window opens.
+        /// </summary>
         public enum PickerOpenMode
         {
+            /// <summary>
+            /// Dropdown mode. The window is displayed as a dropdown.
+            /// </summary>
             DropDown,
+            
+            /// <summary>
+            /// Fixed-width utility window mode. The window is displayed as a utility window with fixed width.
+            /// </summary>
             UtilityFixedWidth
         }
 
@@ -337,7 +347,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             }
         }
 
-        // Unity entry point (※ override 아님!)
+        // Unity entry point (※ not override!)
         private void OnGUI()
         {
             // Keep fixed width in utility mode

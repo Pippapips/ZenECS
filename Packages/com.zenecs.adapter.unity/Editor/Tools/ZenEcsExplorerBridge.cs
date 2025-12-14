@@ -24,17 +24,42 @@ using ZenECS.Core;
 namespace ZenECS.Adapter.Unity.Editor.Tools
 {
     /// <summary>
-    /// ExplorerWindow와 느슨하게 연결하기 위한 브리지.
-    /// - 타입 이름: "ExplorerWindow" 또는 "EcsExplorerWindow" 검색
-    /// - 인스턴스 획득: EditorWindow.GetWindow(type, true, title, true)
-    /// - 메서드: public void SelectEntity(int entityId, int entityGen)
+    /// Bridge for loosely coupling with ExplorerWindow.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Enables opening the ZenECS Explorer window and selecting entities through reflection.
+    /// </para>
+    /// <para>
+    /// Main operations:
+    /// </para>
+    /// <list type="bullet">
+    /// <item><description>Type name: searches for "ZenEcsExplorerWindow"</description></item>
+    /// <item><description>Instance acquisition: <see cref="EditorWindow.GetWindow(Type, bool, string, bool)"/></description></item>
+    /// <item><description>Method invocation: <c>SelectEntity(IWorld, int, int)</c></description></item>
+    /// </list>
+    /// </remarks>
     internal static class ZenEcsExplorerBridge
     {
         private static Type? _cachedType;
         private static MethodInfo? _cachedSelectMethod;
 
-        /// <summary>ExplorerWindow를 열어 SelectEntity(id, gen)을 호출.</summary>
+        /// <summary>
+        /// Opens the ExplorerWindow and selects the specified entity.
+        /// </summary>
+        /// <param name="world">The world that the entity belongs to.</param>
+        /// <param name="entityId">The ID of the entity to select.</param>
+        /// <param name="entityGen">The generation of the entity to select.</param>
+        /// <returns>
+        /// Returns <c>true</c> if the ExplorerWindow was found and entity selection succeeded;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// Uses reflection to find the ExplorerWindow type, opens the window, and then
+        /// calls the SelectEntity method. Returns <c>false</c> if the type or method cannot be found.
+        /// </para>
+        /// </remarks>
         public static bool TryOpenAndSelect(IWorld world, int entityId, int entityGen)
         {
             var t = ResolveExplorerType();
@@ -43,7 +68,7 @@ namespace ZenECS.Adapter.Unity.Editor.Tools
             var win = EditorWindow.GetWindow(t, utility: false, title: "ZenECS Explorer", focus: true);
             if (win == null)
             {
-                // 포커스 실패 시 마지막 수단
+                // Last resort if focus fails
                 win = ScriptableObject.CreateInstance(t) as EditorWindow;
                 if (win == null) return false;
                 win.Show();
@@ -60,12 +85,12 @@ namespace ZenECS.Adapter.Unity.Editor.Tools
             }
             catch (TargetInvocationException tie)
             {
-                Debug.LogError($"[ExplorerBridge] SelectEntity 호출 중 예외: {tie.InnerException?.Message ?? tie.Message}");
+                Debug.LogError($"[ExplorerBridge] Exception while calling SelectEntity: {tie.InnerException?.Message ?? tie.Message}");
                 return false;
             }
             catch (Exception ex)
             {
-                Debug.LogError($"[ExplorerBridge] SelectEntity 호출 실패: {ex.Message}");
+                Debug.LogError($"[ExplorerBridge] Failed to call SelectEntity: {ex.Message}");
                 return false;
             }
         }
@@ -74,7 +99,7 @@ namespace ZenECS.Adapter.Unity.Editor.Tools
         {
             if (_cachedType != null) return _cachedType;
 
-            // 우선순위: 명확한 이름 먼저
+            // Priority: clear names first
             string[] candidates = { "ZenEcsExplorerWindow" };
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -101,7 +126,7 @@ namespace ZenECS.Adapter.Unity.Editor.Tools
             }
 
             if (_cachedType == null)
-                Debug.LogWarning("[ExplorerBridge] ExplorerWindow 타입을 찾지 못했습니다. (이름: ExplorerWindow/EcsExplorerWindow)");
+                Debug.LogWarning("[ExplorerBridge] Could not find ExplorerWindow type. (Names: ExplorerWindow/EcsExplorerWindow)");
 
             return _cachedType;
         }
@@ -127,7 +152,7 @@ namespace ZenECS.Adapter.Unity.Editor.Tools
                                    });
 
             if (_cachedSelectMethod == null)
-                Debug.LogWarning("[ExplorerBridge] SelectEntity(IWorld, int, int) 메서드를 찾지 못했습니다.");
+                Debug.LogWarning("[ExplorerBridge] Could not find SelectEntity(IWorld, int, int) method.");
 
             return _cachedSelectMethod;
         }

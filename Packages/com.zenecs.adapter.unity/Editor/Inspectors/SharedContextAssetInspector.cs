@@ -58,7 +58,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
             var ctxType = marker.ContextType;
 
             // // ─────────────────────────────────────────────
-            // // 1) Script (항상 맨 첫 줄, 읽기 전용)
+            // // 1) Script (always first line, read-only)
             // // ─────────────────────────────────────────────
             // var scriptProp = serializedObject.FindProperty("m_Script");
             // if (scriptProp != null)
@@ -71,11 +71,11 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
             // EditorGUILayout.Space(4f);
 
-            // ContextType이 유효한 경우에만 Context 정보 표시
+            // Display Context info only if ContextType is valid
             if (ctxType != null)
             {
                 // ─────────────────────────────────────────
-                // 2) ContextType명 헤더 + 우측 돋보기 아이콘
+                // 2) ContextType name header + right-side ping icon
                 // ─────────────────────────────────────────
                 var headerRect = EditorGUILayout.GetControlRect();
                 const float pingW = 20f;
@@ -92,10 +92,10 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                     pingW,
                     headerRect.height);
 
-                // 클래스명 헤더 (굵게)
+                // Class name header (bold)
                 EditorGUI.LabelField(headerLabelRect, ctxType.Name, EditorStyles.boldLabel);
 
-                // 돋보기 아이콘 버튼 → 소스 Ping (Selection 변경 없음)
+                // Ping icon button → source Ping (no Selection change)
                 using (new EditorGUI.DisabledScope(false))
                 {
                     var gcPing = GetSearchIconContent("Ping context script in Project");
@@ -106,7 +106,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 }
 
                 // ─────────────────────────────────────────
-                // 3) Context Type / Namespace 정보
+                // 3) Context Type / Namespace info
                 // ─────────────────────────────────────────
                 var typeRect = EditorGUILayout.GetControlRect();
                 EditorGUI.LabelField(typeRect, "Context Type", "Shared Context");
@@ -118,8 +118,8 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 EditorGUILayout.Space(4f);
 
                 // ─────────────────────────────────────────
-                // 4) Context Type의 public 멤버들 표시
-                //    (private 제외: public fields + public properties)
+                // 4) Display public members of Context Type
+                //    (exclude private: public fields + public properties)
                 // ─────────────────────────────────────────
                 var members = CollectPublicMembers(ctxType);
                 if (members.Count > 0)
@@ -156,13 +156,13 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
             }
 
             // // ─────────────────────────────────────────────
-            // // 5) Properties 헤더
+            // // 5) Properties header
             // // ─────────────────────────────────────────────
             // EditorGUILayout.LabelField("Properties", EditorStyles.boldLabel);
             //
             // // ─────────────────────────────────────────────
-            // // 6) 나머지는 Unity 기본 인스펙터 그대로
-            // //    (Script(m_Script)만 제외)
+            // // 6) Rest uses Unity default inspector as-is
+            // //    (Script(m_Script) only excluded)
             // // ─────────────────────────────────────────────
             // EditorGUILayout.Space(2f);
             //
@@ -172,10 +172,10 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
         }
 
         /// <summary>
-        /// 지정된 타입의 "접근 가능한" 멤버들 수집.
-        /// - private 제외
-        /// - public instance 필드 + public instance 프로퍼티
-        /// - DeclaredOnly: base 클래스(MonoBehaviour)의 transform/gameObject 등은 제외
+        /// Collects "accessible" members of the specified type.
+        /// - Excludes private
+        /// - Public instance fields + public instance properties
+        /// - DeclaredOnly: Excludes transform/gameObject etc. from base class (MonoBehaviour)
         /// </summary>
         static List<(string name, string typeName)> CollectPublicMembers(Type ctxType)
         {
@@ -187,14 +187,14 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
             // 1) public fields
             foreach (var f in ctxType.GetFields(flags))
             {
-                // 필요하면 [HideInInspector] 같은 것만 필터링
+                // Filter only [HideInInspector] etc. if needed
                 if (Attribute.IsDefined(f, typeof(HideInInspector), inherit: true))
                     continue;
 
                 result.Add((f.Name, f.FieldType.Name));
             }
 
-            // 2) public properties (getter 있는 것만, 인덱서 제외)
+            // 2) public properties (only those with getter, exclude indexers)
             foreach (var p in ctxType.GetProperties(flags))
             {
                 if (!p.CanRead) continue;
@@ -209,7 +209,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
         }
 
         // ─────────────────────────────────────────────
-        // Helpers (ModelContextAssetInspector와 동일 패턴)
+        // Helpers (same pattern as ModelContextAssetInspector)
         // ─────────────────────────────────────────────
 
         static void PingTypeSource(Type? t)

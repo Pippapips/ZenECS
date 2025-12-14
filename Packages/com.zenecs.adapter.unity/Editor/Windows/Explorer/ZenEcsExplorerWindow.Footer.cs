@@ -36,11 +36,11 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 {
                     var isPaused = _kernel.IsPaused;
 
-                    // 툴바 라인 높이에 맞춘 Rect
+                    // Rect aligned to toolbar line height
                     var rowHeight = EditorGUIUtility.singleLineHeight + 2f;
                     var pauseRect = GUILayoutUtility.GetRect(24f, rowHeight, GUILayout.Width(24f));
                     
-                    // System 리스트에서 쓰는 것과 동일한 버튼 영역 보정
+                    // Same button area correction as used in System list
                     var btnRect = new Rect(
                         pauseRect.x,
                         pauseRect.y + 1f,

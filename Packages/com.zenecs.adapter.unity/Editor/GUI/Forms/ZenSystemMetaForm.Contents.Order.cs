@@ -34,7 +34,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
         {
             if (t == null) return;
 
-            // Order Before/After (Attribute 기반)
+            // Order Before/After (Attribute-based)
             var beforeList = new List<string>();
             var afterList = new List<string>();
 
@@ -60,7 +60,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             }
             catch
             {
-                // 구버전에서 타입이 다를 수 있으니 조용히 무시
+                // Silently ignore as types may differ in older versions
             }
 
             string beforeText = beforeList.Count > 0

@@ -35,12 +35,12 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
         {
             if (t == null) return;
             
-            // 그룹 & Phase (Fixed/Variable/Presentation)
+            // Group & Phase (Fixed/Variable/Presentation)
             ZenUtil.ResolveSystemGroupAndPhase(t, out var group, out var phase);
 
             var groupLabel = group.ToString();
 
-            // Execution Group + 대표 인터페이스
+            // Execution Group + representative interface
             var execLabel = "Unknown";
 
             if (group is SystemGroup.FrameInput or SystemGroup.FrameSync or SystemGroup.FrameView or SystemGroup.FrameUI)
@@ -52,12 +52,12 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 execLabel = "Deterministic";
             }
             
-            // 상단: System 이름 + Namespace + Ping 아이콘
+            // Top: System name + Namespace + Ping icon
             var ns = string.IsNullOrEmpty(t.Namespace) ? "(global)" : t.Namespace;
 
             using (new EditorGUILayout.HorizontalScope())
             {
-                // 이름 + 네임스페이스를 한 덩어리로 왼쪽에 붙여서 표시
+                // Display name + namespace as one block aligned to the left
                 using (new EditorGUILayout.VerticalScope())
                 {
                     EditorGUILayout.LabelField(t.Name, EditorStyles.boldLabel, GUILayout.ExpandWidth(true));

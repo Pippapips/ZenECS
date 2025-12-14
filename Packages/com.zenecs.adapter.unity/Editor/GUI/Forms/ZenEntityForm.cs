@@ -27,15 +27,41 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 {
     public static partial class ZenEntityForm
     {
+        /// <summary>
+        /// Represents the type of section to display in the entity form.
+        /// </summary>
         public enum EEntitySection
         {
+            /// <summary>
+            /// Components section.
+            /// </summary>
             Components = 0,
+            
+            /// <summary>
+            /// Contexts section.
+            /// </summary>
             Contexts,
+            
+            /// <summary>
+            /// Binders section.
+            /// </summary>
             Binders,
         }
 
+        /// <summary>
+        /// Class that manages the foldout state of the entity form.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Tracks the open/close state of each section (components, contexts, binders) of the entity
+        /// and the foldout state of each item.
+        /// </para>
+        /// </remarks>
         public class EntityFoldoutInfo
         {
+            /// <summary>
+            /// Gets or sets the open/close state of the entire foldout.
+            /// </summary>
             public bool Open { get; set; }
             private readonly Dictionary<EEntitySection, bool> _sectionFoldouts = new();
             private readonly Dictionary<Type, bool> _componentFoldouts = new();
@@ -84,6 +110,15 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             }
             
             #region expand / collapse
+            
+            /// <summary>
+            /// Expands all sections and items.
+            /// </summary>
+            /// <remarks>
+            /// <para>
+            /// Expands the entire foldout and all sections (Components, Contexts, Binders) and all items.
+            /// </para>
+            /// </remarks>
             public void ExpandAll()
             {
                 Open = true;
@@ -98,6 +133,14 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 ExpandAll(EEntitySection.Binders);
             }
 
+            /// <summary>
+            /// Collapses all sections and items.
+            /// </summary>
+            /// <remarks>
+            /// <para>
+            /// Collapses the entire foldout and all sections (Components, Contexts, Binders) and all items.
+            /// </para>
+            /// </remarks>
             public void CollapseAll()
             {
                 Open = false;
@@ -112,6 +155,15 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 CollapseAll(EEntitySection.Binders);
             }
 
+            /// <summary>
+            /// Expands all items in the specified section.
+            /// </summary>
+            /// <param name="sectionType">The type of section to expand.</param>
+            /// <remarks>
+            /// <para>
+            /// Expands the foldout state of the specified section and all items within that section.
+            /// </para>
+            /// </remarks>
             public void ExpandAll(EEntitySection sectionType)
             {
                 switch (sectionType)
@@ -146,6 +198,15 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 }
             }
 
+            /// <summary>
+            /// Collapses all items in the specified section.
+            /// </summary>
+            /// <param name="sectionType">The type of section to collapse.</param>
+            /// <remarks>
+            /// <para>
+            /// Collapses the foldout state of the specified section and all items within that section.
+            /// </para>
+            /// </remarks>
             public void CollapseAll(EEntitySection sectionType)
             {
                 switch (sectionType)
@@ -179,18 +240,65 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             #endregion
 
             #region get/set
+            
+            /// <summary>
+            /// Gets the foldout state of the specified section.
+            /// </summary>
+            /// <param name="section">The type of section to check.</param>
+            /// <returns>
+            /// Returns <c>true</c> if the section is open; otherwise, <c>false</c>.
+            /// Returns <c>false</c> if the section is not registered.
+            /// </returns>
             public bool GetSectionFoldout(EEntitySection section) =>
                 _sectionFoldouts.GetValueOrDefault(section);
+                
+            /// <summary>
+            /// Gets the foldout state of the specified section.
+            /// </summary>
+            /// <param name="section">The type of section to check.</param>
+            /// <param name="defaultFoldout">The default value to use if the section is not registered.</param>
+            /// <returns>
+            /// Returns <c>true</c> if the section is open; otherwise, <c>false</c>.
+            /// Returns <paramref name="defaultFoldout"/> if the section is not registered.
+            /// </returns>
             public bool GetSectionFoldout(EEntitySection section, bool defaultFoldout) =>
                 _sectionFoldouts.GetValueOrDefault(section, defaultFoldout);
 
+            /// <summary>
+            /// Sets the foldout state of the specified section.
+            /// </summary>
+            /// <param name="section">The type of section to set.</param>
+            /// <param name="value">The new foldout state.</param>
             public void SetSectionFoldout(EEntitySection section, bool value) => _sectionFoldouts[section] = value;
 
+            /// <summary>
+            /// Attempts to get the foldout state of the specified section.
+            /// </summary>
+            /// <param name="sectionType">The type of section to check.</param>
+            /// <param name="value">
+            /// When this method returns, contains the foldout state if the section is registered;
+            /// otherwise, contains the default value.
+            /// </param>
+            /// <returns>
+            /// Returns <c>true</c> if the section is registered; otherwise, <c>false</c>.
+            /// </returns>
             public bool TryGetSectionFoldout(EEntitySection sectionType, out bool value)
             {
                 return _sectionFoldouts.TryGetValue(sectionType, out value);
             }
             
+            /// <summary>
+            /// Attempts to get the foldout state of a specific type item within the specified section.
+            /// </summary>
+            /// <param name="sectionType">The type of section to check.</param>
+            /// <param name="t">The type of item to check.</param>
+            /// <param name="value">
+            /// When this method returns, contains the foldout state if the item is registered;
+            /// otherwise, contains the default value.
+            /// </param>
+            /// <returns>
+            /// Returns <c>true</c> if the item is registered; otherwise, <c>false</c>.
+            /// </returns>
             public bool TryGetFoldout(EEntitySection sectionType, Type t, out bool value)
             {
                 return sectionType switch
@@ -202,6 +310,11 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 };
             }
 
+            /// <summary>
+            /// Gets the count of foldout items registered in the specified section.
+            /// </summary>
+            /// <param name="sectionType">The type of section to check the count for.</param>
+            /// <returns>The count of foldout items registered in the section.</returns>
             public int GetFoldoutCount(EEntitySection sectionType)
             {
                 return sectionType switch
@@ -213,6 +326,15 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 };
             }
             
+            /// <summary>
+            /// Gets the foldout state of a specific type item within the specified section.
+            /// </summary>
+            /// <param name="sectionType">The type of section to check.</param>
+            /// <param name="t">The type of item to check.</param>
+            /// <returns>
+            /// Returns <c>true</c> if the item is open; otherwise, <c>false</c>.
+            /// Returns <c>false</c> if the item is not registered.
+            /// </returns>
             public bool GetFoldout(EEntitySection sectionType, Type t)
             {
                 return sectionType switch
@@ -224,6 +346,16 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 };
             }
 
+            /// <summary>
+            /// Gets the foldout state of a specific type item within the specified section.
+            /// </summary>
+            /// <param name="sectionType">The type of section to check.</param>
+            /// <param name="t">The type of item to check.</param>
+            /// <param name="defaultFoldout">The default value to use if the item is not registered.</param>
+            /// <returns>
+            /// Returns <c>true</c> if the item is open; otherwise, <c>false</c>.
+            /// Returns <paramref name="defaultFoldout"/> if the item is not registered.
+            /// </returns>
             public bool GetFoldout(EEntitySection sectionType, Type t, bool defaultFoldout)
             {
                 return sectionType switch
@@ -235,6 +367,12 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 };
             }
 
+            /// <summary>
+            /// Sets the foldout state of a specific type item within the specified section.
+            /// </summary>
+            /// <param name="sectionType">The type of section to set.</param>
+            /// <param name="t">The type of item to set.</param>
+            /// <param name="value">The new foldout state.</param>
             public void SetFoldout(EEntitySection sectionType, Type t, bool value)
             {
                 switch (sectionType)
@@ -251,6 +389,16 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 }
             }
             
+            /// <summary>
+            /// Removes the foldout state of a specific type item within the specified section.
+            /// </summary>
+            /// <param name="sectionType">The type of section to remove from.</param>
+            /// <param name="t">The type of item to remove.</param>
+            /// <remarks>
+            /// <para>
+            /// No exception is thrown if the item is not registered.
+            /// </para>
+            /// </remarks>
             public void RemoveFoldout(EEntitySection sectionType, Type t)
             {
                 switch (sectionType)

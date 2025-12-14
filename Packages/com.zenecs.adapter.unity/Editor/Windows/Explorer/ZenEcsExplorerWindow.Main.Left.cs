@@ -32,11 +32,11 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
         [Serializable]
         sealed class ExplorerSystemTreeState
         {
-            // 선택된 시스템
+            // Selected system
             public int SelectedSystemIndex = -1;
             public int SelectedSystemEntityCount;
 
-            // 스크롤
+            // Scroll
             public Vector2 Scroll;
 
             // System Tree Foldout
@@ -78,7 +78,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 
             EditorGUILayout.Space(4);
 
-            // 헤더 + ClearSelection 버튼
+            // Header + ClearSelection button
             using (new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Systems", EditorStyles.boldLabel);

@@ -31,29 +31,29 @@ using PackageSource = UnityEditor.PackageManager.PackageSource;
 namespace ZenECS.Adapter.Unity.Editor.Codegen
 {
     /// <summary>
-    /// ZenComponent(StableId) + IComponentFormatter 자동 등록 g.cs 코드젠 (ZenFormatterForAttribute 확장).
-    /// - Component: ComponentRegistry.Register<T>(stableId)
+    /// Automatic registration g.cs codegen for ZenComponent(StableId) + IComponentFormatter (ZenFormatterForAttribute extension).
+    /// - Component: ComponentRegistry.Register&lt;T&gt;(stableId)
     /// - Formatter: ComponentRegistry.RegisterFormatter(new Formatter())
-    /// - 포매터 선택 우선순위: [Attribute IsLatest] > [StableId .vN 최댓값] > [클래스명 V(\d+) 최댓값] > [같은 어셈블리] > [이름순]
-    /// - 배치/청소/Verbose/Custom Output 규칙 유지
-    /// - isLatest 중복(동일 컴포넌트에 2개 이상) 시: 메뉴 토글에 따라 경고/예외
+    /// - Formatter selection priority: [Attribute IsLatest] &gt; [StableId .vN max] &gt; [ClassName V(\d+) max] &gt; [Same assembly] &gt; [Name order]
+    /// - Maintains batch/cleanup/Verbose/Custom Output rules
+    /// - When isLatest duplicates (2 or more for same component): warning/exception based on menu toggle
     /// </summary>
     [InitializeOnLoad]
     public sealed class ZenEcsStableIdAndFormatterCodegen : IPreprocessBuildWithReport
     {
-        // ===== 고정 설정 =====
+        // ===== Fixed settings =====
         const string GENERATED_NAMESPACE = "ZenECS.Codegen.Registry";
         const int ROOT_NS_DEPTH = 2;
         const string CUSTOM_OUTPUT_PREF = "ZenECS.Codegen.CustomOutputRootAssetPath";
         const string FILE_MARKER = "// ZENECS_STABLEID_CODEGEN";
 
-        // 중복 발견 시 throw 로 빌드를 막을지 여부(편의 토글)
+        // Whether to block build with throw when duplicates are found (convenience toggle)
         const string FAIL_ON_LATEST_DUP_PREF = "ZenECS.Codegen.FailOnLatestDuplicate";
 
-        // 최신 포맷터의 StableId가 컴포넌트 StableId와 다를 경우 빌드 실패(권고: ON)
+        // Build failure if latest formatter's StableId differs from component StableId (recommended: ON)
         const string STRICT_STABLEID_MATCH_PREF = "ZenECS.Codegen.StrictStableIdMatch";
 
-        // SDK FQN (문자열 폴백용)
+        // SDK FQN (for string fallback)
         const string IFMT_OPEN_GENERIC_FQN = "ZenECS.Core.Serialization.IComponentFormatter`1";
         const string IFMT_NONGENERIC_FQN = "ZenECS.Core.Serialization.IComponentFormatter";
         const string ATTR_FORMATTER_FOR_FQN = "ZenECS.Core.Serialization.ZenFormatterForAttribute";
@@ -134,14 +134,14 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
             }
         }
 
-        // 재진입 가드
+        // Reentry guard
         static bool _busy;
         const string BusyKey = "ZenECS_Codegen_Busy";
 
-        // asmdef 인덱스
+        // asmdef index
         static Dictionary<string, string> _asmdefPathByAsmName;
 
-        // 리플렉션 캐시(견고한 Attribute/Interface 탐지)
+        // Reflection cache (robust Attribute/Interface detection)
         static Type _fmtAttrType;
         static Type _ifmtNonGenericType;
         static Type _ifmtOpenGenericType;
@@ -215,7 +215,7 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
 
         public static void GenerateImpl()
         {
-            // === 컴포넌트 스캔 ===
+            // === Component scan ===
             var compAttr = FindZenComponentAttributeType();
             if (compAttr == null)
             {
@@ -246,26 +246,26 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
 
             var stableByType = compItems.GroupBy(c => c.Type).ToDictionary(g => g.Key, g => g.First().StableId);
 
-            // === 포매터 스캔 (Attribute 확장) ===
+            // === Formatter scan (Attribute extension) ===
             var fmtItems = ScanFormattersWithAttribute(stableByType, out int warnCount);
             if (warnCount > 0) LogWarn($"[ZenECS] Formatter warnings: {warnCount} (see Console)");
 
-            // 포매터 스캔 직후: isLatest 중복 즉시 점검
+            // Immediately after formatter scan: check for isLatest duplicates
             var fail = EditorPrefs.GetBool(FAIL_ON_LATEST_DUP_PREF, true);
             ValidateLatestUniqueness(fmtItems, fail);
 
-            // 최신 포맷터 ↔ 컴포넌트 StableId 일치성 검사(엄격 권고)
+            // Latest formatter ↔ component StableId consistency check (strictly recommended)
             var chosenAll = ChooseFormattersPerComponent_WithAttribute(fmtItems.Where(f => f.ComponentType != null).ToList());
             var strictSid = EditorPrefs.GetBool(STRICT_STABLEID_MATCH_PREF, true);
             ValidateLatestStableIdMatch(chosenAll, stableByType, strictSid);
 
-            // === 마이그 스캔 ===
+            // === Migration scan ===
             var migItems = ScanPostLoadMigrations();
 
-            // === 그룹 구성 ===
+            // === Group construction ===
             var groups = BuildGroups(compItems, fmtItems, migItems);
 
-            // === 출력 루트/keep 계산 ===
+            // === Calculate output root/keep ===
             var customRoot = EditorPrefs.GetString(CUSTOM_OUTPUT_PREF, null);
             if (!string.IsNullOrEmpty(customRoot) && !customRoot.StartsWith("Assets/", StringComparison.Ordinal))
             {
@@ -291,14 +291,14 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
             if (!string.IsNullOrEmpty(customRoot))
                 CleanStaleUserOutputs(customRoot, internalKeepPrefixes, keepRoots);
 
-            // === 생성 ===
+            // === Generation ===
             int totalComps = 0, totalFmts = 0, files = 0;
 
             foreach (var g in groups)
             {
                 ResolveOutput(g, customRoot, out string assetBase, out string classSuffix);
 
-                // a) 컴포넌트 레지스트리
+                // a) Component registry
                 if (g.Components.Count > 0)
                 {
                     var cls = $"StableIdBootstrap_{classSuffix}";
@@ -332,7 +332,7 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
                     LogVerbose($"[ZenECS] Generated Component registry => {assetPath}");
                 }
 
-                // b) 포매터 레지스트리
+                // b) Formatter registry
                 if (g.Formatters.Count > 0)
                 {
                     var chosen = ChooseFormattersPerComponent_WithAttribute(g.Formatters);
@@ -354,7 +354,7 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
                     sb.AppendLine("    private static void Register()");
                     sb.AppendLine("    {");
 
-                    // 3-1) 최신(쓰기용) 등록
+                    // 3-1) Latest (for writing) registration
                     foreach (var f in chosen.OrderBy(f => f.ComponentType?.FullName ?? "", StringComparer.Ordinal)
                                  .ThenBy(f => f.FormatterType.FullName, StringComparer.Ordinal))
                     {
@@ -364,7 +364,7 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
                         totalFmts++;
                     }
 
-                    // 3-2) 레거시(읽기전용) 등록: StableId가 컴포넌트 StableId와 다른 Attribute 기반 포맷터
+                    // 3-2) Legacy (read-only) registration: Attribute-based formatters where StableId differs from component StableId
                     var compSidMap = g.Components.ToDictionary(c => c.Type, c => c.StableId);
                     var latestSet = new HashSet<Type>(chosen.Select(c => c.FormatterType));
                     var legacy = g.Formatters
@@ -393,7 +393,7 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
                     LogVerbose($"[ZenECS] Generated Formatter registry => {assetPath}");
                 }
 
-                // c) Post-Load Migration 레지스트리
+                // c) Post-Load Migration registry
                 if (g.Migrations.Count > 0)
                 {
                     var cls = $"MigrationBootstrap_{classSuffix}";
@@ -412,7 +412,7 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
                     sb.AppendLine("    private static void Register()");
                     sb.AppendLine("    {");
                     foreach (var m in g.Migrations
-                                 .OrderBy(x => x.Order ?? int.MaxValue) // Order가 있으면 정보 순서로
+                                 .OrderBy(x => x.Order ?? int.MaxValue) // If Order exists, use info order
                                  .ThenBy(x => x.MigrationType.FullName, StringComparer.Ordinal))
                     {
                         var mt = (m.MigrationType.FullName ?? m.MigrationType.Name).Replace('+', '.');
@@ -431,7 +431,7 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
             LogVerbose($"[ZenECS] Codegen done. files={files}, components={totalComps}, formatters={totalFmts}");
         }
 
-        // ===== 모델 =====
+        // ===== Models =====
         readonly struct CompScan
         {
             public readonly string StableId;
@@ -448,11 +448,11 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
         sealed class FmtScan
         {
             public Type FormatterType;
-            public Type ComponentType;           // 추정된 컴포넌트 타입 (없을 수 있음)
-            public bool FromAttribute;           // Attribute 기반 메타인지
-            public bool IsLatest;                // Attribute로 지정된 최신 여부
-            public int VersionHint;              // StableId/이름에서 추정한 vN (없으면 -1)
-            public string StableIdFromAttribute; // Attribute의 StableId(로그/검증용)
+            public Type ComponentType;           // Estimated component type (may be absent)
+            public bool FromAttribute;           // Whether Attribute-based metadata
+            public bool IsLatest;                // Whether specified as latest by Attribute
+            public int VersionHint;              // vN estimated from StableId/name (or -1 if absent)
+            public string StableIdFromAttribute; // StableId from Attribute (for logging/validation)
             public Assembly Assembly => FormatterType.Assembly;
         }
 
@@ -460,7 +460,7 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
         {
             public Type MigrationType;
             public Assembly Assembly => MigrationType.Assembly;
-            public int? Order; // 정보용(등록엔 불필요)
+            public int? Order; // For information (not required for registration)
         }
 
         sealed class Group
@@ -475,7 +475,7 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
             public bool IsAsmdef => !string.IsNullOrEmpty(AsmdefAssetPath);
         }
 
-        // ===== 그룹 구성 =====
+        // ===== Group construction =====
         static List<Group> BuildGroups(CompScan[] comps, List<FmtScan> fmts, List<MigScan> migs = null)
         {
             var groups = new List<Group>();
@@ -565,7 +565,7 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
                 found.Formatters.Add(f);
             }
 
-            // ===== 마이그레이션 소속 그룹 배치 =====
+            // ===== Assign migrations to groups =====
             if (migs != null && migs.Count > 0)
             {
                 foreach (var m in migs)
@@ -598,7 +598,7 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
             return groups;
         }
 
-        // ===== isLatest 중복 검증 =====
+        // ===== isLatest duplication validation =====
         static void ValidateLatestUniqueness(IEnumerable<FmtScan> fmtItems, bool failIfDuplicated)
         {
             var dups = fmtItems
@@ -622,8 +622,8 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
                 throw new Exception("[ZenECS] isLatest duplication detected. Fix attributes so each component has exactly ONE isLatest.");
         }
 
-        // 최신으로 선택된 포맷터의 StableId가 컴포넌트 StableId와 동일한가를 검증.
-        // 다르면: strict=true면 예외로 빌드 중단, strict=false면 경고.
+        // Validates whether the StableId of the formatter selected as latest matches the component StableId.
+        // If different: if strict=true, throws exception to stop build; if strict=false, warns.
         static void ValidateLatestStableIdMatch(IEnumerable<FmtScan> chosen, Dictionary<Type, string> stableByType, bool strict)
         {
             foreach (var f in chosen)
@@ -631,11 +631,11 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
                 if (f.ComponentType == null) continue;
                 if (!stableByType.TryGetValue(f.ComponentType, out var compSid) || string.IsNullOrEmpty(compSid))
                 {
-                    // 컴포넌트에 StableId가 없으면(이상 케이스) 경고만
+                    // Warn only if component has no StableId (abnormal case)
                     LogWarn($"[ZenECS] Component {f.ComponentType?.FullName} has no StableId. Formatter={f.FormatterType.FullName}");
                     continue;
                 }
-                // Attribute 없는 최신 후보면 경고 (권고: Attribute로 명시)
+                // Warn if latest candidate without Attribute (recommended: explicitly specify with Attribute)
                 if (!f.FromAttribute)
                 {
                     var msg = $"[ZenECS] Latest formatter without [ZenFormatterFor] for {f.ComponentType.FullName}: {f.FormatterType.FullName}. " +
@@ -657,14 +657,14 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
             }
         }
 
-        // ZenEcsStableIdAndFormatterCodegen.cs 내부 어딘가 정적 메서드 영역
+        // Static method area somewhere inside ZenEcsStableIdAndFormatterCodegen.cs
         static Dictionary<Type, string> ScanComponents(out CompScan[] compItems)
         {
             var compAttr = FindZenComponentAttributeType();
             if (compAttr == null)
                 throw new Exception("[ZenECS] ZenComponentAttribute (ZenECS.Core) not found.");
 
-            // GenerateImpl의 스캔 로직을 재사용
+            // Reuse scan logic from GenerateImpl
             compItems = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => !a.IsDynamic && !a.FullName.StartsWith("UnityEditor", StringComparison.Ordinal))
                 .SelectMany(a =>
@@ -688,28 +688,28 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
             if (dupComp != null)
                 throw new Exception($"[ZenECS] Duplicate StableId (components): {dupComp.Key}");
 
-            // Type -> StableId 맵
+            // Type -> StableId map
             return compItems.GroupBy(c => c.Type).ToDictionary(g => g.Key, g => g.First().StableId);
         }
 
-        // Unity가 스크립트 컴파일 후 도메인 리로드할 때마다 호출
+        // Called each time Unity reloads domain after script compilation
         [UnityEditor.Callbacks.DidReloadScripts]
         static void OnScriptsReloaded()
         {
             try
             {
-                // 1) 컴포넌트 스캔으로 Type->StableId 맵 구축
-                var stableByType = ScanComponents(out _); // ← 기존 Generate 경로에서 쓰는 것과 동일한 스캐너 사용
+                // 1) Build Type->StableId map via component scan
+                var stableByType = ScanComponents(out _); // ← Uses the same scanner as the existing Generate path
 
-                // 2) 포맷터 스캔
+                // 2) Formatter scan
                 int _warn;
                 var fmts = ScanFormattersWithAttribute(stableByType, out _warn);
 
-                // 3) isLatest 중복 체크(선택)
+                // 3) isLatest duplication check (optional)
                 var fail = EditorPrefs.GetBool(FAIL_ON_LATEST_DUP_PREF, true);
                 ValidateLatestUniqueness(fmts, fail);
 
-                // 4) 최신 포맷터 선정 및 StableId 일치 검증
+                // 4) Select latest formatter and validate StableId match
                 var chosen = ChooseFormattersPerComponent_WithAttribute(
                     fmts.Where(f => f.ComponentType != null).ToList());
 
@@ -722,13 +722,13 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
             }
         }
 
-        // ===== 포매터 스캔 (Attribute 확장) =====
+        // ===== Formatter scan (Attribute extension) =====
         static List<FmtScan> ScanFormattersWithAttribute(Dictionary<Type, string> stableByType, out int warnCount)
         {
             warnCount = 0;
             var results = new List<FmtScan>();
 
-            // 견고한 타입 해석(한 번만)
+            // Robust type resolution (once only)
             var attrType = GetFormatterForAttributeType();
             var ifmtNonGeneric = GetIFormatterNonGenericType();
             var ifmtOpenGeneric = GetIFormatterOpenGenericType();
@@ -750,7 +750,7 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
                 {
                     if (t == null || !t.IsClass || t.IsAbstract) continue;
 
-                    // IComponentFormatter / IComponentFormatter<T> 구현 여부
+                    // Whether implements IComponentFormatter / IComponentFormatter<T>
                     var ifaces = t.GetInterfaces();
                     bool hasIFmt = false;
 
@@ -760,21 +760,21 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
                     if (!hasIFmt && ifmtOpenGeneric != null)
                         hasIFmt = ifaces.Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == ifmtOpenGeneric);
 
-                    // 최후의 폴백: FQN 문자열 비교
+                    // Last fallback: FQN string comparison
                     if (!hasIFmt)
                         hasIFmt = ifaces.Any(i => i.FullName == IFMT_NONGENERIC_FQN)
                                   || ifaces.Any(i => i.IsGenericType && i.GetGenericTypeDefinition().FullName == IFMT_OPEN_GENERIC_FQN);
 
                     if (!hasIFmt) continue;
 
-                    // 기본 컴포넌트 타입 추정
+                    // Estimate default component type
                     Type compType = ifaces.FirstOrDefault(i =>
                             i.IsGenericType && (ifmtOpenGeneric != null ? i.GetGenericTypeDefinition() == ifmtOpenGeneric
                                 : i.GetGenericTypeDefinition().FullName == IFMT_OPEN_GENERIC_FQN))
                         ?.GetGenericArguments().FirstOrDefault();
                     if (compType == null)
                     {
-                        // 인스턴스의 ComponentType 프로퍼티로 폴백
+                        // Fallback to ComponentType property of instance
                         try
                         {
                             var inst = Activator.CreateInstance(t);
@@ -786,7 +786,7 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
                         }
                     }
 
-                    // Attribute 읽기 (여러 개 허용) — 실제 Type로 직접 비교
+                    // Read Attribute (multiple allowed) — direct comparison with actual Type
                     var attrs = (attrType != null) ? t.GetCustomAttributes(attrType, inherit: false) : Array.Empty<object>();
                     if (attrs.Length > 0)
                     {
@@ -812,7 +812,7 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
 
                             int vHint = ExtractVnFromStableId(sid);
 
-                            // Attribute StableId base vs Component StableId base (정보 로그)
+                            // Attribute StableId base vs Component StableId base (info log)
                             if (!string.IsNullOrEmpty(sid) && stableByType.TryGetValue(effComp, out var compSid))
                             {
                                 var baseA = Regex.Replace(sid, @"\.v\d+$", "");
@@ -834,10 +834,10 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
                             });
                         }
 
-                        continue; // Attribute 있었으면 네이밍 폴백은 생략
+                        continue; // Skip naming fallback if Attribute exists
                     }
 
-                    // 네이밍 폴백: 클래스명 V(\d+)
+                    // Naming fallback: class name V(\d+)
                     int verName = -1;
                     var mv = Regex.Match(t.Name, @"V(\d+)\b");
                     if (mv.Success && int.TryParse(mv.Groups[1].Value, out var vn))
@@ -846,9 +846,9 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
                     results.Add(new FmtScan
                     {
                         FormatterType = t,
-                        ComponentType = compType, // null 가능
+                        ComponentType = compType, // may be null
                         FromAttribute = false,
-                        IsLatest = false, // 선택 단계에서 결정
+                        IsLatest = false, // determined in selection phase
                         VersionHint = verName
                     });
                 }
@@ -864,7 +864,7 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
             return (m.Success && int.TryParse(m.Groups[1].Value, out var v)) ? v : -1;
         }
 
-        // 컴포넌트별 1개 포매터 선택(Attrib aware)
+        // Select one formatter per component (Attribute aware)
         static List<FmtScan> ChooseFormattersPerComponent_WithAttribute(List<FmtScan> list)
         {
             var withType = list.Where(f => f.ComponentType != null)
@@ -878,42 +878,42 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
 
             static FmtScan ChooseBest(Type compType, List<FmtScan> candidates)
             {
-                // 1) Attribute IsLatest 우선
+                // 1) Attribute IsLatest priority
                 var latests = candidates.Where(c => c.FromAttribute && c.IsLatest).ToList();
                 if (latests.Count == 1) return latests[0];
                 if (latests.Count > 1)
                 {
-                    // 경고만 찍고 tie-break (빌드 차단은 ValidateLatestUniqueness에서 수행)
+                    // Only warn and tie-break (build blocking is done in ValidateLatestUniqueness)
                     Debug.LogWarning($"[ZenECS] Multiple isLatest found for {compType.FullName}; tie-breaking.");
                     return latests
-                        .OrderByDescending(c => c.VersionHint) // Vn 큰 것
+                        .OrderByDescending(c => c.VersionHint) // Larger Vn
                         .ThenByDescending(c => c.FormatterType.Assembly == compType.Assembly ? 1 : 0)
                         .ThenBy(c => c.FormatterType.FullName, StringComparer.Ordinal)
                         .First();
                 }
 
-                // 2) StableId .vN 최대(Attrib 기반 항목만)
+                // 2) StableId .vN maximum (Attribute-based items only)
                 var bestAttr = candidates.Where(c => c.FromAttribute && c.VersionHint >= 0)
                     .OrderByDescending(c => c.VersionHint)
                     .FirstOrDefault();
                 if (bestAttr != null) return bestAttr;
 
-                // 3) 클래스명 V(\d+) 최대
+                // 3) Class name V(\d+) maximum
                 var bestName = candidates.OrderByDescending(c => c.VersionHint).FirstOrDefault();
                 if (bestName != null && bestName.VersionHint >= 0) return bestName;
 
-                // 4) 같은 어셈블리 우선
+                // 4) Same assembly priority
                 var sameAsm = candidates.Where(c => c.FormatterType.Assembly == compType.Assembly)
                     .OrderBy(c => c.FormatterType.FullName, StringComparer.Ordinal)
                     .ToList();
                 if (sameAsm.Count > 0) return sameAsm.Last();
 
-                // 5) 최후: 이름순
+                // 5) Last resort: name order
                 return candidates.OrderBy(c => c.FormatterType.FullName, StringComparer.Ordinal).Last();
             }
         }
 
-        // ===== 내부/사용자 식별 =====
+        // ===== Internal/user identification =====
         static bool IsZenEcsAssemblyOrTypes(IEnumerable<CompScan> items)
         {
             var firstAsmName = items.First().Assembly.GetName().Name ?? "";
@@ -926,14 +926,14 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
             => (f.FormatterType.Namespace ?? "").StartsWith("ZenECS.", StringComparison.Ordinal)
                || (f.ComponentType?.Namespace ?? "").StartsWith("ZenECS.", StringComparison.Ordinal);
 
-        // ===== 스캔/리플렉션 유틸 =====
+        // ===== Scan/reflection utilities =====
         static Type GetIPostLoadMigrationType()
         {
             if (_ipostLoadType != null) return _ipostLoadType;
-            // 1) FQN 우선
+            // 1) FQN priority
             _ipostLoadType = Type.GetType(IPOSTLOAD_FQN, throwOnError: false);
             if (_ipostLoadType != null) return _ipostLoadType;
-            // 2) 도메인 스캔(네임스페이스 변동 대비)
+            // 2) Domain scan (to handle namespace changes)
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
             {
                 if (asm.IsDynamic) continue;
@@ -955,7 +955,7 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
         {
             var tIface = GetIPostLoadMigrationType();
             var list = new List<MigScan>();
-            if (tIface == null) return list; // 레지스트리가 없을 수도 있는 환경 고려
+            if (tIface == null) return list; // Consider environment where registry may not exist
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
             {
                 if (asm.IsDynamic || asm.FullName.StartsWith("UnityEditor", StringComparison.Ordinal)) continue;
@@ -1006,10 +1006,10 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
         {
             if (_fmtAttrType != null) return _fmtAttrType;
 
-            // 1) 직통 FQN 시도(어셈블리명 변경될 수 있으니 throwOnError:false)
+            // 1) Try direct FQN (throwOnError:false as assembly name may change)
             _fmtAttrType = Type.GetType($"{ATTR_FORMATTER_FOR_FQN}", throwOnError: false);
 
-            // 2) 도메인 전체 스캔(네임스페이스가 조금 달라도 잡아내기)
+            // 2) Full domain scan (to catch even if namespace differs slightly)
             if (_fmtAttrType == null)
             {
                 foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
@@ -1109,7 +1109,7 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
         static string SanitizeId(string s) => Regex.Replace(s ?? string.Empty, @"[^A-Za-z0-9_]", "_");
         static string Norm(string p) => p?.Replace("\\", "/") ?? "";
 
-        // ===== 경로/출력 =====
+        // ===== Path/output =====
         static void ResolveOutput(Group g, string customRootAssets, out string assetBase, out string classSuffix)
         {
             if (!string.IsNullOrEmpty(customRootAssets) && !g.IsZenEcsInternal)
@@ -1231,7 +1231,7 @@ namespace ZenECS.Adapter.Unity.Editor.Codegen
             AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceSynchronousImport);
         }
 
-        // ===== 청소 =====
+        // ===== Cleanup =====
         static void CleanStaleUserOutputs(string customRootAssets,
             HashSet<string> internalKeepPrefixes,
             HashSet<string> keepRoots)

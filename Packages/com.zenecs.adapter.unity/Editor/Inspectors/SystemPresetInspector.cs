@@ -59,7 +59,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
             _list.drawElementCallback = (rect, index, active, focused) =>
                 DrawElement(rect, index, active, focused);
 
-            // Add / Remove 그대로 유지
+            // Add / Remove keep as-is
             _list.onAddDropdownCallback = (buttonRect, list) =>
             {
                 serializedObject.Update();
@@ -139,12 +139,12 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
             if (!UseFilter)
             {
-                // 필터 없으면 ReorderableList 그대로 사용 (드래그 핸들 포함)
+                // If no filter, use ReorderableList as-is (includes drag handle)
                 _list!.DoLayoutList();
             }
             else
             {
-                // 필터 있을 때는 "=" 핸들 없는 커스텀 뷰
+                // When filter exists, custom view without "=" handle
                 DrawFilteredList();
             }
 
@@ -179,7 +179,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
                 GUILayout.FlexibleSpace();
 
-                // 오른쪽 정렬 Filter
+                // Right-aligned Filter
                 var searchTextStyle = GUI.skin.FindStyle("ToolbarSeachTextField") ?? GUI.skin.textField;
                 var cancelStyle = GUI.skin.FindStyle("ToolbarSeachCancelButton");
 
@@ -232,7 +232,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 return;
             }
 
-            // 헤더 모양은 ReorderableList랑 비슷하게 한 번 더
+            // Header shape similar to ReorderableList once more
             var headerRect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
             EditorGUI.LabelField(headerRect, "Filtered Systems", EditorStyles.boldLabel);
 
@@ -248,7 +248,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
             GUILayout.Space(4);
 
-            // 필터 모드에서도 추가 버튼 하나는 있어야 편함
+            // Filter mode should also have one add button for convenience
             using (new GUILayout.HorizontalScope())
             {
                 GUILayout.FlexibleSpace();
@@ -315,7 +315,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 if (!string.IsNullOrEmpty(GetSystemRunKinds(typeBase)))
                     openedLines++;
 
-                // Order Before/After (Attribute 기반)
+                // Order Before/After (Attribute-based)
                 openedLines += 2;
                 
                 var watched = GetSystemWatchedComponents(typeBase);
@@ -328,13 +328,13 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
         void DrawElement(Rect rect, int index, bool active, bool focused)
         {
-            // ReorderableList에서 호출되는 버전 (= 핸들 있음)
+            // Version called from ReorderableList (= has handle)
             InternalDrawElement(rect, index, drawHandleOffset: true);
         }
 
         void DrawElementWithoutHandle(Rect rect, int index)
         {
-            // 필터 전용 버전 (= 핸들 없음)
+            // Filter-only version (= no handle)
             InternalDrawElement(rect, index, drawHandleOffset: false);
         }
 
@@ -349,7 +349,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
             float line = EditorGUIUtility.singleLineHeight;
 
-            // ReorderableList 핸들이 있을 때는 여백을 더 줌
+            // Add more margin when ReorderableList handle exists
             float handleOffset = drawHandleOffset ? 10f : 0f;
 
             const float padX = 0f;
@@ -483,7 +483,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                     y += line;
                 }
 
-                // Order Before/After (Attribute 기반)
+                // Order Before/After (Attribute-based)
                 var beforeList = new List<string>();
                 var afterList = new List<string>();
 
@@ -509,7 +509,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 }
                 catch
                 {
-                    // 구버전에서 타입이 다를 수 있으니 조용히 무시
+                    // Silently ignore as types may differ in older versions
                 }
 
                 string beforeText = beforeList.Count > 0

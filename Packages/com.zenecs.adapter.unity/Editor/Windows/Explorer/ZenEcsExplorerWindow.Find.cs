@@ -32,11 +32,11 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
         {
             public ZenEntityForm.EntityFoldoutInfo? EntityFoldoutInfo;
             
-            // 입력 문자열
+            // Input strings
             public string EntityIdText = string.Empty;
             public string EntityGenText = "0";
 
-            // UI 상태
+            // UI state
             public bool IsFindMode;
             public bool FoundValid;
             public bool WatchedSystemsFold;
@@ -72,7 +72,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 
                     using (new EditorGUILayout.VerticalScope(GUI.skin.box))
                     {
-                        // 상단 Close 버튼
+                        // Top Close button
                         using (new EditorGUILayout.HorizontalScope())
                         {
                             GUILayout.FlexibleSpace();
@@ -84,7 +84,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                             }
                         }
 
-                        // 결과 표시
+                        // Display result
                         DrawFindResult();
                     }
                 }
@@ -151,7 +151,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 
             GUILayout.Space(4);
 
-            // 실제 Entity Inspect
+            // Actual Entity Inspect
             //DrawOneEntity(_world, _findState.FoundEntity);
             
             if (_findState.EntityFoldoutInfo == null)

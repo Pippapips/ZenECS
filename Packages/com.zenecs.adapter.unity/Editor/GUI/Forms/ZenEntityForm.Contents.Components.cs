@@ -179,7 +179,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                     }
                     catch (KeyNotFoundException)
                     {
-                        // 컴포넌트 타입이 레지스트리에 없는 경우는 무시
+                        // Ignore if component type is not in registry
                     }
                 }
             }

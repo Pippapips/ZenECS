@@ -27,7 +27,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 
         static Texture2D _brandIcon;
 
-        // UPM 패키지 내 경로에 맞게 수정
+        // Modified to match the path within the UPM package
         const string BrandIconPath =
             "Packages/com.zenecs.adapter.unity/Editor/Art/pippapips_icon.png";
 
@@ -87,13 +87,44 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             }
         }
 
-        // 심플 오버로드들
+        /// <summary>
+        /// Draws a header with only a role name.
+        /// </summary>
+        /// <param name="roleName">The role name to display on the header.</param>
+        /// <remarks>
+        /// <para>
+        /// Draws a simple header displaying only the role name without description, tags, or icon.
+        /// </para>
+        /// </remarks>
         public static void DrawHeader(string roleName)
             => DrawHeader(roleName, null, null, null);
 
+        /// <summary>
+        /// Draws a header with a role name and description.
+        /// </summary>
+        /// <param name="roleName">The role name to display on the header.</param>
+        /// <param name="description">The description to display on the header.</param>
+        /// <remarks>
+        /// <para>
+        /// Draws a header displaying the role name and description without tags or icon.
+        /// </para>
+        /// </remarks>
         public static void DrawHeader(string roleName, string description)
             => DrawHeader(roleName, description, null, null);
 
+        /// <summary>
+        /// Draws a complete header.
+        /// </summary>
+        /// <param name="roleName">The role name to display on the header. If empty, it is replaced with "Inspector".</param>
+        /// <param name="description">The description to display on the header. Not displayed if <c>null</c> or empty.</param>
+        /// <param name="tags">The array of tags to display on the header. Not displayed if <c>null</c> or empty.</param>
+        /// <param name="icon">The icon to display on the header. If <c>null</c>, the default brand icon is used.</param>
+        /// <remarks>
+        /// <para>
+        /// Draws a ZenECS brand-style header. An accent bar and icon are displayed on the left,
+        /// and the role name, tags, and description are displayed on the right. Automatically adapts to Unity Pro/Personal themes.
+        /// </para>
+        /// </remarks>
         public static void DrawHeader(
             string roleName,
             string description,
@@ -116,10 +147,10 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             const float textGap    = 8f;
             float lineHeight       = EditorGUIUtility.singleLineHeight;
 
-            // 텍스트 블록 높이 대략 계산
+            // Roughly calculate text block height
             int textLines = 1; // title
             if (hasTags) textLines++;
-            if (hasDesc) textLines += 2; // 설명은 두 줄 정도 여유
+            if (hasDesc) textLines += 2; // Description takes about two lines
 
             float baseTextHeight = textLines * lineHeight + padY * 2f;
             float minHeight      = iconSize + padY * 2f;
@@ -133,20 +164,20 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             var bg     = EditorGUIUtility.isProSkin ? _bgDark : _bgLight;
             var accent = EditorGUIUtility.isProSkin ? _accentDark : _accentLight;
 
-            // 배경
+            // Background
             EditorGUI.DrawRect(rect, bg);
 
-            // 왼쪽 accent bar
+            // Left accent bar
             var accentRect = new Rect(rect.x, rect.y, accentW, rect.height);
             EditorGUI.DrawRect(accentRect, accent);
 
-            // 상단/하단 라인
+            // Top/bottom lines
             var topRect    = new Rect(rect.x, rect.y, rect.width, 1f);
             var bottomRect = new Rect(rect.x, rect.yMax - 1f, rect.width, 1f);
             EditorGUI.DrawRect(topRect,    new Color(accent.r, accent.g, accent.b, 0.18f));
             EditorGUI.DrawRect(bottomRect, new Color(0f, 0f, 0f, EditorGUIUtility.isProSkin ? 0.35f : 0.12f));
 
-            // 아이콘
+            // Icon
             var useIcon = icon != null ? icon : _brandIcon;
             float innerLeft = rect.x + accentW + padX;
 
@@ -166,7 +197,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             float innerWidth  = Mathf.Max(10f, innerRight - innerLeft);
             float cursorY     = rect.y + padY + 20;
 
-            // Title + tags (같은 수평 라인)
+            // Title + tags (same horizontal line)
             var titleRect = new Rect(innerLeft, cursorY, innerWidth, lineHeight);
 
             float tagsWidth = 0f;
@@ -187,7 +218,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             titleRect.width = titleWidth;
             EditorGUI.LabelField(titleRect, $"ZenECS - {roleName}", _titleStyle);
 
-            // Tags 오른쪽 정렬
+            // Tags right-aligned
             if (hasTags)
             {
                 float tagRight = innerLeft + innerWidth;

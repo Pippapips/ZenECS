@@ -23,7 +23,7 @@ using ZenECS.Adapter.Unity.Linking;
 namespace ZenECS.Adapter.Unity.Editor.Inspectors
 {
     /// <summary>
-    /// EntityLink의 런타임 메타를 인스펙터에서 표시 + ExplorerWindow 연동 버튼 제공.
+    /// Displays EntityLink runtime metadata in the inspector and provides ExplorerWindow integration button.
     /// </summary>
     [CustomEditor(typeof(EntityLink))]
     public sealed class EntityLinkInspector : UnityEditor.Editor
@@ -47,7 +47,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 }
             );
             
-            // (2) 메타 패널
+            // (2) Meta panel
             DrawMetaBox(link);
 
             EditorGUILayout.Space(6);
@@ -55,13 +55,13 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
             using (new EditorGUI.DisabledScope(!link || link.World == null))
             {
-                // ExplorerWindow로 선택
+                // Select in ExplorerWindow
                 if (GUILayout.Button("Select Linked Entity in Explorer", GUILayout.Height(24)))
                 {
                     if (!TrySelectInExplorer(link))
                         EditorUtility.DisplayDialog("Explorer",
-                            "ExplorerWindow를 찾을 수 없거나 SelectEntity 메서드를 호출할 수 없습니다.\n" +
-                            "창/이름/네임스페이스를 확인하세요.", "OK");
+                            "Cannot find ExplorerWindow or cannot call SelectEntity method.\n" +
+                            "Please check window/name/namespace.", "OK");
                 }
             }
         }
@@ -76,7 +76,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
                 if (!link || link.World == null)
                 {
-                    EditorGUILayout.HelpBox("World가 연결되지 않았습니다. (링크 미설정)", MessageType.Info);
+                    EditorGUILayout.HelpBox("World is not connected. (link not configured)", MessageType.Info);
                 }
                 else
                 {

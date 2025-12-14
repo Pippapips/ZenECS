@@ -34,7 +34,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
         [Serializable]
         sealed class ExplorerEntityPanelState
         {
-            // 스크롤
+            // Scroll
             public Vector2 Scroll;
 
             public Dictionary<Entity, ZenEntityForm.EntityFoldoutInfo> EntityFoldoutInfos = new();
@@ -106,7 +106,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             
             if (!hasSystem && !hasSingleton)
             {
-                // 시스템/싱글톤 선택 없음 → 안내 메시지만
+                // No system/singleton selected → show info message only
                 GUILayout.FlexibleSpace();
                 using (new EditorGUILayout.HorizontalScope())
                 {
@@ -139,7 +139,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             else
             {
                 // =========================
-                // 정상 리스트 모드 (시스템 선택 있음)
+                // Normal list mode (system selected)
                 // =========================
 
                 var sys = systems![_systemTree.SelectedSystemIndex];
@@ -157,7 +157,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 
                 _systemTree.SelectedSystemEntityCount = tmp.Count;
 
-                // 🔹 2) Entities 헤더 + 리스트
+                // 🔹 2) Entities header + list
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     if (_systemTree.SelectedSystemEntityCount > 0)

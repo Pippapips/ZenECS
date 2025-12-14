@@ -23,37 +23,105 @@ namespace ZenECS.Adapter.Unity.Editor.Common
 {
     public static class ZenGUIStyles
     {
+        /// <summary>
+        /// Gets a layout Rect with single-line height.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="Rect"/> with single-line height and expandable width.
+        /// </returns>
         public static Rect GetSingleLineRect()
         {
             return GUILayoutUtility.GetRect(0, EditorGUIUtility.singleLineHeight, GUILayout.ExpandWidth(true));
         }
         
+        /// <summary>
+        /// Gets a layout Rect with single-line height and indent applied.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="Rect"/> with single-line height where the current indent level is applied.
+        /// </returns>
         public static Rect GetIndentedSingleLineRect()
         {
-            // Indent 반영
+            // Reflect indent
             return EditorGUI.IndentedRect(GetSingleLineRect());
         }
 
+        /// <summary>
+        /// Calculates multiple Rects on a single line aligned to the left.
+        /// </summary>
+        /// <param name="width">The width of each Rect.</param>
+        /// <param name="gap">The spacing between Rects.</param>
+        /// <param name="rects">
+        /// An array to fill with calculated Rects. Rects are calculated for the length of the array.
+        /// </param>
+        /// <remarks>
+        /// <para>
+        /// Rects are arranged sequentially from left to right.
+        /// </para>
+        /// </remarks>
         public static void GetLeftSingleLineRects(float width, float gap, ref Rect[] rects)
         {
             GetLeftRects(GetSingleLineRect(), width, gap, ref rects);
         }
 
+        /// <summary>
+        /// Calculates multiple Rects on a single line aligned to the right.
+        /// </summary>
+        /// <param name="width">The width of each Rect.</param>
+        /// <param name="gap">The spacing between Rects.</param>
+        /// <param name="rects">
+        /// An array to fill with calculated Rects. Rects are calculated for the length of the array.
+        /// </param>
+        /// <remarks>
+        /// <para>
+        /// Rects are arranged sequentially from right to left.
+        /// </para>
+        /// </remarks>
         public static void GetRightSingleLineRects(float width, float gap, ref Rect[] rects)
         {
             GetRightRects(GetSingleLineRect(), width, gap, ref rects);
         }
         
+        /// <summary>
+        /// Calculates multiple Rects on an indented single line aligned to the left.
+        /// </summary>
+        /// <param name="width">The width of each Rect.</param>
+        /// <param name="gap">The spacing between Rects.</param>
+        /// <param name="rects">
+        /// An array to fill with calculated Rects. Rects are calculated for the length of the array.
+        /// </param>
         public static void GetLeftIndentedSingleLineRects(float width, float gap, ref Rect[] rects)
         {
             GetLeftRects(GetIndentedSingleLineRect(), width, gap, ref rects);
         }
         
+        /// <summary>
+        /// Calculates multiple Rects on an indented single line aligned to the right.
+        /// </summary>
+        /// <param name="width">The width of each Rect.</param>
+        /// <param name="gap">The spacing between Rects.</param>
+        /// <param name="rects">
+        /// An array to fill with calculated Rects. Rects are calculated for the length of the array.
+        /// </param>
         public static void TryGetRightIndentedSingleLineRects(float width, float gap, ref Rect[] rects)
         {
             GetRightRects(GetIndentedSingleLineRect(), width, gap, ref rects);
         }
 
+        /// <summary>
+        /// Calculates multiple Rects aligned to the left within the specified row Rect.
+        /// </summary>
+        /// <param name="rowRect">The row area where Rects will be placed.</param>
+        /// <param name="width">The width of each Rect.</param>
+        /// <param name="gap">The spacing between Rects.</param>
+        /// <param name="rects">
+        /// An array to fill with calculated Rects. If the array is empty, no operation is performed.
+        /// </param>
+        /// <remarks>
+        /// <para>
+        /// The first Rect is placed at the left edge of the row, and subsequent Rects are arranged sequentially to the right.
+        /// </para>
+        /// </remarks>
         public static void GetLeftRects(Rect rowRect, float width, float gap, ref Rect[] rects)
         {
             if (rects.Length == 0) return;
@@ -73,6 +141,20 @@ namespace ZenECS.Adapter.Unity.Editor.Common
             }
         }
 
+        /// <summary>
+        /// Calculates multiple Rects aligned to the right within the specified row Rect.
+        /// </summary>
+        /// <param name="rowRect">The row area where Rects will be placed.</param>
+        /// <param name="width">The width of each Rect.</param>
+        /// <param name="gap">The spacing between Rects.</param>
+        /// <param name="rects">
+        /// An array to fill with calculated Rects. If the array is empty, no operation is performed.
+        /// </param>
+        /// <remarks>
+        /// <para>
+        /// The first Rect is placed at the right edge of the row, and subsequent Rects are arranged sequentially to the left.
+        /// </para>
+        /// </remarks>
         public static void GetRightRects(Rect rowRect, float width, float gap, ref Rect[] rects)
         {
             if (rects.Length == 0) return;
@@ -92,12 +174,26 @@ namespace ZenECS.Adapter.Unity.Editor.Common
             }
         }
         
+        /// <summary>
+        /// Provides a scope for temporarily changing label style and width.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Use with a <see cref="using"/> statement to temporarily change label style and width,
+        /// and automatically restore to the original state when the scope exits.
+        /// </para>
+        /// </remarks>
         public readonly struct LabelScope : IDisposable
         {
             private readonly GUIStyle _backupStyle;
             private readonly float _backupLabelWidth;
             private readonly bool _hasCustomWidth;
 
+            /// <summary>
+            /// Initializes a new instance of <see cref="LabelScope"/>.
+            /// </summary>
+            /// <param name="style">The label style to apply.</param>
+            /// <param name="labelWidth">The label width to apply. If <c>null</c>, the width is not changed.</param>
             public LabelScope(GUIStyle style, float? labelWidth = null)
             {
                 _backupStyle = new GUIStyle(EditorStyles.label);
@@ -110,6 +206,10 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                     EditorGUIUtility.labelWidth = labelWidth.Value;
             }
 
+            /// <summary>
+            /// Applies the label style.
+            /// </summary>
+            /// <param name="src">The source style to apply.</param>
             private static void ApplyStyle(GUIStyle src)
             {
                 EditorStyles.label.font = src.font;
@@ -120,6 +220,9 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                 EditorStyles.label.richText = src.richText;
             }
 
+            /// <summary>
+            /// Ends the scope and restores the label style and width to their original state.
+            /// </summary>
             public void Dispose()
             {
                 ApplyStyle(_backupStyle);
@@ -143,11 +246,11 @@ namespace ZenECS.Adapter.Unity.Editor.Common
 
                     _linkLabel.normal.textColor = Color.lightGray;
                     _linkLabel.hover.textColor  = Color.orangeRed;
-                    _linkLabel.active.textColor = Color.orangeRed;   // 클릭 중
-                    _linkLabel.focused.textColor = Color.orangeRed;  // 키보드 focus
+                    _linkLabel.active.textColor = Color.orangeRed;   // While clicking
+                    _linkLabel.focused.textColor = Color.orangeRed;  // Keyboard focus
                     _linkLabel.alignment = TextAnchor.MiddleLeft;
 
-                    // 배경은 없애서 “버튼처럼” 안 보이게
+                    // Remove background so it doesn't look like a button
                     _linkLabel.normal.background  = null;
                     _linkLabel.hover.background   = null;
                     _linkLabel.active.background  = null;

@@ -131,7 +131,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 : "(global)";
             
             string label;
-            // ComponentPicker/BinderPicker 스타일: 이름 — namespace 형태
+            // ComponentPicker/BinderPicker style: name — namespace format
             label = $"{name}   <size=9><color=#888888>— {nsStr}</color></size>";
 
             if (disabled)
@@ -167,13 +167,13 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
         // Unity entry point
         private void OnGUI() => DrawDefaultGUI();
 
-        // ContextAsset이 만들어내는 IContext 타입 추론
+        // Infer IContext type that ContextAsset creates
         private static Type? TryResolveContextType(ContextAsset asset)
         {
             if (asset == null) return null;
             var aType = asset.GetType();
 
-            // 1) ContextType 프로퍼티 관례
+            // 1) ContextType property convention
             var prop = aType.GetProperty("ContextType",
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
             if (prop != null && typeof(Type).IsAssignableFrom(prop.PropertyType))
@@ -183,7 +183,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                     return v;
             }
 
-            // 2) GetContextType() 메서드 관례
+            // 2) GetContextType() method convention
             var mGet = aType.GetMethod("GetContextType",
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static,
                 null, Type.EmptyTypes, null);
@@ -194,7 +194,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                     return v;
             }
 
-            // 3) Create/Build/Instantiate/Make/ToInstance 반환 타입으로 추론
+            // 3) Infer from Create/Build/Instantiate/Make/ToInstance return type
             var names = new[] { "Create", "Build", "Instantiate", "Make", "ToInstance" };
             foreach (var name in names)
             {

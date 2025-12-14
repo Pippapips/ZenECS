@@ -30,34 +30,34 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
     public sealed partial class ZenEcsExplorerWindow
     {
         // =====================================================================
-        //  LEFT: Singletons 리스트 한 줄
+        //  LEFT: Singletons list one line
         // =====================================================================
 
         void DrawSingletonRow(Type type, Entity owner, IWorld world)
         {
             var typeName = type.Name;
 
-            // === 한 줄 Rect 계산 ===
+            // === Calculate one-line Rect ===
             var rowHeight = EditorGUIUtility.singleLineHeight + 4f;
             var rowRect = GUILayoutUtility.GetRect(0, rowHeight, GUILayout.ExpandWidth(true));
 
-            // Indent 반영
+            // Reflect indent
             rowRect = EditorGUI.IndentedRect(rowRect);
 
             const float iconW = 24f;
             const float gap = 1f;
 
-            // 오른쪽 끝: X
+            // Right end: X
             var removeRect = new Rect(rowRect.xMax - iconW, rowRect.y, iconW, rowRect.height);
             var pingRect = new Rect(removeRect.x - iconW, rowRect.y, iconW, rowRect.height);
 
-            // 가운데: Singleton 버튼
+            // Middle: Singleton button
             float sysX = rowRect.x;
             float sysRight = pingRect.x - gap;
             float sysW = Mathf.Max(0f, sysRight - sysX);
             var sysRect = new Rect(sysX, rowRect.y, sysW, rowHeight);
 
-            // ===== Singleton 버튼 =====
+            // ===== Singleton button =====
             string label = $"{typeName}  (Entity #{owner.Id}:{owner.Gen})";
 
             GUIStyle btnStyle = new GUIStyle(GUI.skin.button)
@@ -81,7 +81,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 _entityPanel.SelectedSingletonEntity = owner;
             }
 
-            // ===== 돋보기 버튼 (컴포넌트 타입 핑) =====
+            // ===== Ping button (component type ping) =====
             {
                 var pingBtnRect = new Rect(
                     pingRect.x,
@@ -105,7 +105,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 }
             }
             
-            // 🔸 삭제 버튼 (기존 그대로)
+            // 🔸 Delete button (as before)
             using (new EditorGUI.DisabledScope(!_coreState.EditMode))
             {
                 var delStyle = new GUIStyle(GUI.skin.button)

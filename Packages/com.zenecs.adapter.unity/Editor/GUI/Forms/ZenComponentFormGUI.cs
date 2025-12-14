@@ -15,46 +15,48 @@
 #if UNITY_EDITOR
 using System;
 using System.Reflection;
-using System.Text; // ★ UTF-8 바이트 길이 계산용
+using System.Text; // ★ For UTF-8 byte length calculation
 using Unity.Collections; // ★ FixedString64Bytes
 using UnityEditor;
 using UnityEngine;
 
 namespace ZenECS.Adapter.Unity.Editor.GUIs
 {
-    /// IMGUI 공용 폼 드로어: 기본형/Unity 타입 + Unity.Mathematics(float2/3/4,int/uint/bool2/3/4, quaternion)
+    /// <summary>
+    /// IMGUI common form drawer: primitive/Unity types + Unity.Mathematics (float2/3/4, int/uint/bool2/3/4, quaternion)
+    /// </summary>
     public static class ZenComponentFormGUI
     {
         public static float LineHeight = 16f;
         
         public static void DrawSmallForm(Rect bodyInner, object obj, Type t, int fontSize = 10, float fontHeight = 14)
         {
-            // 1) 백업
+            // 1) Backup
             var labelBackup = new GUIStyle(EditorStyles.label);
             var textBackup = new GUIStyle(EditorStyles.textField);
             var numberBackup = new GUIStyle(EditorStyles.numberField);
 
             try
             {
-                // 2) 라벨 폰트 (이미 줄여놨다면 이 부분은 패스 가능)
+                // 2) Label font (can skip this part if already reduced)
                 EditorStyles.label.fontSize = fontSize;
 
-                // 3) 값(TextField/IntField) 폰트 줄이기
+                // 3) Reduce font size for values (TextField/IntField)
                 EditorStyles.textField.fontSize = fontSize;
                 EditorStyles.numberField.fontSize = fontSize;
 
-                // 필요하면 popup, toggle 등도 추가
+                // Add popup, toggle, etc. if needed
                 // EditorStyles.popup.fontSize = 9;
 
-                // 4) 우리 폼 라인 높이 줄이기
+                // 4) Reduce our form line height
                 LineHeight = fontHeight;
 
-                // 5) 실제 Draw
+                // 5) Actual Draw
                 DrawObject(bodyInner, obj, t);
             }
             finally
             {
-                // 6) 원복
+                // 6) Restore
                 CopyStyle(EditorStyles.label, labelBackup);
                 CopyStyle(EditorStyles.textField, textBackup);
                 CopyStyle(EditorStyles.numberField, numberBackup);
@@ -73,7 +75,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
         
         static bool IsReadOnly(System.Type componentType, System.Reflection.MemberInfo member)
         {
-            // 멤버나 타입에 [ReadOnlyInInspector]가 붙었는가?
+            // Is [ReadOnlyInInspector] attached to member or type?
             return System.Attribute.IsDefined(member,
                        typeof(ZenECS.Adapter.Unity.ZenReadOnlyInInspectorAttribute), inherit: true)
                    || System.Attribute.IsDefined(componentType,
@@ -136,13 +138,13 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 return true;
             }
 
-            // --- FixedString64Bytes (UTF-8 64바이트 제한) ---
+            // --- FixedString64Bytes (UTF-8 64-byte limit) ---
             if (ft == typeof(FixedString64Bytes))
             {
                 string s = cur is FixedString64Bytes fs ? fs.ToString() : string.Empty;
                 string newS = EditorGUI.TextField(r, label, s);
 
-                // UTF-8 64바이트 초과 시 안전하게 잘라냄(문자 경계 보존)
+                // Safely truncate if exceeds UTF-8 64 bytes (preserves character boundaries)
                 if (Encoding.UTF8.GetByteCount(newS) > 64)
                     newS = TruncateUtf8ByByteLimit(newS, 64);
 
@@ -205,7 +207,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             return false;
         }
 
-        // Unity.Mathematics 벡터 (float2/3/4, int/uint/bool2/3/4)
+        // Unity.Mathematics vectors (float2/3/4, int/uint/bool2/3/4)
         static bool TryDrawMathVector(Rect r, string label, Type t, ref object cur)
         {
             if (!IsMatVector(t, out var dim, out var elem)) return false;
@@ -389,7 +391,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
         static object ElemF(Type elem, float v) => elem == typeof(double) ? (object)(double)v : v;
         static object ElemI(Type elem, int v) => elem == typeof(uint) ? (object)(uint)Mathf.Max(0, v) : v;
 
-        // UTF-8 바이트 수 기준으로 안전하게 잘라내기(문자 경계 보존)
+        // Safely truncate based on UTF-8 byte count (preserves character boundaries)
         static string TruncateUtf8ByByteLimit(string src, int maxBytes)
         {
             if (string.IsNullOrEmpty(src)) return string.Empty;
@@ -418,7 +420,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             elem = null;
             if (t == null || t.Namespace != "Unity.Mathematics") return false;
 
-            // 이름 패턴: float2/3/4, double2/3/4, int2/3/4, uint2/3/4, bool2/3/4
+            // Name pattern: float2/3/4, double2/3/4, int2/3/4, uint2/3/4, bool2/3/4
             string n = t.Name;
             bool head =
                 n.StartsWith("float") || n.StartsWith("double") ||
@@ -447,16 +449,16 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             float pad = Mathf.Max(2f, EditorGUIUtility.standardVerticalSpacing);
             if (!rowHeight) return h + pad;
 
-            // 살짝 더 높은 컨트롤들: Vector2/3/4, Quaternion(Euler로 표시), 수학 벡터/쿼터니언
+            // Slightly taller controls: Vector2/3/4, Quaternion (displayed as Euler), math vectors/quaternions
             if (ft == typeof(Vector2) || ft == typeof(Vector3) || ft == typeof(Vector4) ||
                 ft == typeof(Quaternion) ||
                 (ft != null && (ft.FullName == "Unity.Mathematics.quaternion" || IsMatVector(ft, out _, out _))))
             {
-                return h + pad + 30f; // ← 한 줄 높이 + 여유
+                return h + pad + 30f; // ← Single line height + margin
             }
 
-            // 나머지(기본형/byte/FixedString64Bytes 등)
-            return h + pad; // ← 표준 여유
+            // Others (primitives/byte/FixedString64Bytes etc.)
+            return h + pad; // ← Standard margin
         }
 
         public static float CalcHeightForObject(object obj, Type typeOverride = null, bool rowHeight = true)
@@ -470,14 +472,14 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             {
                 var ft = f.FieldType;
 
-                // 수학 벡터/Quaternion(수학) → 한 줄
+                // Math vectors/Quaternion (math) → one line
                 if (IsMatVector(ft, out _, out _) || ft.FullName == "Unity.Mathematics.quaternion")
                 {
                     y += RowH(ft, rowHeight);
                     continue;
                 }
 
-                // 유니티 기본형/Vector2/3/4/Quaternion/Color/Object, byte, FixedString64Bytes 등 → 한 줄
+                // Unity primitives/Vector2/3/4/Quaternion/Color/Object, byte, FixedString64Bytes etc. → one line
                 if (ft == typeof(int) || ft == typeof(float) || ft == typeof(bool) || ft == typeof(string) ||
                     ft == typeof(Vector2) || ft == typeof(Vector3) || ft == typeof(Vector4) ||
                     ft == typeof(Quaternion) || ft == typeof(Color) ||
@@ -488,11 +490,11 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                     continue;
                 }
 
-                // (미지원 타입)도 한 줄로 잡아 라벨이 겹치지 않게
+                // (Unsupported types) also treated as one line so labels don't overlap
                 y += RowH(ft, rowHeight);
             }
 
-            // 약간의 바닥 여유
+            // Small bottom margin
             return y + 2f;
         }
 
@@ -503,7 +505,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             {
                 var ft = f.FieldType;
 
-                // 여기 목록은 DrawValue/TryDrawBuiltin/TryDrawMathVector에서 지원하는 타입과 일치시켜야 함
+                // This list must match types supported by DrawValue/TryDrawBuiltin/TryDrawMathVector
                 if (ft == typeof(int) || ft == typeof(float) || ft == typeof(bool) || ft == typeof(string) ||
                     ft == typeof(byte) ||
                     ft == typeof(Vector2) || ft == typeof(Vector3) || ft == typeof(Vector4) ||
@@ -511,7 +513,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                     typeof(UnityEngine.Object).IsAssignableFrom(ft) ||
                     ft.FullName == "Unity.Mathematics.quaternion" || IsMatVector(ft, out _, out _))
                 {
-                    return true; // 하나라도 있으면 그릴 게 있음
+                    return true; // If any exist, there's something to draw
                 }
             }
 
