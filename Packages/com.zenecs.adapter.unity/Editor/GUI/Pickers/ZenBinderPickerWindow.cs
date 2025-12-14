@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -49,7 +49,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 
             win._disabled = disabled ?? new HashSet<Type>();
 
-            var width = 520f;
+            var width = 560f; // ComponentPicker와 동일한 크기
             var height = 400f;
 
             var topLeft = GUIUtility.GUIToScreenPoint(
@@ -69,6 +69,18 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
         }
 
         // --- Base hooks -----------------------------------------------------
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            // Simplified row style similar to PR Label (Context Picker Window style)
+            _rowStyle = new GUIStyle("PR Label")
+            {
+                alignment = TextAnchor.MiddleLeft,
+                fixedHeight = ROW_HEIGHT,
+                richText = true
+            };
+        }
 
         protected override IEnumerable<Type> GetSourceItems() => _all;
 
@@ -103,20 +115,22 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 
         protected override GUIContent GetItemContent(Type t, bool disabled)
         {
-            var ns = t.Namespace ?? "Global";
-            var typeName = t.Name;
-            var fullName = t.FullName ?? typeName;
+            string nsStr = string.IsNullOrEmpty(t.Namespace) ? "(global)" : t.Namespace!;
+            string label;
 
-            const int maxLen = 70;
-            string secondary = fullName.Length > maxLen
-                ? "…" + fullName.Substring(fullName.Length - maxLen)
-                : ns;
+            // ComponentPicker 스타일: 이름 / namespace 형태
+            label = $"{t.Name}   <size=9><color=#888888>— {nsStr}</color></size>";
 
-            string displayText = disabled
-                ? $"<color=#888888>{typeName}</color>   <size=9><color=#999999>{secondary}</color></size>"
-                : $"<b>{typeName}</b>   <size=9><color=#888888>{secondary}</color></size>";
+            if (disabled)
+            {
+                label = $"<color=#888888>{label}  <color=#AA4444>(already added)</color></color>";
+            }
+            else
+            {
+                label = $"<b>{label}</b>";
+            }
 
-            return new GUIContent(displayText, fullName);
+            return new GUIContent(label, t.FullName);
         }
 
         protected override void OnItemPicked(Type item)

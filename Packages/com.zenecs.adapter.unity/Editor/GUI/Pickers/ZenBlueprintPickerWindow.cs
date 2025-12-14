@@ -52,6 +52,18 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             win.Focus();
         }
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            // Simplified row style similar to PR Label (Context Picker Window style)
+            _rowStyle = new GUIStyle("PR Label")
+            {
+                alignment = TextAnchor.MiddleLeft,
+                fixedHeight = ROW_HEIGHT,
+                richText = true
+            };
+        }
+
         protected override IEnumerable<EntityBlueprint> GetSourceItems() => _all;
 
         protected override bool MatchesSearch(EntityBlueprint bp, string search)

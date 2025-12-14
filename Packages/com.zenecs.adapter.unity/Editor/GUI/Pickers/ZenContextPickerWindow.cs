@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -35,7 +35,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             win._all.AddRange(allContextTypes ?? Array.Empty<Type>());
             win._disabled = disabled ?? new HashSet<Type>();
 
-            var w = size?.x ?? 420f;
+            var w = size?.x ?? 560f; // ComponentPicker와 동일한 크기
             var h = size?.y ?? 360f;
 
             var screenPos = GUIUtility.GUIToScreenPoint(
@@ -57,7 +57,8 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             _rowStyle = new GUIStyle("PR Label")
             {
                 alignment = TextAnchor.MiddleLeft,
-                fixedHeight = ROW_HEIGHT
+                fixedHeight = ROW_HEIGHT,
+                richText = true
             };
         }
 
@@ -81,10 +82,19 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 
         protected override GUIContent GetItemContent(Type t, bool disabled)
         {
-            var label = t.FullName ?? t.Name ?? string.Empty;
+            string nsStr = string.IsNullOrEmpty(t.Namespace) ? "(global)" : t.Namespace!;
+            string label;
+
+            // ComponentPicker 스타일: 이름 / namespace 형태
+            label = $"{t.Name}   <size=9><color=#888888>— {nsStr}</color></size>";
+
             if (disabled)
             {
-                label = $"<color=#888888>{label}  (already added)</color>";
+                label = $"<color=#888888>{label}  <color=#AA4444>(already added)</color></color>";
+            }
+            else
+            {
+                label = $"<b>{label}</b>";
             }
 
             return new GUIContent(label, t.FullName);

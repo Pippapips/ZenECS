@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -65,6 +65,18 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             win.Focus();
         }
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            // Simplified row style similar to PR Label (Context Picker Window style)
+            _rowStyle = new GUIStyle("PR Label")
+            {
+                alignment = TextAnchor.MiddleLeft,
+                fixedHeight = ROW_HEIGHT,
+                richText = true
+            };
+        }
+
         protected override IEnumerable<Type> GetSourceItems() => _all;
 
         protected override bool IsDisabled(Type item) => _disabled.Contains(item);
@@ -93,20 +105,10 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 
         protected override GUIContent GetItemContent(Type t, bool disabled)
         {
-            string typeName = t.Name;
-            string ns = t.Namespace ?? string.Empty;
-
-            string label;
+            var label = t.FullName ?? t.Name ?? string.Empty;
             if (disabled)
             {
-                label =
-                    $"<color=#888888><b>{typeName}</b></color>  " +
-                    $"<color=#999999>({ns}) — already added</color>";
-            }
-            else
-            {
-                label =
-                    $"<b>{typeName}</b>  <color=#999999>({ns})</color>";
+                label = $"<color=#888888>{label}  <color=#AA4444>(already added)</color></color>";
             }
 
             return new GUIContent(label, t.FullName);

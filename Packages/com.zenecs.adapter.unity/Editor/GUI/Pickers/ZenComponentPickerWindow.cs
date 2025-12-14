@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -39,6 +39,13 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
         protected override void OnEnable()
         {
             base.OnEnable();
+            // Simplified row style similar to PR Label (Context Picker Window style)
+            _rowStyle = new GUIStyle("PR Label")
+            {
+                alignment = TextAnchor.MiddleLeft,
+                fixedHeight = ROW_HEIGHT,
+                richText = true
+            };
 
             minSize = new Vector2(WINDOW_WIDTH, WINDOW_MIN_H);
             maxSize = new Vector2(WINDOW_WIDTH, WINDOW_MAX_H);
@@ -200,7 +207,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 
             if (disabled)
             {
-                label = $"<color=#888888>{label}  (already added)</color>";
+                label = $"<color=#888888>{label}  <color=#AA4444>(already added)</color></color>";
             }
             else
             {
