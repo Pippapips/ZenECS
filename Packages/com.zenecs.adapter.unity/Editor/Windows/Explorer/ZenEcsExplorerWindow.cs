@@ -28,9 +28,10 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
         // =====================================================================
 
         [MenuItem("ZenECS/Tools/ZenECS Explorer")]
-        public static void Open()
+        public static ZenEcsExplorerWindow Open()
         {
-            GetWindow<ZenEcsExplorerWindow>("ZenECS Explorer");
+            var window = GetWindow<ZenEcsExplorerWindow>("ZenECS Explorer");
+            return window;
         }
 
         [Serializable]
