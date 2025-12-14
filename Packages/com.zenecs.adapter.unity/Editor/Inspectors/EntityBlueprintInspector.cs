@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Blueprints;
+using ZenECS.Adapter.Unity.Editor.Common;
 using ZenECS.Adapter.Unity.Editor.GUIs;
 using ZenECS.Core;
 using ZenECS.Core.Binding;
@@ -987,39 +988,12 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
         static void PingTypeSource(Type t)
         {
-            if (t == null)
-                return;
-
-            var guids = AssetDatabase.FindAssets($"t:MonoScript {t.Name}");
-            foreach (var guid in guids)
-            {
-                var path = AssetDatabase.GUIDToAssetPath(guid);
-                var ms = AssetDatabase.LoadAssetAtPath<MonoScript>(path);
-                if (ms == null) continue;
-
-                if (ms.GetClass() == t)
-                {
-                    EditorGUIUtility.PingObject(ms);
-                    //Selection.activeObject = ms;
-                    break;
-                }
-            }
+            ZenAssetDatabase.PingMonoScript(t);
         }
 
         static GUIContent GetSearchIconContent(string tooltip)
         {
-            // Unity 기본 검색 아이콘
-            var gc = EditorGUIUtility.IconContent("d_Search Icon");
-            if (gc == null || gc.image == null)
-                gc = EditorGUIUtility.IconContent("Search Icon");
-
-            // 혹시 아이콘을 못 찾았을 경우 텍스트로 fallback
-            if (gc == null)
-                gc = new GUIContent("🔍", tooltip);
-            else
-                gc.tooltip = tooltip;
-
-            return gc;
+            return ZenGUIContents.IconPing(tooltip);
         }
     }
 }

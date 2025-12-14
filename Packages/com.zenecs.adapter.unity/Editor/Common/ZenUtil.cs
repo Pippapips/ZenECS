@@ -26,34 +26,10 @@ namespace ZenECS.Adapter.Unity.Editor.Common
         {
             if (t == null) return;
 
-            try
-            {
-                var scripts = Resources.FindObjectsOfTypeAll<MonoScript>();
-                foreach (var ms in scripts)
-                {
-                    if (ms == null) continue;
-                    try
-                    {
-                        if (ms.GetClass() == t)
-                        {
-                            // Only ping, don't modify Selection
-                            EditorGUIUtility.PingObject(ms);
-                            return;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        // Continue processing even if individual script check fails
-                        Debug.LogWarning($"[ZenUtil] Failed to check script {ms.name}: {ex.Message}");
-                    }
-                }
+            if (ZenAssetDatabase.PingMonoScript(t))
+                return;
 
-                Debug.Log($"ZenEcsExplorer: Unable to locate a script asset for component type {t.FullName}.\nIt may not exist, or a matching type name is required to ping the script source.");
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"[ZenUtil] Failed to ping type {t.FullName}: {ex}");
-            }
+            Debug.Log($"ZenEcsExplorer: Unable to locate a script asset for component type {t.FullName}.\nIt may not exist, or a matching type name is required to ping the script source.");
         }
 
         // ──────────────────────────────────────────────
@@ -192,15 +168,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
         
         public static List<ContextAsset> LoadAllAssets()
         {
-            var res = new List<ContextAsset>(64);
-            foreach (var guid in AssetDatabase.FindAssets("t:ContextAsset"))
-            {
-                var path = AssetDatabase.GUIDToAssetPath(guid);
-                var a = AssetDatabase.LoadAssetAtPath<ContextAsset>(path);
-                if (a) res.Add(a);
-            }
-
-            return res.OrderBy(a => a.name).ToList();
+            return ZenAssetDatabase.FindAndLoadAllAssets<ContextAsset>();
         }
         
         public static void ResolveSystemGroupAndPhase(Type t, out SystemGroup group, out PhaseKind phase)

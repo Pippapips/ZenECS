@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -8,15 +8,22 @@ namespace ZenECS.Adapter.Unity.Editor.Common
 {
     public static class ZenGUIContents
     {
-        public static GUIContent IconPing()
+        /// <summary>
+        /// Gets the search/ping icon content with optional tooltip
+        /// </summary>
+        public static GUIContent IconPing(string? tooltip = null)
         {
-            // Unity 기본 검색 아이콘
+            // Unity default search icon
             var gc = EditorGUIUtility.IconContent("d_Search Icon");
             if (gc == null || !gc.image)
                 gc = EditorGUIUtility.IconContent("Search Icon");
 
-            // 혹시 아이콘을 못 찾았을 경우 텍스트로 fallback
+            // Fallback to text if icon not found
             gc ??= new GUIContent("🔍");
+            
+            if (!string.IsNullOrEmpty(tooltip))
+                gc.tooltip = tooltip;
+                
             return gc;
         }
         

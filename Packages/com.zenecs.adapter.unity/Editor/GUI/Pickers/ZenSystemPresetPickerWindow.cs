@@ -1,10 +1,11 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 #nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using ZenECS.Adapter.Unity.Editor.Common;
 
 namespace ZenECS.Adapter.Unity.Editor.GUIs
 {
@@ -55,17 +56,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
         /// </summary>
         private static List<ScriptableObject> LoadAllPresets()
         {
-            var res = new List<ScriptableObject>(32);
-
-            foreach (var guid in AssetDatabase.FindAssets("t:SystemsPreset"))
-            {
-                var path = AssetDatabase.GUIDToAssetPath(guid);
-                var so = AssetDatabase.LoadAssetAtPath<ScriptableObject>(path);
-                if (so != null)
-                    res.Add(so);
-            }
-
-            return res.OrderBy(a => a.name).ToList();
+            return ZenAssetDatabase.FindAndLoadAllAssets<ScriptableObject>("t:SystemsPreset");
         }
 
         protected override IEnumerable<ScriptableObject> GetSourceItems() => _all;

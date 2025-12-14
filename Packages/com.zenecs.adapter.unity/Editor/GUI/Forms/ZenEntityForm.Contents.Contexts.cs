@@ -53,15 +53,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 
             static List<ContextAsset> LoadAllAssets()
             {
-                var res = new List<ContextAsset>(64);
-                foreach (var guid in AssetDatabase.FindAssets("t:ContextAsset"))
-                {
-                    var path = AssetDatabase.GUIDToAssetPath(guid);
-                    var a = AssetDatabase.LoadAssetAtPath<ContextAsset>(path);
-                    if (a) res.Add(a);
-                }
-
-                return res.OrderBy(a => a.name).ToList();
+                return ZenAssetDatabase.FindAndLoadAllAssets<ContextAsset>();
             }
 
             void OnGUI()

@@ -675,16 +675,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
         static GUIContent GetSearchIconContent(string tooltip)
         {
-            var gc = EditorGUIUtility.IconContent("d_Search Icon");
-            if (gc == null || gc.image == null)
-                gc = EditorGUIUtility.IconContent("Search Icon");
-
-            if (gc == null)
-                gc = new GUIContent("🔍", tooltip);
-            else
-                gc.tooltip = tooltip;
-
-            return gc;
+            return ZenGUIContents.IconPing(tooltip);
         }
 
         #endregion

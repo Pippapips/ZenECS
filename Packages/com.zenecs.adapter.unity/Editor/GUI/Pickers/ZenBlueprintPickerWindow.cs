@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Blueprints;
+using ZenECS.Adapter.Unity.Editor.Common;
 
 namespace ZenECS.Adapter.Unity.Editor.GUIs
 {
@@ -31,14 +32,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 
             // Load all EntityBlueprint assets in project
             win._all.Clear();
-            var guids = AssetDatabase.FindAssets("t:EntityBlueprint");
-            foreach (var g in guids)
-            {
-                var path = AssetDatabase.GUIDToAssetPath(g);
-                var bp = AssetDatabase.LoadAssetAtPath<EntityBlueprint>(path);
-                if (bp != null)
-                    win._all.Add(bp);
-            }
+            win._all.AddRange(ZenAssetDatabase.FindAndLoadAllAssets<EntityBlueprint>());
 
             var w = size?.x ?? 500f;
             var h = size?.y ?? 360f;

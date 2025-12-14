@@ -1,9 +1,10 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 #nullable enable
 using System;
 using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
+using ZenECS.Adapter.Unity.Editor.Common;
 using ZenECS.Adapter.Unity.Editor.GUIs;
 
 namespace ZenECS.Adapter.Unity.Editor.Inspectors
@@ -125,43 +126,12 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
         static void PingTypeSource(Type? t)
         {
-            if (t == null) return;
-
-            var guids = AssetDatabase.FindAssets($"t:MonoScript {t.Name}");
-            foreach (var guid in guids)
-            {
-                var path = AssetDatabase.GUIDToAssetPath(guid);
-                var ms   = AssetDatabase.LoadAssetAtPath<MonoScript>(path);
-                if (ms == null) continue;
-
-                try
-                {
-                    if (ms.GetClass() == t)
-                    {
-                        // Project에서만 Ping, Selection은 그대로 유지
-                        EditorGUIUtility.PingObject(ms);
-                        break;
-                    }
-                }
-                catch
-                {
-                    // GetClass() 실패 방어
-                }
-            }
+            ZenAssetDatabase.PingMonoScript(t);
         }
 
         static GUIContent GetSearchIconContent(string tooltip)
         {
-            var gc = EditorGUIUtility.IconContent("d_Search Icon");
-            if (gc == null || gc.image == null)
-                gc = EditorGUIUtility.IconContent("Search Icon");
-
-            if (gc == null)
-                gc = new GUIContent("🔍", tooltip);
-            else
-                gc.tooltip = tooltip;
-
-            return gc;
+            return ZenGUIContents.IconPing(tooltip);
         }
     }
 }
