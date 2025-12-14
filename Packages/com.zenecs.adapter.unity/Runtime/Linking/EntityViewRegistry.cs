@@ -227,6 +227,48 @@ namespace ZenECS.Adapter.Unity.Linking
             /// </returns>
             public bool HasLink(Entity e) =>
                 _map.TryGetValue(e, out var link) && link != null && link.IsAlive;
+
+            /// <summary>
+            /// Enumerates all alive entity-link pairs registered in this registry.
+            /// </summary>
+            /// <returns>
+            /// An enumerable sequence of tuples containing the <see cref="Entity"/>
+            /// and its associated <see cref="EntityLink"/>. Only links that are
+            /// non-null and report <see cref="EntityLink.IsAlive"/> as <c>true</c>
+            /// are included in the enumeration.
+            /// </returns>
+            /// <remarks>
+            /// <para>
+            /// This method iterates through all entries in the internal dictionary
+            /// and filters out any entries where the link is <c>null</c> or not alive.
+            /// This ensures that only valid, active links are returned.
+            /// </para>
+            /// <para>
+            /// The enumeration is performed lazily, so modifications to the registry
+            /// during enumeration may affect the results. It is recommended to avoid
+            /// modifying the registry while iterating over the results.
+            /// </para>
+            /// <para>
+            /// Typical usage:
+            /// </para>
+            /// <code>
+            /// var registry = EntityViewRegistry.For(world);
+            /// foreach (var (entity, link) in registry.EnumerateViews())
+            /// {
+            ///     Debug.Log($"Entity {entity.Id} → {link.gameObject.name}");
+            /// }
+            /// </code>
+            /// </remarks>
+            public IEnumerable<(Entity Entity, EntityLink Link)> EnumerateViews(bool aliveOnly = false)
+            {
+                foreach (var kvp in _map)
+                {
+                    if (kvp.Value != null && (!aliveOnly || kvp.Value.IsAlive))
+                    {
+                        yield return (kvp.Key, kvp.Value);
+                    }
+                }
+            }
         }
     }
 }
