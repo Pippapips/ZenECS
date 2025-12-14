@@ -57,8 +57,15 @@ namespace ZenECS.Adapter.Unity
         private static IKernel? _cached;
 
         /// <summary>
-        /// Gets the current active ZenECS kernel.
+        /// Attempts to get the current active ZenECS kernel without throwing an exception.
         /// </summary>
+        /// <param name="kernel">
+        /// When this method returns, contains the resolved kernel if found or created;
+        /// otherwise <c>null</c>.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if a kernel was successfully obtained or created; otherwise <c>false</c>.
+        /// </returns>
         /// <remarks>
         /// <para>
         /// Resolution order:
@@ -81,39 +88,63 @@ namespace ZenECS.Adapter.Unity
         /// </description></item>
         /// </list>
         /// </remarks>
+        public static bool TryGetCurrent(out IKernel? kernel)
+        {
+            if (_cached != null)
+            {
+                kernel = _cached;
+                return true;
+            }
+
+            // 1) Use the kernel registered on the bridge, if any.
+            if (ZenEcsUnityBridge.Kernel != null)
+            {
+                kernel = _cached = ZenEcsUnityBridge.Kernel;
+                return true;
+            }
+
+            // 2) Find an EcsDriver in the scene and use its kernel.
+#if UNITY_2022_2_OR_NEWER
+            var drv = UnityEngine.Object.FindFirstObjectByType<EcsDriver>(FindObjectsInactive.Include);
+#else
+            var drv = UnityEngine.Object.FindObjectOfType<EcsDriver>(true);
+#endif
+            if (drv != null && drv.Kernel != null)
+            {
+                kernel = _cached = drv.Kernel;
+                return true;
+            }
+
+            // 3) Auto-create a driver and kernel if nothing exists.
+            var createdKernel = CreateEcsDriverWithKernel();
+            if (createdKernel != null)
+            {
+                kernel = _cached = createdKernel;
+                return true;
+            }
+
+            kernel = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the current active ZenECS kernel.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This property uses <see cref="TryGetCurrent(out IKernel?)"/> internally.
+        /// If no kernel can be obtained or created, an <see cref="InvalidOperationException"/>
+        /// is thrown. For safe access without exceptions, use <see cref="TryGetCurrent(out IKernel?)"/>
+        /// instead.
+        /// </para>
+        /// </remarks>
         /// <exception cref="InvalidOperationException">
         /// Thrown when no kernel can be obtained or created.
         /// </exception>
-        public static IKernel Current
-        {
-            get
-            {
-                if (_cached != null)
-                    return _cached;
-
-                // 1) Use the kernel registered on the bridge, if any.
-                if (ZenEcsUnityBridge.Kernel != null)
-                    return _cached = ZenEcsUnityBridge.Kernel;
-
-                // 2) Find an EcsDriver in the scene and use its kernel.
-#if UNITY_2022_2_OR_NEWER
-                var drv = UnityEngine.Object.FindFirstObjectByType<EcsDriver>(FindObjectsInactive.Include);
-#else
-                var drv = UnityEngine.Object.FindObjectOfType<EcsDriver>(true);
-#endif
-                if (drv != null && drv.Kernel != null)
-                    return _cached = drv.Kernel;
-
-                // 3) Auto-create a driver and kernel if nothing exists.
-                var kernel = CreateEcsDriverWithKernel();
-                if (kernel != null)
-                    return _cached = kernel;
-
-                throw new InvalidOperationException(
-                    "[KernelLocator] No ZenECS kernel is available. " +
-                    "Ensure there is a ProjectInstaller/EcsDriver in the scene or call CreateEcsDriverWithKernel() manually.");
-            }
-        }
+        public static IKernel Current =>
+            TryGetCurrent(out var k) ? k : throw new InvalidOperationException(
+                "[KernelLocator] No ZenECS kernel is available. " +
+                "Ensure there is a ProjectInstaller/EcsDriver in the scene or call CreateEcsDriverWithKernel() manually.");
 
         /// <summary>
         /// Creates a new <see cref="EcsDriver"/> GameObject and optionally

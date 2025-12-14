@@ -55,7 +55,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 
         void ClearState(bool repaint = true, bool resetFindStateRemoveTexts = true)
         {
-            // 좌측 트리 / 우측 엔티티 패널 상태 리셋
+            // Reset left tree / right entity panel state
             _systemTree.ClearSelection();
             _systemTree.ClearTreeFoldouts();
             _systemTree.Scroll = Vector2.zero;
@@ -63,7 +63,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             _entityPanel.ClearSelection();
             _entityPanel.Scroll = Vector2.zero;
 
-            // Find 모드 리셋
+            // Reset Find mode
             _findState.Reset(resetFindStateRemoveTexts);
 
             if (repaint)
@@ -160,7 +160,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
         }
 
         // =====================================================================
-        //  BRIDGE ENTRY: SelectEntity (외부에서 호출)
+        //  BRIDGE ENTRY: SelectEntity (called from external)
         // =====================================================================
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             var kernel = ZenEcsUnityBridge.Kernel;
             if (kernel == null) return;
 
-            // Explorer에서 현재 선택된 World로 검사한다.
+            // Check with the currently selected World in Explorer.
             var currentWorld = kernel.CurrentWorld;
             if (currentWorld == null || currentWorld.Id != world.Id)
             {

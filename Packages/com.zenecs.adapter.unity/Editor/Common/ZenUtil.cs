@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using ZenECS.Core.Systems;
 
 namespace ZenECS.Adapter.Unity.Editor.Common
 {
-    // Fixed / Variable / Presentation 구분
+    // Fixed / Variable / Presentation distinction
     public enum PhaseKind
     {
         Unknown,
@@ -26,133 +26,148 @@ namespace ZenECS.Adapter.Unity.Editor.Common
         {
             if (t == null) return;
 
-            var scripts = Resources.FindObjectsOfTypeAll<MonoScript>();
-            foreach (var ms in scripts)
+            try
             {
-                if (ms == null) continue;
-                try
+                var scripts = Resources.FindObjectsOfTypeAll<MonoScript>();
+                foreach (var ms in scripts)
                 {
-                    if (ms.GetClass() == t)
+                    if (ms == null) continue;
+                    try
                     {
-                        // Selection은 건드리지 않고 Ping만
-                        EditorGUIUtility.PingObject(ms);
-                        return;
+                        if (ms.GetClass() == t)
+                        {
+                            // Only ping, don't modify Selection
+                            EditorGUIUtility.PingObject(ms);
+                            return;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Continue processing even if individual script check fails
+                        Debug.LogWarning($"[ZenUtil] Failed to check script {ms.name}: {ex.Message}");
                     }
                 }
-                catch
+
+                Debug.Log($"ZenEcsExplorer: Unable to locate a script asset for component type {t.FullName}.\nIt may not exist, or a matching type name is required to ping the script source.");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[ZenUtil] Failed to ping type {t.FullName}: {ex}");
+            }
+        }
+
+        // ──────────────────────────────────────────────
+        // Common TypeFinder Infrastructure
+        // ──────────────────────────────────────────────
+
+        /// <summary>
+        /// Common type search infrastructure. Provides logic shared by all TypeFinder classes.
+        /// </summary>
+        private static class TypeFinderCore
+        {
+            private static readonly Dictionary<string, List<Type>> _cache = new();
+
+            /// <summary>
+            /// Returns a list of relevant assemblies.
+            /// </summary>
+            private static IEnumerable<System.Reflection.Assembly> GetRelevantAssemblies()
+            {
+                var asms = AppDomain.CurrentDomain.GetAssemblies();
+                foreach (var asm in asms)
                 {
-                    // 무시
+                    var n = asm.GetName().Name;
+                    if (n == null) continue;
+                    if (n.StartsWith("UnityEditor", StringComparison.OrdinalIgnoreCase)) continue;
+                    if (n.StartsWith("System", StringComparison.OrdinalIgnoreCase)) continue;
+                    if (n.StartsWith("mscorlib", StringComparison.OrdinalIgnoreCase)) continue;
+                    if (n.StartsWith("netstandard", StringComparison.OrdinalIgnoreCase)) continue;
+
+                    yield return asm;
                 }
             }
 
-            Debug.Log($"ZenEcsExplorer: Unable to locate a script asset for component type {t.FullName}.\nIt may not exist, or a matching type name is required to ping the script source.");
+            /// <summary>
+            /// Searches for types matching the specified conditions.
+            /// </summary>
+            /// <param name="cacheKey">Cache key (unique identifier)</param>
+            /// <param name="baseType">Base type (e.g., ISystem, IBinder)</param>
+            /// <param name="predicate">Additional filtering condition</param>
+            /// <param name="initialCapacity">Initial list capacity</param>
+            /// <returns>List of found types</returns>
+            public static IEnumerable<Type> FindTypes(
+                string cacheKey,
+                Type baseType,
+                Func<Type, bool> predicate,
+                int initialCapacity = 256)
+            {
+                if (_cache.TryGetValue(cacheKey, out var cached))
+                    return cached;
+
+                var list = new List<Type>(initialCapacity);
+
+                foreach (var asm in GetRelevantAssemblies())
+                {
+                    Type[] types;
+                    try
+                    {
+                        types = asm.GetTypes();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogWarning($"[TypeFinderCore] Failed to get types from assembly {asm.GetName().Name}: {ex.Message}");
+                        continue;
+                    }
+
+                    foreach (var t in types)
+                    {
+                        if (t == null) continue;
+                        if (t.IsAbstract) continue;
+                        if (t.IsGenericTypeDefinition) continue;
+                        if (t.Namespace != null && t.Namespace.EndsWith(".Editor", StringComparison.Ordinal)) continue;
+
+                        if (!baseType.IsAssignableFrom(t)) continue;
+                        if (!predicate(t)) continue;
+
+                        list.Add(t);
+                    }
+                }
+
+                var result = list
+                    .Distinct()
+                    .OrderBy(t => t.FullName)
+                    .ToList();
+
+                _cache[cacheKey] = result;
+                return result;
+            }
+
+            /// <summary>
+            /// Invalidates the cache. Must be called on assembly reload.
+            /// </summary>
+            public static void ClearCache()
+            {
+                _cache.Clear();
+            }
         }
         
         public static class SingletonTypeFinder
         {
-            private static List<Type>? _cache;
-
-            public static IEnumerable<Type> All()
-            {
-                if (_cache != null) return _cache;
-
-                var list = new List<Type>(128);
-                var asms = AppDomain.CurrentDomain.GetAssemblies();
-
-                foreach (var asm in asms)
-                {
-                    var n = asm.GetName().Name;
-                    if (n.StartsWith("UnityEditor", StringComparison.OrdinalIgnoreCase)) continue;
-                    if (n.StartsWith("System", StringComparison.OrdinalIgnoreCase)) continue;
-                    if (n.StartsWith("mscorlib", StringComparison.OrdinalIgnoreCase)) continue;
-                    if (n.StartsWith("netstandard", StringComparison.OrdinalIgnoreCase)) continue;
-
-                    Type[] types;
-                    try
-                    {
-                        types = asm.GetTypes();
-                    }
-                    catch
-                    {
-                        continue;
-                    }
-
-                    foreach (var t in types)
-                    {
-                        if (t == null) continue;
-                        if (!t.IsValueType) continue; // struct only
-                        if (t.IsAbstract) continue;
-                        if (t.IsGenericTypeDefinition) continue;
-                        if (t.Namespace != null && t.Namespace.EndsWith(".Editor", StringComparison.Ordinal)) continue;
-
-                        if (!typeof(IWorldSingletonComponent).IsAssignableFrom(t)) continue;
-
-                        list.Add(t);
-                    }
-                }
-
-                _cache = list
-                    .Distinct()
-                    .OrderBy(t => t.FullName)
-                    .ToList();
-
-                return _cache;
-            }
+            public static IEnumerable<Type> All() =>
+                TypeFinderCore.FindTypes(
+                    cacheKey: "Singleton",
+                    baseType: typeof(IWorldSingletonComponent),
+                    predicate: t => t.IsValueType, // struct only
+                    initialCapacity: 128);
         }
         
         public static class SystemTypeFinder
         {
-            private static List<Type>? _cache;
-
-            public static IEnumerable<Type> All()
-            {
-                if (_cache != null) return _cache;
-
-                var list = new List<Type>(256);
-                var asms = AppDomain.CurrentDomain.GetAssemblies();
-
-                foreach (var asm in asms)
-                {
-                    var n = asm.GetName().Name;
-                    if (n.StartsWith("UnityEditor", StringComparison.OrdinalIgnoreCase)) continue;
-                    if (n.StartsWith("System", StringComparison.OrdinalIgnoreCase)) continue;
-                    if (n.StartsWith("mscorlib", StringComparison.OrdinalIgnoreCase)) continue;
-                    if (n.StartsWith("netstandard", StringComparison.OrdinalIgnoreCase)) continue;
-
-                    Type[] types;
-                    try
-                    {
-                        types = asm.GetTypes();
-                    }
-                    catch
-                    {
-                        continue;
-                    }
-
-                    foreach (var t in types)
-                    {
-                        if (t == null) continue;
-                        if (t.IsAbstract) continue;
-                        if (t.IsGenericTypeDefinition) continue;
-                        if (t.Namespace != null && t.Namespace.EndsWith(".Editor", StringComparison.Ordinal)) continue;
-
-                        // ISystem 구현 여부
-                        if (!typeof(ISystem).IsAssignableFrom(t)) continue;
-
-                        // 기본 생성자 필수 (Activator.CreateInstance용)
-                        if (t.GetConstructor(Type.EmptyTypes) == null) continue;
-
-                        list.Add(t);
-                    }
-                }
-
-                _cache = list
-                    .Distinct()
-                    .OrderBy(t => t.FullName)
-                    .ToList();
-
-                return _cache;
-            }
+            public static IEnumerable<Type> All() =>
+                TypeFinderCore.FindTypes(
+                    cacheKey: "System",
+                    baseType: typeof(ISystem),
+                    predicate: t => t.GetConstructor(Type.EmptyTypes) != null, // Parameterless constructor required
+                    initialCapacity: 256);
         }
         
         public static class BinderTypeFinder
@@ -168,7 +183,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
 
                 foreach (var asm in asms)
                 {
-                    // 편의상 에디터/시스템 어셈블리는 스킵 (원하면 조건 완화 가능)
+                    // Skip editor/system assemblies for convenience (conditions can be relaxed if needed)
                     var n = asm.GetName().Name;
                     if (n.StartsWith("UnityEditor", StringComparison.OrdinalIgnoreCase)) continue;
                     if (n.StartsWith("System", StringComparison.OrdinalIgnoreCase)) continue;
@@ -191,7 +206,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                         if (t.IsGenericTypeDefinition) continue;
                         if (t.Namespace != null && t.Namespace.EndsWith(".Editor", StringComparison.Ordinal)) continue;
 
-                        // 생성자 조건: 기본 생성자
+                        // Constructor requirement: parameterless constructor
                         if (t.GetConstructor(Type.EmptyTypes) == null) continue;
 
                         // “Binder” 후보 판별 (마커 인터페이스/특성/이름 규칙 중 하나라도 맞으면 통과)
@@ -200,7 +215,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                     }
                 }
 
-                // 정렬 및 캐시
+                // Sort and cache
                 _cache = list
                     .Distinct()
                     .OrderBy(t => t.FullName)
@@ -224,7 +239,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
 
                 foreach (var asm in asms)
                 {
-                    // 편의상 에디터/시스템 어셈블리는 스킵 (원하면 조건 완화 가능)
+                    // Skip editor/system assemblies for convenience (conditions can be relaxed if needed)
                     var n = asm.GetName().Name;
                     if (n.StartsWith("UnityEditor", StringComparison.OrdinalIgnoreCase)) continue;
                     if (n.StartsWith("System", StringComparison.OrdinalIgnoreCase)) continue;
@@ -247,7 +262,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                         if (t.IsGenericTypeDefinition) continue;
                         if (t.Namespace != null && t.Namespace.EndsWith(".Editor", StringComparison.Ordinal)) continue;
 
-                        // 생성자 조건: 기본 생성자
+                        // Constructor requirement: parameterless constructor
                         if (t.GetConstructor(Type.EmptyTypes) == null) continue;
 
                         // “Binder” 후보 판별 (마커 인터페이스/특성/이름 규칙 중 하나라도 맞으면 통과)
@@ -256,7 +271,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                     }
                 }
 
-                // 정렬 및 캐시
+                // Sort and cache
                 _cache = list
                     .Distinct()
                     .OrderBy(t => t.FullName)
@@ -286,7 +301,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
 
             switch (group)
             {
-                // 고정 틱 = Deterministic
+                // Fixed tick = Deterministic
                 case SystemGroup.FixedInput:
                 case SystemGroup.FixedDecision:
                 case SystemGroup.FixedSimulation:
@@ -294,7 +309,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                     phase = PhaseKind.Deterministic;
                     break;
 
-                // 프레임 기반 = Non-deterministic
+                // Frame-based = Non-deterministic
                 case SystemGroup.FrameInput:
                 case SystemGroup.FrameSync:
                 case SystemGroup.FrameView:
@@ -303,13 +318,13 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                     break;
 
                 default:
-                    // 혹시 그룹이 지정 안돼있으면 Non-deterministic 쪽에 묶어두기
+                    // If group is not specified, categorize as Unknown
                     phase = PhaseKind.Unknown;
                     break;
             }
         }
         
-        /// <summary>[Watch]의 AllOf 컴포넌트를 모두 가진 엔티티를 수집(항상 동작)</summary>
+        /// <summary>Collects entities that have all AllOf components from [Watch] (always active)</summary>
         public static bool TryCollectEntitiesBySystemWatched(IWorld w, object system, List<Entity> outList)
         {
             var attrs = system.GetType().GetCustomAttributes(typeof(ZenSystemWatchAttribute), false)
@@ -334,7 +349,7 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                 }
             }
 
-            // 중복 제거(간단/할당 적음)
+            // Remove duplicates (simple/low allocation)
             if (outList.Count > 1)
             {
                 var seen = new HashSet<int>(outList.Count);
@@ -363,26 +378,27 @@ namespace ZenECS.Adapter.Unity.Editor.Common
                 if (sys == null) continue;
                 var tSys = sys.GetType();
 
-                // 이 시스템이 [Watch] 속성을 가지고 있는지 먼저 거칠게 필터링
+                // First, roughly filter whether this system has [Watch] attribute
                 bool hasWatchAttribute = false;
                 try
                 {
                     hasWatchAttribute = tSys.GetCustomAttributes(typeof(ZenSystemWatchAttribute), false).Any();
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // 리플렉션 실패 시 그냥 계속 진행
+                    // 리플렉션 실패 시 로깅하고 계속 진행
+                    Debug.LogWarning($"[ZenUtil] Failed to get custom attributes for type {tSys.FullName}: {ex.Message}");
                 }
 
                 if (!hasWatchAttribute)
                     continue;
 
-                // WatchQueryRunner를 통해 이 시스템이 감시하는 엔티티 목록 수집
+                // Collect list of entities watched by this system via WatchQueryRunner
                 var tmp = new List<Entity>();
                 if (!TryCollectEntitiesBySystemWatched(world, sys, tmp))
                     continue;
 
-                // 현재 Find 뷰의 엔티티가 포함되어 있으면 목록에 추가
+                // Add to list if current Find view's entity is included
                 if (tmp.Contains(entity))
                 {
                     result.Add((sys, tSys));
