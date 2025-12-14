@@ -116,7 +116,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             menu.AddItem(new GUIContent("Add Singleton..."), false, () =>
             {
                 // 전체 싱글톤 struct 타입 수집
-                var allSingletons = SingletonTypeFinder.All();
+                var allSingletons = ZenUtil.SingletonTypeFinder.All();
 
                 // 이미 world에 존재하는 싱글톤 타입들은 disabled 처리
                 var disabled = new HashSet<Type>();
@@ -159,7 +159,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 () =>
                 {
                     // 전체 System 타입 목록
-                    var allSystemTypes = SystemTypeFinder.All().ToList();
+                    var allSystemTypes = ZenUtil.SystemTypeFinder.All().ToList();
 
                     // 이미 등록된 System 타입들은 disabled 처리
                     var disabled = new HashSet<Type>();

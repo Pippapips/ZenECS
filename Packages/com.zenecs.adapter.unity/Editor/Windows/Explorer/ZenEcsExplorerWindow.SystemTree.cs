@@ -25,74 +25,6 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
         //  SYSTEM TREE HELPERS
         // =====================================================================
 
-        /// <summary>[Watch]의 AllOf 컴포넌트를 모두 가진 엔티티를 수집(항상 동작)</summary>
-        public bool TryCollectEntitiesBySystemWatched(IWorld w, object system, List<Entity> outList)
-        {
-            var attrs = system.GetType().GetCustomAttributes(typeof(ZenSystemWatchAttribute), false)
-                .Cast<ZenSystemWatchAttribute>().ToArray();
-            if (attrs.Length == 0) return false;
-
-            var all = w.GetAllEntities();
-            foreach (var a in attrs)
-            {
-                var allOf = a.AllOf ?? Array.Empty<Type>();
-                if (allOf.Length == 0) continue;
-
-                foreach (var e in all)
-                {
-                    bool ok = true;
-                    for (int i = 0; i < allOf.Length && ok; i++)
-                    {
-                        var component = allOf[i];
-                        ok &= w.HasComponentBoxed(e, component);
-                    }
-                    if (ok) outList.Add(e);
-                }
-            }
-
-            // 중복 제거(간단/할당 적음)
-            if (outList.Count > 1)
-            {
-                var seen = new HashSet<int>(outList.Count);
-                int write = 0;
-                for (int i = 0; i < outList.Count; i++)
-                    if (seen.Add(outList[i].Id))
-                        outList[write++] = outList[i];
-                if (write < outList.Count) outList.RemoveRange(write, outList.Count - write);
-            }
-
-            return true;
-        }
-        
-        static void ResolveGroupAndPhase(Type t, out SystemGroup group, out PhaseKind phase)
-        {
-            group = SystemUtil.ResolveGroup(t);
-
-            switch (group)
-            {
-                // 고정 틱 = Deterministic
-                case SystemGroup.FixedInput:
-                case SystemGroup.FixedDecision:
-                case SystemGroup.FixedSimulation:
-                case SystemGroup.FixedPost:
-                    phase = PhaseKind.Deterministic;
-                    break;
-
-                // 프레임 기반 = Non-deterministic
-                case SystemGroup.FrameInput:
-                case SystemGroup.FrameSync:
-                case SystemGroup.FrameView:
-                case SystemGroup.FrameUI:
-                    phase = PhaseKind.NonDeterministic;
-                    break;
-
-                default:
-                    // 혹시 그룹이 지정 안돼있으면 Non-deterministic 쪽에 묶어두기
-                    phase = PhaseKind.Unknown;
-                    break;
-            }
-        }
-
         void DrawSystemTree(IReadOnlyList<ISystem> systems, IWorld? world)
         {
             // PhaseKind(Deterministic / NonDeterministic / Unknown)
@@ -106,7 +38,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 if (sys == null) continue;
 
                 var t = sys.GetType();
-                ResolveGroupAndPhase(t, out var group, out var phase);
+                ZenUtil.ResolveSystemGroupAndPhase(t, out var group, out var phase);
 
                 if (!groupTree.TryGetValue(phase, out var phaseMap))
                 {
@@ -138,8 +70,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             {
                 EditorGUI.indentLevel = 0;
 
-                FoldoutHeader(ref _systemTree.DeterministicFold, "Deterministic", null, null, ZenGUIStyles.SystemFoldout);
-
+                _systemTree.DeterministicFold = EditorGUILayout.Foldout(_systemTree.DeterministicFold, "Deterministic", true, ZenGUIStyles.SystemFoldout10);
                 if (_systemTree.DeterministicFold)
                 {
                     EditorGUI.indentLevel++;
@@ -399,7 +330,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 
             if (GUI.Button(pingBtnRect, ZenGUIContents.IconPing(), ZenGUIStyles.ButtonPadding))
             {
-                PingSystemTypeNoSelect(tSys);
+                ZenUtil.PingType(tSys);
             }
 
             // ===== X 삭제 버튼 =====

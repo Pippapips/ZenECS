@@ -96,7 +96,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             var systems = _world.GetAllSystems();
             if (systems.Count > 0)
             {
-                var watchedList = CollectWatchedSystemsForEntity(_world, _findState.FoundEntity, systems);
+                var watchedList = ZenUtil.CollectWatchedSystemsForEntity(_world, _findState.FoundEntity, systems);
                 if (watchedList.Count == 0)
                 {
                     using (new EditorGUILayout.VerticalScope(GUI.skin.box))
@@ -128,7 +128,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                                     var marginRight = new Rect(r.xMax - 20, r.y, 20, r.height);
                                     if (GUI.Button(marginRight, ZenGUIContents.IconPing(), EditorStyles.iconButton))
                                     {
-                                        PingSystemType(t);
+                                        ZenUtil.PingType(t);
                                     }
                                 }
                             }
@@ -144,7 +144,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             
             if (_findState.EntityFoldoutInfo == null)
             {
-                _findState.EntityFoldoutInfo = new ZenEntityForm.EntityFoldoutInfo();
+                _findState.EntityFoldoutInfo = new ZenEntityForm.EntityFoldoutInfo(_world, _findState.FoundEntity);
                 _findState.EntityFoldoutInfo.ExpandAll();
             }
             

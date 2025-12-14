@@ -87,7 +87,7 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 
                 if (GUI.Button(pingBtnRect, searchContent, iconStyle))
                 {
-                    PingComponentType(type);
+                    ZenUtil.PingType(type);
                 }
             }
             

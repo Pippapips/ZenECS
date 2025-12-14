@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,6 @@ using UnityEngine;
 using ZenECS.Adapter.Unity.Editor.Common;
 using ZenECS.Core;
 
-#if UNITY_EDITOR
 namespace ZenECS.Adapter.Unity.Editor.GUIs
 {
     public static partial class ZenEntityForm
@@ -28,6 +28,47 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             private readonly Dictionary<Type, bool> _contextFoldouts = new();
             private readonly Dictionary<Type, bool> _binderFoldouts = new();
 
+            public EntityFoldoutInfo(IWorld w, Entity e, bool expandAll = false)
+            {
+                Open = expandAll;
+                
+                if (!TryGetSectionFoldout(EEntitySection.Components, out var componentSectionFoldout))
+                {
+                    SetSectionFoldout(EEntitySection.Components, Open);
+                }
+                foreach (var tuple in w.GetAllComponents(e))
+                {
+                    if (!TryGetFoldout(EEntitySection.Components, tuple.type, out var foldout))
+                    {
+                        SetFoldout(EEntitySection.Components, tuple.type, Open);
+                    }
+                }
+            
+                if (!TryGetSectionFoldout(EEntitySection.Contexts, out var contextSectionFoldout))
+                {
+                    SetSectionFoldout(EEntitySection.Contexts, Open);
+                }
+                foreach (var tuple in w.GetAllContexts(e))
+                {
+                    if (!TryGetFoldout(EEntitySection.Contexts, tuple.type, out var foldout))
+                    {
+                        SetFoldout(EEntitySection.Contexts, tuple.type, Open);
+                    }
+                }
+            
+                if (!TryGetSectionFoldout(EEntitySection.Binders, out var binderSectionFoldout))
+                {
+                    SetSectionFoldout(EEntitySection.Binders, Open);
+                }
+                foreach (var tuple in w.GetAllBinders(e))
+                {
+                    if (!TryGetFoldout(EEntitySection.Binders, tuple.type, out var foldout))
+                    {
+                        SetFoldout(EEntitySection.Binders, tuple.type, Open);
+                    }
+                }
+            }
+            
             #region expand / collapse
             public void ExpandAll()
             {
@@ -131,7 +172,6 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
 
             public void SetSectionFoldout(EEntitySection section, bool value) => _sectionFoldouts[section] = value;
 
-
             public bool TryGetSectionFoldout(EEntitySection sectionType, out bool value)
             {
                 return _sectionFoldouts.TryGetValue(sectionType, out value);
@@ -215,55 +255,11 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             #endregion
         }
 
-        public static void DrawEntity(IWorld w, Entity e, bool canEdit)
+        public static void DrawEntity(IWorld? w, Entity e, bool canEdit, ref EntityFoldoutInfo foldoutInfo, Action? onRemoved = null)
         {
-            var foldoutInfo = new EntityFoldoutInfo();
-            DrawEntity(w, e, canEdit, ref foldoutInfo);
-        }
-
-        private static void initFoldouts(IWorld w, Entity e, ref EntityFoldoutInfo foldoutInfo)
-        {
-            if (!foldoutInfo.TryGetSectionFoldout(EEntitySection.Components, out var componentSectionFoldout))
-            {
-                foldoutInfo.SetSectionFoldout(EEntitySection.Components, foldoutInfo.Open);
-            }
-            foreach (var tuple in w.GetAllComponents(e))
-            {
-                if (!foldoutInfo.TryGetFoldout(EEntitySection.Components, tuple.type, out var foldout))
-                {
-                    foldoutInfo.SetFoldout(EEntitySection.Components, tuple.type, foldoutInfo.Open);
-                }
-            }
+            if (w == null) return;
+            if (!w.IsAlive(e)) return;
             
-            if (!foldoutInfo.TryGetSectionFoldout(EEntitySection.Contexts, out var contextSectionFoldout))
-            {
-                foldoutInfo.SetSectionFoldout(EEntitySection.Contexts, foldoutInfo.Open);
-            }
-            foreach (var tuple in w.GetAllContexts(e))
-            {
-                if (!foldoutInfo.TryGetFoldout(EEntitySection.Contexts, tuple.type, out var foldout))
-                {
-                    foldoutInfo.SetFoldout(EEntitySection.Contexts, tuple.type, foldoutInfo.Open);
-                }
-            }
-            
-            if (!foldoutInfo.TryGetSectionFoldout(EEntitySection.Binders, out var binderSectionFoldout))
-            {
-                foldoutInfo.SetSectionFoldout(EEntitySection.Binders, foldoutInfo.Open);
-            }
-            foreach (var tuple in w.GetAllBinders(e))
-            {
-                if (!foldoutInfo.TryGetFoldout(EEntitySection.Binders, tuple.type, out var foldout))
-                {
-                    foldoutInfo.SetFoldout(EEntitySection.Binders, tuple.type, foldoutInfo.Open);
-                }
-            }
-        }
-        
-        public static void DrawEntity(IWorld w, Entity e, bool canEdit, ref EntityFoldoutInfo foldoutInfo, Action? onRemoved = null)
-        {
-            initFoldouts(w, e, ref foldoutInfo);
-
             using (new EditorGUILayout.VerticalScope(GUI.skin.box))
             {
                 EditorGUI.indentLevel = 0;

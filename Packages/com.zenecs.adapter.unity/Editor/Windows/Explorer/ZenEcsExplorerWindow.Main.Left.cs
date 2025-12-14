@@ -13,14 +13,6 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
 {
     public sealed partial class ZenEcsExplorerWindow
     {
-        // Fixed / Variable / Presentation 구분
-        enum PhaseKind
-        {
-            Unknown,
-            Deterministic,
-            NonDeterministic,
-        }
-        
         /// <summary>
         /// ViewModel for the left system tree panel.
         /// </summary>
@@ -63,7 +55,6 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 PhaseFold.Clear();
             }
         }
-
         readonly ExplorerSystemTreeState _systemTree = new();
 
         private void DrawLeftSystemTreePanel()

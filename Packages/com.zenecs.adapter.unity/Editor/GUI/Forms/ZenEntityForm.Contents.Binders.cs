@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,6 @@ using ZenECS.Adapter.Unity.Editor.Common;
 using ZenECS.Core;
 using ZenECS.Core.Binding;
 
-#if UNITY_EDITOR
 namespace ZenECS.Adapter.Unity.Editor.GUIs
 {
     public static partial class ZenEntityForm
