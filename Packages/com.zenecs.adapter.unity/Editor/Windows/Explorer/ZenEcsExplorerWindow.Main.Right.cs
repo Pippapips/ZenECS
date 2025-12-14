@@ -65,7 +65,6 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 ClearEntityView();
             }
         }
-        readonly ExplorerEntityPanelState _entityPanel = new();
         
         private void DrawRightEntityPanel()
         {

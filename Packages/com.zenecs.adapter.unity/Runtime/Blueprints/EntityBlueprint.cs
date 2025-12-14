@@ -1,4 +1,4 @@
-﻿// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Adapter.Unity — Blueprints
 // File: EntityBlueprint.cs
 // Purpose: ScriptableObject blueprint that stores a component snapshot,
@@ -16,6 +16,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Binding.Contexts;
@@ -134,43 +135,86 @@ namespace ZenECS.Adapter.Unity.Blueprints
         {
             world.ExternalCommandEnqueue(ExternalCommand.CreateEntity((e, cmd) =>
             {
-                _data?.ApplyTo(world, e, cmd);
-
-                // 1) Contexts first (so binders see them in OnAttach).
-                for (int i = 0; i < _contextAssets.Count; i++)
-                {
-                    var asset = _contextAssets[i];
-                    switch (asset)
-                    {
-                        case SharedContextAsset markerAsset:
-                        {
-                            if (sharedContextResolver != null)
-                            {
-                                var ctx = sharedContextResolver.Resolve(markerAsset);
-                                if (ctx != null)
-                                    world.RegisterContext(e, ctx);
-                            }
-                            break;
-                        }
-                        case PerEntityContextAsset perEntityAsset:
-                        {
-                            var ctx = perEntityAsset.Create();
-                            world.RegisterContext(e, ctx);
-                            break;
-                        }
-                    }
-                }
-
-                foreach (var b in _binders)
-                {
-                    if (b == null) continue;
-                    var inst = (IBinder)ShallowCopy(b, b.GetType());
-                    inst.SetApplyOrderAndAttachOrder(inst.ApplyOrder, b.AttachOrder);
-                    world.AttachBinder(e, inst);
-                }
-
+                ApplyComponents(world, e, cmd);
+                ApplyContexts(world, e, sharedContextResolver);
+                ApplyBinders(world, e);
                 onCreated?.Invoke(e);
             }));
+        }
+
+        /// <summary>
+        /// Applies component snapshot to the entity.
+        /// </summary>
+        private void ApplyComponents(IWorld world, Entity e, ICommandBuffer cmd)
+        {
+            _data?.ApplyTo(world, e, cmd);
+        }
+
+        /// <summary>
+        /// Applies context assets to the entity.
+        /// </summary>
+        private void ApplyContexts(IWorld world, Entity e, ISharedContextResolver? sharedContextResolver)
+        {
+            // Contexts first (so binders see them in OnAttach).
+            for (int i = 0; i < _contextAssets.Count; i++)
+            {
+                var asset = _contextAssets[i];
+                switch (asset)
+                {
+                    case SharedContextAsset markerAsset:
+                    {
+                        if (sharedContextResolver != null)
+                        {
+                            var ctx = sharedContextResolver.Resolve(markerAsset);
+                            if (ctx != null)
+                                world.RegisterContext(e, ctx);
+                        }
+                        break;
+                    }
+                    case PerEntityContextAsset perEntityAsset:
+                    {
+                        var ctx = perEntityAsset.Create();
+                        world.RegisterContext(e, ctx);
+                        break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Applies binders to the entity by shallow-cloning them.
+        /// </summary>
+        private void ApplyBinders(IWorld world, Entity e)
+        {
+            foreach (var b in _binders)
+            {
+                if (b == null) continue;
+                var inst = (IBinder)ShallowCopy(b, b.GetType());
+                inst.SetApplyOrderAndAttachOrder(inst.ApplyOrder, b.AttachOrder);
+                world.AttachBinder(e, inst);
+            }
+        }
+
+        /// <summary>
+        /// Cache for field information to avoid repeated reflection calls.
+        /// </summary>
+        private static readonly Dictionary<Type, FieldInfo[]> _fieldCache = new();
+
+        /// <summary>
+        /// Gets cached field information for a type, or builds and caches it if not present.
+        /// </summary>
+        private static FieldInfo[] GetCachedFields(Type t)
+        {
+            if (_fieldCache.TryGetValue(t, out var cached))
+                return cached;
+
+            const BindingFlags BF = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+            var fields = t.GetFields(BF)
+                .Where(f => !f.IsStatic)
+                .ToArray();
+
+            _fieldCache[t] = fields;
+            return fields;
         }
 
         /// <summary>
@@ -195,7 +239,12 @@ namespace ZenECS.Adapter.Unity.Blueprints
         /// <remarks>
         /// <para>
         /// This method uses reflection to copy all non-static instance fields.
-        /// It does not perform deep cloning of referenced objects.
+        /// Field information is cached to improve performance on repeated copies
+        /// of the same type. It does not perform deep cloning of referenced objects.
+        /// </para>
+        /// <para>
+        /// If the source implements <see cref="ICloneable"/>, <see cref="ICloneable.Clone"/>
+        /// is used instead of reflection-based copying for better performance.
         /// </para>
         /// </remarks>
         private static object ShallowCopy(object? source, Type t)
@@ -203,6 +252,22 @@ namespace ZenECS.Adapter.Unity.Blueprints
             if (source == null) return null!;
             if (t.IsValueType) return source;
             if (typeof(UnityEngine.Object).IsAssignableFrom(t)) return source;
+
+            // Prefer ICloneable if available (more efficient and type-aware)
+            if (source is ICloneable cloneable)
+            {
+                try
+                {
+                    return cloneable.Clone();
+                }
+                catch (Exception ex)
+                {
+                    // If Clone() fails, fall back to reflection-based copying
+                    Debug.LogWarning(
+                        $"[EntityBlueprint] ICloneable.Clone() failed for type '{t.FullName}': {ex.Message}. " +
+                        "Falling back to reflection-based copying.");
+                }
+            }
 
             object target;
             try { target = Activator.CreateInstance(t)!; }
@@ -212,10 +277,10 @@ namespace ZenECS.Adapter.Unity.Blueprints
                     $"Type '{t.FullName}' requires a public parameterless ctor.", ex);
             }
 
-            const BindingFlags BF = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-            foreach (var f in t.GetFields(BF))
+            // Use cached field information for better performance
+            var fields = GetCachedFields(t);
+            foreach (var f in fields)
             {
-                if (f.IsStatic) continue;
                 var val = f.GetValue(source);
                 f.SetValue(target, val);
             }

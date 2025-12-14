@@ -55,7 +55,6 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
                 PhaseFold.Clear();
             }
         }
-        readonly ExplorerSystemTreeState _systemTree = new();
 
         private void DrawLeftSystemTreePanel()
         {

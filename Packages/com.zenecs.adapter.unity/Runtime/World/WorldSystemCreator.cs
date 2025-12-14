@@ -238,9 +238,13 @@ namespace ZenECS.Adapter.Unity
 
             if (types.Count == 0)
             {
-                if (errors.Count == 0)
+                // Only log if there were errors during collection; otherwise it's a normal
+                // scenario where no systems are configured yet.
+                if (errors.Count > 0)
                 {
-                    Debug.LogWarning("[WorldSystemCreator] No system types found to register.");
+                    Debug.LogWarning(
+                        "[WorldSystemCreator] No system types found to register after processing. " +
+                        "Check systemPresets and systemTypes fields in the inspector.");
                 }
                 return;
             }

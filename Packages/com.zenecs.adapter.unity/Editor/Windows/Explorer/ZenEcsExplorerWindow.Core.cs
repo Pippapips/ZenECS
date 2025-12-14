@@ -42,7 +42,71 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
             public bool EditMode = true;
         }
 
+        /// <summary>
+        /// Consolidated state management for the Explorer window.
+        /// </summary>
+        [Serializable]
+        sealed class ExplorerState
+        {
+            public ExplorerSystemTreeState SystemTree = new();
+            public ExplorerEntityPanelState EntityPanel = new();
+            public ExplorerFindState Find = new();
+
+            /// <summary>
+            /// Clears all state components.
+            /// </summary>
+            /// <param name="resetFindTexts">Whether to reset Find state text fields.</param>
+            public void Clear(bool resetFindTexts = true)
+            {
+                SystemTree.ClearSelection();
+                SystemTree.ClearTreeFoldouts();
+                SystemTree.Scroll = Vector2.zero;
+
+                EntityPanel.ClearSelection();
+                EntityPanel.Scroll = Vector2.zero;
+
+                Find.Reset(resetFindTexts);
+            }
+
+            /// <summary>
+            /// Clears only the system tree state.
+            /// </summary>
+            public void ClearSystemTree()
+            {
+                SystemTree.ClearSelection();
+                SystemTree.ClearTreeFoldouts();
+                SystemTree.Scroll = Vector2.zero;
+            }
+
+            /// <summary>
+            /// Clears only the entity panel state.
+            /// </summary>
+            public void ClearEntityPanel()
+            {
+                EntityPanel.ClearSelection();
+                EntityPanel.Scroll = Vector2.zero;
+            }
+
+            /// <summary>
+            /// Clears only the find state.
+            /// </summary>
+            /// <param name="resetTexts">Whether to reset text fields.</param>
+            public void ClearFind(bool resetTexts = true)
+            {
+                Find.Reset(resetTexts);
+            }
+        }
+
         readonly ExplorerCoreState _coreState = new();
+        
+        // Consolidated state management - access via _state property
+        private readonly ExplorerState _state = new();
+        
+        // Legacy field accessors for backward compatibility
+        // These delegate to _state for unified state management
+        private ExplorerSystemTreeState _systemTree => _state.SystemTree;
+        private ExplorerEntityPanelState _entityPanel => _state.EntityPanel;
+        private ExplorerFindState _findState => _state.Find;
 
         private double _nextRepaint;
         private const float _repaintInterval = 0.25f;
@@ -53,18 +117,14 @@ namespace ZenECS.Adapter.Unity.Editor.Windows
         //  UNITY LIFECYCLE
         // =====================================================================
 
+        /// <summary>
+        /// Clears all window state.
+        /// </summary>
+        /// <param name="repaint">Whether to trigger a repaint after clearing.</param>
+        /// <param name="resetFindStateRemoveTexts">Whether to reset Find state text fields.</param>
         void ClearState(bool repaint = true, bool resetFindStateRemoveTexts = true)
         {
-            // Reset left tree / right entity panel state
-            _systemTree.ClearSelection();
-            _systemTree.ClearTreeFoldouts();
-            _systemTree.Scroll = Vector2.zero;
-
-            _entityPanel.ClearSelection();
-            _entityPanel.Scroll = Vector2.zero;
-
-            // Reset Find mode
-            _findState.Reset(resetFindStateRemoveTexts);
+            _state.Clear(resetFindStateRemoveTexts);
 
             if (repaint)
                 Repaint();
