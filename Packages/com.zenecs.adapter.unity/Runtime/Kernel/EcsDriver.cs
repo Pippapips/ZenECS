@@ -100,6 +100,7 @@ namespace ZenECS.Adapter.Unity
             Kernel.WorldDestroyed += OnWorldDestroyed;
 
             KernelLocator.Attach(Kernel);
+            ZenEcsUnityBridge.Kernel = Kernel;
             return Kernel;
         }
 
