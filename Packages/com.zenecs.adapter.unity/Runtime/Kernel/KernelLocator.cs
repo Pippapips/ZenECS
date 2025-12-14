@@ -78,8 +78,9 @@ namespace ZenECS.Adapter.Unity
         /// <see cref="ZenEcsUnityBridge.Kernel"/>, if assigned.
         /// </description></item>
         /// <item><description>
-        /// <see cref="EcsDriver"/> in the scene (first found), if it has a
-        /// non-null <see cref="EcsDriver.Kernel"/>.
+        /// <see cref="EcsDriver"/> in the scene (first found). If the driver
+        /// exists but its <see cref="EcsDriver.Kernel"/> is <c>null</c>, the
+        /// kernel is automatically created via <see cref="EcsDriver.CreateKernel()"/>.
         /// </description></item>
         /// <item><description>
         /// Automatic creation of an <see cref="EcsDriver"/> via
@@ -117,17 +118,27 @@ namespace ZenECS.Adapter.Unity
 #else
             var drv = UnityEngine.Object.FindObjectOfType<EcsDriver>(true);
 #endif
-            if (drv != null && drv.Kernel != null)
+            if (drv != null)
             {
+                // If EcsDriver exists but Kernel is not yet created, create it now.
+                // CreateKernel() will automatically update ZenEcsUnityBridge.Kernel.
+                if (drv.Kernel == null)
+                {
+                    var createdKernel = drv.CreateKernel();
+                    kernel = _cached = createdKernel;
+                    return true;
+                }
+                
+                // Kernel already exists, use it.
                 kernel = _cached = drv.Kernel;
                 return true;
             }
 
             // 3) Auto-create a driver and kernel if nothing exists.
-            var createdKernel = CreateEcsDriverWithKernel();
-            if (createdKernel != null)
+            var autoCreatedKernel = CreateEcsDriverWithKernel();
+            if (autoCreatedKernel != null)
             {
-                kernel = _cached = createdKernel;
+                kernel = _cached = autoCreatedKernel;
                 return true;
             }
 
