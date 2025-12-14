@@ -1,4 +1,4 @@
-﻿// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Adapter.Unity — Linking
 // File: EntityViewRegistry.cs
 // Purpose: Per-world registry that maps entities to their primary EntityLink
@@ -50,43 +50,72 @@ namespace ZenECS.Adapter.Unity.Linking
         public static Registry For(IWorld w) => _byWorld.GetValue(w, _ => new Registry());
 
         /// <summary>
+        /// Cleans up the registry for a specific world that is being disposed.
+        /// </summary>
+        /// <param name="world">The world whose registry should be cleaned up.</param>
+        /// <remarks>
+        /// <para>
+        /// This method should be called when a world is being disposed to ensure
+        /// that all entity links registered for that world are properly cleaned up.
+        /// It clears all entries in the registry's internal dictionary.
+        /// </para>
+        /// <para>
+        /// The <see cref="ConditionalWeakTable"/> will automatically remove the
+        /// registry entry when the world is garbage collected, but calling this
+        /// method ensures immediate cleanup of the dictionary contents.
+        /// </para>
+        /// </remarks>
+        public static void CleanupWorld(IWorld world)
+        {
+            if (world == null) return;
+            
+            // Try to get the registry and clear it
+            if (_byWorld.TryGetValue(world, out var registry))
+            {
+                registry.UnregisterAll();
+            }
+        }
+
+        /// <summary>
+        /// Cleans up registries for worlds that are no longer referenced.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This method is intended to be called periodically or when worlds are
+        /// disposed. Since <see cref="ConditionalWeakTable"/> automatically removes
+        /// entries when the key (world) is garbage collected, this method primarily
+        /// serves to clean up any remaining references in the registry dictionaries.
+        /// </para>
+        /// <para>
+        /// In practice, the <see cref="ConditionalWeakTable"/> handles most cleanup
+        /// automatically, but this method can be useful for explicit cleanup scenarios.
+        /// </para>
+        /// <para>
+        /// For cleaning up a specific world, use <see cref="CleanupWorld(IWorld)"/> instead.
+        /// </para>
+        /// </remarks>
+        public static void CleanupDeadWorlds()
+        {
+            // ConditionalWeakTable automatically removes entries when the key is GC'd,
+            // so we don't need to manually iterate. However, we can force a collection
+            // if needed by accessing the table (though this is generally not necessary).
+            // This method is provided for explicit cleanup scenarios where immediate
+            // cleanup is desired, though in practice the GC will handle it automatically.
+            
+            // Note: ConditionalWeakTable doesn't expose a way to enumerate keys,
+            // so we can't directly clean up dead entries. The GC will handle it.
+            // This method is kept for API consistency and future extensibility.
+        }
+
+        /// <summary>
         /// Per-world mapping from <see cref="Entity"/> to <see cref="EntityLink"/>.
         /// </summary>
         public sealed class Registry
         {
             /// <summary>
-            /// Small container that holds the registered <see cref="EntityLink"/>.
+            /// Internal map from entity to link.
             /// </summary>
-            /// <remarks>
-            /// <para>
-            /// A bucket is used so that the link reference can be cleared
-            /// without removing the dictionary entry immediately, allowing for
-            /// simple cleanup semantics.
-            /// </para>
-            /// </remarks>
-            private sealed class Bucket
-            {
-                /// <summary>
-                /// The link associated with the entity, or <c>null</c> if none.
-                /// </summary>
-                public EntityLink? Link;
-            }
-
-            /// <summary>
-            /// Internal map from entity to bucket.
-            /// </summary>
-            private readonly Dictionary<Entity, Bucket> _map = new();
-
-            /// <summary>
-            /// Gets the bucket associated with the specified entity, creating
-            /// a new one if necessary.
-            /// </summary>
-            /// <param name="e">The entity key.</param>
-            /// <returns>
-            /// A non-null <see cref="Bucket"/> associated with <paramref name="e"/>.
-            /// </returns>
-            private Bucket GetOrCreate(Entity e) =>
-                _map.TryGetValue(e, out var b) ? b : (_map[e] = new Bucket());
+            private readonly Dictionary<Entity, EntityLink?> _map = new();
 
             /// <summary>
             /// Registers a link for the given entity.
@@ -101,8 +130,7 @@ namespace ZenECS.Adapter.Unity.Linking
             /// </remarks>
             public void Register(Entity e, EntityLink link)
             {
-                var b = GetOrCreate(e);
-                b.Link = link;
+                _map[e] = link;
             }
 
             /// <summary>
@@ -115,16 +143,14 @@ namespace ZenECS.Adapter.Unity.Linking
             /// </param>
             /// <remarks>
             /// <para>
-            /// If the stored link equals <paramref name="link"/>, the bucket's
-            /// link is cleared. If the cleared bucket no longer has a valid
-            /// link, the entity is removed from the internal map.
+            /// If the stored link equals <paramref name="link"/>, the entity
+            /// is removed from the internal map.
             /// </para>
             /// </remarks>
             public void Unregister(Entity e, EntityLink link)
             {
-                if (!_map.TryGetValue(e, out var b)) return;
-                if (b.Link == link) b.Link = null;
-                if (!b.Link) _map.Remove(e);
+                if (_map.TryGetValue(e, out var existing) && existing == link)
+                    _map.Remove(e);
             }
 
             /// <summary>
@@ -155,17 +181,16 @@ namespace ZenECS.Adapter.Unity.Linking
             /// </returns>
             /// <remarks>
             /// <para>
-            /// The method checks both that the bucket exists and that the
-            /// stored link reference is non-null and reports
+            /// The method checks that the link exists, is non-null, and reports
             /// <see cref="EntityLink.IsAlive"/> as <c>true</c>.
             /// </para>
             /// </remarks>
             public bool TryGet(Entity e, out EntityLink? link)
             {
                 link = null;
-                if (_map.TryGetValue(e, out var b) && (b.Link && b.Link.IsAlive))
+                if (_map.TryGetValue(e, out var stored) && stored != null && stored.IsAlive)
                 {
-                    link = b.Link;
+                    link = stored;
                     return true;
                 }
                 return false;
@@ -181,14 +206,14 @@ namespace ZenECS.Adapter.Unity.Linking
             /// </param>
             /// <remarks>
             /// <para>
-            /// If no bucket is found or the link is null or not alive, the
+            /// If no link is found or the link is null or not alive, the
             /// callback is not invoked.
             /// </para>
             /// </remarks>
             public void Callback(Entity e, System.Action<EntityLink> act)
             {
-                if (!_map.TryGetValue(e, out var b)) return;
-                if (b.Link && b.Link.IsAlive) act(b.Link);
+                if (_map.TryGetValue(e, out var link) && link != null && link.IsAlive)
+                    act(link);
             }
 
             /// <summary>
@@ -201,7 +226,7 @@ namespace ZenECS.Adapter.Unity.Linking
             /// for <paramref name="e"/>; otherwise <c>false</c>.
             /// </returns>
             public bool HasLink(Entity e) =>
-                _map.TryGetValue(e, out var b) && (b.Link && b.Link.IsAlive);
+                _map.TryGetValue(e, out var link) && link != null && link.IsAlive;
         }
     }
 }

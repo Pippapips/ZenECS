@@ -17,6 +17,7 @@
 using UnityEngine;
 using ZenECS.Core;
 using ZenECS.Core.Config;
+using ZenECS.Adapter.Unity.Linking;
 
 namespace ZenECS.Adapter.Unity
 {
@@ -92,6 +93,9 @@ namespace ZenECS.Adapter.Unity
                     StepOnlyCurrentWhenSelected = false,
                 },
                 new Logger());
+
+            // Subscribe to world destruction events to clean up EntityViewRegistry
+            Kernel.WorldDestroyed += OnWorldDestroyed;
 
             KernelLocator.Attach(Kernel);
             return Kernel;
@@ -173,9 +177,34 @@ namespace ZenECS.Adapter.Unity
         /// <item><description>Cleared from <see cref="Kernel"/> to avoid reuse.</description></item>
         /// </list>
         /// </remarks>
+        /// <summary>
+        /// Handles world destruction events to clean up EntityViewRegistry.
+        /// </summary>
+        /// <param name="world">The world that was destroyed.</param>
+        private void OnWorldDestroyed(IWorld world)
+        {
+            EntityViewRegistry.CleanupWorld(world);
+        }
+
+        /// <summary>
+        /// Unity lifecycle callback invoked when the component or its GameObject
+        /// is being destroyed.
+        /// </summary>
+        /// <remarks>
+        /// If a kernel instance is owned by this driver, it is:
+        /// <list type="bullet">
+        /// <item><description>Unsubscribed from world destruction events.</description></item>
+        /// <item><description>Detached from <see cref="KernelLocator"/>.</description></item>
+        /// <item><description>Disposed to release any managed resources.</description></item>
+        /// <item><description>Cleared from <see cref="Kernel"/> to avoid reuse.</description></item>
+        /// </list>
+        /// </remarks>
         private void OnDestroy()
         {
             if (Kernel == null) return;
+
+            // Unsubscribe from events before disposing
+            Kernel.WorldDestroyed -= OnWorldDestroyed;
 
             KernelLocator.Detach(Kernel);
             Kernel.Dispose();

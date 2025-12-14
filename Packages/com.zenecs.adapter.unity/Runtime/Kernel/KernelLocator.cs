@@ -142,7 +142,7 @@ namespace ZenECS.Adapter.Unity
         /// Thrown when no kernel can be obtained or created.
         /// </exception>
         public static IKernel Current =>
-            TryGetCurrent(out var k) ? k : throw new InvalidOperationException(
+            TryGetCurrent(out var k) && k != null ? k : throw new InvalidOperationException(
                 "[KernelLocator] No ZenECS kernel is available. " +
                 "Ensure there is a ProjectInstaller/EcsDriver in the scene or call CreateEcsDriverWithKernel() manually.");
 
