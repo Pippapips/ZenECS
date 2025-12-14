@@ -1,3 +1,16 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenEcsExplorerWindow.Main.Left.cs
+// Purpose: Left panel implementation for ZenECS Explorer window main layout,
+//          containing the system tree view.
+// Key concepts:
+//   • System tree panel: displays hierarchical system view.
+//   • Partial class: part of ZenEcsExplorerWindow split across multiple files.
+//   • Editor-only: compiled out in player builds.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 using System;
 using System.Collections.Generic;

@@ -1,3 +1,17 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: SystemTypeRefDrawer.cs
+// Purpose: Custom PropertyDrawer for SystemTypeRef that provides a MonoScript
+//          picker UI with type filtering and validation.
+// Key concepts:
+//   • MonoScript picker: ObjectField for selecting script assets.
+//   • Type validation: checks against SystemTypeFilterAttribute constraints.
+//   • Type-to-script cache: reverse lookup from Type to MonoScript.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 #nullable enable
 using System;

@@ -1,4 +1,19 @@
-﻿#if UNITY_EDITOR
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenPickerWindowBase.cs
+// Purpose: Common base class for searchable dropdown picker windows used in
+//          ZenECS editor tooling for selecting types, assets, and other items.
+// Key concepts:
+//   • Searchable list: toolbar with search field and scrollable item list.
+//   • Keyboard navigation: Up/Down/Enter/Escape key support.
+//   • Hover highlighting: visual feedback for mouse interaction.
+//   • Derived classes: provide source items, matching logic, and pick callbacks.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
+#if UNITY_EDITOR
 #nullable enable
 using System;
 using System.Collections.Generic;

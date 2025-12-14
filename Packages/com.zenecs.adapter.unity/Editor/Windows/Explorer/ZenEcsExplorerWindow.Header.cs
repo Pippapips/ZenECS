@@ -1,3 +1,16 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenEcsExplorerWindow.Header.cs
+// Purpose: Header section implementation for ZenECS Explorer window, providing
+//          toolbar with world selection, edit mode toggle, and navigation buttons.
+// Key concepts:
+//   • Toolbar UI: world picker, edit mode toggle, find/clear buttons.
+//   • Partial class: part of ZenEcsExplorerWindow split across multiple files.
+//   • Editor-only: compiled out in player builds.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 using System;
 using System.Collections.Generic;

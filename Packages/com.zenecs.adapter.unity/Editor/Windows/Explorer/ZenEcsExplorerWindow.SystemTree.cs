@@ -1,3 +1,17 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenEcsExplorerWindow.SystemTree.cs
+// Purpose: System tree panel implementation for ZenECS Explorer window,
+//          displaying hierarchical view of registered systems grouped by phase.
+// Key concepts:
+//   • System hierarchy: foldable tree organized by system groups/phases.
+//   • Selection handling: tracks selected system for entity filtering.
+//   • Partial class: part of ZenEcsExplorerWindow split across multiple files.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 #nullable enable
 using System;

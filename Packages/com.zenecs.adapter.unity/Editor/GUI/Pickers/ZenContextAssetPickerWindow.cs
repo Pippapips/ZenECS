@@ -1,3 +1,17 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenContextAssetPickerWindow.cs
+// Purpose: Searchable picker window for selecting ContextAsset ScriptableObject
+//          assets (SharedContextAsset, PerEntityContextAsset) in ZenECS editor tooling.
+// Key concepts:
+//   • Context asset selection: filters and displays available ContextAsset assets.
+//   • Searchable: toolbar with search field for filtering assets.
+//   • Derived from ZenPickerWindowBase: inherits common picker functionality.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 #nullable enable
 using System;

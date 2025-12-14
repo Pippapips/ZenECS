@@ -1,4 +1,17 @@
-﻿#if UNITY_EDITOR
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenSystemMetaForm.Contents.cs
+// Purpose: Content rendering methods for ZenSystemMetaForm partial class,
+//          providing UI for displaying system metadata information.
+// Key concepts:
+//   • System metadata display: shows system type, group, execution order.
+//   • Partial class: part of ZenSystemMetaForm split across multiple files.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
+#if UNITY_EDITOR
 #nullable enable
 using System;
 using System.Collections.Generic;

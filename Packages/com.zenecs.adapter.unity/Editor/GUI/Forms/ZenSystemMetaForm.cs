@@ -1,4 +1,18 @@
-﻿#if UNITY_EDITOR
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenSystemMetaForm.cs
+// Purpose: Partial class that provides system metadata editing UI forms for
+//          the ZenECS Explorer window, including group, execution order, and
+//          watch attributes.
+// Key concepts:
+//   • System metadata: group, execution order, watch attributes editing.
+//   • Partial class: split across multiple files for organization.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
+#if UNITY_EDITOR
 #nullable enable
 using System;
 using System.Collections.Generic;

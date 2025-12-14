@@ -1,3 +1,16 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenEcsExplorerWindow.Main.cs
+// Purpose: Main layout implementation for ZenECS Explorer window, providing
+//          split-pane view with system tree on left and entity panel on right.
+// Key concepts:
+//   • Split-pane layout: resizable divider between system tree and entity panel.
+//   • Partial class: part of ZenEcsExplorerWindow split across multiple files.
+//   • Editor-only: compiled out in player builds.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 using System;
 using System.Collections.Generic;

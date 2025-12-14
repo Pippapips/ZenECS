@@ -1,3 +1,16 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: EntityLinkHierarchyMarker.cs
+// Purpose: Unity Hierarchy window marker that displays a visual indicator
+//          on GameObjects with EntityLink components.
+// Key concepts:
+//   • Hierarchy decoration: shows "E" marker for EntityLink components.
+//   • Visual indicator: helps identify ECS-linked GameObjects in hierarchy.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 #nullable enable
 using UnityEditor;

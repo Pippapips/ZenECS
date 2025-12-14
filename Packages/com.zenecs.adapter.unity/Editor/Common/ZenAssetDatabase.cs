@@ -1,3 +1,16 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenAssetDatabase.cs
+// Purpose: Unity AssetDatabase wrapper utilities for finding and loading
+//          ScriptableObject assets used by ZenECS editor tooling.
+// Key concepts:
+//   • Asset discovery: FindAndLoadAllAssets<T> searches project for assets.
+//   • Script pinging: PingMonoScript locates script files by type name.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 #nullable enable
 using System;

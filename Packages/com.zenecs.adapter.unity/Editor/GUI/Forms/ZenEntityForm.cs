@@ -1,3 +1,17 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenEntityForm.cs
+// Purpose: Partial class that provides entity editing UI forms for the ZenECS
+//          Explorer window, including components, contexts, and binders sections.
+// Key concepts:
+//   • Entity editing: add/remove components, contexts, and binders.
+//   • Section-based UI: Components, Contexts, Binders tabs.
+//   • Partial class: split across multiple files for organization.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 #nullable enable
 using System;

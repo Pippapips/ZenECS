@@ -1,3 +1,17 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenEcsExplorerWindow.cs
+// Purpose: Main EditorWindow for the ZenECS Explorer tool that provides
+//          inspection and editing capabilities for ECS systems and entities.
+// Key concepts:
+//   • Core lifecycle: window initialization, state management, repaint scheduling.
+//   • Partial class: split across multiple files (Core, Header, Main, Footer, etc.).
+//   • State management: consolidated ExplorerState for system tree, entity panel, find.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 #nullable enable
 using System;

@@ -1,3 +1,17 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenEntityForm.Contents.Binders.cs
+// Purpose: Binders section implementation for ZenEntityForm partial class,
+//          providing UI for displaying and editing entity binders.
+// Key concepts:
+//   • Binder display: shows all IBinder instances attached to an entity.
+//   • Binder editing: add/remove binders via picker windows.
+//   • Partial class: part of ZenEntityForm split across multiple files.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 #nullable enable
 using System;

@@ -1,3 +1,17 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenEntityForm.Contents.Components.cs
+// Purpose: Components section implementation for ZenEntityForm partial class,
+//          providing UI for displaying and editing entity components.
+// Key concepts:
+//   • Component display: shows all components attached to an entity.
+//   • Component editing: add/remove components via picker windows.
+//   • Partial class: part of ZenEntityForm split across multiple files.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 #nullable enable
 using System;

@@ -1,3 +1,16 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenEntityForm.Contents.cs
+// Purpose: Content rendering methods for ZenEntityForm partial class, providing
+//          UI for displaying entity information and section headers.
+// Key concepts:
+//   • Entity display: shows entity ID, generation, and section tabs.
+//   • Partial class: part of ZenEntityForm split across multiple files.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 #nullable enable
 using System;

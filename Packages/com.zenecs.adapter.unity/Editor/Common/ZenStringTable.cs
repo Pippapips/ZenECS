@@ -1,4 +1,18 @@
-﻿#if UNITY_EDITOR
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenStringTable.cs
+// Purpose: Centralized string constants and formatting helpers for ZenECS
+//          editor UI, ensuring consistent labels and messages across tools.
+// Key concepts:
+//   • String constants: UI labels, button text, tooltips, error messages.
+//   • Formatting helpers: entity titles, component counts, system names.
+//   • Localization-ready: all user-facing strings in one place.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
+#if UNITY_EDITOR
 #nullable enable
 using System;
 using UnityEditor;

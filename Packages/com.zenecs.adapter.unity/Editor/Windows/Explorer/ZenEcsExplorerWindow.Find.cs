@@ -1,3 +1,17 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenEcsExplorerWindow.Find.cs
+// Purpose: Find mode implementation for ZenECS Explorer window, providing
+//          entity search by ID/Gen and display of watched systems.
+// Key concepts:
+//   • Entity search: find entity by ID and generation number.
+//   • Watched systems: displays systems that watch the found entity.
+//   • Partial class: part of ZenEcsExplorerWindow split across multiple files.
+//   • Editor-only: compiled out in player builds.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 using System;
 using System.Collections.Generic;

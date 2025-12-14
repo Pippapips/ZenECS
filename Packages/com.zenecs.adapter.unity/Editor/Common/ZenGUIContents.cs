@@ -1,3 +1,16 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenGUIContents.cs
+// Purpose: Reusable GUIContent instances and drawing helpers for ZenECS
+//          editor windows and inspectors.
+// Key concepts:
+//   • Icon content: ping, pause, plus icons with fallbacks.
+//   • Drawing utilities: line separators, indented controls.
+//   • Editor-only: safe for use in custom PropertyDrawers and EditorWindows.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 using System;
 using UnityEditor;

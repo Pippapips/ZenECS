@@ -1,4 +1,18 @@
-﻿#if UNITY_EDITOR
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenFoldoutHeader.cs
+// Purpose: Unified foldable header component with arrow, title, namespace,
+//          and optional right-side button slots for ZenECS editor UIs.
+// Key concepts:
+//   • Foldable header: collapsible sections with consistent styling.
+//   • Two-line labels: title and namespace display with inline or stacked layout.
+//   • Right button area: reserved space for action buttons.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
+#if UNITY_EDITOR
 using System;
 using UnityEditor;
 using UnityEngine;

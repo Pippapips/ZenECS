@@ -1,3 +1,16 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: PerEntityContextAssetInspector.cs
+// Purpose: Custom inspector for PerEntityContextAsset ScriptableObject that
+//          provides editing UI for per-entity context factory configuration.
+// Key concepts:
+//   • Context factory: creates IContext instances per entity at spawn time.
+//   • Type selection: picks IContext implementation type for factory.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 #nullable enable
 using System;

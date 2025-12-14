@@ -1,3 +1,17 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenBinderPickerWindow.cs
+// Purpose: Searchable picker window for selecting IBinder implementation types
+//          in ZenECS editor tooling.
+// Key concepts:
+//   • Binder type selection: filters and displays available IBinder types.
+//   • Searchable: toolbar with search field for filtering types.
+//   • Derived from ZenPickerWindowBase: inherits common picker functionality.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 #nullable enable
 using System;

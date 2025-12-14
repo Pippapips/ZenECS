@@ -1,3 +1,17 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenEcsExplorerBridge.cs
+// Purpose: Loose coupling bridge that allows external code to open and select
+//          entities in the ZenECS Explorer window via reflection.
+// Key concepts:
+//   • Type resolution: finds ExplorerWindow type by name via reflection.
+//   • Method invocation: calls SelectEntity(IWorld, int, int) dynamically.
+//   • Loose coupling: no direct reference to ExplorerWindow assembly.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 #nullable enable
 using System;

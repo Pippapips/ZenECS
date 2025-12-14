@@ -1,3 +1,17 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenECSGitUrlDependencyInstaller.cs
+// Purpose: Automatic dependency installer that prompts users to install
+//          optional dependencies (Extenject/Zenject, UniRx) via Git URLs.
+// Key concepts:
+//   • Dependency detection: checks for installed packages via manifest.json.
+//   • Git URL installation: adds dependencies to Packages/manifest.json.
+//   • User prompting: displays dialog on first editor load if dependencies missing.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 #nullable enable
 using System;

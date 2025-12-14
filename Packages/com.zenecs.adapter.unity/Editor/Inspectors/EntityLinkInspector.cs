@@ -1,4 +1,17 @@
-﻿#if UNITY_EDITOR
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: EntityLinkInspector.cs
+// Purpose: Custom inspector for EntityLink MonoBehaviour that displays
+//          world/entity metadata and provides debugging utilities.
+// Key concepts:
+//   • Inspector UI: shows linked world name, entity ID/Gen, alive status.
+//   • Debug tools: ping entity in Explorer, detach link, view components.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
+#if UNITY_EDITOR
 #nullable enable
 using UnityEditor;
 using UnityEngine;

@@ -1,3 +1,18 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: EntityBlueprintInspector.cs
+// Purpose: Custom inspector for EntityBlueprint ScriptableObject that provides
+//          rich editing UI for component snapshots, contexts, and binders.
+// Key concepts:
+//   • Component editing: ReorderableList for component entries with JSON editing.
+//   • Context management: list of ContextAsset references with pickers.
+//   • Binder editing: managed reference list for IBinder implementations.
+//   • Validation: visual indicators for assigned/missing components.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 using System;
 using System.Linq;

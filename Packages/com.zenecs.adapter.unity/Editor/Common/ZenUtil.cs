@@ -1,3 +1,17 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenUtil.cs
+// Purpose: Common utility functions for ZenECS editor tooling, including type
+//          finders, system analysis, and entity collection helpers.
+// Key concepts:
+//   • Type finders: Singleton, System, Binder, Context discovery with caching.
+//   • System analysis: group/phase resolution, watch attribute processing.
+//   • Entity collection: gather entities watched by systems via attributes.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 #nullable enable
 using System;

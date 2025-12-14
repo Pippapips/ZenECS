@@ -1,4 +1,19 @@
-﻿#if UNITY_EDITOR
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenEcsStableIdAndFormatterCodegen.cs
+// Purpose: Automatic code generation for ZenComponent StableId registration and
+//          IComponentFormatter registration based on ZenFormatterForAttribute.
+// Key concepts:
+//   • Component registration: ComponentRegistry.Register<T>(stableId).
+//   • Formatter registration: ComponentRegistry.RegisterFormatter(new Formatter()).
+//   • Formatter selection: priority-based resolution (IsLatest > version > name).
+//   • Build-time generation: runs on build and assembly reload.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
+#if UNITY_EDITOR
 using System;
 using System.IO;
 using System.Linq;

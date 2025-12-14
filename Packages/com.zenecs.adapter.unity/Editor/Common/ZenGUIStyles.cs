@@ -1,4 +1,18 @@
-﻿#nullable enable
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenGUIStyles.cs
+// Purpose: Centralized GUIStyle definitions and layout helpers for ZenECS
+//          editor tooling, providing consistent visual styling.
+// Key concepts:
+//   • Style definitions: labels, buttons, foldouts, text fields with variants.
+//   • Layout helpers: single-line rects, indented controls, left/right alignment.
+//   • Lazy initialization: styles created on first access and cached.
+//   • Editor-only: safe for use in custom PropertyDrawers and EditorWindows.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
+#nullable enable
 using System;
 using UnityEditor;
 using UnityEngine;

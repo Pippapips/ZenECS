@@ -1,4 +1,18 @@
-﻿#if UNITY_EDITOR
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenEcsGUIHeader.cs
+// Purpose: Reusable header component for ZenECS inspector UIs that displays
+//          title, description, tags, and optional brand icon.
+// Key concepts:
+//   • Branded header: consistent visual style across ZenECS inspectors.
+//   • Flexible layout: supports title, description, tags, and custom icons.
+//   • Theme-aware: adapts colors for Unity Pro and Personal themes.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
+#if UNITY_EDITOR
 using System;
 using UnityEditor;
 using UnityEngine;

@@ -1,4 +1,18 @@
-﻿#if UNITY_EDITOR
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenSystemMetaForm.Contents.Watched.cs
+// Purpose: Watch attributes display implementation for ZenSystemMetaForm
+//          partial class, showing entities watched by a system.
+// Key concepts:
+//   • Watch attributes: displays entities watched via ZenSystemWatchAttribute.
+//   • Entity filtering: shows entities matching watch criteria.
+//   • Partial class: part of ZenSystemMetaForm split across multiple files.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
+#if UNITY_EDITOR
 #nullable enable
 using System;
 using System.Collections.Generic;

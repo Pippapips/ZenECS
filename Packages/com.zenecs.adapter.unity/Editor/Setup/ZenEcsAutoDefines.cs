@@ -1,3 +1,18 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenEcsAutoDefines.cs
+// Purpose: Automatic preprocessor definition manager that detects and applies
+//          scripting define symbols (ZENECS_ZENJECT, ZENECS_UNIRX) based on
+//          installed packages.
+// Key concepts:
+//   • Auto-detection: scans assemblies for Zenject/UniRx presence.
+//   • Define management: adds/removes symbols for all build target groups.
+//   • Event-driven: runs on domain reload, compilation, and asset changes.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 #nullable enable
 using System;

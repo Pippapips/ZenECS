@@ -1,3 +1,17 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: SystemPresetInspector.cs
+// Purpose: Custom inspector for SystemsPreset ScriptableObject that provides
+//          editing UI for system type collections and metadata.
+// Key concepts:
+//   • System type editing: ReorderableList for SystemTypeRef entries.
+//   • Metadata display: system group, execution order, watch attributes.
+//   • Type picker: custom UI for selecting ISystem implementation types.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 #nullable enable
 using System;

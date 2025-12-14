@@ -1,3 +1,17 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenBlueprintPickerWindow.cs
+// Purpose: Searchable picker window for selecting EntityBlueprint ScriptableObject
+//          assets in ZenECS editor tooling.
+// Key concepts:
+//   • Blueprint asset selection: filters and displays available EntityBlueprint assets.
+//   • Searchable: toolbar with search field for filtering assets.
+//   • Derived from ZenPickerWindowBase: inherits common picker functionality.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #if UNITY_EDITOR
 #nullable enable
 using System;

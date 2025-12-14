@@ -1,4 +1,18 @@
-﻿#if UNITY_EDITOR
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter.Unity — Editor
+// File: ZenComponentFormGUI.cs
+// Purpose: Component editing GUI utilities for displaying and editing ECS
+//          component data in the ZenECS Explorer window.
+// Key concepts:
+//   • Component display: shows component fields and values in inspector-style UI.
+//   • Type handling: supports Unity types, Unity.Mathematics, FixedString64Bytes.
+//   • UTF-8 validation: ensures FixedString64Bytes length constraints.
+//   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
+#if UNITY_EDITOR
 using System;
 using System.Reflection;
 using System.Text; // ★ UTF-8 바이트 길이 계산용
