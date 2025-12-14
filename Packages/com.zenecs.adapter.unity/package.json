@@ -2,7 +2,7 @@
   "name": "com.zenecs.adapter.unity",
   "displayName": "ZenECS Adapter for Unity",
   "version": "1.0.0",
-  "description": "Unity integration layer for ZenECS Core (binders, views, runtime hooks).",
+  "description": "Adapter for using ZenECS Core in Unity. Unity integration layer providing seamless ECS integration with Unity's GameObject lifecycle and editor workflows. Includes EcsDriver for automatic kernel initialization, EntityLink for bidirectional GameObject-Entity binding, EntityBlueprint for ScriptableObject-based entity spawning, and Context Binding for shared/per-entity data management. Also features View Binder patterns for data-driven UI, Input-to-Intent conversion pipelines, and optional integrations with UniRx and Zenject for reactive and dependency injection workflows.",
   "unity": "2021.3",
   "dependencies": {
     "com.zenecs.core": "1.0.0"
