@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using ZenECS.Adapter.Unity;
+using ZenECS.Adapter.Unity.Editor.Common;
 using ZenECS.Adapter.Unity.Editor.GUIs;
 using ZenECS.Adapter.Unity.SystemPresets;
 using ZenECS.Core;
@@ -669,21 +670,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
         static void PingTypeSource(Type? t)
         {
-            if (t == null) return;
-
-            var guids = AssetDatabase.FindAssets($"t:MonoScript {t.Name}");
-            foreach (var guid in guids)
-            {
-                var path = AssetDatabase.GUIDToAssetPath(guid);
-                var ms = AssetDatabase.LoadAssetAtPath<MonoScript>(path);
-                if (ms == null) continue;
-
-                if (ms.GetClass() == t)
-                {
-                    EditorGUIUtility.PingObject(ms);
-                    break;
-                }
-            }
+            ZenUtil.PingType(t);
         }
 
         static GUIContent GetSearchIconContent(string tooltip)

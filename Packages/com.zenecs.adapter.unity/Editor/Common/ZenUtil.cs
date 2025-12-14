@@ -172,114 +172,22 @@ namespace ZenECS.Adapter.Unity.Editor.Common
         
         public static class BinderTypeFinder
         {
-            private static List<Type>? _cache;
-
-            public static IEnumerable<Type> All()
-            {
-                if (_cache != null) return _cache;
-
-                var list = new List<Type>(256);
-                var asms = AppDomain.CurrentDomain.GetAssemblies();
-
-                foreach (var asm in asms)
-                {
-                    // Skip editor/system assemblies for convenience (conditions can be relaxed if needed)
-                    var n = asm.GetName().Name;
-                    if (n.StartsWith("UnityEditor", StringComparison.OrdinalIgnoreCase)) continue;
-                    if (n.StartsWith("System", StringComparison.OrdinalIgnoreCase)) continue;
-                    if (n.StartsWith("mscorlib", StringComparison.OrdinalIgnoreCase)) continue;
-                    if (n.StartsWith("netstandard", StringComparison.OrdinalIgnoreCase)) continue;
-
-                    Type[] types;
-                    try
-                    {
-                        types = asm.GetTypes();
-                    }
-                    catch
-                    {
-                        continue;
-                    }
-
-                    foreach (var t in types)
-                    {
-                        if (t == null || t.IsAbstract) continue;
-                        if (t.IsGenericTypeDefinition) continue;
-                        if (t.Namespace != null && t.Namespace.EndsWith(".Editor", StringComparison.Ordinal)) continue;
-
-                        // Constructor requirement: parameterless constructor
-                        if (t.GetConstructor(Type.EmptyTypes) == null) continue;
-
-                        // “Binder” 후보 판별 (마커 인터페이스/특성/이름 규칙 중 하나라도 맞으면 통과)
-                        if (LooksLikeBinder(t))
-                            list.Add(t);
-                    }
-                }
-
-                // Sort and cache
-                _cache = list
-                    .Distinct()
-                    .OrderBy(t => t.FullName)
-                    .ToList();
-                return _cache;
-            }
-
-            static bool LooksLikeBinder(Type t) => typeof(IBinder).IsAssignableFrom(t);
+            public static IEnumerable<Type> All() =>
+                TypeFinderCore.FindTypes(
+                    cacheKey: "Binder",
+                    baseType: typeof(IBinder),
+                    predicate: t => t.GetConstructor(Type.EmptyTypes) != null, // Parameterless constructor required
+                    initialCapacity: 256);
         }
         
         public static class ContextTypeFinder
         {
-            private static List<Type>? _cache;
-
-            public static IEnumerable<Type> All()
-            {
-                if (_cache != null) return _cache;
-
-                var list = new List<Type>(256);
-                var asms = AppDomain.CurrentDomain.GetAssemblies();
-
-                foreach (var asm in asms)
-                {
-                    // Skip editor/system assemblies for convenience (conditions can be relaxed if needed)
-                    var n = asm.GetName().Name;
-                    if (n.StartsWith("UnityEditor", StringComparison.OrdinalIgnoreCase)) continue;
-                    if (n.StartsWith("System", StringComparison.OrdinalIgnoreCase)) continue;
-                    if (n.StartsWith("mscorlib", StringComparison.OrdinalIgnoreCase)) continue;
-                    if (n.StartsWith("netstandard", StringComparison.OrdinalIgnoreCase)) continue;
-
-                    Type[] types;
-                    try
-                    {
-                        types = asm.GetTypes();
-                    }
-                    catch
-                    {
-                        continue;
-                    }
-
-                    foreach (var t in types)
-                    {
-                        if (t == null || t.IsAbstract) continue;
-                        if (t.IsGenericTypeDefinition) continue;
-                        if (t.Namespace != null && t.Namespace.EndsWith(".Editor", StringComparison.Ordinal)) continue;
-
-                        // Constructor requirement: parameterless constructor
-                        if (t.GetConstructor(Type.EmptyTypes) == null) continue;
-
-                        // “Binder” 후보 판별 (마커 인터페이스/특성/이름 규칙 중 하나라도 맞으면 통과)
-                        if (LooksLikeContext(t))
-                            list.Add(t);
-                    }
-                }
-
-                // Sort and cache
-                _cache = list
-                    .Distinct()
-                    .OrderBy(t => t.FullName)
-                    .ToList();
-                return _cache;
-            }
-
-            static bool LooksLikeContext(Type t) => typeof(ContextAsset).IsAssignableFrom(t);
+            public static IEnumerable<Type> All() =>
+                TypeFinderCore.FindTypes(
+                    cacheKey: "Context",
+                    baseType: typeof(ContextAsset),
+                    predicate: t => t.GetConstructor(Type.EmptyTypes) != null, // Parameterless constructor required
+                    initialCapacity: 256);
         }
         
         public static List<ContextAsset> LoadAllAssets()

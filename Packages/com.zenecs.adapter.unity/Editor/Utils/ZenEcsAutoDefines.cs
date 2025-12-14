@@ -40,11 +40,6 @@ namespace ZenECS.Adapter.Unity.Editor.Utils
             CompilationPipeline.compilationFinished += _ => SafeApply();
         }
 
-        private static void AssemblyReloadEventsOnafterAssemblyReload()
-        {
-            throw new NotImplementedException();
-        }
-
         private static void DelayedOnce()
         {
             EditorApplication.update -= DelayedOnce;
@@ -67,7 +62,16 @@ namespace ZenECS.Adapter.Unity.Editor.Utils
             var (hasZenject, hasUniRx) = (detected.HasZenject, detected.HasUniRx);
 
             var group = EditorUserBuildSettings.selectedBuildTargetGroup;
-            var defines = GetDefines(NamedBuildTarget.FromBuildTargetGroup(group));
+#if UNITY_2021_2_OR_NEWER
+            if (!TryGetNamedBuildTarget(group, out var nbt))
+            {
+                Menu.SetChecked(MENU_RESYNC, false);
+                return true;
+            }
+            var defines = GetDefines(nbt);
+#else
+            var defines = GetDefinesLegacy(group);
+#endif
 
             // 간단한 상태 출력
             bool ok =
@@ -191,21 +195,20 @@ namespace ZenECS.Adapter.Unity.Editor.Utils
                     Debug.Log($"[ZenECS] ({group}) defines = {string.Join(";", list)}");
             }
 #else
-    // 구버전은 기존대로
-    var targetGroups = Enum.GetValues(typeof(BuildTargetGroup))
-                           .Cast<BuildTargetGroup>()
-                           .Where(g => g != BuildTargetGroup.Unknown);
+            // 구버전은 기존대로
+            var targetGroups = Enum.GetValues(typeof(BuildTargetGroup))
+                                   .Cast<BuildTargetGroup>()
+                                   .Where(g => g != BuildTargetGroup.Unknown);
 
-    foreach (var group in targetGroups)
-    {
-        var list = GetDefinesLegacy(group);
-        list = Update(list, SYM_ZENJECT, detected.HasZenject);
-        list = Update(list, SYM_UNIRX,  detected.HasUniRx);
-        list = Update(list, SYM_ZEN_SIG, detected.HasUniRx);
-        SetDefinesLegacy(group, list);
-        if (logDetails)
-            Debug.Log($"[ZenECS] ({group}) defines = {string.Join(";", list)}");
-    }
+            foreach (var group in targetGroups)
+            {
+                var list = GetDefinesLegacy(group);
+                list = Update(list, SYM_ZENJECT, detected.HasZenject);
+                list = Update(list, SYM_UNIRX,  detected.HasUniRx);
+                SetDefinesLegacy(group, list);
+                if (logDetails)
+                    Debug.Log($"[ZenECS] ({group}) defines = {string.Join(";", list)}");
+            }
 #endif
 
             MenuValidate();

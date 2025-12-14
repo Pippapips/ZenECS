@@ -109,7 +109,7 @@ namespace ZenECS.Adapter.Unity.Editor.Tools
                                        return ps.Length == 3
                                               && ps[0].ParameterType == typeof(IWorld)
                                               && ps[1].ParameterType == typeof(int)
-                                              && ps[1].ParameterType == typeof(int);
+                                              && ps[2].ParameterType == typeof(int);
                                    });
 
             if (_cachedSelectMethod == null)
