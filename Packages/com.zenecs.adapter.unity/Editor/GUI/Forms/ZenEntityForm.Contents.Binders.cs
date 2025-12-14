@@ -102,28 +102,19 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             var contents = w.GetAllBinders(e).ToArray();
             foreach (var (t, boxed) in contents)
             {
-                var hasFields = ZenComponentFormGUI.HasDrawableFields(t);
                 var ns = string.IsNullOrEmpty(t.Namespace) ? "Global" : t.Namespace;
                 var foldoutName = $"{t.Name} <size=9><color=#707070>[{ns}]</color></size>";
 
-                if (!hasFields)
-                {
-                    EditorGUILayout.LabelField(foldoutName, ZenGUIStyles.LabelMLNormal10);
-                    drawBinderMenus(w, e, t, canEdit, ref foldoutInfo, boxed as BaseBinder);
-                }
-                else
-                {
-                    var open = foldoutInfo.GetFoldout(EEntitySection.Contexts, t, false);
-                    open = EditorGUILayout.Foldout(open, foldoutName, true, ZenGUIStyles.SystemFoldout10);
-                    foldoutInfo.SetFoldout(EEntitySection.Contexts, t, open);
+                var open = foldoutInfo.GetFoldout(EEntitySection.Binders, t, false);
+                open = EditorGUILayout.Foldout(open, foldoutName, true, ZenGUIStyles.SystemFoldout10);
+                foldoutInfo.SetFoldout(EEntitySection.Binders, t, open);
 
-                    if (open)
-                    {
-                        drawBinderContent(w, e, t, boxed, canEdit);
-                    }
-
-                    drawBinderMenus(w, e, t, canEdit, ref foldoutInfo, boxed as BaseBinder, true);
+                if (open)
+                {
+                    drawBinderContent(w, e, t, boxed, canEdit);
                 }
+
+                drawBinderMenus(w, e, t, canEdit, ref foldoutInfo, boxed as BaseBinder, true);
 
                 ZenGUIContents.DrawLine();
 
@@ -140,13 +131,87 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             {
                 #region CONTENTS
 
-                // apply order
-                // observing binds
+                // Apply Order with +/- buttons
+                if (boxed is IBinder binder)
+                {
+                    var currentOrder = binder.ApplyOrder;
+                    
+                    // +/- 버튼을 가로로 배치
+                    EditorGUILayout.BeginHorizontal();
+                    var rects = new Rect[3];
+                    ZenGUIStyles.GetLeftIndentedSingleLineRects(20, 1, ref rects);
+                    using (new EditorGUI.DisabledScope(!canEdit))
+                    {
+                        if (GUI.Button(rects[0], "+", ZenGUIStyles.ButtonMCNormal10))
+                        {
+                            binder.SetApplyOrder(currentOrder + 1);
+                        }
+                        
+                        if (GUI.Button(rects[1], "-", ZenGUIStyles.ButtonMCNormal10))
+                        {
+                            binder.SetApplyOrder(currentOrder - 1);
+                        }
+                    }
+                    EditorGUILayout.EndHorizontal();
+
+                    // Apply Order 라벨과 IntField를 +/- 버튼 아래에 가로로 배치
+                    EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(false));
+                    EditorGUI.BeginChangeCheck();
+                    var newOrder = EditorGUILayout.IntField(currentOrder, GUILayout.Width(60), GUILayout.ExpandWidth(false));
+                    if (EditorGUI.EndChangeCheck() && canEdit)
+                    {
+                        binder.SetApplyOrder(newOrder);
+                    }
+                    EditorGUILayout.LabelField("Apply Order", ZenGUIStyles.LabelMLNormal10, GUILayout.ExpandWidth(false));
+                    
+                    EditorGUILayout.EndHorizontal();
+
+                    GUILayout.Space(4);
+                }
+
+                // Observing binds (IBind interfaces)
+                if (t != null)
+                {
+                    var observedTypes = ExtractObservedComponentTypes(t);
+                    if (observedTypes.Count > 0)
+                    {
+                        EditorGUILayout.LabelField("Observing (IBinds)", ZenGUIStyles.LabelMLNormal10);
+                        EditorGUI.indentLevel++;
+                        
+                        foreach (var observedType in observedTypes)
+                        {
+                            EditorGUILayout.LabelField($"• {observedType.Name}", ZenGUIStyles.LabelMLNormal9);
+                        }
+                        
+                        EditorGUI.indentLevel--;
+                    }
+                }
 
                 #endregion
             }
 
             EditorGUI.indentLevel = prevIndent;
+        }
+
+        // Extract observed component types from IBind<T> interfaces
+        private static IReadOnlyList<Type> ExtractObservedComponentTypes(Type binderType)
+        {
+            static bool IsBindsInterface(Type t)
+                => t.IsInterface && t.IsGenericType && t.Name.StartsWith("IBind", StringComparison.Ordinal);
+
+            var set = new HashSet<Type>();
+            foreach (var itf in binderType.GetInterfaces())
+            {
+                if (!IsBindsInterface(itf)) continue;
+                foreach (var ga in itf.GetGenericArguments())
+                {
+                    if (ga.IsAbstract) continue;
+                    if (ga.Namespace?.EndsWith(".Editor", StringComparison.Ordinal) == true) continue;
+                    set.Add(ga);
+                }
+            }
+
+            return set.OrderBy(t => t.Name).ToArray();
         }
     }
 }
