@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Codice.Client.Common.GameUI;
 using UnityEditor;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Editor.Common;
@@ -50,7 +49,8 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             }
         }
 
-        private static void drawBinderMenus(IWorld w, Entity e, Type t, bool canEdit, ref EntityFoldoutInfo foldoutInfo, BaseBinder? binder = null, bool indent = false)
+        private static void drawBinderMenus(IWorld w, Entity e, Type t, bool canEdit, ref EntityFoldoutInfo foldoutInfo,
+            BaseBinder? binder = null, bool indent = false)
         {
             if (indent) EditorGUI.indentLevel++;
 
@@ -102,6 +102,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
             var contents = w.GetAllBinders(e).ToArray();
             foreach (var (t, boxed) in contents)
             {
+                var hasFields = ZenComponentFormGUI.HasDrawableFields(t);
                 var ns = string.IsNullOrEmpty(t.Namespace) ? "Global" : t.Namespace;
                 var foldoutName = $"{t.Name} <size=9><color=#707070>[{ns}]</color></size>";
 
@@ -135,7 +136,7 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                 if (boxed is IBinder binder)
                 {
                     var currentOrder = binder.ApplyOrder;
-                    
+
                     // +/- 버튼을 가로로 배치
                     EditorGUILayout.BeginHorizontal();
                     var rects = new Rect[3];
@@ -146,27 +147,30 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                         {
                             binder.SetApplyOrder(currentOrder + 1);
                         }
-                        
+
                         if (GUI.Button(rects[1], "-", ZenGUIStyles.ButtonMCNormal10))
                         {
                             binder.SetApplyOrder(currentOrder - 1);
                         }
                     }
+
                     EditorGUILayout.EndHorizontal();
 
-                    // Apply Order 라벨과 IntField를 +/- 버튼 아래에 가로로 배치
-                    EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(false));
-                    EditorGUI.BeginChangeCheck();
-                    var newOrder = EditorGUILayout.IntField(currentOrder, GUILayout.Width(60), GUILayout.ExpandWidth(false));
-                    if (EditorGUI.EndChangeCheck() && canEdit)
+                    EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true));
+
+                    using (new EditorGUI.DisabledScope(!canEdit))
                     {
-                        binder.SetApplyOrder(newOrder);
-                    }
-                    EditorGUILayout.LabelField("Apply Order", ZenGUIStyles.LabelMLNormal10, GUILayout.ExpandWidth(false));
-                    
-                    EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.LabelField("Apply Order", ZenGUIStyles.LabelMLNormal10, GUILayout.Width(120));
 
-                    GUILayout.Space(4);
+                        EditorGUI.BeginChangeCheck();
+                        var newOrder = EditorGUILayout.IntField(currentOrder, GUILayout.Width(100));
+                        if (EditorGUI.EndChangeCheck() && canEdit)
+                        {
+                            binder.SetApplyOrder(newOrder);
+                        }
+                    }
+
+                    EditorGUILayout.EndHorizontal();
                 }
 
                 // Observing binds (IBind interfaces)
@@ -177,12 +181,12 @@ namespace ZenECS.Adapter.Unity.Editor.GUIs
                     {
                         EditorGUILayout.LabelField("Observing (IBinds)", ZenGUIStyles.LabelMLNormal10);
                         EditorGUI.indentLevel++;
-                        
+
                         foreach (var observedType in observedTypes)
                         {
                             EditorGUILayout.LabelField($"• {observedType.Name}", ZenGUIStyles.LabelMLNormal9);
                         }
-                        
+
                         EditorGUI.indentLevel--;
                     }
                 }
