@@ -7,7 +7,7 @@
 // Key concepts:
 //   • Component snapshot: EntityBlueprintData as a serialized component set.
 //   • Context assets: shared/per-entity IContext factories and markers.
-//   • Binders: managed-reference binders shallow-cloned per entity.
+//   • Binders: ScriptableObject binder assets that create binders per entity.
 //   • External command: uses ExternalCommand.CreateEntity for safe creation.
 // Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
@@ -16,11 +16,10 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Binding.Contexts;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
+using ZenECS.Adapter.Unity.Binding.Binders.Assets;
 using ZenECS.Core;
 using ZenECS.Core.Binding;
 
@@ -71,8 +70,8 @@ namespace ZenECS.Adapter.Unity.Blueprints
         [Header("Contexts (ScriptableObject assets)")]
         [SerializeField] private List<ContextAsset> _contextAssets = new();
 
-        [Header("Binders (managed reference)")]
-        [SerializeReference] private List<IBinder> _binders = new();
+        [Header("Binders (ScriptableObject assets)")]
+        [SerializeField] private List<BinderAsset> _binderAssets = new();
 
         /// <summary>
         /// Spawns an entity and applies the blueprint's component snapshot,
@@ -120,8 +119,9 @@ namespace ZenECS.Adapter.Unity.Blueprints
         /// </list>
         /// </description></item>
         /// <item><description>
-        /// Shallow-clones each binder, sets its apply/attach order and attaches
-        /// it to the entity using <see cref="IWorld.AttachBinder"/>.
+        /// Creates binders from <see cref="_binderAssets"/>: each
+        /// <see cref="BinderAsset"/> creates a fresh binder and attaches it
+        /// to the entity.
         /// </description></item>
         /// <item><description>
         /// Invokes <paramref name="onCreated"/> if provided.
@@ -182,125 +182,21 @@ namespace ZenECS.Adapter.Unity.Blueprints
         }
 
         /// <summary>
-        /// Applies binders to the entity by shallow-cloning them.
+        /// Applies binder assets to the entity.
         /// </summary>
-        /// <remarks>
-        /// Each binder is shallow-copied to create a unique instance per entity.
-        /// The copied instance's ApplyOrder and the original binder's AttachOrder
-        /// are preserved and set on the cloned instance before attachment.
-        /// </remarks>
         private void ApplyBinders(IWorld world, Entity e)
         {
-            foreach (var b in _binders)
+            for (int i = 0; i < _binderAssets.Count; i++)
             {
-                if (b == null) continue;
-                var inst = (IBinder)ShallowCopy(b, b.GetType());
-                if (inst == null)
+                var asset = _binderAssets[i];
+                if (asset != null)
                 {
-                    Debug.LogWarning($"[EntityBlueprint] Failed to clone binder of type '{b.GetType().FullName}'. Skipping.");
-                    continue;
+                    var binder = asset.Create();
+                    if (binder != null)
+                        world.AttachBinder(e, binder);
                 }
-                // Preserve the cloned instance's ApplyOrder and original binder's AttachOrder
-                inst.SetApplyOrderAndAttachOrder(inst.ApplyOrder, b.AttachOrder);
-                world.AttachBinder(e, inst);
             }
         }
 
-        /// <summary>
-        /// Cache for field information to avoid repeated reflection calls.
-        /// </summary>
-        private static readonly Dictionary<Type, FieldInfo[]> _fieldCache = new();
-
-        /// <summary>
-        /// Gets cached field information for a type, or builds and caches it if not present.
-        /// </summary>
-        private static FieldInfo[] GetCachedFields(Type t)
-        {
-            if (_fieldCache.TryGetValue(t, out var cached))
-                return cached;
-
-            const BindingFlags BF = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-            var fields = t.GetFields(BF)
-                .Where(f => !f.IsStatic)
-                .ToArray();
-
-            _fieldCache[t] = fields;
-            return fields;
-        }
-
-        /// <summary>
-        /// Creates a shallow copy of a binder (or other reference type).
-        /// </summary>
-        /// <param name="source">
-        /// Source object instance to copy. Value types and Unity objects are
-        /// returned as-is.
-        /// </param>
-        /// <param name="t">
-        /// Runtime type of the source object.
-        /// </param>
-        /// <returns>
-        /// A shallow-cloned instance of <paramref name="t"/> with all instance
-        /// fields copied from <paramref name="source"/>; or the original value
-        /// when the type is a value type or <see cref="UnityEngine.Object"/>.
-        /// </returns>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown if <paramref name="t"/> does not expose a public, parameterless
-        /// constructor.
-        /// </exception>
-        /// <remarks>
-        /// <para>
-        /// This method uses reflection to copy all non-static instance fields.
-        /// Field information is cached to improve performance on repeated copies
-        /// of the same type. It does not perform deep cloning of referenced objects.
-        /// </para>
-        /// <para>
-        /// If the source implements <see cref="ICloneable"/>, <see cref="ICloneable.Clone"/>
-        /// is used instead of reflection-based copying for better performance.
-        /// </para>
-        /// </remarks>
-        private static object ShallowCopy(object? source, Type t)
-        {
-            if (source == null) return null!;
-            if (t.IsValueType) return source;
-            if (typeof(UnityEngine.Object).IsAssignableFrom(t)) return source;
-
-            // Prefer ICloneable if available (more efficient and type-aware)
-            if (source is ICloneable cloneable)
-            {
-                try
-                {
-                    var cloned = cloneable.Clone();
-                    if (cloned != null) return cloned;
-                    // If Clone() returns null, fall back to reflection-based copying
-                    Debug.LogWarning(
-                        $"[EntityBlueprint] ICloneable.Clone() returned null for type '{t.FullName}'. " +
-                        "Falling back to reflection-based copying.");
-                }
-                catch (Exception ex)
-                {
-                    // If Clone() fails, fall back to reflection-based copying
-                    Debug.LogWarning(
-                        $"[EntityBlueprint] ICloneable.Clone() failed for type '{t.FullName}': {ex.Message}. " +
-                        "Falling back to reflection-based copying.");
-                }
-            }
-
-            object target;
-            try { target = Activator.CreateInstance(t)!; }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException(
-                    $"Type '{t.FullName}' requires a public parameterless ctor.", ex);
-            }
-
-            // Use cached field information for better performance
-            var fields = GetCachedFields(t);
-            foreach (var f in fields)
-            {
-                var val = f.GetValue(source);
-                f.SetValue(target, val);
-            }
-            return target;
-        }
     }
 }

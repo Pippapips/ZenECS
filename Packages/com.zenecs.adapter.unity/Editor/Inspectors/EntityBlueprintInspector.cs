@@ -6,7 +6,7 @@
 // Key concepts:
 //   • Component editing: ReorderableList for component entries with JSON editing.
 //   • Context management: list of ContextAsset references with pickers.
-//   • Binder editing: managed reference list for IBinder implementations.
+//   • Binder editing: list of BinderAsset references with pickers.
 //   • Validation: visual indicators for assigned/missing components.
 //   • Editor-only: compiled out in player builds via #if UNITY_EDITOR.
 // Copyright (c) 2026 Pippapips Limited
@@ -22,6 +22,7 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using ZenECS.Adapter.Unity.Blueprints;
+using ZenECS.Adapter.Unity.Binding.Binders.Assets;
 using ZenECS.Adapter.Unity.Editor.Common;
 using ZenECS.Adapter.Unity.Editor.GUIs;
 using ZenECS.Core;
@@ -41,9 +42,9 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
         SerializedProperty _contextsProp; // _contextAssets (List<ContextAsset>)
         ReorderableList _contextsList;
 
-        // ───────── Binders (managed reference) ─────────
-        SerializedProperty _bindersProp; // _binders (List<IBinder>)
-        ReorderableList _bindersList;
+        // ───────── Binders (BinderAsset refs) ─────────
+        SerializedProperty _binderAssetsProp; // _binderAssets (List<BinderAsset>)
+        ReorderableList _binderAssetsList;
 
         readonly Dictionary<string, bool> _fold = new();
         const float PAD = 6f;
@@ -66,12 +67,83 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
             // Contexts (SO refs: _contextAssets)
             _contextsProp = serializedObject.FindProperty("_contextAssets");
             if (_contextsProp != null && _contextsProp.isArray)
+            {
+                // 깨진 참조 복구 시도
+                ValidateAndRepairContextAssets();
                 BuildContextsList();
+            }
 
-            // Binders (managed reference)
-            _bindersProp = serializedObject.FindProperty("_binders");
-            if (_bindersProp != null && _bindersProp.isArray)
-                BuildBindersList();
+            // Binders (SO refs: _binderAssets)
+            _binderAssetsProp = serializedObject.FindProperty("_binderAssets");
+            if (_binderAssetsProp != null && _binderAssetsProp.isArray)
+            {
+                // 깨진 참조 복구 시도
+                ValidateAndRepairBinderAssets();
+                BuildBinderAssetsList();
+            }
+        }
+
+        /// <summary>
+        /// _contextAssets의 깨진 참조를 검증하고 복구합니다.
+        /// 파일 복사 후 GUID가 변경되어 참조가 깨진 경우를 처리합니다.
+        /// </summary>
+        void ValidateAndRepairContextAssets()
+        {
+            if (_contextsProp == null || !_contextsProp.isArray) return;
+
+            bool needsRepair = false;
+            var blueprint = target as EntityBlueprint;
+            if (blueprint == null) return;
+
+            // 현재 asset이 있는 디렉토리 경로
+            var blueprintPath = AssetDatabase.GetAssetPath(blueprint);
+            var blueprintDir = System.IO.Path.GetDirectoryName(blueprintPath).Replace('\\', '/');
+
+            serializedObject.Update();
+
+            for (int i = 0; i < _contextsProp.arraySize; i++)
+            {
+                var elem = _contextsProp.GetArrayElementAtIndex(i);
+                var asset = elem.objectReferenceValue as ScriptableObject;
+
+                // 참조가 null이거나 깨진 경우 복구 시도
+                if (asset == null)
+                {
+                    // 같은 디렉토리에서 이름으로 찾기 시도
+                    var allContextAssets = ZenAssetDatabase.FindAndLoadAllAssets<ScriptableObject>($"t:ScriptableObject");
+                    
+                    // 같은 디렉토리의 ContextAsset 찾기
+                    ScriptableObject foundAsset = null;
+                    foreach (var candidate in allContextAssets)
+                    {
+                        var candidatePath = AssetDatabase.GetAssetPath(candidate);
+                        var candidateDir = System.IO.Path.GetDirectoryName(candidatePath).Replace('\\', '/');
+                        
+                        // 같은 디렉토리이고 ContextAsset 타입인 경우
+                        if (candidateDir == blueprintDir && 
+                            candidate.GetType().IsSubclassOf(typeof(ZenECS.Adapter.Unity.Binding.Contexts.Assets.ContextAsset)))
+                        {
+                            // 첫 번째로 찾은 것을 사용 (더 정교한 매칭은 나중에 개선 가능)
+                            foundAsset = candidate;
+                            break;
+                        }
+                    }
+
+                    if (foundAsset != null)
+                    {
+                        elem.objectReferenceValue = foundAsset;
+                        needsRepair = true;
+                    }
+                }
+            }
+
+            if (needsRepair)
+            {
+                serializedObject.ApplyModifiedProperties();
+                EditorUtility.SetDirty(blueprint);
+                // 참조된 asset들도 dirty로 표시
+                MarkReferencedAssetsDirty();
+            }
         }
 
         void EnsureStylesReady()
@@ -155,13 +227,117 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 _contextsList.DoLayoutList();
             }
 
-            if (_bindersList != null)
+            if (_binderAssetsList != null)
             {
                 EditorGUILayout.Space(8);
-                _bindersList.DoLayoutList();
+                _binderAssetsList.DoLayoutList();
             }
 
-            serializedObject.ApplyModifiedProperties();
+            if (serializedObject.ApplyModifiedProperties())
+            {
+                // 참조된 ContextAsset들을 dirty로 표시하여 함께 저장되도록 함
+                MarkReferencedAssetsDirty();
+                EditorUtility.SetDirty(target);
+            }
+        }
+
+        /// <summary>
+        /// 참조된 asset들(ContextAssets, BinderAssets)을 dirty로 표시하여 Unity가 함께 저장하도록 함.
+        /// </summary>
+        private void MarkReferencedAssetsDirty()
+        {
+            if (_contextsProp != null && _contextsProp.isArray)
+            {
+                for (int i = 0; i < _contextsProp.arraySize; i++)
+                {
+                    var elem = _contextsProp.GetArrayElementAtIndex(i);
+                    var asset = elem.objectReferenceValue as ScriptableObject;
+                    if (asset != null)
+                    {
+                        EditorUtility.SetDirty(asset);
+                    }
+                }
+            }
+
+            if (_binderAssetsProp != null && _binderAssetsProp.isArray)
+            {
+                for (int i = 0; i < _binderAssetsProp.arraySize; i++)
+                {
+                    var elem = _binderAssetsProp.GetArrayElementAtIndex(i);
+                    var asset = elem.objectReferenceValue as ScriptableObject;
+                    if (asset != null)
+                    {
+                        EditorUtility.SetDirty(asset);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// _binderAssets의 깨진 참조를 검증하고 복구합니다.
+        /// 파일 복사 후 GUID가 변경되어 참조가 깨진 경우를 처리합니다.
+        /// </summary>
+        void ValidateAndRepairBinderAssets()
+        {
+            if (_binderAssetsProp == null || !_binderAssetsProp.isArray) return;
+
+            bool needsRepair = false;
+            var blueprint = target as EntityBlueprint;
+            if (blueprint == null) return;
+
+            // 현재 asset이 있는 디렉토리 경로
+            var blueprintPath = AssetDatabase.GetAssetPath(blueprint);
+            var blueprintDir = System.IO.Path.GetDirectoryName(blueprintPath).Replace('\\', '/');
+
+            serializedObject.Update();
+
+            for (int i = 0; i < _binderAssetsProp.arraySize; i++)
+            {
+                var elem = _binderAssetsProp.GetArrayElementAtIndex(i);
+                var asset = elem.objectReferenceValue as ScriptableObject;
+
+                // 참조가 null이거나 깨진 경우 복구 시도
+                if (asset == null)
+                {
+                    // 같은 디렉토리에서 이름으로 찾기 시도
+                    var allBinderAssets = ZenAssetDatabase.FindAndLoadAllAssets<ScriptableObject>($"t:ScriptableObject");
+                    
+                    // 같은 디렉토리의 BinderAsset 찾기
+                    ScriptableObject foundAsset = null;
+                    foreach (var candidate in allBinderAssets)
+                    {
+                        var candidatePath = AssetDatabase.GetAssetPath(candidate);
+                        var candidateDir = System.IO.Path.GetDirectoryName(candidatePath).Replace('\\', '/');
+                        
+                        // 같은 디렉토리이고 BinderAsset 타입인 경우
+                        if (candidateDir == blueprintDir && 
+                            candidate.GetType().IsSubclassOf(typeof(BinderAsset)))
+                        {
+                            // 첫 번째로 찾은 것을 사용 (더 정교한 매칭은 나중에 개선 가능)
+                            foundAsset = candidate;
+                            break;
+                        }
+                    }
+
+                    if (foundAsset != null)
+                    {
+                        elem.objectReferenceValue = foundAsset;
+                        needsRepair = true;
+                        Debug.LogWarning(
+                            $"[EntityBlueprint] 깨진 BinderAsset 참조를 복구했습니다: " +
+                            $"{AssetDatabase.GetAssetPath(blueprint)} -> {AssetDatabase.GetAssetPath(foundAsset)}"
+                        );
+                    }
+                }
+            }
+
+            if (needsRepair)
+            {
+                serializedObject.ApplyModifiedProperties();
+                EditorUtility.SetDirty(blueprint);
+                // 참조된 asset들도 dirty로 표시
+                MarkReferencedAssetsDirty();
+            }
         }
 
         // =====================================================================
@@ -181,17 +357,6 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
             }
         }
 
-        void SetBindersFoldAll(bool open)
-        {
-            if (_bindersProp == null || !_bindersProp.isArray)
-                return;
-
-            for (int i = 0; i < _bindersProp.arraySize; i++)
-            {
-                var key = $"binder:{i}";
-                _fold[key] = open;
-            }
-        }
 
         // =====================================================================
         // Components (BlueprintData as-is)
@@ -417,12 +582,24 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
                 var elem = _contextsProp.GetArrayElementAtIndex(idx);
                 elem.objectReferenceValue = null;
                 serializedObject.ApplyModifiedProperties();
+                EditorUtility.SetDirty(target);
             };
 
             _contextsList.onRemoveCallback = rl =>
             {
                 if (rl.index >= 0 && rl.index < _contextsProp.arraySize)
+                {
+                    var elem = _contextsProp.GetArrayElementAtIndex(rl.index);
+                    var asset = elem.objectReferenceValue as ScriptableObject;
                     _contextsProp.DeleteArrayElementAtIndex(rl.index);
+                    serializedObject.ApplyModifiedProperties();
+                    // 제거된 asset도 dirty 표시 (참조 해제가 저장되도록)
+                    if (asset != null)
+                    {
+                        EditorUtility.SetDirty(asset);
+                    }
+                    EditorUtility.SetDirty(target);
+                }
             };
 
             _contextsList.elementHeightCallback = index =>
@@ -451,14 +628,31 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
             _contextsList.drawElementCallback = (rect, index, active, focused) =>
             {
                 var p = _contextsProp.GetArrayElementAtIndex(index);
-                var obj = p.objectReferenceValue;
+                var objBefore = p.objectReferenceValue;
 
                 float line = EditorGUIUtility.singleLineHeight;
 
                 // 1) Context SO ObjectField
                 var rField = new Rect(rect.x + 4, rect.y + 3, rect.width - 8, line);
+                EditorGUI.BeginChangeCheck();
                 EditorGUI.PropertyField(rField, p, GUIContent.none);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    var objAfter = p.objectReferenceValue;
+                    // 참조가 변경되었거나 새로 할당된 경우 dirty 표시
+                    if (objAfter != null && objAfter is ScriptableObject so)
+                    {
+                        EditorUtility.SetDirty(so);
+                    }
+                    // 이전 참조도 dirty 표시 (제거되더라도 저장되도록)
+                    if (objBefore != null && objBefore is ScriptableObject soBefore)
+                    {
+                        EditorUtility.SetDirty(soBefore);
+                    }
+                    EditorUtility.SetDirty(target);
+                }
 
+                var obj = p.objectReferenceValue;
                 if (obj == null)
                     return;
 
@@ -484,355 +678,75 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
         }
 
         // =====================================================================
-        // Binders (managed reference: includes missing context warning badge)
+        // Binders (BinderAsset refs)
         // =====================================================================
-        void BuildBindersList()
+        void BuildBinderAssetsList()
         {
-            _bindersList = new ReorderableList(serializedObject, _bindersProp, true, true, true, true);
-            _bindersList.drawHeaderCallback = r =>
+            _binderAssetsList = new ReorderableList(serializedObject, _binderAssetsProp, true, true, true, true);
+
+            _binderAssetsList.drawHeaderCallback = r =>
+                EditorGUI.LabelField(r, "Binders (Binder Assets)", EditorStyles.boldLabel);
+
+            // Simply: onAdd adds one empty slot, user directly drags/selects SO
+            _binderAssetsList.onAddCallback = rl =>
             {
-                const float buttonWidth = 24f;
-                const float buttonGap = 2f;
-
-                var labelRect = new Rect(r.x, r.y, r.width - (buttonWidth * 2f + buttonGap * 2f), r.height);
-                EditorGUI.LabelField(labelRect, "Binders (managed reference)", EditorStyles.boldLabel);
-
-                var expandRect = new Rect(r.xMax - (buttonWidth * 2f + buttonGap), r.y, buttonWidth, r.height);
-                var collapseRect = new Rect(r.xMax - buttonWidth, r.y, buttonWidth, r.height);
-
-                if (GUI.Button(expandRect, new GUIContent("▼", "Expand all binder entries"), EditorStyles.miniButton))
-                {
-                    SetBindersFoldAll(true);
-                }
-
-                if (GUI.Button(collapseRect, new GUIContent("▲", "Collapse all binder entries"), EditorStyles.miniButton))
-                {
-                    SetBindersFoldAll(false);
-                }
+                int idx = _binderAssetsProp.arraySize;
+                _binderAssetsProp.InsertArrayElementAtIndex(idx);
+                var elem = _binderAssetsProp.GetArrayElementAtIndex(idx);
+                elem.objectReferenceValue = null;
+                serializedObject.ApplyModifiedProperties();
+                EditorUtility.SetDirty(target);
             };
 
-            _bindersList.onAddDropdownCallback = (rect, list) =>
+            _binderAssetsList.onRemoveCallback = rl =>
             {
-                // 1) Collect all binder types
-                IEnumerable<Type> AllBinders()
-                    => UnityEditor.TypeCache.GetTypesDerivedFrom(typeof(IBinder))
-                        .Where(t => !t.IsAbstract && t.GetConstructor(Type.EmptyTypes) != null);
-
-                // 2) Disable binder types already added
-                var disabled = new HashSet<Type>();
-                for (int i = 0; i < _bindersProp.arraySize; i++)
+                if (rl.index >= 0 && rl.index < _binderAssetsProp.arraySize)
                 {
-                    var p = _bindersProp.GetArrayElementAtIndex(i);
-                    var inst = p?.managedReferenceValue;
-                    if (inst != null) disabled.Add(inst.GetType());
-                }
-
-                // 3) Show search/select UI with ZenBinderPickerWindow
-                ZenBinderPickerWindow.Show(
-                    allBinderTypes: AllBinders(),
-                    disabled: disabled,
-                    onPick: pickedType =>
+                    var elem = _binderAssetsProp.GetArrayElementAtIndex(rl.index);
+                    var asset = elem.objectReferenceValue as ScriptableObject;
+                    _binderAssetsProp.DeleteArrayElementAtIndex(rl.index);
+                    serializedObject.ApplyModifiedProperties();
+                    // 제거된 asset도 dirty 표시 (참조 해제가 저장되도록)
+                    if (asset != null)
                     {
-                        serializedObject.Update();
-                        int idx = _bindersProp.arraySize;
-                        _bindersProp.InsertArrayElementAtIndex(idx);
-                        var elem = _bindersProp.GetArrayElementAtIndex(idx);
-                        elem.managedReferenceValue = Activator.CreateInstance(pickedType);
-                        serializedObject.ApplyModifiedProperties();
-                        EditorUtility.SetDirty(target);
-                    },
-                    activatorRectGui: rect,
-                    title: "Add Binder"
-                );
+                        EditorUtility.SetDirty(asset);
+                    }
+                    EditorUtility.SetDirty(target);
+                }
             };
 
-            _bindersList.onRemoveCallback = rl =>
+            _binderAssetsList.elementHeightCallback = index =>
             {
-                if (rl.index >= 0 && rl.index < _bindersProp.arraySize)
-                    _bindersProp.DeleteArrayElementAtIndex(rl.index);
+                float line = EditorGUIUtility.singleLineHeight;
+                float h = line; // ObjectField
+
+                return h + 4f;
             };
 
-            _bindersList.elementHeightCallback = index =>
+            _binderAssetsList.drawElementCallback = (rect, index, active, focused) =>
             {
-                const float pad = 6f;
+                var p = _binderAssetsProp.GetArrayElementAtIndex(index);
+                var objBefore = p.objectReferenceValue;
+
                 float line = EditorGUIUtility.singleLineHeight;
 
-                if (_bindersProp == null || index < 0 || index >= _bindersProp.arraySize)
-                    return line + pad * 2f;
-
-                var p = _bindersProp.GetArrayElementAtIndex(index);
-                var inst = p?.managedReferenceValue;
-                var t = inst?.GetType();
-
-                float headerH = line + pad; // Header one line
-
-                string key = $"binder:{index}";
-                bool open = _fold.TryGetValue(key, out var o) ? o : true;
-                if (!open)
-                    return headerH + pad;
-
-                // Namespace one line
-                float nsH = 0f;
-                if (t != null && !string.IsNullOrEmpty(t.Namespace))
-                    nsH = line + 4f;
-                else
-                    nsH = pad;
-
-                // Priority / AttachOrder two lines
-                float orderH = 0f;
-                if (inst is IBinder) orderH += line;
-                if (inst is IAttachOrderMarker) orderH += line + 4f; // Slight margin
-
-                // Observing(IBinds) meta height
-                float metaH = 0f;
-                var observed = t != null ? ExtractObservedComponentTypes(t) : Array.Empty<Type>();
-                if (observed.Count > 0)
-                {
-                    // Title one line + items
-                    metaH = line; // "Observing (IBinds)"
-                    metaH += observed.Count * (line + 1f); // Each component line
-                    metaH += pad;
-                }
-
-                float bodyH = EditorGUI.GetPropertyHeight(p, GUIContent.none, true);
-
-                return headerH + pad + nsH + orderH + metaH + bodyH + pad;
-            };
-
-            _bindersList.drawElementCallback = (rect, index, active, focused) =>
-            {
-                var p = _bindersProp.GetArrayElementAtIndex(index);
-                var inst = p?.managedReferenceValue;
-                var t = inst?.GetType();
-                string title = t != null ? t.Name : "(None)";
-                string key = $"binder:{index}";
-                if (!_fold.ContainsKey(key)) _fold[key] = true;
-
-                float line = EditorGUIUtility.singleLineHeight;
-                float x = rect.x;
-                float y = rect.y + 3f;
-                float w = rect.width;
-
-                // IBinder / IAttachOrderMarker casting (pre-cast as will use below)
-                var binder = inst as IBinder;
-                var marker = inst as IAttachOrderMarker;
-
-                // ─ 1) Header: Foldout + Reset(R) + Ping (search icon) ─
-                var rHead = new Rect(x + 4f, y, w - 8f, line);
-
-                const float btnW = 20f;
-                // Right end: Ping
-                var rPing = new Rect(rHead.xMax - btnW, rHead.y, btnW, rHead.height);
-                // Left of that: Reset(R)
-                var rReset = new Rect(rHead.xMax - btnW * 2f - 2f, rHead.y, btnW, rHead.height);
-                // Rest: Foldout
-                var rFold = new Rect(rHead.x, rHead.y, rHead.width - (btnW * 2f + 6f), rHead.height);
-
-                bool open = EditorGUI.Foldout(rFold, _fold[key], title, true, EditorStyles.foldoutHeader);
-                _fold[key] = open;
-
-                // Reset button: IBinder.Reset(withPriority: true)
-                using (new EditorGUI.DisabledScope(binder == null))
-                {
-                    if (GUI.Button(rReset, new GUIContent("R", "Reset binder (including priority)"),
-                            EditorStyles.miniButton)
-                        && binder != null)
-                    {
-                        binder.ResetApplyOrderAndAttachOrder();
-                        Repaint();
-                    }
-                }
-
-                // Ping button: Binder source Ping
-                using (new EditorGUI.DisabledScope(t == null))
-                {
-                    var gcPing = GetSearchIconContent("Ping binder script in Project");
-                    if (GUI.Button(rPing, gcPing, EditorStyles.iconButton) && t != null)
-                    {
-                        PingTypeSource(t); // Ping only the script in Project
-                    }
-                }
-
-                if (!open) return;
-
-                y = rHead.yMax;
-
-                // ─ 2) Namespace one line (same style as Components section) ─
-                if (t != null && !string.IsNullOrEmpty(t.Namespace))
-                {
-                    EnsureStylesReady(); // Prepare _namespaceStyle
-                    y += 2f;
-                    var nsRect = new Rect(rect.x + 8f, y, rect.width - 16f, line);
-                    EditorGUI.LabelField(nsRect, t.Namespace, _namespaceStyle);
-                    y += line + 2f;
-                }
-                else
-                {
-                    y += 6f;
-                }
-
-                // ─ 3) Priority / AttachOrder editing (+/- buttons included) ─
-                // Current values
-                int curPriority = binder != null ? binder.ApplyOrder : 0;
-                int curAttach = marker != null ? marker.AttachOrder : 0;
-                int newPriority = curPriority;
-                int newAttach = curAttach;
-                bool changedOrder = false;
-
-                const float btnWidth = 18f;
-                const float btnGap = 2f;
-
-                if (marker != null)
-                {
-                    var rAttachBase = new Rect(rect.x + 12f, y, rect.width - 24f, line);
-
-                    var rAttachField = new Rect(
-                        rAttachBase.x,
-                        rAttachBase.y,
-                        rAttachBase.width - (btnWidth * 2f + btnGap * 2f),
-                        rAttachBase.height
-                    );
-                    var rAttachMinus = new Rect(rAttachField.xMax + btnGap, rAttachBase.y, btnWidth, rAttachBase.height);
-                    var rAttachPlus = new Rect(rAttachMinus.xMax + btnGap, rAttachBase.y, btnWidth, rAttachBase.height);
-
-                    EditorGUI.BeginChangeCheck();
-                    newAttach = EditorGUI.IntField(
-                        rAttachField,
-                        new GUIContent("Attach Order", "Bind order among binders (lower attaches first)"),
-                        newAttach
-                    );
-                    if (EditorGUI.EndChangeCheck())
-                        changedOrder = true;
-
-                    if (GUI.Button(rAttachMinus, "-", EditorStyles.miniButton))
-                    {
-                        newAttach -= 1;
-                        changedOrder = true;
-                    }
-
-                    if (GUI.Button(rAttachPlus, "+", EditorStyles.miniButton))
-                    {
-                        newAttach += 1;
-                        changedOrder = true;
-                    }
-
-                    y += line;
-                }
-
-                if (binder != null)
-                {
-                    var rPriBase = new Rect(rect.x + 12f, y, rect.width - 24f, line);
-
-                    // IntField area: leave room for two buttons on the right
-                    var rPriField = new Rect(
-                        rPriBase.x,
-                        rPriBase.y,
-                        rPriBase.width - (btnWidth * 2f + btnGap * 2f),
-                        rPriBase.height
-                    );
-                    var rPriMinus = new Rect(rPriField.xMax + btnGap, rPriBase.y, btnWidth, rPriBase.height);
-                    var rPriPlus = new Rect(rPriMinus.xMax + btnGap, rPriBase.y, btnWidth, rPriBase.height);
-
-                    // Number input
-                    EditorGUI.BeginChangeCheck();
-                    newPriority = EditorGUI.IntField(
-                        rPriField,
-                        new GUIContent("Apply Order", "Apply order (lower runs first)"),
-                        newPriority
-                    );
-                    if (EditorGUI.EndChangeCheck())
-                        changedOrder = true;
-
-                    // -1 button
-                    if (GUI.Button(rPriMinus, "-", EditorStyles.miniButton))
-                    {
-                        newPriority -= 1;
-                        changedOrder = true;
-                    }
-
-                    // +1 button
-                    if (GUI.Button(rPriPlus, "+", EditorStyles.miniButton))
-                    {
-                        newPriority += 1;
-                        changedOrder = true;
-                    }
-
-                    y += line + 4f;
-                }
-
-                if (changedOrder && binder != null)
-                {
-                    // Don't worry about Undo, just apply value immediately
-                    binder.SetApplyOrderAndAttachOrder(newPriority, newAttach);
-                }
-
-                // ─ 4) Observing (IBinds) meta block (✔ / ✕ included) ─
-                var observed = t != null ? ExtractObservedComponentTypes(t) : Array.Empty<Type>();
-
-                if (observed.Count > 0)
-                {
-                    var providedTypes = GetProvidedComponentTypesFromEntries(_compEntriesProp); // _data.entries
-                    var providedSet = new HashSet<Type>(providedTypes);
-
-                    var metaTitle = new Rect(rect.x + 12f, y, rect.width - 24f, line);
-                    EditorGUI.LabelField(metaTitle, "Observing (IBinds)", EditorStyles.boldLabel);
-                    y = metaTitle.yMax + 2f;
-
-                    foreach (var ct in observed)
-                    {
-                        var lineRect = new Rect(rect.x + 16f, y, rect.width - 32f, line);
-
-                        var left = new Rect(lineRect.x, lineRect.y, lineRect.width - 24f, lineRect.height);
-                        var right = new Rect(lineRect.xMax - 20f, lineRect.y, 20f, lineRect.height);
-
-                        bool hasComp = providedSet.Contains(ct);
-
-                        EnsureStylesReady(); // _obsOkStyle / _obsMissingStyle etc.
-
-                        if (hasComp)
-                        {
-                            EditorGUI.LabelField(left, $"• {ct.Name}", _obsOkStyle);
-
-                            var checkStyle = new GUIStyle(EditorStyles.miniLabel)
-                            {
-                                alignment = TextAnchor.MiddleRight,
-                                richText = true
-                            };
-                            EditorGUI.LabelField(
-                                right,
-                                new GUIContent("<b><color=#2ECC71>✔</color></b>"),
-                                checkStyle
-                            );
-                        }
-                        else
-                        {
-                            EditorGUI.LabelField(left, $"• {ct.Name}", _obsMissingStyle);
-
-                            var xStyle = new GUIStyle(EditorStyles.miniLabel)
-                            {
-                                alignment = TextAnchor.MiddleRight,
-                                richText = true
-                            };
-                            EditorGUI.LabelField(
-                                right,
-                                new GUIContent("<b><color=#E74C3C>✕</color></b>"),
-                                xStyle
-                            );
-                        }
-
-                        y += line + 1f;
-                    }
-
-                    y += PAD;
-                }
-
-                // ─ 5) Binder body ─
-                var rBody = new Rect(rect.x + 8f, y, rect.width - 16f, rect.yMax - y - PAD);
+                // 1) BinderAsset SO ObjectField
+                var rField = new Rect(rect.x + 4, rect.y + 3, rect.width - 8, line);
                 EditorGUI.BeginChangeCheck();
-                DrawBinderBody(rBody, p);
+                EditorGUI.PropertyField(rField, p, GUIContent.none);
                 if (EditorGUI.EndChangeCheck())
                 {
-                    serializedObject.ApplyModifiedProperties();
+                    var objAfter = p.objectReferenceValue;
+                    // 참조가 변경되었거나 새로 할당된 경우 dirty 표시
+                    if (objAfter != null && objAfter is ScriptableObject so)
+                    {
+                        EditorUtility.SetDirty(so);
+                    }
+                    // 이전 참조도 dirty 표시 (제거되더라도 저장되도록)
+                    if (objBefore != null && objBefore is ScriptableObject soBefore)
+                    {
+                        EditorUtility.SetDirty(soBefore);
+                    }
                     EditorUtility.SetDirty(target);
                 }
             };
@@ -935,25 +849,6 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
             // pill UI currently disabled (reimplement based on ContextAsset if needed)
         }
 
-        void DrawBinderBody(Rect area, SerializedProperty root)
-        {
-            var y = area.y;
-            var x = area.x;
-            var w = area.width;
-
-            var iter = root.Copy();
-            var end = root.GetEndProperty();
-
-            bool enterChildren = true;
-            while (iter.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iter, end))
-            {
-                float h = EditorGUI.GetPropertyHeight(iter, GUIContent.none, true);
-                var r = new Rect(x, y, w, h);
-                EditorGUI.PropertyField(r, iter, GUIContent.none, true);
-                y += h + 2f;
-                enterChildren = false;
-            }
-        }
 
         static Type ResolveTypeName(string typeName)
         {
