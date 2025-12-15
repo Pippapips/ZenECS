@@ -13,14 +13,13 @@
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
+using System;
+using System.Collections.Generic;
 using ZenECS.Adapter.Unity.Binding.Contexts.Assets;
 using ZenECS.Core.Binding;
 
 #if ZENECS_ZENJECT
 using Zenject;
-#else
-using System;
-using System.Collections.Generic;
 #endif
 
 namespace ZenECS.Adapter.Unity.Binding.Contexts
@@ -52,7 +51,7 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts
     public sealed class SharedContextResolver : ISharedContextResolver
     {
 #if ZENECS_ZENJECT
-        private readonly DiContainer _container;
+        private readonly DiContainer? _container;
 
         /// <summary>
         /// Initializes a new resolver that delegates context resolution to a
@@ -66,55 +65,41 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts
         {
             _container = container;
         }
-
-        /// <inheritdoc />
-        public IContext? Resolve(SharedContextAsset marker)
-        {
-            if (!marker) return null;
-            return (IContext)_container.Resolve(marker.ContextType);
-        }
-
-        /// <inheritdoc />
-        public IContext? Resolve<T>() where T : IContext
-        {
-            return _container.Resolve<T>();
-        }
-
-        /// <inheritdoc />
-        /// <remarks>
-        /// In Zenject mode, context instances are managed by the container, so
-        /// this method performs no operation.
-        /// </remarks>
-        public void AddContext(IContext? context) { }
-
-        /// <inheritdoc />
-        /// <remarks>
-        /// In Zenject mode, context instances are managed by the container, so
-        /// this method performs no operation.
-        /// </remarks>
-        public void RemoveContext(IContext? context) { }
-
-        /// <inheritdoc />
-        /// <remarks>
-        /// In Zenject mode, context instances are managed by the container, so
-        /// this method performs no operation.
-        /// </remarks>
-        public void RemoveAllContexts() { }
-
-#else
+#endif
         private readonly Dictionary<Type, IContext> _contexts = new();
-
+        
+        public SharedContextResolver()
+        {
+            
+        }
+        
         /// <inheritdoc />
         public IContext? Resolve(SharedContextAsset marker)
         {
             if (!marker) return null;
+#if ZENECS_ZENJECT
+            if (_container == null)
+            {
+                return _contexts.GetValueOrDefault(marker.ContextType);
+            }
+            return (IContext)_container.Resolve(marker.ContextType);
+#else
             return _contexts.GetValueOrDefault(marker.ContextType);
+#endif
         }
 
         /// <inheritdoc />
         public IContext? Resolve<T>() where T : IContext
         {
+#if ZENECS_ZENJECT
+            if (_container == null)
+            {
+                return _contexts.GetValueOrDefault(typeof(T));
+            }
+            return _container.Resolve<T>();
+#else
             return _contexts.GetValueOrDefault(typeof(T));
+#endif
         }
 
         /// <inheritdoc />
@@ -140,6 +125,5 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts
         {
             _contexts.Clear();
         }
-#endif
     }
 }

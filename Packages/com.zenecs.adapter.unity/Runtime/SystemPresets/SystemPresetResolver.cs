@@ -75,7 +75,7 @@ namespace ZenECS.Adapter.Unity.SystemPresets
         {
             _container = container;
         }
-#else
+#endif
         /// <summary>
         /// Initializes a new instance of <see cref="SystemPresetResolver"/> in
         /// non-Zenject mode.
@@ -89,7 +89,6 @@ namespace ZenECS.Adapter.Unity.SystemPresets
         public SystemPresetResolver()
         {
         }
-#endif
 
         /// <summary>
         /// Instantiates systems for the given types, skipping ones that are
@@ -129,12 +128,11 @@ namespace ZenECS.Adapter.Unity.SystemPresets
         /// </remarks>
         public List<ISystem> InstantiateSystems(List<Type> types)
         {
-#if ZENECS_ZENJECT
-            if (_container == null) return new List<ISystem>();
+            if (_container == null)
+            {
+                return InstantiateSystemsInternal(types, t => (ISystem)Activator.CreateInstance(t));
+            }
             return InstantiateSystemsInternal(types, t => (ISystem)_container.Instantiate(t));
-#else
-            return InstantiateSystemsInternal(types, t => (ISystem)Activator.CreateInstance(t));
-#endif
         }
 
         /// <summary>
