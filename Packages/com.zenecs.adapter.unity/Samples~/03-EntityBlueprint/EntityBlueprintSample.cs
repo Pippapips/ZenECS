@@ -22,6 +22,7 @@ namespace ZenEcsAdapterUnitySamples.EntityBlueprint
     /// <summary>
     /// Health 컴포넌트 - 엔티티의 체력을 저장합니다.
     /// </summary>
+    [ZenComponent]
     public readonly struct Health
     {
         public readonly int Max;
@@ -33,22 +34,29 @@ namespace ZenEcsAdapterUnitySamples.EntityBlueprint
     /// <summary>
     /// Position 컴포넌트 - 엔티티의 위치를 저장합니다.
     /// </summary>
+    [ZenComponent]
     public readonly struct Position
     {
         public readonly float X, Y, Z;
         public Position(float x, float y, float z) { X = x; Y = y; Z = z; }
     }
 
+    [ZenComponent]
+    public readonly struct Rotation
+    {
+        public readonly float X, Y, Z;
+        public Rotation(float x, float y, float z) { X = x; Y = y; Z = z; }
+    }
+    
     /// <summary>
     /// EntityBlueprint 샘플 - ScriptableObject 기반 엔티티 스폰을 보여줍니다.
     /// </summary>
     public sealed class EntityBlueprintSample : MonoBehaviour
     {
         [Header("Blueprint")]
-        [SerializeField] private EntityBlueprint? _blueprint;
+        [SerializeField] private ZenECS.Adapter.Unity.Blueprints.EntityBlueprint? _blueprint;
 
         [Header("Spawn Settings")]
-        [SerializeField] private int _spawnCount = 3;
         [SerializeField] private float _spawnInterval = 1f;
 
         private IWorld? _world;
@@ -63,7 +71,7 @@ namespace ZenEcsAdapterUnitySamples.EntityBlueprint
                 return;
             }
 
-            _world = kernel.CreateWorld("BlueprintWorld", setAsCurrent: true);
+            _world = kernel.CreateWorld(null, "BlueprintWorld", setAsCurrent: true);
             Debug.Log("[EntityBlueprintSample] World 생성 완료");
 
             if (_blueprint == null)
