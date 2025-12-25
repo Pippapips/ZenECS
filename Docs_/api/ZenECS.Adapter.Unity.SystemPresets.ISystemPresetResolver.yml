@@ -1,0 +1,459 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
+  commentId: T:ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
+  id: ISystemPresetResolver
+  parent: ZenECS.Adapter.Unity.SystemPresets
+  children:
+  - ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.InstantiateSystems(System.Collections.Generic.List{System.Type})
+  langs:
+  - csharp
+  - vb
+  name: ISystemPresetResolver
+  nameWithType: ISystemPresetResolver
+  fullName: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/ISystemPresetResolver.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ISystemPresetResolver
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/ISystemPresetResolver.cs
+    startLine: 50
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.SystemPresets
+  summary: Creates concrete <xref href="ZenECS.Core.Systems.ISystem" data-throw-if-not-resolved="false"></xref> instances from a list of system types.
+  remarks: >-
+    <p>
+
+    <xref href="ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver" data-throw-if-not-resolved="false"></xref> is a pluggable abstraction used by
+
+    higher-level installers (for example, <code>WorldSystemInstaller</code>) to
+
+    turn a set of <xref href="System.Type" data-throw-if-not-resolved="false"></xref> descriptors into live
+
+    <xref href="ZenECS.Core.Systems.ISystem" data-throw-if-not-resolved="false"></xref> instances.
+
+    </p>
+
+    <p>
+
+    Typical implementations include:
+
+    </p>
+
+    <ul><li>
+
+    A dependency injection container (such as Zenject) that resolves
+
+    <xref href="ZenECS.Core.Systems.ISystem" data-throw-if-not-resolved="false"></xref> instances from bindings.
+
+    </li><li>
+
+    A simple factory that uses <xref href="System.Activator.CreateInstance(System.Type)" data-throw-if-not-resolved="false"></xref>
+
+    to construct each system.
+
+    </li></ul>
+
+    <p>
+
+    The interface defines a single method,
+
+    <xref href="ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.InstantiateSystems(System.Collections.Generic.List%7bSystem.Type%7d)" data-throw-if-not-resolved="false"></xref>, which is responsible for validating
+
+    the type list (for example, removing non-<xref href="ZenECS.Core.Systems.ISystem" data-throw-if-not-resolved="false"></xref> or
+
+    abstract types) and constructing the final instance list.
+
+    </p>
+  example: []
+  syntax:
+    content: public interface ISystemPresetResolver
+    content.vb: Public Interface ISystemPresetResolver
+- uid: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.InstantiateSystems(System.Collections.Generic.List{System.Type})
+  commentId: M:ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.InstantiateSystems(System.Collections.Generic.List{System.Type})
+  id: InstantiateSystems(System.Collections.Generic.List{System.Type})
+  parent: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
+  langs:
+  - csharp
+  - vb
+  name: InstantiateSystems(List<Type>)
+  nameWithType: ISystemPresetResolver.InstantiateSystems(List<Type>)
+  fullName: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.InstantiateSystems(System.Collections.Generic.List<System.Type>)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/ISystemPresetResolver.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: InstantiateSystems
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/ISystemPresetResolver.cs
+    startLine: 83
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.SystemPresets
+  summary: >-
+    Instantiates concrete <xref href="ZenECS.Core.Systems.ISystem" data-throw-if-not-resolved="false"></xref> instances from the given
+
+    list of system types.
+  remarks: >-
+    <p>
+
+    This method acts as both a construction and a validation step:
+
+    </p>
+
+    <ul><li>
+
+    Non-<xref href="ZenECS.Core.Systems.ISystem" data-throw-if-not-resolved="false"></xref> types should be ignored.
+
+    </li><li>
+
+    Abstract or open-generic types should not be instantiated.
+
+    </li><li>
+
+    Duplicate types may be filtered out according to the resolver's
+
+    policy.
+
+    </li></ul>
+  example: []
+  syntax:
+    content: List<ISystem> InstantiateSystems(List<Type> types)
+    parameters:
+    - id: types
+      type: System.Collections.Generic.List{System.Type}
+      description: >-
+        List of candidate types to instantiate. Implementations may assume
+
+        that the caller attempted to filter out obvious invalid types, but
+
+        should still perform validation as needed.
+    return:
+      type: System.Collections.Generic.List{ZenECS.Core.Systems.ISystem}
+      description: >-
+        A list of successfully created <xref href="ZenECS.Core.Systems.ISystem" data-throw-if-not-resolved="false"></xref> instances.
+
+        Implementations are free to drop types that are invalid, abstract,
+
+        or already represented in the result.
+    content.vb: Function InstantiateSystems(types As List(Of Type)) As List(Of ISystem)
+  overload: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.InstantiateSystems*
+  nameWithType.vb: ISystemPresetResolver.InstantiateSystems(List(Of Type))
+  fullName.vb: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.InstantiateSystems(System.Collections.Generic.List(Of System.Type))
+  name.vb: InstantiateSystems(List(Of Type))
+references:
+- uid: ZenECS.Core.Systems.ISystem
+  commentId: T:ZenECS.Core.Systems.ISystem
+  parent: ZenECS.Core.Systems
+  href: ZenECS.Core.Systems.ISystem.html
+  name: ISystem
+  nameWithType: ISystem
+  fullName: ZenECS.Core.Systems.ISystem
+- uid: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
+  commentId: T:ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
+  parent: ZenECS.Adapter.Unity.SystemPresets
+  href: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.html
+  name: ISystemPresetResolver
+  nameWithType: ISystemPresetResolver
+  fullName: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.Activator.CreateInstance(System.Type)
+  commentId: M:System.Activator.CreateInstance(System.Type)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.activator.createinstance#system-activator-createinstance(system-type)
+  name: CreateInstance(Type)
+  nameWithType: Activator.CreateInstance(Type)
+  fullName: System.Activator.CreateInstance(System.Type)
+  spec.csharp:
+  - uid: System.Activator.CreateInstance(System.Type)
+    name: CreateInstance
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.activator.createinstance#system-activator-createinstance(system-type)
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: System.Activator.CreateInstance(System.Type)
+    name: CreateInstance
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.activator.createinstance#system-activator-createinstance(system-type)
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.InstantiateSystems(System.Collections.Generic.List{System.Type})
+  commentId: M:ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.InstantiateSystems(System.Collections.Generic.List{System.Type})
+  parent: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
+  isExternal: true
+  href: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.html#ZenECS_Adapter_Unity_SystemPresets_ISystemPresetResolver_InstantiateSystems_System_Collections_Generic_List_System_Type__
+  name: InstantiateSystems(List<Type>)
+  nameWithType: ISystemPresetResolver.InstantiateSystems(List<Type>)
+  fullName: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.InstantiateSystems(System.Collections.Generic.List<System.Type>)
+  nameWithType.vb: ISystemPresetResolver.InstantiateSystems(List(Of Type))
+  fullName.vb: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.InstantiateSystems(System.Collections.Generic.List(Of System.Type))
+  name.vb: InstantiateSystems(List(Of Type))
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.InstantiateSystems(System.Collections.Generic.List{System.Type})
+    name: InstantiateSystems
+    href: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.html#ZenECS_Adapter_Unity_SystemPresets_ISystemPresetResolver_InstantiateSystems_System_Collections_Generic_List_System_Type__
+  - name: (
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.InstantiateSystems(System.Collections.Generic.List{System.Type})
+    name: InstantiateSystems
+    href: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.html#ZenECS_Adapter_Unity_SystemPresets_ISystemPresetResolver_InstantiateSystems_System_Collections_Generic_List_System_Type__
+  - name: (
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  - name: )
+- uid: ZenECS.Adapter.Unity.SystemPresets
+  commentId: N:ZenECS.Adapter.Unity.SystemPresets
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.SystemPresets
+  nameWithType: ZenECS.Adapter.Unity.SystemPresets
+  fullName: ZenECS.Adapter.Unity.SystemPresets
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.SystemPresets
+    name: SystemPresets
+    href: ZenECS.Adapter.Unity.SystemPresets.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.SystemPresets
+    name: SystemPresets
+    href: ZenECS.Adapter.Unity.SystemPresets.html
+- uid: ZenECS.Core.Systems
+  commentId: N:ZenECS.Core.Systems
+  href: ZenECS.html
+  name: ZenECS.Core.Systems
+  nameWithType: ZenECS.Core.Systems
+  fullName: ZenECS.Core.Systems
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Systems
+    name: Systems
+    href: ZenECS.Core.Systems.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Systems
+    name: Systems
+    href: ZenECS.Core.Systems.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.InstantiateSystems*
+  commentId: Overload:ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.InstantiateSystems
+  href: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.html#ZenECS_Adapter_Unity_SystemPresets_ISystemPresetResolver_InstantiateSystems_System_Collections_Generic_List_System_Type__
+  name: InstantiateSystems
+  nameWithType: ISystemPresetResolver.InstantiateSystems
+  fullName: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.InstantiateSystems
+- uid: System.Collections.Generic.List{System.Type}
+  commentId: T:System.Collections.Generic.List{System.Type}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<Type>
+  nameWithType: List<Type>
+  fullName: System.Collections.Generic.List<System.Type>
+  nameWithType.vb: List(Of Type)
+  fullName.vb: System.Collections.Generic.List(Of System.Type)
+  name.vb: List(Of Type)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Collections.Generic.List{ZenECS.Core.Systems.ISystem}
+  commentId: T:System.Collections.Generic.List{ZenECS.Core.Systems.ISystem}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<ISystem>
+  nameWithType: List<ISystem>
+  fullName: System.Collections.Generic.List<ZenECS.Core.Systems.ISystem>
+  nameWithType.vb: List(Of ISystem)
+  fullName.vb: System.Collections.Generic.List(Of ZenECS.Core.Systems.ISystem)
+  name.vb: List(Of ISystem)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: ZenECS.Core.Systems.ISystem
+    name: ISystem
+    href: ZenECS.Core.Systems.ISystem.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Systems.ISystem
+    name: ISystem
+    href: ZenECS.Core.Systems.ISystem.html
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

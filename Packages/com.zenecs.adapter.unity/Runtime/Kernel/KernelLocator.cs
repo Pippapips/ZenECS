@@ -186,7 +186,7 @@ namespace ZenECS.Adapter.Unity
             var go = new GameObject("[ZenECS] EcsDriver (auto)");
             var drv = go.AddComponent<EcsDriver>();
 
-            if (dontDestroyOnLoad)
+            if (dontDestroyOnLoad && drv.gameObject != null)
             {
                 UnityEngine.Object.DontDestroyOnLoad(drv.gameObject);
             }
@@ -248,6 +248,13 @@ namespace ZenECS.Adapter.Unity
         /// Unity domain reload hook that resets the cached kernel reference
         /// before any scenes are loaded.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This method is only executed in Unity runtime. In non-Unity environments
+        /// (such as DocFX builds), the attribute is provided by Unity stubs and has
+        /// no effect.
+        /// </para>
+        /// </remarks>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void ResetOnDomainReload() => _cached = null;
 

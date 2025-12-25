@@ -1,0 +1,130 @@
+### YamlMime:ManagedReference
+items:
+- uid: Unity.Mathematics
+  commentId: N:Unity.Mathematics
+  id: Unity.Mathematics
+  children:
+  - Unity.Mathematics.bool2
+  - Unity.Mathematics.bool3
+  - Unity.Mathematics.bool4
+  - Unity.Mathematics.float2
+  - Unity.Mathematics.float3
+  - Unity.Mathematics.float4
+  - Unity.Mathematics.int2
+  - Unity.Mathematics.int3
+  - Unity.Mathematics.int4
+  - Unity.Mathematics.quaternion
+  - Unity.Mathematics.uint2
+  - Unity.Mathematics.uint3
+  - Unity.Mathematics.uint4
+  langs:
+  - csharp
+  - vb
+  name: Unity.Mathematics
+  nameWithType: Unity.Mathematics
+  fullName: Unity.Mathematics
+  type: Namespace
+  assemblies:
+  - ZenECS.Adapter.Unity
+references:
+- uid: Unity.Mathematics.float2
+  commentId: T:Unity.Mathematics.float2
+  href: Unity.Mathematics.float2.html
+  name: float2
+  nameWithType: float2
+  fullName: Unity.Mathematics.float2
+- uid: Unity.Mathematics.float3
+  commentId: T:Unity.Mathematics.float3
+  href: Unity.Mathematics.float3.html
+  name: float3
+  nameWithType: float3
+  fullName: Unity.Mathematics.float3
+- uid: Unity.Mathematics.float4
+  commentId: T:Unity.Mathematics.float4
+  parent: Unity.Mathematics
+  href: Unity.Mathematics.float4.html
+  name: float4
+  nameWithType: float4
+  fullName: Unity.Mathematics.float4
+- uid: Unity.Mathematics.int2
+  commentId: T:Unity.Mathematics.int2
+  href: Unity.Mathematics.int2.html
+  name: int2
+  nameWithType: int2
+  fullName: Unity.Mathematics.int2
+- uid: Unity.Mathematics.int3
+  commentId: T:Unity.Mathematics.int3
+  href: Unity.Mathematics.int3.html
+  name: int3
+  nameWithType: int3
+  fullName: Unity.Mathematics.int3
+- uid: Unity.Mathematics.int4
+  commentId: T:Unity.Mathematics.int4
+  href: Unity.Mathematics.int4.html
+  name: int4
+  nameWithType: int4
+  fullName: Unity.Mathematics.int4
+- uid: Unity.Mathematics.uint2
+  commentId: T:Unity.Mathematics.uint2
+  href: Unity.Mathematics.uint2.html
+  name: uint2
+  nameWithType: uint2
+  fullName: Unity.Mathematics.uint2
+- uid: Unity.Mathematics.uint3
+  commentId: T:Unity.Mathematics.uint3
+  href: Unity.Mathematics.uint3.html
+  name: uint3
+  nameWithType: uint3
+  fullName: Unity.Mathematics.uint3
+- uid: Unity.Mathematics.uint4
+  commentId: T:Unity.Mathematics.uint4
+  href: Unity.Mathematics.uint4.html
+  name: uint4
+  nameWithType: uint4
+  fullName: Unity.Mathematics.uint4
+- uid: Unity.Mathematics.bool2
+  commentId: T:Unity.Mathematics.bool2
+  href: Unity.Mathematics.bool2.html
+  name: bool2
+  nameWithType: bool2
+  fullName: Unity.Mathematics.bool2
+- uid: Unity.Mathematics.bool3
+  commentId: T:Unity.Mathematics.bool3
+  href: Unity.Mathematics.bool3.html
+  name: bool3
+  nameWithType: bool3
+  fullName: Unity.Mathematics.bool3
+- uid: Unity.Mathematics.bool4
+  commentId: T:Unity.Mathematics.bool4
+  href: Unity.Mathematics.bool4.html
+  name: bool4
+  nameWithType: bool4
+  fullName: Unity.Mathematics.bool4
+- uid: Unity.Mathematics.quaternion
+  commentId: T:Unity.Mathematics.quaternion
+  href: Unity.Mathematics.quaternion.html
+  name: quaternion
+  nameWithType: quaternion
+  fullName: Unity.Mathematics.quaternion
+- uid: Unity.Mathematics
+  commentId: N:Unity.Mathematics
+  href: Unity.html
+  name: Unity.Mathematics
+  nameWithType: Unity.Mathematics
+  fullName: Unity.Mathematics
+  spec.csharp:
+  - uid: Unity
+    name: Unity
+    href: Unity.html
+  - name: .
+  - uid: Unity.Mathematics
+    name: Mathematics
+    href: Unity.Mathematics.html
+  spec.vb:
+  - uid: Unity
+    name: Unity
+    href: Unity.html
+  - name: .
+  - uid: Unity.Mathematics
+    name: Mathematics
+    href: Unity.Mathematics.html

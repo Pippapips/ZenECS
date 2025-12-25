@@ -1,0 +1,237 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Systems.ISystem
+  commentId: T:ZenECS.Core.Systems.ISystem
+  id: ISystem
+  parent: ZenECS.Core.Systems
+  children:
+  - ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld,System.Single)
+  langs:
+  - csharp
+  - vb
+  name: ISystem
+  nameWithType: ISystem
+  fullName: ZenECS.Core.Systems.ISystem
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ISystem
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+    startLine: 123
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Systems
+  summary: Base interface for all ECS systems.
+  remarks: >-
+    <p>
+
+    Specialized interfaces such as <code>IFixedRunSystem</code>,
+
+    <code>IFrameRunSystem</code>, or <code>IFrameLateSystem</code> refine when and how
+
+    <xref href="ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld%2cSystem.Single)" data-throw-if-not-resolved="false"></xref> is invoked (for example fixed vs variable timestep,
+
+    early vs late frame).
+
+    </p>
+
+    <p>
+
+    Deterministic ordering between systems is handled externally by the
+
+    system planner/runner and is typically based on <xref href="ZenECS.Core.Systems.SystemGroup" data-throw-if-not-resolved="false"></xref>
+
+    plus an explicit ordering key.
+
+    </p>
+  example: []
+  syntax:
+    content: public interface ISystem
+    content.vb: Public Interface ISystem
+- uid: ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld,System.Single)
+  commentId: M:ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld,System.Single)
+  id: Run(ZenECS.Core.IWorld,System.Single)
+  parent: ZenECS.Core.Systems.ISystem
+  langs:
+  - csharp
+  - vb
+  name: Run(IWorld, float)
+  nameWithType: ISystem.Run(IWorld, float)
+  fullName: ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld, float)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Run
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+    startLine: 135
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Systems
+  summary: Executes the system logic against the given world.
+  example: []
+  syntax:
+    content: void Run(IWorld w, float dt)
+    parameters:
+    - id: w
+      type: ZenECS.Core.IWorld
+      description: The ECS world instance.
+    - id: dt
+      type: System.Single
+      description: >-
+        Time delta in seconds.
+
+        For fixed-step systems this equals the fixed timestep;
+
+        for frame systems it is the frame delta;
+
+        some setup systems may ignore this value.
+    content.vb: Sub Run(w As IWorld, dt As Single)
+  overload: ZenECS.Core.Systems.ISystem.Run*
+  nameWithType.vb: ISystem.Run(IWorld, Single)
+  fullName.vb: ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld, Single)
+  name.vb: Run(IWorld, Single)
+references:
+- uid: ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld,System.Single)
+  commentId: M:ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld,System.Single)
+  parent: ZenECS.Core.Systems.ISystem
+  isExternal: true
+  href: ZenECS.Core.Systems.ISystem.html#ZenECS_Core_Systems_ISystem_Run_ZenECS_Core_IWorld_System_Single_
+  name: Run(IWorld, float)
+  nameWithType: ISystem.Run(IWorld, float)
+  fullName: ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld, float)
+  nameWithType.vb: ISystem.Run(IWorld, Single)
+  fullName.vb: ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld, Single)
+  name.vb: Run(IWorld, Single)
+  spec.csharp:
+  - uid: ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld,System.Single)
+    name: Run
+    href: ZenECS.Core.Systems.ISystem.html#ZenECS_Core_Systems_ISystem_Run_ZenECS_Core_IWorld_System_Single_
+  - name: (
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld,System.Single)
+    name: Run
+    href: ZenECS.Core.Systems.ISystem.html#ZenECS_Core_Systems_ISystem_Run_ZenECS_Core_IWorld_System_Single_
+  - name: (
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: ZenECS.Core.Systems.SystemGroup
+  commentId: T:ZenECS.Core.Systems.SystemGroup
+  parent: ZenECS.Core.Systems
+  href: ZenECS.Core.Systems.SystemGroup.html
+  name: SystemGroup
+  nameWithType: SystemGroup
+  fullName: ZenECS.Core.Systems.SystemGroup
+- uid: ZenECS.Core.Systems
+  commentId: N:ZenECS.Core.Systems
+  href: ZenECS.html
+  name: ZenECS.Core.Systems
+  nameWithType: ZenECS.Core.Systems
+  fullName: ZenECS.Core.Systems
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Systems
+    name: Systems
+    href: ZenECS.Core.Systems.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Systems
+    name: Systems
+    href: ZenECS.Core.Systems.html
+- uid: ZenECS.Core.Systems.ISystem
+  commentId: T:ZenECS.Core.Systems.ISystem
+  parent: ZenECS.Core.Systems
+  href: ZenECS.Core.Systems.ISystem.html
+  name: ISystem
+  nameWithType: ISystem
+  fullName: ZenECS.Core.Systems.ISystem
+- uid: ZenECS.Core.Systems.ISystem.Run*
+  commentId: Overload:ZenECS.Core.Systems.ISystem.Run
+  href: ZenECS.Core.Systems.ISystem.html#ZenECS_Core_Systems_ISystem_Run_ZenECS_Core_IWorld_System_Single_
+  name: Run
+  nameWithType: ISystem.Run
+  fullName: ZenECS.Core.Systems.ISystem.Run
+- uid: ZenECS.Core.IWorld
+  commentId: T:ZenECS.Core.IWorld
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorld.html
+  name: IWorld
+  nameWithType: IWorld
+  fullName: ZenECS.Core.IWorld
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

@@ -1,0 +1,624 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.QueryEnumerable`5.Result
+  commentId: T:ZenECS.Core.QueryEnumerable`5.Result
+  id: QueryEnumerable`5.Result
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.QueryEnumerable`5.Result.#ctor(ZenECS.Core.Entity@,`0@,`1@,`2@,`3@,`4@)
+  - ZenECS.Core.QueryEnumerable`5.Result.Component1
+  - ZenECS.Core.QueryEnumerable`5.Result.Component2
+  - ZenECS.Core.QueryEnumerable`5.Result.Component3
+  - ZenECS.Core.QueryEnumerable`5.Result.Component4
+  - ZenECS.Core.QueryEnumerable`5.Result.Component5
+  - ZenECS.Core.QueryEnumerable`5.Result.Deconstruct(ZenECS.Core.Entity@,`0@,`1@,`2@,`3@,`4@)
+  - ZenECS.Core.QueryEnumerable`5.Result.Entity
+  langs:
+  - csharp
+  - vb
+  name: QueryEnumerable<T1, T2, T3, T4, T5>.Result
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5>.Result
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5>.Result
+  type: Struct
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Result
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+    startLine: 912
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Result item for five-component queries.
+  example: []
+  syntax:
+    content: public readonly struct QueryEnumerable<T1, T2, T3, T4, T5>.Result
+    content.vb: Public Structure QueryEnumerable(Of T1, T2, T3, T4, T5).Result
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5).Result
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5).Result
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5).Result
+- uid: ZenECS.Core.QueryEnumerable`5.Result.Entity
+  commentId: F:ZenECS.Core.QueryEnumerable`5.Result.Entity
+  id: Entity
+  parent: ZenECS.Core.QueryEnumerable`5.Result
+  langs:
+  - csharp
+  - vb
+  name: Entity
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5>.Result.Entity
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5>.Result.Entity
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Entity
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+    startLine: 914
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  syntax:
+    content: public readonly Entity Entity
+    return:
+      type: ZenECS.Core.Entity
+    content.vb: Public ReadOnly Entity As Entity
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5).Result.Entity
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5).Result.Entity
+- uid: ZenECS.Core.QueryEnumerable`5.Result.Component1
+  commentId: F:ZenECS.Core.QueryEnumerable`5.Result.Component1
+  id: Component1
+  parent: ZenECS.Core.QueryEnumerable`5.Result
+  langs:
+  - csharp
+  - vb
+  name: Component1
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5>.Result.Component1
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5>.Result.Component1
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Component1
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+    startLine: 915
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  syntax:
+    content: public readonly T1 Component1
+    return:
+      type: '{T1}'
+    content.vb: Public ReadOnly Component1 As T1
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5).Result.Component1
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5).Result.Component1
+- uid: ZenECS.Core.QueryEnumerable`5.Result.Component2
+  commentId: F:ZenECS.Core.QueryEnumerable`5.Result.Component2
+  id: Component2
+  parent: ZenECS.Core.QueryEnumerable`5.Result
+  langs:
+  - csharp
+  - vb
+  name: Component2
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5>.Result.Component2
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5>.Result.Component2
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Component2
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+    startLine: 916
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  syntax:
+    content: public readonly T2 Component2
+    return:
+      type: '{T2}'
+    content.vb: Public ReadOnly Component2 As T2
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5).Result.Component2
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5).Result.Component2
+- uid: ZenECS.Core.QueryEnumerable`5.Result.Component3
+  commentId: F:ZenECS.Core.QueryEnumerable`5.Result.Component3
+  id: Component3
+  parent: ZenECS.Core.QueryEnumerable`5.Result
+  langs:
+  - csharp
+  - vb
+  name: Component3
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5>.Result.Component3
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5>.Result.Component3
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Component3
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+    startLine: 917
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  syntax:
+    content: public readonly T3 Component3
+    return:
+      type: '{T3}'
+    content.vb: Public ReadOnly Component3 As T3
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5).Result.Component3
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5).Result.Component3
+- uid: ZenECS.Core.QueryEnumerable`5.Result.Component4
+  commentId: F:ZenECS.Core.QueryEnumerable`5.Result.Component4
+  id: Component4
+  parent: ZenECS.Core.QueryEnumerable`5.Result
+  langs:
+  - csharp
+  - vb
+  name: Component4
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5>.Result.Component4
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5>.Result.Component4
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Component4
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+    startLine: 918
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  syntax:
+    content: public readonly T4 Component4
+    return:
+      type: '{T4}'
+    content.vb: Public ReadOnly Component4 As T4
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5).Result.Component4
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5).Result.Component4
+- uid: ZenECS.Core.QueryEnumerable`5.Result.Component5
+  commentId: F:ZenECS.Core.QueryEnumerable`5.Result.Component5
+  id: Component5
+  parent: ZenECS.Core.QueryEnumerable`5.Result
+  langs:
+  - csharp
+  - vb
+  name: Component5
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5>.Result.Component5
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5>.Result.Component5
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Component5
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+    startLine: 919
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  syntax:
+    content: public readonly T5 Component5
+    return:
+      type: '{T5}'
+    content.vb: Public ReadOnly Component5 As T5
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5).Result.Component5
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5).Result.Component5
+- uid: ZenECS.Core.QueryEnumerable`5.Result.#ctor(ZenECS.Core.Entity@,`0@,`1@,`2@,`3@,`4@)
+  commentId: M:ZenECS.Core.QueryEnumerable`5.Result.#ctor(ZenECS.Core.Entity@,`0@,`1@,`2@,`3@,`4@)
+  id: '#ctor(ZenECS.Core.Entity@,`0@,`1@,`2@,`3@,`4@)'
+  parent: ZenECS.Core.QueryEnumerable`5.Result
+  langs:
+  - csharp
+  - vb
+  name: Result(in Entity, in T1, in T2, in T3, in T4, in T5)
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5>.Result.Result(in Entity, in T1, in T2, in T3, in T4, in T5)
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5>.Result.Result(in ZenECS.Core.Entity, in T1, in T2, in T3, in T4, in T5)
+  type: Constructor
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: .ctor
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+    startLine: 924
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Creates a new result container.
+  example: []
+  syntax:
+    content: public Result(in Entity entity, in T1 c1, in T2 c2, in T3 c3, in T4 c4, in T5 c5)
+    parameters:
+    - id: entity
+      type: ZenECS.Core.Entity
+    - id: c1
+      type: '{T1}'
+    - id: c2
+      type: '{T2}'
+    - id: c3
+      type: '{T3}'
+    - id: c4
+      type: '{T4}'
+    - id: c5
+      type: '{T5}'
+    content.vb: Public Sub New(entity As Entity, c1 As T1, c2 As T2, c3 As T3, c4 As T4, c5 As T5)
+  overload: ZenECS.Core.QueryEnumerable`5.Result.#ctor*
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5).Result.New(Entity, T1, T2, T3, T4, T5)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5).Result.New(ZenECS.Core.Entity, T1, T2, T3, T4, T5)
+  name.vb: New(Entity, T1, T2, T3, T4, T5)
+- uid: ZenECS.Core.QueryEnumerable`5.Result.Deconstruct(ZenECS.Core.Entity@,`0@,`1@,`2@,`3@,`4@)
+  commentId: M:ZenECS.Core.QueryEnumerable`5.Result.Deconstruct(ZenECS.Core.Entity@,`0@,`1@,`2@,`3@,`4@)
+  id: Deconstruct(ZenECS.Core.Entity@,`0@,`1@,`2@,`3@,`4@)
+  parent: ZenECS.Core.QueryEnumerable`5.Result
+  langs:
+  - csharp
+  - vb
+  name: Deconstruct(out Entity, out T1, out T2, out T3, out T4, out T5)
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5>.Result.Deconstruct(out Entity, out T1, out T2, out T3, out T4, out T5)
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5>.Result.Deconstruct(out ZenECS.Core.Entity, out T1, out T2, out T3, out T4, out T5)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Deconstruct
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+    startLine: 937
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Deconstructs this result into its values.
+  example: []
+  syntax:
+    content: public void Deconstruct(out Entity entity, out T1 c1, out T2 c2, out T3 c3, out T4 c4, out T5 c5)
+    parameters:
+    - id: entity
+      type: ZenECS.Core.Entity
+    - id: c1
+      type: '{T1}'
+    - id: c2
+      type: '{T2}'
+    - id: c3
+      type: '{T3}'
+    - id: c4
+      type: '{T4}'
+    - id: c5
+      type: '{T5}'
+    content.vb: Public Sub Deconstruct(entity As Entity, c1 As T1, c2 As T2, c3 As T3, c4 As T4, c5 As T5)
+  overload: ZenECS.Core.QueryEnumerable`5.Result.Deconstruct*
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5).Result.Deconstruct(Entity, T1, T2, T3, T4, T5)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5).Result.Deconstruct(ZenECS.Core.Entity, T1, T2, T3, T4, T5)
+  name.vb: Deconstruct(Entity, T1, T2, T3, T4, T5)
+references:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.Entity
+  commentId: T:ZenECS.Core.Entity
+  parent: ZenECS.Core
+  href: ZenECS.Core.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: ZenECS.Core.Entity
+- uid: '{T1}'
+  commentId: '!:T1'
+  definition: T1
+  name: T1
+  nameWithType: T1
+  fullName: T1
+- uid: T1
+  name: T1
+  nameWithType: T1
+  fullName: T1
+- uid: '{T2}'
+  commentId: '!:T2'
+  definition: T2
+  name: T2
+  nameWithType: T2
+  fullName: T2
+- uid: T2
+  name: T2
+  nameWithType: T2
+  fullName: T2
+- uid: '{T3}'
+  commentId: '!:T3'
+  definition: T3
+  name: T3
+  nameWithType: T3
+  fullName: T3
+- uid: T3
+  name: T3
+  nameWithType: T3
+  fullName: T3
+- uid: '{T4}'
+  commentId: '!:T4'
+  definition: T4
+  name: T4
+  nameWithType: T4
+  fullName: T4
+- uid: T4
+  name: T4
+  nameWithType: T4
+  fullName: T4
+- uid: '{T5}'
+  commentId: '!:T5'
+  definition: T5
+  name: T5
+  nameWithType: T5
+  fullName: T5
+- uid: T5
+  name: T5
+  nameWithType: T5
+  fullName: T5
+- uid: ZenECS.Core.QueryEnumerable`5.Result.#ctor*
+  commentId: Overload:ZenECS.Core.QueryEnumerable`5.Result.#ctor
+  href: ZenECS.Core.QueryEnumerable-5.Result.html#ZenECS_Core_QueryEnumerable_5_Result__ctor_ZenECS_Core_Entity___0___1___2___3___4__
+  name: Result
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5>.Result.Result
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5>.Result.Result
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5).Result.New
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5).Result.New
+  name.vb: New
+- uid: ZenECS.Core.QueryEnumerable`5.Result.Deconstruct*
+  commentId: Overload:ZenECS.Core.QueryEnumerable`5.Result.Deconstruct
+  href: ZenECS.Core.QueryEnumerable-5.Result.html#ZenECS_Core_QueryEnumerable_5_Result_Deconstruct_ZenECS_Core_Entity___0___1___2___3___4__
+  name: Deconstruct
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5>.Result.Deconstruct
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5>.Result.Deconstruct
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5).Result.Deconstruct
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5).Result.Deconstruct

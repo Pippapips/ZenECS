@@ -1,0 +1,654 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.IWorldBinderApi
+  commentId: T:ZenECS.Core.IWorldBinderApi
+  id: IWorldBinderApi
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.IWorldBinderApi.AttachBinder(ZenECS.Core.Entity,ZenECS.Core.Binding.IBinder)
+  - ZenECS.Core.IWorldBinderApi.DetachAllBinders(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity,System.Type)
+  - ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity,ZenECS.Core.Binding.IBinder)
+  - ZenECS.Core.IWorldBinderApi.GetAllBinderList(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldBinderApi.GetAllBinders(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldBinderApi.HasBinder``1(ZenECS.Core.Entity)
+  langs:
+  - csharp
+  - vb
+  name: IWorldBinderApi
+  nameWithType: IWorldBinderApi
+  fullName: ZenECS.Core.IWorldBinderApi
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldBinderApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IWorldBinderApi
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldBinderApi.cs
+    startLine: 41
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: 'Adapter-facing binder surface: attach and detach view binders to entities.'
+  remarks: >-
+    <p>
+
+    Binders live on the view side (for example Unity GameObjects) and are
+
+    associated with ECS entities via this API. The world remains the single
+
+    source of truth for binder lifetimes and ensures that:
+
+    </p>
+
+    <ul><li>
+
+    Binders are detached when entities are despawned or the world is reset.
+      </li><li>
+    Attach policies (see <code>AttachOptions</code> in the binding layer) are honored
+
+    when required contexts are missing.
+      </li><li>
+    Multiple binders can be attached to the same entity, but each binder
+
+    instance is tracked only once.
+      </li></ul>
+  example: []
+  syntax:
+    content: public interface IWorldBinderApi
+    content.vb: Public Interface IWorldBinderApi
+- uid: ZenECS.Core.IWorldBinderApi.HasBinder``1(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldBinderApi.HasBinder``1(ZenECS.Core.Entity)
+  id: HasBinder``1(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldBinderApi
+  langs:
+  - csharp
+  - vb
+  name: HasBinder<T>(Entity)
+  nameWithType: IWorldBinderApi.HasBinder<T>(Entity)
+  fullName: ZenECS.Core.IWorldBinderApi.HasBinder<T>(ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldBinderApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: HasBinder
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldBinderApi.cs
+    startLine: 53
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Checks whether an entity currently has a binder of type <code class="typeparamref">T</code>.
+  example: []
+  syntax:
+    content: 'bool HasBinder<T>(Entity e) where T : class, IBinder'
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    typeParameters:
+    - id: T
+      description: Binder type to query for.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if at least one binder of type
+
+        <code class="typeparamref">T</code> is attached to <code class="paramref">e</code>;
+
+        otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function HasBinder(Of T As {Class, IBinder})(e As Entity) As Boolean
+  overload: ZenECS.Core.IWorldBinderApi.HasBinder*
+  nameWithType.vb: IWorldBinderApi.HasBinder(Of T)(Entity)
+  fullName.vb: ZenECS.Core.IWorldBinderApi.HasBinder(Of T)(ZenECS.Core.Entity)
+  name.vb: HasBinder(Of T)(Entity)
+- uid: ZenECS.Core.IWorldBinderApi.AttachBinder(ZenECS.Core.Entity,ZenECS.Core.Binding.IBinder)
+  commentId: M:ZenECS.Core.IWorldBinderApi.AttachBinder(ZenECS.Core.Entity,ZenECS.Core.Binding.IBinder)
+  id: AttachBinder(ZenECS.Core.Entity,ZenECS.Core.Binding.IBinder)
+  parent: ZenECS.Core.IWorldBinderApi
+  langs:
+  - csharp
+  - vb
+  name: AttachBinder(Entity, IBinder?)
+  nameWithType: IWorldBinderApi.AttachBinder(Entity, IBinder?)
+  fullName: ZenECS.Core.IWorldBinderApi.AttachBinder(ZenECS.Core.Entity, ZenECS.Core.Binding.IBinder?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldBinderApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: AttachBinder
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldBinderApi.cs
+    startLine: 80
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Attaches a binder instance to an entity using the world's default attach policy.
+  remarks: >-
+    <p>
+
+    Implementations are expected to:
+
+    </p>
+
+    <ul><li>
+
+    Validate that required contexts are present and behave according to
+
+    the world's configured attach policy.
+      </li><li>
+    Ensure the same binder instance is not attached multiple times.
+      </li><li>
+    Register the binder so it will be detached automatically if
+
+    <code class="paramref">e</code> is despawned or the world is reset.
+      </li></ul>
+  example: []
+  syntax:
+    content: void AttachBinder(Entity e, IBinder? binder)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    - id: binder
+      type: ZenECS.Core.Binding.IBinder
+      description: Binder instance to attach. If <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>, the call is ignored.
+    content.vb: Sub AttachBinder(e As Entity, binder As IBinder)
+  overload: ZenECS.Core.IWorldBinderApi.AttachBinder*
+  nameWithType.vb: IWorldBinderApi.AttachBinder(Entity, IBinder)
+  fullName.vb: ZenECS.Core.IWorldBinderApi.AttachBinder(ZenECS.Core.Entity, ZenECS.Core.Binding.IBinder)
+  name.vb: AttachBinder(Entity, IBinder)
+- uid: ZenECS.Core.IWorldBinderApi.DetachAllBinders(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldBinderApi.DetachAllBinders(ZenECS.Core.Entity)
+  id: DetachAllBinders(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldBinderApi
+  langs:
+  - csharp
+  - vb
+  name: DetachAllBinders(Entity)
+  nameWithType: IWorldBinderApi.DetachAllBinders(Entity)
+  fullName: ZenECS.Core.IWorldBinderApi.DetachAllBinders(ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldBinderApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: DetachAllBinders
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldBinderApi.cs
+    startLine: 90
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Detaches all binders currently attached to an entity.
+  remarks: >-
+    This is typically used during teardown of a view object or when
+
+    re-binding an entity to a new set of view components.
+  example: []
+  syntax:
+    content: void DetachAllBinders(Entity e)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    content.vb: Sub DetachAllBinders(e As Entity)
+  overload: ZenECS.Core.IWorldBinderApi.DetachAllBinders*
+- uid: ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity,ZenECS.Core.Binding.IBinder)
+  commentId: M:ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity,ZenECS.Core.Binding.IBinder)
+  id: DetachBinder(ZenECS.Core.Entity,ZenECS.Core.Binding.IBinder)
+  parent: ZenECS.Core.IWorldBinderApi
+  langs:
+  - csharp
+  - vb
+  name: DetachBinder(Entity, IBinder)
+  nameWithType: IWorldBinderApi.DetachBinder(Entity, IBinder)
+  fullName: ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity, ZenECS.Core.Binding.IBinder)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldBinderApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: DetachBinder
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldBinderApi.cs
+    startLine: 101
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Detaches a specific binder instance from an entity.
+  remarks: >-
+    The call is a no-op if the specified binder is not currently
+
+    attached to <code class="paramref">e</code>.
+  example: []
+  syntax:
+    content: void DetachBinder(Entity e, IBinder binder)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    - id: binder
+      type: ZenECS.Core.Binding.IBinder
+      description: Binder instance to detach.
+    content.vb: Sub DetachBinder(e As Entity, binder As IBinder)
+  overload: ZenECS.Core.IWorldBinderApi.DetachBinder*
+- uid: ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity,System.Type)
+  commentId: M:ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity,System.Type)
+  id: DetachBinder(ZenECS.Core.Entity,System.Type)
+  parent: ZenECS.Core.IWorldBinderApi
+  langs:
+  - csharp
+  - vb
+  name: DetachBinder(Entity, Type)
+  nameWithType: IWorldBinderApi.DetachBinder(Entity, Type)
+  fullName: ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity, System.Type)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldBinderApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: DetachBinder
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldBinderApi.cs
+    startLine: 112
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Detaches binders from an entity by binder type.
+  example: []
+  syntax:
+    content: bool DetachBinder(Entity e, Type t)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    - id: t
+      type: System.Type
+      description: Binder type to remove.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if at least one binder of type <code class="paramref">t</code>
+
+        was detached; otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function DetachBinder(e As Entity, t As Type) As Boolean
+  overload: ZenECS.Core.IWorldBinderApi.DetachBinder*
+- uid: ZenECS.Core.IWorldBinderApi.GetAllBinders(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldBinderApi.GetAllBinders(ZenECS.Core.Entity)
+  id: GetAllBinders(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldBinderApi
+  langs:
+  - csharp
+  - vb
+  name: GetAllBinders(Entity)
+  nameWithType: IWorldBinderApi.GetAllBinders(Entity)
+  fullName: ZenECS.Core.IWorldBinderApi.GetAllBinders(ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldBinderApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: GetAllBinders
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldBinderApi.cs
+    startLine: 123
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Returns all binders attached to an entity as a type/value pair array.
+  example: []
+  syntax:
+    content: (Type type, object boxed)[] GetAllBinders(Entity e)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    return:
+      type: System.ValueTuple{System.Type,System.Object}[]
+      description: >-
+        An array of tuples where <code>type</code> is the binder runtime type and
+
+        <code>boxed</code> is the binder instance boxed as <xref href="System.Object" data-throw-if-not-resolved="false"></xref>.
+
+        Returns an empty array if no binders are attached.
+    content.vb: Function GetAllBinders(e As Entity) As (type As Type, boxed As Object)()
+  overload: ZenECS.Core.IWorldBinderApi.GetAllBinders*
+- uid: ZenECS.Core.IWorldBinderApi.GetAllBinderList(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldBinderApi.GetAllBinderList(ZenECS.Core.Entity)
+  id: GetAllBinderList(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldBinderApi
+  langs:
+  - csharp
+  - vb
+  name: GetAllBinderList(Entity)
+  nameWithType: IWorldBinderApi.GetAllBinderList(Entity)
+  fullName: ZenECS.Core.IWorldBinderApi.GetAllBinderList(ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldBinderApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: GetAllBinderList
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldBinderApi.cs
+    startLine: 133
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Returns a read-only list view of all binder instances attached to an entity.
+  example: []
+  syntax:
+    content: IReadOnlyList<IBinder>? GetAllBinderList(Entity e)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    return:
+      type: System.Collections.Generic.IReadOnlyList{ZenECS.Core.Binding.IBinder}
+      description: >-
+        A read-only list of <xref href="ZenECS.Core.Binding.IBinder" data-throw-if-not-resolved="false"></xref> instances, or
+
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if no binders are attached.
+    content.vb: Function GetAllBinderList(e As Entity) As IReadOnlyList(Of IBinder)
+  overload: ZenECS.Core.IWorldBinderApi.GetAllBinderList*
+references:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.IWorldBinderApi.HasBinder*
+  commentId: Overload:ZenECS.Core.IWorldBinderApi.HasBinder
+  href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_HasBinder__1_ZenECS_Core_Entity_
+  name: HasBinder
+  nameWithType: IWorldBinderApi.HasBinder
+  fullName: ZenECS.Core.IWorldBinderApi.HasBinder
+- uid: ZenECS.Core.Entity
+  commentId: T:ZenECS.Core.Entity
+  parent: ZenECS.Core
+  href: ZenECS.Core.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: ZenECS.Core.Entity
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.IWorldBinderApi.AttachBinder*
+  commentId: Overload:ZenECS.Core.IWorldBinderApi.AttachBinder
+  href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_AttachBinder_ZenECS_Core_Entity_ZenECS_Core_Binding_IBinder_
+  name: AttachBinder
+  nameWithType: IWorldBinderApi.AttachBinder
+  fullName: ZenECS.Core.IWorldBinderApi.AttachBinder
+- uid: ZenECS.Core.Binding.IBinder
+  commentId: T:ZenECS.Core.Binding.IBinder
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IBinder.html
+  name: IBinder
+  nameWithType: IBinder
+  fullName: ZenECS.Core.Binding.IBinder
+- uid: ZenECS.Core.Binding
+  commentId: N:ZenECS.Core.Binding
+  href: ZenECS.html
+  name: ZenECS.Core.Binding
+  nameWithType: ZenECS.Core.Binding
+  fullName: ZenECS.Core.Binding
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+- uid: ZenECS.Core.IWorldBinderApi.DetachAllBinders*
+  commentId: Overload:ZenECS.Core.IWorldBinderApi.DetachAllBinders
+  href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_DetachAllBinders_ZenECS_Core_Entity_
+  name: DetachAllBinders
+  nameWithType: IWorldBinderApi.DetachAllBinders
+  fullName: ZenECS.Core.IWorldBinderApi.DetachAllBinders
+- uid: ZenECS.Core.IWorldBinderApi.DetachBinder*
+  commentId: Overload:ZenECS.Core.IWorldBinderApi.DetachBinder
+  href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_DetachBinder_ZenECS_Core_Entity_ZenECS_Core_Binding_IBinder_
+  name: DetachBinder
+  nameWithType: IWorldBinderApi.DetachBinder
+  fullName: ZenECS.Core.IWorldBinderApi.DetachBinder
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: ZenECS.Core.IWorldBinderApi.GetAllBinders*
+  commentId: Overload:ZenECS.Core.IWorldBinderApi.GetAllBinders
+  href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_GetAllBinders_ZenECS_Core_Entity_
+  name: GetAllBinders
+  nameWithType: IWorldBinderApi.GetAllBinders
+  fullName: ZenECS.Core.IWorldBinderApi.GetAllBinders
+- uid: System.ValueTuple{System.Type,System.Object}[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: (Type type, object boxed)[]
+  nameWithType: (Type type, object boxed)[]
+  fullName: (System.Type type, object boxed)[]
+  nameWithType.vb: (type As Type, boxed As Object)()
+  fullName.vb: (type As System.Type, boxed As Object)()
+  name.vb: (type As Type, boxed As Object)()
+  spec.csharp:
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: " "
+  - uid: System.ValueTuple{System.Type,System.Object}.type
+    name: type
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.type,system.object-.type
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: " "
+  - uid: System.ValueTuple{System.Type,System.Object}.boxed
+    name: boxed
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.type,system.object-.boxed
+  - name: )
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{System.Type,System.Object}.type
+    name: type
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.type,system.object-.type
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Type,System.Object}.boxed
+    name: boxed
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.type,system.object-.boxed
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: (
+  - name: )
+- uid: ZenECS.Core.IWorldBinderApi.GetAllBinderList*
+  commentId: Overload:ZenECS.Core.IWorldBinderApi.GetAllBinderList
+  href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_GetAllBinderList_ZenECS_Core_Entity_
+  name: GetAllBinderList
+  nameWithType: IWorldBinderApi.GetAllBinderList
+  fullName: ZenECS.Core.IWorldBinderApi.GetAllBinderList
+- uid: System.Collections.Generic.IReadOnlyList{ZenECS.Core.Binding.IBinder}
+  commentId: T:System.Collections.Generic.IReadOnlyList{ZenECS.Core.Binding.IBinder}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<IBinder>
+  nameWithType: IReadOnlyList<IBinder>
+  fullName: System.Collections.Generic.IReadOnlyList<ZenECS.Core.Binding.IBinder>
+  nameWithType.vb: IReadOnlyList(Of IBinder)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of ZenECS.Core.Binding.IBinder)
+  name.vb: IReadOnlyList(Of IBinder)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: ZenECS.Core.Binding.IBinder
+    name: IBinder
+    href: ZenECS.Core.Binding.IBinder.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Binding.IBinder
+    name: IBinder
+    href: ZenECS.Core.Binding.IBinder.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

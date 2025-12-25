@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity.Binding.Binders.Assets
+  commentId: N:ZenECS.Adapter.Unity.Binding.Binders.Assets
+  id: ZenECS.Adapter.Unity.Binding.Binders.Assets
+  children:
+  - ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset
+  langs:
+  - csharp
+  - vb
+  name: ZenECS.Adapter.Unity.Binding.Binders.Assets
+  nameWithType: ZenECS.Adapter.Unity.Binding.Binders.Assets
+  fullName: ZenECS.Adapter.Unity.Binding.Binders.Assets
+  type: Namespace
+  assemblies:
+  - ZenECS.Adapter.Unity
+references:
+- uid: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset
+  commentId: T:ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset
+  href: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.html
+  name: BinderAsset
+  nameWithType: BinderAsset
+  fullName: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset

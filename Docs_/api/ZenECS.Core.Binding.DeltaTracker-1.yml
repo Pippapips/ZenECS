@@ -1,0 +1,817 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Binding.DeltaTracker`1
+  commentId: T:ZenECS.Core.Binding.DeltaTracker`1
+  id: DeltaTracker`1
+  parent: ZenECS.Core.Binding
+  children:
+  - ZenECS.Core.Binding.DeltaTracker`1.ApplyDelta(ZenECS.Core.Binding.ComponentDelta{`0}@)
+  - ZenECS.Core.Binding.DeltaTracker`1.ClearDirty
+  - ZenECS.Core.Binding.DeltaTracker`1.Dirty
+  - ZenECS.Core.Binding.DeltaTracker`1.Has
+  - ZenECS.Core.Binding.DeltaTracker`1.Last
+  - ZenECS.Core.Binding.DeltaTracker`1.MarkRemoved(System.Boolean)
+  - ZenECS.Core.Binding.DeltaTracker`1.NeedsApply
+  - ZenECS.Core.Binding.DeltaTracker`1.Removed
+  - ZenECS.Core.Binding.DeltaTracker`1.Reset
+  - ZenECS.Core.Binding.DeltaTracker`1.Set(`0@,System.Boolean)
+  langs:
+  - csharp
+  - vb
+  name: DeltaTracker<T>
+  nameWithType: DeltaTracker<T>
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>
+  type: Struct
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: DeltaTracker
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+    startLine: 23
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Tracks component state and a "dirty" flag for a single component type
+
+    based purely on delta notifications.
+  example: []
+  syntax:
+    content: 'public struct DeltaTracker<T> where T : struct'
+    typeParameters:
+    - id: T
+      description: The component value type.
+    content.vb: Public Structure DeltaTracker(Of T As Structure)
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  nameWithType.vb: DeltaTracker(Of T)
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T)
+  name.vb: DeltaTracker(Of T)
+- uid: ZenECS.Core.Binding.DeltaTracker`1.Has
+  commentId: F:ZenECS.Core.Binding.DeltaTracker`1.Has
+  id: Has
+  parent: ZenECS.Core.Binding.DeltaTracker`1
+  langs:
+  - csharp
+  - vb
+  name: Has
+  nameWithType: DeltaTracker<T>.Has
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>.Has
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Has
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+    startLine: 29
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    True if the component is currently present on the entity
+
+    after the last processed delta.
+  example: []
+  syntax:
+    content: public bool Has
+    return:
+      type: System.Boolean
+    content.vb: Public Has As Boolean
+  nameWithType.vb: DeltaTracker(Of T).Has
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T).Has
+- uid: ZenECS.Core.Binding.DeltaTracker`1.Dirty
+  commentId: F:ZenECS.Core.Binding.DeltaTracker`1.Dirty
+  id: Dirty
+  parent: ZenECS.Core.Binding.DeltaTracker`1
+  langs:
+  - csharp
+  - vb
+  name: Dirty
+  nameWithType: DeltaTracker<T>.Dirty
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>.Dirty
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Dirty
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+    startLine: 35
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    True if there is a pending change that should be applied
+
+    to the view in the next <code>OnApply</code> call.
+  example: []
+  syntax:
+    content: public bool Dirty
+    return:
+      type: System.Boolean
+    content.vb: Public Dirty As Boolean
+  nameWithType.vb: DeltaTracker(Of T).Dirty
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T).Dirty
+- uid: ZenECS.Core.Binding.DeltaTracker`1.Removed
+  commentId: F:ZenECS.Core.Binding.DeltaTracker`1.Removed
+  id: Removed
+  parent: ZenECS.Core.Binding.DeltaTracker`1
+  langs:
+  - csharp
+  - vb
+  name: Removed
+  nameWithType: DeltaTracker<T>.Removed
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>.Removed
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Removed
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+    startLine: 42
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    True if the last processed delta represented a removal
+
+    (i.e. the component was removed from the entity).
+
+    This is useful if the view needs to actively "unset" something.
+  example: []
+  syntax:
+    content: public bool Removed
+    return:
+      type: System.Boolean
+    content.vb: Public Removed As Boolean
+  nameWithType.vb: DeltaTracker(Of T).Removed
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T).Removed
+- uid: ZenECS.Core.Binding.DeltaTracker`1.Last
+  commentId: F:ZenECS.Core.Binding.DeltaTracker`1.Last
+  id: Last
+  parent: ZenECS.Core.Binding.DeltaTracker`1
+  langs:
+  - csharp
+  - vb
+  name: Last
+  nameWithType: DeltaTracker<T>.Last
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>.Last
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Last
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+    startLine: 48
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    The last known value of the component, as reported by deltas.
+
+    Only meaningful when <xref href="ZenECS.Core.Binding.DeltaTracker%601.Has" data-throw-if-not-resolved="false"></xref> is <code>true</code>.
+  example: []
+  syntax:
+    content: public T Last
+    return:
+      type: '{T}'
+    content.vb: Public Last As T
+  nameWithType.vb: DeltaTracker(Of T).Last
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T).Last
+- uid: ZenECS.Core.Binding.DeltaTracker`1.NeedsApply
+  commentId: P:ZenECS.Core.Binding.DeltaTracker`1.NeedsApply
+  id: NeedsApply
+  parent: ZenECS.Core.Binding.DeltaTracker`1
+  langs:
+  - csharp
+  - vb
+  name: NeedsApply
+  nameWithType: DeltaTracker<T>.NeedsApply
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>.NeedsApply
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: NeedsApply
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+    startLine: 54
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Returns <code>true</code> if the tracker has any change that needs to be
+
+    applied to the view (i.e. <xref href="ZenECS.Core.Binding.DeltaTracker%601.Dirty" data-throw-if-not-resolved="false"></xref> is <code>true</code>).
+  example: []
+  syntax:
+    content: public bool NeedsApply { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property NeedsApply As Boolean
+  overload: ZenECS.Core.Binding.DeltaTracker`1.NeedsApply*
+  nameWithType.vb: DeltaTracker(Of T).NeedsApply
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T).NeedsApply
+- uid: ZenECS.Core.Binding.DeltaTracker`1.Reset
+  commentId: M:ZenECS.Core.Binding.DeltaTracker`1.Reset
+  id: Reset
+  parent: ZenECS.Core.Binding.DeltaTracker`1
+  langs:
+  - csharp
+  - vb
+  name: Reset()
+  nameWithType: DeltaTracker<T>.Reset()
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>.Reset()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Reset
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+    startLine: 60
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Clears all flags and resets the tracker to an "empty" state.
+
+    Call this when the binder is unbound or reused.
+  example: []
+  syntax:
+    content: public void Reset()
+    content.vb: Public Sub Reset()
+  overload: ZenECS.Core.Binding.DeltaTracker`1.Reset*
+  nameWithType.vb: DeltaTracker(Of T).Reset()
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T).Reset()
+- uid: ZenECS.Core.Binding.DeltaTracker`1.Set(`0@,System.Boolean)
+  commentId: M:ZenECS.Core.Binding.DeltaTracker`1.Set(`0@,System.Boolean)
+  id: Set(`0@,System.Boolean)
+  parent: ZenECS.Core.Binding.DeltaTracker`1
+  langs:
+  - csharp
+  - vb
+  name: Set(in T, bool)
+  nameWithType: DeltaTracker<T>.Set(in T, bool)
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>.Set(in T, bool)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Set
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+    startLine: 77
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Sets the component as present with the given value and optionally
+
+    marks it as dirty. Intended for initial snapshots or "add/update" deltas.
+  example: []
+  syntax:
+    content: public void Set(in T value, bool markDirty = true)
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The latest component value.
+    - id: markDirty
+      type: System.Boolean
+      description: >-
+        If <code>true</code> (default), <xref href="ZenECS.Core.Binding.DeltaTracker%601.Dirty" data-throw-if-not-resolved="false"></xref> is set so that the view
+
+        will be updated on the next apply.
+    content.vb: Public Sub [Set](value As T, markDirty As Boolean = True)
+  overload: ZenECS.Core.Binding.DeltaTracker`1.Set*
+  nameWithType.vb: DeltaTracker(Of T).Set(T, Boolean)
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T).Set(T, Boolean)
+  name.vb: Set(T, Boolean)
+- uid: ZenECS.Core.Binding.DeltaTracker`1.MarkRemoved(System.Boolean)
+  commentId: M:ZenECS.Core.Binding.DeltaTracker`1.MarkRemoved(System.Boolean)
+  id: MarkRemoved(System.Boolean)
+  parent: ZenECS.Core.Binding.DeltaTracker`1
+  langs:
+  - csharp
+  - vb
+  name: MarkRemoved(bool)
+  nameWithType: DeltaTracker<T>.MarkRemoved(bool)
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>.MarkRemoved(bool)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: MarkRemoved
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+    startLine: 94
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Marks the component as removed. Optionally marks as dirty so
+
+    the view can react to the removal.
+  example: []
+  syntax:
+    content: public void MarkRemoved(bool markDirty = true)
+    parameters:
+    - id: markDirty
+      type: System.Boolean
+      description: If <code>true</code> (default), <xref href="ZenECS.Core.Binding.DeltaTracker%601.Dirty" data-throw-if-not-resolved="false"></xref> is set.
+    content.vb: Public Sub MarkRemoved(markDirty As Boolean = True)
+  overload: ZenECS.Core.Binding.DeltaTracker`1.MarkRemoved*
+  nameWithType.vb: DeltaTracker(Of T).MarkRemoved(Boolean)
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T).MarkRemoved(Boolean)
+  name.vb: MarkRemoved(Boolean)
+- uid: ZenECS.Core.Binding.DeltaTracker`1.ClearDirty
+  commentId: M:ZenECS.Core.Binding.DeltaTracker`1.ClearDirty
+  id: ClearDirty
+  parent: ZenECS.Core.Binding.DeltaTracker`1
+  langs:
+  - csharp
+  - vb
+  name: ClearDirty()
+  nameWithType: DeltaTracker<T>.ClearDirty()
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>.ClearDirty()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ClearDirty
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+    startLine: 107
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Clears the dirty and removed flags after the view has consumed
+
+    the latest state during an apply pass.
+  example: []
+  syntax:
+    content: public void ClearDirty()
+    content.vb: Public Sub ClearDirty()
+  overload: ZenECS.Core.Binding.DeltaTracker`1.ClearDirty*
+  nameWithType.vb: DeltaTracker(Of T).ClearDirty()
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T).ClearDirty()
+- uid: ZenECS.Core.Binding.DeltaTracker`1.ApplyDelta(ZenECS.Core.Binding.ComponentDelta{`0}@)
+  commentId: M:ZenECS.Core.Binding.DeltaTracker`1.ApplyDelta(ZenECS.Core.Binding.ComponentDelta{`0}@)
+  id: ApplyDelta(ZenECS.Core.Binding.ComponentDelta{`0}@)
+  parent: ZenECS.Core.Binding.DeltaTracker`1
+  langs:
+  - csharp
+  - vb
+  name: ApplyDelta(in ComponentDelta<T>)
+  nameWithType: DeltaTracker<T>.ApplyDelta(in ComponentDelta<T>)
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>.ApplyDelta(in ZenECS.Core.Binding.ComponentDelta<T>)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ApplyDelta
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
+    startLine: 124
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: Applies a <xref href="ZenECS.Core.Binding.ComponentDelta%601" data-throw-if-not-resolved="false"></xref> to the tracker.
+  example: []
+  syntax:
+    content: public void ApplyDelta(in ComponentDelta<T> delta)
+    parameters:
+    - id: delta
+      type: ZenECS.Core.Binding.ComponentDelta{{T}}
+      description: The delta describing the component change.
+    content.vb: Public Sub ApplyDelta(delta As ComponentDelta(Of T))
+  overload: ZenECS.Core.Binding.DeltaTracker`1.ApplyDelta*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown when <xref href="ZenECS.Core.Binding.ComponentDelta%601.Kind" data-throw-if-not-resolved="false"></xref> has an unknown value.
+  nameWithType.vb: DeltaTracker(Of T).ApplyDelta(ComponentDelta(Of T))
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T).ApplyDelta(ZenECS.Core.Binding.ComponentDelta(Of T))
+  name.vb: ApplyDelta(ComponentDelta(Of T))
+references:
+- uid: ZenECS.Core.Binding
+  commentId: N:ZenECS.Core.Binding
+  href: ZenECS.html
+  name: ZenECS.Core.Binding
+  nameWithType: ZenECS.Core.Binding
+  fullName: ZenECS.Core.Binding
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: ZenECS.Core.Binding.DeltaTracker`1.Has
+  commentId: F:ZenECS.Core.Binding.DeltaTracker`1.Has
+  href: ZenECS.Core.Binding.DeltaTracker-1.html#ZenECS_Core_Binding_DeltaTracker_1_Has
+  name: Has
+  nameWithType: DeltaTracker<T>.Has
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>.Has
+  nameWithType.vb: DeltaTracker(Of T).Has
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T).Has
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: ZenECS.Core.Binding.DeltaTracker`1.Dirty
+  commentId: F:ZenECS.Core.Binding.DeltaTracker`1.Dirty
+  href: ZenECS.Core.Binding.DeltaTracker-1.html#ZenECS_Core_Binding_DeltaTracker_1_Dirty
+  name: Dirty
+  nameWithType: DeltaTracker<T>.Dirty
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>.Dirty
+  nameWithType.vb: DeltaTracker(Of T).Dirty
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T).Dirty
+- uid: ZenECS.Core.Binding.DeltaTracker`1.NeedsApply*
+  commentId: Overload:ZenECS.Core.Binding.DeltaTracker`1.NeedsApply
+  href: ZenECS.Core.Binding.DeltaTracker-1.html#ZenECS_Core_Binding_DeltaTracker_1_NeedsApply
+  name: NeedsApply
+  nameWithType: DeltaTracker<T>.NeedsApply
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>.NeedsApply
+  nameWithType.vb: DeltaTracker(Of T).NeedsApply
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T).NeedsApply
+- uid: ZenECS.Core.Binding.DeltaTracker`1.Reset*
+  commentId: Overload:ZenECS.Core.Binding.DeltaTracker`1.Reset
+  href: ZenECS.Core.Binding.DeltaTracker-1.html#ZenECS_Core_Binding_DeltaTracker_1_Reset
+  name: Reset
+  nameWithType: DeltaTracker<T>.Reset
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>.Reset
+  nameWithType.vb: DeltaTracker(Of T).Reset
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T).Reset
+- uid: ZenECS.Core.Binding.DeltaTracker`1.Set*
+  commentId: Overload:ZenECS.Core.Binding.DeltaTracker`1.Set
+  href: ZenECS.Core.Binding.DeltaTracker-1.html#ZenECS_Core_Binding_DeltaTracker_1_Set__0__System_Boolean_
+  name: Set
+  nameWithType: DeltaTracker<T>.Set
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>.Set
+  nameWithType.vb: DeltaTracker(Of T).Set
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T).Set
+- uid: ZenECS.Core.Binding.DeltaTracker`1.MarkRemoved*
+  commentId: Overload:ZenECS.Core.Binding.DeltaTracker`1.MarkRemoved
+  href: ZenECS.Core.Binding.DeltaTracker-1.html#ZenECS_Core_Binding_DeltaTracker_1_MarkRemoved_System_Boolean_
+  name: MarkRemoved
+  nameWithType: DeltaTracker<T>.MarkRemoved
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>.MarkRemoved
+  nameWithType.vb: DeltaTracker(Of T).MarkRemoved
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T).MarkRemoved
+- uid: ZenECS.Core.Binding.DeltaTracker`1.ClearDirty*
+  commentId: Overload:ZenECS.Core.Binding.DeltaTracker`1.ClearDirty
+  href: ZenECS.Core.Binding.DeltaTracker-1.html#ZenECS_Core_Binding_DeltaTracker_1_ClearDirty
+  name: ClearDirty
+  nameWithType: DeltaTracker<T>.ClearDirty
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>.ClearDirty
+  nameWithType.vb: DeltaTracker(Of T).ClearDirty
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T).ClearDirty
+- uid: ZenECS.Core.Binding.ComponentDelta`1
+  commentId: T:ZenECS.Core.Binding.ComponentDelta`1
+  href: ZenECS.Core.Binding.ComponentDelta-1.html
+  name: ComponentDelta<T>
+  nameWithType: ComponentDelta<T>
+  fullName: ZenECS.Core.Binding.ComponentDelta<T>
+  nameWithType.vb: ComponentDelta(Of T)
+  fullName.vb: ZenECS.Core.Binding.ComponentDelta(Of T)
+  name.vb: ComponentDelta(Of T)
+  spec.csharp:
+  - uid: ZenECS.Core.Binding.ComponentDelta`1
+    name: ComponentDelta
+    href: ZenECS.Core.Binding.ComponentDelta-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.Binding.ComponentDelta`1
+    name: ComponentDelta
+    href: ZenECS.Core.Binding.ComponentDelta-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ZenECS.Core.Binding.ComponentDelta`1.Kind
+  commentId: P:ZenECS.Core.Binding.ComponentDelta`1.Kind
+  href: ZenECS.Core.Binding.ComponentDelta-1.html#ZenECS_Core_Binding_ComponentDelta_1_Kind
+  name: Kind
+  nameWithType: ComponentDelta<T>.Kind
+  fullName: ZenECS.Core.Binding.ComponentDelta<T>.Kind
+  nameWithType.vb: ComponentDelta(Of T).Kind
+  fullName.vb: ZenECS.Core.Binding.ComponentDelta(Of T).Kind
+- uid: System.ArgumentOutOfRangeException
+  commentId: T:System.ArgumentOutOfRangeException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
+  name: ArgumentOutOfRangeException
+  nameWithType: ArgumentOutOfRangeException
+  fullName: System.ArgumentOutOfRangeException
+- uid: ZenECS.Core.Binding.DeltaTracker`1.ApplyDelta*
+  commentId: Overload:ZenECS.Core.Binding.DeltaTracker`1.ApplyDelta
+  href: ZenECS.Core.Binding.DeltaTracker-1.html#ZenECS_Core_Binding_DeltaTracker_1_ApplyDelta_ZenECS_Core_Binding_ComponentDelta__0___
+  name: ApplyDelta
+  nameWithType: DeltaTracker<T>.ApplyDelta
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>.ApplyDelta
+  nameWithType.vb: DeltaTracker(Of T).ApplyDelta
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T).ApplyDelta
+- uid: ZenECS.Core.Binding.ComponentDelta{{T}}
+  commentId: T:ZenECS.Core.Binding.ComponentDelta{`0}
+  parent: ZenECS.Core.Binding
+  definition: ZenECS.Core.Binding.ComponentDelta`1
+  href: ZenECS.Core.Binding.ComponentDelta-1.html
+  name: ComponentDelta<T>
+  nameWithType: ComponentDelta<T>
+  fullName: ZenECS.Core.Binding.ComponentDelta<T>
+  nameWithType.vb: ComponentDelta(Of T)
+  fullName.vb: ZenECS.Core.Binding.ComponentDelta(Of T)
+  name.vb: ComponentDelta(Of T)
+  spec.csharp:
+  - uid: ZenECS.Core.Binding.ComponentDelta`1
+    name: ComponentDelta
+    href: ZenECS.Core.Binding.ComponentDelta-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.Binding.ComponentDelta`1
+    name: ComponentDelta
+    href: ZenECS.Core.Binding.ComponentDelta-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

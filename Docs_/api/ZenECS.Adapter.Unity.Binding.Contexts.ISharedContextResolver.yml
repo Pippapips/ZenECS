@@ -1,0 +1,463 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+  commentId: T:ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+  id: ISharedContextResolver
+  parent: ZenECS.Adapter.Unity.Binding.Contexts
+  children:
+  - ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.AddContext(ZenECS.Core.Binding.IContext)
+  - ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.RemoveAllContexts
+  - ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.RemoveContext(ZenECS.Core.Binding.IContext)
+  - ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.Resolve(ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset)
+  - ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.Resolve``1
+  langs:
+  - csharp
+  - vb
+  name: ISharedContextResolver
+  nameWithType: ISharedContextResolver
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/ISharedContextResolver.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ISharedContextResolver
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/ISharedContextResolver.cs
+    startLine: 43
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Binding.Contexts
+  summary: Resolves shared <xref href="ZenECS.Core.Binding.IContext" data-throw-if-not-resolved="false"></xref> instances from marker assets or type.
+  remarks: >-
+    <p>
+
+    This abstraction allows binding code to obtain shared/global context
+
+    instances without knowing how they are created or stored. A concrete
+
+    implementation may:
+
+    </p>
+
+    <ul><li>
+
+    Use a dependency injection container (for example, Zenject) to resolve
+
+    <xref href="ZenECS.Core.Binding.IContext" data-throw-if-not-resolved="false"></xref> instances.
+
+    </li><li>
+
+    Maintain an internal dictionary that maps context types to instances.
+
+    </li></ul>
+
+    <p>
+
+    The interface does not define any lifetime policy; it is up to the
+
+    implementation and surrounding application code to decide when
+
+    contexts are created and disposed.
+
+    </p>
+  example: []
+  syntax:
+    content: public interface ISharedContextResolver
+    content.vb: Public Interface ISharedContextResolver
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.Resolve(ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset)
+  commentId: M:ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.Resolve(ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset)
+  id: Resolve(ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset)
+  parent: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+  langs:
+  - csharp
+  - vb
+  name: Resolve(SharedContextAsset)
+  nameWithType: ISharedContextResolver.Resolve(SharedContextAsset)
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.Resolve(ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/ISharedContextResolver.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Resolve
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/ISharedContextResolver.cs
+    startLine: 58
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Binding.Contexts
+  summary: Resolves a shared context from a marker asset.
+  example: []
+  syntax:
+    content: IContext? Resolve(SharedContextAsset marker)
+    parameters:
+    - id: marker
+      type: ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset
+      description: >-
+        The <xref href="ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset" data-throw-if-not-resolved="false"></xref> that describes the shared
+
+        context to resolve. Implementations typically use
+
+        <xref href="ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset.ContextType" data-throw-if-not-resolved="false"></xref> to identify the
+
+        concrete <xref href="ZenECS.Core.Binding.IContext" data-throw-if-not-resolved="false"></xref> type.
+    return:
+      type: ZenECS.Core.Binding.IContext
+      description: >-
+        The resolved <xref href="ZenECS.Core.Binding.IContext" data-throw-if-not-resolved="false"></xref> instance, or <code>null</code> if
+
+        the marker is <code>null</code> or no matching context is available.
+    content.vb: Function Resolve(marker As SharedContextAsset) As IContext
+  overload: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.Resolve*
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.Resolve``1
+  commentId: M:ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.Resolve``1
+  id: Resolve``1
+  parent: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+  langs:
+  - csharp
+  - vb
+  name: Resolve<T>()
+  nameWithType: ISharedContextResolver.Resolve<T>()
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.Resolve<T>()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/ISharedContextResolver.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Resolve
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/ISharedContextResolver.cs
+    startLine: 70
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Binding.Contexts
+  summary: Resolves a shared context by its concrete type.
+  example: []
+  syntax:
+    content: 'IContext? Resolve<T>() where T : IContext'
+    typeParameters:
+    - id: T
+      description: The concrete <xref href="ZenECS.Core.Binding.IContext" data-throw-if-not-resolved="false"></xref> type to resolve.
+    return:
+      type: ZenECS.Core.Binding.IContext
+      description: >-
+        The resolved <code class="typeparamref">T</code> instance, or <code>null</code> if
+
+        no matching context is available.
+    content.vb: Function Resolve(Of T As IContext)() As IContext
+  overload: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.Resolve*
+  nameWithType.vb: ISharedContextResolver.Resolve(Of T)()
+  fullName.vb: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.Resolve(Of T)()
+  name.vb: Resolve(Of T)()
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.AddContext(ZenECS.Core.Binding.IContext)
+  commentId: M:ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.AddContext(ZenECS.Core.Binding.IContext)
+  id: AddContext(ZenECS.Core.Binding.IContext)
+  parent: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+  langs:
+  - csharp
+  - vb
+  name: AddContext(IContext?)
+  nameWithType: ISharedContextResolver.AddContext(IContext?)
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.AddContext(ZenECS.Core.Binding.IContext?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/ISharedContextResolver.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: AddContext
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/ISharedContextResolver.cs
+    startLine: 87
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Binding.Contexts
+  summary: Adds a context instance to the resolver.
+  remarks: >-
+    <p>
+
+    In implementations backed by a DI container, this method may be a
+
+    no-op because the container is responsible for managing instances.
+
+    In dictionary-based implementations it typically registers or
+
+    replaces the context under its runtime type.
+
+    </p>
+  example: []
+  syntax:
+    content: void AddContext(IContext? context)
+    parameters:
+    - id: context
+      type: ZenECS.Core.Binding.IContext
+      description: >-
+        The context instance to register. If <code>null</code>, the call is
+
+        ignored.
+    content.vb: Sub AddContext(context As IContext)
+  overload: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.AddContext*
+  nameWithType.vb: ISharedContextResolver.AddContext(IContext)
+  fullName.vb: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.AddContext(ZenECS.Core.Binding.IContext)
+  name.vb: AddContext(IContext)
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.RemoveContext(ZenECS.Core.Binding.IContext)
+  commentId: M:ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.RemoveContext(ZenECS.Core.Binding.IContext)
+  id: RemoveContext(ZenECS.Core.Binding.IContext)
+  parent: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+  langs:
+  - csharp
+  - vb
+  name: RemoveContext(IContext?)
+  nameWithType: ISharedContextResolver.RemoveContext(IContext?)
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.RemoveContext(ZenECS.Core.Binding.IContext?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/ISharedContextResolver.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RemoveContext
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/ISharedContextResolver.cs
+    startLine: 103
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Binding.Contexts
+  summary: Removes a context instance from the resolver.
+  remarks: >-
+    <p>
+
+    In dictionary-based implementations this usually removes the entry
+
+    associated with the context's runtime type. DI-based implementations
+
+    may treat this as a no-op.
+
+    </p>
+  example: []
+  syntax:
+    content: void RemoveContext(IContext? context)
+    parameters:
+    - id: context
+      type: ZenECS.Core.Binding.IContext
+      description: >-
+        The context instance to remove. If <code>null</code>, the call is
+
+        ignored.
+    content.vb: Sub RemoveContext(context As IContext)
+  overload: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.RemoveContext*
+  nameWithType.vb: ISharedContextResolver.RemoveContext(IContext)
+  fullName.vb: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.RemoveContext(ZenECS.Core.Binding.IContext)
+  name.vb: RemoveContext(IContext)
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.RemoveAllContexts
+  commentId: M:ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.RemoveAllContexts
+  id: RemoveAllContexts
+  parent: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+  langs:
+  - csharp
+  - vb
+  name: RemoveAllContexts()
+  nameWithType: ISharedContextResolver.RemoveAllContexts()
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.RemoveAllContexts()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/ISharedContextResolver.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RemoveAllContexts
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/ISharedContextResolver.cs
+    startLine: 115
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Binding.Contexts
+  summary: Clears all registered contexts from the resolver.
+  remarks: >-
+    <p>
+
+    Dictionary-based implementations typically remove all entries,
+
+    effectively resetting the internal registry. DI-based implementations
+
+    may treat this as a no-op if lifetime is managed externally.
+
+    </p>
+  example: []
+  syntax:
+    content: void RemoveAllContexts()
+    content.vb: Sub RemoveAllContexts()
+  overload: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.RemoveAllContexts*
+references:
+- uid: ZenECS.Core.Binding.IContext
+  commentId: T:ZenECS.Core.Binding.IContext
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IContext.html
+  name: IContext
+  nameWithType: IContext
+  fullName: ZenECS.Core.Binding.IContext
+- uid: ZenECS.Adapter.Unity.Binding.Contexts
+  commentId: N:ZenECS.Adapter.Unity.Binding.Contexts
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.Binding.Contexts
+  nameWithType: ZenECS.Adapter.Unity.Binding.Contexts
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding
+    name: Binding
+    href: ZenECS.Adapter.Unity.Binding.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts
+    name: Contexts
+    href: ZenECS.Adapter.Unity.Binding.Contexts.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding
+    name: Binding
+    href: ZenECS.Adapter.Unity.Binding.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts
+    name: Contexts
+    href: ZenECS.Adapter.Unity.Binding.Contexts.html
+- uid: ZenECS.Core.Binding
+  commentId: N:ZenECS.Core.Binding
+  href: ZenECS.html
+  name: ZenECS.Core.Binding
+  nameWithType: ZenECS.Core.Binding
+  fullName: ZenECS.Core.Binding
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset
+  commentId: T:ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset
+  parent: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  href: ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset.html
+  name: SharedContextAsset
+  nameWithType: SharedContextAsset
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset.ContextType
+  commentId: P:ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset.ContextType
+  href: ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset.html#ZenECS_Adapter_Unity_Binding_Contexts_Assets_SharedContextAsset_ContextType
+  name: ContextType
+  nameWithType: SharedContextAsset.ContextType
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset.ContextType
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.Resolve*
+  commentId: Overload:ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.Resolve
+  href: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.html#ZenECS_Adapter_Unity_Binding_Contexts_ISharedContextResolver_Resolve_ZenECS_Adapter_Unity_Binding_Contexts_Assets_SharedContextAsset_
+  name: Resolve
+  nameWithType: ISharedContextResolver.Resolve
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.Resolve
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  commentId: N:ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  nameWithType: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding
+    name: Binding
+    href: ZenECS.Adapter.Unity.Binding.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts
+    name: Contexts
+    href: ZenECS.Adapter.Unity.Binding.Contexts.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+    name: Assets
+    href: ZenECS.Adapter.Unity.Binding.Contexts.Assets.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding
+    name: Binding
+    href: ZenECS.Adapter.Unity.Binding.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts
+    name: Contexts
+    href: ZenECS.Adapter.Unity.Binding.Contexts.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+    name: Assets
+    href: ZenECS.Adapter.Unity.Binding.Contexts.Assets.html
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.AddContext*
+  commentId: Overload:ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.AddContext
+  href: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.html#ZenECS_Adapter_Unity_Binding_Contexts_ISharedContextResolver_AddContext_ZenECS_Core_Binding_IContext_
+  name: AddContext
+  nameWithType: ISharedContextResolver.AddContext
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.AddContext
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.RemoveContext*
+  commentId: Overload:ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.RemoveContext
+  href: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.html#ZenECS_Adapter_Unity_Binding_Contexts_ISharedContextResolver_RemoveContext_ZenECS_Core_Binding_IContext_
+  name: RemoveContext
+  nameWithType: ISharedContextResolver.RemoveContext
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.RemoveContext
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.RemoveAllContexts*
+  commentId: Overload:ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.RemoveAllContexts
+  href: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.html#ZenECS_Adapter_Unity_Binding_Contexts_ISharedContextResolver_RemoveAllContexts
+  name: RemoveAllContexts
+  nameWithType: ISharedContextResolver.RemoveAllContexts
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.RemoveAllContexts

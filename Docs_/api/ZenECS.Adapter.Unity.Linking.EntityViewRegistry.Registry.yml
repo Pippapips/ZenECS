@@ -1,0 +1,952 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry
+  commentId: T:ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry
+  id: EntityViewRegistry.Registry
+  parent: ZenECS.Adapter.Unity.Linking
+  children:
+  - ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Callback(ZenECS.Core.Entity,System.Action{ZenECS.Adapter.Unity.Linking.EntityLink})
+  - ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.EnumerateViews(System.Boolean)
+  - ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.HasLink(ZenECS.Core.Entity)
+  - ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Register(ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink)
+  - ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.TryGet(ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink@)
+  - ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Unregister(ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink)
+  - ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.UnregisterAll
+  langs:
+  - csharp
+  - vb
+  name: EntityViewRegistry.Registry
+  nameWithType: EntityViewRegistry.Registry
+  fullName: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry
+  type: Class
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Registry
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
+    startLine: 108
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Linking
+  summary: Per-world mapping from <xref href="ZenECS.Core.Entity" data-throw-if-not-resolved="false"></xref> to <xref href="ZenECS.Adapter.Unity.Linking.EntityLink" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public sealed class EntityViewRegistry.Registry
+    content.vb: Public NotInheritable Class EntityViewRegistry.Registry
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Register(ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink)
+  commentId: M:ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Register(ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink)
+  id: Register(ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink)
+  parent: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry
+  langs:
+  - csharp
+  - vb
+  name: Register(Entity, EntityLink)
+  nameWithType: EntityViewRegistry.Registry.Register(Entity, EntityLink)
+  fullName: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Register(ZenECS.Core.Entity, ZenECS.Adapter.Unity.Linking.EntityLink)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Register
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
+    startLine: 130
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Linking
+  summary: Registers a link for the given entity.
+  remarks: >-
+    <p>
+
+    Any previously registered link for <code class="paramref">e</code> in this
+
+    registry will be replaced.
+
+    </p>
+  example: []
+  syntax:
+    content: public void Register(Entity e, EntityLink link)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: The entity to associate with the link.
+    - id: link
+      type: ZenECS.Adapter.Unity.Linking.EntityLink
+      description: The <xref href="ZenECS.Adapter.Unity.Linking.EntityLink" data-throw-if-not-resolved="false"></xref> to register.
+    content.vb: Public Sub Register(e As Entity, link As EntityLink)
+  overload: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Register*
+- uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Unregister(ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink)
+  commentId: M:ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Unregister(ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink)
+  id: Unregister(ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink)
+  parent: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry
+  langs:
+  - csharp
+  - vb
+  name: Unregister(Entity, EntityLink)
+  nameWithType: EntityViewRegistry.Registry.Unregister(Entity, EntityLink)
+  fullName: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Unregister(ZenECS.Core.Entity, ZenECS.Adapter.Unity.Linking.EntityLink)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Unregister
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
+    startLine: 149
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Linking
+  summary: Unregisters a specific link for the given entity.
+  remarks: >-
+    <p>
+
+    If the stored link equals <code class="paramref">link</code>, the entity
+
+    is removed from the internal map.
+
+    </p>
+  example: []
+  syntax:
+    content: public void Unregister(Entity e, EntityLink link)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: The entity whose link should be removed.
+    - id: link
+      type: ZenECS.Adapter.Unity.Linking.EntityLink
+      description: >-
+        The <xref href="ZenECS.Adapter.Unity.Linking.EntityLink" data-throw-if-not-resolved="false"></xref> instance to unregister. If this
+
+        does not match the stored link, no action is taken.
+    content.vb: Public Sub Unregister(e As Entity, link As EntityLink)
+  overload: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Unregister*
+- uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.UnregisterAll
+  commentId: M:ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.UnregisterAll
+  id: UnregisterAll
+  parent: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry
+  langs:
+  - csharp
+  - vb
+  name: UnregisterAll()
+  nameWithType: EntityViewRegistry.Registry.UnregisterAll()
+  fullName: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.UnregisterAll()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: UnregisterAll
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
+    startLine: 165
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Linking
+  summary: Unregisters all links in this registry.
+  remarks: >-
+    <p>
+
+    This method clears the internal dictionary entirely. It is
+
+    typically used for world-level cleanup when the world is being
+
+    disposed or reset.
+
+    </p>
+  example: []
+  syntax:
+    content: public void UnregisterAll()
+    content.vb: Public Sub UnregisterAll()
+  overload: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.UnregisterAll*
+- uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.TryGet(ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink@)
+  commentId: M:ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.TryGet(ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink@)
+  id: TryGet(ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink@)
+  parent: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry
+  langs:
+  - csharp
+  - vb
+  name: TryGet(Entity, out EntityLink?)
+  nameWithType: EntityViewRegistry.Registry.TryGet(Entity, out EntityLink?)
+  fullName: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.TryGet(ZenECS.Core.Entity, out ZenECS.Adapter.Unity.Linking.EntityLink?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: TryGet
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
+    startLine: 187
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Linking
+  summary: Attempts to retrieve the link registered for an entity.
+  remarks: >-
+    <p>
+
+    The method checks that the link exists, is non-null, and reports
+
+    <xref href="ZenECS.Adapter.Unity.Linking.EntityLink.IsAlive" data-throw-if-not-resolved="false"></xref> as <code>true</code>.
+
+    </p>
+  example: []
+  syntax:
+    content: public bool TryGet(Entity e, out EntityLink? link)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: The entity whose link is requested.
+    - id: link
+      type: ZenECS.Adapter.Unity.Linking.EntityLink
+      description: >-
+        When this method returns, contains the registered
+
+        <xref href="ZenECS.Adapter.Unity.Linking.EntityLink" data-throw-if-not-resolved="false"></xref> if found and alive; otherwise <code>null</code>.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if an alive link was found; otherwise <code>false</code>.
+    content.vb: Public Function TryGet(e As Entity, link As EntityLink) As Boolean
+  overload: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.TryGet*
+  nameWithType.vb: EntityViewRegistry.Registry.TryGet(Entity, EntityLink)
+  fullName.vb: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.TryGet(ZenECS.Core.Entity, ZenECS.Adapter.Unity.Linking.EntityLink)
+  name.vb: TryGet(Entity, EntityLink)
+- uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Callback(ZenECS.Core.Entity,System.Action{ZenECS.Adapter.Unity.Linking.EntityLink})
+  commentId: M:ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Callback(ZenECS.Core.Entity,System.Action{ZenECS.Adapter.Unity.Linking.EntityLink})
+  id: Callback(ZenECS.Core.Entity,System.Action{ZenECS.Adapter.Unity.Linking.EntityLink})
+  parent: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry
+  langs:
+  - csharp
+  - vb
+  name: Callback(Entity, Action<EntityLink>)
+  nameWithType: EntityViewRegistry.Registry.Callback(Entity, Action<EntityLink>)
+  fullName: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Callback(ZenECS.Core.Entity, System.Action<ZenECS.Adapter.Unity.Linking.EntityLink>)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Callback
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
+    startLine: 212
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Linking
+  summary: >-
+    Invokes a callback for the link associated with the specified
+
+    entity, if it exists and is alive.
+  remarks: >-
+    <p>
+
+    If no link is found or the link is null or not alive, the
+
+    callback is not invoked.
+
+    </p>
+  example: []
+  syntax:
+    content: public void Callback(Entity e, Action<EntityLink> act)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: The entity whose link should be used.
+    - id: act
+      type: System.Action{ZenECS.Adapter.Unity.Linking.EntityLink}
+      description: The action to invoke with the <xref href="ZenECS.Adapter.Unity.Linking.EntityLink" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Sub Callback(e As Entity, act As Action(Of EntityLink))
+  overload: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Callback*
+  nameWithType.vb: EntityViewRegistry.Registry.Callback(Entity, Action(Of EntityLink))
+  fullName.vb: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Callback(ZenECS.Core.Entity, System.Action(Of ZenECS.Adapter.Unity.Linking.EntityLink))
+  name.vb: Callback(Entity, Action(Of EntityLink))
+- uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.HasLink(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.HasLink(ZenECS.Core.Entity)
+  id: HasLink(ZenECS.Core.Entity)
+  parent: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry
+  langs:
+  - csharp
+  - vb
+  name: HasLink(Entity)
+  nameWithType: EntityViewRegistry.Registry.HasLink(Entity)
+  fullName: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.HasLink(ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: HasLink
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
+    startLine: 227
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Linking
+  summary: >-
+    Determines whether there is an alive link registered for the
+
+    specified entity.
+  example: []
+  syntax:
+    content: public bool HasLink(Entity e)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: The entity to check.
+    return:
+      type: System.Boolean
+      description: >-
+        <code>true</code> if an alive <xref href="ZenECS.Adapter.Unity.Linking.EntityLink" data-throw-if-not-resolved="false"></xref> is registered
+
+        for <code class="paramref">e</code>; otherwise <code>false</code>.
+    content.vb: Public Function HasLink(e As Entity) As Boolean
+  overload: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.HasLink*
+- uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.EnumerateViews(System.Boolean)
+  commentId: M:ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.EnumerateViews(System.Boolean)
+  id: EnumerateViews(System.Boolean)
+  parent: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry
+  langs:
+  - csharp
+  - vb
+  name: EnumerateViews(bool)
+  nameWithType: EntityViewRegistry.Registry.EnumerateViews(bool)
+  fullName: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.EnumerateViews(bool)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: EnumerateViews
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
+    startLine: 275
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Linking
+  summary: Enumerates all entity-link pairs registered in this registry.
+  remarks: >-
+    <p>
+
+    This method iterates through all entries in the internal dictionary
+
+    and filters out entries based on <code class="paramref">aliveOnly</code>:
+
+    </p>
+
+    <ul><li>
+
+    When <code class="paramref">aliveOnly</code> is <code>true</code>, only links that are
+
+    non-null and report <xref href="ZenECS.Adapter.Unity.Linking.EntityLink.IsAlive" data-throw-if-not-resolved="false"></xref> as <code>true</code>
+
+    are included.
+
+    </li><li>
+
+    When <code class="paramref">aliveOnly</code> is <code>false</code>, all non-null links
+
+    are included regardless of their alive status.
+
+    </li></ul>
+
+    <p>
+
+    The enumeration is performed lazily, so modifications to the registry
+
+    during enumeration may affect the results. It is recommended to avoid
+
+    modifying the registry while iterating over the results.
+
+    </p>
+
+    <p>
+
+    Typical usage:
+
+    </p>
+
+
+    <pre><code class="lang-csharp">var registry = EntityViewRegistry.For(world);
+
+    foreach (var (entity, link) in registry.EnumerateViews(aliveOnly: true))
+
+    {
+        Debug.Log($"Entity {entity.Id} → {link.gameObject.name}");
+    }</code></pre>
+  example: []
+  syntax:
+    content: public IEnumerable<(Entity Entity, EntityLink Link)> EnumerateViews(bool aliveOnly = false)
+    parameters:
+    - id: aliveOnly
+      type: System.Boolean
+      description: >-
+        If <code>true</code>, only includes links where <xref href="ZenECS.Adapter.Unity.Linking.EntityLink.IsAlive" data-throw-if-not-resolved="false"></xref>
+
+        is <code>true</code>. If <code>false</code>, includes all non-null links regardless
+
+        of their alive status.
+    return:
+      type: System.Collections.Generic.IEnumerable{System.ValueTuple{ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink}}
+      description: >-
+        An enumerable sequence of tuples containing the <xref href="ZenECS.Core.Entity" data-throw-if-not-resolved="false"></xref>
+
+        and its associated <xref href="ZenECS.Adapter.Unity.Linking.EntityLink" data-throw-if-not-resolved="false"></xref>. The filtering behavior
+
+        depends on <code class="paramref">aliveOnly</code>.
+    content.vb: Public Function EnumerateViews(aliveOnly As Boolean = False) As IEnumerable(Of (Entity As Entity, Link As EntityLink))
+  overload: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.EnumerateViews*
+  nameWithType.vb: EntityViewRegistry.Registry.EnumerateViews(Boolean)
+  fullName.vb: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.EnumerateViews(Boolean)
+  name.vb: EnumerateViews(Boolean)
+references:
+- uid: ZenECS.Core.Entity
+  commentId: T:ZenECS.Core.Entity
+  parent: ZenECS.Core
+  href: ZenECS.Core.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: ZenECS.Core.Entity
+- uid: ZenECS.Adapter.Unity.Linking.EntityLink
+  commentId: T:ZenECS.Adapter.Unity.Linking.EntityLink
+  parent: ZenECS.Adapter.Unity.Linking
+  href: ZenECS.Adapter.Unity.Linking.EntityLink.html
+  name: EntityLink
+  nameWithType: EntityLink
+  fullName: ZenECS.Adapter.Unity.Linking.EntityLink
+- uid: ZenECS.Adapter.Unity.Linking
+  commentId: N:ZenECS.Adapter.Unity.Linking
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.Linking
+  nameWithType: ZenECS.Adapter.Unity.Linking
+  fullName: ZenECS.Adapter.Unity.Linking
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Linking
+    name: Linking
+    href: ZenECS.Adapter.Unity.Linking.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Linking
+    name: Linking
+    href: ZenECS.Adapter.Unity.Linking.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Register*
+  commentId: Overload:ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Register
+  href: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.html#ZenECS_Adapter_Unity_Linking_EntityViewRegistry_Registry_Register_ZenECS_Core_Entity_ZenECS_Adapter_Unity_Linking_EntityLink_
+  name: Register
+  nameWithType: EntityViewRegistry.Registry.Register
+  fullName: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Register
+- uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Unregister*
+  commentId: Overload:ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Unregister
+  href: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.html#ZenECS_Adapter_Unity_Linking_EntityViewRegistry_Registry_Unregister_ZenECS_Core_Entity_ZenECS_Adapter_Unity_Linking_EntityLink_
+  name: Unregister
+  nameWithType: EntityViewRegistry.Registry.Unregister
+  fullName: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Unregister
+- uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.UnregisterAll*
+  commentId: Overload:ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.UnregisterAll
+  href: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.html#ZenECS_Adapter_Unity_Linking_EntityViewRegistry_Registry_UnregisterAll
+  name: UnregisterAll
+  nameWithType: EntityViewRegistry.Registry.UnregisterAll
+  fullName: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.UnregisterAll
+- uid: ZenECS.Adapter.Unity.Linking.EntityLink.IsAlive
+  commentId: P:ZenECS.Adapter.Unity.Linking.EntityLink.IsAlive
+  href: ZenECS.Adapter.Unity.Linking.EntityLink.html#ZenECS_Adapter_Unity_Linking_EntityLink_IsAlive
+  name: IsAlive
+  nameWithType: EntityLink.IsAlive
+  fullName: ZenECS.Adapter.Unity.Linking.EntityLink.IsAlive
+- uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.TryGet*
+  commentId: Overload:ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.TryGet
+  href: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.html#ZenECS_Adapter_Unity_Linking_EntityViewRegistry_Registry_TryGet_ZenECS_Core_Entity_ZenECS_Adapter_Unity_Linking_EntityLink__
+  name: TryGet
+  nameWithType: EntityViewRegistry.Registry.TryGet
+  fullName: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.TryGet
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Callback*
+  commentId: Overload:ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Callback
+  href: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.html#ZenECS_Adapter_Unity_Linking_EntityViewRegistry_Registry_Callback_ZenECS_Core_Entity_System_Action_ZenECS_Adapter_Unity_Linking_EntityLink__
+  name: Callback
+  nameWithType: EntityViewRegistry.Registry.Callback
+  fullName: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.Callback
+- uid: System.Action{ZenECS.Adapter.Unity.Linking.EntityLink}
+  commentId: T:System.Action{ZenECS.Adapter.Unity.Linking.EntityLink}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<EntityLink>
+  nameWithType: Action<EntityLink>
+  fullName: System.Action<ZenECS.Adapter.Unity.Linking.EntityLink>
+  nameWithType.vb: Action(Of EntityLink)
+  fullName.vb: System.Action(Of ZenECS.Adapter.Unity.Linking.EntityLink)
+  name.vb: Action(Of EntityLink)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: ZenECS.Adapter.Unity.Linking.EntityLink
+    name: EntityLink
+    href: ZenECS.Adapter.Unity.Linking.EntityLink.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Adapter.Unity.Linking.EntityLink
+    name: EntityLink
+    href: ZenECS.Adapter.Unity.Linking.EntityLink.html
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.HasLink*
+  commentId: Overload:ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.HasLink
+  href: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.html#ZenECS_Adapter_Unity_Linking_EntityViewRegistry_Registry_HasLink_ZenECS_Core_Entity_
+  name: HasLink
+  nameWithType: EntityViewRegistry.Registry.HasLink
+  fullName: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.HasLink
+- uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.EnumerateViews*
+  commentId: Overload:ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.EnumerateViews
+  href: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.html#ZenECS_Adapter_Unity_Linking_EntityViewRegistry_Registry_EnumerateViews_System_Boolean_
+  name: EnumerateViews
+  nameWithType: EntityViewRegistry.Registry.EnumerateViews
+  fullName: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.EnumerateViews
+- uid: System.Collections.Generic.IEnumerable{System.ValueTuple{ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink}}
+  commentId: T:System.Collections.Generic.IEnumerable{System.ValueTuple{ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<(Entity Entity, EntityLink Link)>
+  nameWithType: IEnumerable<(Entity Entity, EntityLink Link)>
+  fullName: System.Collections.Generic.IEnumerable<(ZenECS.Core.Entity Entity, ZenECS.Adapter.Unity.Linking.EntityLink Link)>
+  nameWithType.vb: IEnumerable(Of (Entity As Entity, Link As EntityLink))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of (Entity As ZenECS.Core.Entity, Link As ZenECS.Adapter.Unity.Linking.EntityLink))
+  name.vb: IEnumerable(Of (Entity As Entity, Link As EntityLink))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: " "
+  - uid: System.ValueTuple{ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink}.Entity
+    name: Entity
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-zenecs.core.entity,zenecs.adapter.unity.linking.entitylink-.entity
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Adapter.Unity.Linking.EntityLink
+    name: EntityLink
+    href: ZenECS.Adapter.Unity.Linking.EntityLink.html
+  - name: " "
+  - uid: System.ValueTuple{ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink}.Link
+    name: Link
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-zenecs.core.entity,zenecs.adapter.unity.linking.entitylink-.link
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink}.Entity
+    name: Entity
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-zenecs.core.entity,zenecs.adapter.unity.linking.entitylink-.entity
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{ZenECS.Core.Entity,ZenECS.Adapter.Unity.Linking.EntityLink}.Link
+    name: Link
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-zenecs.core.entity,zenecs.adapter.unity.linking.entitylink-.link
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: ZenECS.Adapter.Unity.Linking.EntityLink
+    name: EntityLink
+    href: ZenECS.Adapter.Unity.Linking.EntityLink.html
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

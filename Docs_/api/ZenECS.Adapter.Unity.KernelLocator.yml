@@ -1,0 +1,1906 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity.KernelLocator
+  commentId: T:ZenECS.Adapter.Unity.KernelLocator
+  id: KernelLocator
+  parent: ZenECS.Adapter.Unity
+  children:
+  - ZenECS.Adapter.Unity.KernelLocator.AllWorlds
+  - ZenECS.Adapter.Unity.KernelLocator.AllWorldsById
+  - ZenECS.Adapter.Unity.KernelLocator.AllWorldsByName(System.Boolean)
+  - ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriver(ZenECS.Core.KernelOptions,System.Boolean)
+  - ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions,System.Boolean)
+  - ZenECS.Adapter.Unity.KernelLocator.Current
+  - ZenECS.Adapter.Unity.KernelLocator.CurrentWorld
+  - ZenECS.Adapter.Unity.KernelLocator.EnsureWorld(System.String,System.Boolean)
+  - ZenECS.Adapter.Unity.KernelLocator.EnsureWorld(System.String,System.Collections.Generic.IEnumerable{System.String},System.Boolean)
+  - ZenECS.Adapter.Unity.KernelLocator.FindByAllTags(System.String[])
+  - ZenECS.Adapter.Unity.KernelLocator.FindByAnyTag(System.String[])
+  - ZenECS.Adapter.Unity.KernelLocator.FindByName(System.String)
+  - ZenECS.Adapter.Unity.KernelLocator.FindByNamePrefix(System.String)
+  - ZenECS.Adapter.Unity.KernelLocator.FindByTag(System.String)
+  - ZenECS.Adapter.Unity.KernelLocator.SetCurrentWorld(ZenECS.Core.IWorld)
+  - ZenECS.Adapter.Unity.KernelLocator.TryGetCurrent(ZenECS.Core.IKernel@)
+  - ZenECS.Adapter.Unity.KernelLocator.TryGetWorldById(ZenECS.Core.WorldId,ZenECS.Core.IWorld@)
+  - ZenECS.Adapter.Unity.KernelLocator.TryGetWorldByName(System.String,ZenECS.Core.IWorld@)
+  - ZenECS.Adapter.Unity.KernelLocator.TryGetWorldByTag(System.String,ZenECS.Core.IWorld@)
+  langs:
+  - csharp
+  - vb
+  name: KernelLocator
+  nameWithType: KernelLocator
+  fullName: ZenECS.Adapter.Unity.KernelLocator
+  type: Class
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: KernelLocator
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 54
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Global-access gateway for <xref href="ZenECS.Core.IKernel" data-throw-if-not-resolved="false"></xref> and multi-world helpers.
+  remarks: >-
+    <p>
+
+    Kernel resolution priority:
+
+    </p>
+
+    <ol><li>
+
+    If <xref href="ZenECS.Adapter.Unity.ZenEcsUnityBridge.Kernel" data-throw-if-not-resolved="false"></xref> is already set, it is used.
+
+    </li><li>
+
+    Otherwise, search the scene for an <xref href="ZenECS.Adapter.Unity.EcsDriver" data-throw-if-not-resolved="false"></xref> and use its
+
+    <xref href="ZenECS.Adapter.Unity.EcsDriver.Kernel" data-throw-if-not-resolved="false"></xref> if available.
+
+    </li><li>
+
+    If neither exists, automatically create a new <xref href="ZenECS.Adapter.Unity.EcsDriver" data-throw-if-not-resolved="false"></xref>
+
+    GameObject (optionally marked GameObject.DontDestroyOnLoad)
+
+    and create a kernel from it.
+
+    </li></ol>
+
+    <p>
+
+    The class also provides helpers for discovering and creating worlds by
+
+    name or tags, as well as snapshot-style dictionary views of all worlds.
+
+    </p>
+  example: []
+  syntax:
+    content: public static class KernelLocator
+    content.vb: Public Module KernelLocator
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: ZenECS.Adapter.Unity.KernelLocator.TryGetCurrent(ZenECS.Core.IKernel@)
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.TryGetCurrent(ZenECS.Core.IKernel@)
+  id: TryGetCurrent(ZenECS.Core.IKernel@)
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: TryGetCurrent(out IKernel?)
+  nameWithType: KernelLocator.TryGetCurrent(out IKernel?)
+  fullName: ZenECS.Adapter.Unity.KernelLocator.TryGetCurrent(out ZenECS.Core.IKernel?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: TryGetCurrent
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 91
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Attempts to get the current active ZenECS kernel without throwing an exception.
+  remarks: >-
+    <p>
+
+    Resolution order:
+
+    </p>
+
+    <ol><li>
+
+    Cached kernel stored in this locator.
+
+    </li><li>
+
+    <xref href="ZenECS.Adapter.Unity.ZenEcsUnityBridge.Kernel" data-throw-if-not-resolved="false"></xref>, if assigned.
+
+    </li><li>
+
+    <xref href="ZenECS.Adapter.Unity.EcsDriver" data-throw-if-not-resolved="false"></xref> in the scene (first found). If the driver
+
+    exists but its <xref href="ZenECS.Adapter.Unity.EcsDriver.Kernel" data-throw-if-not-resolved="false"></xref> is <code>null</code>, the
+
+    kernel is automatically created via EcsDriver.CreateKernel().
+
+    </li><li>
+
+    Automatic creation of an <xref href="ZenECS.Adapter.Unity.EcsDriver" data-throw-if-not-resolved="false"></xref> via
+
+    <xref href="ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions%2cSystem.Boolean)" data-throw-if-not-resolved="false"></xref>, which also creates a
+
+    kernel instance.
+
+    </li></ol>
+  example: []
+  syntax:
+    content: public static bool TryGetCurrent(out IKernel? kernel)
+    parameters:
+    - id: kernel
+      type: ZenECS.Core.IKernel
+      description: >-
+        When this method returns, contains the resolved kernel if found or created;
+
+        otherwise <code>null</code>.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if a kernel was successfully obtained or created; otherwise <code>false</code>.
+    content.vb: Public Shared Function TryGetCurrent(kernel As IKernel) As Boolean
+  overload: ZenECS.Adapter.Unity.KernelLocator.TryGetCurrent*
+  nameWithType.vb: KernelLocator.TryGetCurrent(IKernel)
+  fullName.vb: ZenECS.Adapter.Unity.KernelLocator.TryGetCurrent(ZenECS.Core.IKernel)
+  name.vb: TryGetCurrent(IKernel)
+- uid: ZenECS.Adapter.Unity.KernelLocator.Current
+  commentId: P:ZenECS.Adapter.Unity.KernelLocator.Current
+  id: Current
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: Current
+  nameWithType: KernelLocator.Current
+  fullName: ZenECS.Adapter.Unity.KernelLocator.Current
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Current
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 162
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Gets the current active ZenECS kernel.
+  remarks: >-
+    <p>
+
+    This property uses <xref href="ZenECS.Adapter.Unity.KernelLocator.TryGetCurrent(ZenECS.Core.IKernel%40)" data-throw-if-not-resolved="false"></xref> internally.
+
+    If no kernel can be obtained or created, an <xref href="System.InvalidOperationException" data-throw-if-not-resolved="false"></xref>
+
+    is thrown. For safe access without exceptions, use <xref href="ZenECS.Adapter.Unity.KernelLocator.TryGetCurrent(ZenECS.Core.IKernel%40)" data-throw-if-not-resolved="false"></xref>
+
+    instead.
+
+    </p>
+  example: []
+  syntax:
+    content: public static IKernel Current { get; }
+    parameters: []
+    return:
+      type: ZenECS.Core.IKernel
+    content.vb: Public Shared ReadOnly Property Current As IKernel
+  overload: ZenECS.Adapter.Unity.KernelLocator.Current*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Thrown when no kernel can be obtained or created.
+- uid: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriver(ZenECS.Core.KernelOptions,System.Boolean)
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriver(ZenECS.Core.KernelOptions,System.Boolean)
+  id: CreateEcsDriver(ZenECS.Core.KernelOptions,System.Boolean)
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: CreateEcsDriver(KernelOptions?, bool)
+  nameWithType: KernelLocator.CreateEcsDriver(KernelOptions?, bool)
+  fullName: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriver(ZenECS.Core.KernelOptions?, bool)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: CreateEcsDriver
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 183
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: >-
+    Creates a new <xref href="ZenECS.Adapter.Unity.EcsDriver" data-throw-if-not-resolved="false"></xref> GameObject and optionally
+
+    creates its kernel.
+  example: []
+  syntax:
+    content: public static IKernel? CreateEcsDriver(KernelOptions? options = null, bool dontDestroyOnLoad = true)
+    parameters:
+    - id: options
+      type: ZenECS.Core.KernelOptions
+      description: >-
+        Optional <xref href="ZenECS.Core.KernelOptions" data-throw-if-not-resolved="false"></xref> used when creating the kernel.
+
+        When <code>null</code>, default options are used.
+    - id: dontDestroyOnLoad
+      type: System.Boolean
+      description: >-
+        If <code>true</code>, the created GameObject is marked with
+
+        <xref href="UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: ZenECS.Core.IKernel
+      description: >-
+        The created <xref href="ZenECS.Core.IKernel" data-throw-if-not-resolved="false"></xref> instance, or <code>null</code> if
+
+        kernel creation failed.
+    content.vb: Public Shared Function CreateEcsDriver(options As KernelOptions = Nothing, dontDestroyOnLoad As Boolean = True) As IKernel
+  overload: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriver*
+  nameWithType.vb: KernelLocator.CreateEcsDriver(KernelOptions, Boolean)
+  fullName.vb: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriver(ZenECS.Core.KernelOptions, Boolean)
+  name.vb: CreateEcsDriver(KernelOptions, Boolean)
+- uid: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions,System.Boolean)
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions,System.Boolean)
+  id: CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions,System.Boolean)
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: CreateEcsDriverWithKernel(KernelOptions?, bool)
+  nameWithType: KernelLocator.CreateEcsDriverWithKernel(KernelOptions?, bool)
+  fullName: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions?, bool)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: CreateEcsDriverWithKernel
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 210
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: >-
+    Convenience helper that creates an <xref href="ZenECS.Adapter.Unity.EcsDriver" data-throw-if-not-resolved="false"></xref> and
+
+    immediately initializes its kernel.
+  example: []
+  syntax:
+    content: public static IKernel? CreateEcsDriverWithKernel(KernelOptions? options = null, bool dontDestroyOnLoad = true)
+    parameters:
+    - id: options
+      type: ZenECS.Core.KernelOptions
+      description: Optional <xref href="ZenECS.Core.KernelOptions" data-throw-if-not-resolved="false"></xref> to use for kernel creation.
+    - id: dontDestroyOnLoad
+      type: System.Boolean
+      description: Whether to mark the created GameObject as non-destructible on load.
+    return:
+      type: ZenECS.Core.IKernel
+      description: >-
+        The created <xref href="ZenECS.Core.IKernel" data-throw-if-not-resolved="false"></xref> instance, or <code>null</code> if
+
+        kernel creation failed.
+    content.vb: Public Shared Function CreateEcsDriverWithKernel(options As KernelOptions = Nothing, dontDestroyOnLoad As Boolean = True) As IKernel
+  overload: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel*
+  nameWithType.vb: KernelLocator.CreateEcsDriverWithKernel(KernelOptions, Boolean)
+  fullName.vb: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions, Boolean)
+  name.vb: CreateEcsDriverWithKernel(KernelOptions, Boolean)
+- uid: ZenECS.Adapter.Unity.KernelLocator.CurrentWorld
+  commentId: P:ZenECS.Adapter.Unity.KernelLocator.CurrentWorld
+  id: CurrentWorld
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: CurrentWorld
+  nameWithType: KernelLocator.CurrentWorld
+  fullName: ZenECS.Adapter.Unity.KernelLocator.CurrentWorld
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: CurrentWorld
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 227
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Gets the current world from the active kernel.
+  remarks: >-
+    <p>
+
+    This property is a convenience wrapper around
+
+    <xref href="ZenECS.Core.IKernel.CurrentWorld" data-throw-if-not-resolved="false"></xref> and throws if it is <code>null</code>.
+
+    </p>
+  example: []
+  syntax:
+    content: public static IWorld CurrentWorld { get; }
+    parameters: []
+    return:
+      type: ZenECS.Core.IWorld
+    content.vb: Public Shared ReadOnly Property CurrentWorld As IWorld
+  overload: ZenECS.Adapter.Unity.KernelLocator.CurrentWorld*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Thrown when <xref href="ZenECS.Core.IKernel.CurrentWorld" data-throw-if-not-resolved="false"></xref> is <code>null</code>.
+- uid: ZenECS.Adapter.Unity.KernelLocator.TryGetWorldById(ZenECS.Core.WorldId,ZenECS.Core.IWorld@)
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.TryGetWorldById(ZenECS.Core.WorldId,ZenECS.Core.IWorld@)
+  id: TryGetWorldById(ZenECS.Core.WorldId,ZenECS.Core.IWorld@)
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: TryGetWorldById(WorldId, out IWorld?)
+  nameWithType: KernelLocator.TryGetWorldById(WorldId, out IWorld?)
+  fullName: ZenECS.Adapter.Unity.KernelLocator.TryGetWorldById(ZenECS.Core.WorldId, out ZenECS.Core.IWorld?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: TryGetWorldById
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 276
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Attempts to get a world by its unique <xref href="ZenECS.Core.WorldId" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public static bool TryGetWorldById(WorldId id, out IWorld? world)
+    parameters:
+    - id: id
+      type: ZenECS.Core.WorldId
+      description: The world identifier to look up.
+    - id: world
+      type: ZenECS.Core.IWorld
+      description: >-
+        When this method returns, contains the resolved world if found,
+
+        otherwise <code>null</code>.
+    return:
+      type: System.Boolean
+      description: >-
+        <code>true</code> if a world with the given <code class="paramref">id</code> was
+
+        found; otherwise <code>false</code>.
+    content.vb: Public Shared Function TryGetWorldById(id As WorldId, world As IWorld) As Boolean
+  overload: ZenECS.Adapter.Unity.KernelLocator.TryGetWorldById*
+  nameWithType.vb: KernelLocator.TryGetWorldById(WorldId, IWorld)
+  fullName.vb: ZenECS.Adapter.Unity.KernelLocator.TryGetWorldById(ZenECS.Core.WorldId, ZenECS.Core.IWorld)
+  name.vb: TryGetWorldById(WorldId, IWorld)
+- uid: ZenECS.Adapter.Unity.KernelLocator.FindByName(System.String)
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.FindByName(System.String)
+  id: FindByName(System.String)
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: FindByName(string)
+  nameWithType: KernelLocator.FindByName(string)
+  fullName: ZenECS.Adapter.Unity.KernelLocator.FindByName(string)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FindByName
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 290
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Finds worlds by exact name (kernel-side matching).
+  example: []
+  syntax:
+    content: public static IEnumerable<IWorld> FindByName(string name)
+    parameters:
+    - id: name
+      type: System.String
+      description: >-
+        The world name to search for. If <code>null</code> or whitespace,
+
+        an empty sequence is returned.
+    return:
+      type: System.Collections.Generic.IEnumerable{ZenECS.Core.IWorld}
+      description: >-
+        An enumerable of worlds whose names match <code class="paramref">name</code>
+
+        exactly.
+    content.vb: Public Shared Function FindByName(name As String) As IEnumerable(Of IWorld)
+  overload: ZenECS.Adapter.Unity.KernelLocator.FindByName*
+  nameWithType.vb: KernelLocator.FindByName(String)
+  fullName.vb: ZenECS.Adapter.Unity.KernelLocator.FindByName(String)
+  name.vb: FindByName(String)
+- uid: ZenECS.Adapter.Unity.KernelLocator.FindByNamePrefix(System.String)
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.FindByNamePrefix(System.String)
+  id: FindByNamePrefix(System.String)
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: FindByNamePrefix(string)
+  nameWithType: KernelLocator.FindByNamePrefix(string)
+  fullName: ZenECS.Adapter.Unity.KernelLocator.FindByNamePrefix(string)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FindByNamePrefix
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 304
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Finds worlds whose names start with the specified prefix.
+  example: []
+  syntax:
+    content: public static IEnumerable<IWorld> FindByNamePrefix(string prefix)
+    parameters:
+    - id: prefix
+      type: System.String
+      description: >-
+        The prefix to match against world names. If <code>null</code>, an empty
+
+        sequence is returned.
+    return:
+      type: System.Collections.Generic.IEnumerable{ZenECS.Core.IWorld}
+      description: >-
+        An enumerable of worlds whose names start with
+
+        <code class="paramref">prefix</code> (kernel-defined semantics).
+    content.vb: Public Shared Function FindByNamePrefix(prefix As String) As IEnumerable(Of IWorld)
+  overload: ZenECS.Adapter.Unity.KernelLocator.FindByNamePrefix*
+  nameWithType.vb: KernelLocator.FindByNamePrefix(String)
+  fullName.vb: ZenECS.Adapter.Unity.KernelLocator.FindByNamePrefix(String)
+  name.vb: FindByNamePrefix(String)
+- uid: ZenECS.Adapter.Unity.KernelLocator.TryGetWorldByName(System.String,ZenECS.Core.IWorld@)
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.TryGetWorldByName(System.String,ZenECS.Core.IWorld@)
+  id: TryGetWorldByName(System.String,ZenECS.Core.IWorld@)
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: TryGetWorldByName(string, out IWorld)
+  nameWithType: KernelLocator.TryGetWorldByName(string, out IWorld)
+  fullName: ZenECS.Adapter.Unity.KernelLocator.TryGetWorldByName(string, out ZenECS.Core.IWorld)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: TryGetWorldByName
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 319
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Attempts to get the first world that matches the specified name.
+  example: []
+  syntax:
+    content: public static bool TryGetWorldByName(string name, out IWorld world)
+    parameters:
+    - id: name
+      type: System.String
+      description: The world name to search for.
+    - id: world
+      type: ZenECS.Core.IWorld
+      description: >-
+        When this method returns, contains the first matching world if
+
+        found; otherwise <code>null</code>.
+    return:
+      type: System.Boolean
+      description: >-
+        <code>true</code> if a world with the given name was found; otherwise
+
+        <code>false</code>.
+    content.vb: Public Shared Function TryGetWorldByName(name As String, world As IWorld) As Boolean
+  overload: ZenECS.Adapter.Unity.KernelLocator.TryGetWorldByName*
+  nameWithType.vb: KernelLocator.TryGetWorldByName(String, IWorld)
+  fullName.vb: ZenECS.Adapter.Unity.KernelLocator.TryGetWorldByName(String, ZenECS.Core.IWorld)
+  name.vb: TryGetWorldByName(String, IWorld)
+- uid: ZenECS.Adapter.Unity.KernelLocator.SetCurrentWorld(ZenECS.Core.IWorld)
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.SetCurrentWorld(ZenECS.Core.IWorld)
+  id: SetCurrentWorld(ZenECS.Core.IWorld)
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: SetCurrentWorld(IWorld)
+  nameWithType: KernelLocator.SetCurrentWorld(IWorld)
+  fullName: ZenECS.Adapter.Unity.KernelLocator.SetCurrentWorld(ZenECS.Core.IWorld)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SetCurrentWorld
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 333
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Sets the given world as the current world on the kernel.
+  example: []
+  syntax:
+    content: public static bool SetCurrentWorld(IWorld w)
+    parameters:
+    - id: w
+      type: ZenECS.Core.IWorld
+      description: World instance to set as current.
+    return:
+      type: System.Boolean
+      description: >-
+        <code>true</code> if the operation succeeded; <code>false</code> if
+
+        <code class="paramref">w</code> is <code>null</code> or an exception was thrown.
+    content.vb: Public Shared Function SetCurrentWorld(w As IWorld) As Boolean
+  overload: ZenECS.Adapter.Unity.KernelLocator.SetCurrentWorld*
+- uid: ZenECS.Adapter.Unity.KernelLocator.EnsureWorld(System.String,System.Boolean)
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.EnsureWorld(System.String,System.Boolean)
+  id: EnsureWorld(System.String,System.Boolean)
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: EnsureWorld(string, bool)
+  nameWithType: KernelLocator.EnsureWorld(string, bool)
+  fullName: ZenECS.Adapter.Unity.KernelLocator.EnsureWorld(string, bool)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: EnsureWorld
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 360
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: >-
+    Ensures a world exists by name; if missing, creates it and
+
+    optionally sets it as current.
+  example: []
+  syntax:
+    content: public static IWorld EnsureWorld(string name, bool setAsCurrent = true)
+    parameters:
+    - id: name
+      type: System.String
+      description: The world name to find or create.
+    - id: setAsCurrent
+      type: System.Boolean
+      description: >-
+        If <code>true</code>, the resolved or created world is set as the current
+
+        world on the kernel.
+    return:
+      type: ZenECS.Core.IWorld
+      description: The existing or newly created <xref href="ZenECS.Core.IWorld" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Shared Function EnsureWorld(name As String, setAsCurrent As Boolean = True) As IWorld
+  overload: ZenECS.Adapter.Unity.KernelLocator.EnsureWorld*
+  nameWithType.vb: KernelLocator.EnsureWorld(String, Boolean)
+  fullName.vb: ZenECS.Adapter.Unity.KernelLocator.EnsureWorld(String, Boolean)
+  name.vb: EnsureWorld(String, Boolean)
+- uid: ZenECS.Adapter.Unity.KernelLocator.FindByTag(System.String)
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.FindByTag(System.String)
+  id: FindByTag(System.String)
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: FindByTag(string)
+  nameWithType: KernelLocator.FindByTag(string)
+  fullName: ZenECS.Adapter.Unity.KernelLocator.FindByTag(string)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FindByTag
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 391
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Finds worlds that contain the specified tag.
+  example: []
+  syntax:
+    content: public static IEnumerable<IWorld> FindByTag(string tag)
+    parameters:
+    - id: tag
+      type: System.String
+      description: >-
+        Tag to search for. If <code>null</code> or whitespace, an empty sequence
+
+        is returned.
+    return:
+      type: System.Collections.Generic.IEnumerable{ZenECS.Core.IWorld}
+      description: >-
+        An enumerable of worlds that contain <code class="paramref">tag</code> (case
+
+        sensitivity is defined by the kernel implementation).
+    content.vb: Public Shared Function FindByTag(tag As String) As IEnumerable(Of IWorld)
+  overload: ZenECS.Adapter.Unity.KernelLocator.FindByTag*
+  nameWithType.vb: KernelLocator.FindByTag(String)
+  fullName.vb: ZenECS.Adapter.Unity.KernelLocator.FindByTag(String)
+  name.vb: FindByTag(String)
+- uid: ZenECS.Adapter.Unity.KernelLocator.FindByAnyTag(System.String[])
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.FindByAnyTag(System.String[])
+  id: FindByAnyTag(System.String[])
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: FindByAnyTag(params string[])
+  nameWithType: KernelLocator.FindByAnyTag(params string[])
+  fullName: ZenECS.Adapter.Unity.KernelLocator.FindByAnyTag(params string[])
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FindByAnyTag
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 405
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Finds worlds that match any of the provided tags (logical OR).
+  example: []
+  syntax:
+    content: public static IEnumerable<IWorld> FindByAnyTag(params string[] tags)
+    parameters:
+    - id: tags
+      type: System.String[]
+      description: >-
+        Collection of tags; if <code>null</code> or empty, an empty sequence is
+
+        returned.
+    return:
+      type: System.Collections.Generic.IEnumerable{ZenECS.Core.IWorld}
+      description: >-
+        An enumerable of worlds that contain at least one of the provided
+
+        <code class="paramref">tags</code>.
+    content.vb: Public Shared Function FindByAnyTag(ParamArray tags As String()) As IEnumerable(Of IWorld)
+  overload: ZenECS.Adapter.Unity.KernelLocator.FindByAnyTag*
+  nameWithType.vb: KernelLocator.FindByAnyTag(ParamArray String())
+  fullName.vb: ZenECS.Adapter.Unity.KernelLocator.FindByAnyTag(ParamArray String())
+  name.vb: FindByAnyTag(ParamArray String())
+- uid: ZenECS.Adapter.Unity.KernelLocator.FindByAllTags(System.String[])
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.FindByAllTags(System.String[])
+  id: FindByAllTags(System.String[])
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: FindByAllTags(params string[])
+  nameWithType: KernelLocator.FindByAllTags(params string[])
+  fullName: ZenECS.Adapter.Unity.KernelLocator.FindByAllTags(params string[])
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FindByAllTags
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 427
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Finds worlds that contain all of the provided tags (logical AND).
+  remarks: >-
+    <p>
+
+    Implementation detail: this is computed as the intersection of
+
+    world ID sets for each individual tag. The algorithm is optimized
+
+    to minimize allocations by using HashSet intersection operations
+
+    and maintaining a single dictionary for world lookups.
+
+    </p>
+  example: []
+  syntax:
+    content: public static IEnumerable<IWorld> FindByAllTags(params string[] tags)
+    parameters:
+    - id: tags
+      type: System.String[]
+      description: >-
+        Collection of tags that a world must contain. If <code>null</code> or
+
+        empty, an empty sequence is returned.
+    return:
+      type: System.Collections.Generic.IEnumerable{ZenECS.Core.IWorld}
+      description: >-
+        An enumerable of worlds that contain all specified
+
+        <code class="paramref">tags</code>.
+    content.vb: Public Shared Function FindByAllTags(ParamArray tags As String()) As IEnumerable(Of IWorld)
+  overload: ZenECS.Adapter.Unity.KernelLocator.FindByAllTags*
+  nameWithType.vb: KernelLocator.FindByAllTags(ParamArray String())
+  fullName.vb: ZenECS.Adapter.Unity.KernelLocator.FindByAllTags(ParamArray String())
+  name.vb: FindByAllTags(ParamArray String())
+- uid: ZenECS.Adapter.Unity.KernelLocator.TryGetWorldByTag(System.String,ZenECS.Core.IWorld@)
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.TryGetWorldByTag(System.String,ZenECS.Core.IWorld@)
+  id: TryGetWorldByTag(System.String,ZenECS.Core.IWorld@)
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: TryGetWorldByTag(string, out IWorld)
+  nameWithType: KernelLocator.TryGetWorldByTag(string, out IWorld)
+  fullName: ZenECS.Adapter.Unity.KernelLocator.TryGetWorldByTag(string, out ZenECS.Core.IWorld)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: TryGetWorldByTag
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 471
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Attempts to get the first world that contains the specified tag.
+  example: []
+  syntax:
+    content: public static bool TryGetWorldByTag(string tag, out IWorld world)
+    parameters:
+    - id: tag
+      type: System.String
+      description: The tag used to filter worlds.
+    - id: world
+      type: ZenECS.Core.IWorld
+      description: >-
+        When this method returns, contains the first matching world if
+
+        found; otherwise <code>null</code>.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if a matching world is found; otherwise <code>false</code>.
+    content.vb: Public Shared Function TryGetWorldByTag(tag As String, world As IWorld) As Boolean
+  overload: ZenECS.Adapter.Unity.KernelLocator.TryGetWorldByTag*
+  nameWithType.vb: KernelLocator.TryGetWorldByTag(String, IWorld)
+  fullName.vb: ZenECS.Adapter.Unity.KernelLocator.TryGetWorldByTag(String, ZenECS.Core.IWorld)
+  name.vb: TryGetWorldByTag(String, IWorld)
+- uid: ZenECS.Adapter.Unity.KernelLocator.EnsureWorld(System.String,System.Collections.Generic.IEnumerable{System.String},System.Boolean)
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.EnsureWorld(System.String,System.Collections.Generic.IEnumerable{System.String},System.Boolean)
+  id: EnsureWorld(System.String,System.Collections.Generic.IEnumerable{System.String},System.Boolean)
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: EnsureWorld(string, IEnumerable<string>, bool)
+  nameWithType: KernelLocator.EnsureWorld(string, IEnumerable<string>, bool)
+  fullName: ZenECS.Adapter.Unity.KernelLocator.EnsureWorld(string, System.Collections.Generic.IEnumerable<string>, bool)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: EnsureWorld
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 492
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: >-
+    Ensures a world exists by name with tags; if missing, creates it
+
+    using the provided tags.
+  example: []
+  syntax:
+    content: public static IWorld EnsureWorld(string name, IEnumerable<string> tags, bool setCurrent = true)
+    parameters:
+    - id: name
+      type: System.String
+      description: The world name to find or create.
+    - id: tags
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: >-
+        Tags to assign when creating a new world. Ignored if the world
+
+        already exists.
+    - id: setCurrent
+      type: System.Boolean
+      description: If <code>true</code>, sets the resolved or created world as current.
+    return:
+      type: ZenECS.Core.IWorld
+      description: The existing or newly created <xref href="ZenECS.Core.IWorld" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Shared Function EnsureWorld(name As String, tags As IEnumerable(Of String), setCurrent As Boolean = True) As IWorld
+  overload: ZenECS.Adapter.Unity.KernelLocator.EnsureWorld*
+  nameWithType.vb: KernelLocator.EnsureWorld(String, IEnumerable(Of String), Boolean)
+  fullName.vb: ZenECS.Adapter.Unity.KernelLocator.EnsureWorld(String, System.Collections.Generic.IEnumerable(Of String), Boolean)
+  name.vb: EnsureWorld(String, IEnumerable(Of String), Boolean)
+- uid: ZenECS.Adapter.Unity.KernelLocator.AllWorldsById
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.AllWorldsById
+  id: AllWorldsById
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: AllWorldsById()
+  nameWithType: KernelLocator.AllWorldsById()
+  fullName: ZenECS.Adapter.Unity.KernelLocator.AllWorldsById()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: AllWorldsById
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 520
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: >-
+    Builds a snapshot dictionary of all worlds keyed by
+
+    <xref href="ZenECS.Core.WorldId" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public static IReadOnlyDictionary<WorldId, IWorld> AllWorldsById()
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{ZenECS.Core.WorldId,ZenECS.Core.IWorld}
+      description: >-
+        A read-only dictionary mapping world IDs to their corresponding
+
+        <xref href="ZenECS.Core.IWorld" data-throw-if-not-resolved="false"></xref> instances.
+    content.vb: Public Shared Function AllWorldsById() As IReadOnlyDictionary(Of WorldId, IWorld)
+  overload: ZenECS.Adapter.Unity.KernelLocator.AllWorldsById*
+- uid: ZenECS.Adapter.Unity.KernelLocator.AllWorldsByName(System.Boolean)
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.AllWorldsByName(System.Boolean)
+  id: AllWorldsByName(System.Boolean)
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: AllWorldsByName(bool)
+  nameWithType: KernelLocator.AllWorldsByName(bool)
+  fullName: ZenECS.Adapter.Unity.KernelLocator.AllWorldsByName(bool)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: AllWorldsByName
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 544
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Builds a snapshot dictionary of all worlds keyed by name.
+  example: []
+  syntax:
+    content: public static IReadOnlyDictionary<string, List<IWorld>> AllWorldsByName(bool ignoreCase = true)
+    parameters:
+    - id: ignoreCase
+      type: System.Boolean
+      description: >-
+        If <code>true</code>, dictionary keys are compared using
+
+        <xref href="System.StringComparer.OrdinalIgnoreCase" data-throw-if-not-resolved="false"></xref>; otherwise
+
+        <xref href="System.StringComparer.Ordinal" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,System.Collections.Generic.List{ZenECS.Core.IWorld}}
+      description: >-
+        A read-only dictionary where each key is a world name and each
+
+        value is a list of worlds that share that name.
+    content.vb: Public Shared Function AllWorldsByName(ignoreCase As Boolean = True) As IReadOnlyDictionary(Of String, List(Of IWorld))
+  overload: ZenECS.Adapter.Unity.KernelLocator.AllWorldsByName*
+  nameWithType.vb: KernelLocator.AllWorldsByName(Boolean)
+  fullName.vb: ZenECS.Adapter.Unity.KernelLocator.AllWorldsByName(Boolean)
+  name.vb: AllWorldsByName(Boolean)
+- uid: ZenECS.Adapter.Unity.KernelLocator.AllWorlds
+  commentId: P:ZenECS.Adapter.Unity.KernelLocator.AllWorlds
+  id: AllWorlds
+  parent: ZenECS.Adapter.Unity.KernelLocator
+  langs:
+  - csharp
+  - vb
+  name: AllWorlds
+  nameWithType: KernelLocator.AllWorlds
+  fullName: ZenECS.Adapter.Unity.KernelLocator.AllWorlds
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: AllWorlds
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
+    startLine: 569
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Enumerates all worlds known to the kernel.
+  remarks: >-
+    <p>
+
+    Implementation detail: internally this uses
+
+    <xref href="ZenECS.Adapter.Unity.KernelLocator.FindByNamePrefix(System.String)" data-throw-if-not-resolved="false"></xref> with an empty prefix to
+
+    retrieve all worlds.
+
+    </p>
+  example: []
+  syntax:
+    content: public static IEnumerable<IWorld> AllWorlds { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{ZenECS.Core.IWorld}
+    content.vb: Public Shared ReadOnly Property AllWorlds As IEnumerable(Of IWorld)
+  overload: ZenECS.Adapter.Unity.KernelLocator.AllWorlds*
+references:
+- uid: ZenECS.Core.IKernel
+  commentId: T:ZenECS.Core.IKernel
+  parent: ZenECS.Core
+  href: ZenECS.Core.IKernel.html
+  name: IKernel
+  nameWithType: IKernel
+  fullName: ZenECS.Core.IKernel
+- uid: ZenECS.Adapter.Unity.ZenEcsUnityBridge.Kernel
+  commentId: P:ZenECS.Adapter.Unity.ZenEcsUnityBridge.Kernel
+  href: ZenECS.Adapter.Unity.ZenEcsUnityBridge.html#ZenECS_Adapter_Unity_ZenEcsUnityBridge_Kernel
+  name: Kernel
+  nameWithType: ZenEcsUnityBridge.Kernel
+  fullName: ZenECS.Adapter.Unity.ZenEcsUnityBridge.Kernel
+- uid: ZenECS.Adapter.Unity.EcsDriver
+  commentId: T:ZenECS.Adapter.Unity.EcsDriver
+  name: EcsDriver
+  nameWithType: EcsDriver
+  fullName: ZenECS.Adapter.Unity.EcsDriver
+- uid: ZenECS.Adapter.Unity.EcsDriver.Kernel
+  commentId: P:ZenECS.Adapter.Unity.EcsDriver.Kernel
+  name: Kernel
+  nameWithType: EcsDriver.Kernel
+  fullName: ZenECS.Adapter.Unity.EcsDriver.Kernel
+- uid: ZenECS.Adapter.Unity
+  commentId: N:ZenECS.Adapter.Unity
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity
+  nameWithType: ZenECS.Adapter.Unity
+  fullName: ZenECS.Adapter.Unity
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions,System.Boolean)
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions,System.Boolean)
+  isExternal: true
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_CreateEcsDriverWithKernel_ZenECS_Core_KernelOptions_System_Boolean_
+  name: CreateEcsDriverWithKernel(KernelOptions, bool)
+  nameWithType: KernelLocator.CreateEcsDriverWithKernel(KernelOptions, bool)
+  fullName: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions, bool)
+  nameWithType.vb: KernelLocator.CreateEcsDriverWithKernel(KernelOptions, Boolean)
+  fullName.vb: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions, Boolean)
+  name.vb: CreateEcsDriverWithKernel(KernelOptions, Boolean)
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions,System.Boolean)
+    name: CreateEcsDriverWithKernel
+    href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_CreateEcsDriverWithKernel_ZenECS_Core_KernelOptions_System_Boolean_
+  - name: (
+  - uid: ZenECS.Core.KernelOptions
+    name: KernelOptions
+    href: ZenECS.Core.KernelOptions.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions,System.Boolean)
+    name: CreateEcsDriverWithKernel
+    href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_CreateEcsDriverWithKernel_ZenECS_Core_KernelOptions_System_Boolean_
+  - name: (
+  - uid: ZenECS.Core.KernelOptions
+    name: KernelOptions
+    href: ZenECS.Core.KernelOptions.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: ZenECS.Adapter.Unity.KernelLocator.TryGetCurrent*
+  commentId: Overload:ZenECS.Adapter.Unity.KernelLocator.TryGetCurrent
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_TryGetCurrent_ZenECS_Core_IKernel__
+  name: TryGetCurrent
+  nameWithType: KernelLocator.TryGetCurrent
+  fullName: ZenECS.Adapter.Unity.KernelLocator.TryGetCurrent
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: ZenECS.Adapter.Unity.KernelLocator.TryGetCurrent(ZenECS.Core.IKernel@)
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.TryGetCurrent(ZenECS.Core.IKernel@)
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_TryGetCurrent_ZenECS_Core_IKernel__
+  name: TryGetCurrent(out IKernel)
+  nameWithType: KernelLocator.TryGetCurrent(out IKernel)
+  fullName: ZenECS.Adapter.Unity.KernelLocator.TryGetCurrent(out ZenECS.Core.IKernel)
+  nameWithType.vb: KernelLocator.TryGetCurrent(IKernel)
+  fullName.vb: ZenECS.Adapter.Unity.KernelLocator.TryGetCurrent(ZenECS.Core.IKernel)
+  name.vb: TryGetCurrent(IKernel)
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.KernelLocator.TryGetCurrent(ZenECS.Core.IKernel@)
+    name: TryGetCurrent
+    href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_TryGetCurrent_ZenECS_Core_IKernel__
+  - name: (
+  - name: out
+  - name: " "
+  - uid: ZenECS.Core.IKernel
+    name: IKernel
+    href: ZenECS.Core.IKernel.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.KernelLocator.TryGetCurrent(ZenECS.Core.IKernel@)
+    name: TryGetCurrent
+    href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_TryGetCurrent_ZenECS_Core_IKernel__
+  - name: (
+  - uid: ZenECS.Core.IKernel
+    name: IKernel
+    href: ZenECS.Core.IKernel.html
+  - name: )
+- uid: System.InvalidOperationException
+  commentId: T:System.InvalidOperationException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+  name: InvalidOperationException
+  nameWithType: InvalidOperationException
+  fullName: System.InvalidOperationException
+- uid: ZenECS.Adapter.Unity.KernelLocator.Current*
+  commentId: Overload:ZenECS.Adapter.Unity.KernelLocator.Current
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_Current
+  name: Current
+  nameWithType: KernelLocator.Current
+  fullName: ZenECS.Adapter.Unity.KernelLocator.Current
+- uid: ZenECS.Core.KernelOptions
+  commentId: T:ZenECS.Core.KernelOptions
+  parent: ZenECS.Core
+  href: ZenECS.Core.KernelOptions.html
+  name: KernelOptions
+  nameWithType: KernelOptions
+  fullName: ZenECS.Core.KernelOptions
+- uid: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)
+  commentId: M:UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)
+  parent: UnityEngine.Object
+  href: UnityEngine.Object.html#UnityEngine_Object_DontDestroyOnLoad_UnityEngine_Object_
+  name: DontDestroyOnLoad(Object)
+  nameWithType: Object.DontDestroyOnLoad(Object)
+  fullName: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)
+  spec.csharp:
+  - uid: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)
+    name: DontDestroyOnLoad
+    href: UnityEngine.Object.html#UnityEngine_Object_DontDestroyOnLoad_UnityEngine_Object_
+  - name: (
+  - uid: UnityEngine.Object
+    name: Object
+    href: UnityEngine.Object.html
+  - name: )
+  spec.vb:
+  - uid: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)
+    name: DontDestroyOnLoad
+    href: UnityEngine.Object.html#UnityEngine_Object_DontDestroyOnLoad_UnityEngine_Object_
+  - name: (
+  - uid: UnityEngine.Object
+    name: Object
+    href: UnityEngine.Object.html
+  - name: )
+- uid: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriver*
+  commentId: Overload:ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriver
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_CreateEcsDriver_ZenECS_Core_KernelOptions_System_Boolean_
+  name: CreateEcsDriver
+  nameWithType: KernelLocator.CreateEcsDriver
+  fullName: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriver
+- uid: UnityEngine.Object
+  commentId: T:UnityEngine.Object
+  parent: UnityEngine
+  href: UnityEngine.Object.html
+  name: Object
+  nameWithType: Object
+  fullName: UnityEngine.Object
+- uid: UnityEngine
+  commentId: N:UnityEngine
+  href: UnityEngine.html
+  name: UnityEngine
+  nameWithType: UnityEngine
+  fullName: UnityEngine
+- uid: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel*
+  commentId: Overload:ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_CreateEcsDriverWithKernel_ZenECS_Core_KernelOptions_System_Boolean_
+  name: CreateEcsDriverWithKernel
+  nameWithType: KernelLocator.CreateEcsDriverWithKernel
+  fullName: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel
+- uid: ZenECS.Core.IKernel.CurrentWorld
+  commentId: P:ZenECS.Core.IKernel.CurrentWorld
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_CurrentWorld
+  name: CurrentWorld
+  nameWithType: IKernel.CurrentWorld
+  fullName: ZenECS.Core.IKernel.CurrentWorld
+- uid: ZenECS.Adapter.Unity.KernelLocator.CurrentWorld*
+  commentId: Overload:ZenECS.Adapter.Unity.KernelLocator.CurrentWorld
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_CurrentWorld
+  name: CurrentWorld
+  nameWithType: KernelLocator.CurrentWorld
+  fullName: ZenECS.Adapter.Unity.KernelLocator.CurrentWorld
+- uid: ZenECS.Core.IWorld
+  commentId: T:ZenECS.Core.IWorld
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorld.html
+  name: IWorld
+  nameWithType: IWorld
+  fullName: ZenECS.Core.IWorld
+- uid: ZenECS.Core.WorldId
+  commentId: T:ZenECS.Core.WorldId
+  parent: ZenECS.Core
+  href: ZenECS.Core.WorldId.html
+  name: WorldId
+  nameWithType: WorldId
+  fullName: ZenECS.Core.WorldId
+- uid: ZenECS.Adapter.Unity.KernelLocator.TryGetWorldById*
+  commentId: Overload:ZenECS.Adapter.Unity.KernelLocator.TryGetWorldById
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_TryGetWorldById_ZenECS_Core_WorldId_ZenECS_Core_IWorld__
+  name: TryGetWorldById
+  nameWithType: KernelLocator.TryGetWorldById
+  fullName: ZenECS.Adapter.Unity.KernelLocator.TryGetWorldById
+- uid: ZenECS.Adapter.Unity.KernelLocator.FindByName*
+  commentId: Overload:ZenECS.Adapter.Unity.KernelLocator.FindByName
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_FindByName_System_String_
+  name: FindByName
+  nameWithType: KernelLocator.FindByName
+  fullName: ZenECS.Adapter.Unity.KernelLocator.FindByName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Collections.Generic.IEnumerable{ZenECS.Core.IWorld}
+  commentId: T:System.Collections.Generic.IEnumerable{ZenECS.Core.IWorld}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<IWorld>
+  nameWithType: IEnumerable<IWorld>
+  fullName: System.Collections.Generic.IEnumerable<ZenECS.Core.IWorld>
+  nameWithType.vb: IEnumerable(Of IWorld)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of ZenECS.Core.IWorld)
+  name.vb: IEnumerable(Of IWorld)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: ZenECS.Adapter.Unity.KernelLocator.FindByNamePrefix*
+  commentId: Overload:ZenECS.Adapter.Unity.KernelLocator.FindByNamePrefix
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_FindByNamePrefix_System_String_
+  name: FindByNamePrefix
+  nameWithType: KernelLocator.FindByNamePrefix
+  fullName: ZenECS.Adapter.Unity.KernelLocator.FindByNamePrefix
+- uid: ZenECS.Adapter.Unity.KernelLocator.TryGetWorldByName*
+  commentId: Overload:ZenECS.Adapter.Unity.KernelLocator.TryGetWorldByName
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_TryGetWorldByName_System_String_ZenECS_Core_IWorld__
+  name: TryGetWorldByName
+  nameWithType: KernelLocator.TryGetWorldByName
+  fullName: ZenECS.Adapter.Unity.KernelLocator.TryGetWorldByName
+- uid: ZenECS.Adapter.Unity.KernelLocator.SetCurrentWorld*
+  commentId: Overload:ZenECS.Adapter.Unity.KernelLocator.SetCurrentWorld
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_SetCurrentWorld_ZenECS_Core_IWorld_
+  name: SetCurrentWorld
+  nameWithType: KernelLocator.SetCurrentWorld
+  fullName: ZenECS.Adapter.Unity.KernelLocator.SetCurrentWorld
+- uid: ZenECS.Adapter.Unity.KernelLocator.EnsureWorld*
+  commentId: Overload:ZenECS.Adapter.Unity.KernelLocator.EnsureWorld
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_EnsureWorld_System_String_System_Boolean_
+  name: EnsureWorld
+  nameWithType: KernelLocator.EnsureWorld
+  fullName: ZenECS.Adapter.Unity.KernelLocator.EnsureWorld
+- uid: ZenECS.Adapter.Unity.KernelLocator.FindByTag*
+  commentId: Overload:ZenECS.Adapter.Unity.KernelLocator.FindByTag
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_FindByTag_System_String_
+  name: FindByTag
+  nameWithType: KernelLocator.FindByTag
+  fullName: ZenECS.Adapter.Unity.KernelLocator.FindByTag
+- uid: ZenECS.Adapter.Unity.KernelLocator.FindByAnyTag*
+  commentId: Overload:ZenECS.Adapter.Unity.KernelLocator.FindByAnyTag
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_FindByAnyTag_System_String___
+  name: FindByAnyTag
+  nameWithType: KernelLocator.FindByAnyTag
+  fullName: ZenECS.Adapter.Unity.KernelLocator.FindByAnyTag
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+- uid: ZenECS.Adapter.Unity.KernelLocator.FindByAllTags*
+  commentId: Overload:ZenECS.Adapter.Unity.KernelLocator.FindByAllTags
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_FindByAllTags_System_String___
+  name: FindByAllTags
+  nameWithType: KernelLocator.FindByAllTags
+  fullName: ZenECS.Adapter.Unity.KernelLocator.FindByAllTags
+- uid: ZenECS.Adapter.Unity.KernelLocator.TryGetWorldByTag*
+  commentId: Overload:ZenECS.Adapter.Unity.KernelLocator.TryGetWorldByTag
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_TryGetWorldByTag_System_String_ZenECS_Core_IWorld__
+  name: TryGetWorldByTag
+  nameWithType: KernelLocator.TryGetWorldByTag
+  fullName: ZenECS.Adapter.Unity.KernelLocator.TryGetWorldByTag
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<string>
+  nameWithType: IEnumerable<string>
+  fullName: System.Collections.Generic.IEnumerable<string>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: ZenECS.Adapter.Unity.KernelLocator.AllWorldsById*
+  commentId: Overload:ZenECS.Adapter.Unity.KernelLocator.AllWorldsById
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_AllWorldsById
+  name: AllWorldsById
+  nameWithType: KernelLocator.AllWorldsById
+  fullName: ZenECS.Adapter.Unity.KernelLocator.AllWorldsById
+- uid: System.Collections.Generic.IReadOnlyDictionary{ZenECS.Core.WorldId,ZenECS.Core.IWorld}
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary{ZenECS.Core.WorldId,ZenECS.Core.IWorld}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<WorldId, IWorld>
+  nameWithType: IReadOnlyDictionary<WorldId, IWorld>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<ZenECS.Core.WorldId, ZenECS.Core.IWorld>
+  nameWithType.vb: IReadOnlyDictionary(Of WorldId, IWorld)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of ZenECS.Core.WorldId, ZenECS.Core.IWorld)
+  name.vb: IReadOnlyDictionary(Of WorldId, IWorld)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - uid: ZenECS.Core.WorldId
+    name: WorldId
+    href: ZenECS.Core.WorldId.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.WorldId
+    name: WorldId
+    href: ZenECS.Core.WorldId.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyDictionary`2
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<TKey, TValue>
+  nameWithType: IReadOnlyDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
+  nameWithType.vb: IReadOnlyDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of TKey, TValue)
+  name.vb: IReadOnlyDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.StringComparer.OrdinalIgnoreCase
+  commentId: P:System.StringComparer.OrdinalIgnoreCase
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.stringcomparer.ordinalignorecase
+  name: OrdinalIgnoreCase
+  nameWithType: StringComparer.OrdinalIgnoreCase
+  fullName: System.StringComparer.OrdinalIgnoreCase
+- uid: System.StringComparer.Ordinal
+  commentId: P:System.StringComparer.Ordinal
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.stringcomparer.ordinal
+  name: Ordinal
+  nameWithType: StringComparer.Ordinal
+  fullName: System.StringComparer.Ordinal
+- uid: ZenECS.Adapter.Unity.KernelLocator.AllWorldsByName*
+  commentId: Overload:ZenECS.Adapter.Unity.KernelLocator.AllWorldsByName
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_AllWorldsByName_System_Boolean_
+  name: AllWorldsByName
+  nameWithType: KernelLocator.AllWorldsByName
+  fullName: ZenECS.Adapter.Unity.KernelLocator.AllWorldsByName
+- uid: System.Collections.Generic.IReadOnlyDictionary{System.String,System.Collections.Generic.List{ZenECS.Core.IWorld}}
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary{System.String,System.Collections.Generic.List{ZenECS.Core.IWorld}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<string, List<IWorld>>
+  nameWithType: IReadOnlyDictionary<string, List<IWorld>>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.List<ZenECS.Core.IWorld>>
+  nameWithType.vb: IReadOnlyDictionary(Of String, List(Of IWorld))
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of String, System.Collections.Generic.List(Of ZenECS.Core.IWorld))
+  name.vb: IReadOnlyDictionary(Of String, List(Of IWorld))
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: )
+  - name: )
+- uid: ZenECS.Adapter.Unity.KernelLocator.FindByNamePrefix(System.String)
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.FindByNamePrefix(System.String)
+  isExternal: true
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_FindByNamePrefix_System_String_
+  name: FindByNamePrefix(string)
+  nameWithType: KernelLocator.FindByNamePrefix(string)
+  fullName: ZenECS.Adapter.Unity.KernelLocator.FindByNamePrefix(string)
+  nameWithType.vb: KernelLocator.FindByNamePrefix(String)
+  fullName.vb: ZenECS.Adapter.Unity.KernelLocator.FindByNamePrefix(String)
+  name.vb: FindByNamePrefix(String)
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.KernelLocator.FindByNamePrefix(System.String)
+    name: FindByNamePrefix
+    href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_FindByNamePrefix_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.KernelLocator.FindByNamePrefix(System.String)
+    name: FindByNamePrefix
+    href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_FindByNamePrefix_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: ZenECS.Adapter.Unity.KernelLocator.AllWorlds*
+  commentId: Overload:ZenECS.Adapter.Unity.KernelLocator.AllWorlds
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_AllWorlds
+  name: AllWorlds
+  nameWithType: KernelLocator.AllWorlds
+  fullName: ZenECS.Adapter.Unity.KernelLocator.AllWorlds

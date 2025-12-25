@@ -2,24 +2,44 @@
 
 > Docs / Core / World Reset
 
-Reset/HardReset/KeepCapacity semantics.
+Reset world state while keeping systems registered.
 
 ## Overview
 
-- TODO
+World reset:
 
-## How it works
+- **Clears Entities**: All entities destroyed
+- **Clears Components**: All components removed
+- **Keeps Systems**: Systems remain registered
+- **Fast Reset**: Efficient state clearing
 
-- TODO
+## API Surface
 
-## API surface
+### Reset World
 
-- TODO
+```csharp
+// Reset world (clears entities, keeps systems)
+world.Reset();
+```
 
 ## Examples
 
-- TODO
+### Game Restart
 
-## FAQ
+```csharp
+public void RestartGame()
+{
+    // Reset world
+    world.Reset();
+    
+    // Reinitialize
+    var player = world.CreateEntity();
+    world.AddComponent(player, new Position(0, 0));
+}
+```
 
-- TODO
+## See Also
+
+- [World](./world.md) - World management
+- [Samples](../samples/05-world-reset.md) - Sample project
+- [Advanced Topics](../guides/advanced-topics.md) - Advanced patterns

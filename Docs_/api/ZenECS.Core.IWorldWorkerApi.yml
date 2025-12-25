@@ -1,0 +1,137 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.IWorldWorkerApi
+  commentId: T:ZenECS.Core.IWorldWorkerApi
+  id: IWorldWorkerApi
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.IWorldWorkerApi.RunScheduledJobs
+  langs:
+  - csharp
+  - vb
+  name: IWorldWorkerApi
+  nameWithType: IWorldWorkerApi
+  fullName: ZenECS.Core.IWorldWorkerApi
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldWorkerApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IWorldWorkerApi
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldWorkerApi.cs
+    startLine: 30
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: World-scoped worker interface for running scheduled jobs.
+  remarks: >-
+    <p>
+
+    The worker API provides a single deterministic barrier where queued jobs
+
+    (such as deferred structural changes, async completions, or adapter tasks)
+
+    can be executed against the owning world instance.
+
+    </p>
+
+    <p>
+
+    Each world has its own worker; jobs from different worlds are isolated and
+
+    must be flushed independently.
+
+    </p>
+  example: []
+  syntax:
+    content: public interface IWorldWorkerApi
+    content.vb: Public Interface IWorldWorkerApi
+- uid: ZenECS.Core.IWorldWorkerApi.RunScheduledJobs
+  commentId: M:ZenECS.Core.IWorldWorkerApi.RunScheduledJobs
+  id: RunScheduledJobs
+  parent: ZenECS.Core.IWorldWorkerApi
+  langs:
+  - csharp
+  - vb
+  name: RunScheduledJobs()
+  nameWithType: IWorldWorkerApi.RunScheduledJobs()
+  fullName: ZenECS.Core.IWorldWorkerApi.RunScheduledJobs()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldWorkerApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RunScheduledJobs
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldWorkerApi.cs
+    startLine: 45
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Executes all jobs currently scheduled for this world.
+  remarks: >-
+    <p>
+
+    Callers are free to choose when to run scheduled jobs. A common pattern
+
+    is to invoke this at explicit simulation barriers (for example, after
+
+    all systems in a phase have run).
+
+    </p>
+  example: []
+  syntax:
+    content: int RunScheduledJobs()
+    return:
+      type: System.Int32
+      description: The number of jobs executed during this call.
+    content.vb: Function RunScheduledJobs() As Integer
+  overload: ZenECS.Core.IWorldWorkerApi.RunScheduledJobs*
+references:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.IWorldWorkerApi.RunScheduledJobs*
+  commentId: Overload:ZenECS.Core.IWorldWorkerApi.RunScheduledJobs
+  href: ZenECS.Core.IWorldWorkerApi.html#ZenECS_Core_IWorldWorkerApi_RunScheduledJobs
+  name: RunScheduledJobs
+  nameWithType: IWorldWorkerApi.RunScheduledJobs
+  fullName: ZenECS.Core.IWorldWorkerApi.RunScheduledJobs
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

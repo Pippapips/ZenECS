@@ -1,0 +1,1293 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.IWorldQueryApi
+  commentId: T:ZenECS.Core.IWorldQueryApi
+  id: IWorldQueryApi
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.IWorldQueryApi.Query``1(ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQueryApi.Query``2(ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQueryApi.Query``3(ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQueryApi.Query``4(ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQueryApi.Query``5(ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQueryApi.Query``6(ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQueryApi.Query``7(ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQueryApi.Query``8(ZenECS.Core.Filter)
+  langs:
+  - csharp
+  - vb
+  name: IWorldQueryApi
+  nameWithType: IWorldQueryApi
+  fullName: ZenECS.Core.IWorldQueryApi
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IWorldQueryApi
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
+    startLine: 33
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Read-only entity query surface that returns allocation-free value-type
+
+    enumerables consumable directly in <code>foreach</code>.
+  remarks: >-
+    <p>
+
+    Queries are strongly typed on the component tuple they require
+
+    (<code class="typeparamref">T1</code> … <code class="typeparamref">T8</code>). Each
+
+    <code>Query&lt;…&gt;(Filter)</code> call builds a <code>QueryEnumerable&lt;…&gt;</code>
+
+    that can be iterated without allocating managed enumerators.
+
+    </p>
+
+    <p>
+
+    The optional <xref href="ZenECS.Core.Filter" data-throw-if-not-resolved="false"></xref> parameter allows additional constraints
+
+    to be expressed (for example, "with any of", "without all", etc.) beyond
+
+    the base component set described by the generic parameters.
+
+    </p>
+  example: []
+  syntax:
+    content: public interface IWorldQueryApi
+    content.vb: Public Interface IWorldQueryApi
+- uid: ZenECS.Core.IWorldQueryApi.Query``1(ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQueryApi.Query``1(ZenECS.Core.Filter)
+  id: Query``1(ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQueryApi
+  langs:
+  - csharp
+  - vb
+  name: Query<T1>(Filter)
+  nameWithType: IWorldQueryApi.Query<T1>(Filter)
+  fullName: ZenECS.Core.IWorldQueryApi.Query<T1>(ZenECS.Core.Filter)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Query
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
+    startLine: 47
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Builds a query over entities that have component <code class="typeparamref">T1</code>.
+  example: []
+  syntax:
+    content: 'QueryEnumerable<T1> Query<T1>(Filter f = default) where T1 : struct'
+    parameters:
+    - id: f
+      type: ZenECS.Core.Filter
+      description: >-
+        Optional composable filter. When left as <code>default</code>, only the
+
+        presence of <code class="typeparamref">T1</code> is considered.
+    typeParameters:
+    - id: T1
+      description: First required component type.
+    return:
+      type: ZenECS.Core.QueryEnumerable{{T1}}
+      description: >-
+        A value-type <xref href="ZenECS.Core.QueryEnumerable%601" data-throw-if-not-resolved="false"></xref> suitable for use in
+
+        <code>foreach</code> loops without allocations.
+    content.vb: Function Query(Of T1 As Structure)(f As Filter = Nothing) As QueryEnumerable(Of T1)
+  overload: ZenECS.Core.IWorldQueryApi.Query*
+  nameWithType.vb: IWorldQueryApi.Query(Of T1)(Filter)
+  fullName.vb: ZenECS.Core.IWorldQueryApi.Query(Of T1)(ZenECS.Core.Filter)
+  name.vb: Query(Of T1)(Filter)
+- uid: ZenECS.Core.IWorldQueryApi.Query``2(ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQueryApi.Query``2(ZenECS.Core.Filter)
+  id: Query``2(ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQueryApi
+  langs:
+  - csharp
+  - vb
+  name: Query<T1, T2>(Filter)
+  nameWithType: IWorldQueryApi.Query<T1, T2>(Filter)
+  fullName: ZenECS.Core.IWorldQueryApi.Query<T1, T2>(ZenECS.Core.Filter)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Query
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
+    startLine: 63
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Builds a query over entities that have components
+
+    <code class="typeparamref">T1</code> and <code class="typeparamref">T2</code>.
+  example: []
+  syntax:
+    content: 'QueryEnumerable<T1, T2> Query<T1, T2>(Filter f = default) where T1 : struct where T2 : struct'
+    parameters:
+    - id: f
+      type: ZenECS.Core.Filter
+      description: >-
+        Optional composable filter. When left as <code>default</code>, only the
+
+        presence of <code class="typeparamref">T1</code> and <code class="typeparamref">T2</code>
+
+        is considered.
+    typeParameters:
+    - id: T1
+      description: First required component type.
+    - id: T2
+      description: Second required component type.
+    return:
+      type: ZenECS.Core.QueryEnumerable{{T1},{T2}}
+      description: A value-type <xref href="ZenECS.Core.QueryEnumerable%602" data-throw-if-not-resolved="false"></xref> for iteration.
+    content.vb: Function Query(Of T1 As Structure, T2 As Structure)(f As Filter = Nothing) As QueryEnumerable(Of T1, T2)
+  overload: ZenECS.Core.IWorldQueryApi.Query*
+  nameWithType.vb: IWorldQueryApi.Query(Of T1, T2)(Filter)
+  fullName.vb: ZenECS.Core.IWorldQueryApi.Query(Of T1, T2)(ZenECS.Core.Filter)
+  name.vb: Query(Of T1, T2)(Filter)
+- uid: ZenECS.Core.IWorldQueryApi.Query``3(ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQueryApi.Query``3(ZenECS.Core.Filter)
+  id: Query``3(ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQueryApi
+  langs:
+  - csharp
+  - vb
+  name: Query<T1, T2, T3>(Filter)
+  nameWithType: IWorldQueryApi.Query<T1, T2, T3>(Filter)
+  fullName: ZenECS.Core.IWorldQueryApi.Query<T1, T2, T3>(ZenECS.Core.Filter)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Query
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
+    startLine: 81
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Builds a query over entities that have components
+
+    <code class="typeparamref">T1</code>, <code class="typeparamref">T2</code>,
+
+    and <code class="typeparamref">T3</code>.
+  example: []
+  syntax:
+    content: 'QueryEnumerable<T1, T2, T3> Query<T1, T2, T3>(Filter f = default) where T1 : struct where T2 : struct where T3 : struct'
+    parameters:
+    - id: f
+      type: ZenECS.Core.Filter
+      description: >-
+        Optional composable filter. When left as <code>default</code>, only the
+
+        presence of the three components is considered.
+    typeParameters:
+    - id: T1
+      description: First required component type.
+    - id: T2
+      description: Second required component type.
+    - id: T3
+      description: Third required component type.
+    return:
+      type: ZenECS.Core.QueryEnumerable{{T1},{T2},{T3}}
+      description: A value-type <xref href="ZenECS.Core.QueryEnumerable%603" data-throw-if-not-resolved="false"></xref> for iteration.
+    content.vb: Function Query(Of T1 As Structure, T2 As Structure, T3 As Structure)(f As Filter = Nothing) As QueryEnumerable(Of T1, T2, T3)
+  overload: ZenECS.Core.IWorldQueryApi.Query*
+  nameWithType.vb: IWorldQueryApi.Query(Of T1, T2, T3)(Filter)
+  fullName.vb: ZenECS.Core.IWorldQueryApi.Query(Of T1, T2, T3)(ZenECS.Core.Filter)
+  name.vb: Query(Of T1, T2, T3)(Filter)
+- uid: ZenECS.Core.IWorldQueryApi.Query``4(ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQueryApi.Query``4(ZenECS.Core.Filter)
+  id: Query``4(ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQueryApi
+  langs:
+  - csharp
+  - vb
+  name: Query<T1, T2, T3, T4>(Filter)
+  nameWithType: IWorldQueryApi.Query<T1, T2, T3, T4>(Filter)
+  fullName: ZenECS.Core.IWorldQueryApi.Query<T1, T2, T3, T4>(ZenECS.Core.Filter)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Query
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
+    startLine: 99
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Builds a query over entities that have components
+
+    <code class="typeparamref">T1</code> through <code class="typeparamref">T4</code>.
+  example: []
+  syntax:
+    content: 'QueryEnumerable<T1, T2, T3, T4> Query<T1, T2, T3, T4>(Filter f = default) where T1 : struct where T2 : struct where T3 : struct where T4 : struct'
+    parameters:
+    - id: f
+      type: ZenECS.Core.Filter
+      description: >-
+        Optional composable filter. When left as <code>default</code>, only the
+
+        presence of the four components is considered.
+    typeParameters:
+    - id: T1
+      description: First required component type.
+    - id: T2
+      description: Second required component type.
+    - id: T3
+      description: Third required component type.
+    - id: T4
+      description: Fourth required component type.
+    return:
+      type: ZenECS.Core.QueryEnumerable{{T1},{T2},{T3},{T4}}
+      description: A value-type <xref href="ZenECS.Core.QueryEnumerable%604" data-throw-if-not-resolved="false"></xref> for iteration.
+    content.vb: Function Query(Of T1 As Structure, T2 As Structure, T3 As Structure, T4 As Structure)(f As Filter = Nothing) As QueryEnumerable(Of T1, T2, T3, T4)
+  overload: ZenECS.Core.IWorldQueryApi.Query*
+  nameWithType.vb: IWorldQueryApi.Query(Of T1, T2, T3, T4)(Filter)
+  fullName.vb: ZenECS.Core.IWorldQueryApi.Query(Of T1, T2, T3, T4)(ZenECS.Core.Filter)
+  name.vb: Query(Of T1, T2, T3, T4)(Filter)
+- uid: ZenECS.Core.IWorldQueryApi.Query``5(ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQueryApi.Query``5(ZenECS.Core.Filter)
+  id: Query``5(ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQueryApi
+  langs:
+  - csharp
+  - vb
+  name: Query<T1, T2, T3, T4, T5>(Filter)
+  nameWithType: IWorldQueryApi.Query<T1, T2, T3, T4, T5>(Filter)
+  fullName: ZenECS.Core.IWorldQueryApi.Query<T1, T2, T3, T4, T5>(ZenECS.Core.Filter)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Query
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
+    startLine: 118
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Builds a query over entities that have components
+
+    <code class="typeparamref">T1</code> through <code class="typeparamref">T5</code>.
+  example: []
+  syntax:
+    content: 'QueryEnumerable<T1, T2, T3, T4, T5> Query<T1, T2, T3, T4, T5>(Filter f = default) where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct'
+    parameters:
+    - id: f
+      type: ZenECS.Core.Filter
+      description: >-
+        Optional composable filter. When left as <code>default</code>, only the
+
+        presence of the five components is considered.
+    typeParameters:
+    - id: T1
+      description: First required component type.
+    - id: T2
+      description: Second required component type.
+    - id: T3
+      description: Third required component type.
+    - id: T4
+      description: Fourth required component type.
+    - id: T5
+      description: Fifth required component type.
+    return:
+      type: ZenECS.Core.QueryEnumerable{{T1},{T2},{T3},{T4},{T5}}
+      description: A value-type <xref href="ZenECS.Core.QueryEnumerable%605" data-throw-if-not-resolved="false"></xref> for iteration.
+    content.vb: Function Query(Of T1 As Structure, T2 As Structure, T3 As Structure, T4 As Structure, T5 As Structure)(f As Filter = Nothing) As QueryEnumerable(Of T1, T2, T3, T4, T5)
+  overload: ZenECS.Core.IWorldQueryApi.Query*
+  nameWithType.vb: IWorldQueryApi.Query(Of T1, T2, T3, T4, T5)(Filter)
+  fullName.vb: ZenECS.Core.IWorldQueryApi.Query(Of T1, T2, T3, T4, T5)(ZenECS.Core.Filter)
+  name.vb: Query(Of T1, T2, T3, T4, T5)(Filter)
+- uid: ZenECS.Core.IWorldQueryApi.Query``6(ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQueryApi.Query``6(ZenECS.Core.Filter)
+  id: Query``6(ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQueryApi
+  langs:
+  - csharp
+  - vb
+  name: Query<T1, T2, T3, T4, T5, T6>(Filter)
+  nameWithType: IWorldQueryApi.Query<T1, T2, T3, T4, T5, T6>(Filter)
+  fullName: ZenECS.Core.IWorldQueryApi.Query<T1, T2, T3, T4, T5, T6>(ZenECS.Core.Filter)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Query
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
+    startLine: 138
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Builds a query over entities that have components
+
+    <code class="typeparamref">T1</code> through <code class="typeparamref">T6</code>.
+  example: []
+  syntax:
+    content: 'QueryEnumerable<T1, T2, T3, T4, T5, T6> Query<T1, T2, T3, T4, T5, T6>(Filter f = default) where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct where T6 : struct'
+    parameters:
+    - id: f
+      type: ZenECS.Core.Filter
+      description: >-
+        Optional composable filter. When left as <code>default</code>, only the
+
+        presence of the six components is considered.
+    typeParameters:
+    - id: T1
+      description: First required component type.
+    - id: T2
+      description: Second required component type.
+    - id: T3
+      description: Third required component type.
+    - id: T4
+      description: Fourth required component type.
+    - id: T5
+      description: Fifth required component type.
+    - id: T6
+      description: Sixth required component type.
+    return:
+      type: ZenECS.Core.QueryEnumerable{{T1},{T2},{T3},{T4},{T5},{T6}}
+      description: A value-type <xref href="ZenECS.Core.QueryEnumerable%606" data-throw-if-not-resolved="false"></xref> for iteration.
+    content.vb: Function Query(Of T1 As Structure, T2 As Structure, T3 As Structure, T4 As Structure, T5 As Structure, T6 As Structure)(f As Filter = Nothing) As QueryEnumerable(Of T1, T2, T3, T4, T5, T6)
+  overload: ZenECS.Core.IWorldQueryApi.Query*
+  nameWithType.vb: IWorldQueryApi.Query(Of T1, T2, T3, T4, T5, T6)(Filter)
+  fullName.vb: ZenECS.Core.IWorldQueryApi.Query(Of T1, T2, T3, T4, T5, T6)(ZenECS.Core.Filter)
+  name.vb: Query(Of T1, T2, T3, T4, T5, T6)(Filter)
+- uid: ZenECS.Core.IWorldQueryApi.Query``7(ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQueryApi.Query``7(ZenECS.Core.Filter)
+  id: Query``7(ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQueryApi
+  langs:
+  - csharp
+  - vb
+  name: Query<T1, T2, T3, T4, T5, T6, T7>(Filter)
+  nameWithType: IWorldQueryApi.Query<T1, T2, T3, T4, T5, T6, T7>(Filter)
+  fullName: ZenECS.Core.IWorldQueryApi.Query<T1, T2, T3, T4, T5, T6, T7>(ZenECS.Core.Filter)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Query
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
+    startLine: 160
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Builds a query over entities that have components
+
+    <code class="typeparamref">T1</code> through <code class="typeparamref">T7</code>.
+  example: []
+  syntax:
+    content: 'QueryEnumerable<T1, T2, T3, T4, T5, T6, T7> Query<T1, T2, T3, T4, T5, T6, T7>(Filter f = default) where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct where T6 : struct where T7 : struct'
+    parameters:
+    - id: f
+      type: ZenECS.Core.Filter
+      description: >-
+        Optional composable filter. When left as <code>default</code>, only the
+
+        presence of the seven components is considered.
+    typeParameters:
+    - id: T1
+      description: First required component type.
+    - id: T2
+      description: Second required component type.
+    - id: T3
+      description: Third required component type.
+    - id: T4
+      description: Fourth required component type.
+    - id: T5
+      description: Fifth required component type.
+    - id: T6
+      description: Sixth required component type.
+    - id: T7
+      description: Seventh required component type.
+    return:
+      type: ZenECS.Core.QueryEnumerable{{T1},{T2},{T3},{T4},{T5},{T6},{T7}}
+      description: >-
+        A value-type <xref href="ZenECS.Core.QueryEnumerable%607" data-throw-if-not-resolved="false"></xref>
+
+        for iteration.
+    content.vb: Function Query(Of T1 As Structure, T2 As Structure, T3 As Structure, T4 As Structure, T5 As Structure, T6 As Structure, T7 As Structure)(f As Filter = Nothing) As QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7)
+  overload: ZenECS.Core.IWorldQueryApi.Query*
+  nameWithType.vb: IWorldQueryApi.Query(Of T1, T2, T3, T4, T5, T6, T7)(Filter)
+  fullName.vb: ZenECS.Core.IWorldQueryApi.Query(Of T1, T2, T3, T4, T5, T6, T7)(ZenECS.Core.Filter)
+  name.vb: Query(Of T1, T2, T3, T4, T5, T6, T7)(Filter)
+- uid: ZenECS.Core.IWorldQueryApi.Query``8(ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQueryApi.Query``8(ZenECS.Core.Filter)
+  id: Query``8(ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQueryApi
+  langs:
+  - csharp
+  - vb
+  name: Query<T1, T2, T3, T4, T5, T6, T7, T8>(Filter)
+  nameWithType: IWorldQueryApi.Query<T1, T2, T3, T4, T5, T6, T7, T8>(Filter)
+  fullName: ZenECS.Core.IWorldQueryApi.Query<T1, T2, T3, T4, T5, T6, T7, T8>(ZenECS.Core.Filter)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Query
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
+    startLine: 183
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Builds a query over entities that have components
+
+    <code class="typeparamref">T1</code> through <code class="typeparamref">T8</code>.
+  example: []
+  syntax:
+    content: 'QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8> Query<T1, T2, T3, T4, T5, T6, T7, T8>(Filter f = default) where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct where T6 : struct where T7 : struct where T8 : struct'
+    parameters:
+    - id: f
+      type: ZenECS.Core.Filter
+      description: >-
+        Optional composable filter. When left as <code>default</code>, only the
+
+        presence of the eight components is considered.
+    typeParameters:
+    - id: T1
+      description: First required component type.
+    - id: T2
+      description: Second required component type.
+    - id: T3
+      description: Third required component type.
+    - id: T4
+      description: Fourth required component type.
+    - id: T5
+      description: Fifth required component type.
+    - id: T6
+      description: Sixth required component type.
+    - id: T7
+      description: Seventh required component type.
+    - id: T8
+      description: Eighth required component type.
+    return:
+      type: ZenECS.Core.QueryEnumerable{{T1},{T2},{T3},{T4},{T5},{T6},{T7},{T8}}
+      description: >-
+        A value-type <xref href="ZenECS.Core.QueryEnumerable%608" data-throw-if-not-resolved="false"></xref>
+
+        for iteration.
+    content.vb: Function Query(Of T1 As Structure, T2 As Structure, T3 As Structure, T4 As Structure, T5 As Structure, T6 As Structure, T7 As Structure, T8 As Structure)(f As Filter = Nothing) As QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7, T8)
+  overload: ZenECS.Core.IWorldQueryApi.Query*
+  nameWithType.vb: IWorldQueryApi.Query(Of T1, T2, T3, T4, T5, T6, T7, T8)(Filter)
+  fullName.vb: ZenECS.Core.IWorldQueryApi.Query(Of T1, T2, T3, T4, T5, T6, T7, T8)(ZenECS.Core.Filter)
+  name.vb: Query(Of T1, T2, T3, T4, T5, T6, T7, T8)(Filter)
+references:
+- uid: ZenECS.Core.Filter
+  commentId: T:ZenECS.Core.Filter
+  parent: ZenECS.Core
+  href: ZenECS.Core.Filter.html
+  name: Filter
+  nameWithType: Filter
+  fullName: ZenECS.Core.Filter
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.QueryEnumerable`1
+  commentId: T:ZenECS.Core.QueryEnumerable`1
+  href: ZenECS.Core.QueryEnumerable-1.html
+  name: QueryEnumerable<T1>
+  nameWithType: QueryEnumerable<T1>
+  fullName: ZenECS.Core.QueryEnumerable<T1>
+  nameWithType.vb: QueryEnumerable(Of T1)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1)
+  name.vb: QueryEnumerable(Of T1)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`1
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-1.html
+  - name: <
+  - name: T1
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`1
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: )
+- uid: ZenECS.Core.IWorldQueryApi.Query*
+  commentId: Overload:ZenECS.Core.IWorldQueryApi.Query
+  href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__1_ZenECS_Core_Filter_
+  name: Query
+  nameWithType: IWorldQueryApi.Query
+  fullName: ZenECS.Core.IWorldQueryApi.Query
+- uid: ZenECS.Core.QueryEnumerable{{T1}}
+  commentId: T:ZenECS.Core.QueryEnumerable{``0}
+  parent: ZenECS.Core
+  definition: ZenECS.Core.QueryEnumerable`1
+  href: ZenECS.Core.QueryEnumerable-1.html
+  name: QueryEnumerable<T1>
+  nameWithType: QueryEnumerable<T1>
+  fullName: ZenECS.Core.QueryEnumerable<T1>
+  nameWithType.vb: QueryEnumerable(Of T1)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1)
+  name.vb: QueryEnumerable(Of T1)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`1
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-1.html
+  - name: <
+  - name: T1
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`1
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable`2
+  commentId: T:ZenECS.Core.QueryEnumerable`2
+  href: ZenECS.Core.QueryEnumerable-2.html
+  name: QueryEnumerable<T1, T2>
+  nameWithType: QueryEnumerable<T1, T2>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2>
+  nameWithType.vb: QueryEnumerable(Of T1, T2)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2)
+  name.vb: QueryEnumerable(Of T1, T2)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`2
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-2.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`2
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable{{T1},{T2}}
+  commentId: T:ZenECS.Core.QueryEnumerable{``0,``1}
+  parent: ZenECS.Core
+  definition: ZenECS.Core.QueryEnumerable`2
+  href: ZenECS.Core.QueryEnumerable-2.html
+  name: QueryEnumerable<T1, T2>
+  nameWithType: QueryEnumerable<T1, T2>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2>
+  nameWithType.vb: QueryEnumerable(Of T1, T2)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2)
+  name.vb: QueryEnumerable(Of T1, T2)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`2
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-2.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`2
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable`3
+  commentId: T:ZenECS.Core.QueryEnumerable`3
+  href: ZenECS.Core.QueryEnumerable-3.html
+  name: QueryEnumerable<T1, T2, T3>
+  nameWithType: QueryEnumerable<T1, T2, T3>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3>
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3)
+  name.vb: QueryEnumerable(Of T1, T2, T3)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`3
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-3.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`3
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-3.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable{{T1},{T2},{T3}}
+  commentId: T:ZenECS.Core.QueryEnumerable{``0,``1,``2}
+  parent: ZenECS.Core
+  definition: ZenECS.Core.QueryEnumerable`3
+  href: ZenECS.Core.QueryEnumerable-3.html
+  name: QueryEnumerable<T1, T2, T3>
+  nameWithType: QueryEnumerable<T1, T2, T3>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3>
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3)
+  name.vb: QueryEnumerable(Of T1, T2, T3)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`3
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-3.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`3
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-3.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable`4
+  commentId: T:ZenECS.Core.QueryEnumerable`4
+  href: ZenECS.Core.QueryEnumerable-4.html
+  name: QueryEnumerable<T1, T2, T3, T4>
+  nameWithType: QueryEnumerable<T1, T2, T3, T4>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4>
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4)
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`4
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-4.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`4
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-4.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable{{T1},{T2},{T3},{T4}}
+  commentId: T:ZenECS.Core.QueryEnumerable{``0,``1,``2,``3}
+  parent: ZenECS.Core
+  definition: ZenECS.Core.QueryEnumerable`4
+  href: ZenECS.Core.QueryEnumerable-4.html
+  name: QueryEnumerable<T1, T2, T3, T4>
+  nameWithType: QueryEnumerable<T1, T2, T3, T4>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4>
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4)
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`4
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-4.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`4
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-4.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable`5
+  commentId: T:ZenECS.Core.QueryEnumerable`5
+  href: ZenECS.Core.QueryEnumerable-5.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5>
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5>
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5)
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`5
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-5.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`5
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-5.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable{{T1},{T2},{T3},{T4},{T5}}
+  commentId: T:ZenECS.Core.QueryEnumerable{``0,``1,``2,``3,``4}
+  parent: ZenECS.Core
+  definition: ZenECS.Core.QueryEnumerable`5
+  href: ZenECS.Core.QueryEnumerable-5.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5>
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5>
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5)
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`5
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-5.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`5
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-5.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable`6
+  commentId: T:ZenECS.Core.QueryEnumerable`6
+  href: ZenECS.Core.QueryEnumerable-6.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5, T6>
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6>
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6)
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`6
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-6.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`6
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-6.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable{{T1},{T2},{T3},{T4},{T5},{T6}}
+  commentId: T:ZenECS.Core.QueryEnumerable{``0,``1,``2,``3,``4,``5}
+  parent: ZenECS.Core
+  definition: ZenECS.Core.QueryEnumerable`6
+  href: ZenECS.Core.QueryEnumerable-6.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5, T6>
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6>
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6)
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`6
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-6.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`6
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-6.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable`7
+  commentId: T:ZenECS.Core.QueryEnumerable`7
+  href: ZenECS.Core.QueryEnumerable-7.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7)
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`7
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-7.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`7
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-7.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable{{T1},{T2},{T3},{T4},{T5},{T6},{T7}}
+  commentId: T:ZenECS.Core.QueryEnumerable{``0,``1,``2,``3,``4,``5,``6}
+  parent: ZenECS.Core
+  definition: ZenECS.Core.QueryEnumerable`7
+  href: ZenECS.Core.QueryEnumerable-7.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7)
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`7
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-7.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`7
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-7.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable`8
+  commentId: T:ZenECS.Core.QueryEnumerable`8
+  href: ZenECS.Core.QueryEnumerable-8.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7, T8)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7, T8)
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7, T8)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`8
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-8.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: ','
+  - name: " "
+  - name: T8
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`8
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-8.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: ','
+  - name: " "
+  - name: T8
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable{{T1},{T2},{T3},{T4},{T5},{T6},{T7},{T8}}
+  commentId: T:ZenECS.Core.QueryEnumerable{``0,``1,``2,``3,``4,``5,``6,``7}
+  parent: ZenECS.Core
+  definition: ZenECS.Core.QueryEnumerable`8
+  href: ZenECS.Core.QueryEnumerable-8.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7, T8)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7, T8)
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7, T8)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`8
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-8.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: ','
+  - name: " "
+  - name: T8
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`8
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-8.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: ','
+  - name: " "
+  - name: T8
+  - name: )

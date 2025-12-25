@@ -1,0 +1,202 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Binding
+  commentId: N:ZenECS.Core.Binding
+  id: ZenECS.Core.Binding
+  children:
+  - ZenECS.Core.Binding.BaseBinder
+  - ZenECS.Core.Binding.ComponentDeltaKind
+  - ZenECS.Core.Binding.ComponentDelta`1
+  - ZenECS.Core.Binding.DeltaTracker`1
+  - ZenECS.Core.Binding.IAttachOrderMarker
+  - ZenECS.Core.Binding.IBind`1
+  - ZenECS.Core.Binding.IBinder
+  - ZenECS.Core.Binding.IBinderEnabledFlag
+  - ZenECS.Core.Binding.IContext
+  - ZenECS.Core.Binding.IContextAwareBinder
+  - ZenECS.Core.Binding.IContextInitialize
+  - ZenECS.Core.Binding.IContextLookup
+  - ZenECS.Core.Binding.IContextReinitialize
+  langs:
+  - csharp
+  - vb
+  name: ZenECS.Core.Binding
+  nameWithType: ZenECS.Core.Binding
+  fullName: ZenECS.Core.Binding
+  type: Namespace
+  assemblies:
+  - ZenECS.Core
+references:
+- uid: ZenECS.Core.Binding.ComponentDeltaKind
+  commentId: T:ZenECS.Core.Binding.ComponentDeltaKind
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.ComponentDeltaKind.html
+  name: ComponentDeltaKind
+  nameWithType: ComponentDeltaKind
+  fullName: ZenECS.Core.Binding.ComponentDeltaKind
+- uid: ZenECS.Core.Binding.ComponentDelta`1
+  commentId: T:ZenECS.Core.Binding.ComponentDelta`1
+  href: ZenECS.Core.Binding.ComponentDelta-1.html
+  name: ComponentDelta<T>
+  nameWithType: ComponentDelta<T>
+  fullName: ZenECS.Core.Binding.ComponentDelta<T>
+  nameWithType.vb: ComponentDelta(Of T)
+  fullName.vb: ZenECS.Core.Binding.ComponentDelta(Of T)
+  name.vb: ComponentDelta(Of T)
+  spec.csharp:
+  - uid: ZenECS.Core.Binding.ComponentDelta`1
+    name: ComponentDelta
+    href: ZenECS.Core.Binding.ComponentDelta-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.Binding.ComponentDelta`1
+    name: ComponentDelta
+    href: ZenECS.Core.Binding.ComponentDelta-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ZenECS.Core.Binding.IBind`1
+  commentId: T:ZenECS.Core.Binding.IBind`1
+  href: ZenECS.Core.Binding.IBind-1.html
+  name: IBind<T>
+  nameWithType: IBind<T>
+  fullName: ZenECS.Core.Binding.IBind<T>
+  nameWithType.vb: IBind(Of T)
+  fullName.vb: ZenECS.Core.Binding.IBind(Of T)
+  name.vb: IBind(Of T)
+  spec.csharp:
+  - uid: ZenECS.Core.Binding.IBind`1
+    name: IBind
+    href: ZenECS.Core.Binding.IBind-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.Binding.IBind`1
+    name: IBind
+    href: ZenECS.Core.Binding.IBind-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ZenECS.Core.Binding.IContextAwareBinder
+  commentId: T:ZenECS.Core.Binding.IContextAwareBinder
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IContextAwareBinder.html
+  name: IContextAwareBinder
+  nameWithType: IContextAwareBinder
+  fullName: ZenECS.Core.Binding.IContextAwareBinder
+- uid: ZenECS.Core.Binding.IBinderEnabledFlag
+  commentId: T:ZenECS.Core.Binding.IBinderEnabledFlag
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IBinderEnabledFlag.html
+  name: IBinderEnabledFlag
+  nameWithType: IBinderEnabledFlag
+  fullName: ZenECS.Core.Binding.IBinderEnabledFlag
+- uid: ZenECS.Core.Binding.IAttachOrderMarker
+  commentId: T:ZenECS.Core.Binding.IAttachOrderMarker
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IAttachOrderMarker.html
+  name: IAttachOrderMarker
+  nameWithType: IAttachOrderMarker
+  fullName: ZenECS.Core.Binding.IAttachOrderMarker
+- uid: ZenECS.Core.Binding.IBinder
+  commentId: T:ZenECS.Core.Binding.IBinder
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IBinder.html
+  name: IBinder
+  nameWithType: IBinder
+  fullName: ZenECS.Core.Binding.IBinder
+- uid: ZenECS.Core.Binding.BaseBinder
+  commentId: T:ZenECS.Core.Binding.BaseBinder
+  href: ZenECS.Core.Binding.BaseBinder.html
+  name: BaseBinder
+  nameWithType: BaseBinder
+  fullName: ZenECS.Core.Binding.BaseBinder
+- uid: ZenECS.Core.Binding.IContext
+  commentId: T:ZenECS.Core.Binding.IContext
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IContext.html
+  name: IContext
+  nameWithType: IContext
+  fullName: ZenECS.Core.Binding.IContext
+- uid: ZenECS.Core.Binding.IContextLookup
+  commentId: T:ZenECS.Core.Binding.IContextLookup
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IContextLookup.html
+  name: IContextLookup
+  nameWithType: IContextLookup
+  fullName: ZenECS.Core.Binding.IContextLookup
+- uid: ZenECS.Core.Binding.IContextInitialize
+  commentId: T:ZenECS.Core.Binding.IContextInitialize
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IContextInitialize.html
+  name: IContextInitialize
+  nameWithType: IContextInitialize
+  fullName: ZenECS.Core.Binding.IContextInitialize
+- uid: ZenECS.Core.Binding.IContextReinitialize
+  commentId: T:ZenECS.Core.Binding.IContextReinitialize
+  href: ZenECS.Core.Binding.IContextReinitialize.html
+  name: IContextReinitialize
+  nameWithType: IContextReinitialize
+  fullName: ZenECS.Core.Binding.IContextReinitialize
+- uid: ZenECS.Core.Binding.DeltaTracker`1
+  commentId: T:ZenECS.Core.Binding.DeltaTracker`1
+  href: ZenECS.Core.Binding.DeltaTracker-1.html
+  name: DeltaTracker<T>
+  nameWithType: DeltaTracker<T>
+  fullName: ZenECS.Core.Binding.DeltaTracker<T>
+  nameWithType.vb: DeltaTracker(Of T)
+  fullName.vb: ZenECS.Core.Binding.DeltaTracker(Of T)
+  name.vb: DeltaTracker(Of T)
+  spec.csharp:
+  - uid: ZenECS.Core.Binding.DeltaTracker`1
+    name: DeltaTracker
+    href: ZenECS.Core.Binding.DeltaTracker-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.Binding.DeltaTracker`1
+    name: DeltaTracker
+    href: ZenECS.Core.Binding.DeltaTracker-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ZenECS.Core.Binding
+  commentId: N:ZenECS.Core.Binding
+  href: ZenECS.html
+  name: ZenECS.Core.Binding
+  nameWithType: ZenECS.Core.Binding
+  fullName: ZenECS.Core.Binding
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html

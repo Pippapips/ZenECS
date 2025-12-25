@@ -2,24 +2,98 @@
 
 > Docs / Core / Snapshot I/O
 
-Save/Load with memory/disk backends.
+Save and load world state with pluggable serialization backends.
 
 ## Overview
 
-- TODO
+Snapshots enable:
 
-## How it works
+- **Save/Load**: Persist world state to disk or memory
+- **Checkpointing**: Create restore points
+- **Replay**: Record and replay simulations
+- **Migration**: Version compatibility with post-load migrations
 
-- TODO
+## How It Works
 
-## API surface
+### Save Process
 
-- TODO
+```
+World State
+    ↓
+Serialize Components
+    ↓
+Write to Stream
+    ↓
+Snapshot File
+```
+
+### Load Process
+
+```
+Snapshot File
+    ↓
+Read from Stream
+    ↓
+Deserialize Components
+    ↓
+Apply Migrations
+    ↓
+World State Restored
+```
+
+## API Surface
+
+### Saving Snapshots
+
+```csharp
+// Save to file
+using var stream = File.Create("save.dat");
+world.Save(stream);
+
+// Save with custom formatter
+world.Save(stream, new JsonComponentFormatter());
+```
+
+### Loading Snapshots
+
+```csharp
+// Load from file
+using var stream = File.OpenRead("save.dat");
+world.Load(stream);
+
+// Load with migrations
+world.Load(stream, migrations: myMigrations);
+```
 
 ## Examples
 
-- TODO
+### Basic Save/Load
 
-## FAQ
+```csharp
+using ZenECS.Core;
 
-- TODO
+var world = kernel.CreateWorld("GameWorld");
+
+// Create entities
+var player = world.CreateEntity();
+world.AddComponent(player, new Position(0, 0));
+world.AddComponent(player, new Health(100, 100));
+
+// Save
+using (var stream = File.Create("save.dat"))
+{
+    world.Save(stream);
+}
+
+// Load
+using (var stream = File.OpenRead("save.dat"))
+{
+    world.Load(stream);
+}
+```
+
+## See Also
+
+- [Migration & PostMig](./migration-postmig.md) - Version migrations
+- [World](./world.md) - World management
+- [Advanced Topics](../guides/advanced-topics.md) - Advanced patterns

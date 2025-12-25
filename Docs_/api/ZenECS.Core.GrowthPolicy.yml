@@ -1,0 +1,132 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.GrowthPolicy
+  commentId: T:ZenECS.Core.GrowthPolicy
+  id: GrowthPolicy
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.GrowthPolicy.Doubling
+  - ZenECS.Core.GrowthPolicy.Step
+  langs:
+  - csharp
+  - vb
+  name: GrowthPolicy
+  nameWithType: GrowthPolicy
+  fullName: ZenECS.Core.GrowthPolicy
+  type: Enum
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: GrowthPolicy
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+    startLine: 21
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Controls how arrays and pools expand once capacity is exceeded.
+  example: []
+  syntax:
+    content: public enum GrowthPolicy
+    content.vb: Public Enum GrowthPolicy
+- uid: ZenECS.Core.GrowthPolicy.Doubling
+  commentId: F:ZenECS.Core.GrowthPolicy.Doubling
+  id: Doubling
+  parent: ZenECS.Core.GrowthPolicy
+  langs:
+  - csharp
+  - vb
+  name: Doubling
+  nameWithType: GrowthPolicy.Doubling
+  fullName: ZenECS.Core.GrowthPolicy.Doubling
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Doubling
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+    startLine: 27
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Double capacity on expansion (guaranteeing at least +256).
+
+    Reduces resize frequency at the cost of larger jumps in memory usage.
+  example: []
+  syntax:
+    content: Doubling = 0
+    return:
+      type: ZenECS.Core.GrowthPolicy
+- uid: ZenECS.Core.GrowthPolicy.Step
+  commentId: F:ZenECS.Core.GrowthPolicy.Step
+  id: Step
+  parent: ZenECS.Core.GrowthPolicy
+  langs:
+  - csharp
+  - vb
+  name: Step
+  nameWithType: GrowthPolicy.Step
+  fullName: ZenECS.Core.GrowthPolicy.Step
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Step
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+    startLine: 34
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Expand capacity by a fixed number of slots
+
+    (<xref href="ZenECS.Core.WorldConfig.GrowthStep" data-throw-if-not-resolved="false"></xref>) on each expansion.
+
+    Provides predictable memory growth.
+  example: []
+  syntax:
+    content: Step = 1
+    return:
+      type: ZenECS.Core.GrowthPolicy
+references:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.GrowthPolicy
+  commentId: T:ZenECS.Core.GrowthPolicy
+  parent: ZenECS.Core
+  href: ZenECS.Core.GrowthPolicy.html
+  name: GrowthPolicy
+  nameWithType: GrowthPolicy
+  fullName: ZenECS.Core.GrowthPolicy
+- uid: ZenECS.Core.WorldConfig.GrowthStep
+  commentId: F:ZenECS.Core.WorldConfig.GrowthStep
+  href: ZenECS.Core.WorldConfig.html#ZenECS_Core_WorldConfig_GrowthStep
+  name: GrowthStep
+  nameWithType: WorldConfig.GrowthStep
+  fullName: ZenECS.Core.WorldConfig.GrowthStep

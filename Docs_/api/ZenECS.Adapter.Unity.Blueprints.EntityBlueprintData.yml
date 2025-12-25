@@ -1,0 +1,915 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+  id: EntityBlueprintData
+  parent: ZenECS.Adapter.Unity.Blueprints
+  children:
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.ApplyTo(ZenECS.Core.IWorld,ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer)
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Resolve(System.String)
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.entries
+  langs:
+  - csharp
+  - vb
+  name: EntityBlueprintData
+  nameWithType: EntityBlueprintData
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+  type: Class
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintData.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: EntityBlueprintData
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintData.cs
+    startLine: 44
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Blueprints
+  summary: Runtime blueprint data container for component snapshots.
+  remarks: >-
+    <p>
+
+    <xref href="ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData" data-throw-if-not-resolved="false"></xref> is a pure data object that can be
+
+    serialized and used both inside and outside Unity ScriptableObjects.
+
+    It represents a list of component snapshots that can be applied to an
+
+    entity in a given <xref href="ZenECS.Core.IWorld" data-throw-if-not-resolved="false"></xref>.
+
+    </p>
+
+    <p>
+
+    Each snapshot entry stores:
+
+    </p>
+
+    <ul><li>
+
+    <xref href="ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry.typeName" data-throw-if-not-resolved="false"></xref>: the assembly-qualified component type name.
+
+    </li><li>
+
+    <xref href="ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry.json" data-throw-if-not-resolved="false"></xref>: JSON encoded by
+
+    <xref href="ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Serialize(System.Object%2cSystem.Type)" data-throw-if-not-resolved="false"></xref>.
+
+    </li></ul>
+  example: []
+  syntax:
+    content: >-
+      [Serializable]
+
+      public sealed class EntityBlueprintData
+    content.vb: >-
+      <Serializable>
+
+      Public NotInheritable Class EntityBlueprintData
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  attributes:
+  - type: System.SerializableAttribute
+    ctor: System.SerializableAttribute.#ctor
+    arguments: []
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.entries
+  commentId: F:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.entries
+  id: entries
+  parent: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+  langs:
+  - csharp
+  - vb
+  name: entries
+  nameWithType: EntityBlueprintData.entries
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.entries
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintData.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: entries
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintData.cs
+    startLine: 68
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Blueprints
+  summary: Collection of serialized component entries in this blueprint.
+  example: []
+  syntax:
+    content: public List<EntityBlueprintData.Entry> entries
+    return:
+      type: System.Collections.Generic.List{ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry}
+    content.vb: Public entries As List(Of EntityBlueprintData.Entry)
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.ApplyTo(ZenECS.Core.IWorld,ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer)
+  commentId: M:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.ApplyTo(ZenECS.Core.IWorld,ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer)
+  id: ApplyTo(ZenECS.Core.IWorld,ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer)
+  parent: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+  langs:
+  - csharp
+  - vb
+  name: ApplyTo(IWorld, Entity, ICommandBuffer)
+  nameWithType: EntityBlueprintData.ApplyTo(IWorld, Entity, ICommandBuffer)
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.ApplyTo(ZenECS.Core.IWorld, ZenECS.Core.Entity, ZenECS.Core.ICommandBuffer)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintData.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ApplyTo
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintData.cs
+    startLine: 104
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Blueprints
+  summary: Applies all stored component snapshots to an entity.
+  remarks: >-
+    <p>
+
+    For each <xref href="ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry" data-throw-if-not-resolved="false"></xref> in <xref href="ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.entries" data-throw-if-not-resolved="false"></xref>:
+
+    </p>
+
+    <ol><li>
+
+    Resolve the component type via <xref href="ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Resolve(System.String)" data-throw-if-not-resolved="false"></xref>.
+
+    </li><li>
+
+    Deserialize the JSON snapshot using
+
+    <xref href="ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Deserialize(System.String%2cSystem.Type)" data-throw-if-not-resolved="false"></xref>.
+
+    </li><li>
+
+    Add the boxed component to the entity via
+
+    <xref href="ZenECS.Core.ICommandBuffer.AddComponentBoxed(ZenECS.Core.Entity%2cSystem.Object)" data-throw-if-not-resolved="false"></xref>.
+
+    </li></ol>
+
+    <p>
+
+    Entries with invalid <xref href="ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry.typeName" data-throw-if-not-resolved="false"></xref> or unresolved
+
+    types are skipped.
+
+    </p>
+  example: []
+  syntax:
+    content: public void ApplyTo(IWorld world, Entity e, ICommandBuffer cmd)
+    parameters:
+    - id: world
+      type: ZenECS.Core.IWorld
+      description: Target <xref href="ZenECS.Core.IWorld" data-throw-if-not-resolved="false"></xref> that owns <code class="paramref">e</code>.
+    - id: e
+      type: ZenECS.Core.Entity
+      description: The entity to which components should be added.
+    - id: cmd
+      type: ZenECS.Core.ICommandBuffer
+      description: Command buffer used to add components in a write-safe manner.
+    content.vb: Public Sub ApplyTo(world As IWorld, e As Entity, cmd As ICommandBuffer)
+  overload: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.ApplyTo*
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Resolve(System.String)
+  commentId: M:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Resolve(System.String)
+  id: Resolve(System.String)
+  parent: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+  langs:
+  - csharp
+  - vb
+  name: Resolve(string)
+  nameWithType: EntityBlueprintData.Resolve(string)
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Resolve(string)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintData.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Resolve
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintData.cs
+    startLine: 133
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Blueprints
+  summary: Resolves a type from an assembly-qualified type name.
+  remarks: >-
+    <p>
+
+    The method first calls <xref href="System.Type.GetType(System.String%2cSystem.Boolean)" data-throw-if-not-resolved="false"></xref> with
+
+    <code>throwOnError = false</code>. If that returns <code>null</code>, it scans
+
+    all assemblies in <xref href="System.AppDomain.CurrentDomain" data-throw-if-not-resolved="false"></xref> and returns
+
+    the first type that matches <code class="paramref">typeName</code>.
+
+    </p>
+  example: []
+  syntax:
+    content: public static Type? Resolve(string typeName)
+    parameters:
+    - id: typeName
+      type: System.String
+      description: The assembly-qualified type name to resolve.
+    return:
+      type: System.Type
+      description: The resolved <xref href="System.Type" data-throw-if-not-resolved="false"></xref> if found; otherwise <code>null</code>.
+    content.vb: Public Shared Function Resolve(typeName As String) As Type
+  overload: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Resolve*
+  nameWithType.vb: EntityBlueprintData.Resolve(String)
+  fullName.vb: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Resolve(String)
+  name.vb: Resolve(String)
+references:
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+  parent: ZenECS.Adapter.Unity.Blueprints
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html
+  name: EntityBlueprintData
+  nameWithType: EntityBlueprintData
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+- uid: ZenECS.Core.IWorld
+  commentId: T:ZenECS.Core.IWorld
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorld.html
+  name: IWorld
+  nameWithType: IWorld
+  fullName: ZenECS.Core.IWorld
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry.typeName
+  commentId: F:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry.typeName
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprintData_Entry_typeName
+  name: typeName
+  nameWithType: EntityBlueprintData.Entry.typeName
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry.typeName
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry.json
+  commentId: F:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry.json
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprintData_Entry_json
+  name: json
+  nameWithType: EntityBlueprintData.Entry.json
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry.json
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Serialize(System.Object,System.Type)
+  commentId: M:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Serialize(System.Object,System.Type)
+  isExternal: true
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprintComponentJson_Serialize_System_Object_System_Type_
+  name: Serialize(object, Type)
+  nameWithType: EntityBlueprintComponentJson.Serialize(object, Type)
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Serialize(object, System.Type)
+  nameWithType.vb: EntityBlueprintComponentJson.Serialize(Object, Type)
+  fullName.vb: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Serialize(Object, System.Type)
+  name.vb: Serialize(Object, Type)
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Serialize(System.Object,System.Type)
+    name: Serialize
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprintComponentJson_Serialize_System_Object_System_Type_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Serialize(System.Object,System.Type)
+    name: Serialize
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprintComponentJson_Serialize_System_Object_System_Type_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: ZenECS.Adapter.Unity.Blueprints
+  commentId: N:ZenECS.Adapter.Unity.Blueprints
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.Blueprints
+  nameWithType: ZenECS.Adapter.Unity.Blueprints
+  fullName: ZenECS.Adapter.Unity.Blueprints
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints
+    name: Blueprints
+    href: ZenECS.Adapter.Unity.Blueprints.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints
+    name: Blueprints
+    href: ZenECS.Adapter.Unity.Blueprints.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Collections.Generic.List{ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry}
+  commentId: T:System.Collections.Generic.List{ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<EntityBlueprintData.Entry>
+  nameWithType: List<EntityBlueprintData.Entry>
+  fullName: System.Collections.Generic.List<ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry>
+  nameWithType.vb: List(Of EntityBlueprintData.Entry)
+  fullName.vb: System.Collections.Generic.List(Of ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry)
+  name.vb: List(Of EntityBlueprintData.Entry)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+    name: EntityBlueprintData
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry
+    name: Entry
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+    name: EntityBlueprintData
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry
+    name: Entry
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry.html
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html
+  name: EntityBlueprintData.Entry
+  nameWithType: EntityBlueprintData.Entry
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+    name: EntityBlueprintData
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry
+    name: Entry
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry.html
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+    name: EntityBlueprintData
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry
+    name: Entry
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry.html
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.entries
+  commentId: F:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.entries
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprintData_entries
+  name: entries
+  nameWithType: EntityBlueprintData.entries
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.entries
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Resolve(System.String)
+  commentId: M:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Resolve(System.String)
+  isExternal: true
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprintData_Resolve_System_String_
+  name: Resolve(string)
+  nameWithType: EntityBlueprintData.Resolve(string)
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Resolve(string)
+  nameWithType.vb: EntityBlueprintData.Resolve(String)
+  fullName.vb: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Resolve(String)
+  name.vb: Resolve(String)
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Resolve(System.String)
+    name: Resolve
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprintData_Resolve_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Resolve(System.String)
+    name: Resolve
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprintData_Resolve_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Deserialize(System.String,System.Type)
+  commentId: M:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Deserialize(System.String,System.Type)
+  isExternal: true
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprintComponentJson_Deserialize_System_String_System_Type_
+  name: Deserialize(string, Type)
+  nameWithType: EntityBlueprintComponentJson.Deserialize(string, Type)
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Deserialize(string, System.Type)
+  nameWithType.vb: EntityBlueprintComponentJson.Deserialize(String, Type)
+  fullName.vb: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Deserialize(String, System.Type)
+  name.vb: Deserialize(String, Type)
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Deserialize(System.String,System.Type)
+    name: Deserialize
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprintComponentJson_Deserialize_System_String_System_Type_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Deserialize(System.String,System.Type)
+    name: Deserialize
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprintComponentJson_Deserialize_System_String_System_Type_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: ZenECS.Core.ICommandBuffer.AddComponentBoxed(ZenECS.Core.Entity,System.Object)
+  commentId: M:ZenECS.Core.ICommandBuffer.AddComponentBoxed(ZenECS.Core.Entity,System.Object)
+  isExternal: true
+  href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_AddComponentBoxed_ZenECS_Core_Entity_System_Object_
+  name: AddComponentBoxed(Entity, object)
+  nameWithType: ICommandBuffer.AddComponentBoxed(Entity, object)
+  fullName: ZenECS.Core.ICommandBuffer.AddComponentBoxed(ZenECS.Core.Entity, object)
+  nameWithType.vb: ICommandBuffer.AddComponentBoxed(Entity, Object)
+  fullName.vb: ZenECS.Core.ICommandBuffer.AddComponentBoxed(ZenECS.Core.Entity, Object)
+  name.vb: AddComponentBoxed(Entity, Object)
+  spec.csharp:
+  - uid: ZenECS.Core.ICommandBuffer.AddComponentBoxed(ZenECS.Core.Entity,System.Object)
+    name: AddComponentBoxed
+    href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_AddComponentBoxed_ZenECS_Core_Entity_System_Object_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.ICommandBuffer.AddComponentBoxed(ZenECS.Core.Entity,System.Object)
+    name: AddComponentBoxed
+    href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_AddComponentBoxed_ZenECS_Core_Entity_System_Object_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.ApplyTo*
+  commentId: Overload:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.ApplyTo
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprintData_ApplyTo_ZenECS_Core_IWorld_ZenECS_Core_Entity_ZenECS_Core_ICommandBuffer_
+  name: ApplyTo
+  nameWithType: EntityBlueprintData.ApplyTo
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.ApplyTo
+- uid: ZenECS.Core.Entity
+  commentId: T:ZenECS.Core.Entity
+  parent: ZenECS.Core
+  href: ZenECS.Core.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: ZenECS.Core.Entity
+- uid: ZenECS.Core.ICommandBuffer
+  commentId: T:ZenECS.Core.ICommandBuffer
+  parent: ZenECS.Core
+  href: ZenECS.Core.ICommandBuffer.html
+  name: ICommandBuffer
+  nameWithType: ICommandBuffer
+  fullName: ZenECS.Core.ICommandBuffer
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.Type.GetType(System.String,System.Boolean)
+  commentId: M:System.Type.GetType(System.String,System.Boolean)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type.gettype#system-type-gettype(system-string-system-boolean)
+  name: GetType(string, bool)
+  nameWithType: Type.GetType(string, bool)
+  fullName: System.Type.GetType(string, bool)
+  nameWithType.vb: Type.GetType(String, Boolean)
+  fullName.vb: System.Type.GetType(String, Boolean)
+  name.vb: GetType(String, Boolean)
+  spec.csharp:
+  - uid: System.Type.GetType(System.String,System.Boolean)
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type.gettype#system-type-gettype(system-string-system-boolean)
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: System.Type.GetType(System.String,System.Boolean)
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type.gettype#system-type-gettype(system-string-system-boolean)
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.AppDomain.CurrentDomain
+  commentId: P:System.AppDomain.CurrentDomain
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.appdomain.currentdomain
+  name: CurrentDomain
+  nameWithType: AppDomain.CurrentDomain
+  fullName: System.AppDomain.CurrentDomain
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Resolve*
+  commentId: Overload:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Resolve
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprintData_Resolve_System_String_
+  name: Resolve
+  nameWithType: EntityBlueprintData.Resolve
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Resolve
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

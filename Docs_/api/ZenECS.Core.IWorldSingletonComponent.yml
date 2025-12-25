@@ -1,0 +1,71 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.IWorldSingletonComponent
+  commentId: T:ZenECS.Core.IWorldSingletonComponent
+  id: IWorldSingletonComponent
+  parent: ZenECS.Core
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: IWorldSingletonComponent
+  nameWithType: IWorldSingletonComponent
+  fullName: ZenECS.Core.IWorldSingletonComponent
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IWorldSingletonComponent
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+    startLine: 36
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Marker interface for components that must exist zero-or-one times per world.
+  remarks: >-
+    <p>
+
+    Components that implement this interface are treated as world-level singletons:
+
+    any given world may have at most one entity that carries a component of that
+
+    type. The world implementation is responsible for enforcing this invariant.
+
+    </p>
+
+    <p>
+
+    Typical usage:
+
+    </p>
+
+    <ul><li>Global configuration for a world (for example, gravity).</li><li>World-level runtime state (for example, match timer).</li><li>Shared references such as global spawners or managers.</li></ul>
+  example: []
+  syntax:
+    content: public interface IWorldSingletonComponent
+    content.vb: Public Interface IWorldSingletonComponent
+references:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html

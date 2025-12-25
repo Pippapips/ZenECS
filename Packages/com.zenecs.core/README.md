@@ -8,14 +8,24 @@
 
 ## ✨ Key Features
 
-- **Multi-World Kernel** — Create and manage multiple worlds, select current world, and step all worlds deterministically
-- **Clean World API** — Unified API integrating components, queries, command buffers, messages, hooks, and contexts/binders
-- **Zero Dependencies** — No external frameworks; lightweight internal DI and worker queue
-- **Deterministic Stepping** — `BeginFrame → FixedStep×N → LateFrame` structure with explicit ordering attributes
-- **Thread Safety** — Safe multi-threaded access using concurrent collections and lock-based snapshots
-- **Snapshot I/O** — Pluggable backend + `IComponentFormatter` + post-load migrations
-- **Binding Layer** — Contexts + binders for view integration (Unity, UI, audio, etc.), separated from Core data flow
-- **Testable** — Small public surface, sealed scopes, clear lifecycle; samples included
+### 🏗️ Clean Architecture
+- **Layered Separation** — Strict boundaries between data (components), simulation (systems), and presentation (binders). View layer never writes directly; messages flow unidirectionally from view → simulation → presentation
+- **Multi-World Kernel** — Isolated simulation spaces with independent lifecycles. Perfect for split-screen, server/client separation, or modular game modes
+- **Zero Dependencies** — Pure .NET Standard 2.1 with no external frameworks. Engine-agnostic design enables Unity, Godot, or standalone .NET applications
+- **Testable by Design** — Minimal public API surface, sealed scopes, and clear lifecycle boundaries. Systems are pure functions over component data
+- **Dependency Injection** — Lightweight internal DI container with per-world scopes. Extensible bootstrap allows custom service composition
+
+### ⚡ Reactive Programming
+- **Message Bus** — Struct-based pub/sub messaging with deterministic delivery. Enables event-driven architecture where systems react to messages rather than polling
+- **ComponentDelta Bindings** — Automatic change detection and reactive view updates. Binders receive deltas (Added/Changed/Removed) and update views reactively
+- **Unidirectional Data Flow** — View publishes messages → Systems consume and mutate state → Presentation reads (read-only). No circular dependencies or tight coupling
+- **UniRx Integration** — Optional bridge to convert message streams to `IObservable<T>` for reactive composition with LINQ operators
+
+### 🎯 Production Ready
+- **Deterministic Stepping** — Explicit `BeginFrame → FixedStep×N → LateFrame` structure with topological system ordering. Reproducible simulations for networking and replays
+- **Command Buffers** — Batch structural changes (entity spawn/despawn, component add/remove) and apply at safe boundaries. Thread-safe and deterministic
+- **Snapshot I/O** — Pluggable serialization backends with post-load migrations. Save/load world state with version compatibility
+- **Thread Safety** — Concurrent world indexing with lock-based snapshots. Safe multi-threaded access patterns built-in
 
 > **Status:** Release Candidate — 1.0 APIs locked, documentation/samples being finalized
 

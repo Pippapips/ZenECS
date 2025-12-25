@@ -1,0 +1,85 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Config
+  commentId: N:ZenECS.Core.Config
+  id: ZenECS.Core.Config
+  children:
+  - ZenECS.Core.Config.EcsRuntimeOptions
+  - ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+  - ZenECS.Core.Config.IEcsLogger
+  langs:
+  - csharp
+  - vb
+  name: ZenECS.Core.Config
+  nameWithType: ZenECS.Core.Config
+  fullName: ZenECS.Core.Config
+  type: Namespace
+  assemblies:
+  - ZenECS.Core
+references:
+- uid: ZenECS.Core.Config.EcsRuntimeOptions
+  commentId: T:ZenECS.Core.Config.EcsRuntimeOptions
+  href: ZenECS.Core.Config.EcsRuntimeOptions.html
+  name: EcsRuntimeOptions
+  nameWithType: EcsRuntimeOptions
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+  commentId: T:ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+  parent: ZenECS.Core.Config
+  href: ZenECS.Core.Config.EcsRuntimeOptions.html
+  name: EcsRuntimeOptions.WriteFailurePolicy
+  nameWithType: EcsRuntimeOptions.WriteFailurePolicy
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+  spec.csharp:
+  - uid: ZenECS.Core.Config.EcsRuntimeOptions
+    name: EcsRuntimeOptions
+    href: ZenECS.Core.Config.EcsRuntimeOptions.html
+  - name: .
+  - uid: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+    name: WriteFailurePolicy
+    href: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.html
+  spec.vb:
+  - uid: ZenECS.Core.Config.EcsRuntimeOptions
+    name: EcsRuntimeOptions
+    href: ZenECS.Core.Config.EcsRuntimeOptions.html
+  - name: .
+  - uid: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+    name: WriteFailurePolicy
+    href: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.html
+- uid: ZenECS.Core.Config.IEcsLogger
+  commentId: T:ZenECS.Core.Config.IEcsLogger
+  parent: ZenECS.Core.Config
+  href: ZenECS.Core.Config.IEcsLogger.html
+  name: IEcsLogger
+  nameWithType: IEcsLogger
+  fullName: ZenECS.Core.Config.IEcsLogger
+- uid: ZenECS.Core.Config
+  commentId: N:ZenECS.Core.Config
+  href: ZenECS.html
+  name: ZenECS.Core.Config
+  nameWithType: ZenECS.Core.Config
+  fullName: ZenECS.Core.Config
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Config
+    name: Config
+    href: ZenECS.Core.Config.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Config
+    name: Config
+    href: ZenECS.Core.Config.html

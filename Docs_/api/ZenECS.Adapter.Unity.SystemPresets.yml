@@ -1,0 +1,92 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity.SystemPresets
+  commentId: N:ZenECS.Adapter.Unity.SystemPresets
+  id: ZenECS.Adapter.Unity.SystemPresets
+  children:
+  - ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
+  - ZenECS.Adapter.Unity.SystemPresets.SystemPresetResolver
+  - ZenECS.Adapter.Unity.SystemPresets.SystemTypeFilterAttribute
+  - ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef
+  - ZenECS.Adapter.Unity.SystemPresets.SystemsPreset
+  langs:
+  - csharp
+  - vb
+  name: ZenECS.Adapter.Unity.SystemPresets
+  nameWithType: ZenECS.Adapter.Unity.SystemPresets
+  fullName: ZenECS.Adapter.Unity.SystemPresets
+  type: Namespace
+  assemblies:
+  - ZenECS.Adapter.Unity
+references:
+- uid: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
+  commentId: T:ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
+  parent: ZenECS.Adapter.Unity.SystemPresets
+  href: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.html
+  name: ISystemPresetResolver
+  nameWithType: ISystemPresetResolver
+  fullName: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
+- uid: ZenECS.Adapter.Unity.SystemPresets.SystemsPreset
+  commentId: T:ZenECS.Adapter.Unity.SystemPresets.SystemsPreset
+  href: ZenECS.Adapter.Unity.SystemPresets.SystemsPreset.html
+  name: SystemsPreset
+  nameWithType: SystemsPreset
+  fullName: ZenECS.Adapter.Unity.SystemPresets.SystemsPreset
+- uid: ZenECS.Adapter.Unity.SystemPresets.SystemPresetResolver
+  commentId: T:ZenECS.Adapter.Unity.SystemPresets.SystemPresetResolver
+  href: ZenECS.Adapter.Unity.SystemPresets.SystemPresetResolver.html
+  name: SystemPresetResolver
+  nameWithType: SystemPresetResolver
+  fullName: ZenECS.Adapter.Unity.SystemPresets.SystemPresetResolver
+- uid: ZenECS.Adapter.Unity.SystemPresets.SystemTypeFilterAttribute
+  commentId: T:ZenECS.Adapter.Unity.SystemPresets.SystemTypeFilterAttribute
+  parent: ZenECS.Adapter.Unity.SystemPresets
+  href: ZenECS.Adapter.Unity.SystemPresets.SystemTypeFilterAttribute.html
+  name: SystemTypeFilterAttribute
+  nameWithType: SystemTypeFilterAttribute
+  fullName: ZenECS.Adapter.Unity.SystemPresets.SystemTypeFilterAttribute
+- uid: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef
+  commentId: T:ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef
+  parent: ZenECS.Adapter.Unity.SystemPresets
+  href: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.html
+  name: SystemTypeRef
+  nameWithType: SystemTypeRef
+  fullName: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef
+- uid: ZenECS.Adapter.Unity.SystemPresets
+  commentId: N:ZenECS.Adapter.Unity.SystemPresets
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.SystemPresets
+  nameWithType: ZenECS.Adapter.Unity.SystemPresets
+  fullName: ZenECS.Adapter.Unity.SystemPresets
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.SystemPresets
+    name: SystemPresets
+    href: ZenECS.Adapter.Unity.SystemPresets.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.SystemPresets
+    name: SystemPresets
+    href: ZenECS.Adapter.Unity.SystemPresets.html

@@ -1,0 +1,569 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions
+  commentId: T:ZenECS.Adapter.Unity.Linking.EntityLinkExtensions
+  id: EntityLinkExtensions
+  parent: ZenECS.Adapter.Unity.Linking
+  children:
+  - ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.CreateEntityLink(UnityEngine.GameObject,ZenECS.Core.IWorld,ZenECS.Core.Entity@)
+  - ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.DestroyEntityLink(UnityEngine.GameObject)
+  langs:
+  - csharp
+  - vb
+  name: EntityLinkExtensions
+  nameWithType: EntityLinkExtensions
+  fullName: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions
+  type: Class
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityLink.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: EntityLinkExtensions
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityLink.cs
+    startLine: 115
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Linking
+  summary: >-
+    Extension methods that provide convenient helpers for working with
+
+    <xref href="ZenECS.Adapter.Unity.Linking.EntityLink" data-throw-if-not-resolved="false"></xref> in the Unity Editor.
+  example: []
+  syntax:
+    content: public static class EntityLinkExtensions
+    content.vb: Public Module EntityLinkExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.CreateEntityLink(UnityEngine.GameObject,ZenECS.Core.IWorld,ZenECS.Core.Entity@)
+  commentId: M:ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.CreateEntityLink(UnityEngine.GameObject,ZenECS.Core.IWorld,ZenECS.Core.Entity@)
+  id: CreateEntityLink(UnityEngine.GameObject,ZenECS.Core.IWorld,ZenECS.Core.Entity@)
+  isExtensionMethod: true
+  parent: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions
+  langs:
+  - csharp
+  - vb
+  name: CreateEntityLink(GameObject, IWorld, in Entity)
+  nameWithType: EntityLinkExtensions.CreateEntityLink(GameObject, IWorld, in Entity)
+  fullName: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.CreateEntityLink(UnityEngine.GameObject, ZenECS.Core.IWorld, in ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityLink.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: CreateEntityLink
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityLink.cs
+    startLine: 139
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Linking
+  summary: >-
+    Ensures a link exists on the GameObject and attaches it to the
+
+    specified world and entity.
+  remarks: >-
+    <p>
+
+    In the Unity Editor, this method either reuses an existing
+
+    <xref href="ZenECS.Adapter.Unity.Linking.EntityLink" data-throw-if-not-resolved="false"></xref> or adds a new one to <code class="paramref">go</code>,
+
+    then calls <xref href="ZenECS.Adapter.Unity.Linking.EntityLink.Attach(ZenECS.Core.IWorld%2cZenECS.Core.Entity%40)" data-throw-if-not-resolved="false"></xref>.
+
+    </p>
+
+    <p>
+
+    In non-editor builds, this method is compiled out and always
+
+    returns <code>null</code>.
+
+    </p>
+  example: []
+  syntax:
+    content: public static EntityLink? CreateEntityLink(this GameObject go, IWorld w, in Entity e)
+    parameters:
+    - id: go
+      type: UnityEngine.GameObject
+      description: The target GameObject to attach the link to.
+    - id: w
+      type: ZenECS.Core.IWorld
+      description: The world that owns the entity.
+    - id: e
+      type: ZenECS.Core.Entity
+      description: The entity to link.
+    return:
+      type: ZenECS.Adapter.Unity.Linking.EntityLink
+      description: >-
+        The created or existing <xref href="ZenECS.Adapter.Unity.Linking.EntityLink" data-throw-if-not-resolved="false"></xref> instance in the
+
+        Unity Editor; otherwise <code>null</code> in non-editor builds.
+    content.vb: Public Shared Function CreateEntityLink(go As GameObject, w As IWorld, e As Entity) As EntityLink
+  overload: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.CreateEntityLink*
+  nameWithType.vb: EntityLinkExtensions.CreateEntityLink(GameObject, IWorld, Entity)
+  fullName.vb: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.CreateEntityLink(UnityEngine.GameObject, ZenECS.Core.IWorld, ZenECS.Core.Entity)
+  name.vb: CreateEntityLink(GameObject, IWorld, Entity)
+- uid: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.DestroyEntityLink(UnityEngine.GameObject)
+  commentId: M:ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.DestroyEntityLink(UnityEngine.GameObject)
+  id: DestroyEntityLink(UnityEngine.GameObject)
+  isExtensionMethod: true
+  parent: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions
+  langs:
+  - csharp
+  - vb
+  name: DestroyEntityLink(GameObject)
+  nameWithType: EntityLinkExtensions.DestroyEntityLink(GameObject)
+  fullName: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.DestroyEntityLink(UnityEngine.GameObject)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityLink.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: DestroyEntityLink
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityLink.cs
+    startLine: 167
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Linking
+  summary: >-
+    Destroys the <xref href="ZenECS.Adapter.Unity.Linking.EntityLink" data-throw-if-not-resolved="false"></xref> attached to the GameObject,
+
+    if any, and detaches it from the world registry.
+  remarks: >-
+    <p>
+
+    In the Unity Editor, this method looks up any existing
+
+    <xref href="ZenECS.Adapter.Unity.Linking.EntityLink" data-throw-if-not-resolved="false"></xref> on <code class="paramref">go</code>, calls
+
+    <xref href="ZenECS.Adapter.Unity.Linking.EntityLink.Detach" data-throw-if-not-resolved="false"></xref>, and leaves destruction to Unity's
+
+    usual component lifecycle.
+
+    </p>
+
+    <p>
+
+    In non-editor builds, this method is compiled out and does nothing.
+
+    </p>
+  example: []
+  syntax:
+    content: public static void DestroyEntityLink(this GameObject go)
+    parameters:
+    - id: go
+      type: UnityEngine.GameObject
+      description: The GameObject whose link should be destroyed.
+    content.vb: Public Shared Sub DestroyEntityLink(go As GameObject)
+  overload: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.DestroyEntityLink*
+references:
+- uid: ZenECS.Adapter.Unity.Linking.EntityLink
+  commentId: T:ZenECS.Adapter.Unity.Linking.EntityLink
+  parent: ZenECS.Adapter.Unity.Linking
+  href: ZenECS.Adapter.Unity.Linking.EntityLink.html
+  name: EntityLink
+  nameWithType: EntityLink
+  fullName: ZenECS.Adapter.Unity.Linking.EntityLink
+- uid: ZenECS.Adapter.Unity.Linking
+  commentId: N:ZenECS.Adapter.Unity.Linking
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.Linking
+  nameWithType: ZenECS.Adapter.Unity.Linking
+  fullName: ZenECS.Adapter.Unity.Linking
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Linking
+    name: Linking
+    href: ZenECS.Adapter.Unity.Linking.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Linking
+    name: Linking
+    href: ZenECS.Adapter.Unity.Linking.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Adapter.Unity.Linking.EntityLink.Attach(ZenECS.Core.IWorld,ZenECS.Core.Entity@)
+  commentId: M:ZenECS.Adapter.Unity.Linking.EntityLink.Attach(ZenECS.Core.IWorld,ZenECS.Core.Entity@)
+  href: ZenECS.Adapter.Unity.Linking.EntityLink.html#ZenECS_Adapter_Unity_Linking_EntityLink_Attach_ZenECS_Core_IWorld_ZenECS_Core_Entity__
+  name: Attach(IWorld, in Entity)
+  nameWithType: EntityLink.Attach(IWorld, in Entity)
+  fullName: ZenECS.Adapter.Unity.Linking.EntityLink.Attach(ZenECS.Core.IWorld, in ZenECS.Core.Entity)
+  nameWithType.vb: EntityLink.Attach(IWorld, Entity)
+  fullName.vb: ZenECS.Adapter.Unity.Linking.EntityLink.Attach(ZenECS.Core.IWorld, ZenECS.Core.Entity)
+  name.vb: Attach(IWorld, Entity)
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Linking.EntityLink.Attach(ZenECS.Core.IWorld,ZenECS.Core.Entity@)
+    name: Attach
+    href: ZenECS.Adapter.Unity.Linking.EntityLink.html#ZenECS_Adapter_Unity_Linking_EntityLink_Attach_ZenECS_Core_IWorld_ZenECS_Core_Entity__
+  - name: (
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - name: in
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Linking.EntityLink.Attach(ZenECS.Core.IWorld,ZenECS.Core.Entity@)
+    name: Attach
+    href: ZenECS.Adapter.Unity.Linking.EntityLink.html#ZenECS_Adapter_Unity_Linking_EntityLink_Attach_ZenECS_Core_IWorld_ZenECS_Core_Entity__
+  - name: (
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.CreateEntityLink*
+  commentId: Overload:ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.CreateEntityLink
+  href: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.html#ZenECS_Adapter_Unity_Linking_EntityLinkExtensions_CreateEntityLink_UnityEngine_GameObject_ZenECS_Core_IWorld_ZenECS_Core_Entity__
+  name: CreateEntityLink
+  nameWithType: EntityLinkExtensions.CreateEntityLink
+  fullName: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.CreateEntityLink
+- uid: UnityEngine.GameObject
+  commentId: T:UnityEngine.GameObject
+  parent: UnityEngine
+  href: UnityEngine.GameObject.html
+  name: GameObject
+  nameWithType: GameObject
+  fullName: UnityEngine.GameObject
+- uid: ZenECS.Core.IWorld
+  commentId: T:ZenECS.Core.IWorld
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorld.html
+  name: IWorld
+  nameWithType: IWorld
+  fullName: ZenECS.Core.IWorld
+- uid: ZenECS.Core.Entity
+  commentId: T:ZenECS.Core.Entity
+  parent: ZenECS.Core
+  href: ZenECS.Core.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: ZenECS.Core.Entity
+- uid: UnityEngine
+  commentId: N:UnityEngine
+  href: UnityEngine.html
+  name: UnityEngine
+  nameWithType: UnityEngine
+  fullName: UnityEngine
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Adapter.Unity.Linking.EntityLink.Detach
+  commentId: M:ZenECS.Adapter.Unity.Linking.EntityLink.Detach
+  href: ZenECS.Adapter.Unity.Linking.EntityLink.html#ZenECS_Adapter_Unity_Linking_EntityLink_Detach
+  name: Detach()
+  nameWithType: EntityLink.Detach()
+  fullName: ZenECS.Adapter.Unity.Linking.EntityLink.Detach()
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Linking.EntityLink.Detach
+    name: Detach
+    href: ZenECS.Adapter.Unity.Linking.EntityLink.html#ZenECS_Adapter_Unity_Linking_EntityLink_Detach
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Linking.EntityLink.Detach
+    name: Detach
+    href: ZenECS.Adapter.Unity.Linking.EntityLink.html#ZenECS_Adapter_Unity_Linking_EntityLink_Detach
+  - name: (
+  - name: )
+- uid: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.DestroyEntityLink*
+  commentId: Overload:ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.DestroyEntityLink
+  href: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.html#ZenECS_Adapter_Unity_Linking_EntityLinkExtensions_DestroyEntityLink_UnityEngine_GameObject_
+  name: DestroyEntityLink
+  nameWithType: EntityLinkExtensions.DestroyEntityLink
+  fullName: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.DestroyEntityLink

@@ -1,0 +1,852 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity.ZenEcsUnityBridge
+  commentId: T:ZenECS.Adapter.Unity.ZenEcsUnityBridge
+  id: ZenEcsUnityBridge
+  parent: ZenECS.Adapter.Unity
+  children:
+  - ZenECS.Adapter.Unity.ZenEcsUnityBridge.Kernel
+  - ZenECS.Adapter.Unity.ZenEcsUnityBridge.SharedContextResolver
+  - ZenECS.Adapter.Unity.ZenEcsUnityBridge.SystemPresetResolver
+  langs:
+  - csharp
+  - vb
+  name: ZenEcsUnityBridge
+  nameWithType: ZenEcsUnityBridge
+  fullName: ZenECS.Adapter.Unity.ZenEcsUnityBridge
+  type: Class
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Shared/ZenEcsUnityBridge.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ZenEcsUnityBridge
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Shared/ZenEcsUnityBridge.cs
+    startLine: 67
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Global bridge between ZenECS core and Unity-specific infrastructure.
+  remarks: >-
+    <p>
+
+    <xref href="ZenECS.Adapter.Unity.ZenEcsUnityBridge" data-throw-if-not-resolved="false"></xref> is a lightweight static hub that allows
+
+    Unity runtime code, editor tools, and installers to coordinate around
+
+    a few shared ZenECS services:
+
+    </p>
+
+    <ul><li>
+
+    <xref href="ZenECS.Adapter.Unity.ZenEcsUnityBridge.Kernel" data-throw-if-not-resolved="false"></xref> — the primary <xref href="ZenECS.Core.IKernel" data-throw-if-not-resolved="false"></xref> instance used
+
+    by the application.
+
+    </li><li>
+
+    <xref href="ZenECS.Adapter.Unity.ZenEcsUnityBridge.SystemPresetResolver" data-throw-if-not-resolved="false"></xref> — used to instantiate
+
+    <xref href="ZenECS.Core.Systems.ISystem" data-throw-if-not-resolved="false"></xref> implementations from presets or type lists.
+
+    </li><li>
+
+    <xref href="ZenECS.Adapter.Unity.ZenEcsUnityBridge.SharedContextResolver" data-throw-if-not-resolved="false"></xref> — used to resolve shared
+
+    <xref href="ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset" data-throw-if-not-resolved="false"></xref> markers to
+
+    concrete IContext instances.
+
+    </li></ul>
+
+    <p>
+
+    The bridge intentionally contains no direct references to
+
+    <code>UnityEditor</code> so that it is safe to use in player builds as well
+
+    as editor-only tooling.
+
+    </p>
+
+    <p>
+
+    Typical initialization flows:
+
+    </p>
+
+    <ol><li>
+
+    <b>With Zenject</b> — <code>ProjectInstaller</code> (Zenject installer)
+
+    creates the kernel and binds resolvers, then assigns them to the
+
+    bridge.
+
+    </li><li>
+
+    <b>Without Zenject</b> — a lightweight <code>ProjectInstaller</code>
+
+    <code>MonoBehaviour</code> or another bootstrap script assigns the kernel
+
+    and resolver implementations directly.
+
+    </li></ol>
+  example: []
+  syntax:
+    content: public static class ZenEcsUnityBridge
+    content.vb: Public Module ZenEcsUnityBridge
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: ZenECS.Adapter.Unity.ZenEcsUnityBridge.SystemPresetResolver
+  commentId: P:ZenECS.Adapter.Unity.ZenEcsUnityBridge.SystemPresetResolver
+  id: SystemPresetResolver
+  parent: ZenECS.Adapter.Unity.ZenEcsUnityBridge
+  langs:
+  - csharp
+  - vb
+  name: SystemPresetResolver
+  nameWithType: ZenEcsUnityBridge.SystemPresetResolver
+  fullName: ZenECS.Adapter.Unity.ZenEcsUnityBridge.SystemPresetResolver
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Shared/ZenEcsUnityBridge.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SystemPresetResolver
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Shared/ZenEcsUnityBridge.cs
+    startLine: 81
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Gets or sets the resolver used to create <xref href="ZenECS.Core.Systems.ISystem" data-throw-if-not-resolved="false"></xref> instances.
+  remarks: >-
+    <p>
+
+    This resolver is typically used by <code>WorldSystemInstaller</code> to
+
+    instantiate systems from a merged list of types and
+
+    <xref href="ZenECS.Adapter.Unity.SystemPresets.SystemsPreset" data-throw-if-not-resolved="false"></xref> assets. When <code>null</code>, callers
+
+    should fall back to directly constructing systems (for example via
+
+    <xref href="System.Activator.CreateInstance(System.Type)" data-throw-if-not-resolved="false"></xref>).
+
+    </p>
+  example: []
+  syntax:
+    content: public static ISystemPresetResolver? SystemPresetResolver { get; set; }
+    parameters: []
+    return:
+      type: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
+    content.vb: Public Shared Property SystemPresetResolver As ISystemPresetResolver
+  overload: ZenECS.Adapter.Unity.ZenEcsUnityBridge.SystemPresetResolver*
+- uid: ZenECS.Adapter.Unity.ZenEcsUnityBridge.SharedContextResolver
+  commentId: P:ZenECS.Adapter.Unity.ZenEcsUnityBridge.SharedContextResolver
+  id: SharedContextResolver
+  parent: ZenECS.Adapter.Unity.ZenEcsUnityBridge
+  langs:
+  - csharp
+  - vb
+  name: SharedContextResolver
+  nameWithType: ZenEcsUnityBridge.SharedContextResolver
+  fullName: ZenECS.Adapter.Unity.ZenEcsUnityBridge.SharedContextResolver
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Shared/ZenEcsUnityBridge.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SharedContextResolver
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Shared/ZenEcsUnityBridge.cs
+    startLine: 99
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Gets or sets the shared context resolver used by binding and blueprints.
+  remarks: >-
+    <p>
+
+    This resolver is used when applying
+
+    <xref href="ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset" data-throw-if-not-resolved="false"></xref> markers,
+
+    for example from <xref href="ZenECS.Adapter.Unity.Blueprints.EntityBlueprint" data-throw-if-not-resolved="false"></xref> during
+
+    entity spawn. It maps marker assets or context types to concrete
+
+    IContext instances that are then registered with worlds.
+
+    </p>
+
+    <p>
+
+    When this property is <code>null</code>, shared-context resolution is
+
+    simply skipped, and only per-entity contexts are created.
+
+    </p>
+  example: []
+  syntax:
+    content: public static ISharedContextResolver? SharedContextResolver { get; set; }
+    parameters: []
+    return:
+      type: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+    content.vb: Public Shared Property SharedContextResolver As ISharedContextResolver
+  overload: ZenECS.Adapter.Unity.ZenEcsUnityBridge.SharedContextResolver*
+- uid: ZenECS.Adapter.Unity.ZenEcsUnityBridge.Kernel
+  commentId: P:ZenECS.Adapter.Unity.ZenEcsUnityBridge.Kernel
+  id: Kernel
+  parent: ZenECS.Adapter.Unity.ZenEcsUnityBridge
+  langs:
+  - csharp
+  - vb
+  name: Kernel
+  nameWithType: ZenEcsUnityBridge.Kernel
+  fullName: ZenECS.Adapter.Unity.ZenEcsUnityBridge.Kernel
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Shared/ZenEcsUnityBridge.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Kernel
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Shared/ZenEcsUnityBridge.cs
+    startLine: 125
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity
+  summary: Gets or sets the optional global ZenECS kernel reference.
+  remarks: >-
+    <p>
+
+    This property is usually initialized in a bootstrap path such as
+
+    <code>ProjectInstaller</code> or an editor bootstrap script, and can then
+
+    be consumed by runtime code or tools that do not have direct access
+
+    to the DI container or scene-level <code>EcsDriver</code>.
+
+    </p>
+
+    <p>
+
+    When <code>null</code>, callers should either:
+
+    </p>
+
+    <ul><li>
+
+    Use <xref href="ZenECS.Adapter.Unity.KernelLocator.Current" data-throw-if-not-resolved="false"></xref> to lazily create or locate
+
+    a kernel.
+
+    </li><li>
+
+    Or treat the absence of a kernel as a "not yet initialized" state
+
+    and defer their logic.
+
+    </li></ul>
+  example: []
+  syntax:
+    content: public static IKernel? Kernel { get; set; }
+    parameters: []
+    return:
+      type: ZenECS.Core.IKernel
+    content.vb: Public Shared Property Kernel As IKernel
+  overload: ZenECS.Adapter.Unity.ZenEcsUnityBridge.Kernel*
+references:
+- uid: ZenECS.Adapter.Unity.ZenEcsUnityBridge
+  commentId: T:ZenECS.Adapter.Unity.ZenEcsUnityBridge
+  href: ZenECS.Adapter.Unity.ZenEcsUnityBridge.html
+  name: ZenEcsUnityBridge
+  nameWithType: ZenEcsUnityBridge
+  fullName: ZenECS.Adapter.Unity.ZenEcsUnityBridge
+- uid: ZenECS.Adapter.Unity.ZenEcsUnityBridge.Kernel
+  commentId: P:ZenECS.Adapter.Unity.ZenEcsUnityBridge.Kernel
+  href: ZenECS.Adapter.Unity.ZenEcsUnityBridge.html#ZenECS_Adapter_Unity_ZenEcsUnityBridge_Kernel
+  name: Kernel
+  nameWithType: ZenEcsUnityBridge.Kernel
+  fullName: ZenECS.Adapter.Unity.ZenEcsUnityBridge.Kernel
+- uid: ZenECS.Core.IKernel
+  commentId: T:ZenECS.Core.IKernel
+  parent: ZenECS.Core
+  href: ZenECS.Core.IKernel.html
+  name: IKernel
+  nameWithType: IKernel
+  fullName: ZenECS.Core.IKernel
+- uid: ZenECS.Adapter.Unity.ZenEcsUnityBridge.SystemPresetResolver
+  commentId: P:ZenECS.Adapter.Unity.ZenEcsUnityBridge.SystemPresetResolver
+  href: ZenECS.Adapter.Unity.ZenEcsUnityBridge.html#ZenECS_Adapter_Unity_ZenEcsUnityBridge_SystemPresetResolver
+  name: SystemPresetResolver
+  nameWithType: ZenEcsUnityBridge.SystemPresetResolver
+  fullName: ZenECS.Adapter.Unity.ZenEcsUnityBridge.SystemPresetResolver
+- uid: ZenECS.Core.Systems.ISystem
+  commentId: T:ZenECS.Core.Systems.ISystem
+  parent: ZenECS.Core.Systems
+  href: ZenECS.Core.Systems.ISystem.html
+  name: ISystem
+  nameWithType: ISystem
+  fullName: ZenECS.Core.Systems.ISystem
+- uid: ZenECS.Adapter.Unity.ZenEcsUnityBridge.SharedContextResolver
+  commentId: P:ZenECS.Adapter.Unity.ZenEcsUnityBridge.SharedContextResolver
+  href: ZenECS.Adapter.Unity.ZenEcsUnityBridge.html#ZenECS_Adapter_Unity_ZenEcsUnityBridge_SharedContextResolver
+  name: SharedContextResolver
+  nameWithType: ZenEcsUnityBridge.SharedContextResolver
+  fullName: ZenECS.Adapter.Unity.ZenEcsUnityBridge.SharedContextResolver
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset
+  commentId: T:ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset
+  parent: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  href: ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset.html
+  name: SharedContextAsset
+  nameWithType: SharedContextAsset
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset
+- uid: ZenECS.Adapter.Unity
+  commentId: N:ZenECS.Adapter.Unity
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity
+  nameWithType: ZenECS.Adapter.Unity
+  fullName: ZenECS.Adapter.Unity
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.Systems
+  commentId: N:ZenECS.Core.Systems
+  href: ZenECS.html
+  name: ZenECS.Core.Systems
+  nameWithType: ZenECS.Core.Systems
+  fullName: ZenECS.Core.Systems
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Systems
+    name: Systems
+    href: ZenECS.Core.Systems.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Systems
+    name: Systems
+    href: ZenECS.Core.Systems.html
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  commentId: N:ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  nameWithType: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding
+    name: Binding
+    href: ZenECS.Adapter.Unity.Binding.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts
+    name: Contexts
+    href: ZenECS.Adapter.Unity.Binding.Contexts.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+    name: Assets
+    href: ZenECS.Adapter.Unity.Binding.Contexts.Assets.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding
+    name: Binding
+    href: ZenECS.Adapter.Unity.Binding.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts
+    name: Contexts
+    href: ZenECS.Adapter.Unity.Binding.Contexts.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+    name: Assets
+    href: ZenECS.Adapter.Unity.Binding.Contexts.Assets.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Adapter.Unity.SystemPresets.SystemsPreset
+  commentId: T:ZenECS.Adapter.Unity.SystemPresets.SystemsPreset
+  href: ZenECS.Adapter.Unity.SystemPresets.SystemsPreset.html
+  name: SystemsPreset
+  nameWithType: SystemsPreset
+  fullName: ZenECS.Adapter.Unity.SystemPresets.SystemsPreset
+- uid: System.Activator.CreateInstance(System.Type)
+  commentId: M:System.Activator.CreateInstance(System.Type)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.activator.createinstance#system-activator-createinstance(system-type)
+  name: CreateInstance(Type)
+  nameWithType: Activator.CreateInstance(Type)
+  fullName: System.Activator.CreateInstance(System.Type)
+  spec.csharp:
+  - uid: System.Activator.CreateInstance(System.Type)
+    name: CreateInstance
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.activator.createinstance#system-activator-createinstance(system-type)
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: System.Activator.CreateInstance(System.Type)
+    name: CreateInstance
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.activator.createinstance#system-activator-createinstance(system-type)
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: ZenECS.Adapter.Unity.ZenEcsUnityBridge.SystemPresetResolver*
+  commentId: Overload:ZenECS.Adapter.Unity.ZenEcsUnityBridge.SystemPresetResolver
+  href: ZenECS.Adapter.Unity.ZenEcsUnityBridge.html#ZenECS_Adapter_Unity_ZenEcsUnityBridge_SystemPresetResolver
+  name: SystemPresetResolver
+  nameWithType: ZenEcsUnityBridge.SystemPresetResolver
+  fullName: ZenECS.Adapter.Unity.ZenEcsUnityBridge.SystemPresetResolver
+- uid: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
+  commentId: T:ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
+  parent: ZenECS.Adapter.Unity.SystemPresets
+  href: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver.html
+  name: ISystemPresetResolver
+  nameWithType: ISystemPresetResolver
+  fullName: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
+- uid: ZenECS.Adapter.Unity.SystemPresets
+  commentId: N:ZenECS.Adapter.Unity.SystemPresets
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.SystemPresets
+  nameWithType: ZenECS.Adapter.Unity.SystemPresets
+  fullName: ZenECS.Adapter.Unity.SystemPresets
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.SystemPresets
+    name: SystemPresets
+    href: ZenECS.Adapter.Unity.SystemPresets.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.SystemPresets
+    name: SystemPresets
+    href: ZenECS.Adapter.Unity.SystemPresets.html
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprint
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.html
+  name: EntityBlueprint
+  nameWithType: EntityBlueprint
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint
+- uid: ZenECS.Adapter.Unity.ZenEcsUnityBridge.SharedContextResolver*
+  commentId: Overload:ZenECS.Adapter.Unity.ZenEcsUnityBridge.SharedContextResolver
+  href: ZenECS.Adapter.Unity.ZenEcsUnityBridge.html#ZenECS_Adapter_Unity_ZenEcsUnityBridge_SharedContextResolver
+  name: SharedContextResolver
+  nameWithType: ZenEcsUnityBridge.SharedContextResolver
+  fullName: ZenECS.Adapter.Unity.ZenEcsUnityBridge.SharedContextResolver
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+  commentId: T:ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+  parent: ZenECS.Adapter.Unity.Binding.Contexts
+  href: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.html
+  name: ISharedContextResolver
+  nameWithType: ISharedContextResolver
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+- uid: ZenECS.Adapter.Unity.Binding.Contexts
+  commentId: N:ZenECS.Adapter.Unity.Binding.Contexts
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.Binding.Contexts
+  nameWithType: ZenECS.Adapter.Unity.Binding.Contexts
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding
+    name: Binding
+    href: ZenECS.Adapter.Unity.Binding.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts
+    name: Contexts
+    href: ZenECS.Adapter.Unity.Binding.Contexts.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding
+    name: Binding
+    href: ZenECS.Adapter.Unity.Binding.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts
+    name: Contexts
+    href: ZenECS.Adapter.Unity.Binding.Contexts.html
+- uid: ZenECS.Adapter.Unity.KernelLocator.Current
+  commentId: P:ZenECS.Adapter.Unity.KernelLocator.Current
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_Current
+  name: Current
+  nameWithType: KernelLocator.Current
+  fullName: ZenECS.Adapter.Unity.KernelLocator.Current
+- uid: ZenECS.Adapter.Unity.ZenEcsUnityBridge.Kernel*
+  commentId: Overload:ZenECS.Adapter.Unity.ZenEcsUnityBridge.Kernel
+  href: ZenECS.Adapter.Unity.ZenEcsUnityBridge.html#ZenECS_Adapter_Unity_ZenEcsUnityBridge_Kernel
+  name: Kernel
+  nameWithType: ZenEcsUnityBridge.Kernel
+  fullName: ZenECS.Adapter.Unity.ZenEcsUnityBridge.Kernel

@@ -2,24 +2,124 @@
 
 > Docs / Core / EcsHost
 
-Hosting scenarios and integration points.
+Hosting scenarios and integration points for ZenECS in different environments.
 
 ## Overview
 
-- TODO
+ZenECS can be hosted in various environments:
 
-## How it works
+- **Unity**: Via Unity Adapter
+- **Standalone .NET**: Console applications, servers
+- **Other Engines**: Godot, MonoGame, etc. (with custom adapter)
+- **Testing**: Unit tests and integration tests
 
-- TODO
+## Hosting Scenarios
 
-## API surface
+### Unity Hosting
 
-- TODO
+Use `EcsDriver` for automatic lifecycle:
 
-## Examples
+```csharp
+// EcsDriver handles kernel lifecycle
+var kernel = KernelLocator.Current;
+var world = kernel.CreateWorld("GameWorld");
+```
 
-- TODO
+### Standalone .NET Hosting
 
-## FAQ
+Manual kernel management:
 
-- TODO
+```csharp
+var kernel = new Kernel();
+var world = kernel.CreateWorld("GameWorld");
+
+// Game loop
+while (running)
+{
+    kernel.PumpAndLateFrame(dt, fixedDelta, maxSubStepsPerFrame: 4);
+}
+
+kernel.Dispose();
+```
+
+### Server Hosting
+
+For game servers:
+
+```csharp
+var kernel = new Kernel();
+var serverWorld = kernel.CreateWorld("Server", tags: new[] { "server" });
+
+// Server loop
+while (serverRunning)
+{
+    // Process network messages
+    ProcessNetworkMessages(serverWorld);
+    
+    // Run simulation
+    kernel.PumpAndLateFrame(dt, fixedDelta, maxSubStepsPerFrame: 4);
+}
+```
+
+### Testing Hosting
+
+For unit tests:
+
+```csharp
+[Test]
+public void TestSystem()
+{
+    var kernel = new Kernel();
+    var world = kernel.CreateWorld("Test");
+    
+    // Test setup
+    world.AddSystems([new TestSystem()]);
+    
+    // Execute
+    kernel.PumpAndLateFrame(1f, 1f / 60f, maxSubStepsPerFrame: 4);
+    
+    // Assertions
+    Assert.IsTrue(/* ... */);
+    
+    kernel.Dispose();
+}
+```
+
+## Integration Points
+
+### Frame Bridge
+
+Bridge engine frame callbacks:
+
+```csharp
+// Unity
+void Update() => kernel.BeginFrame(Time.deltaTime);
+void FixedUpdate() => kernel.FixedStep(Time.fixedDeltaTime);
+void LateUpdate() => kernel.LateFrame(Time.deltaTime, alpha);
+
+// Godot
+public override void _Process(float delta) => kernel.BeginFrame(delta);
+public override void _PhysicsProcess(float delta) => kernel.FixedStep(delta);
+```
+
+### Lifecycle Management
+
+Manage kernel lifecycle:
+
+```csharp
+// Initialize
+var kernel = new Kernel();
+var world = kernel.CreateWorld("GameWorld");
+
+// Run
+kernel.PumpAndLateFrame(dt, fixedDelta, maxSubStepsPerFrame: 4);
+
+// Cleanup
+kernel.Dispose();
+```
+
+## See Also
+
+- [Unity Adapter](../adapter-unity/overview.md) - Unity integration
+- [EcsKernel](./ecs-kernel.md) - Kernel management
+- [Architecture](../overview/architecture.md) - System design

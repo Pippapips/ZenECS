@@ -1,0 +1,66 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Binding.IContext
+  commentId: T:ZenECS.Core.Binding.IContext
+  id: IContext
+  parent: ZenECS.Core.Binding
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: IContext
+  nameWithType: IContext
+  fullName: ZenECS.Core.Binding.IContext
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IContext
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
+    startLine: 23
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Marker interface for context objects.
+
+    A context is a resource container (data or references) that binders use
+
+    to drive external presentation systems (rendering, UI, audio, etc.).
+  example: []
+  syntax:
+    content: public interface IContext
+    content.vb: Public Interface IContext
+references:
+- uid: ZenECS.Core.Binding
+  commentId: N:ZenECS.Core.Binding
+  href: ZenECS.html
+  name: ZenECS.Core.Binding
+  nameWithType: ZenECS.Core.Binding
+  fullName: ZenECS.Core.Binding
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html

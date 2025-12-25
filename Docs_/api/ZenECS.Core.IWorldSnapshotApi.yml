@@ -1,0 +1,212 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.IWorldSnapshotApi
+  commentId: T:ZenECS.Core.IWorldSnapshotApi
+  id: IWorldSnapshotApi
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.IWorldSnapshotApi.LoadFullSnapshotBinary(System.IO.Stream)
+  - ZenECS.Core.IWorldSnapshotApi.SaveFullSnapshotBinary(System.IO.Stream)
+  langs:
+  - csharp
+  - vb
+  name: IWorldSnapshotApi
+  nameWithType: IWorldSnapshotApi
+  fullName: ZenECS.Core.IWorldSnapshotApi
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSnapshotApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IWorldSnapshotApi
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSnapshotApi.cs
+    startLine: 36
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Snapshot I/O surface for saving and restoring entire world state.
+  remarks: >-
+    <p>
+
+    Implementations are responsible for emitting a stable, portable binary format
+
+    that can be loaded across process runs (and, ideally, platforms), including a
+
+    versioned magic header to detect incompatibilities early.
+
+    </p>
+
+    <p>
+
+    A snapshot is expected to capture:
+
+    </p>
+
+    <ul><li>Entity metadata (next id, generations, free list, alive mask).</li><li>All component pools and their per-entity values.</li><li>Any additional world-level state required for correct restore.</li></ul>
+  example: []
+  syntax:
+    content: public interface IWorldSnapshotApi
+    content.vb: Public Interface IWorldSnapshotApi
+- uid: ZenECS.Core.IWorldSnapshotApi.SaveFullSnapshotBinary(System.IO.Stream)
+  commentId: M:ZenECS.Core.IWorldSnapshotApi.SaveFullSnapshotBinary(System.IO.Stream)
+  id: SaveFullSnapshotBinary(System.IO.Stream)
+  parent: ZenECS.Core.IWorldSnapshotApi
+  langs:
+  - csharp
+  - vb
+  name: SaveFullSnapshotBinary(Stream)
+  nameWithType: IWorldSnapshotApi.SaveFullSnapshotBinary(Stream)
+  fullName: ZenECS.Core.IWorldSnapshotApi.SaveFullSnapshotBinary(System.IO.Stream)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSnapshotApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SaveFullSnapshotBinary
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSnapshotApi.cs
+    startLine: 55
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Saves a complete snapshot of the world into the given stream.
+  remarks: >-
+    <p>
+
+    Implementations should:
+
+    </p>
+
+    <ul><li>Write a magic header and version tag.</li><li>Encode metadata such as NextId, Generation[], FreeIds[], AliveBits.</li><li>Serialize each component pool using the configured formatter set.</li></ul>
+
+    <p>
+
+    The stream is not closed by this call; lifetime management remains with the caller.
+
+    </p>
+  example: []
+  syntax:
+    content: void SaveFullSnapshotBinary(Stream s)
+    parameters:
+    - id: s
+      type: System.IO.Stream
+      description: Writable stream that will receive the snapshot bytes.
+    content.vb: Sub SaveFullSnapshotBinary(s As Stream)
+  overload: ZenECS.Core.IWorldSnapshotApi.SaveFullSnapshotBinary*
+- uid: ZenECS.Core.IWorldSnapshotApi.LoadFullSnapshotBinary(System.IO.Stream)
+  commentId: M:ZenECS.Core.IWorldSnapshotApi.LoadFullSnapshotBinary(System.IO.Stream)
+  id: LoadFullSnapshotBinary(System.IO.Stream)
+  parent: ZenECS.Core.IWorldSnapshotApi
+  langs:
+  - csharp
+  - vb
+  name: LoadFullSnapshotBinary(Stream)
+  nameWithType: IWorldSnapshotApi.LoadFullSnapshotBinary(Stream)
+  fullName: ZenECS.Core.IWorldSnapshotApi.LoadFullSnapshotBinary(System.IO.Stream)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSnapshotApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: LoadFullSnapshotBinary
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSnapshotApi.cs
+    startLine: 75
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Loads a complete snapshot from the given stream and replaces in-memory state.
+  remarks: >-
+    <p>
+
+    Implementations should:
+
+    </p>
+
+    <ul><li>Validate the magic header and version.</li><li>Restore entity metadata and rebuild alive/free lists.</li><li>Clear existing component pools before repopulating them.</li><li>Run any registered post-load migrations after data is restored.</li></ul>
+
+    <p>
+
+    The stream is not closed by this call; lifetime management remains with the caller.
+
+    </p>
+  example: []
+  syntax:
+    content: void LoadFullSnapshotBinary(Stream s)
+    parameters:
+    - id: s
+      type: System.IO.Stream
+      description: Readable stream that provides the snapshot bytes.
+    content.vb: Sub LoadFullSnapshotBinary(s As Stream)
+  overload: ZenECS.Core.IWorldSnapshotApi.LoadFullSnapshotBinary*
+references:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.IWorldSnapshotApi.SaveFullSnapshotBinary*
+  commentId: Overload:ZenECS.Core.IWorldSnapshotApi.SaveFullSnapshotBinary
+  href: ZenECS.Core.IWorldSnapshotApi.html#ZenECS_Core_IWorldSnapshotApi_SaveFullSnapshotBinary_System_IO_Stream_
+  name: SaveFullSnapshotBinary
+  nameWithType: IWorldSnapshotApi.SaveFullSnapshotBinary
+  fullName: ZenECS.Core.IWorldSnapshotApi.SaveFullSnapshotBinary
+- uid: System.IO.Stream
+  commentId: T:System.IO.Stream
+  parent: System.IO
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  name: Stream
+  nameWithType: Stream
+  fullName: System.IO.Stream
+- uid: System.IO
+  commentId: N:System.IO
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.IO
+  nameWithType: System.IO
+  fullName: System.IO
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.IO
+    name: IO
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.IO
+    name: IO
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io
+- uid: ZenECS.Core.IWorldSnapshotApi.LoadFullSnapshotBinary*
+  commentId: Overload:ZenECS.Core.IWorldSnapshotApi.LoadFullSnapshotBinary
+  href: ZenECS.Core.IWorldSnapshotApi.html#ZenECS_Core_IWorldSnapshotApi_LoadFullSnapshotBinary_System_IO_Stream_
+  name: LoadFullSnapshotBinary
+  nameWithType: IWorldSnapshotApi.LoadFullSnapshotBinary
+  fullName: ZenECS.Core.IWorldSnapshotApi.LoadFullSnapshotBinary

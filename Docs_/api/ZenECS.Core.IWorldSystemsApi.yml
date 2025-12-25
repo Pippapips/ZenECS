@@ -1,0 +1,737 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.IWorldSystemsApi
+  commentId: T:ZenECS.Core.IWorldSystemsApi
+  id: IWorldSystemsApi
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.IWorldSystemsApi.AddSystem(ZenECS.Core.Systems.ISystem)
+  - ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable{ZenECS.Core.Systems.ISystem})
+  - ZenECS.Core.IWorldSystemsApi.GetAllSystems
+  - ZenECS.Core.IWorldSystemsApi.IsEnabledSystem(System.Type)
+  - ZenECS.Core.IWorldSystemsApi.IsEnabledSystem``1
+  - ZenECS.Core.IWorldSystemsApi.RemoveSystem(System.Type)
+  - ZenECS.Core.IWorldSystemsApi.RemoveSystem``1
+  - ZenECS.Core.IWorldSystemsApi.SetEnabledSystem``1(System.Boolean)
+  - ZenECS.Core.IWorldSystemsApi.TryGetSystem(System.Type,ZenECS.Core.Systems.ISystem@)
+  - ZenECS.Core.IWorldSystemsApi.TryGetSystem``1(``0@)
+  langs:
+  - csharp
+  - vb
+  name: IWorldSystemsApi
+  nameWithType: IWorldSystemsApi
+  fullName: ZenECS.Core.IWorldSystemsApi
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IWorldSystemsApi
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+    startLine: 24
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Public system-management API surfaced by <xref href="ZenECS.Core.IWorld" data-throw-if-not-resolved="false"></xref> for runtime
+
+    extensibility. Mutations are applied at the next frame boundary to keep
+
+    ticks deterministic and thread-safe.
+  example: []
+  syntax:
+    content: public interface IWorldSystemsApi
+    content.vb: Public Interface IWorldSystemsApi
+- uid: ZenECS.Core.IWorldSystemsApi.AddSystem(ZenECS.Core.Systems.ISystem)
+  commentId: M:ZenECS.Core.IWorldSystemsApi.AddSystem(ZenECS.Core.Systems.ISystem)
+  id: AddSystem(ZenECS.Core.Systems.ISystem)
+  parent: ZenECS.Core.IWorldSystemsApi
+  langs:
+  - csharp
+  - vb
+  name: AddSystem(ISystem)
+  nameWithType: IWorldSystemsApi.AddSystem(ISystem)
+  fullName: ZenECS.Core.IWorldSystemsApi.AddSystem(ZenECS.Core.Systems.ISystem)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: AddSystem
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+    startLine: 27
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Queues a system instance for addition at the next frame boundary.
+  example: []
+  syntax:
+    content: void AddSystem(ISystem system)
+    parameters:
+    - id: system
+      type: ZenECS.Core.Systems.ISystem
+    content.vb: Sub AddSystem(system As ISystem)
+  overload: ZenECS.Core.IWorldSystemsApi.AddSystem*
+- uid: ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable{ZenECS.Core.Systems.ISystem})
+  commentId: M:ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable{ZenECS.Core.Systems.ISystem})
+  id: AddSystems(System.Collections.Generic.IEnumerable{ZenECS.Core.Systems.ISystem})
+  parent: ZenECS.Core.IWorldSystemsApi
+  langs:
+  - csharp
+  - vb
+  name: AddSystems(IEnumerable<ISystem>)
+  nameWithType: IWorldSystemsApi.AddSystems(IEnumerable<ISystem>)
+  fullName: ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable<ZenECS.Core.Systems.ISystem>)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: AddSystems
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+    startLine: 30
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Queues multiple systems for addition at the next frame boundary.
+  example: []
+  syntax:
+    content: void AddSystems(IEnumerable<ISystem> systems)
+    parameters:
+    - id: systems
+      type: System.Collections.Generic.IEnumerable{ZenECS.Core.Systems.ISystem}
+    content.vb: Sub AddSystems(systems As IEnumerable(Of ISystem))
+  overload: ZenECS.Core.IWorldSystemsApi.AddSystems*
+  nameWithType.vb: IWorldSystemsApi.AddSystems(IEnumerable(Of ISystem))
+  fullName.vb: ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable(Of ZenECS.Core.Systems.ISystem))
+  name.vb: AddSystems(IEnumerable(Of ISystem))
+- uid: ZenECS.Core.IWorldSystemsApi.RemoveSystem``1
+  commentId: M:ZenECS.Core.IWorldSystemsApi.RemoveSystem``1
+  id: RemoveSystem``1
+  parent: ZenECS.Core.IWorldSystemsApi
+  langs:
+  - csharp
+  - vb
+  name: RemoveSystem<T>()
+  nameWithType: IWorldSystemsApi.RemoveSystem<T>()
+  fullName: ZenECS.Core.IWorldSystemsApi.RemoveSystem<T>()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RemoveSystem
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+    startLine: 33
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Queues the first system of type <code class="typeparamref">T</code> for removal.
+  example: []
+  syntax:
+    content: 'void RemoveSystem<T>() where T : ISystem'
+    typeParameters:
+    - id: T
+    content.vb: Sub RemoveSystem(Of T As ISystem)()
+  overload: ZenECS.Core.IWorldSystemsApi.RemoveSystem*
+  nameWithType.vb: IWorldSystemsApi.RemoveSystem(Of T)()
+  fullName.vb: ZenECS.Core.IWorldSystemsApi.RemoveSystem(Of T)()
+  name.vb: RemoveSystem(Of T)()
+- uid: ZenECS.Core.IWorldSystemsApi.RemoveSystem(System.Type)
+  commentId: M:ZenECS.Core.IWorldSystemsApi.RemoveSystem(System.Type)
+  id: RemoveSystem(System.Type)
+  parent: ZenECS.Core.IWorldSystemsApi
+  langs:
+  - csharp
+  - vb
+  name: RemoveSystem(Type)
+  nameWithType: IWorldSystemsApi.RemoveSystem(Type)
+  fullName: ZenECS.Core.IWorldSystemsApi.RemoveSystem(System.Type)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RemoveSystem
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+    startLine: 36
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Queues the first system of the specified <code class="paramref">t</code> for removal.
+  example: []
+  syntax:
+    content: void RemoveSystem(Type t)
+    parameters:
+    - id: t
+      type: System.Type
+    content.vb: Sub RemoveSystem(t As Type)
+  overload: ZenECS.Core.IWorldSystemsApi.RemoveSystem*
+- uid: ZenECS.Core.IWorldSystemsApi.TryGetSystem``1(``0@)
+  commentId: M:ZenECS.Core.IWorldSystemsApi.TryGetSystem``1(``0@)
+  id: TryGetSystem``1(``0@)
+  parent: ZenECS.Core.IWorldSystemsApi
+  langs:
+  - csharp
+  - vb
+  name: TryGetSystem<T>(out T?)
+  nameWithType: IWorldSystemsApi.TryGetSystem<T>(out T?)
+  fullName: ZenECS.Core.IWorldSystemsApi.TryGetSystem<T>(out T?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: TryGetSystem
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+    startLine: 41
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Attempts to retrieve the first active system of type <code class="typeparamref">T</code>.
+  example: []
+  syntax:
+    content: 'bool TryGetSystem<T>(out T? system) where T : class, ISystem'
+    parameters:
+    - id: system
+      type: '{T}'
+    typeParameters:
+    - id: T
+    return:
+      type: System.Boolean
+    content.vb: Function TryGetSystem(Of T As {Class, ISystem})(system As T) As Boolean
+  overload: ZenECS.Core.IWorldSystemsApi.TryGetSystem*
+  nameWithType.vb: IWorldSystemsApi.TryGetSystem(Of T)(T)
+  fullName.vb: ZenECS.Core.IWorldSystemsApi.TryGetSystem(Of T)(T)
+  name.vb: TryGetSystem(Of T)(T)
+- uid: ZenECS.Core.IWorldSystemsApi.TryGetSystem(System.Type,ZenECS.Core.Systems.ISystem@)
+  commentId: M:ZenECS.Core.IWorldSystemsApi.TryGetSystem(System.Type,ZenECS.Core.Systems.ISystem@)
+  id: TryGetSystem(System.Type,ZenECS.Core.Systems.ISystem@)
+  parent: ZenECS.Core.IWorldSystemsApi
+  langs:
+  - csharp
+  - vb
+  name: TryGetSystem(Type, out ISystem?)
+  nameWithType: IWorldSystemsApi.TryGetSystem(Type, out ISystem?)
+  fullName: ZenECS.Core.IWorldSystemsApi.TryGetSystem(System.Type, out ZenECS.Core.Systems.ISystem?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: TryGetSystem
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+    startLine: 55
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Attempts to retrieve the first active system of the specified type.
+  example: []
+  syntax:
+    content: bool TryGetSystem(Type t, out ISystem? system)
+    parameters:
+    - id: t
+      type: System.Type
+      description: System type to retrieve.
+    - id: system
+      type: ZenECS.Core.Systems.ISystem
+      description: >-
+        When this method returns, contains the system instance if found;
+
+        otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if a system of type <code class="paramref">t</code> was found;
+
+        otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function TryGetSystem(t As Type, system As ISystem) As Boolean
+  overload: ZenECS.Core.IWorldSystemsApi.TryGetSystem*
+  nameWithType.vb: IWorldSystemsApi.TryGetSystem(Type, ISystem)
+  fullName.vb: ZenECS.Core.IWorldSystemsApi.TryGetSystem(System.Type, ZenECS.Core.Systems.ISystem)
+  name.vb: TryGetSystem(Type, ISystem)
+- uid: ZenECS.Core.IWorldSystemsApi.GetAllSystems
+  commentId: M:ZenECS.Core.IWorldSystemsApi.GetAllSystems
+  id: GetAllSystems
+  parent: ZenECS.Core.IWorldSystemsApi
+  langs:
+  - csharp
+  - vb
+  name: GetAllSystems()
+  nameWithType: IWorldSystemsApi.GetAllSystems()
+  fullName: ZenECS.Core.IWorldSystemsApi.GetAllSystems()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: GetAllSystems
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+    startLine: 64
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets all currently active systems registered in this world.
+  example: []
+  syntax:
+    content: IReadOnlyList<ISystem> GetAllSystems()
+    return:
+      type: System.Collections.Generic.IReadOnlyList{ZenECS.Core.Systems.ISystem}
+      description: >-
+        A read-only list containing all active systems, in the order they
+
+        are scheduled for execution.
+    content.vb: Function GetAllSystems() As IReadOnlyList(Of ISystem)
+  overload: ZenECS.Core.IWorldSystemsApi.GetAllSystems*
+- uid: ZenECS.Core.IWorldSystemsApi.SetEnabledSystem``1(System.Boolean)
+  commentId: M:ZenECS.Core.IWorldSystemsApi.SetEnabledSystem``1(System.Boolean)
+  id: SetEnabledSystem``1(System.Boolean)
+  parent: ZenECS.Core.IWorldSystemsApi
+  langs:
+  - csharp
+  - vb
+  name: SetEnabledSystem<T>(bool)
+  nameWithType: IWorldSystemsApi.SetEnabledSystem<T>(bool)
+  fullName: ZenECS.Core.IWorldSystemsApi.SetEnabledSystem<T>(bool)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SetEnabledSystem
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+    startLine: 81
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Enables or disables execution of the first active system of type <code class="typeparamref">T</code>.
+  remarks: >-
+    The system must implement <xref href="ZenECS.Core.Systems.ISystemEnabledFlag" data-throw-if-not-resolved="false"></xref>. Systems that are
+
+    disabled will be skipped during execution by the system runner.
+  example: []
+  syntax:
+    content: 'bool SetEnabledSystem<T>(bool enabled) where T : ISystem'
+    parameters:
+    - id: enabled
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> to enable the system; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> to disable it.
+    typeParameters:
+    - id: T
+      description: System type that must implement <xref href="ZenECS.Core.Systems.ISystemEnabledFlag" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if a system of type <code class="typeparamref">T</code> was found
+
+        and its enabled state was updated; otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function SetEnabledSystem(Of T As ISystem)(enabled As Boolean) As Boolean
+  overload: ZenECS.Core.IWorldSystemsApi.SetEnabledSystem*
+  nameWithType.vb: IWorldSystemsApi.SetEnabledSystem(Of T)(Boolean)
+  fullName.vb: ZenECS.Core.IWorldSystemsApi.SetEnabledSystem(Of T)(Boolean)
+  name.vb: SetEnabledSystem(Of T)(Boolean)
+- uid: ZenECS.Core.IWorldSystemsApi.IsEnabledSystem``1
+  commentId: M:ZenECS.Core.IWorldSystemsApi.IsEnabledSystem``1
+  id: IsEnabledSystem``1
+  parent: ZenECS.Core.IWorldSystemsApi
+  langs:
+  - csharp
+  - vb
+  name: IsEnabledSystem<T>()
+  nameWithType: IWorldSystemsApi.IsEnabledSystem<T>()
+  fullName: ZenECS.Core.IWorldSystemsApi.IsEnabledSystem<T>()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IsEnabledSystem
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+    startLine: 95
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Checks whether the first active system of type <code class="typeparamref">T</code> is currently enabled.
+  remarks: >-
+    The system must implement <xref href="ZenECS.Core.Systems.ISystemEnabledFlag" data-throw-if-not-resolved="false"></xref>. If the system does not
+
+    exist, this method returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+  example: []
+  syntax:
+    content: 'bool IsEnabledSystem<T>() where T : ISystem'
+    typeParameters:
+    - id: T
+      description: System type that must implement <xref href="ZenECS.Core.Systems.ISystemEnabledFlag" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the system is enabled; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> if it is
+
+        disabled or does not exist.
+    content.vb: Function IsEnabledSystem(Of T As ISystem)() As Boolean
+  overload: ZenECS.Core.IWorldSystemsApi.IsEnabledSystem*
+  nameWithType.vb: IWorldSystemsApi.IsEnabledSystem(Of T)()
+  fullName.vb: ZenECS.Core.IWorldSystemsApi.IsEnabledSystem(Of T)()
+  name.vb: IsEnabledSystem(Of T)()
+- uid: ZenECS.Core.IWorldSystemsApi.IsEnabledSystem(System.Type)
+  commentId: M:ZenECS.Core.IWorldSystemsApi.IsEnabledSystem(System.Type)
+  id: IsEnabledSystem(System.Type)
+  parent: ZenECS.Core.IWorldSystemsApi
+  langs:
+  - csharp
+  - vb
+  name: IsEnabledSystem(Type)
+  nameWithType: IWorldSystemsApi.IsEnabledSystem(Type)
+  fullName: ZenECS.Core.IWorldSystemsApi.IsEnabledSystem(System.Type)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IsEnabledSystem
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
+    startLine: 109
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Checks whether the first active system of the specified type is currently enabled.
+  remarks: >-
+    The system must implement <xref href="ZenECS.Core.Systems.ISystemEnabledFlag" data-throw-if-not-resolved="false"></xref>. If the system does not
+
+    exist, this method returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+  example: []
+  syntax:
+    content: bool IsEnabledSystem(Type t)
+    parameters:
+    - id: t
+      type: System.Type
+      description: System type that must implement <xref href="ZenECS.Core.Systems.ISystemEnabledFlag" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the system is enabled; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> if it is
+
+        disabled or does not exist.
+    content.vb: Function IsEnabledSystem(t As Type) As Boolean
+  overload: ZenECS.Core.IWorldSystemsApi.IsEnabledSystem*
+references:
+- uid: ZenECS.Core.IWorld
+  commentId: T:ZenECS.Core.IWorld
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorld.html
+  name: IWorld
+  nameWithType: IWorld
+  fullName: ZenECS.Core.IWorld
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.IWorldSystemsApi.AddSystem*
+  commentId: Overload:ZenECS.Core.IWorldSystemsApi.AddSystem
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_AddSystem_ZenECS_Core_Systems_ISystem_
+  name: AddSystem
+  nameWithType: IWorldSystemsApi.AddSystem
+  fullName: ZenECS.Core.IWorldSystemsApi.AddSystem
+- uid: ZenECS.Core.Systems.ISystem
+  commentId: T:ZenECS.Core.Systems.ISystem
+  parent: ZenECS.Core.Systems
+  href: ZenECS.Core.Systems.ISystem.html
+  name: ISystem
+  nameWithType: ISystem
+  fullName: ZenECS.Core.Systems.ISystem
+- uid: ZenECS.Core.Systems
+  commentId: N:ZenECS.Core.Systems
+  href: ZenECS.html
+  name: ZenECS.Core.Systems
+  nameWithType: ZenECS.Core.Systems
+  fullName: ZenECS.Core.Systems
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Systems
+    name: Systems
+    href: ZenECS.Core.Systems.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Systems
+    name: Systems
+    href: ZenECS.Core.Systems.html
+- uid: ZenECS.Core.IWorldSystemsApi.AddSystems*
+  commentId: Overload:ZenECS.Core.IWorldSystemsApi.AddSystems
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_AddSystems_System_Collections_Generic_IEnumerable_ZenECS_Core_Systems_ISystem__
+  name: AddSystems
+  nameWithType: IWorldSystemsApi.AddSystems
+  fullName: ZenECS.Core.IWorldSystemsApi.AddSystems
+- uid: System.Collections.Generic.IEnumerable{ZenECS.Core.Systems.ISystem}
+  commentId: T:System.Collections.Generic.IEnumerable{ZenECS.Core.Systems.ISystem}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<ISystem>
+  nameWithType: IEnumerable<ISystem>
+  fullName: System.Collections.Generic.IEnumerable<ZenECS.Core.Systems.ISystem>
+  nameWithType.vb: IEnumerable(Of ISystem)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of ZenECS.Core.Systems.ISystem)
+  name.vb: IEnumerable(Of ISystem)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: ZenECS.Core.Systems.ISystem
+    name: ISystem
+    href: ZenECS.Core.Systems.ISystem.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Systems.ISystem
+    name: ISystem
+    href: ZenECS.Core.Systems.ISystem.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: ZenECS.Core.IWorldSystemsApi.RemoveSystem*
+  commentId: Overload:ZenECS.Core.IWorldSystemsApi.RemoveSystem
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_RemoveSystem__1
+  name: RemoveSystem
+  nameWithType: IWorldSystemsApi.RemoveSystem
+  fullName: ZenECS.Core.IWorldSystemsApi.RemoveSystem
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.IWorldSystemsApi.TryGetSystem*
+  commentId: Overload:ZenECS.Core.IWorldSystemsApi.TryGetSystem
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_TryGetSystem__1___0__
+  name: TryGetSystem
+  nameWithType: IWorldSystemsApi.TryGetSystem
+  fullName: ZenECS.Core.IWorldSystemsApi.TryGetSystem
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: ZenECS.Core.IWorldSystemsApi.GetAllSystems*
+  commentId: Overload:ZenECS.Core.IWorldSystemsApi.GetAllSystems
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_GetAllSystems
+  name: GetAllSystems
+  nameWithType: IWorldSystemsApi.GetAllSystems
+  fullName: ZenECS.Core.IWorldSystemsApi.GetAllSystems
+- uid: System.Collections.Generic.IReadOnlyList{ZenECS.Core.Systems.ISystem}
+  commentId: T:System.Collections.Generic.IReadOnlyList{ZenECS.Core.Systems.ISystem}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<ISystem>
+  nameWithType: IReadOnlyList<ISystem>
+  fullName: System.Collections.Generic.IReadOnlyList<ZenECS.Core.Systems.ISystem>
+  nameWithType.vb: IReadOnlyList(Of ISystem)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of ZenECS.Core.Systems.ISystem)
+  name.vb: IReadOnlyList(Of ISystem)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: ZenECS.Core.Systems.ISystem
+    name: ISystem
+    href: ZenECS.Core.Systems.ISystem.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Systems.ISystem
+    name: ISystem
+    href: ZenECS.Core.Systems.ISystem.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ZenECS.Core.Systems.ISystemEnabledFlag
+  commentId: T:ZenECS.Core.Systems.ISystemEnabledFlag
+  href: ZenECS.Core.Systems.ISystemEnabledFlag.html
+  name: ISystemEnabledFlag
+  nameWithType: ISystemEnabledFlag
+  fullName: ZenECS.Core.Systems.ISystemEnabledFlag
+- uid: ZenECS.Core.IWorldSystemsApi.SetEnabledSystem*
+  commentId: Overload:ZenECS.Core.IWorldSystemsApi.SetEnabledSystem
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_SetEnabledSystem__1_System_Boolean_
+  name: SetEnabledSystem
+  nameWithType: IWorldSystemsApi.SetEnabledSystem
+  fullName: ZenECS.Core.IWorldSystemsApi.SetEnabledSystem
+- uid: ZenECS.Core.IWorldSystemsApi.IsEnabledSystem*
+  commentId: Overload:ZenECS.Core.IWorldSystemsApi.IsEnabledSystem
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_IsEnabledSystem__1
+  name: IsEnabledSystem
+  nameWithType: IWorldSystemsApi.IsEnabledSystem
+  fullName: ZenECS.Core.IWorldSystemsApi.IsEnabledSystem

@@ -1,0 +1,119 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.IWorldResetApi
+  commentId: T:ZenECS.Core.IWorldResetApi
+  id: IWorldResetApi
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.IWorldResetApi.Reset(System.Boolean)
+  langs:
+  - csharp
+  - vb
+  name: IWorldResetApi
+  nameWithType: IWorldResetApi
+  fullName: ZenECS.Core.IWorldResetApi
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldResetApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IWorldResetApi
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldResetApi.cs
+    startLine: 20
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Reset operations for a world. Implementations should guarantee that
+
+    post-reset state is consistent and caches/queues are cleared.
+  example: []
+  syntax:
+    content: public interface IWorldResetApi
+    content.vb: Public Interface IWorldResetApi
+- uid: ZenECS.Core.IWorldResetApi.Reset(System.Boolean)
+  commentId: M:ZenECS.Core.IWorldResetApi.Reset(System.Boolean)
+  id: Reset(System.Boolean)
+  parent: ZenECS.Core.IWorldResetApi
+  langs:
+  - csharp
+  - vb
+  name: Reset(bool)
+  nameWithType: IWorldResetApi.Reset(bool)
+  fullName: ZenECS.Core.IWorldResetApi.Reset(bool)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldResetApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Reset
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldResetApi.cs
+    startLine: 29
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Resets the world.
+  example: []
+  syntax:
+    content: void Reset(bool keepCapacity)
+    parameters:
+    - id: keepCapacity
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> to reuse current array/pool capacities (fast path);
+
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> to rebuild storage from the initial configuration.
+    content.vb: Sub Reset(keepCapacity As Boolean)
+  overload: ZenECS.Core.IWorldResetApi.Reset*
+  nameWithType.vb: IWorldResetApi.Reset(Boolean)
+  fullName.vb: ZenECS.Core.IWorldResetApi.Reset(Boolean)
+  name.vb: Reset(Boolean)
+references:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.IWorldResetApi.Reset*
+  commentId: Overload:ZenECS.Core.IWorldResetApi.Reset
+  href: ZenECS.Core.IWorldResetApi.html#ZenECS_Core_IWorldResetApi_Reset_System_Boolean_
+  name: Reset
+  nameWithType: IWorldResetApi.Reset
+  fullName: ZenECS.Core.IWorldResetApi.Reset
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

@@ -1,0 +1,850 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.WorldId
+  commentId: T:ZenECS.Core.WorldId
+  id: WorldId
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.WorldId.#ctor(System.Guid)
+  - ZenECS.Core.WorldId.Equals(System.Object)
+  - ZenECS.Core.WorldId.Equals(ZenECS.Core.WorldId)
+  - ZenECS.Core.WorldId.GetHashCode
+  - ZenECS.Core.WorldId.ToString
+  - ZenECS.Core.WorldId.Value
+  - ZenECS.Core.WorldId.op_Equality(ZenECS.Core.WorldId,ZenECS.Core.WorldId)
+  - ZenECS.Core.WorldId.op_Inequality(ZenECS.Core.WorldId,ZenECS.Core.WorldId)
+  langs:
+  - csharp
+  - vb
+  name: WorldId
+  nameWithType: WorldId
+  fullName: ZenECS.Core.WorldId
+  type: Struct
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: WorldId
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
+    startLine: 36
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Stable, value-type identifier for a <xref href="ZenECS.Core.IWorld" data-throw-if-not-resolved="false"></xref>.
+
+    Wraps a <xref href="System.Guid" data-throw-if-not-resolved="false"></xref> to provide strong typing, readable intent,
+
+    and well-defined equality semantics across application domains.
+  remarks: >-
+    <p>
+
+    <b>Why a wrapper around <xref href="System.Guid" data-throw-if-not-resolved="false"></xref>?</b>
+
+    A dedicated type prevents accidental misuse of arbitrary GUIDs where a
+
+    world identity is required, and allows documenting/expanding semantics
+
+    without leaking implementation details to callers.
+
+    </p>
+
+    <p>
+
+    <b>Equality &amp; hashing</b> are based solely on the underlying
+
+    <xref href="System.Guid" data-throw-if-not-resolved="false"></xref> value, making this struct safe to use as a dictionary
+
+    key or in sets.
+
+    </p>
+  example: []
+  syntax:
+    content: 'public readonly struct WorldId : IEquatable<WorldId>'
+    content.vb: Public Structure WorldId Implements IEquatable(Of WorldId)
+  implements:
+  - System.IEquatable{ZenECS.Core.WorldId}
+  inheritedMembers:
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: ZenECS.Core.WorldId.Value
+  commentId: P:ZenECS.Core.WorldId.Value
+  id: Value
+  parent: ZenECS.Core.WorldId
+  langs:
+  - csharp
+  - vb
+  name: Value
+  nameWithType: WorldId.Value
+  fullName: ZenECS.Core.WorldId.Value
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Value
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
+    startLine: 41
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: The underlying globally unique value that represents this world id.
+  example: []
+  syntax:
+    content: public Guid Value { get; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: Public ReadOnly Property Value As Guid
+  overload: ZenECS.Core.WorldId.Value*
+- uid: ZenECS.Core.WorldId.#ctor(System.Guid)
+  commentId: M:ZenECS.Core.WorldId.#ctor(System.Guid)
+  id: '#ctor(System.Guid)'
+  parent: ZenECS.Core.WorldId
+  langs:
+  - csharp
+  - vb
+  name: WorldId(Guid)
+  nameWithType: WorldId.WorldId(Guid)
+  fullName: ZenECS.Core.WorldId.WorldId(System.Guid)
+  type: Constructor
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: .ctor
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
+    startLine: 47
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Create a new <xref href="ZenECS.Core.WorldId" data-throw-if-not-resolved="false"></xref> from an existing <xref href="System.Guid" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public WorldId(Guid value)
+    parameters:
+    - id: value
+      type: System.Guid
+      description: The GUID to wrap.
+    content.vb: Public Sub New(value As Guid)
+  overload: ZenECS.Core.WorldId.#ctor*
+  nameWithType.vb: WorldId.New(Guid)
+  fullName.vb: ZenECS.Core.WorldId.New(System.Guid)
+  name.vb: New(Guid)
+- uid: ZenECS.Core.WorldId.Equals(ZenECS.Core.WorldId)
+  commentId: M:ZenECS.Core.WorldId.Equals(ZenECS.Core.WorldId)
+  id: Equals(ZenECS.Core.WorldId)
+  parent: ZenECS.Core.WorldId
+  langs:
+  - csharp
+  - vb
+  name: Equals(WorldId)
+  nameWithType: WorldId.Equals(WorldId)
+  fullName: ZenECS.Core.WorldId.Equals(ZenECS.Core.WorldId)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Equals
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
+    startLine: 53
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: 'Value equality: returns <code>true</code> if the wrapped GUIDs are equal.'
+  example: []
+  syntax:
+    content: public bool Equals(WorldId other)
+    parameters:
+    - id: other
+      type: ZenECS.Core.WorldId
+      description: The other id to compare against.
+    return:
+      type: System.Boolean
+    content.vb: Public Function Equals(other As WorldId) As Boolean
+  overload: ZenECS.Core.WorldId.Equals*
+  implements:
+  - System.IEquatable{ZenECS.Core.WorldId}.Equals(ZenECS.Core.WorldId)
+- uid: ZenECS.Core.WorldId.Equals(System.Object)
+  commentId: M:ZenECS.Core.WorldId.Equals(System.Object)
+  id: Equals(System.Object)
+  parent: ZenECS.Core.WorldId
+  langs:
+  - csharp
+  - vb
+  name: Equals(object?)
+  nameWithType: WorldId.Equals(object?)
+  fullName: ZenECS.Core.WorldId.Equals(object?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Equals
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
+    startLine: 60
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Value equality override: returns <code>true</code> if <code class="paramref">obj</code>
+
+    is a <xref href="ZenECS.Core.WorldId" data-throw-if-not-resolved="false"></xref> with the same underlying GUID.
+  example: []
+  syntax:
+    content: public override bool Equals(object? obj)
+    parameters:
+    - id: obj
+      type: System.Object
+      description: The object to compare.
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides Function Equals(obj As Object) As Boolean
+  overridden: System.ValueType.Equals(System.Object)
+  overload: ZenECS.Core.WorldId.Equals*
+  nameWithType.vb: WorldId.Equals(Object)
+  fullName.vb: ZenECS.Core.WorldId.Equals(Object)
+  name.vb: Equals(Object)
+- uid: ZenECS.Core.WorldId.GetHashCode
+  commentId: M:ZenECS.Core.WorldId.GetHashCode
+  id: GetHashCode
+  parent: ZenECS.Core.WorldId
+  langs:
+  - csharp
+  - vb
+  name: GetHashCode()
+  nameWithType: WorldId.GetHashCode()
+  fullName: ZenECS.Core.WorldId.GetHashCode()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: GetHashCode
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
+    startLine: 65
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Hash code derived from the underlying <xref href="System.Guid" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public override int GetHashCode()
+    return:
+      type: System.Int32
+    content.vb: Public Overrides Function GetHashCode() As Integer
+  overridden: System.ValueType.GetHashCode
+  overload: ZenECS.Core.WorldId.GetHashCode*
+- uid: ZenECS.Core.WorldId.ToString
+  commentId: M:ZenECS.Core.WorldId.ToString
+  id: ToString
+  parent: ZenECS.Core.WorldId
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: WorldId.ToString()
+  fullName: ZenECS.Core.WorldId.ToString()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ToString
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
+    startLine: 70
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Returns the canonical string representation of the underlying GUID.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.ValueType.ToString
+  overload: ZenECS.Core.WorldId.ToString*
+- uid: ZenECS.Core.WorldId.op_Equality(ZenECS.Core.WorldId,ZenECS.Core.WorldId)
+  commentId: M:ZenECS.Core.WorldId.op_Equality(ZenECS.Core.WorldId,ZenECS.Core.WorldId)
+  id: op_Equality(ZenECS.Core.WorldId,ZenECS.Core.WorldId)
+  parent: ZenECS.Core.WorldId
+  langs:
+  - csharp
+  - vb
+  name: operator ==(WorldId, WorldId)
+  nameWithType: WorldId.operator ==(WorldId, WorldId)
+  fullName: ZenECS.Core.WorldId.operator ==(ZenECS.Core.WorldId, ZenECS.Core.WorldId)
+  type: Operator
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: op_Equality
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
+    startLine: 75
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Equality operator (see <xref href="ZenECS.Core.WorldId.Equals(ZenECS.Core.WorldId)" data-throw-if-not-resolved="false"></xref>).
+  example: []
+  syntax:
+    content: public static bool operator ==(WorldId a, WorldId b)
+    parameters:
+    - id: a
+      type: ZenECS.Core.WorldId
+    - id: b
+      type: ZenECS.Core.WorldId
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator =(a As WorldId, b As WorldId) As Boolean
+  overload: ZenECS.Core.WorldId.op_Equality*
+  nameWithType.vb: WorldId.=(WorldId, WorldId)
+  fullName.vb: ZenECS.Core.WorldId.=(ZenECS.Core.WorldId, ZenECS.Core.WorldId)
+  name.vb: =(WorldId, WorldId)
+- uid: ZenECS.Core.WorldId.op_Inequality(ZenECS.Core.WorldId,ZenECS.Core.WorldId)
+  commentId: M:ZenECS.Core.WorldId.op_Inequality(ZenECS.Core.WorldId,ZenECS.Core.WorldId)
+  id: op_Inequality(ZenECS.Core.WorldId,ZenECS.Core.WorldId)
+  parent: ZenECS.Core.WorldId
+  langs:
+  - csharp
+  - vb
+  name: operator !=(WorldId, WorldId)
+  nameWithType: WorldId.operator !=(WorldId, WorldId)
+  fullName: ZenECS.Core.WorldId.operator !=(ZenECS.Core.WorldId, ZenECS.Core.WorldId)
+  type: Operator
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: op_Inequality
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
+    startLine: 80
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Inequality operator (see <xref href="ZenECS.Core.WorldId.Equals(ZenECS.Core.WorldId)" data-throw-if-not-resolved="false"></xref>).
+  example: []
+  syntax:
+    content: public static bool operator !=(WorldId a, WorldId b)
+    parameters:
+    - id: a
+      type: ZenECS.Core.WorldId
+    - id: b
+      type: ZenECS.Core.WorldId
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator <>(a As WorldId, b As WorldId) As Boolean
+  overload: ZenECS.Core.WorldId.op_Inequality*
+  nameWithType.vb: WorldId.<>(WorldId, WorldId)
+  fullName.vb: ZenECS.Core.WorldId.<>(ZenECS.Core.WorldId, ZenECS.Core.WorldId)
+  name.vb: <>(WorldId, WorldId)
+references:
+- uid: ZenECS.Core.IWorld
+  commentId: T:ZenECS.Core.IWorld
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorld.html
+  name: IWorld
+  nameWithType: IWorld
+  fullName: ZenECS.Core.IWorld
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: System.IEquatable{ZenECS.Core.WorldId}
+  commentId: T:System.IEquatable{ZenECS.Core.WorldId}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<WorldId>
+  nameWithType: IEquatable<WorldId>
+  fullName: System.IEquatable<ZenECS.Core.WorldId>
+  nameWithType.vb: IEquatable(Of WorldId)
+  fullName.vb: System.IEquatable(Of ZenECS.Core.WorldId)
+  name.vb: IEquatable(Of WorldId)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: ZenECS.Core.WorldId
+    name: WorldId
+    href: ZenECS.Core.WorldId.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.WorldId
+    name: WorldId
+    href: ZenECS.Core.WorldId.html
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: ZenECS.Core.WorldId.Value*
+  commentId: Overload:ZenECS.Core.WorldId.Value
+  href: ZenECS.Core.WorldId.html#ZenECS_Core_WorldId_Value
+  name: Value
+  nameWithType: WorldId.Value
+  fullName: ZenECS.Core.WorldId.Value
+- uid: ZenECS.Core.WorldId
+  commentId: T:ZenECS.Core.WorldId
+  parent: ZenECS.Core
+  href: ZenECS.Core.WorldId.html
+  name: WorldId
+  nameWithType: WorldId
+  fullName: ZenECS.Core.WorldId
+- uid: ZenECS.Core.WorldId.#ctor*
+  commentId: Overload:ZenECS.Core.WorldId.#ctor
+  href: ZenECS.Core.WorldId.html#ZenECS_Core_WorldId__ctor_System_Guid_
+  name: WorldId
+  nameWithType: WorldId.WorldId
+  fullName: ZenECS.Core.WorldId.WorldId
+  nameWithType.vb: WorldId.New
+  fullName.vb: ZenECS.Core.WorldId.New
+  name.vb: New
+- uid: ZenECS.Core.WorldId.Equals*
+  commentId: Overload:ZenECS.Core.WorldId.Equals
+  href: ZenECS.Core.WorldId.html#ZenECS_Core_WorldId_Equals_ZenECS_Core_WorldId_
+  name: Equals
+  nameWithType: WorldId.Equals
+  fullName: ZenECS.Core.WorldId.Equals
+- uid: System.IEquatable{ZenECS.Core.WorldId}.Equals(ZenECS.Core.WorldId)
+  commentId: M:System.IEquatable{ZenECS.Core.WorldId}.Equals(ZenECS.Core.WorldId)
+  parent: System.IEquatable{ZenECS.Core.WorldId}
+  definition: System.IEquatable`1.Equals(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(WorldId)
+  nameWithType: IEquatable<WorldId>.Equals(WorldId)
+  fullName: System.IEquatable<ZenECS.Core.WorldId>.Equals(ZenECS.Core.WorldId)
+  nameWithType.vb: IEquatable(Of WorldId).Equals(WorldId)
+  fullName.vb: System.IEquatable(Of ZenECS.Core.WorldId).Equals(ZenECS.Core.WorldId)
+  spec.csharp:
+  - uid: System.IEquatable{ZenECS.Core.WorldId}.Equals(ZenECS.Core.WorldId)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: ZenECS.Core.WorldId
+    name: WorldId
+    href: ZenECS.Core.WorldId.html
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable{ZenECS.Core.WorldId}.Equals(ZenECS.Core.WorldId)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: ZenECS.Core.WorldId
+    name: WorldId
+    href: ZenECS.Core.WorldId.html
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.IEquatable`1.Equals(`0)
+  commentId: M:System.IEquatable`1.Equals(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(T)
+  nameWithType: IEquatable<T>.Equals(T)
+  fullName: System.IEquatable<T>.Equals(T)
+  nameWithType.vb: IEquatable(Of T).Equals(T)
+  fullName.vb: System.IEquatable(Of T).Equals(T)
+  spec.csharp:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: ZenECS.Core.WorldId.GetHashCode*
+  commentId: Overload:ZenECS.Core.WorldId.GetHashCode
+  href: ZenECS.Core.WorldId.html#ZenECS_Core_WorldId_GetHashCode
+  name: GetHashCode
+  nameWithType: WorldId.GetHashCode
+  fullName: ZenECS.Core.WorldId.GetHashCode
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: ZenECS.Core.WorldId.ToString*
+  commentId: Overload:ZenECS.Core.WorldId.ToString
+  href: ZenECS.Core.WorldId.html#ZenECS_Core_WorldId_ToString
+  name: ToString
+  nameWithType: WorldId.ToString
+  fullName: ZenECS.Core.WorldId.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: ZenECS.Core.WorldId.Equals(ZenECS.Core.WorldId)
+  commentId: M:ZenECS.Core.WorldId.Equals(ZenECS.Core.WorldId)
+  href: ZenECS.Core.WorldId.html#ZenECS_Core_WorldId_Equals_ZenECS_Core_WorldId_
+  name: Equals(WorldId)
+  nameWithType: WorldId.Equals(WorldId)
+  fullName: ZenECS.Core.WorldId.Equals(ZenECS.Core.WorldId)
+  spec.csharp:
+  - uid: ZenECS.Core.WorldId.Equals(ZenECS.Core.WorldId)
+    name: Equals
+    href: ZenECS.Core.WorldId.html#ZenECS_Core_WorldId_Equals_ZenECS_Core_WorldId_
+  - name: (
+  - uid: ZenECS.Core.WorldId
+    name: WorldId
+    href: ZenECS.Core.WorldId.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.WorldId.Equals(ZenECS.Core.WorldId)
+    name: Equals
+    href: ZenECS.Core.WorldId.html#ZenECS_Core_WorldId_Equals_ZenECS_Core_WorldId_
+  - name: (
+  - uid: ZenECS.Core.WorldId
+    name: WorldId
+    href: ZenECS.Core.WorldId.html
+  - name: )
+- uid: ZenECS.Core.WorldId.op_Equality*
+  commentId: Overload:ZenECS.Core.WorldId.op_Equality
+  href: ZenECS.Core.WorldId.html#ZenECS_Core_WorldId_op_Equality_ZenECS_Core_WorldId_ZenECS_Core_WorldId_
+  name: operator ==
+  nameWithType: WorldId.operator ==
+  fullName: ZenECS.Core.WorldId.operator ==
+  nameWithType.vb: WorldId.=
+  fullName.vb: ZenECS.Core.WorldId.=
+  name.vb: =
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: ZenECS.Core.WorldId.op_Equality*
+    name: ==
+    href: ZenECS.Core.WorldId.html#ZenECS_Core_WorldId_op_Equality_ZenECS_Core_WorldId_ZenECS_Core_WorldId_
+- uid: ZenECS.Core.WorldId.op_Inequality*
+  commentId: Overload:ZenECS.Core.WorldId.op_Inequality
+  href: ZenECS.Core.WorldId.html#ZenECS_Core_WorldId_op_Inequality_ZenECS_Core_WorldId_ZenECS_Core_WorldId_
+  name: operator !=
+  nameWithType: WorldId.operator !=
+  fullName: ZenECS.Core.WorldId.operator !=
+  nameWithType.vb: WorldId.<>
+  fullName.vb: ZenECS.Core.WorldId.<>
+  name.vb: <>
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: ZenECS.Core.WorldId.op_Inequality*
+    name: '!='
+    href: ZenECS.Core.WorldId.html#ZenECS_Core_WorldId_op_Inequality_ZenECS_Core_WorldId_ZenECS_Core_WorldId_

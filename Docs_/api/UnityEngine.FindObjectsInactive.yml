@@ -1,0 +1,96 @@
+### YamlMime:ManagedReference
+items:
+- uid: UnityEngine.FindObjectsInactive
+  commentId: T:UnityEngine.FindObjectsInactive
+  id: FindObjectsInactive
+  parent: UnityEngine
+  children:
+  - UnityEngine.FindObjectsInactive.Exclude
+  - UnityEngine.FindObjectsInactive.Include
+  langs:
+  - csharp
+  - vb
+  name: FindObjectsInactive
+  nameWithType: FindObjectsInactive
+  fullName: UnityEngine.FindObjectsInactive
+  type: Enum
+  source:
+    remote:
+      path: src/UnityStubs.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FindObjectsInactive
+    path: ../src/UnityStubs.cs
+    startLine: 131
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: UnityEngine
+  syntax:
+    content: public enum FindObjectsInactive
+    content.vb: Public Enum FindObjectsInactive
+- uid: UnityEngine.FindObjectsInactive.Include
+  commentId: F:UnityEngine.FindObjectsInactive.Include
+  id: Include
+  parent: UnityEngine.FindObjectsInactive
+  langs:
+  - csharp
+  - vb
+  name: Include
+  nameWithType: FindObjectsInactive.Include
+  fullName: UnityEngine.FindObjectsInactive.Include
+  type: Field
+  source:
+    remote:
+      path: src/UnityStubs.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Include
+    path: ../src/UnityStubs.cs
+    startLine: 133
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: UnityEngine
+  syntax:
+    content: Include = 0
+    return:
+      type: UnityEngine.FindObjectsInactive
+- uid: UnityEngine.FindObjectsInactive.Exclude
+  commentId: F:UnityEngine.FindObjectsInactive.Exclude
+  id: Exclude
+  parent: UnityEngine.FindObjectsInactive
+  langs:
+  - csharp
+  - vb
+  name: Exclude
+  nameWithType: FindObjectsInactive.Exclude
+  fullName: UnityEngine.FindObjectsInactive.Exclude
+  type: Field
+  source:
+    remote:
+      path: src/UnityStubs.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Exclude
+    path: ../src/UnityStubs.cs
+    startLine: 134
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: UnityEngine
+  syntax:
+    content: Exclude = 1
+    return:
+      type: UnityEngine.FindObjectsInactive
+references:
+- uid: UnityEngine
+  commentId: N:UnityEngine
+  href: UnityEngine.html
+  name: UnityEngine
+  nameWithType: UnityEngine
+  fullName: UnityEngine
+- uid: UnityEngine.FindObjectsInactive
+  commentId: T:UnityEngine.FindObjectsInactive
+  parent: UnityEngine
+  href: UnityEngine.FindObjectsInactive.html
+  name: FindObjectsInactive
+  nameWithType: FindObjectsInactive
+  fullName: UnityEngine.FindObjectsInactive

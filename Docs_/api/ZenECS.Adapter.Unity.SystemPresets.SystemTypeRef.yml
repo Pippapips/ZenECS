@@ -1,0 +1,652 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef
+  commentId: T:ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef
+  id: SystemTypeRef
+  parent: ZenECS.Adapter.Unity.SystemPresets
+  children:
+  - ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.AssemblyQualifiedName
+  - ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.FromType(System.Type)
+  - ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.Resolve
+  - ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.ToString
+  langs:
+  - csharp
+  - vb
+  name: SystemTypeRef
+  nameWithType: SystemTypeRef
+  fullName: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef
+  type: Struct
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SystemTypeRef
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
+    startLine: 45
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.SystemPresets
+  summary: Runtime-safe type reference stored as an assembly-qualified name.
+  remarks: >-
+    <p>
+
+    <xref href="ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef" data-throw-if-not-resolved="false"></xref> is a lightweight value type that keeps the
+
+    assembly-qualified name of a type (for example
+
+    <code>"MyGame.MovementSystem, MyGame.Assembly"</code>) and can resolve it
+
+    back to a <xref href="System.Type" data-throw-if-not-resolved="false"></xref> at runtime.
+
+    </p>
+
+    <p>
+
+    Typical usage:
+
+    </p>
+
+    <ol><li>
+
+    In the editor, a custom inspector presents a type picker (for example,
+
+    a <code>MonoScript</code>-based UI) and stores the selected type's
+
+    <xref href="System.Type.AssemblyQualifiedName" data-throw-if-not-resolved="false"></xref> into
+
+    <xref href="ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.AssemblyQualifiedName" data-throw-if-not-resolved="false"></xref>.
+
+    </li><li>
+
+    At runtime, <xref href="ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.Resolve" data-throw-if-not-resolved="false"></xref> is called to obtain the actual
+
+    <xref href="System.Type" data-throw-if-not-resolved="false"></xref> instance, or <code>null</code> if resolution fails.
+
+    </li></ol>
+  example: []
+  syntax:
+    content: >-
+      [Serializable]
+
+      public struct SystemTypeRef
+    content.vb: >-
+      <Serializable>
+
+      Public Structure SystemTypeRef
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  attributes:
+  - type: System.SerializableAttribute
+    ctor: System.SerializableAttribute.#ctor
+    arguments: []
+- uid: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.AssemblyQualifiedName
+  commentId: P:ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.AssemblyQualifiedName
+  id: AssemblyQualifiedName
+  parent: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef
+  langs:
+  - csharp
+  - vb
+  name: AssemblyQualifiedName
+  nameWithType: SystemTypeRef.AssemblyQualifiedName
+  fullName: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.AssemblyQualifiedName
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: AssemblyQualifiedName
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
+    startLine: 74
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.SystemPresets
+  summary: Gets or sets the assembly-qualified name of the referenced type.
+  remarks: >-
+    <p>
+
+    When this property is <code>null</code> or whitespace,
+
+    <xref href="ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.Resolve" data-throw-if-not-resolved="false"></xref> will return <code>null</code>.
+
+    </p>
+  example: []
+  syntax:
+    content: public string AssemblyQualifiedName { readonly get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property AssemblyQualifiedName As String
+  overload: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.AssemblyQualifiedName*
+- uid: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.Resolve
+  commentId: M:ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.Resolve
+  id: Resolve
+  parent: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef
+  langs:
+  - csharp
+  - vb
+  name: Resolve()
+  nameWithType: SystemTypeRef.Resolve()
+  fullName: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.Resolve()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Resolve
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
+    startLine: 101
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.SystemPresets
+  summary: Resolves the stored assembly-qualified name into a <xref href="System.Type" data-throw-if-not-resolved="false"></xref>.
+  remarks: >-
+    <p>
+
+    This method returns <code>null</code> when:
+
+    </p>
+
+    <ul><li>
+
+    <xref href="ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.AssemblyQualifiedName" data-throw-if-not-resolved="false"></xref> is <code>null</code>, empty, or
+
+    whitespace.
+
+    </li><li>
+
+    <xref href="System.Type.GetType(System.String%2cSystem.Boolean)" data-throw-if-not-resolved="false"></xref> cannot resolve the type
+
+    (for example, the assembly is missing or the name has changed).
+
+    </li></ul>
+  example: []
+  syntax:
+    content: public readonly Type? Resolve()
+    return:
+      type: System.Type
+      description: The resolved <xref href="System.Type" data-throw-if-not-resolved="false"></xref> if successful; otherwise <code>null</code>.
+    content.vb: Public Function Resolve() As Type
+  overload: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.Resolve*
+- uid: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.ToString
+  commentId: M:ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.ToString
+  id: ToString
+  parent: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: SystemTypeRef.ToString()
+  fullName: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.ToString()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ToString
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
+    startLine: 113
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.SystemPresets
+  summary: Returns the raw assembly-qualified name string for debugging purposes.
+  example: []
+  syntax:
+    content: public override readonly string ToString()
+    return:
+      type: System.String
+      description: >-
+        The stored <xref href="ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.AssemblyQualifiedName" data-throw-if-not-resolved="false"></xref>, or
+
+        <xref href="System.String.Empty" data-throw-if-not-resolved="false"></xref> if it is <code>null</code>.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.ValueType.ToString
+  overload: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.ToString*
+- uid: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.FromType(System.Type)
+  commentId: M:ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.FromType(System.Type)
+  id: FromType(System.Type)
+  parent: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef
+  langs:
+  - csharp
+  - vb
+  name: FromType(Type)
+  nameWithType: SystemTypeRef.FromType(Type)
+  fullName: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.FromType(System.Type)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FromType
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
+    startLine: 127
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.SystemPresets
+  summary: Creates a new <xref href="ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef" data-throw-if-not-resolved="false"></xref> from a concrete type.
+  example: []
+  syntax:
+    content: public static SystemTypeRef FromType(Type t)
+    parameters:
+    - id: t
+      type: System.Type
+      description: The type to wrap.
+    return:
+      type: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef
+      description: >-
+        A new <xref href="ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef" data-throw-if-not-resolved="false"></xref> whose
+
+        <xref href="ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.AssemblyQualifiedName" data-throw-if-not-resolved="false"></xref> is taken from
+
+        <code class="paramref">t</code>.
+    content.vb: Public Shared Function FromType(t As Type) As SystemTypeRef
+  overload: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.FromType*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when <code class="paramref">t</code> is <code>null</code>.
+references:
+- uid: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef
+  commentId: T:ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef
+  parent: ZenECS.Adapter.Unity.SystemPresets
+  href: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.html
+  name: SystemTypeRef
+  nameWithType: SystemTypeRef
+  fullName: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.Type.AssemblyQualifiedName
+  commentId: P:System.Type.AssemblyQualifiedName
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type.assemblyqualifiedname
+  name: AssemblyQualifiedName
+  nameWithType: Type.AssemblyQualifiedName
+  fullName: System.Type.AssemblyQualifiedName
+- uid: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.AssemblyQualifiedName
+  commentId: P:ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.AssemblyQualifiedName
+  href: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.html#ZenECS_Adapter_Unity_SystemPresets_SystemTypeRef_AssemblyQualifiedName
+  name: AssemblyQualifiedName
+  nameWithType: SystemTypeRef.AssemblyQualifiedName
+  fullName: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.AssemblyQualifiedName
+- uid: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.Resolve
+  commentId: M:ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.Resolve
+  href: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.html#ZenECS_Adapter_Unity_SystemPresets_SystemTypeRef_Resolve
+  name: Resolve()
+  nameWithType: SystemTypeRef.Resolve()
+  fullName: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.Resolve()
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.Resolve
+    name: Resolve
+    href: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.html#ZenECS_Adapter_Unity_SystemPresets_SystemTypeRef_Resolve
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.Resolve
+    name: Resolve
+    href: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.html#ZenECS_Adapter_Unity_SystemPresets_SystemTypeRef_Resolve
+  - name: (
+  - name: )
+- uid: ZenECS.Adapter.Unity.SystemPresets
+  commentId: N:ZenECS.Adapter.Unity.SystemPresets
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.SystemPresets
+  nameWithType: ZenECS.Adapter.Unity.SystemPresets
+  fullName: ZenECS.Adapter.Unity.SystemPresets
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.SystemPresets
+    name: SystemPresets
+    href: ZenECS.Adapter.Unity.SystemPresets.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.SystemPresets
+    name: SystemPresets
+    href: ZenECS.Adapter.Unity.SystemPresets.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.AssemblyQualifiedName*
+  commentId: Overload:ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.AssemblyQualifiedName
+  href: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.html#ZenECS_Adapter_Unity_SystemPresets_SystemTypeRef_AssemblyQualifiedName
+  name: AssemblyQualifiedName
+  nameWithType: SystemTypeRef.AssemblyQualifiedName
+  fullName: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.AssemblyQualifiedName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Type.GetType(System.String,System.Boolean)
+  commentId: M:System.Type.GetType(System.String,System.Boolean)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type.gettype#system-type-gettype(system-string-system-boolean)
+  name: GetType(string, bool)
+  nameWithType: Type.GetType(string, bool)
+  fullName: System.Type.GetType(string, bool)
+  nameWithType.vb: Type.GetType(String, Boolean)
+  fullName.vb: System.Type.GetType(String, Boolean)
+  name.vb: GetType(String, Boolean)
+  spec.csharp:
+  - uid: System.Type.GetType(System.String,System.Boolean)
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type.gettype#system-type-gettype(system-string-system-boolean)
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: System.Type.GetType(System.String,System.Boolean)
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type.gettype#system-type-gettype(system-string-system-boolean)
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.Resolve*
+  commentId: Overload:ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.Resolve
+  href: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.html#ZenECS_Adapter_Unity_SystemPresets_SystemTypeRef_Resolve
+  name: Resolve
+  nameWithType: SystemTypeRef.Resolve
+  fullName: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.Resolve
+- uid: System.String.Empty
+  commentId: F:System.String.Empty
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string.empty
+  name: Empty
+  nameWithType: string.Empty
+  fullName: string.Empty
+  nameWithType.vb: String.Empty
+  fullName.vb: String.Empty
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.ToString*
+  commentId: Overload:ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.ToString
+  href: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.html#ZenECS_Adapter_Unity_SystemPresets_SystemTypeRef_ToString
+  name: ToString
+  nameWithType: SystemTypeRef.ToString
+  fullName: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.ToString
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+  name: ArgumentNullException
+  nameWithType: ArgumentNullException
+  fullName: System.ArgumentNullException
+- uid: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.FromType*
+  commentId: Overload:ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.FromType
+  href: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.html#ZenECS_Adapter_Unity_SystemPresets_SystemTypeRef_FromType_System_Type_
+  name: FromType
+  nameWithType: SystemTypeRef.FromType
+  fullName: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef.FromType

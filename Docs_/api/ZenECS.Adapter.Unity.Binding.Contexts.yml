@@ -1,0 +1,77 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity.Binding.Contexts
+  commentId: N:ZenECS.Adapter.Unity.Binding.Contexts
+  id: ZenECS.Adapter.Unity.Binding.Contexts
+  children:
+  - ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+  - ZenECS.Adapter.Unity.Binding.Contexts.SharedContextResolver
+  langs:
+  - csharp
+  - vb
+  name: ZenECS.Adapter.Unity.Binding.Contexts
+  nameWithType: ZenECS.Adapter.Unity.Binding.Contexts
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts
+  type: Namespace
+  assemblies:
+  - ZenECS.Adapter.Unity
+references:
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+  commentId: T:ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+  parent: ZenECS.Adapter.Unity.Binding.Contexts
+  href: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.html
+  name: ISharedContextResolver
+  nameWithType: ISharedContextResolver
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.SharedContextResolver
+  commentId: T:ZenECS.Adapter.Unity.Binding.Contexts.SharedContextResolver
+  href: ZenECS.Adapter.Unity.Binding.Contexts.SharedContextResolver.html
+  name: SharedContextResolver
+  nameWithType: SharedContextResolver
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.SharedContextResolver
+- uid: ZenECS.Adapter.Unity.Binding.Contexts
+  commentId: N:ZenECS.Adapter.Unity.Binding.Contexts
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.Binding.Contexts
+  nameWithType: ZenECS.Adapter.Unity.Binding.Contexts
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding
+    name: Binding
+    href: ZenECS.Adapter.Unity.Binding.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts
+    name: Contexts
+    href: ZenECS.Adapter.Unity.Binding.Contexts.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding
+    name: Binding
+    href: ZenECS.Adapter.Unity.Binding.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts
+    name: Contexts
+    href: ZenECS.Adapter.Unity.Binding.Contexts.html

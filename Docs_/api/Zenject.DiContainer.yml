@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: Zenject.DiContainer
+  commentId: T:Zenject.DiContainer
+  id: DiContainer
+  parent: Zenject
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: DiContainer
+  nameWithType: DiContainer
+  fullName: Zenject.DiContainer
+  type: Interface
+  source:
+    remote:
+      path: src/UnityStubs.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: DiContainer
+    path: ../src/UnityStubs.cs
+    startLine: 182
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: Zenject
+  summary: Zenject dependency injection container (stub for documentation only).
+  example: []
+  syntax:
+    content: public interface DiContainer
+    content.vb: Public Interface DiContainer
+references:
+- uid: Zenject
+  commentId: N:Zenject
+  href: Zenject.html
+  name: Zenject
+  nameWithType: Zenject
+  fullName: Zenject

@@ -1,0 +1,174 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+  commentId: T:ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+  id: EcsRuntimeOptions.WriteFailurePolicy
+  parent: ZenECS.Core.Config
+  children:
+  - ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Ignore
+  - ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Log
+  - ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Throw
+  langs:
+  - csharp
+  - vb
+  name: EcsRuntimeOptions.WriteFailurePolicy
+  nameWithType: EcsRuntimeOptions.WriteFailurePolicy
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+  type: Enum
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: WriteFailurePolicy
+    path: ../Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
+    startLine: 43
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Config
+  summary: >-
+    Defines how the core reacts when a structural write (Add/Replace/Remove) is denied
+
+    by permissions or validation policies.
+  example: []
+  syntax:
+    content: public enum EcsRuntimeOptions.WriteFailurePolicy
+    content.vb: Public Enum EcsRuntimeOptions.WriteFailurePolicy
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Throw
+  commentId: F:ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Throw
+  id: Throw
+  parent: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+  langs:
+  - csharp
+  - vb
+  name: Throw
+  nameWithType: EcsRuntimeOptions.WriteFailurePolicy.Throw
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Throw
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Throw
+    path: ../Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
+    startLine: 48
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Config
+  summary: Throw an exception immediately. Best for development and strict correctness.
+  example: []
+  syntax:
+    content: Throw = 0
+    return:
+      type: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Log
+  commentId: F:ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Log
+  id: Log
+  parent: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+  langs:
+  - csharp
+  - vb
+  name: Log
+  nameWithType: EcsRuntimeOptions.WriteFailurePolicy.Log
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Log
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Log
+    path: ../Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
+    startLine: 53
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Config
+  summary: Log a warning and ignore the operation (non-fatal).
+  example: []
+  syntax:
+    content: Log = 1
+    return:
+      type: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Ignore
+  commentId: F:ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Ignore
+  id: Ignore
+  parent: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+  langs:
+  - csharp
+  - vb
+  name: Ignore
+  nameWithType: EcsRuntimeOptions.WriteFailurePolicy.Ignore
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Ignore
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Ignore
+    path: ../Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
+    startLine: 58
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Config
+  summary: Silently ignore the operation. Use with caution in production.
+  example: []
+  syntax:
+    content: Ignore = 2
+    return:
+      type: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+references:
+- uid: ZenECS.Core.Config
+  commentId: N:ZenECS.Core.Config
+  href: ZenECS.html
+  name: ZenECS.Core.Config
+  nameWithType: ZenECS.Core.Config
+  fullName: ZenECS.Core.Config
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Config
+    name: Config
+    href: ZenECS.Core.Config.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Config
+    name: Config
+    href: ZenECS.Core.Config.html
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+  commentId: T:ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+  parent: ZenECS.Core.Config
+  href: ZenECS.Core.Config.EcsRuntimeOptions.html
+  name: EcsRuntimeOptions.WriteFailurePolicy
+  nameWithType: EcsRuntimeOptions.WriteFailurePolicy
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+  spec.csharp:
+  - uid: ZenECS.Core.Config.EcsRuntimeOptions
+    name: EcsRuntimeOptions
+    href: ZenECS.Core.Config.EcsRuntimeOptions.html
+  - name: .
+  - uid: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+    name: WriteFailurePolicy
+    href: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.html
+  spec.vb:
+  - uid: ZenECS.Core.Config.EcsRuntimeOptions
+    name: EcsRuntimeOptions
+    href: ZenECS.Core.Config.EcsRuntimeOptions.html
+  - name: .
+  - uid: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+    name: WriteFailurePolicy
+    href: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.html

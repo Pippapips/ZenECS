@@ -1,0 +1,625 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.ComponentEvents
+  commentId: T:ZenECS.Core.ComponentEvents
+  id: ComponentEvents
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.ComponentEvents.ComponentAdded
+  - ZenECS.Core.ComponentEvents.ComponentRemoved
+  langs:
+  - csharp
+  - vb
+  name: ComponentEvents
+  nameWithType: ComponentEvents
+  fullName: ZenECS.Core.ComponentEvents
+  type: Class
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Events/ComponentEvents.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ComponentEvents
+    path: ../Packages/com.zenecs.core/Runtime/Events/ComponentEvents.cs
+    startLine: 39
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Global event hub for component lifecycle notifications.
+  remarks: >-
+    <p>
+
+    These events are raised by the world implementation to inform tools and
+
+    observers when components are added to or removed from entities.
+
+    They are <b>not</b> intended to be used for core gameplay logic;
+
+    prefer systems, queries, and message buses for that.
+
+    </p>
+
+    <p>
+
+    Events are fired per-world and always carry the target
+
+    <xref href="ZenECS.Core.IWorld" data-throw-if-not-resolved="false"></xref> instance and <xref href="ZenECS.Core.Entity" data-throw-if-not-resolved="false"></xref> handle, plus
+
+    the component <xref href="System.Type" data-throw-if-not-resolved="false"></xref> (and value for additions).
+
+    </p>
+
+    <p>
+
+    Handlers should be <i>exception-safe</i>. Exceptions thrown from
+
+    subscribers will propagate to the caller that raised the event.
+
+    </p>
+  example: []
+  syntax:
+    content: public static class ComponentEvents
+    content.vb: Public Module ComponentEvents
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: ZenECS.Core.ComponentEvents.ComponentAdded
+  commentId: E:ZenECS.Core.ComponentEvents.ComponentAdded
+  id: ComponentAdded
+  parent: ZenECS.Core.ComponentEvents
+  langs:
+  - csharp
+  - vb
+  name: ComponentAdded
+  nameWithType: ComponentEvents.ComponentAdded
+  fullName: ZenECS.Core.ComponentEvents.ComponentAdded
+  type: Event
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Events/ComponentEvents.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ComponentAdded
+    path: ../Packages/com.zenecs.core/Runtime/Events/ComponentEvents.cs
+    startLine: 48
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Raised when a component is added to an entity.
+  remarks: >-
+    The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> argument is the component type (e.g., <code>typeof(MyComponent)</code>),
+
+    and the <xref href="System.Object" data-throw-if-not-resolved="false"></xref> argument is the boxed component value at the time of addition.
+  example: []
+  syntax:
+    content: public static event Action<IWorld, Entity, Type, object>? ComponentAdded
+    return:
+      type: System.Action{ZenECS.Core.IWorld,ZenECS.Core.Entity,System.Type,System.Object}
+    content.vb: Public Shared Event ComponentAdded As Action(Of IWorld, Entity, Type, Object)
+- uid: ZenECS.Core.ComponentEvents.ComponentRemoved
+  commentId: E:ZenECS.Core.ComponentEvents.ComponentRemoved
+  id: ComponentRemoved
+  parent: ZenECS.Core.ComponentEvents
+  langs:
+  - csharp
+  - vb
+  name: ComponentRemoved
+  nameWithType: ComponentEvents.ComponentRemoved
+  fullName: ZenECS.Core.ComponentEvents.ComponentRemoved
+  type: Event
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Events/ComponentEvents.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ComponentRemoved
+    path: ../Packages/com.zenecs.core/Runtime/Events/ComponentEvents.cs
+    startLine: 56
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Raised when a component is removed from an entity.
+  remarks: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> argument is the component type that was removed.
+  example: []
+  syntax:
+    content: public static event Action<IWorld, Entity, Type>? ComponentRemoved
+    return:
+      type: System.Action{ZenECS.Core.IWorld,ZenECS.Core.Entity,System.Type}
+    content.vb: Public Shared Event ComponentRemoved As Action(Of IWorld, Entity, Type)
+references:
+- uid: ZenECS.Core.IWorld
+  commentId: T:ZenECS.Core.IWorld
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorld.html
+  name: IWorld
+  nameWithType: IWorld
+  fullName: ZenECS.Core.IWorld
+- uid: ZenECS.Core.Entity
+  commentId: T:ZenECS.Core.Entity
+  parent: ZenECS.Core
+  href: ZenECS.Core.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: ZenECS.Core.Entity
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Action{ZenECS.Core.IWorld,ZenECS.Core.Entity,System.Type,System.Object}
+  commentId: T:System.Action{ZenECS.Core.IWorld,ZenECS.Core.Entity,System.Type,System.Object}
+  parent: System
+  definition: System.Action`4
+  href: https://learn.microsoft.com/dotnet/api/system.action-4
+  name: Action<IWorld, Entity, Type, object>
+  nameWithType: Action<IWorld, Entity, Type, object>
+  fullName: System.Action<ZenECS.Core.IWorld, ZenECS.Core.Entity, System.Type, object>
+  nameWithType.vb: Action(Of IWorld, Entity, Type, Object)
+  fullName.vb: System.Action(Of ZenECS.Core.IWorld, ZenECS.Core.Entity, System.Type, Object)
+  name.vb: Action(Of IWorld, Entity, Type, Object)
+  spec.csharp:
+  - uid: System.Action`4
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-4
+  - name: <
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`4
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-4
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Action`4
+  commentId: T:System.Action`4
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-4
+  name: Action<T1, T2, T3, T4>
+  nameWithType: Action<T1, T2, T3, T4>
+  fullName: System.Action<T1, T2, T3, T4>
+  nameWithType.vb: Action(Of T1, T2, T3, T4)
+  fullName.vb: System.Action(Of T1, T2, T3, T4)
+  name.vb: Action(Of T1, T2, T3, T4)
+  spec.csharp:
+  - uid: System.Action`4
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-4
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`4
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-4
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: )
+- uid: System.Action{ZenECS.Core.IWorld,ZenECS.Core.Entity,System.Type}
+  commentId: T:System.Action{ZenECS.Core.IWorld,ZenECS.Core.Entity,System.Type}
+  parent: System
+  definition: System.Action`3
+  href: https://learn.microsoft.com/dotnet/api/system.action-3
+  name: Action<IWorld, Entity, Type>
+  nameWithType: Action<IWorld, Entity, Type>
+  fullName: System.Action<ZenECS.Core.IWorld, ZenECS.Core.Entity, System.Type>
+  nameWithType.vb: Action(Of IWorld, Entity, Type)
+  fullName.vb: System.Action(Of ZenECS.Core.IWorld, ZenECS.Core.Entity, System.Type)
+  name.vb: Action(Of IWorld, Entity, Type)
+  spec.csharp:
+  - uid: System.Action`3
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-3
+  - name: <
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`3
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Action`3
+  commentId: T:System.Action`3
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-3
+  name: Action<T1, T2, T3>
+  nameWithType: Action<T1, T2, T3>
+  fullName: System.Action<T1, T2, T3>
+  nameWithType.vb: Action(Of T1, T2, T3)
+  fullName.vb: System.Action(Of T1, T2, T3)
+  name.vb: Action(Of T1, T2, T3)
+  spec.csharp:
+  - uid: System.Action`3
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-3
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`3
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: )

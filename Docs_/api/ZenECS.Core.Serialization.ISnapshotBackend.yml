@@ -1,0 +1,910 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Serialization.ISnapshotBackend
+  commentId: T:ZenECS.Core.Serialization.ISnapshotBackend
+  id: ISnapshotBackend
+  parent: ZenECS.Core.Serialization
+  children:
+  - ZenECS.Core.Serialization.ISnapshotBackend.Length
+  - ZenECS.Core.Serialization.ISnapshotBackend.Position
+  - ZenECS.Core.Serialization.ISnapshotBackend.ReadBool
+  - ZenECS.Core.Serialization.ISnapshotBackend.ReadBytes(System.Span{System.Byte},System.Int32)
+  - ZenECS.Core.Serialization.ISnapshotBackend.ReadFloat
+  - ZenECS.Core.Serialization.ISnapshotBackend.ReadInt
+  - ZenECS.Core.Serialization.ISnapshotBackend.ReadString
+  - ZenECS.Core.Serialization.ISnapshotBackend.ReadUInt
+  - ZenECS.Core.Serialization.ISnapshotBackend.Rewind
+  - ZenECS.Core.Serialization.ISnapshotBackend.WriteBool(System.Boolean)
+  - ZenECS.Core.Serialization.ISnapshotBackend.WriteBytes(System.ReadOnlySpan{System.Byte})
+  - ZenECS.Core.Serialization.ISnapshotBackend.WriteFloat(System.Single)
+  - ZenECS.Core.Serialization.ISnapshotBackend.WriteInt(System.Int32)
+  - ZenECS.Core.Serialization.ISnapshotBackend.WriteString(System.String)
+  - ZenECS.Core.Serialization.ISnapshotBackend.WriteUInt(System.UInt32)
+  langs:
+  - csharp
+  - vb
+  name: ISnapshotBackend
+  nameWithType: ISnapshotBackend
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ISnapshotBackend
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+    startLine: 21
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: >-
+    Backend-agnostic I/O interface used by snapshot serializers.
+
+    Implementations must be deterministic and consistent about endianness.
+  example: []
+  syntax:
+    content: 'public interface ISnapshotBackend : IDisposable'
+    content.vb: Public Interface ISnapshotBackend Inherits IDisposable
+  inheritedMembers:
+  - System.IDisposable.Dispose
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.WriteBytes(System.ReadOnlySpan{System.Byte})
+  commentId: M:ZenECS.Core.Serialization.ISnapshotBackend.WriteBytes(System.ReadOnlySpan{System.Byte})
+  id: WriteBytes(System.ReadOnlySpan{System.Byte})
+  parent: ZenECS.Core.Serialization.ISnapshotBackend
+  langs:
+  - csharp
+  - vb
+  name: WriteBytes(ReadOnlySpan<byte>)
+  nameWithType: ISnapshotBackend.WriteBytes(ReadOnlySpan<byte>)
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.WriteBytes(System.ReadOnlySpan<byte>)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: WriteBytes
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+    startLine: 26
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Write a contiguous span of bytes.
+  example: []
+  syntax:
+    content: void WriteBytes(ReadOnlySpan<byte> data)
+    parameters:
+    - id: data
+      type: System.ReadOnlySpan{System.Byte}
+    content.vb: Sub WriteBytes(data As ReadOnlySpan(Of Byte))
+  overload: ZenECS.Core.Serialization.ISnapshotBackend.WriteBytes*
+  nameWithType.vb: ISnapshotBackend.WriteBytes(ReadOnlySpan(Of Byte))
+  fullName.vb: ZenECS.Core.Serialization.ISnapshotBackend.WriteBytes(System.ReadOnlySpan(Of Byte))
+  name.vb: WriteBytes(ReadOnlySpan(Of Byte))
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.ReadBytes(System.Span{System.Byte},System.Int32)
+  commentId: M:ZenECS.Core.Serialization.ISnapshotBackend.ReadBytes(System.Span{System.Byte},System.Int32)
+  id: ReadBytes(System.Span{System.Byte},System.Int32)
+  parent: ZenECS.Core.Serialization.ISnapshotBackend
+  langs:
+  - csharp
+  - vb
+  name: ReadBytes(Span<byte>, int)
+  nameWithType: ISnapshotBackend.ReadBytes(Span<byte>, int)
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.ReadBytes(System.Span<byte>, int)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ReadBytes
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+    startLine: 29
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Read exactly <code class="paramref">length</code> bytes into <code class="paramref">dst</code>.
+  example: []
+  syntax:
+    content: void ReadBytes(Span<byte> dst, int length)
+    parameters:
+    - id: dst
+      type: System.Span{System.Byte}
+    - id: length
+      type: System.Int32
+    content.vb: Sub ReadBytes(dst As Span(Of Byte), length As Integer)
+  overload: ZenECS.Core.Serialization.ISnapshotBackend.ReadBytes*
+  nameWithType.vb: ISnapshotBackend.ReadBytes(Span(Of Byte), Integer)
+  fullName.vb: ZenECS.Core.Serialization.ISnapshotBackend.ReadBytes(System.Span(Of Byte), Integer)
+  name.vb: ReadBytes(Span(Of Byte), Integer)
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.WriteInt(System.Int32)
+  commentId: M:ZenECS.Core.Serialization.ISnapshotBackend.WriteInt(System.Int32)
+  id: WriteInt(System.Int32)
+  parent: ZenECS.Core.Serialization.ISnapshotBackend
+  langs:
+  - csharp
+  - vb
+  name: WriteInt(int)
+  nameWithType: ISnapshotBackend.WriteInt(int)
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.WriteInt(int)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: WriteInt
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+    startLine: 34
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Write a 32-bit signed integer.
+  example: []
+  syntax:
+    content: void WriteInt(int v)
+    parameters:
+    - id: v
+      type: System.Int32
+    content.vb: Sub WriteInt(v As Integer)
+  overload: ZenECS.Core.Serialization.ISnapshotBackend.WriteInt*
+  nameWithType.vb: ISnapshotBackend.WriteInt(Integer)
+  fullName.vb: ZenECS.Core.Serialization.ISnapshotBackend.WriteInt(Integer)
+  name.vb: WriteInt(Integer)
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.ReadInt
+  commentId: M:ZenECS.Core.Serialization.ISnapshotBackend.ReadInt
+  id: ReadInt
+  parent: ZenECS.Core.Serialization.ISnapshotBackend
+  langs:
+  - csharp
+  - vb
+  name: ReadInt()
+  nameWithType: ISnapshotBackend.ReadInt()
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.ReadInt()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ReadInt
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+    startLine: 37
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Read a 32-bit signed integer.
+  example: []
+  syntax:
+    content: int ReadInt()
+    return:
+      type: System.Int32
+    content.vb: Function ReadInt() As Integer
+  overload: ZenECS.Core.Serialization.ISnapshotBackend.ReadInt*
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.WriteUInt(System.UInt32)
+  commentId: M:ZenECS.Core.Serialization.ISnapshotBackend.WriteUInt(System.UInt32)
+  id: WriteUInt(System.UInt32)
+  parent: ZenECS.Core.Serialization.ISnapshotBackend
+  langs:
+  - csharp
+  - vb
+  name: WriteUInt(uint)
+  nameWithType: ISnapshotBackend.WriteUInt(uint)
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.WriteUInt(uint)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: WriteUInt
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+    startLine: 40
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Write a 32-bit unsigned integer.
+  example: []
+  syntax:
+    content: void WriteUInt(uint v)
+    parameters:
+    - id: v
+      type: System.UInt32
+    content.vb: Sub WriteUInt(v As UInteger)
+  overload: ZenECS.Core.Serialization.ISnapshotBackend.WriteUInt*
+  nameWithType.vb: ISnapshotBackend.WriteUInt(UInteger)
+  fullName.vb: ZenECS.Core.Serialization.ISnapshotBackend.WriteUInt(UInteger)
+  name.vb: WriteUInt(UInteger)
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.ReadUInt
+  commentId: M:ZenECS.Core.Serialization.ISnapshotBackend.ReadUInt
+  id: ReadUInt
+  parent: ZenECS.Core.Serialization.ISnapshotBackend
+  langs:
+  - csharp
+  - vb
+  name: ReadUInt()
+  nameWithType: ISnapshotBackend.ReadUInt()
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.ReadUInt()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ReadUInt
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+    startLine: 43
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Read a 32-bit unsigned integer.
+  example: []
+  syntax:
+    content: uint ReadUInt()
+    return:
+      type: System.UInt32
+    content.vb: Function ReadUInt() As UInteger
+  overload: ZenECS.Core.Serialization.ISnapshotBackend.ReadUInt*
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.WriteFloat(System.Single)
+  commentId: M:ZenECS.Core.Serialization.ISnapshotBackend.WriteFloat(System.Single)
+  id: WriteFloat(System.Single)
+  parent: ZenECS.Core.Serialization.ISnapshotBackend
+  langs:
+  - csharp
+  - vb
+  name: WriteFloat(float)
+  nameWithType: ISnapshotBackend.WriteFloat(float)
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.WriteFloat(float)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: WriteFloat
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+    startLine: 46
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Write a 32-bit floating-point value.
+  example: []
+  syntax:
+    content: void WriteFloat(float v)
+    parameters:
+    - id: v
+      type: System.Single
+    content.vb: Sub WriteFloat(v As Single)
+  overload: ZenECS.Core.Serialization.ISnapshotBackend.WriteFloat*
+  nameWithType.vb: ISnapshotBackend.WriteFloat(Single)
+  fullName.vb: ZenECS.Core.Serialization.ISnapshotBackend.WriteFloat(Single)
+  name.vb: WriteFloat(Single)
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.ReadFloat
+  commentId: M:ZenECS.Core.Serialization.ISnapshotBackend.ReadFloat
+  id: ReadFloat
+  parent: ZenECS.Core.Serialization.ISnapshotBackend
+  langs:
+  - csharp
+  - vb
+  name: ReadFloat()
+  nameWithType: ISnapshotBackend.ReadFloat()
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.ReadFloat()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ReadFloat
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+    startLine: 49
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Read a 32-bit floating-point value.
+  example: []
+  syntax:
+    content: float ReadFloat()
+    return:
+      type: System.Single
+    content.vb: Function ReadFloat() As Single
+  overload: ZenECS.Core.Serialization.ISnapshotBackend.ReadFloat*
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.WriteString(System.String)
+  commentId: M:ZenECS.Core.Serialization.ISnapshotBackend.WriteString(System.String)
+  id: WriteString(System.String)
+  parent: ZenECS.Core.Serialization.ISnapshotBackend
+  langs:
+  - csharp
+  - vb
+  name: WriteString(string)
+  nameWithType: ISnapshotBackend.WriteString(string)
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.WriteString(string)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: WriteString
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+    startLine: 52
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Write a UTF-8 string (implementation-defined length encoding).
+  example: []
+  syntax:
+    content: void WriteString(string s)
+    parameters:
+    - id: s
+      type: System.String
+    content.vb: Sub WriteString(s As String)
+  overload: ZenECS.Core.Serialization.ISnapshotBackend.WriteString*
+  nameWithType.vb: ISnapshotBackend.WriteString(String)
+  fullName.vb: ZenECS.Core.Serialization.ISnapshotBackend.WriteString(String)
+  name.vb: WriteString(String)
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.ReadString
+  commentId: M:ZenECS.Core.Serialization.ISnapshotBackend.ReadString
+  id: ReadString
+  parent: ZenECS.Core.Serialization.ISnapshotBackend
+  langs:
+  - csharp
+  - vb
+  name: ReadString()
+  nameWithType: ISnapshotBackend.ReadString()
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.ReadString()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ReadString
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+    startLine: 55
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Read a UTF-8 string previously written by <xref href="ZenECS.Core.Serialization.ISnapshotBackend.WriteString(System.String)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: string ReadString()
+    return:
+      type: System.String
+    content.vb: Function ReadString() As String
+  overload: ZenECS.Core.Serialization.ISnapshotBackend.ReadString*
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.WriteBool(System.Boolean)
+  commentId: M:ZenECS.Core.Serialization.ISnapshotBackend.WriteBool(System.Boolean)
+  id: WriteBool(System.Boolean)
+  parent: ZenECS.Core.Serialization.ISnapshotBackend
+  langs:
+  - csharp
+  - vb
+  name: WriteBool(bool)
+  nameWithType: ISnapshotBackend.WriteBool(bool)
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.WriteBool(bool)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: WriteBool
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+    startLine: 58
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Write a Boolean value.
+  example: []
+  syntax:
+    content: void WriteBool(bool v)
+    parameters:
+    - id: v
+      type: System.Boolean
+    content.vb: Sub WriteBool(v As Boolean)
+  overload: ZenECS.Core.Serialization.ISnapshotBackend.WriteBool*
+  nameWithType.vb: ISnapshotBackend.WriteBool(Boolean)
+  fullName.vb: ZenECS.Core.Serialization.ISnapshotBackend.WriteBool(Boolean)
+  name.vb: WriteBool(Boolean)
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.ReadBool
+  commentId: M:ZenECS.Core.Serialization.ISnapshotBackend.ReadBool
+  id: ReadBool
+  parent: ZenECS.Core.Serialization.ISnapshotBackend
+  langs:
+  - csharp
+  - vb
+  name: ReadBool()
+  nameWithType: ISnapshotBackend.ReadBool()
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.ReadBool()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ReadBool
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+    startLine: 61
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Read a Boolean value.
+  example: []
+  syntax:
+    content: bool ReadBool()
+    return:
+      type: System.Boolean
+    content.vb: Function ReadBool() As Boolean
+  overload: ZenECS.Core.Serialization.ISnapshotBackend.ReadBool*
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.Position
+  commentId: P:ZenECS.Core.Serialization.ISnapshotBackend.Position
+  id: Position
+  parent: ZenECS.Core.Serialization.ISnapshotBackend
+  langs:
+  - csharp
+  - vb
+  name: Position
+  nameWithType: ISnapshotBackend.Position
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.Position
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Position
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+    startLine: 66
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Current cursor position.
+  example: []
+  syntax:
+    content: long Position { get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Property Position As Long
+  overload: ZenECS.Core.Serialization.ISnapshotBackend.Position*
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.Rewind
+  commentId: M:ZenECS.Core.Serialization.ISnapshotBackend.Rewind
+  id: Rewind
+  parent: ZenECS.Core.Serialization.ISnapshotBackend
+  langs:
+  - csharp
+  - vb
+  name: Rewind()
+  nameWithType: ISnapshotBackend.Rewind()
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.Rewind()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Rewind
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+    startLine: 69
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Reset the cursor to the beginning.
+  example: []
+  syntax:
+    content: void Rewind()
+    content.vb: Sub Rewind()
+  overload: ZenECS.Core.Serialization.ISnapshotBackend.Rewind*
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.Length
+  commentId: P:ZenECS.Core.Serialization.ISnapshotBackend.Length
+  id: Length
+  parent: ZenECS.Core.Serialization.ISnapshotBackend
+  langs:
+  - csharp
+  - vb
+  name: Length
+  nameWithType: ISnapshotBackend.Length
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.Length
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Length
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
+    startLine: 72
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Total readable length (when applicable).
+  example: []
+  syntax:
+    content: long Length { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: ReadOnly Property Length As Long
+  overload: ZenECS.Core.Serialization.ISnapshotBackend.Length*
+references:
+- uid: ZenECS.Core.Serialization
+  commentId: N:ZenECS.Core.Serialization
+  href: ZenECS.html
+  name: ZenECS.Core.Serialization
+  nameWithType: ZenECS.Core.Serialization
+  fullName: ZenECS.Core.Serialization
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Serialization
+    name: Serialization
+    href: ZenECS.Core.Serialization.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Serialization
+    name: Serialization
+    href: ZenECS.Core.Serialization.html
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.WriteBytes*
+  commentId: Overload:ZenECS.Core.Serialization.ISnapshotBackend.WriteBytes
+  href: ZenECS.Core.Serialization.ISnapshotBackend.html#ZenECS_Core_Serialization_ISnapshotBackend_WriteBytes_System_ReadOnlySpan_System_Byte__
+  name: WriteBytes
+  nameWithType: ISnapshotBackend.WriteBytes
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.WriteBytes
+- uid: System.ReadOnlySpan{System.Byte}
+  commentId: T:System.ReadOnlySpan{System.Byte}
+  parent: System
+  definition: System.ReadOnlySpan`1
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<byte>
+  nameWithType: ReadOnlySpan<byte>
+  fullName: System.ReadOnlySpan<byte>
+  nameWithType.vb: ReadOnlySpan(Of Byte)
+  fullName.vb: System.ReadOnlySpan(Of Byte)
+  name.vb: ReadOnlySpan(Of Byte)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: )
+- uid: System.ReadOnlySpan`1
+  commentId: T:System.ReadOnlySpan`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<T>
+  nameWithType: ReadOnlySpan<T>
+  fullName: System.ReadOnlySpan<T>
+  nameWithType.vb: ReadOnlySpan(Of T)
+  fullName.vb: System.ReadOnlySpan(Of T)
+  name.vb: ReadOnlySpan(Of T)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.ReadBytes*
+  commentId: Overload:ZenECS.Core.Serialization.ISnapshotBackend.ReadBytes
+  href: ZenECS.Core.Serialization.ISnapshotBackend.html#ZenECS_Core_Serialization_ISnapshotBackend_ReadBytes_System_Span_System_Byte__System_Int32_
+  name: ReadBytes
+  nameWithType: ISnapshotBackend.ReadBytes
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.ReadBytes
+- uid: System.Span{System.Byte}
+  commentId: T:System.Span{System.Byte}
+  parent: System
+  definition: System.Span`1
+  href: https://learn.microsoft.com/dotnet/api/system.span-1
+  name: Span<byte>
+  nameWithType: Span<byte>
+  fullName: System.Span<byte>
+  nameWithType.vb: Span(Of Byte)
+  fullName.vb: System.Span(Of Byte)
+  name.vb: Span(Of Byte)
+  spec.csharp:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: <
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '>'
+  spec.vb:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Span`1
+  commentId: T:System.Span`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.span-1
+  name: Span<T>
+  nameWithType: Span<T>
+  fullName: System.Span<T>
+  nameWithType.vb: Span(Of T)
+  fullName.vb: System.Span(Of T)
+  name.vb: Span(Of T)
+  spec.csharp:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.WriteInt*
+  commentId: Overload:ZenECS.Core.Serialization.ISnapshotBackend.WriteInt
+  href: ZenECS.Core.Serialization.ISnapshotBackend.html#ZenECS_Core_Serialization_ISnapshotBackend_WriteInt_System_Int32_
+  name: WriteInt
+  nameWithType: ISnapshotBackend.WriteInt
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.WriteInt
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.ReadInt*
+  commentId: Overload:ZenECS.Core.Serialization.ISnapshotBackend.ReadInt
+  href: ZenECS.Core.Serialization.ISnapshotBackend.html#ZenECS_Core_Serialization_ISnapshotBackend_ReadInt
+  name: ReadInt
+  nameWithType: ISnapshotBackend.ReadInt
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.ReadInt
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.WriteUInt*
+  commentId: Overload:ZenECS.Core.Serialization.ISnapshotBackend.WriteUInt
+  href: ZenECS.Core.Serialization.ISnapshotBackend.html#ZenECS_Core_Serialization_ISnapshotBackend_WriteUInt_System_UInt32_
+  name: WriteUInt
+  nameWithType: ISnapshotBackend.WriteUInt
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.WriteUInt
+- uid: System.UInt32
+  commentId: T:System.UInt32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uint32
+  name: uint
+  nameWithType: uint
+  fullName: uint
+  nameWithType.vb: UInteger
+  fullName.vb: UInteger
+  name.vb: UInteger
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.ReadUInt*
+  commentId: Overload:ZenECS.Core.Serialization.ISnapshotBackend.ReadUInt
+  href: ZenECS.Core.Serialization.ISnapshotBackend.html#ZenECS_Core_Serialization_ISnapshotBackend_ReadUInt
+  name: ReadUInt
+  nameWithType: ISnapshotBackend.ReadUInt
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.ReadUInt
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.WriteFloat*
+  commentId: Overload:ZenECS.Core.Serialization.ISnapshotBackend.WriteFloat
+  href: ZenECS.Core.Serialization.ISnapshotBackend.html#ZenECS_Core_Serialization_ISnapshotBackend_WriteFloat_System_Single_
+  name: WriteFloat
+  nameWithType: ISnapshotBackend.WriteFloat
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.WriteFloat
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.ReadFloat*
+  commentId: Overload:ZenECS.Core.Serialization.ISnapshotBackend.ReadFloat
+  href: ZenECS.Core.Serialization.ISnapshotBackend.html#ZenECS_Core_Serialization_ISnapshotBackend_ReadFloat
+  name: ReadFloat
+  nameWithType: ISnapshotBackend.ReadFloat
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.ReadFloat
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.WriteString*
+  commentId: Overload:ZenECS.Core.Serialization.ISnapshotBackend.WriteString
+  href: ZenECS.Core.Serialization.ISnapshotBackend.html#ZenECS_Core_Serialization_ISnapshotBackend_WriteString_System_String_
+  name: WriteString
+  nameWithType: ISnapshotBackend.WriteString
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.WriteString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.WriteString(System.String)
+  commentId: M:ZenECS.Core.Serialization.ISnapshotBackend.WriteString(System.String)
+  isExternal: true
+  href: ZenECS.Core.Serialization.ISnapshotBackend.html#ZenECS_Core_Serialization_ISnapshotBackend_WriteString_System_String_
+  name: WriteString(string)
+  nameWithType: ISnapshotBackend.WriteString(string)
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.WriteString(string)
+  nameWithType.vb: ISnapshotBackend.WriteString(String)
+  fullName.vb: ZenECS.Core.Serialization.ISnapshotBackend.WriteString(String)
+  name.vb: WriteString(String)
+  spec.csharp:
+  - uid: ZenECS.Core.Serialization.ISnapshotBackend.WriteString(System.String)
+    name: WriteString
+    href: ZenECS.Core.Serialization.ISnapshotBackend.html#ZenECS_Core_Serialization_ISnapshotBackend_WriteString_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.Serialization.ISnapshotBackend.WriteString(System.String)
+    name: WriteString
+    href: ZenECS.Core.Serialization.ISnapshotBackend.html#ZenECS_Core_Serialization_ISnapshotBackend_WriteString_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.ReadString*
+  commentId: Overload:ZenECS.Core.Serialization.ISnapshotBackend.ReadString
+  href: ZenECS.Core.Serialization.ISnapshotBackend.html#ZenECS_Core_Serialization_ISnapshotBackend_ReadString
+  name: ReadString
+  nameWithType: ISnapshotBackend.ReadString
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.ReadString
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.WriteBool*
+  commentId: Overload:ZenECS.Core.Serialization.ISnapshotBackend.WriteBool
+  href: ZenECS.Core.Serialization.ISnapshotBackend.html#ZenECS_Core_Serialization_ISnapshotBackend_WriteBool_System_Boolean_
+  name: WriteBool
+  nameWithType: ISnapshotBackend.WriteBool
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.WriteBool
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.ReadBool*
+  commentId: Overload:ZenECS.Core.Serialization.ISnapshotBackend.ReadBool
+  href: ZenECS.Core.Serialization.ISnapshotBackend.html#ZenECS_Core_Serialization_ISnapshotBackend_ReadBool
+  name: ReadBool
+  nameWithType: ISnapshotBackend.ReadBool
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.ReadBool
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.Position*
+  commentId: Overload:ZenECS.Core.Serialization.ISnapshotBackend.Position
+  href: ZenECS.Core.Serialization.ISnapshotBackend.html#ZenECS_Core_Serialization_ISnapshotBackend_Position
+  name: Position
+  nameWithType: ISnapshotBackend.Position
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.Position
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.Rewind*
+  commentId: Overload:ZenECS.Core.Serialization.ISnapshotBackend.Rewind
+  href: ZenECS.Core.Serialization.ISnapshotBackend.html#ZenECS_Core_Serialization_ISnapshotBackend_Rewind
+  name: Rewind
+  nameWithType: ISnapshotBackend.Rewind
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.Rewind
+- uid: ZenECS.Core.Serialization.ISnapshotBackend.Length*
+  commentId: Overload:ZenECS.Core.Serialization.ISnapshotBackend.Length
+  href: ZenECS.Core.Serialization.ISnapshotBackend.html#ZenECS_Core_Serialization_ISnapshotBackend_Length
+  name: Length
+  nameWithType: ISnapshotBackend.Length
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend.Length

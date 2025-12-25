@@ -1,0 +1,192 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Serialization.IPostLoadMigration
+  commentId: T:ZenECS.Core.Serialization.IPostLoadMigration
+  id: IPostLoadMigration
+  parent: ZenECS.Core.Serialization
+  children:
+  - ZenECS.Core.Serialization.IPostLoadMigration.Order
+  - ZenECS.Core.Serialization.IPostLoadMigration.Run(ZenECS.Core.IWorld)
+  langs:
+  - csharp
+  - vb
+  name: IPostLoadMigration
+  nameWithType: IPostLoadMigration
+  fullName: ZenECS.Core.Serialization.IPostLoadMigration
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/IPostLoadMigration.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IPostLoadMigration
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/IPostLoadMigration.cs
+    startLine: 24
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: >-
+    A migration step that runs after a full snapshot has been loaded and all
+
+    component pools have been restored.
+  remarks: >-
+    Implementations <b>must be idempotent</b>. Use to rebuild indices, rebind
+
+    contexts, or adjust data layouts between versions.
+  example: []
+  syntax:
+    content: public interface IPostLoadMigration
+    content.vb: Public Interface IPostLoadMigration
+- uid: ZenECS.Core.Serialization.IPostLoadMigration.Order
+  commentId: P:ZenECS.Core.Serialization.IPostLoadMigration.Order
+  id: Order
+  parent: ZenECS.Core.Serialization.IPostLoadMigration
+  langs:
+  - csharp
+  - vb
+  name: Order
+  nameWithType: IPostLoadMigration.Order
+  fullName: ZenECS.Core.Serialization.IPostLoadMigration.Order
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/IPostLoadMigration.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Order
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/IPostLoadMigration.cs
+    startLine: 27
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Execution priority; lower values run earlier.
+  example: []
+  syntax:
+    content: int Order { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property Order As Integer
+  overload: ZenECS.Core.Serialization.IPostLoadMigration.Order*
+- uid: ZenECS.Core.Serialization.IPostLoadMigration.Run(ZenECS.Core.IWorld)
+  commentId: M:ZenECS.Core.Serialization.IPostLoadMigration.Run(ZenECS.Core.IWorld)
+  id: Run(ZenECS.Core.IWorld)
+  parent: ZenECS.Core.Serialization.IPostLoadMigration
+  langs:
+  - csharp
+  - vb
+  name: Run(IWorld)
+  nameWithType: IPostLoadMigration.Run(IWorld)
+  fullName: ZenECS.Core.Serialization.IPostLoadMigration.Run(ZenECS.Core.IWorld)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/IPostLoadMigration.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Run
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/IPostLoadMigration.cs
+    startLine: 33
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Execute the migration against the provided <code class="paramref">world</code>.
+  example: []
+  syntax:
+    content: void Run(IWorld world)
+    parameters:
+    - id: world
+      type: ZenECS.Core.IWorld
+      description: Target world instance.
+    content.vb: Sub Run(world As IWorld)
+  overload: ZenECS.Core.Serialization.IPostLoadMigration.Run*
+references:
+- uid: ZenECS.Core.Serialization
+  commentId: N:ZenECS.Core.Serialization
+  href: ZenECS.html
+  name: ZenECS.Core.Serialization
+  nameWithType: ZenECS.Core.Serialization
+  fullName: ZenECS.Core.Serialization
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Serialization
+    name: Serialization
+    href: ZenECS.Core.Serialization.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Serialization
+    name: Serialization
+    href: ZenECS.Core.Serialization.html
+- uid: ZenECS.Core.Serialization.IPostLoadMigration.Order*
+  commentId: Overload:ZenECS.Core.Serialization.IPostLoadMigration.Order
+  href: ZenECS.Core.Serialization.IPostLoadMigration.html#ZenECS_Core_Serialization_IPostLoadMigration_Order
+  name: Order
+  nameWithType: IPostLoadMigration.Order
+  fullName: ZenECS.Core.Serialization.IPostLoadMigration.Order
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.Serialization.IPostLoadMigration.Run*
+  commentId: Overload:ZenECS.Core.Serialization.IPostLoadMigration.Run
+  href: ZenECS.Core.Serialization.IPostLoadMigration.html#ZenECS_Core_Serialization_IPostLoadMigration_Run_ZenECS_Core_IWorld_
+  name: Run
+  nameWithType: IPostLoadMigration.Run
+  fullName: ZenECS.Core.Serialization.IPostLoadMigration.Run
+- uid: ZenECS.Core.IWorld
+  commentId: T:ZenECS.Core.IWorld
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorld.html
+  name: IWorld
+  nameWithType: IWorld
+  fullName: ZenECS.Core.IWorld
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html

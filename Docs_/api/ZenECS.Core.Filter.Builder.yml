@@ -1,0 +1,554 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Filter.Builder
+  commentId: T:ZenECS.Core.Filter.Builder
+  id: Filter.Builder
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.Filter.Builder.Build
+  - ZenECS.Core.Filter.Builder.WithAny(System.Type[])
+  - ZenECS.Core.Filter.Builder.With``1
+  - ZenECS.Core.Filter.Builder.WithoutAny(System.Type[])
+  - ZenECS.Core.Filter.Builder.Without``1
+  langs:
+  - csharp
+  - vb
+  name: Filter.Builder
+  nameWithType: Filter.Builder
+  fullName: ZenECS.Core.Filter.Builder
+  type: Struct
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Builder
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+    startLine: 66
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Fluent, immutable builder used to compose <xref href="ZenECS.Core.Filter" data-throw-if-not-resolved="false"></xref> instances.
+  remarks: >-
+    <p>
+
+    Each method returns a new builder that includes the requested constraint;
+
+    the original builder remains unchanged.
+
+    </p>
+  example: []
+  syntax:
+    content: public readonly struct Filter.Builder
+    content.vb: Public Structure Filter.Builder
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: ZenECS.Core.Filter.Builder.With``1
+  commentId: M:ZenECS.Core.Filter.Builder.With``1
+  id: With``1
+  parent: ZenECS.Core.Filter.Builder
+  langs:
+  - csharp
+  - vb
+  name: With<T>()
+  nameWithType: Filter.Builder.With<T>()
+  fullName: ZenECS.Core.Filter.Builder.With<T>()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: With
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+    startLine: 86
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Requires that entities include component <code class="typeparamref">T</code>.
+  example: []
+  syntax:
+    content: 'public Filter.Builder With<T>() where T : struct'
+    typeParameters:
+    - id: T
+      description: Component type that must be present.
+    return:
+      type: ZenECS.Core.Filter.Builder
+      description: A new builder that includes this constraint.
+    content.vb: Public Function [With](Of T As Structure)() As Filter.Builder
+  overload: ZenECS.Core.Filter.Builder.With*
+  nameWithType.vb: Filter.Builder.With(Of T)()
+  fullName.vb: ZenECS.Core.Filter.Builder.With(Of T)()
+  name.vb: With(Of T)()
+- uid: ZenECS.Core.Filter.Builder.Without``1
+  commentId: M:ZenECS.Core.Filter.Builder.Without``1
+  id: Without``1
+  parent: ZenECS.Core.Filter.Builder
+  langs:
+  - csharp
+  - vb
+  name: Without<T>()
+  nameWithType: Filter.Builder.Without<T>()
+  fullName: ZenECS.Core.Filter.Builder.Without<T>()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Without
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+    startLine: 94
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Requires that entities exclude component <code class="typeparamref">T</code>.
+  example: []
+  syntax:
+    content: 'public Filter.Builder Without<T>() where T : struct'
+    typeParameters:
+    - id: T
+      description: Component type that must be absent.
+    return:
+      type: ZenECS.Core.Filter.Builder
+      description: A new builder that includes this constraint.
+    content.vb: Public Function Without(Of T As Structure)() As Filter.Builder
+  overload: ZenECS.Core.Filter.Builder.Without*
+  nameWithType.vb: Filter.Builder.Without(Of T)()
+  fullName.vb: ZenECS.Core.Filter.Builder.Without(Of T)()
+  name.vb: Without(Of T)()
+- uid: ZenECS.Core.Filter.Builder.WithAny(System.Type[])
+  commentId: M:ZenECS.Core.Filter.Builder.WithAny(System.Type[])
+  id: WithAny(System.Type[])
+  parent: ZenECS.Core.Filter.Builder
+  langs:
+  - csharp
+  - vb
+  name: WithAny(params Type[])
+  nameWithType: Filter.Builder.WithAny(params Type[])
+  fullName: ZenECS.Core.Filter.Builder.WithAny(params System.Type[])
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: WithAny
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+    startLine: 102
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: 'Adds an OR group: entity passes if it contains <em>any one</em> of these types.'
+  example: []
+  syntax:
+    content: public Filter.Builder WithAny(params Type[] types)
+    parameters:
+    - id: types
+      type: System.Type[]
+      description: Component types that form the OR group.
+    return:
+      type: ZenECS.Core.Filter.Builder
+      description: A new builder that includes this OR-group constraint.
+    content.vb: Public Function WithAny(ParamArray types As Type()) As Filter.Builder
+  overload: ZenECS.Core.Filter.Builder.WithAny*
+  nameWithType.vb: Filter.Builder.WithAny(ParamArray Type())
+  fullName.vb: ZenECS.Core.Filter.Builder.WithAny(ParamArray System.Type())
+  name.vb: WithAny(ParamArray Type())
+- uid: ZenECS.Core.Filter.Builder.WithoutAny(System.Type[])
+  commentId: M:ZenECS.Core.Filter.Builder.WithoutAny(System.Type[])
+  id: WithoutAny(System.Type[])
+  parent: ZenECS.Core.Filter.Builder
+  langs:
+  - csharp
+  - vb
+  name: WithoutAny(params Type[])
+  nameWithType: Filter.Builder.WithoutAny(params Type[])
+  fullName: ZenECS.Core.Filter.Builder.WithoutAny(params System.Type[])
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: WithoutAny
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+    startLine: 110
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: 'Adds a NOT-OR group: entity fails if it contains <em>any one</em> of these types.'
+  example: []
+  syntax:
+    content: public Filter.Builder WithoutAny(params Type[] types)
+    parameters:
+    - id: types
+      type: System.Type[]
+      description: Component types that form the NOT-OR group.
+    return:
+      type: ZenECS.Core.Filter.Builder
+      description: A new builder that includes this NOT-OR-group constraint.
+    content.vb: Public Function WithoutAny(ParamArray types As Type()) As Filter.Builder
+  overload: ZenECS.Core.Filter.Builder.WithoutAny*
+  nameWithType.vb: Filter.Builder.WithoutAny(ParamArray Type())
+  fullName.vb: ZenECS.Core.Filter.Builder.WithoutAny(ParamArray System.Type())
+  name.vb: WithoutAny(ParamArray Type())
+- uid: ZenECS.Core.Filter.Builder.Build
+  commentId: M:ZenECS.Core.Filter.Builder.Build
+  id: Build
+  parent: ZenECS.Core.Filter.Builder
+  langs:
+  - csharp
+  - vb
+  name: Build()
+  nameWithType: Filter.Builder.Build()
+  fullName: ZenECS.Core.Filter.Builder.Build()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Build
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+    startLine: 117
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Finalizes this builder into an immutable <xref href="ZenECS.Core.Filter" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public Filter Build()
+    return:
+      type: ZenECS.Core.Filter
+      description: A fully constructed <xref href="ZenECS.Core.Filter" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Public Function Build() As Filter
+  overload: ZenECS.Core.Filter.Builder.Build*
+references:
+- uid: ZenECS.Core.Filter
+  commentId: T:ZenECS.Core.Filter
+  parent: ZenECS.Core
+  href: ZenECS.Core.Filter.html
+  name: Filter
+  nameWithType: Filter
+  fullName: ZenECS.Core.Filter
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.Filter.Builder.With*
+  commentId: Overload:ZenECS.Core.Filter.Builder.With
+  href: ZenECS.Core.Filter.Builder.html#ZenECS_Core_Filter_Builder_With__1
+  name: With
+  nameWithType: Filter.Builder.With
+  fullName: ZenECS.Core.Filter.Builder.With
+- uid: ZenECS.Core.Filter.Builder
+  commentId: T:ZenECS.Core.Filter.Builder
+  parent: ZenECS.Core
+  href: ZenECS.Core.Filter.html
+  name: Filter.Builder
+  nameWithType: Filter.Builder
+  fullName: ZenECS.Core.Filter.Builder
+  spec.csharp:
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: .
+  - uid: ZenECS.Core.Filter.Builder
+    name: Builder
+    href: ZenECS.Core.Filter.Builder.html
+  spec.vb:
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: .
+  - uid: ZenECS.Core.Filter.Builder
+    name: Builder
+    href: ZenECS.Core.Filter.Builder.html
+- uid: ZenECS.Core.Filter.Builder.Without*
+  commentId: Overload:ZenECS.Core.Filter.Builder.Without
+  href: ZenECS.Core.Filter.Builder.html#ZenECS_Core_Filter_Builder_Without__1
+  name: Without
+  nameWithType: Filter.Builder.Without
+  fullName: ZenECS.Core.Filter.Builder.Without
+- uid: ZenECS.Core.Filter.Builder.WithAny*
+  commentId: Overload:ZenECS.Core.Filter.Builder.WithAny
+  href: ZenECS.Core.Filter.Builder.html#ZenECS_Core_Filter_Builder_WithAny_System_Type___
+  name: WithAny
+  nameWithType: Filter.Builder.WithAny
+  fullName: ZenECS.Core.Filter.Builder.WithAny
+- uid: System.Type[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type[]
+  nameWithType: Type[]
+  fullName: System.Type[]
+  nameWithType.vb: Type()
+  fullName.vb: System.Type()
+  name.vb: Type()
+  spec.csharp:
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: (
+  - name: )
+- uid: ZenECS.Core.Filter.Builder.WithoutAny*
+  commentId: Overload:ZenECS.Core.Filter.Builder.WithoutAny
+  href: ZenECS.Core.Filter.Builder.html#ZenECS_Core_Filter_Builder_WithoutAny_System_Type___
+  name: WithoutAny
+  nameWithType: Filter.Builder.WithoutAny
+  fullName: ZenECS.Core.Filter.Builder.WithoutAny
+- uid: ZenECS.Core.Filter.Builder.Build*
+  commentId: Overload:ZenECS.Core.Filter.Builder.Build
+  href: ZenECS.Core.Filter.Builder.html#ZenECS_Core_Filter_Builder_Build
+  name: Build
+  nameWithType: Filter.Builder.Build
+  fullName: ZenECS.Core.Filter.Builder.Build

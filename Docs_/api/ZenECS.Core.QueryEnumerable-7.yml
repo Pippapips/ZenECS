@@ -1,0 +1,406 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.QueryEnumerable`7
+  commentId: T:ZenECS.Core.QueryEnumerable`7
+  id: QueryEnumerable`7
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.QueryEnumerable`7.GetEnumerator
+  langs:
+  - csharp
+  - vb
+  name: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>
+  type: Struct
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: QueryEnumerable
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+    startLine: 1270
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Seven-component query enumerable.
+  example: []
+  syntax:
+    content: 'public readonly struct QueryEnumerable<T1, T2, T3, T4, T5, T6, T7> where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct where T6 : struct where T7 : struct'
+    typeParameters:
+    - id: T1
+      description: First component type.
+    - id: T2
+      description: Second component type.
+    - id: T3
+      description: Third component type.
+    - id: T4
+      description: Fourth component type.
+    - id: T5
+      description: Fifth component type.
+    - id: T6
+      description: Sixth component type.
+    - id: T7
+      description: Seventh component type.
+    content.vb: Public Structure QueryEnumerable(Of T1 As Structure, T2 As Structure, T3 As Structure, T4 As Structure, T5 As Structure, T6 As Structure, T7 As Structure)
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7)
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7)
+- uid: ZenECS.Core.QueryEnumerable`7.GetEnumerator
+  commentId: M:ZenECS.Core.QueryEnumerable`7.GetEnumerator
+  id: GetEnumerator
+  parent: ZenECS.Core.QueryEnumerable`7
+  langs:
+  - csharp
+  - vb
+  name: GetEnumerator()
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>.GetEnumerator()
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>.GetEnumerator()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: GetEnumerator
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
+    startLine: 1345
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Returns an enumerator over results.
+  example: []
+  syntax:
+    content: public QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>.Enumerator GetEnumerator()
+    return:
+      type: ZenECS.Core.QueryEnumerable`7.Enumerator
+    content.vb: Public Function GetEnumerator() As QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7).Enumerator
+  overload: ZenECS.Core.QueryEnumerable`7.GetEnumerator*
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7).GetEnumerator()
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7).GetEnumerator()
+references:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.QueryEnumerable`7.GetEnumerator*
+  commentId: Overload:ZenECS.Core.QueryEnumerable`7.GetEnumerator
+  href: ZenECS.Core.QueryEnumerable-7.html#ZenECS_Core_QueryEnumerable_7_GetEnumerator
+  name: GetEnumerator
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>.GetEnumerator
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>.GetEnumerator
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7).GetEnumerator
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7).GetEnumerator
+- uid: ZenECS.Core.QueryEnumerable`7.Enumerator
+  commentId: T:ZenECS.Core.QueryEnumerable`7.Enumerator
+  parent: ZenECS.Core
+  href: ZenECS.Core.QueryEnumerable-7.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>.Enumerator
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>.Enumerator
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>.Enumerator
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7).Enumerator
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7).Enumerator
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7).Enumerator
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`7
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-7.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: '>'
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`7.Enumerator
+    name: Enumerator
+    href: ZenECS.Core.QueryEnumerable-7.Enumerator.html
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`7
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-7.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: )
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`7.Enumerator
+    name: Enumerator
+    href: ZenECS.Core.QueryEnumerable-7.Enumerator.html

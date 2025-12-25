@@ -1,0 +1,347 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Systems.SystemGroup
+  commentId: T:ZenECS.Core.Systems.SystemGroup
+  id: SystemGroup
+  parent: ZenECS.Core.Systems
+  children:
+  - ZenECS.Core.Systems.SystemGroup.FixedDecision
+  - ZenECS.Core.Systems.SystemGroup.FixedInput
+  - ZenECS.Core.Systems.SystemGroup.FixedPost
+  - ZenECS.Core.Systems.SystemGroup.FixedSimulation
+  - ZenECS.Core.Systems.SystemGroup.FrameInput
+  - ZenECS.Core.Systems.SystemGroup.FrameSync
+  - ZenECS.Core.Systems.SystemGroup.FrameUI
+  - ZenECS.Core.Systems.SystemGroup.FrameView
+  - ZenECS.Core.Systems.SystemGroup.Unknown
+  langs:
+  - csharp
+  - vb
+  name: SystemGroup
+  nameWithType: SystemGroup
+  fullName: ZenECS.Core.Systems.SystemGroup
+  type: Enum
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SystemGroup
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+    startLine: 55
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Systems
+  summary: Logical execution group for systems.
+  remarks: >-
+    <p>
+
+    System groups are used by planners and runners to build deterministic
+
+    execution pipelines. Each system should belong to exactly one group.
+
+    </p>
+
+    <p>
+
+    Fixed-step groups are intended for deterministic simulation, while
+
+    frame groups are variable-step and typically used for presentation,
+
+    input, and UI.
+
+    </p>
+  example: []
+  syntax:
+    content: public enum SystemGroup
+    content.vb: Public Enum SystemGroup
+- uid: ZenECS.Core.Systems.SystemGroup.Unknown
+  commentId: F:ZenECS.Core.Systems.SystemGroup.Unknown
+  id: Unknown
+  parent: ZenECS.Core.Systems.SystemGroup
+  langs:
+  - csharp
+  - vb
+  name: Unknown
+  nameWithType: SystemGroup.Unknown
+  fullName: ZenECS.Core.Systems.SystemGroup.Unknown
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Unknown
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+    startLine: 60
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Systems
+  summary: Group is unknown or not explicitly specified.
+  example: []
+  syntax:
+    content: Unknown = 0
+    return:
+      type: ZenECS.Core.Systems.SystemGroup
+- uid: ZenECS.Core.Systems.SystemGroup.FixedInput
+  commentId: F:ZenECS.Core.Systems.SystemGroup.FixedInput
+  id: FixedInput
+  parent: ZenECS.Core.Systems.SystemGroup
+  langs:
+  - csharp
+  - vb
+  name: FixedInput
+  nameWithType: SystemGroup.FixedInput
+  fullName: ZenECS.Core.Systems.SystemGroup.FixedInput
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FixedInput
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+    startLine: 67
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Systems
+  summary: Fixed-step input phase (player input sampling, commands, etc.).
+  example: []
+  syntax:
+    content: FixedInput = 1
+    return:
+      type: ZenECS.Core.Systems.SystemGroup
+- uid: ZenECS.Core.Systems.SystemGroup.FixedDecision
+  commentId: F:ZenECS.Core.Systems.SystemGroup.FixedDecision
+  id: FixedDecision
+  parent: ZenECS.Core.Systems.SystemGroup
+  langs:
+  - csharp
+  - vb
+  name: FixedDecision
+  nameWithType: SystemGroup.FixedDecision
+  fullName: ZenECS.Core.Systems.SystemGroup.FixedDecision
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FixedDecision
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+    startLine: 72
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Systems
+  summary: Fixed-step decision phase (AI, pathfinding, control decisions).
+  example: []
+  syntax:
+    content: FixedDecision = 2
+    return:
+      type: ZenECS.Core.Systems.SystemGroup
+- uid: ZenECS.Core.Systems.SystemGroup.FixedSimulation
+  commentId: F:ZenECS.Core.Systems.SystemGroup.FixedSimulation
+  id: FixedSimulation
+  parent: ZenECS.Core.Systems.SystemGroup
+  langs:
+  - csharp
+  - vb
+  name: FixedSimulation
+  nameWithType: SystemGroup.FixedSimulation
+  fullName: ZenECS.Core.Systems.SystemGroup.FixedSimulation
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FixedSimulation
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+    startLine: 77
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Systems
+  summary: Fixed-step simulation phase (physics, gameplay state updates).
+  example: []
+  syntax:
+    content: FixedSimulation = 3
+    return:
+      type: ZenECS.Core.Systems.SystemGroup
+- uid: ZenECS.Core.Systems.SystemGroup.FixedPost
+  commentId: F:ZenECS.Core.Systems.SystemGroup.FixedPost
+  id: FixedPost
+  parent: ZenECS.Core.Systems.SystemGroup
+  langs:
+  - csharp
+  - vb
+  name: FixedPost
+  nameWithType: SystemGroup.FixedPost
+  fullName: ZenECS.Core.Systems.SystemGroup.FixedPost
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FixedPost
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+    startLine: 82
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Systems
+  summary: Fixed-step post-simulation phase (cleanup, events, bookkeeping).
+  example: []
+  syntax:
+    content: FixedPost = 4
+    return:
+      type: ZenECS.Core.Systems.SystemGroup
+- uid: ZenECS.Core.Systems.SystemGroup.FrameInput
+  commentId: F:ZenECS.Core.Systems.SystemGroup.FrameInput
+  id: FrameInput
+  parent: ZenECS.Core.Systems.SystemGroup
+  langs:
+  - csharp
+  - vb
+  name: FrameInput
+  nameWithType: SystemGroup.FrameInput
+  fullName: ZenECS.Core.Systems.SystemGroup.FrameInput
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FrameInput
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+    startLine: 89
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Systems
+  summary: Per-frame input phase (device input, view events, transient commands).
+  example: []
+  syntax:
+    content: FrameInput = 5
+    return:
+      type: ZenECS.Core.Systems.SystemGroup
+- uid: ZenECS.Core.Systems.SystemGroup.FrameSync
+  commentId: F:ZenECS.Core.Systems.SystemGroup.FrameSync
+  id: FrameSync
+  parent: ZenECS.Core.Systems.SystemGroup
+  langs:
+  - csharp
+  - vb
+  name: FrameSync
+  nameWithType: SystemGroup.FrameSync
+  fullName: ZenECS.Core.Systems.SystemGroup.FrameSync
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FrameSync
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+    startLine: 94
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Systems
+  summary: Per-frame sync phase (camera, client prediction, view-space logic).
+  example: []
+  syntax:
+    content: FrameSync = 6
+    return:
+      type: ZenECS.Core.Systems.SystemGroup
+- uid: ZenECS.Core.Systems.SystemGroup.FrameView
+  commentId: F:ZenECS.Core.Systems.SystemGroup.FrameView
+  id: FrameView
+  parent: ZenECS.Core.Systems.SystemGroup
+  langs:
+  - csharp
+  - vb
+  name: FrameView
+  nameWithType: SystemGroup.FrameView
+  fullName: ZenECS.Core.Systems.SystemGroup.FrameView
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FrameView
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+    startLine: 99
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Systems
+  summary: Per-frame view phase (interpolation, transforms, animation, mesh binding).
+  example: []
+  syntax:
+    content: FrameView = 7
+    return:
+      type: ZenECS.Core.Systems.SystemGroup
+- uid: ZenECS.Core.Systems.SystemGroup.FrameUI
+  commentId: F:ZenECS.Core.Systems.SystemGroup.FrameUI
+  id: FrameUI
+  parent: ZenECS.Core.Systems.SystemGroup
+  langs:
+  - csharp
+  - vb
+  name: FrameUI
+  nameWithType: SystemGroup.FrameUI
+  fullName: ZenECS.Core.Systems.SystemGroup.FrameUI
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FrameUI
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
+    startLine: 104
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Systems
+  summary: Per-frame UI phase (UI, HUD, debug overlays).
+  example: []
+  syntax:
+    content: FrameUI = 8
+    return:
+      type: ZenECS.Core.Systems.SystemGroup
+references:
+- uid: ZenECS.Core.Systems
+  commentId: N:ZenECS.Core.Systems
+  href: ZenECS.html
+  name: ZenECS.Core.Systems
+  nameWithType: ZenECS.Core.Systems
+  fullName: ZenECS.Core.Systems
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Systems
+    name: Systems
+    href: ZenECS.Core.Systems.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Systems
+    name: Systems
+    href: ZenECS.Core.Systems.html
+- uid: ZenECS.Core.Systems.SystemGroup
+  commentId: T:ZenECS.Core.Systems.SystemGroup
+  parent: ZenECS.Core.Systems
+  href: ZenECS.Core.Systems.SystemGroup.html
+  name: SystemGroup
+  nameWithType: SystemGroup
+  fullName: ZenECS.Core.Systems.SystemGroup

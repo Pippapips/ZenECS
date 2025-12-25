@@ -1,0 +1,327 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.IWorldCommandBufferApi
+  commentId: T:ZenECS.Core.IWorldCommandBufferApi
+  id: IWorldCommandBufferApi
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.IWorldCommandBufferApi.BeginWrite
+  - ZenECS.Core.IWorldCommandBufferApi.ExternalCommandClear
+  - ZenECS.Core.IWorldCommandBufferApi.ExternalCommandCount
+  - ZenECS.Core.IWorldCommandBufferApi.ExternalCommandEnqueue(ZenECS.Core.ExternalCommand)
+  - ZenECS.Core.IWorldCommandBufferApi.HasExternalCommand
+  langs:
+  - csharp
+  - vb
+  name: IWorldCommandBufferApi
+  nameWithType: IWorldCommandBufferApi
+  fullName: ZenECS.Core.IWorldCommandBufferApi
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IWorldCommandBufferApi
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
+    startLine: 34
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: World-side API for beginning command buffers and managing external commands.
+  remarks: >-
+    <p>
+
+    The runner/worker is responsible for applying buffers at well-defined
+
+    tick barriers (for example, at the end of the fixed-step or frame-step
+
+    pipelines). This decouples mutation recording from the moment mutations
+
+    are actually applied.
+
+    </p>
+
+    <p>
+
+    External commands provide an additional queue that can be fed from
+
+    outside the simulation loop (for example, networking, UI, or tools),
+
+    which are then translated into command-buffer operations at a safe
+
+    simulation barrier.
+
+    </p>
+  example: []
+  syntax:
+    content: public interface IWorldCommandBufferApi
+    content.vb: Public Interface IWorldCommandBufferApi
+- uid: ZenECS.Core.IWorldCommandBufferApi.BeginWrite
+  commentId: M:ZenECS.Core.IWorldCommandBufferApi.BeginWrite
+  id: BeginWrite
+  parent: ZenECS.Core.IWorldCommandBufferApi
+  langs:
+  - csharp
+  - vb
+  name: BeginWrite()
+  nameWithType: IWorldCommandBufferApi.BeginWrite()
+  fullName: ZenECS.Core.IWorldCommandBufferApi.BeginWrite()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: BeginWrite
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
+    startLine: 47
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Begins recording a new command buffer bound to this world.
+  remarks: >-
+    <p>
+
+    The returned buffer never applies mutations immediately; it only
+
+    records operations that will later be applied at a deterministic
+
+    barrier by the runner/worker.
+
+    </p>
+  example: []
+  syntax:
+    content: ICommandBuffer BeginWrite()
+    return:
+      type: ZenECS.Core.ICommandBuffer
+      description: A new command buffer bound to the world.
+    content.vb: Function BeginWrite() As ICommandBuffer
+  overload: ZenECS.Core.IWorldCommandBufferApi.BeginWrite*
+- uid: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandCount
+  commentId: P:ZenECS.Core.IWorldCommandBufferApi.ExternalCommandCount
+  id: ExternalCommandCount
+  parent: ZenECS.Core.IWorldCommandBufferApi
+  langs:
+  - csharp
+  - vb
+  name: ExternalCommandCount
+  nameWithType: IWorldCommandBufferApi.ExternalCommandCount
+  fullName: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandCount
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ExternalCommandCount
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
+    startLine: 53
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Gets the number of pending external commands currently queued
+
+    for this world.
+  example: []
+  syntax:
+    content: int ExternalCommandCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property ExternalCommandCount As Integer
+  overload: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandCount*
+- uid: ZenECS.Core.IWorldCommandBufferApi.HasExternalCommand
+  commentId: P:ZenECS.Core.IWorldCommandBufferApi.HasExternalCommand
+  id: HasExternalCommand
+  parent: ZenECS.Core.IWorldCommandBufferApi
+  langs:
+  - csharp
+  - vb
+  name: HasExternalCommand
+  nameWithType: IWorldCommandBufferApi.HasExternalCommand
+  fullName: ZenECS.Core.IWorldCommandBufferApi.HasExternalCommand
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: HasExternalCommand
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
+    startLine: 59
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Gets a value indicating whether there is at least one pending
+
+    external command in the queue.
+  example: []
+  syntax:
+    content: bool HasExternalCommand { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property HasExternalCommand As Boolean
+  overload: ZenECS.Core.IWorldCommandBufferApi.HasExternalCommand*
+- uid: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandEnqueue(ZenECS.Core.ExternalCommand)
+  commentId: M:ZenECS.Core.IWorldCommandBufferApi.ExternalCommandEnqueue(ZenECS.Core.ExternalCommand)
+  id: ExternalCommandEnqueue(ZenECS.Core.ExternalCommand)
+  parent: ZenECS.Core.IWorldCommandBufferApi
+  langs:
+  - csharp
+  - vb
+  name: ExternalCommandEnqueue(ExternalCommand)
+  nameWithType: IWorldCommandBufferApi.ExternalCommandEnqueue(ExternalCommand)
+  fullName: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandEnqueue(ZenECS.Core.ExternalCommand)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ExternalCommandEnqueue
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
+    startLine: 66
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Enqueues an <xref href="ZenECS.Core.ExternalCommand" data-throw-if-not-resolved="false"></xref> to be flushed into a command
+
+    buffer at the next external-command flush point.
+  example: []
+  syntax:
+    content: void ExternalCommandEnqueue(ExternalCommand command)
+    parameters:
+    - id: command
+      type: ZenECS.Core.ExternalCommand
+      description: Command to enqueue.
+    content.vb: Sub ExternalCommandEnqueue(command As ExternalCommand)
+  overload: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandEnqueue*
+- uid: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandClear
+  commentId: M:ZenECS.Core.IWorldCommandBufferApi.ExternalCommandClear
+  id: ExternalCommandClear
+  parent: ZenECS.Core.IWorldCommandBufferApi
+  langs:
+  - csharp
+  - vb
+  name: ExternalCommandClear()
+  nameWithType: IWorldCommandBufferApi.ExternalCommandClear()
+  fullName: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandClear()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ExternalCommandClear
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
+    startLine: 71
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Clears all pending external commands without applying them.
+  example: []
+  syntax:
+    content: void ExternalCommandClear()
+    content.vb: Sub ExternalCommandClear()
+  overload: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandClear*
+references:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.IWorldCommandBufferApi.BeginWrite*
+  commentId: Overload:ZenECS.Core.IWorldCommandBufferApi.BeginWrite
+  href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_BeginWrite
+  name: BeginWrite
+  nameWithType: IWorldCommandBufferApi.BeginWrite
+  fullName: ZenECS.Core.IWorldCommandBufferApi.BeginWrite
+- uid: ZenECS.Core.ICommandBuffer
+  commentId: T:ZenECS.Core.ICommandBuffer
+  parent: ZenECS.Core
+  href: ZenECS.Core.ICommandBuffer.html
+  name: ICommandBuffer
+  nameWithType: ICommandBuffer
+  fullName: ZenECS.Core.ICommandBuffer
+- uid: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandCount*
+  commentId: Overload:ZenECS.Core.IWorldCommandBufferApi.ExternalCommandCount
+  href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_ExternalCommandCount
+  name: ExternalCommandCount
+  nameWithType: IWorldCommandBufferApi.ExternalCommandCount
+  fullName: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.IWorldCommandBufferApi.HasExternalCommand*
+  commentId: Overload:ZenECS.Core.IWorldCommandBufferApi.HasExternalCommand
+  href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_HasExternalCommand
+  name: HasExternalCommand
+  nameWithType: IWorldCommandBufferApi.HasExternalCommand
+  fullName: ZenECS.Core.IWorldCommandBufferApi.HasExternalCommand
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: ZenECS.Core.ExternalCommand
+  commentId: T:ZenECS.Core.ExternalCommand
+  parent: ZenECS.Core
+  href: ZenECS.Core.ExternalCommand.html
+  name: ExternalCommand
+  nameWithType: ExternalCommand
+  fullName: ZenECS.Core.ExternalCommand
+- uid: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandEnqueue*
+  commentId: Overload:ZenECS.Core.IWorldCommandBufferApi.ExternalCommandEnqueue
+  href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_ExternalCommandEnqueue_ZenECS_Core_ExternalCommand_
+  name: ExternalCommandEnqueue
+  nameWithType: IWorldCommandBufferApi.ExternalCommandEnqueue
+  fullName: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandEnqueue
+- uid: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandClear*
+  commentId: Overload:ZenECS.Core.IWorldCommandBufferApi.ExternalCommandClear
+  href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_ExternalCommandClear
+  name: ExternalCommandClear
+  nameWithType: IWorldCommandBufferApi.ExternalCommandClear
+  fullName: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandClear

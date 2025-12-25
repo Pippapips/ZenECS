@@ -11,14 +11,24 @@
 
 ## ✨ Key Features
 
-- **EcsDriver** — MonoBehaviour-based Kernel lifecycle management and frame driving
-- **EntityLink** — Component that links Unity GameObjects to ECS Entities
-- **EntityBlueprint** — ScriptableObject-based entity blueprint system
-- **UniRx Integration** — Extension methods that convert World message bus to IObservable (optional)
-- **Zenject Support** — Integration with Zenject dependency injection framework (optional)
-- **System Presets** — Asset-based system configuration via ScriptableObject
-- **Context Binding** — Shared/per-entity context management and binder system
-- **Editor Tools** — ECS Explorer, custom inspectors, code generation, and more
+### 🏗️ Clean Architecture Integration
+- **Seamless Unity Bridge** — `EcsDriver` automatically manages kernel lifecycle and bridges Unity's `Update/FixedUpdate/LateUpdate` to ECS frame structure. Zero boilerplate initialization
+- **View-Data Separation** — `EntityLink` connects GameObjects to entities without coupling. View layer publishes messages; systems handle logic; binders update views reactively
+- **ScriptableObject Blueprints** — Data-driven entity spawning with `EntityBlueprint`. Configure components, contexts, and binders in the editor without code changes
+- **Context Binding System** — Shared and per-entity contexts for UI, audio, and view integration. Clean separation between ECS data and Unity-specific view concerns
+- **System Presets** — Asset-based system configuration. Define system sets once, reuse across worlds. Supports both Zenject DI and manual instantiation
+
+### ⚡ Reactive Programming Patterns
+- **Message Bus Integration** — World message bus enables event-driven architecture. Systems subscribe to messages and react to events rather than polling
+- **ComponentDelta Bindings** — Automatic reactive view updates via `IBinder` and `ComponentDelta<T>`. Views automatically sync when components change
+- **UniRx Bridge** — Optional `WorldRx` extension methods convert message streams to `IObservable<T>`. Compose reactive pipelines with LINQ operators
+- **Input-to-Intent Pattern** — Convert Unity Input to ECS intent components via messages. Clean separation between input handling and game logic
+
+### 🎨 Unity-Specific Features
+- **Editor Tools** — ECS Explorer window for runtime inspection, custom inspectors for blueprints and systems, automatic scripting define detection
+- **Entity Blueprint System** — Visual entity configuration in the inspector. Serialize component snapshots as JSON with type-safe deserialization
+- **Zenject Integration** — Optional dependency injection support. Systems and contexts resolved via DI container for testable, modular architecture
+- **FixedStep vs Update** — Clear separation between deterministic simulation (FixedStep) and variable-timestep presentation (Update/LateUpdate)
 
 ---
 

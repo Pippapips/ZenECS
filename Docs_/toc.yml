@@ -1,7 +1,68 @@
 ### YamlMime:TableOfContent
-- name: Overview
-  href: articles/overview.md
-- name: Docs
-  href: docs/
-- name: API
-  href: api/
+- name: Home
+  href: index.md
+- name: Getting Started
+  href: ../README.md
+- name: Documentation
+  items:
+    - name: Overview
+      href: ../Docs/overview/zenecs-at-a-glance.md
+    - name: Architecture
+      href: ../Docs/overview/architecture.md
+    - name: Getting Started
+      items:
+        - name: Quick Start
+          href: ../Docs/getting-started/quickstart-basic.md
+        - name: Installation
+          items:
+            - name: Unity (UPM)
+              href: ../Docs/getting-started/install-upm.md
+            - name: .NET (NuGet)
+              href: ../Docs/getting-started/install-nuget.md
+        - name: Project Setup
+          href: ../Docs/getting-started/project-setup-unity.md
+    - name: Core Concepts
+      items:
+        - name: Entities & Components
+          href: ../Docs/core/entities.md
+        - name: Systems
+          href: ../Docs/core/systems.md
+        - name: Worlds
+          href: ../Docs/core/world.md
+        - name: Message Bus
+          href: ../Docs/core/message-bus.md
+        - name: Binding
+          href: ../Docs/core/binding.md
+    - name: Unity Adapter
+      items:
+        - name: Overview
+          href: ../Docs/adapter-unity/overview.md
+        - name: Setup
+          href: ../Docs/adapter-unity/setup.md
+        - name: View Binder
+          href: ../Docs/adapter-unity/view-binder.md
+        - name: DI & UniRx
+          href: ../Docs/adapter-unity/unity-di-unirx.md
+    - name: Guides
+      href: ../Docs/guides/
+    - name: Samples
+      href: ../Docs/samples/
+    - name: API Reference
+      href: api/
+      homepage: api/index.html
+    - name: References
+      items:
+        - name: Documentation Guidelines
+          href: ../Docs/references/documentation-guidelines.md
+        - name: Writing Manual
+          href: ../Docs/references/writing-manual.md
+        - name: DocFX Integration Guide
+          href: ../Docs/references/docfx-integration-guide.md
+        - name: Documentation Index
+          href: ../Docs/references/documentation-index.md
+        - name: API Index
+          href: ../Docs/references/api-index.md
+        - name: Schema
+          href: ../Docs/references/schema.md
+        - name: Repository Structure
+          href: ../Docs/references/repo-structure.md

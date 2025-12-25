@@ -1,0 +1,600 @@
+### YamlMime:TableOfContent
+items:
+- uid: Unity.Collections
+  name: Unity.Collections
+  type: Namespace
+  items:
+  - uid: Unity.Collections.FixedString64Bytes
+    name: FixedString64Bytes
+    type: Struct
+- uid: Unity.Mathematics
+  name: Unity.Mathematics
+  type: Namespace
+  items:
+  - uid: Unity.Mathematics.bool2
+    name: bool2
+    type: Struct
+  - uid: Unity.Mathematics.bool3
+    name: bool3
+    type: Struct
+  - uid: Unity.Mathematics.bool4
+    name: bool4
+    type: Struct
+  - uid: Unity.Mathematics.float2
+    name: float2
+    type: Struct
+  - uid: Unity.Mathematics.float3
+    name: float3
+    type: Struct
+  - uid: Unity.Mathematics.float4
+    name: float4
+    type: Struct
+  - uid: Unity.Mathematics.int2
+    name: int2
+    type: Struct
+  - uid: Unity.Mathematics.int3
+    name: int3
+    type: Struct
+  - uid: Unity.Mathematics.int4
+    name: int4
+    type: Struct
+  - uid: Unity.Mathematics.quaternion
+    name: quaternion
+    type: Struct
+  - uid: Unity.Mathematics.uint2
+    name: uint2
+    type: Struct
+  - uid: Unity.Mathematics.uint3
+    name: uint3
+    type: Struct
+  - uid: Unity.Mathematics.uint4
+    name: uint4
+    type: Struct
+- uid: UnityEngine
+  name: UnityEngine
+  type: Namespace
+  items:
+  - uid: UnityEngine.Application
+    name: Application
+    type: Class
+  - uid: UnityEngine.Color
+    name: Color
+    type: Struct
+  - uid: UnityEngine.Component
+    name: Component
+    type: Class
+  - uid: UnityEngine.CreateAssetMenuAttribute
+    name: CreateAssetMenuAttribute
+    type: Class
+  - uid: UnityEngine.Debug
+    name: Debug
+    type: Class
+  - uid: UnityEngine.DefaultExecutionOrderAttribute
+    name: DefaultExecutionOrderAttribute
+    type: Class
+  - uid: UnityEngine.DisallowMultipleComponentAttribute
+    name: DisallowMultipleComponentAttribute
+    type: Class
+  - uid: UnityEngine.FindObjectsInactive
+    name: FindObjectsInactive
+    type: Enum
+  - uid: UnityEngine.GameObject
+    name: GameObject
+    type: Class
+  - uid: UnityEngine.HeaderAttribute
+    name: HeaderAttribute
+    type: Class
+  - uid: UnityEngine.JsonUtility
+    name: JsonUtility
+    type: Class
+  - uid: UnityEngine.MonoBehaviour
+    name: MonoBehaviour
+    type: Class
+  - uid: UnityEngine.Object
+    name: Object
+    type: Class
+  - uid: UnityEngine.PropertyAttribute
+    name: PropertyAttribute
+    type: Class
+  - uid: UnityEngine.Quaternion
+    name: Quaternion
+    type: Struct
+  - uid: UnityEngine.RuntimeInitializeLoadType
+    name: RuntimeInitializeLoadType
+    type: Enum
+  - uid: UnityEngine.RuntimeInitializeOnLoadMethodAttribute
+    name: RuntimeInitializeOnLoadMethodAttribute
+    type: Class
+  - uid: UnityEngine.ScriptableObject
+    name: ScriptableObject
+    type: Class
+  - uid: UnityEngine.SerializeFieldAttribute
+    name: SerializeFieldAttribute
+    type: Class
+  - uid: UnityEngine.Time
+    name: Time
+    type: Class
+  - uid: UnityEngine.TooltipAttribute
+    name: TooltipAttribute
+    type: Class
+  - uid: UnityEngine.Vector2
+    name: Vector2
+    type: Struct
+  - uid: UnityEngine.Vector3
+    name: Vector3
+    type: Struct
+  - uid: UnityEngine.Vector4
+    name: Vector4
+    type: Struct
+- uid: ZenECS.Adapter.Unity
+  name: ZenECS.Adapter.Unity
+  type: Namespace
+  items:
+  - uid: ZenECS.Adapter.Unity.KernelLocator
+    name: KernelLocator
+    type: Class
+  - uid: ZenECS.Adapter.Unity.WorldSystemCreator
+    name: WorldSystemCreator
+    type: Class
+  - uid: ZenECS.Adapter.Unity.ZenEcsUnityBridge
+    name: ZenEcsUnityBridge
+    type: Class
+  - uid: ZenECS.Adapter.Unity.ZenReadOnlyInInspectorAttribute
+    name: ZenReadOnlyInInspectorAttribute
+    type: Class
+- uid: ZenECS.Adapter.Unity.Binding.Binders.Assets
+  name: ZenECS.Adapter.Unity.Binding.Binders.Assets
+  type: Namespace
+  items:
+  - uid: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset
+    name: BinderAsset
+    type: Class
+- uid: ZenECS.Adapter.Unity.Binding.Contexts
+  name: ZenECS.Adapter.Unity.Binding.Contexts
+  type: Namespace
+  items:
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+    name: ISharedContextResolver
+    type: Interface
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts.SharedContextResolver
+    name: SharedContextResolver
+    type: Class
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  name: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  type: Namespace
+  items:
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets.ContextAsset
+    name: ContextAsset
+    type: Class
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets.PerEntityContextAsset
+    name: PerEntityContextAsset
+    type: Class
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset
+    name: SharedContextAsset
+    type: Class
+- uid: ZenECS.Adapter.Unity.Blueprints
+  name: ZenECS.Adapter.Unity.Blueprints
+  type: Namespace
+  items:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint
+    name: EntityBlueprint
+    type: Class
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    type: Class
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool2
+    name: EntityBlueprintComponentJson.Bool2
+    type: Struct
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool3
+    name: EntityBlueprintComponentJson.Bool3
+    type: Struct
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool4
+    name: EntityBlueprintComponentJson.Bool4
+    type: Struct
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float2
+    name: EntityBlueprintComponentJson.Float2
+    type: Struct
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float3
+    name: EntityBlueprintComponentJson.Float3
+    type: Struct
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float4
+    name: EntityBlueprintComponentJson.Float4
+    type: Struct
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int2
+    name: EntityBlueprintComponentJson.Int2
+    type: Struct
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int3
+    name: EntityBlueprintComponentJson.Int3
+    type: Struct
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4
+    name: EntityBlueprintComponentJson.Int4
+    type: Struct
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt2
+    name: EntityBlueprintComponentJson.UInt2
+    type: Struct
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt3
+    name: EntityBlueprintComponentJson.UInt3
+    type: Struct
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt4
+    name: EntityBlueprintComponentJson.UInt4
+    type: Struct
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+    name: EntityBlueprintData
+    type: Class
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry
+    name: EntityBlueprintData.Entry
+    type: Class
+- uid: ZenECS.Adapter.Unity.DI
+  name: ZenECS.Adapter.Unity.DI
+  type: Namespace
+  items:
+  - uid: ZenECS.Adapter.Unity.DI.ProjectInstaller
+    name: ProjectInstaller
+    type: Class
+- uid: ZenECS.Adapter.Unity.Linking
+  name: ZenECS.Adapter.Unity.Linking
+  type: Namespace
+  items:
+  - uid: ZenECS.Adapter.Unity.Linking.EntityLink
+    name: EntityLink
+    type: Class
+  - uid: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions
+    name: EntityLinkExtensions
+    type: Class
+  - uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry
+    name: EntityViewRegistry
+    type: Class
+  - uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry
+    name: EntityViewRegistry.Registry
+    type: Class
+- uid: ZenECS.Adapter.Unity.SystemPresets
+  name: ZenECS.Adapter.Unity.SystemPresets
+  type: Namespace
+  items:
+  - uid: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
+    name: ISystemPresetResolver
+    type: Interface
+  - uid: ZenECS.Adapter.Unity.SystemPresets.SystemPresetResolver
+    name: SystemPresetResolver
+    type: Class
+  - uid: ZenECS.Adapter.Unity.SystemPresets.SystemTypeFilterAttribute
+    name: SystemTypeFilterAttribute
+    type: Class
+  - uid: ZenECS.Adapter.Unity.SystemPresets.SystemTypeRef
+    name: SystemTypeRef
+    type: Struct
+  - uid: ZenECS.Adapter.Unity.SystemPresets.SystemsPreset
+    name: SystemsPreset
+    type: Class
+- uid: ZenECS.Core
+  name: ZenECS.Core
+  type: Namespace
+  items:
+  - uid: ZenECS.Core.ComponentEvents
+    name: ComponentEvents
+    type: Class
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    type: Struct
+  - uid: ZenECS.Core.EntityEvents
+    name: EntityEvents
+    type: Class
+  - uid: ZenECS.Core.ExternalCommand
+    name: ExternalCommand
+    type: Struct
+  - uid: ZenECS.Core.ExternalCommandKind
+    name: ExternalCommandKind
+    type: Enum
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    type: Struct
+  - uid: ZenECS.Core.Filter.Builder
+    name: Filter.Builder
+    type: Struct
+  - uid: ZenECS.Core.GrowthPolicy
+    name: GrowthPolicy
+    type: Enum
+  - uid: ZenECS.Core.ICommandBuffer
+    name: ICommandBuffer
+    type: Interface
+  - uid: ZenECS.Core.IKernel
+    name: IKernel
+    type: Interface
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    type: Interface
+  - uid: ZenECS.Core.IWorldBinderApi
+    name: IWorldBinderApi
+    type: Interface
+  - uid: ZenECS.Core.IWorldCommandBufferApi
+    name: IWorldCommandBufferApi
+    type: Interface
+  - uid: ZenECS.Core.IWorldComponentApi
+    name: IWorldComponentApi
+    type: Interface
+  - uid: ZenECS.Core.IWorldContextApi
+    name: IWorldContextApi
+    type: Interface
+  - uid: ZenECS.Core.IWorldEntityApi
+    name: IWorldEntityApi
+    type: Interface
+  - uid: ZenECS.Core.IWorldHookApi
+    name: IWorldHookApi
+    type: Interface
+  - uid: ZenECS.Core.IWorldMessagesApi
+    name: IWorldMessagesApi
+    type: Interface
+  - uid: ZenECS.Core.IWorldQueryApi
+    name: IWorldQueryApi
+    type: Interface
+  - uid: ZenECS.Core.IWorldQuerySpanApi
+    name: IWorldQuerySpanApi
+    type: Interface
+  - uid: ZenECS.Core.IWorldResetApi
+    name: IWorldResetApi
+    type: Interface
+  - uid: ZenECS.Core.IWorldSingletonComponent
+    name: IWorldSingletonComponent
+    type: Interface
+  - uid: ZenECS.Core.IWorldSnapshotApi
+    name: IWorldSnapshotApi
+    type: Interface
+  - uid: ZenECS.Core.IWorldSystemsApi
+    name: IWorldSystemsApi
+    type: Interface
+  - uid: ZenECS.Core.IWorldWorkerApi
+    name: IWorldWorkerApi
+    type: Interface
+  - uid: ZenECS.Core.Kernel
+    name: Kernel
+    type: Class
+  - uid: ZenECS.Core.KernelOptions
+    name: KernelOptions
+    type: Class
+  - uid: ZenECS.Core.QueryEnumerable`1
+    name: QueryEnumerable<T1>
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`1.Enumerator
+    name: QueryEnumerable<T1>.Enumerator
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`1.Result
+    name: QueryEnumerable<T1>.Result
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`2
+    name: QueryEnumerable<T1, T2>
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`2.Enumerator
+    name: QueryEnumerable<T1, T2>.Enumerator
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`2.Result
+    name: QueryEnumerable<T1, T2>.Result
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`3
+    name: QueryEnumerable<T1, T2, T3>
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`3.Enumerator
+    name: QueryEnumerable<T1, T2, T3>.Enumerator
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`3.Result
+    name: QueryEnumerable<T1, T2, T3>.Result
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`4
+    name: QueryEnumerable<T1, T2, T3, T4>
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`4.Enumerator
+    name: QueryEnumerable<T1, T2, T3, T4>.Enumerator
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`4.Result
+    name: QueryEnumerable<T1, T2, T3, T4>.Result
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`5
+    name: QueryEnumerable<T1, T2, T3, T4, T5>
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`5.Enumerator
+    name: QueryEnumerable<T1, T2, T3, T4, T5>.Enumerator
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`5.Result
+    name: QueryEnumerable<T1, T2, T3, T4, T5>.Result
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`6
+    name: QueryEnumerable<T1, T2, T3, T4, T5, T6>
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`6.Enumerator
+    name: QueryEnumerable<T1, T2, T3, T4, T5, T6>.Enumerator
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`6.Result
+    name: QueryEnumerable<T1, T2, T3, T4, T5, T6>.Result
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`7
+    name: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`7.Enumerator
+    name: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>.Enumerator
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`7.Result
+    name: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>.Result
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`8
+    name: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`8.Enumerator
+    name: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>.Enumerator
+    type: Struct
+  - uid: ZenECS.Core.QueryEnumerable`8.Result
+    name: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>.Result
+    type: Struct
+  - uid: ZenECS.Core.RefAction`1
+    name: RefAction<T>
+    type: Delegate
+  - uid: ZenECS.Core.WorldConfig
+    name: WorldConfig
+    type: Struct
+  - uid: ZenECS.Core.WorldHandle
+    name: WorldHandle
+    type: Struct
+  - uid: ZenECS.Core.WorldId
+    name: WorldId
+    type: Struct
+  - uid: ZenECS.Core.ZenComponentAttribute
+    name: ZenComponentAttribute
+    type: Class
+  - uid: ZenECS.Core.ZenDefaults
+    name: ZenDefaults
+    type: Class
+  - uid: ZenECS.Core.ZenFormatterForAttribute
+    name: ZenFormatterForAttribute
+    type: Class
+  - uid: ZenECS.Core.ZenSystemWatchAttribute
+    name: ZenSystemWatchAttribute
+    type: Class
+- uid: ZenECS.Core.Binding
+  name: ZenECS.Core.Binding
+  type: Namespace
+  items:
+  - uid: ZenECS.Core.Binding.BaseBinder
+    name: BaseBinder
+    type: Class
+  - uid: ZenECS.Core.Binding.ComponentDeltaKind
+    name: ComponentDeltaKind
+    type: Enum
+  - uid: ZenECS.Core.Binding.ComponentDelta`1
+    name: ComponentDelta<T>
+    type: Struct
+  - uid: ZenECS.Core.Binding.DeltaTracker`1
+    name: DeltaTracker<T>
+    type: Struct
+  - uid: ZenECS.Core.Binding.IAttachOrderMarker
+    name: IAttachOrderMarker
+    type: Interface
+  - uid: ZenECS.Core.Binding.IBind`1
+    name: IBind<T>
+    type: Interface
+  - uid: ZenECS.Core.Binding.IBinder
+    name: IBinder
+    type: Interface
+  - uid: ZenECS.Core.Binding.IBinderEnabledFlag
+    name: IBinderEnabledFlag
+    type: Interface
+  - uid: ZenECS.Core.Binding.IContext
+    name: IContext
+    type: Interface
+  - uid: ZenECS.Core.Binding.IContextAwareBinder
+    name: IContextAwareBinder
+    type: Interface
+  - uid: ZenECS.Core.Binding.IContextInitialize
+    name: IContextInitialize
+    type: Interface
+  - uid: ZenECS.Core.Binding.IContextLookup
+    name: IContextLookup
+    type: Interface
+  - uid: ZenECS.Core.Binding.IContextReinitialize
+    name: IContextReinitialize
+    type: Interface
+- uid: ZenECS.Core.Config
+  name: ZenECS.Core.Config
+  type: Namespace
+  items:
+  - uid: ZenECS.Core.Config.EcsRuntimeOptions
+    name: EcsRuntimeOptions
+    type: Class
+  - uid: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+    name: EcsRuntimeOptions.WriteFailurePolicy
+    type: Enum
+  - uid: ZenECS.Core.Config.IEcsLogger
+    name: IEcsLogger
+    type: Interface
+- uid: ZenECS.Core.Messaging
+  name: ZenECS.Core.Messaging
+  type: Namespace
+  items:
+  - uid: ZenECS.Core.Messaging.IMessage
+    name: IMessage
+    type: Interface
+- uid: ZenECS.Core.Serialization
+  name: ZenECS.Core.Serialization
+  type: Namespace
+  items:
+  - uid: ZenECS.Core.Serialization.BinaryComponentFormatter`1
+    name: BinaryComponentFormatter<T>
+    type: Class
+  - uid: ZenECS.Core.Serialization.ComponentRegistry
+    name: ComponentRegistry
+    type: Class
+  - uid: ZenECS.Core.Serialization.IComponentFormatter
+    name: IComponentFormatter
+    type: Interface
+  - uid: ZenECS.Core.Serialization.IComponentFormatter`1
+    name: IComponentFormatter<T>
+    type: Interface
+  - uid: ZenECS.Core.Serialization.IPostLoadMigration
+    name: IPostLoadMigration
+    type: Interface
+  - uid: ZenECS.Core.Serialization.ISnapshotBackend
+    name: ISnapshotBackend
+    type: Interface
+  - uid: ZenECS.Core.Serialization.PostLoadMigrationRegistry
+    name: PostLoadMigrationRegistry
+    type: Class
+- uid: ZenECS.Core.Systems
+  name: ZenECS.Core.Systems
+  type: Namespace
+  items:
+  - uid: ZenECS.Core.Systems.FixedDecisionGroupAttribute
+    name: FixedDecisionGroupAttribute
+    type: Class
+  - uid: ZenECS.Core.Systems.FixedGroupAttribute
+    name: FixedGroupAttribute
+    type: Class
+  - uid: ZenECS.Core.Systems.FixedInputGroupAttribute
+    name: FixedInputGroupAttribute
+    type: Class
+  - uid: ZenECS.Core.Systems.FixedPostGroupAttribute
+    name: FixedPostGroupAttribute
+    type: Class
+  - uid: ZenECS.Core.Systems.FrameInputGroupAttribute
+    name: FrameInputGroupAttribute
+    type: Class
+  - uid: ZenECS.Core.Systems.FrameSyncGroupAttribute
+    name: FrameSyncGroupAttribute
+    type: Class
+  - uid: ZenECS.Core.Systems.FrameUIGroupAttribute
+    name: FrameUIGroupAttribute
+    type: Class
+  - uid: ZenECS.Core.Systems.FrameViewGroupAttribute
+    name: FrameViewGroupAttribute
+    type: Class
+  - uid: ZenECS.Core.Systems.GroupAttribute
+    name: GroupAttribute
+    type: Class
+  - uid: ZenECS.Core.Systems.ISystem
+    name: ISystem
+    type: Interface
+  - uid: ZenECS.Core.Systems.ISystemEnabledFlag
+    name: ISystemEnabledFlag
+    type: Interface
+  - uid: ZenECS.Core.Systems.ISystemLifecycle
+    name: ISystemLifecycle
+    type: Interface
+  - uid: ZenECS.Core.Systems.OrderAfterAttribute
+    name: OrderAfterAttribute
+    type: Class
+  - uid: ZenECS.Core.Systems.OrderBeforeAttribute
+    name: OrderBeforeAttribute
+    type: Class
+  - uid: ZenECS.Core.Systems.SystemGroup
+    name: SystemGroup
+    type: Enum
+  - uid: ZenECS.Core.Systems.SystemUtil
+    name: SystemUtil
+    type: Class
+- uid: Zenject
+  name: Zenject
+  type: Namespace
+  items:
+  - uid: Zenject.DiContainer
+    name: DiContainer
+    type: Interface
+  - uid: Zenject.MonoInstaller
+    name: MonoInstaller
+    type: Class
+memberLayout: SamePage

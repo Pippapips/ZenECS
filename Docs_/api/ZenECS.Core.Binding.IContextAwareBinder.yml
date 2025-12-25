@@ -1,0 +1,155 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Binding.IContextAwareBinder
+  commentId: T:ZenECS.Core.Binding.IContextAwareBinder
+  id: IContextAwareBinder
+  parent: ZenECS.Core.Binding
+  children:
+  - ZenECS.Core.Binding.IContextAwareBinder.ContextAttached(ZenECS.Core.Binding.IContext)
+  - ZenECS.Core.Binding.IContextAwareBinder.ContextDetached(ZenECS.Core.Binding.IContext)
+  langs:
+  - csharp
+  - vb
+  name: IContextAwareBinder
+  nameWithType: IContextAwareBinder
+  fullName: ZenECS.Core.Binding.IContextAwareBinder
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IContextAwareBinder
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 22
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Implemented by binders that want to be notified when contexts are attached
+
+    to or detached from the entity this binder is bound to.
+  example: []
+  syntax:
+    content: public interface IContextAwareBinder
+    content.vb: Public Interface IContextAwareBinder
+- uid: ZenECS.Core.Binding.IContextAwareBinder.ContextAttached(ZenECS.Core.Binding.IContext)
+  commentId: M:ZenECS.Core.Binding.IContextAwareBinder.ContextAttached(ZenECS.Core.Binding.IContext)
+  id: ContextAttached(ZenECS.Core.Binding.IContext)
+  parent: ZenECS.Core.Binding.IContextAwareBinder
+  langs:
+  - csharp
+  - vb
+  name: ContextAttached(IContext)
+  nameWithType: IContextAwareBinder.ContextAttached(IContext)
+  fullName: ZenECS.Core.Binding.IContextAwareBinder.ContextAttached(ZenECS.Core.Binding.IContext)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ContextAttached
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 29
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Called when a context becomes available for the bound entity.
+
+    Implementations typically cache or subscribe to the given context.
+  example: []
+  syntax:
+    content: void ContextAttached(IContext context)
+    parameters:
+    - id: context
+      type: ZenECS.Core.Binding.IContext
+      description: The context that was attached.
+    content.vb: Sub ContextAttached(context As IContext)
+  overload: ZenECS.Core.Binding.IContextAwareBinder.ContextAttached*
+- uid: ZenECS.Core.Binding.IContextAwareBinder.ContextDetached(ZenECS.Core.Binding.IContext)
+  commentId: M:ZenECS.Core.Binding.IContextAwareBinder.ContextDetached(ZenECS.Core.Binding.IContext)
+  id: ContextDetached(ZenECS.Core.Binding.IContext)
+  parent: ZenECS.Core.Binding.IContextAwareBinder
+  langs:
+  - csharp
+  - vb
+  name: ContextDetached(IContext)
+  nameWithType: IContextAwareBinder.ContextDetached(IContext)
+  fullName: ZenECS.Core.Binding.IContextAwareBinder.ContextDetached(ZenECS.Core.Binding.IContext)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ContextDetached
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 36
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Called when a context is removed from the bound entity.
+
+    Implementations should release or unsubscribe from the given context.
+  example: []
+  syntax:
+    content: void ContextDetached(IContext context)
+    parameters:
+    - id: context
+      type: ZenECS.Core.Binding.IContext
+      description: The context that was detached.
+    content.vb: Sub ContextDetached(context As IContext)
+  overload: ZenECS.Core.Binding.IContextAwareBinder.ContextDetached*
+references:
+- uid: ZenECS.Core.Binding
+  commentId: N:ZenECS.Core.Binding
+  href: ZenECS.html
+  name: ZenECS.Core.Binding
+  nameWithType: ZenECS.Core.Binding
+  fullName: ZenECS.Core.Binding
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+- uid: ZenECS.Core.Binding.IContextAwareBinder.ContextAttached*
+  commentId: Overload:ZenECS.Core.Binding.IContextAwareBinder.ContextAttached
+  href: ZenECS.Core.Binding.IContextAwareBinder.html#ZenECS_Core_Binding_IContextAwareBinder_ContextAttached_ZenECS_Core_Binding_IContext_
+  name: ContextAttached
+  nameWithType: IContextAwareBinder.ContextAttached
+  fullName: ZenECS.Core.Binding.IContextAwareBinder.ContextAttached
+- uid: ZenECS.Core.Binding.IContext
+  commentId: T:ZenECS.Core.Binding.IContext
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IContext.html
+  name: IContext
+  nameWithType: IContext
+  fullName: ZenECS.Core.Binding.IContext
+- uid: ZenECS.Core.Binding.IContextAwareBinder.ContextDetached*
+  commentId: Overload:ZenECS.Core.Binding.IContextAwareBinder.ContextDetached
+  href: ZenECS.Core.Binding.IContextAwareBinder.html#ZenECS_Core_Binding_IContextAwareBinder_ContextDetached_ZenECS_Core_Binding_IContext_
+  name: ContextDetached
+  nameWithType: IContextAwareBinder.ContextDetached
+  fullName: ZenECS.Core.Binding.IContextAwareBinder.ContextDetached

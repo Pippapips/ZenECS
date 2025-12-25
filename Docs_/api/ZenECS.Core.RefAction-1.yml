@@ -1,0 +1,73 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.RefAction`1
+  commentId: T:ZenECS.Core.RefAction`1
+  id: RefAction`1
+  parent: ZenECS.Core
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: RefAction<T>
+  nameWithType: RefAction<T>
+  fullName: ZenECS.Core.RefAction<T>
+  type: Delegate
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RefAction
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+    startLine: 24
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Delegate used to process a component by reference (no boxing/copy).
+  example: []
+  syntax:
+    content: 'public delegate void RefAction<T>(ref T value) where T : struct'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: Reference to the component value.
+    typeParameters:
+    - id: T
+      description: Component type.
+    content.vb: Public Delegate Sub RefAction(Of T As Structure)(value As T)
+  nameWithType.vb: RefAction(Of T)
+  fullName.vb: ZenECS.Core.RefAction(Of T)
+  name.vb: RefAction(Of T)
+references:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T

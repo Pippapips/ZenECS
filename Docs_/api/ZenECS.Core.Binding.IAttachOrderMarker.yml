@@ -1,0 +1,228 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Binding.IAttachOrderMarker
+  commentId: T:ZenECS.Core.Binding.IAttachOrderMarker
+  id: IAttachOrderMarker
+  parent: ZenECS.Core.Binding
+  children:
+  - ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder
+  - ZenECS.Core.Binding.IAttachOrderMarker.ResetAttachOrder
+  - ZenECS.Core.Binding.IAttachOrderMarker.SetAttachOrder(System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: IAttachOrderMarker
+  nameWithType: IAttachOrderMarker
+  fullName: ZenECS.Core.Binding.IAttachOrderMarker
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IAttachOrderMarker
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 55
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Internal marker that lets the router/registry preserve "attach sequence"
+
+    ordering independent from <xref href="ZenECS.Core.Binding.IBinder.ApplyOrder" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public interface IAttachOrderMarker
+    content.vb: Public Interface IAttachOrderMarker
+- uid: ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder
+  commentId: P:ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder
+  id: AttachOrder
+  parent: ZenECS.Core.Binding.IAttachOrderMarker
+  langs:
+  - csharp
+  - vb
+  name: AttachOrder
+  nameWithType: IAttachOrderMarker.AttachOrder
+  fullName: ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: AttachOrder
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 61
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Zero-based order assigned at attachment time.
+
+    This is stable for the lifetime of the binder attachment.
+  example: []
+  syntax:
+    content: int AttachOrder { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property AttachOrder As Integer
+  overload: ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder*
+- uid: ZenECS.Core.Binding.IAttachOrderMarker.ResetAttachOrder
+  commentId: M:ZenECS.Core.Binding.IAttachOrderMarker.ResetAttachOrder
+  id: ResetAttachOrder
+  parent: ZenECS.Core.Binding.IAttachOrderMarker
+  langs:
+  - csharp
+  - vb
+  name: ResetAttachOrder()
+  nameWithType: IAttachOrderMarker.ResetAttachOrder()
+  fullName: ZenECS.Core.Binding.IAttachOrderMarker.ResetAttachOrder()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ResetAttachOrder
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 66
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: Reset the stored attach order back to its default value.
+  example: []
+  syntax:
+    content: void ResetAttachOrder()
+    content.vb: Sub ResetAttachOrder()
+  overload: ZenECS.Core.Binding.IAttachOrderMarker.ResetAttachOrder*
+- uid: ZenECS.Core.Binding.IAttachOrderMarker.SetAttachOrder(System.Int32)
+  commentId: M:ZenECS.Core.Binding.IAttachOrderMarker.SetAttachOrder(System.Int32)
+  id: SetAttachOrder(System.Int32)
+  parent: ZenECS.Core.Binding.IAttachOrderMarker
+  langs:
+  - csharp
+  - vb
+  name: SetAttachOrder(int)
+  nameWithType: IAttachOrderMarker.SetAttachOrder(int)
+  fullName: ZenECS.Core.Binding.IAttachOrderMarker.SetAttachOrder(int)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SetAttachOrder
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 72
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: Set the <xref href="ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder" data-throw-if-not-resolved="false"></xref> value explicitly.
+  example: []
+  syntax:
+    content: void SetAttachOrder(int attachOrder)
+    parameters:
+    - id: attachOrder
+      type: System.Int32
+      description: The new attach order index.
+    content.vb: Sub SetAttachOrder(attachOrder As Integer)
+  overload: ZenECS.Core.Binding.IAttachOrderMarker.SetAttachOrder*
+  nameWithType.vb: IAttachOrderMarker.SetAttachOrder(Integer)
+  fullName.vb: ZenECS.Core.Binding.IAttachOrderMarker.SetAttachOrder(Integer)
+  name.vb: SetAttachOrder(Integer)
+references:
+- uid: ZenECS.Core.Binding.IBinder.ApplyOrder
+  commentId: P:ZenECS.Core.Binding.IBinder.ApplyOrder
+  parent: ZenECS.Core.Binding.IBinder
+  href: ZenECS.Core.Binding.IBinder.html#ZenECS_Core_Binding_IBinder_ApplyOrder
+  name: ApplyOrder
+  nameWithType: IBinder.ApplyOrder
+  fullName: ZenECS.Core.Binding.IBinder.ApplyOrder
+- uid: ZenECS.Core.Binding
+  commentId: N:ZenECS.Core.Binding
+  href: ZenECS.html
+  name: ZenECS.Core.Binding
+  nameWithType: ZenECS.Core.Binding
+  fullName: ZenECS.Core.Binding
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+- uid: ZenECS.Core.Binding.IBinder
+  commentId: T:ZenECS.Core.Binding.IBinder
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IBinder.html
+  name: IBinder
+  nameWithType: IBinder
+  fullName: ZenECS.Core.Binding.IBinder
+- uid: ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder*
+  commentId: Overload:ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder
+  href: ZenECS.Core.Binding.IAttachOrderMarker.html#ZenECS_Core_Binding_IAttachOrderMarker_AttachOrder
+  name: AttachOrder
+  nameWithType: IAttachOrderMarker.AttachOrder
+  fullName: ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.Binding.IAttachOrderMarker.ResetAttachOrder*
+  commentId: Overload:ZenECS.Core.Binding.IAttachOrderMarker.ResetAttachOrder
+  href: ZenECS.Core.Binding.IAttachOrderMarker.html#ZenECS_Core_Binding_IAttachOrderMarker_ResetAttachOrder
+  name: ResetAttachOrder
+  nameWithType: IAttachOrderMarker.ResetAttachOrder
+  fullName: ZenECS.Core.Binding.IAttachOrderMarker.ResetAttachOrder
+- uid: ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder
+  commentId: P:ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder
+  parent: ZenECS.Core.Binding.IAttachOrderMarker
+  href: ZenECS.Core.Binding.IAttachOrderMarker.html#ZenECS_Core_Binding_IAttachOrderMarker_AttachOrder
+  name: AttachOrder
+  nameWithType: IAttachOrderMarker.AttachOrder
+  fullName: ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder
+- uid: ZenECS.Core.Binding.IAttachOrderMarker.SetAttachOrder*
+  commentId: Overload:ZenECS.Core.Binding.IAttachOrderMarker.SetAttachOrder
+  href: ZenECS.Core.Binding.IAttachOrderMarker.html#ZenECS_Core_Binding_IAttachOrderMarker_SetAttachOrder_System_Int32_
+  name: SetAttachOrder
+  nameWithType: IAttachOrderMarker.SetAttachOrder
+  fullName: ZenECS.Core.Binding.IAttachOrderMarker.SetAttachOrder
+- uid: ZenECS.Core.Binding.IAttachOrderMarker
+  commentId: T:ZenECS.Core.Binding.IAttachOrderMarker
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IAttachOrderMarker.html
+  name: IAttachOrderMarker
+  nameWithType: IAttachOrderMarker
+  fullName: ZenECS.Core.Binding.IAttachOrderMarker

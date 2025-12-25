@@ -1,0 +1,533 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.IWorldContextApi
+  commentId: T:ZenECS.Core.IWorldContextApi
+  id: IWorldContextApi
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.IWorldContextApi.GetAllContexts(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldContextApi.HasContext(ZenECS.Core.Entity,System.Type)
+  - ZenECS.Core.IWorldContextApi.HasContext``1(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldContextApi.RegisterContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  - ZenECS.Core.IWorldContextApi.ReinitializeContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  - ZenECS.Core.IWorldContextApi.RemoveContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  langs:
+  - csharp
+  - vb
+  name: IWorldContextApi
+  nameWithType: IWorldContextApi
+  fullName: ZenECS.Core.IWorldContextApi
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IWorldContextApi
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
+    startLine: 34
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: World-side API for registering and managing per-entity view contexts.
+  remarks: >-
+    <p>
+
+    Contexts are arbitrary objects (for example, Unity components, pooled
+
+    view models, or adapter-specific handles) that are attached to entities
+
+    and later consumed by binders and renderers when applying presentation
+
+    deltas from the ECS world.
+
+    </p>
+
+    <p>
+
+    The world is the single source of truth for which contexts are associated
+
+    with a given entity; binders should not cache long-lived references
+
+    without listening for lifecycle changes.
+
+    </p>
+  example: []
+  syntax:
+    content: public interface IWorldContextApi
+    content.vb: Public Interface IWorldContextApi
+- uid: ZenECS.Core.IWorldContextApi.RegisterContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  commentId: M:ZenECS.Core.IWorldContextApi.RegisterContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  id: RegisterContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  parent: ZenECS.Core.IWorldContextApi
+  langs:
+  - csharp
+  - vb
+  name: RegisterContext(Entity, IContext)
+  nameWithType: IWorldContextApi.RegisterContext(Entity, IContext)
+  fullName: ZenECS.Core.IWorldContextApi.RegisterContext(ZenECS.Core.Entity, ZenECS.Core.Binding.IContext)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RegisterContext
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
+    startLine: 52
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Registers a context object for an entity.
+  remarks: >-
+    <p>
+
+    The exact replacement policy (for example, whether multiple contexts
+
+    of the same runtime type are allowed, or whether a new registration
+
+    overwrites an existing one) is defined by the world implementation.
+
+    </p>
+
+    <p>
+
+    Implementations are expected to detach or recycle contexts when
+
+    entities are despawned or the world is reset.
+
+    </p>
+  example: []
+  syntax:
+    content: void RegisterContext(Entity e, IContext ctx)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    - id: ctx
+      type: ZenECS.Core.Binding.IContext
+      description: Context instance to associate with the entity.
+    content.vb: Sub RegisterContext(e As Entity, ctx As IContext)
+  overload: ZenECS.Core.IWorldContextApi.RegisterContext*
+- uid: ZenECS.Core.IWorldContextApi.HasContext(ZenECS.Core.Entity,System.Type)
+  commentId: M:ZenECS.Core.IWorldContextApi.HasContext(ZenECS.Core.Entity,System.Type)
+  id: HasContext(ZenECS.Core.Entity,System.Type)
+  parent: ZenECS.Core.IWorldContextApi
+  langs:
+  - csharp
+  - vb
+  name: HasContext(Entity, Type?)
+  nameWithType: IWorldContextApi.HasContext(Entity, Type?)
+  fullName: ZenECS.Core.IWorldContextApi.HasContext(ZenECS.Core.Entity, System.Type?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: HasContext
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
+    startLine: 63
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Checks whether an entity has at least one context of a given runtime type.
+  example: []
+  syntax:
+    content: bool HasContext(Entity e, Type? contextType)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    - id: contextType
+      type: System.Type
+      description: Context runtime type to query for.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if a context of type <code class="paramref">contextType</code>
+
+        is registered for <code class="paramref">e</code>; otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function HasContext(e As Entity, contextType As Type) As Boolean
+  overload: ZenECS.Core.IWorldContextApi.HasContext*
+  nameWithType.vb: IWorldContextApi.HasContext(Entity, Type)
+  fullName.vb: ZenECS.Core.IWorldContextApi.HasContext(ZenECS.Core.Entity, System.Type)
+  name.vb: HasContext(Entity, Type)
+- uid: ZenECS.Core.IWorldContextApi.HasContext``1(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldContextApi.HasContext``1(ZenECS.Core.Entity)
+  id: HasContext``1(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldContextApi
+  langs:
+  - csharp
+  - vb
+  name: HasContext<T>(Entity)
+  nameWithType: IWorldContextApi.HasContext<T>(Entity)
+  fullName: ZenECS.Core.IWorldContextApi.HasContext<T>(ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: HasContext
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
+    startLine: 74
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Checks whether an entity has at least one context of type <code class="typeparamref">T</code>.
+  example: []
+  syntax:
+    content: 'bool HasContext<T>(Entity e) where T : class, IContext'
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    typeParameters:
+    - id: T
+      description: Context type to query for.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if a context of type <code class="typeparamref">T</code>
+
+        is registered for <code class="paramref">e</code>; otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function HasContext(Of T As {Class, IContext})(e As Entity) As Boolean
+  overload: ZenECS.Core.IWorldContextApi.HasContext*
+  nameWithType.vb: IWorldContextApi.HasContext(Of T)(Entity)
+  fullName.vb: ZenECS.Core.IWorldContextApi.HasContext(Of T)(ZenECS.Core.Entity)
+  name.vb: HasContext(Of T)(Entity)
+- uid: ZenECS.Core.IWorldContextApi.GetAllContexts(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldContextApi.GetAllContexts(ZenECS.Core.Entity)
+  id: GetAllContexts(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldContextApi
+  langs:
+  - csharp
+  - vb
+  name: GetAllContexts(Entity)
+  nameWithType: IWorldContextApi.GetAllContexts(Entity)
+  fullName: ZenECS.Core.IWorldContextApi.GetAllContexts(ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: GetAllContexts
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
+    startLine: 86
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets all contexts currently registered for an entity.
+  example: []
+  syntax:
+    content: (Type type, object boxed)[] GetAllContexts(Entity e)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    return:
+      type: System.ValueTuple{System.Type,System.Object}[]
+      description: >-
+        An array of tuples where <code>type</code> is the runtime type of the
+
+        context and <code>boxed</code> is the context instance boxed as
+
+        <xref href="System.Object" data-throw-if-not-resolved="false"></xref>. Returns an empty array if no contexts
+
+        are registered.
+    content.vb: Function GetAllContexts(e As Entity) As (type As Type, boxed As Object)()
+  overload: ZenECS.Core.IWorldContextApi.GetAllContexts*
+- uid: ZenECS.Core.IWorldContextApi.RemoveContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  commentId: M:ZenECS.Core.IWorldContextApi.RemoveContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  id: RemoveContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  parent: ZenECS.Core.IWorldContextApi
+  langs:
+  - csharp
+  - vb
+  name: RemoveContext(Entity, IContext)
+  nameWithType: IWorldContextApi.RemoveContext(Entity, IContext)
+  fullName: ZenECS.Core.IWorldContextApi.RemoveContext(ZenECS.Core.Entity, ZenECS.Core.Binding.IContext)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RemoveContext
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
+    startLine: 101
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Removes a specific context instance from an entity.
+  remarks: >-
+    The call is a no-op if the context is not currently registered for
+
+    <code class="paramref">e</code>.
+  example: []
+  syntax:
+    content: bool RemoveContext(Entity e, IContext ctx)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    - id: ctx
+      type: ZenECS.Core.Binding.IContext
+      description: Context instance to remove.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the specified context instance was
+
+        registered and removed; otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function RemoveContext(e As Entity, ctx As IContext) As Boolean
+  overload: ZenECS.Core.IWorldContextApi.RemoveContext*
+- uid: ZenECS.Core.IWorldContextApi.ReinitializeContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  commentId: M:ZenECS.Core.IWorldContextApi.ReinitializeContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  id: ReinitializeContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  parent: ZenECS.Core.IWorldContextApi
+  langs:
+  - csharp
+  - vb
+  name: ReinitializeContext(Entity, IContext)
+  nameWithType: IWorldContextApi.ReinitializeContext(Entity, IContext)
+  fullName: ZenECS.Core.IWorldContextApi.ReinitializeContext(ZenECS.Core.Entity, ZenECS.Core.Binding.IContext)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ReinitializeContext
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
+    startLine: 122
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Requests that a context be reinitialized for an entity.
+  remarks: >-
+    <p>
+
+    The exact semantics of "reinitialize" are implementation-specific,
+
+    but a common pattern is to re-run context setup logic after data
+
+    changes, or after a binder has reattached to an existing view object.
+
+    </p>
+  example: []
+  syntax:
+    content: bool ReinitializeContext(Entity e, IContext ctx)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    - id: ctx
+      type: ZenECS.Core.Binding.IContext
+      description: >-
+        Context instance to reinitialize (typically one that is already
+
+        registered).
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the context is known and was successfully
+
+        reinitialized; otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function ReinitializeContext(e As Entity, ctx As IContext) As Boolean
+  overload: ZenECS.Core.IWorldContextApi.ReinitializeContext*
+references:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.IWorldContextApi.RegisterContext*
+  commentId: Overload:ZenECS.Core.IWorldContextApi.RegisterContext
+  href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_RegisterContext_ZenECS_Core_Entity_ZenECS_Core_Binding_IContext_
+  name: RegisterContext
+  nameWithType: IWorldContextApi.RegisterContext
+  fullName: ZenECS.Core.IWorldContextApi.RegisterContext
+- uid: ZenECS.Core.Entity
+  commentId: T:ZenECS.Core.Entity
+  parent: ZenECS.Core
+  href: ZenECS.Core.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: ZenECS.Core.Entity
+- uid: ZenECS.Core.Binding.IContext
+  commentId: T:ZenECS.Core.Binding.IContext
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IContext.html
+  name: IContext
+  nameWithType: IContext
+  fullName: ZenECS.Core.Binding.IContext
+- uid: ZenECS.Core.Binding
+  commentId: N:ZenECS.Core.Binding
+  href: ZenECS.html
+  name: ZenECS.Core.Binding
+  nameWithType: ZenECS.Core.Binding
+  fullName: ZenECS.Core.Binding
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+- uid: ZenECS.Core.IWorldContextApi.HasContext*
+  commentId: Overload:ZenECS.Core.IWorldContextApi.HasContext
+  href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_HasContext_ZenECS_Core_Entity_System_Type_
+  name: HasContext
+  nameWithType: IWorldContextApi.HasContext
+  fullName: ZenECS.Core.IWorldContextApi.HasContext
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: ZenECS.Core.IWorldContextApi.GetAllContexts*
+  commentId: Overload:ZenECS.Core.IWorldContextApi.GetAllContexts
+  href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_GetAllContexts_ZenECS_Core_Entity_
+  name: GetAllContexts
+  nameWithType: IWorldContextApi.GetAllContexts
+  fullName: ZenECS.Core.IWorldContextApi.GetAllContexts
+- uid: System.ValueTuple{System.Type,System.Object}[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: (Type type, object boxed)[]
+  nameWithType: (Type type, object boxed)[]
+  fullName: (System.Type type, object boxed)[]
+  nameWithType.vb: (type As Type, boxed As Object)()
+  fullName.vb: (type As System.Type, boxed As Object)()
+  name.vb: (type As Type, boxed As Object)()
+  spec.csharp:
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: " "
+  - uid: System.ValueTuple{System.Type,System.Object}.type
+    name: type
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.type,system.object-.type
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: " "
+  - uid: System.ValueTuple{System.Type,System.Object}.boxed
+    name: boxed
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.type,system.object-.boxed
+  - name: )
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{System.Type,System.Object}.type
+    name: type
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.type,system.object-.type
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Type,System.Object}.boxed
+    name: boxed
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.type,system.object-.boxed
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: (
+  - name: )
+- uid: ZenECS.Core.IWorldContextApi.RemoveContext*
+  commentId: Overload:ZenECS.Core.IWorldContextApi.RemoveContext
+  href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_RemoveContext_ZenECS_Core_Entity_ZenECS_Core_Binding_IContext_
+  name: RemoveContext
+  nameWithType: IWorldContextApi.RemoveContext
+  fullName: ZenECS.Core.IWorldContextApi.RemoveContext
+- uid: ZenECS.Core.IWorldContextApi.ReinitializeContext*
+  commentId: Overload:ZenECS.Core.IWorldContextApi.ReinitializeContext
+  href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_ReinitializeContext_ZenECS_Core_Entity_ZenECS_Core_Binding_IContext_
+  name: ReinitializeContext
+  nameWithType: IWorldContextApi.ReinitializeContext
+  fullName: ZenECS.Core.IWorldContextApi.ReinitializeContext

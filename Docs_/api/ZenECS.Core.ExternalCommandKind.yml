@@ -1,0 +1,278 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.ExternalCommandKind
+  commentId: T:ZenECS.Core.ExternalCommandKind
+  id: ExternalCommandKind
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.ExternalCommandKind.AddComponent
+  - ZenECS.Core.ExternalCommandKind.CreateEntity
+  - ZenECS.Core.ExternalCommandKind.DestroyEntity
+  - ZenECS.Core.ExternalCommandKind.RemoveComponent
+  - ZenECS.Core.ExternalCommandKind.RemoveSingleton
+  - ZenECS.Core.ExternalCommandKind.ReplaceComponent
+  - ZenECS.Core.ExternalCommandKind.SetSingleton
+  langs:
+  - csharp
+  - vb
+  name: ExternalCommandKind
+  nameWithType: ExternalCommandKind
+  fullName: ZenECS.Core.ExternalCommandKind
+  type: Enum
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ExternalCommandKind
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 24
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Enumerates the kinds of external commands that can be queued and later
+
+    applied to a world via a command buffer.
+  example: []
+  syntax:
+    content: public enum ExternalCommandKind
+    content.vb: Public Enum ExternalCommandKind
+- uid: ZenECS.Core.ExternalCommandKind.CreateEntity
+  commentId: F:ZenECS.Core.ExternalCommandKind.CreateEntity
+  id: CreateEntity
+  parent: ZenECS.Core.ExternalCommandKind
+  langs:
+  - csharp
+  - vb
+  name: CreateEntity
+  nameWithType: ExternalCommandKind.CreateEntity
+  fullName: ZenECS.Core.ExternalCommandKind.CreateEntity
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: CreateEntity
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 30
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Create a new entity. The resulting entity handle is provided via the
+
+    <xref href="ZenECS.Core.ExternalCommand.CreatedCallback" data-throw-if-not-resolved="false"></xref> when the command is applied.
+  example: []
+  syntax:
+    content: CreateEntity = 0
+    return:
+      type: ZenECS.Core.ExternalCommandKind
+- uid: ZenECS.Core.ExternalCommandKind.DestroyEntity
+  commentId: F:ZenECS.Core.ExternalCommandKind.DestroyEntity
+  id: DestroyEntity
+  parent: ZenECS.Core.ExternalCommandKind
+  langs:
+  - csharp
+  - vb
+  name: DestroyEntity
+  nameWithType: ExternalCommandKind.DestroyEntity
+  fullName: ZenECS.Core.ExternalCommandKind.DestroyEntity
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: DestroyEntity
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 35
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Destroy an existing entity.
+  example: []
+  syntax:
+    content: DestroyEntity = 1
+    return:
+      type: ZenECS.Core.ExternalCommandKind
+- uid: ZenECS.Core.ExternalCommandKind.AddComponent
+  commentId: F:ZenECS.Core.ExternalCommandKind.AddComponent
+  id: AddComponent
+  parent: ZenECS.Core.ExternalCommandKind
+  langs:
+  - csharp
+  - vb
+  name: AddComponent
+  nameWithType: ExternalCommandKind.AddComponent
+  fullName: ZenECS.Core.ExternalCommandKind.AddComponent
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: AddComponent
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 40
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Add a component to an entity.
+  example: []
+  syntax:
+    content: AddComponent = 2
+    return:
+      type: ZenECS.Core.ExternalCommandKind
+- uid: ZenECS.Core.ExternalCommandKind.ReplaceComponent
+  commentId: F:ZenECS.Core.ExternalCommandKind.ReplaceComponent
+  id: ReplaceComponent
+  parent: ZenECS.Core.ExternalCommandKind
+  langs:
+  - csharp
+  - vb
+  name: ReplaceComponent
+  nameWithType: ExternalCommandKind.ReplaceComponent
+  fullName: ZenECS.Core.ExternalCommandKind.ReplaceComponent
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ReplaceComponent
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 46
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Replace an existing component on an entity, or add it depending on the
+
+    command-buffer semantics.
+  example: []
+  syntax:
+    content: ReplaceComponent = 3
+    return:
+      type: ZenECS.Core.ExternalCommandKind
+- uid: ZenECS.Core.ExternalCommandKind.RemoveComponent
+  commentId: F:ZenECS.Core.ExternalCommandKind.RemoveComponent
+  id: RemoveComponent
+  parent: ZenECS.Core.ExternalCommandKind
+  langs:
+  - csharp
+  - vb
+  name: RemoveComponent
+  nameWithType: ExternalCommandKind.RemoveComponent
+  fullName: ZenECS.Core.ExternalCommandKind.RemoveComponent
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RemoveComponent
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 51
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Remove a component from an entity.
+  example: []
+  syntax:
+    content: RemoveComponent = 4
+    return:
+      type: ZenECS.Core.ExternalCommandKind
+- uid: ZenECS.Core.ExternalCommandKind.SetSingleton
+  commentId: F:ZenECS.Core.ExternalCommandKind.SetSingleton
+  id: SetSingleton
+  parent: ZenECS.Core.ExternalCommandKind
+  langs:
+  - csharp
+  - vb
+  name: SetSingleton
+  nameWithType: ExternalCommandKind.SetSingleton
+  fullName: ZenECS.Core.ExternalCommandKind.SetSingleton
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SetSingleton
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 56
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Set or replace a world singleton component.
+  example: []
+  syntax:
+    content: SetSingleton = 5
+    return:
+      type: ZenECS.Core.ExternalCommandKind
+- uid: ZenECS.Core.ExternalCommandKind.RemoveSingleton
+  commentId: F:ZenECS.Core.ExternalCommandKind.RemoveSingleton
+  id: RemoveSingleton
+  parent: ZenECS.Core.ExternalCommandKind
+  langs:
+  - csharp
+  - vb
+  name: RemoveSingleton
+  nameWithType: ExternalCommandKind.RemoveSingleton
+  fullName: ZenECS.Core.ExternalCommandKind.RemoveSingleton
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RemoveSingleton
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 61
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Remove a world singleton component.
+  example: []
+  syntax:
+    content: RemoveSingleton = 6
+    return:
+      type: ZenECS.Core.ExternalCommandKind
+references:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.ExternalCommand.CreatedCallback
+  commentId: P:ZenECS.Core.ExternalCommand.CreatedCallback
+  href: ZenECS.Core.ExternalCommand.html#ZenECS_Core_ExternalCommand_CreatedCallback
+  name: CreatedCallback
+  nameWithType: ExternalCommand.CreatedCallback
+  fullName: ZenECS.Core.ExternalCommand.CreatedCallback
+- uid: ZenECS.Core.ExternalCommandKind
+  commentId: T:ZenECS.Core.ExternalCommandKind
+  parent: ZenECS.Core
+  href: ZenECS.Core.ExternalCommandKind.html
+  name: ExternalCommandKind
+  nameWithType: ExternalCommandKind
+  fullName: ZenECS.Core.ExternalCommandKind

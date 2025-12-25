@@ -1,0 +1,162 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Binding.IBinderEnabledFlag
+  commentId: T:ZenECS.Core.Binding.IBinderEnabledFlag
+  id: IBinderEnabledFlag
+  parent: ZenECS.Core.Binding
+  children:
+  - ZenECS.Core.Binding.IBinderEnabledFlag.Enabled
+  langs:
+  - csharp
+  - vb
+  name: IBinderEnabledFlag
+  nameWithType: IBinderEnabledFlag
+  fullName: ZenECS.Core.Binding.IBinderEnabledFlag
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IBinderEnabledFlag
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 42
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: Optional flag that allows enabling or disabling a binder without unbinding it.
+  example: []
+  syntax:
+    content: public interface IBinderEnabledFlag
+    content.vb: Public Interface IBinderEnabledFlag
+- uid: ZenECS.Core.Binding.IBinderEnabledFlag.Enabled
+  commentId: P:ZenECS.Core.Binding.IBinderEnabledFlag.Enabled
+  id: Enabled
+  parent: ZenECS.Core.Binding.IBinderEnabledFlag
+  langs:
+  - csharp
+  - vb
+  name: Enabled
+  nameWithType: IBinderEnabledFlag.Enabled
+  fullName: ZenECS.Core.Binding.IBinderEnabledFlag.Enabled
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Enabled
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 48
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Gets or sets whether this binder is currently enabled.
+
+    When <code>false</code>, the binder will be skipped in the <xref href="ZenECS.Core.Binding.IBinder.Apply(ZenECS.Core.IWorld%2cZenECS.Core.Entity)" data-throw-if-not-resolved="false"></xref> pass.
+  example: []
+  syntax:
+    content: bool Enabled { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property Enabled As Boolean
+  overload: ZenECS.Core.Binding.IBinderEnabledFlag.Enabled*
+references:
+- uid: ZenECS.Core.Binding
+  commentId: N:ZenECS.Core.Binding
+  href: ZenECS.html
+  name: ZenECS.Core.Binding
+  nameWithType: ZenECS.Core.Binding
+  fullName: ZenECS.Core.Binding
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+- uid: ZenECS.Core.Binding.IBinder.Apply(ZenECS.Core.IWorld,ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.Binding.IBinder.Apply(ZenECS.Core.IWorld,ZenECS.Core.Entity)
+  parent: ZenECS.Core.Binding.IBinder
+  href: ZenECS.Core.Binding.IBinder.html#ZenECS_Core_Binding_IBinder_Apply_ZenECS_Core_IWorld_ZenECS_Core_Entity_
+  name: Apply(IWorld, Entity)
+  nameWithType: IBinder.Apply(IWorld, Entity)
+  fullName: ZenECS.Core.Binding.IBinder.Apply(ZenECS.Core.IWorld, ZenECS.Core.Entity)
+  spec.csharp:
+  - uid: ZenECS.Core.Binding.IBinder.Apply(ZenECS.Core.IWorld,ZenECS.Core.Entity)
+    name: Apply
+    href: ZenECS.Core.Binding.IBinder.html#ZenECS_Core_Binding_IBinder_Apply_ZenECS_Core_IWorld_ZenECS_Core_Entity_
+  - name: (
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.Binding.IBinder.Apply(ZenECS.Core.IWorld,ZenECS.Core.Entity)
+    name: Apply
+    href: ZenECS.Core.Binding.IBinder.html#ZenECS_Core_Binding_IBinder_Apply_ZenECS_Core_IWorld_ZenECS_Core_Entity_
+  - name: (
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: ZenECS.Core.Binding.IBinderEnabledFlag.Enabled*
+  commentId: Overload:ZenECS.Core.Binding.IBinderEnabledFlag.Enabled
+  href: ZenECS.Core.Binding.IBinderEnabledFlag.html#ZenECS_Core_Binding_IBinderEnabledFlag_Enabled
+  name: Enabled
+  nameWithType: IBinderEnabledFlag.Enabled
+  fullName: ZenECS.Core.Binding.IBinderEnabledFlag.Enabled
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: ZenECS.Core.Binding.IBinder
+  commentId: T:ZenECS.Core.Binding.IBinder
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IBinder.html
+  name: IBinder
+  nameWithType: IBinder
+  fullName: ZenECS.Core.Binding.IBinder
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

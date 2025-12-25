@@ -1,0 +1,93 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  commentId: N:ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  id: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  children:
+  - ZenECS.Adapter.Unity.Binding.Contexts.Assets.ContextAsset
+  - ZenECS.Adapter.Unity.Binding.Contexts.Assets.PerEntityContextAsset
+  - ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset
+  langs:
+  - csharp
+  - vb
+  name: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  nameWithType: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  type: Namespace
+  assemblies:
+  - ZenECS.Adapter.Unity
+references:
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets.ContextAsset
+  commentId: T:ZenECS.Adapter.Unity.Binding.Contexts.Assets.ContextAsset
+  parent: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  href: ZenECS.Adapter.Unity.Binding.Contexts.Assets.ContextAsset.html
+  name: ContextAsset
+  nameWithType: ContextAsset
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.Assets.ContextAsset
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets.PerEntityContextAsset
+  commentId: T:ZenECS.Adapter.Unity.Binding.Contexts.Assets.PerEntityContextAsset
+  href: ZenECS.Adapter.Unity.Binding.Contexts.Assets.PerEntityContextAsset.html
+  name: PerEntityContextAsset
+  nameWithType: PerEntityContextAsset
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.Assets.PerEntityContextAsset
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset
+  commentId: T:ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset
+  parent: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  href: ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset.html
+  name: SharedContextAsset
+  nameWithType: SharedContextAsset
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  commentId: N:ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  nameWithType: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding
+    name: Binding
+    href: ZenECS.Adapter.Unity.Binding.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts
+    name: Contexts
+    href: ZenECS.Adapter.Unity.Binding.Contexts.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+    name: Assets
+    href: ZenECS.Adapter.Unity.Binding.Contexts.Assets.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding
+    name: Binding
+    href: ZenECS.Adapter.Unity.Binding.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts
+    name: Contexts
+    href: ZenECS.Adapter.Unity.Binding.Contexts.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+    name: Assets
+    href: ZenECS.Adapter.Unity.Binding.Contexts.Assets.html

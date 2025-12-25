@@ -1,0 +1,136 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Serialization
+  commentId: N:ZenECS.Core.Serialization
+  id: ZenECS.Core.Serialization
+  children:
+  - ZenECS.Core.Serialization.BinaryComponentFormatter`1
+  - ZenECS.Core.Serialization.ComponentRegistry
+  - ZenECS.Core.Serialization.IComponentFormatter
+  - ZenECS.Core.Serialization.IComponentFormatter`1
+  - ZenECS.Core.Serialization.IPostLoadMigration
+  - ZenECS.Core.Serialization.ISnapshotBackend
+  - ZenECS.Core.Serialization.PostLoadMigrationRegistry
+  langs:
+  - csharp
+  - vb
+  name: ZenECS.Core.Serialization
+  nameWithType: ZenECS.Core.Serialization
+  fullName: ZenECS.Core.Serialization
+  type: Namespace
+  assemblies:
+  - ZenECS.Core
+references:
+- uid: ZenECS.Core.Serialization.IComponentFormatter
+  commentId: T:ZenECS.Core.Serialization.IComponentFormatter
+  parent: ZenECS.Core.Serialization
+  href: ZenECS.Core.Serialization.IComponentFormatter.html
+  name: IComponentFormatter
+  nameWithType: IComponentFormatter
+  fullName: ZenECS.Core.Serialization.IComponentFormatter
+- uid: ZenECS.Core.Serialization.IComponentFormatter`1
+  commentId: T:ZenECS.Core.Serialization.IComponentFormatter`1
+  href: ZenECS.Core.Serialization.IComponentFormatter-1.html
+  name: IComponentFormatter<T>
+  nameWithType: IComponentFormatter<T>
+  fullName: ZenECS.Core.Serialization.IComponentFormatter<T>
+  nameWithType.vb: IComponentFormatter(Of T)
+  fullName.vb: ZenECS.Core.Serialization.IComponentFormatter(Of T)
+  name.vb: IComponentFormatter(Of T)
+  spec.csharp:
+  - uid: ZenECS.Core.Serialization.IComponentFormatter`1
+    name: IComponentFormatter
+    href: ZenECS.Core.Serialization.IComponentFormatter-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.Serialization.IComponentFormatter`1
+    name: IComponentFormatter
+    href: ZenECS.Core.Serialization.IComponentFormatter-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ZenECS.Core.Serialization.IPostLoadMigration
+  commentId: T:ZenECS.Core.Serialization.IPostLoadMigration
+  parent: ZenECS.Core.Serialization
+  href: ZenECS.Core.Serialization.IPostLoadMigration.html
+  name: IPostLoadMigration
+  nameWithType: IPostLoadMigration
+  fullName: ZenECS.Core.Serialization.IPostLoadMigration
+- uid: ZenECS.Core.Serialization.ISnapshotBackend
+  commentId: T:ZenECS.Core.Serialization.ISnapshotBackend
+  parent: ZenECS.Core.Serialization
+  href: ZenECS.Core.Serialization.ISnapshotBackend.html
+  name: ISnapshotBackend
+  nameWithType: ISnapshotBackend
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend
+- uid: ZenECS.Core.Serialization.BinaryComponentFormatter`1
+  commentId: T:ZenECS.Core.Serialization.BinaryComponentFormatter`1
+  href: ZenECS.Core.Serialization.BinaryComponentFormatter-1.html
+  name: BinaryComponentFormatter<T>
+  nameWithType: BinaryComponentFormatter<T>
+  fullName: ZenECS.Core.Serialization.BinaryComponentFormatter<T>
+  nameWithType.vb: BinaryComponentFormatter(Of T)
+  fullName.vb: ZenECS.Core.Serialization.BinaryComponentFormatter(Of T)
+  name.vb: BinaryComponentFormatter(Of T)
+  spec.csharp:
+  - uid: ZenECS.Core.Serialization.BinaryComponentFormatter`1
+    name: BinaryComponentFormatter
+    href: ZenECS.Core.Serialization.BinaryComponentFormatter-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.Serialization.BinaryComponentFormatter`1
+    name: BinaryComponentFormatter
+    href: ZenECS.Core.Serialization.BinaryComponentFormatter-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ZenECS.Core.Serialization.ComponentRegistry
+  commentId: T:ZenECS.Core.Serialization.ComponentRegistry
+  href: ZenECS.Core.Serialization.ComponentRegistry.html
+  name: ComponentRegistry
+  nameWithType: ComponentRegistry
+  fullName: ZenECS.Core.Serialization.ComponentRegistry
+- uid: ZenECS.Core.Serialization.PostLoadMigrationRegistry
+  commentId: T:ZenECS.Core.Serialization.PostLoadMigrationRegistry
+  href: ZenECS.Core.Serialization.PostLoadMigrationRegistry.html
+  name: PostLoadMigrationRegistry
+  nameWithType: PostLoadMigrationRegistry
+  fullName: ZenECS.Core.Serialization.PostLoadMigrationRegistry
+- uid: ZenECS.Core.Serialization
+  commentId: N:ZenECS.Core.Serialization
+  href: ZenECS.html
+  name: ZenECS.Core.Serialization
+  nameWithType: ZenECS.Core.Serialization
+  fullName: ZenECS.Core.Serialization
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Serialization
+    name: Serialization
+    href: ZenECS.Core.Serialization.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Serialization
+    name: Serialization
+    href: ZenECS.Core.Serialization.html

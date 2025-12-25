@@ -1,0 +1,693 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Binding.IBinder
+  commentId: T:ZenECS.Core.Binding.IBinder
+  id: IBinder
+  parent: ZenECS.Core.Binding
+  children:
+  - ZenECS.Core.Binding.IBinder.Apply(ZenECS.Core.IWorld,ZenECS.Core.Entity)
+  - ZenECS.Core.Binding.IBinder.ApplyOrder
+  - ZenECS.Core.Binding.IBinder.Bind(ZenECS.Core.IWorld,ZenECS.Core.Entity,ZenECS.Core.Binding.IContextLookup)
+  - ZenECS.Core.Binding.IBinder.Entity
+  - ZenECS.Core.Binding.IBinder.ResetApplyOrder
+  - ZenECS.Core.Binding.IBinder.ResetApplyOrderAndAttachOrder
+  - ZenECS.Core.Binding.IBinder.SetApplyOrder(System.Int32)
+  - ZenECS.Core.Binding.IBinder.SetApplyOrderAndAttachOrder(System.Int32,System.Int32)
+  - ZenECS.Core.Binding.IBinder.Unbind
+  langs:
+  - csharp
+  - vb
+  name: IBinder
+  nameWithType: IBinder
+  fullName: ZenECS.Core.Binding.IBinder
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IBinder
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 78
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: Connects an entity’s contexts and component deltas to an external presentation target.
+  example: []
+  syntax:
+    content: 'public interface IBinder : IAttachOrderMarker, IContextAwareBinder, IBinderEnabledFlag'
+    content.vb: Public Interface IBinder Inherits IAttachOrderMarker, IContextAwareBinder, IBinderEnabledFlag
+  inheritedMembers:
+  - ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder
+  - ZenECS.Core.Binding.IAttachOrderMarker.ResetAttachOrder
+  - ZenECS.Core.Binding.IAttachOrderMarker.SetAttachOrder(System.Int32)
+  - ZenECS.Core.Binding.IContextAwareBinder.ContextAttached(ZenECS.Core.Binding.IContext)
+  - ZenECS.Core.Binding.IContextAwareBinder.ContextDetached(ZenECS.Core.Binding.IContext)
+  - ZenECS.Core.Binding.IBinderEnabledFlag.Enabled
+- uid: ZenECS.Core.Binding.IBinder.Entity
+  commentId: P:ZenECS.Core.Binding.IBinder.Entity
+  id: Entity
+  parent: ZenECS.Core.Binding.IBinder
+  langs:
+  - csharp
+  - vb
+  name: Entity
+  nameWithType: IBinder.Entity
+  fullName: ZenECS.Core.Binding.IBinder.Entity
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Entity
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 84
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    The entity this binder is currently attached to.
+
+    Contains Entity.Default (default value) when detached.
+  example: []
+  syntax:
+    content: Entity Entity { get; }
+    parameters: []
+    return:
+      type: ZenECS.Core.Entity
+    content.vb: ReadOnly Property Entity As Entity
+  overload: ZenECS.Core.Binding.IBinder.Entity*
+- uid: ZenECS.Core.Binding.IBinder.ApplyOrder
+  commentId: P:ZenECS.Core.Binding.IBinder.ApplyOrder
+  id: ApplyOrder
+  parent: ZenECS.Core.Binding.IBinder
+  langs:
+  - csharp
+  - vb
+  name: ApplyOrder
+  nameWithType: IBinder.ApplyOrder
+  fullName: ZenECS.Core.Binding.IBinder.ApplyOrder
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ApplyOrder
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 90
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Execution priority among binders attached to the same entity.
+
+    Lower values are applied earlier during the per-frame <xref href="ZenECS.Core.Binding.IBinder.Apply(ZenECS.Core.IWorld%2cZenECS.Core.Entity)" data-throw-if-not-resolved="false"></xref> pass.
+  example: []
+  syntax:
+    content: int ApplyOrder { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property ApplyOrder As Integer
+  overload: ZenECS.Core.Binding.IBinder.ApplyOrder*
+- uid: ZenECS.Core.Binding.IBinder.SetApplyOrder(System.Int32)
+  commentId: M:ZenECS.Core.Binding.IBinder.SetApplyOrder(System.Int32)
+  id: SetApplyOrder(System.Int32)
+  parent: ZenECS.Core.Binding.IBinder
+  langs:
+  - csharp
+  - vb
+  name: SetApplyOrder(int)
+  nameWithType: IBinder.SetApplyOrder(int)
+  fullName: ZenECS.Core.Binding.IBinder.SetApplyOrder(int)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SetApplyOrder
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 96
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: Set the <xref href="ZenECS.Core.Binding.IBinder.ApplyOrder" data-throw-if-not-resolved="false"></xref> for this binder.
+  example: []
+  syntax:
+    content: void SetApplyOrder(int order)
+    parameters:
+    - id: order
+      type: System.Int32
+      description: New application order value.
+    content.vb: Sub SetApplyOrder(order As Integer)
+  overload: ZenECS.Core.Binding.IBinder.SetApplyOrder*
+  nameWithType.vb: IBinder.SetApplyOrder(Integer)
+  fullName.vb: ZenECS.Core.Binding.IBinder.SetApplyOrder(Integer)
+  name.vb: SetApplyOrder(Integer)
+- uid: ZenECS.Core.Binding.IBinder.SetApplyOrderAndAttachOrder(System.Int32,System.Int32)
+  commentId: M:ZenECS.Core.Binding.IBinder.SetApplyOrderAndAttachOrder(System.Int32,System.Int32)
+  id: SetApplyOrderAndAttachOrder(System.Int32,System.Int32)
+  parent: ZenECS.Core.Binding.IBinder
+  langs:
+  - csharp
+  - vb
+  name: SetApplyOrderAndAttachOrder(int, int)
+  nameWithType: IBinder.SetApplyOrderAndAttachOrder(int, int)
+  fullName: ZenECS.Core.Binding.IBinder.SetApplyOrderAndAttachOrder(int, int)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SetApplyOrderAndAttachOrder
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 104
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Set both <xref href="ZenECS.Core.Binding.IBinder.ApplyOrder" data-throw-if-not-resolved="false"></xref> and <xref href="ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder" data-throw-if-not-resolved="false"></xref>
+
+    in a single call, keeping them in sync when needed.
+  example: []
+  syntax:
+    content: void SetApplyOrderAndAttachOrder(int applyOrder, int attachOrder)
+    parameters:
+    - id: applyOrder
+      type: System.Int32
+      description: New <xref href="ZenECS.Core.Binding.IBinder.ApplyOrder" data-throw-if-not-resolved="false"></xref>.
+    - id: attachOrder
+      type: System.Int32
+      description: New <xref href="ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Sub SetApplyOrderAndAttachOrder(applyOrder As Integer, attachOrder As Integer)
+  overload: ZenECS.Core.Binding.IBinder.SetApplyOrderAndAttachOrder*
+  nameWithType.vb: IBinder.SetApplyOrderAndAttachOrder(Integer, Integer)
+  fullName.vb: ZenECS.Core.Binding.IBinder.SetApplyOrderAndAttachOrder(Integer, Integer)
+  name.vb: SetApplyOrderAndAttachOrder(Integer, Integer)
+- uid: ZenECS.Core.Binding.IBinder.ResetApplyOrder
+  commentId: M:ZenECS.Core.Binding.IBinder.ResetApplyOrder
+  id: ResetApplyOrder
+  parent: ZenECS.Core.Binding.IBinder
+  langs:
+  - csharp
+  - vb
+  name: ResetApplyOrder()
+  nameWithType: IBinder.ResetApplyOrder()
+  fullName: ZenECS.Core.Binding.IBinder.ResetApplyOrder()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ResetApplyOrder
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 109
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: Reset the <xref href="ZenECS.Core.Binding.IBinder.ApplyOrder" data-throw-if-not-resolved="false"></xref> back to its default value.
+  example: []
+  syntax:
+    content: void ResetApplyOrder()
+    content.vb: Sub ResetApplyOrder()
+  overload: ZenECS.Core.Binding.IBinder.ResetApplyOrder*
+- uid: ZenECS.Core.Binding.IBinder.ResetApplyOrderAndAttachOrder
+  commentId: M:ZenECS.Core.Binding.IBinder.ResetApplyOrderAndAttachOrder
+  id: ResetApplyOrderAndAttachOrder
+  parent: ZenECS.Core.Binding.IBinder
+  langs:
+  - csharp
+  - vb
+  name: ResetApplyOrderAndAttachOrder()
+  nameWithType: IBinder.ResetApplyOrderAndAttachOrder()
+  fullName: ZenECS.Core.Binding.IBinder.ResetApplyOrderAndAttachOrder()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ResetApplyOrderAndAttachOrder
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 115
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Reset both <xref href="ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder" data-throw-if-not-resolved="false"></xref> and <xref href="ZenECS.Core.Binding.IBinder.ApplyOrder" data-throw-if-not-resolved="false"></xref>
+
+    back to their default values.
+  example: []
+  syntax:
+    content: void ResetApplyOrderAndAttachOrder()
+    content.vb: Sub ResetApplyOrderAndAttachOrder()
+  overload: ZenECS.Core.Binding.IBinder.ResetApplyOrderAndAttachOrder*
+- uid: ZenECS.Core.Binding.IBinder.Bind(ZenECS.Core.IWorld,ZenECS.Core.Entity,ZenECS.Core.Binding.IContextLookup)
+  commentId: M:ZenECS.Core.Binding.IBinder.Bind(ZenECS.Core.IWorld,ZenECS.Core.Entity,ZenECS.Core.Binding.IContextLookup)
+  id: Bind(ZenECS.Core.IWorld,ZenECS.Core.Entity,ZenECS.Core.Binding.IContextLookup)
+  parent: ZenECS.Core.Binding.IBinder
+  langs:
+  - csharp
+  - vb
+  name: Bind(IWorld, Entity, IContextLookup)
+  nameWithType: IBinder.Bind(IWorld, Entity, IContextLookup)
+  fullName: ZenECS.Core.Binding.IBinder.Bind(ZenECS.Core.IWorld, ZenECS.Core.Entity, ZenECS.Core.Binding.IContextLookup)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Bind
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 124
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Attach this binder to <code class="paramref">e</code> and cache lookup services.
+
+    Called exactly once per attachment by the world/router.
+  example: []
+  syntax:
+    content: void Bind(IWorld world, Entity e, IContextLookup contextLookup)
+    parameters:
+    - id: world
+      type: ZenECS.Core.IWorld
+      description: Owning world.
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    - id: contextLookup
+      type: ZenECS.Core.Binding.IContextLookup
+      description: Context lookup for resolving required resources.
+    content.vb: Sub Bind(world As IWorld, e As Entity, contextLookup As IContextLookup)
+  overload: ZenECS.Core.Binding.IBinder.Bind*
+- uid: ZenECS.Core.Binding.IBinder.Unbind
+  commentId: M:ZenECS.Core.Binding.IBinder.Unbind
+  id: Unbind
+  parent: ZenECS.Core.Binding.IBinder
+  langs:
+  - csharp
+  - vb
+  name: Unbind()
+  nameWithType: IBinder.Unbind()
+  fullName: ZenECS.Core.Binding.IBinder.Unbind()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Unbind
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 131
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Detach this binder from its entity. Called when the entity is destroyed
+
+    or the binder is removed. Must be safe to call multiple times
+
+    (no-op after the first detach).
+  example: []
+  syntax:
+    content: void Unbind()
+    content.vb: Sub Unbind()
+  overload: ZenECS.Core.Binding.IBinder.Unbind*
+- uid: ZenECS.Core.Binding.IBinder.Apply(ZenECS.Core.IWorld,ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.Binding.IBinder.Apply(ZenECS.Core.IWorld,ZenECS.Core.Entity)
+  id: Apply(ZenECS.Core.IWorld,ZenECS.Core.Entity)
+  parent: ZenECS.Core.Binding.IBinder
+  langs:
+  - csharp
+  - vb
+  name: Apply(IWorld, Entity)
+  nameWithType: IBinder.Apply(IWorld, Entity)
+  fullName: ZenECS.Core.Binding.IBinder.Apply(ZenECS.Core.IWorld, ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Apply
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
+    startLine: 140
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Per-frame application step invoked at the end of Presentation.
+
+    Implementations should perform view updates based on captured
+
+    deltas and contexts in this method.
+  example: []
+  syntax:
+    content: void Apply(IWorld w, Entity e)
+    parameters:
+    - id: w
+      type: ZenECS.Core.IWorld
+      description: The world in which the entity exists.
+    - id: e
+      type: ZenECS.Core.Entity
+      description: The entity this binder is applied to.
+    content.vb: Sub Apply(w As IWorld, e As Entity)
+  overload: ZenECS.Core.Binding.IBinder.Apply*
+references:
+- uid: ZenECS.Core.Binding
+  commentId: N:ZenECS.Core.Binding
+  href: ZenECS.html
+  name: ZenECS.Core.Binding
+  nameWithType: ZenECS.Core.Binding
+  fullName: ZenECS.Core.Binding
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+- uid: ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder
+  commentId: P:ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder
+  parent: ZenECS.Core.Binding.IAttachOrderMarker
+  href: ZenECS.Core.Binding.IAttachOrderMarker.html#ZenECS_Core_Binding_IAttachOrderMarker_AttachOrder
+  name: AttachOrder
+  nameWithType: IAttachOrderMarker.AttachOrder
+  fullName: ZenECS.Core.Binding.IAttachOrderMarker.AttachOrder
+- uid: ZenECS.Core.Binding.IAttachOrderMarker.ResetAttachOrder
+  commentId: M:ZenECS.Core.Binding.IAttachOrderMarker.ResetAttachOrder
+  parent: ZenECS.Core.Binding.IAttachOrderMarker
+  href: ZenECS.Core.Binding.IAttachOrderMarker.html#ZenECS_Core_Binding_IAttachOrderMarker_ResetAttachOrder
+  name: ResetAttachOrder()
+  nameWithType: IAttachOrderMarker.ResetAttachOrder()
+  fullName: ZenECS.Core.Binding.IAttachOrderMarker.ResetAttachOrder()
+  spec.csharp:
+  - uid: ZenECS.Core.Binding.IAttachOrderMarker.ResetAttachOrder
+    name: ResetAttachOrder
+    href: ZenECS.Core.Binding.IAttachOrderMarker.html#ZenECS_Core_Binding_IAttachOrderMarker_ResetAttachOrder
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.Binding.IAttachOrderMarker.ResetAttachOrder
+    name: ResetAttachOrder
+    href: ZenECS.Core.Binding.IAttachOrderMarker.html#ZenECS_Core_Binding_IAttachOrderMarker_ResetAttachOrder
+  - name: (
+  - name: )
+- uid: ZenECS.Core.Binding.IAttachOrderMarker.SetAttachOrder(System.Int32)
+  commentId: M:ZenECS.Core.Binding.IAttachOrderMarker.SetAttachOrder(System.Int32)
+  parent: ZenECS.Core.Binding.IAttachOrderMarker
+  isExternal: true
+  href: ZenECS.Core.Binding.IAttachOrderMarker.html#ZenECS_Core_Binding_IAttachOrderMarker_SetAttachOrder_System_Int32_
+  name: SetAttachOrder(int)
+  nameWithType: IAttachOrderMarker.SetAttachOrder(int)
+  fullName: ZenECS.Core.Binding.IAttachOrderMarker.SetAttachOrder(int)
+  nameWithType.vb: IAttachOrderMarker.SetAttachOrder(Integer)
+  fullName.vb: ZenECS.Core.Binding.IAttachOrderMarker.SetAttachOrder(Integer)
+  name.vb: SetAttachOrder(Integer)
+  spec.csharp:
+  - uid: ZenECS.Core.Binding.IAttachOrderMarker.SetAttachOrder(System.Int32)
+    name: SetAttachOrder
+    href: ZenECS.Core.Binding.IAttachOrderMarker.html#ZenECS_Core_Binding_IAttachOrderMarker_SetAttachOrder_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.Binding.IAttachOrderMarker.SetAttachOrder(System.Int32)
+    name: SetAttachOrder
+    href: ZenECS.Core.Binding.IAttachOrderMarker.html#ZenECS_Core_Binding_IAttachOrderMarker_SetAttachOrder_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: ZenECS.Core.Binding.IContextAwareBinder.ContextAttached(ZenECS.Core.Binding.IContext)
+  commentId: M:ZenECS.Core.Binding.IContextAwareBinder.ContextAttached(ZenECS.Core.Binding.IContext)
+  parent: ZenECS.Core.Binding.IContextAwareBinder
+  href: ZenECS.Core.Binding.IContextAwareBinder.html#ZenECS_Core_Binding_IContextAwareBinder_ContextAttached_ZenECS_Core_Binding_IContext_
+  name: ContextAttached(IContext)
+  nameWithType: IContextAwareBinder.ContextAttached(IContext)
+  fullName: ZenECS.Core.Binding.IContextAwareBinder.ContextAttached(ZenECS.Core.Binding.IContext)
+  spec.csharp:
+  - uid: ZenECS.Core.Binding.IContextAwareBinder.ContextAttached(ZenECS.Core.Binding.IContext)
+    name: ContextAttached
+    href: ZenECS.Core.Binding.IContextAwareBinder.html#ZenECS_Core_Binding_IContextAwareBinder_ContextAttached_ZenECS_Core_Binding_IContext_
+  - name: (
+  - uid: ZenECS.Core.Binding.IContext
+    name: IContext
+    href: ZenECS.Core.Binding.IContext.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.Binding.IContextAwareBinder.ContextAttached(ZenECS.Core.Binding.IContext)
+    name: ContextAttached
+    href: ZenECS.Core.Binding.IContextAwareBinder.html#ZenECS_Core_Binding_IContextAwareBinder_ContextAttached_ZenECS_Core_Binding_IContext_
+  - name: (
+  - uid: ZenECS.Core.Binding.IContext
+    name: IContext
+    href: ZenECS.Core.Binding.IContext.html
+  - name: )
+- uid: ZenECS.Core.Binding.IContextAwareBinder.ContextDetached(ZenECS.Core.Binding.IContext)
+  commentId: M:ZenECS.Core.Binding.IContextAwareBinder.ContextDetached(ZenECS.Core.Binding.IContext)
+  parent: ZenECS.Core.Binding.IContextAwareBinder
+  href: ZenECS.Core.Binding.IContextAwareBinder.html#ZenECS_Core_Binding_IContextAwareBinder_ContextDetached_ZenECS_Core_Binding_IContext_
+  name: ContextDetached(IContext)
+  nameWithType: IContextAwareBinder.ContextDetached(IContext)
+  fullName: ZenECS.Core.Binding.IContextAwareBinder.ContextDetached(ZenECS.Core.Binding.IContext)
+  spec.csharp:
+  - uid: ZenECS.Core.Binding.IContextAwareBinder.ContextDetached(ZenECS.Core.Binding.IContext)
+    name: ContextDetached
+    href: ZenECS.Core.Binding.IContextAwareBinder.html#ZenECS_Core_Binding_IContextAwareBinder_ContextDetached_ZenECS_Core_Binding_IContext_
+  - name: (
+  - uid: ZenECS.Core.Binding.IContext
+    name: IContext
+    href: ZenECS.Core.Binding.IContext.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.Binding.IContextAwareBinder.ContextDetached(ZenECS.Core.Binding.IContext)
+    name: ContextDetached
+    href: ZenECS.Core.Binding.IContextAwareBinder.html#ZenECS_Core_Binding_IContextAwareBinder_ContextDetached_ZenECS_Core_Binding_IContext_
+  - name: (
+  - uid: ZenECS.Core.Binding.IContext
+    name: IContext
+    href: ZenECS.Core.Binding.IContext.html
+  - name: )
+- uid: ZenECS.Core.Binding.IBinderEnabledFlag.Enabled
+  commentId: P:ZenECS.Core.Binding.IBinderEnabledFlag.Enabled
+  parent: ZenECS.Core.Binding.IBinderEnabledFlag
+  href: ZenECS.Core.Binding.IBinderEnabledFlag.html#ZenECS_Core_Binding_IBinderEnabledFlag_Enabled
+  name: Enabled
+  nameWithType: IBinderEnabledFlag.Enabled
+  fullName: ZenECS.Core.Binding.IBinderEnabledFlag.Enabled
+- uid: ZenECS.Core.Binding.IAttachOrderMarker
+  commentId: T:ZenECS.Core.Binding.IAttachOrderMarker
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IAttachOrderMarker.html
+  name: IAttachOrderMarker
+  nameWithType: IAttachOrderMarker
+  fullName: ZenECS.Core.Binding.IAttachOrderMarker
+- uid: ZenECS.Core.Binding.IContextAwareBinder
+  commentId: T:ZenECS.Core.Binding.IContextAwareBinder
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IContextAwareBinder.html
+  name: IContextAwareBinder
+  nameWithType: IContextAwareBinder
+  fullName: ZenECS.Core.Binding.IContextAwareBinder
+- uid: ZenECS.Core.Binding.IBinderEnabledFlag
+  commentId: T:ZenECS.Core.Binding.IBinderEnabledFlag
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IBinderEnabledFlag.html
+  name: IBinderEnabledFlag
+  nameWithType: IBinderEnabledFlag
+  fullName: ZenECS.Core.Binding.IBinderEnabledFlag
+- uid: ZenECS.Core.Binding.IBinder.Entity*
+  commentId: Overload:ZenECS.Core.Binding.IBinder.Entity
+  href: ZenECS.Core.Binding.IBinder.html#ZenECS_Core_Binding_IBinder_Entity
+  name: Entity
+  nameWithType: IBinder.Entity
+  fullName: ZenECS.Core.Binding.IBinder.Entity
+- uid: ZenECS.Core.Entity
+  commentId: T:ZenECS.Core.Entity
+  parent: ZenECS.Core
+  href: ZenECS.Core.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: ZenECS.Core.Entity
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.Binding.IBinder.Apply(ZenECS.Core.IWorld,ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.Binding.IBinder.Apply(ZenECS.Core.IWorld,ZenECS.Core.Entity)
+  parent: ZenECS.Core.Binding.IBinder
+  href: ZenECS.Core.Binding.IBinder.html#ZenECS_Core_Binding_IBinder_Apply_ZenECS_Core_IWorld_ZenECS_Core_Entity_
+  name: Apply(IWorld, Entity)
+  nameWithType: IBinder.Apply(IWorld, Entity)
+  fullName: ZenECS.Core.Binding.IBinder.Apply(ZenECS.Core.IWorld, ZenECS.Core.Entity)
+  spec.csharp:
+  - uid: ZenECS.Core.Binding.IBinder.Apply(ZenECS.Core.IWorld,ZenECS.Core.Entity)
+    name: Apply
+    href: ZenECS.Core.Binding.IBinder.html#ZenECS_Core_Binding_IBinder_Apply_ZenECS_Core_IWorld_ZenECS_Core_Entity_
+  - name: (
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.Binding.IBinder.Apply(ZenECS.Core.IWorld,ZenECS.Core.Entity)
+    name: Apply
+    href: ZenECS.Core.Binding.IBinder.html#ZenECS_Core_Binding_IBinder_Apply_ZenECS_Core_IWorld_ZenECS_Core_Entity_
+  - name: (
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: ZenECS.Core.Binding.IBinder.ApplyOrder*
+  commentId: Overload:ZenECS.Core.Binding.IBinder.ApplyOrder
+  href: ZenECS.Core.Binding.IBinder.html#ZenECS_Core_Binding_IBinder_ApplyOrder
+  name: ApplyOrder
+  nameWithType: IBinder.ApplyOrder
+  fullName: ZenECS.Core.Binding.IBinder.ApplyOrder
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: ZenECS.Core.Binding.IBinder
+  commentId: T:ZenECS.Core.Binding.IBinder
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IBinder.html
+  name: IBinder
+  nameWithType: IBinder
+  fullName: ZenECS.Core.Binding.IBinder
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.Binding.IBinder.ApplyOrder
+  commentId: P:ZenECS.Core.Binding.IBinder.ApplyOrder
+  parent: ZenECS.Core.Binding.IBinder
+  href: ZenECS.Core.Binding.IBinder.html#ZenECS_Core_Binding_IBinder_ApplyOrder
+  name: ApplyOrder
+  nameWithType: IBinder.ApplyOrder
+  fullName: ZenECS.Core.Binding.IBinder.ApplyOrder
+- uid: ZenECS.Core.Binding.IBinder.SetApplyOrder*
+  commentId: Overload:ZenECS.Core.Binding.IBinder.SetApplyOrder
+  href: ZenECS.Core.Binding.IBinder.html#ZenECS_Core_Binding_IBinder_SetApplyOrder_System_Int32_
+  name: SetApplyOrder
+  nameWithType: IBinder.SetApplyOrder
+  fullName: ZenECS.Core.Binding.IBinder.SetApplyOrder
+- uid: ZenECS.Core.Binding.IBinder.SetApplyOrderAndAttachOrder*
+  commentId: Overload:ZenECS.Core.Binding.IBinder.SetApplyOrderAndAttachOrder
+  href: ZenECS.Core.Binding.IBinder.html#ZenECS_Core_Binding_IBinder_SetApplyOrderAndAttachOrder_System_Int32_System_Int32_
+  name: SetApplyOrderAndAttachOrder
+  nameWithType: IBinder.SetApplyOrderAndAttachOrder
+  fullName: ZenECS.Core.Binding.IBinder.SetApplyOrderAndAttachOrder
+- uid: ZenECS.Core.Binding.IBinder.ResetApplyOrder*
+  commentId: Overload:ZenECS.Core.Binding.IBinder.ResetApplyOrder
+  href: ZenECS.Core.Binding.IBinder.html#ZenECS_Core_Binding_IBinder_ResetApplyOrder
+  name: ResetApplyOrder
+  nameWithType: IBinder.ResetApplyOrder
+  fullName: ZenECS.Core.Binding.IBinder.ResetApplyOrder
+- uid: ZenECS.Core.Binding.IBinder.ResetApplyOrderAndAttachOrder*
+  commentId: Overload:ZenECS.Core.Binding.IBinder.ResetApplyOrderAndAttachOrder
+  href: ZenECS.Core.Binding.IBinder.html#ZenECS_Core_Binding_IBinder_ResetApplyOrderAndAttachOrder
+  name: ResetApplyOrderAndAttachOrder
+  nameWithType: IBinder.ResetApplyOrderAndAttachOrder
+  fullName: ZenECS.Core.Binding.IBinder.ResetApplyOrderAndAttachOrder
+- uid: ZenECS.Core.Binding.IBinder.Bind*
+  commentId: Overload:ZenECS.Core.Binding.IBinder.Bind
+  href: ZenECS.Core.Binding.IBinder.html#ZenECS_Core_Binding_IBinder_Bind_ZenECS_Core_IWorld_ZenECS_Core_Entity_ZenECS_Core_Binding_IContextLookup_
+  name: Bind
+  nameWithType: IBinder.Bind
+  fullName: ZenECS.Core.Binding.IBinder.Bind
+- uid: ZenECS.Core.IWorld
+  commentId: T:ZenECS.Core.IWorld
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorld.html
+  name: IWorld
+  nameWithType: IWorld
+  fullName: ZenECS.Core.IWorld
+- uid: ZenECS.Core.Binding.IContextLookup
+  commentId: T:ZenECS.Core.Binding.IContextLookup
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IContextLookup.html
+  name: IContextLookup
+  nameWithType: IContextLookup
+  fullName: ZenECS.Core.Binding.IContextLookup
+- uid: ZenECS.Core.Binding.IBinder.Unbind*
+  commentId: Overload:ZenECS.Core.Binding.IBinder.Unbind
+  href: ZenECS.Core.Binding.IBinder.html#ZenECS_Core_Binding_IBinder_Unbind
+  name: Unbind
+  nameWithType: IBinder.Unbind
+  fullName: ZenECS.Core.Binding.IBinder.Unbind
+- uid: ZenECS.Core.Binding.IBinder.Apply*
+  commentId: Overload:ZenECS.Core.Binding.IBinder.Apply
+  href: ZenECS.Core.Binding.IBinder.html#ZenECS_Core_Binding_IBinder_Apply_ZenECS_Core_IWorld_ZenECS_Core_Entity_
+  name: Apply
+  nameWithType: IBinder.Apply
+  fullName: ZenECS.Core.Binding.IBinder.Apply

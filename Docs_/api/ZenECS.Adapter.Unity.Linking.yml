@@ -1,0 +1,101 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity.Linking
+  commentId: N:ZenECS.Adapter.Unity.Linking
+  id: ZenECS.Adapter.Unity.Linking
+  children:
+  - ZenECS.Adapter.Unity.Linking.EntityLink
+  - ZenECS.Adapter.Unity.Linking.EntityLinkExtensions
+  - ZenECS.Adapter.Unity.Linking.EntityViewRegistry
+  - ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry
+  langs:
+  - csharp
+  - vb
+  name: ZenECS.Adapter.Unity.Linking
+  nameWithType: ZenECS.Adapter.Unity.Linking
+  fullName: ZenECS.Adapter.Unity.Linking
+  type: Namespace
+  assemblies:
+  - ZenECS.Adapter.Unity
+references:
+- uid: ZenECS.Adapter.Unity.Linking.EntityLink
+  commentId: T:ZenECS.Adapter.Unity.Linking.EntityLink
+  parent: ZenECS.Adapter.Unity.Linking
+  href: ZenECS.Adapter.Unity.Linking.EntityLink.html
+  name: EntityLink
+  nameWithType: EntityLink
+  fullName: ZenECS.Adapter.Unity.Linking.EntityLink
+- uid: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions
+  commentId: T:ZenECS.Adapter.Unity.Linking.EntityLinkExtensions
+  parent: ZenECS.Adapter.Unity.Linking
+  href: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions.html
+  name: EntityLinkExtensions
+  nameWithType: EntityLinkExtensions
+  fullName: ZenECS.Adapter.Unity.Linking.EntityLinkExtensions
+- uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry
+  commentId: T:ZenECS.Adapter.Unity.Linking.EntityViewRegistry
+  href: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.html
+  name: EntityViewRegistry
+  nameWithType: EntityViewRegistry
+  fullName: ZenECS.Adapter.Unity.Linking.EntityViewRegistry
+- uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry
+  commentId: T:ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry
+  parent: ZenECS.Adapter.Unity.Linking
+  href: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.html
+  name: EntityViewRegistry.Registry
+  nameWithType: EntityViewRegistry.Registry
+  fullName: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry
+    name: EntityViewRegistry
+    href: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry
+    name: Registry
+    href: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.html
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry
+    name: EntityViewRegistry
+    href: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry
+    name: Registry
+    href: ZenECS.Adapter.Unity.Linking.EntityViewRegistry.Registry.html
+- uid: ZenECS.Adapter.Unity.Linking
+  commentId: N:ZenECS.Adapter.Unity.Linking
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.Linking
+  nameWithType: ZenECS.Adapter.Unity.Linking
+  fullName: ZenECS.Adapter.Unity.Linking
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Linking
+    name: Linking
+    href: ZenECS.Adapter.Unity.Linking.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Linking
+    name: Linking
+    href: ZenECS.Adapter.Unity.Linking.html

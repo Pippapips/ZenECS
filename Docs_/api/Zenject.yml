@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: Zenject
+  commentId: N:Zenject
+  id: Zenject
+  children:
+  - Zenject.DiContainer
+  - Zenject.MonoInstaller
+  langs:
+  - csharp
+  - vb
+  name: Zenject
+  nameWithType: Zenject
+  fullName: Zenject
+  type: Namespace
+  assemblies:
+  - ZenECS.Adapter.Unity
+references:
+- uid: Zenject.DiContainer
+  commentId: T:Zenject.DiContainer
+  href: Zenject.DiContainer.html
+  name: DiContainer
+  nameWithType: DiContainer
+  fullName: Zenject.DiContainer
+- uid: Zenject.MonoInstaller
+  commentId: T:Zenject.MonoInstaller
+  href: Zenject.MonoInstaller.html
+  name: MonoInstaller
+  nameWithType: MonoInstaller
+  fullName: Zenject.MonoInstaller

@@ -1,0 +1,869 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.ICommandBuffer
+  commentId: T:ZenECS.Core.ICommandBuffer
+  id: ICommandBuffer
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.ICommandBuffer.AddComponentBoxed(ZenECS.Core.Entity,System.Object)
+  - ZenECS.Core.ICommandBuffer.AddComponent``1(ZenECS.Core.Entity,``0@)
+  - ZenECS.Core.ICommandBuffer.CreateEntity
+  - ZenECS.Core.ICommandBuffer.DestroyAllEntities
+  - ZenECS.Core.ICommandBuffer.DestroyEntity(ZenECS.Core.Entity)
+  - ZenECS.Core.ICommandBuffer.EndWrite
+  - ZenECS.Core.ICommandBuffer.RemoveComponentTyped(ZenECS.Core.Entity,System.Type)
+  - ZenECS.Core.ICommandBuffer.RemoveComponent``1(ZenECS.Core.Entity)
+  - ZenECS.Core.ICommandBuffer.RemoveSingletonTyped(System.Type)
+  - ZenECS.Core.ICommandBuffer.RemoveSingleton``1
+  - ZenECS.Core.ICommandBuffer.ReplaceComponentBoxed(ZenECS.Core.Entity,System.Object)
+  - ZenECS.Core.ICommandBuffer.ReplaceComponent``1(ZenECS.Core.Entity,``0@)
+  - ZenECS.Core.ICommandBuffer.SetSingletonTyped(System.Type,System.Object)
+  - ZenECS.Core.ICommandBuffer.SetSingleton``1(``0@)
+  langs:
+  - csharp
+  - vb
+  name: ICommandBuffer
+  nameWithType: ICommandBuffer
+  fullName: ZenECS.Core.ICommandBuffer
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ICommandBuffer
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+    startLine: 37
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Records structural and value mutations to be applied later at a world barrier.
+  remarks: >-
+    <p>
+
+    A command buffer is always bound to a single <xref href="ZenECS.Core.IWorld" data-throw-if-not-resolved="false"></xref> and never
+
+    applies mutations immediately; all recorded operations are applied by the
+
+    runner/worker at a deterministic tick boundary.
+
+    </p>
+
+    <p>
+
+    Systems must not call world mutation APIs directly. Instead, they obtain
+
+    a buffer via <xref href="ZenECS.Core.IWorldCommandBufferApi.BeginWrite" data-throw-if-not-resolved="false"></xref> and record
+
+    all entity/component/singleton changes through this interface.
+
+    </p>
+
+    <p>
+
+    Implementations must treat the buffer as single-use: once
+
+    <xref href="ZenECS.Core.ICommandBuffer.EndWrite" data-throw-if-not-resolved="false"></xref> is called (or the buffer is disposed), no further
+
+    commands may be recorded.
+
+    </p>
+  example: []
+  syntax:
+    content: 'public interface ICommandBuffer : IDisposable'
+    content.vb: Public Interface ICommandBuffer Inherits IDisposable
+  inheritedMembers:
+  - System.IDisposable.Dispose
+- uid: ZenECS.Core.ICommandBuffer.EndWrite
+  commentId: M:ZenECS.Core.ICommandBuffer.EndWrite
+  id: EndWrite
+  parent: ZenECS.Core.ICommandBuffer
+  langs:
+  - csharp
+  - vb
+  name: EndWrite()
+  nameWithType: ICommandBuffer.EndWrite()
+  fullName: ZenECS.Core.ICommandBuffer.EndWrite()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: EndWrite
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+    startLine: 52
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Marks the end of the write phase for this buffer.
+  remarks: >-
+    <p>
+
+    After calling <xref href="ZenECS.Core.ICommandBuffer.EndWrite" data-throw-if-not-resolved="false"></xref>, no further commands may be recorded.
+
+    The buffer is queued for application at the next world barrier.
+
+    </p>
+
+    <p>
+
+    <xref href="System.IDisposable.Dispose" data-throw-if-not-resolved="false"></xref> should typically call <xref href="ZenECS.Core.ICommandBuffer.EndWrite" data-throw-if-not-resolved="false"></xref>
+
+    if it has not been called already.
+
+    </p>
+  example: []
+  syntax:
+    content: void EndWrite()
+    content.vb: Sub EndWrite()
+  overload: ZenECS.Core.ICommandBuffer.EndWrite*
+- uid: ZenECS.Core.ICommandBuffer.CreateEntity
+  commentId: M:ZenECS.Core.ICommandBuffer.CreateEntity
+  id: CreateEntity
+  parent: ZenECS.Core.ICommandBuffer
+  langs:
+  - csharp
+  - vb
+  name: CreateEntity()
+  nameWithType: ICommandBuffer.CreateEntity()
+  fullName: ZenECS.Core.ICommandBuffer.CreateEntity()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: CreateEntity
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+    startLine: 68
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Records the creation of a new entity in the bound world.
+  remarks: The entity becomes alive only when the buffer is applied at a barrier.
+  example: []
+  syntax:
+    content: Entity CreateEntity()
+    return:
+      type: ZenECS.Core.Entity
+      description: >-
+        An <xref href="ZenECS.Core.Entity" data-throw-if-not-resolved="false"></xref> handle that can be used to record further
+
+        operations (components, tags, etc.) in the same buffer.
+    content.vb: Function CreateEntity() As Entity
+  overload: ZenECS.Core.ICommandBuffer.CreateEntity*
+- uid: ZenECS.Core.ICommandBuffer.DestroyEntity(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.ICommandBuffer.DestroyEntity(ZenECS.Core.Entity)
+  id: DestroyEntity(ZenECS.Core.Entity)
+  parent: ZenECS.Core.ICommandBuffer
+  langs:
+  - csharp
+  - vb
+  name: DestroyEntity(Entity)
+  nameWithType: ICommandBuffer.DestroyEntity(Entity)
+  fullName: ZenECS.Core.ICommandBuffer.DestroyEntity(ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: DestroyEntity
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+    startLine: 79
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Records the destruction of an entity.
+  remarks: >-
+    The entity will be removed and all components destroyed when the
+
+    buffer is applied at a barrier. If the entity is already dead at
+
+    application time, this becomes a no-op.
+  example: []
+  syntax:
+    content: void DestroyEntity(Entity e)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: The entity to destroy.
+    content.vb: Sub DestroyEntity(e As Entity)
+  overload: ZenECS.Core.ICommandBuffer.DestroyEntity*
+- uid: ZenECS.Core.ICommandBuffer.AddComponent``1(ZenECS.Core.Entity,``0@)
+  commentId: M:ZenECS.Core.ICommandBuffer.AddComponent``1(ZenECS.Core.Entity,``0@)
+  id: AddComponent``1(ZenECS.Core.Entity,``0@)
+  parent: ZenECS.Core.ICommandBuffer
+  langs:
+  - csharp
+  - vb
+  name: AddComponent<T>(Entity, in T)
+  nameWithType: ICommandBuffer.AddComponent<T>(Entity, in T)
+  fullName: ZenECS.Core.ICommandBuffer.AddComponent<T>(ZenECS.Core.Entity, in T)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: AddComponent
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+    startLine: 95
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Records adding a component to an entity.
+  remarks: >-
+    If the entity is not alive by the time the buffer is applied,
+
+    this operation becomes a no-op.
+  example: []
+  syntax:
+    content: 'void AddComponent<T>(Entity e, in T value) where T : struct'
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    - id: value
+      type: '{T}'
+      description: Component value to add.
+    typeParameters:
+    - id: T
+      description: Component type.
+    content.vb: Sub AddComponent(Of T As Structure)(e As Entity, value As T)
+  overload: ZenECS.Core.ICommandBuffer.AddComponent*
+  nameWithType.vb: ICommandBuffer.AddComponent(Of T)(Entity, T)
+  fullName.vb: ZenECS.Core.ICommandBuffer.AddComponent(Of T)(ZenECS.Core.Entity, T)
+  name.vb: AddComponent(Of T)(Entity, T)
+- uid: ZenECS.Core.ICommandBuffer.AddComponentBoxed(ZenECS.Core.Entity,System.Object)
+  commentId: M:ZenECS.Core.ICommandBuffer.AddComponentBoxed(ZenECS.Core.Entity,System.Object)
+  id: AddComponentBoxed(ZenECS.Core.Entity,System.Object)
+  parent: ZenECS.Core.ICommandBuffer
+  langs:
+  - csharp
+  - vb
+  name: AddComponentBoxed(Entity, object?)
+  nameWithType: ICommandBuffer.AddComponentBoxed(Entity, object?)
+  fullName: ZenECS.Core.ICommandBuffer.AddComponentBoxed(ZenECS.Core.Entity, object?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: AddComponentBoxed
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+    startLine: 109
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Records adding a component to an entity using a boxed value.
+  remarks: >-
+    If <code class="paramref">boxed</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>, the operation is ignored.
+
+    Implementations are expected to validate and unbox the value when
+
+    applying the buffer.
+  example: []
+  syntax:
+    content: void AddComponentBoxed(Entity e, object? boxed)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    - id: boxed
+      type: System.Object
+      description: Boxed component value; its runtime type determines the component type.
+    content.vb: Sub AddComponentBoxed(e As Entity, boxed As Object)
+  overload: ZenECS.Core.ICommandBuffer.AddComponentBoxed*
+  nameWithType.vb: ICommandBuffer.AddComponentBoxed(Entity, Object)
+  fullName.vb: ZenECS.Core.ICommandBuffer.AddComponentBoxed(ZenECS.Core.Entity, Object)
+  name.vb: AddComponentBoxed(Entity, Object)
+- uid: ZenECS.Core.ICommandBuffer.ReplaceComponent``1(ZenECS.Core.Entity,``0@)
+  commentId: M:ZenECS.Core.ICommandBuffer.ReplaceComponent``1(ZenECS.Core.Entity,``0@)
+  id: ReplaceComponent``1(ZenECS.Core.Entity,``0@)
+  parent: ZenECS.Core.ICommandBuffer
+  langs:
+  - csharp
+  - vb
+  name: ReplaceComponent<T>(Entity, in T)
+  nameWithType: ICommandBuffer.ReplaceComponent<T>(Entity, in T)
+  fullName: ZenECS.Core.ICommandBuffer.ReplaceComponent<T>(ZenECS.Core.Entity, in T)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ReplaceComponent
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+    startLine: 121
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Records replacing (or setting) a component value on an entity.
+  remarks: >-
+    If the component is missing when the buffer is applied, it may be
+
+    created depending on world policy.
+  example: []
+  syntax:
+    content: 'void ReplaceComponent<T>(Entity e, in T value) where T : struct'
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    - id: value
+      type: '{T}'
+      description: New component value.
+    typeParameters:
+    - id: T
+      description: Component type.
+    content.vb: Sub ReplaceComponent(Of T As Structure)(e As Entity, value As T)
+  overload: ZenECS.Core.ICommandBuffer.ReplaceComponent*
+  nameWithType.vb: ICommandBuffer.ReplaceComponent(Of T)(Entity, T)
+  fullName.vb: ZenECS.Core.ICommandBuffer.ReplaceComponent(Of T)(ZenECS.Core.Entity, T)
+  name.vb: ReplaceComponent(Of T)(Entity, T)
+- uid: ZenECS.Core.ICommandBuffer.ReplaceComponentBoxed(ZenECS.Core.Entity,System.Object)
+  commentId: M:ZenECS.Core.ICommandBuffer.ReplaceComponentBoxed(ZenECS.Core.Entity,System.Object)
+  id: ReplaceComponentBoxed(ZenECS.Core.Entity,System.Object)
+  parent: ZenECS.Core.ICommandBuffer
+  langs:
+  - csharp
+  - vb
+  name: ReplaceComponentBoxed(Entity, object?)
+  nameWithType: ICommandBuffer.ReplaceComponentBoxed(Entity, object?)
+  fullName: ZenECS.Core.ICommandBuffer.ReplaceComponentBoxed(ZenECS.Core.Entity, object?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ReplaceComponentBoxed
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+    startLine: 135
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Records replacing (or setting) a component value on an entity using a boxed value.
+  remarks: >-
+    If the component is missing when the buffer is applied, it may be
+
+    created depending on world policy. If <code class="paramref">boxed</code> is
+
+    <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>, the operation is ignored.
+  example: []
+  syntax:
+    content: void ReplaceComponentBoxed(Entity e, object? boxed)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    - id: boxed
+      type: System.Object
+      description: Boxed component value; its runtime type determines the component type.
+    content.vb: Sub ReplaceComponentBoxed(e As Entity, boxed As Object)
+  overload: ZenECS.Core.ICommandBuffer.ReplaceComponentBoxed*
+  nameWithType.vb: ICommandBuffer.ReplaceComponentBoxed(Entity, Object)
+  fullName.vb: ZenECS.Core.ICommandBuffer.ReplaceComponentBoxed(ZenECS.Core.Entity, Object)
+  name.vb: ReplaceComponentBoxed(Entity, Object)
+- uid: ZenECS.Core.ICommandBuffer.RemoveComponent``1(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.ICommandBuffer.RemoveComponent``1(ZenECS.Core.Entity)
+  id: RemoveComponent``1(ZenECS.Core.Entity)
+  parent: ZenECS.Core.ICommandBuffer
+  langs:
+  - csharp
+  - vb
+  name: RemoveComponent<T>(Entity)
+  nameWithType: ICommandBuffer.RemoveComponent<T>(Entity)
+  fullName: ZenECS.Core.ICommandBuffer.RemoveComponent<T>(ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RemoveComponent
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+    startLine: 145
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Records removing a component from an entity.
+  remarks: If the component is absent when the buffer is applied, this becomes a no-op.
+  example: []
+  syntax:
+    content: 'void RemoveComponent<T>(Entity e) where T : struct'
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    typeParameters:
+    - id: T
+      description: Component type.
+    content.vb: Sub RemoveComponent(Of T As Structure)(e As Entity)
+  overload: ZenECS.Core.ICommandBuffer.RemoveComponent*
+  nameWithType.vb: ICommandBuffer.RemoveComponent(Of T)(Entity)
+  fullName.vb: ZenECS.Core.ICommandBuffer.RemoveComponent(Of T)(ZenECS.Core.Entity)
+  name.vb: RemoveComponent(Of T)(Entity)
+- uid: ZenECS.Core.ICommandBuffer.RemoveComponentTyped(ZenECS.Core.Entity,System.Type)
+  commentId: M:ZenECS.Core.ICommandBuffer.RemoveComponentTyped(ZenECS.Core.Entity,System.Type)
+  id: RemoveComponentTyped(ZenECS.Core.Entity,System.Type)
+  parent: ZenECS.Core.ICommandBuffer
+  langs:
+  - csharp
+  - vb
+  name: RemoveComponentTyped(Entity, Type)
+  nameWithType: ICommandBuffer.RemoveComponentTyped(Entity, Type)
+  fullName: ZenECS.Core.ICommandBuffer.RemoveComponentTyped(ZenECS.Core.Entity, System.Type)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RemoveComponentTyped
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+    startLine: 155
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Records removing a component from an entity by runtime type.
+  remarks: If the component is absent when the buffer is applied, this becomes a no-op.
+  example: []
+  syntax:
+    content: void RemoveComponentTyped(Entity e, Type type)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    - id: type
+      type: System.Type
+      description: Component type to remove.
+    content.vb: Sub RemoveComponentTyped(e As Entity, type As Type)
+  overload: ZenECS.Core.ICommandBuffer.RemoveComponentTyped*
+- uid: ZenECS.Core.ICommandBuffer.SetSingleton``1(``0@)
+  commentId: M:ZenECS.Core.ICommandBuffer.SetSingleton``1(``0@)
+  id: SetSingleton``1(``0@)
+  parent: ZenECS.Core.ICommandBuffer
+  langs:
+  - csharp
+  - vb
+  name: SetSingleton<T>(in T)
+  nameWithType: ICommandBuffer.SetSingleton<T>(in T)
+  fullName: ZenECS.Core.ICommandBuffer.SetSingleton<T>(in T)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SetSingleton
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+    startLine: 173
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Records setting a singleton component.
+  remarks: >-
+    <p>
+
+    If a singleton of type <code class="typeparamref">T</code> already exists,
+
+    its value is replaced. Otherwise, a dedicated singleton entity is
+
+    created to hold the new value.
+
+    </p>
+  example: []
+  syntax:
+    content: 'void SetSingleton<T>(in T value) where T : struct, IWorldSingletonComponent'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: New singleton value.
+    typeParameters:
+    - id: T
+      description: Singleton component type.
+    content.vb: Sub SetSingleton(Of T As {Structure, IWorldSingletonComponent})(value As T)
+  overload: ZenECS.Core.ICommandBuffer.SetSingleton*
+  nameWithType.vb: ICommandBuffer.SetSingleton(Of T)(T)
+  fullName.vb: ZenECS.Core.ICommandBuffer.SetSingleton(Of T)(T)
+  name.vb: SetSingleton(Of T)(T)
+- uid: ZenECS.Core.ICommandBuffer.SetSingletonTyped(System.Type,System.Object)
+  commentId: M:ZenECS.Core.ICommandBuffer.SetSingletonTyped(System.Type,System.Object)
+  id: SetSingletonTyped(System.Type,System.Object)
+  parent: ZenECS.Core.ICommandBuffer
+  langs:
+  - csharp
+  - vb
+  name: SetSingletonTyped(Type, object?)
+  nameWithType: ICommandBuffer.SetSingletonTyped(Type, object?)
+  fullName: ZenECS.Core.ICommandBuffer.SetSingletonTyped(System.Type, object?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SetSingletonTyped
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+    startLine: 187
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Records setting a singleton component using a boxed value.
+  remarks: >-
+    If a singleton of the specified type already exists, its value is replaced.
+
+    Otherwise, a dedicated singleton entity is created. If
+
+    <code class="paramref">boxed</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>, the operation is ignored.
+  example: []
+  syntax:
+    content: void SetSingletonTyped(Type type, object? boxed)
+    parameters:
+    - id: type
+      type: System.Type
+      description: Singleton component type.
+    - id: boxed
+      type: System.Object
+      description: Boxed singleton value; must be assignable to <code class="paramref">type</code>.
+    content.vb: Sub SetSingletonTyped(type As Type, boxed As Object)
+  overload: ZenECS.Core.ICommandBuffer.SetSingletonTyped*
+  nameWithType.vb: ICommandBuffer.SetSingletonTyped(Type, Object)
+  fullName.vb: ZenECS.Core.ICommandBuffer.SetSingletonTyped(System.Type, Object)
+  name.vb: SetSingletonTyped(Type, Object)
+- uid: ZenECS.Core.ICommandBuffer.RemoveSingleton``1
+  commentId: M:ZenECS.Core.ICommandBuffer.RemoveSingleton``1
+  id: RemoveSingleton``1
+  parent: ZenECS.Core.ICommandBuffer
+  langs:
+  - csharp
+  - vb
+  name: RemoveSingleton<T>()
+  nameWithType: ICommandBuffer.RemoveSingleton<T>()
+  fullName: ZenECS.Core.ICommandBuffer.RemoveSingleton<T>()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RemoveSingleton
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+    startLine: 196
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Records removal of a singleton component and its dedicated entity.
+  remarks: If the singleton does not exist, this becomes a no-op.
+  example: []
+  syntax:
+    content: 'void RemoveSingleton<T>() where T : struct, IWorldSingletonComponent'
+    typeParameters:
+    - id: T
+      description: Singleton component type.
+    content.vb: Sub RemoveSingleton(Of T As {Structure, IWorldSingletonComponent})()
+  overload: ZenECS.Core.ICommandBuffer.RemoveSingleton*
+  nameWithType.vb: ICommandBuffer.RemoveSingleton(Of T)()
+  fullName.vb: ZenECS.Core.ICommandBuffer.RemoveSingleton(Of T)()
+  name.vb: RemoveSingleton(Of T)()
+- uid: ZenECS.Core.ICommandBuffer.RemoveSingletonTyped(System.Type)
+  commentId: M:ZenECS.Core.ICommandBuffer.RemoveSingletonTyped(System.Type)
+  id: RemoveSingletonTyped(System.Type)
+  parent: ZenECS.Core.ICommandBuffer
+  langs:
+  - csharp
+  - vb
+  name: RemoveSingletonTyped(Type)
+  nameWithType: ICommandBuffer.RemoveSingletonTyped(Type)
+  fullName: ZenECS.Core.ICommandBuffer.RemoveSingletonTyped(System.Type)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RemoveSingletonTyped
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+    startLine: 205
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Records removal of a singleton component by runtime type.
+  remarks: If the singleton does not exist, this becomes a no-op.
+  example: []
+  syntax:
+    content: void RemoveSingletonTyped(Type type)
+    parameters:
+    - id: type
+      type: System.Type
+      description: Singleton component type.
+    content.vb: Sub RemoveSingletonTyped(type As Type)
+  overload: ZenECS.Core.ICommandBuffer.RemoveSingletonTyped*
+- uid: ZenECS.Core.ICommandBuffer.DestroyAllEntities
+  commentId: M:ZenECS.Core.ICommandBuffer.DestroyAllEntities
+  id: DestroyAllEntities
+  parent: ZenECS.Core.ICommandBuffer
+  langs:
+  - csharp
+  - vb
+  name: DestroyAllEntities()
+  nameWithType: ICommandBuffer.DestroyAllEntities()
+  fullName: ZenECS.Core.ICommandBuffer.DestroyAllEntities()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: DestroyAllEntities
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
+    startLine: 214
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Records a command to despawn <b>all alive entities</b> in the world.
+  remarks: >-
+    Applied at the barrier, this will behave as if every entity had been
+
+    despawned individually (events, router, binders included).
+  example: []
+  syntax:
+    content: void DestroyAllEntities()
+    content.vb: Sub DestroyAllEntities()
+  overload: ZenECS.Core.ICommandBuffer.DestroyAllEntities*
+references:
+- uid: ZenECS.Core.IWorld
+  commentId: T:ZenECS.Core.IWorld
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorld.html
+  name: IWorld
+  nameWithType: IWorld
+  fullName: ZenECS.Core.IWorld
+- uid: ZenECS.Core.IWorldCommandBufferApi.BeginWrite
+  commentId: M:ZenECS.Core.IWorldCommandBufferApi.BeginWrite
+  parent: ZenECS.Core.IWorldCommandBufferApi
+  href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_BeginWrite
+  name: BeginWrite()
+  nameWithType: IWorldCommandBufferApi.BeginWrite()
+  fullName: ZenECS.Core.IWorldCommandBufferApi.BeginWrite()
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldCommandBufferApi.BeginWrite
+    name: BeginWrite
+    href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_BeginWrite
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldCommandBufferApi.BeginWrite
+    name: BeginWrite
+    href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_BeginWrite
+  - name: (
+  - name: )
+- uid: ZenECS.Core.ICommandBuffer.EndWrite
+  commentId: M:ZenECS.Core.ICommandBuffer.EndWrite
+  href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_EndWrite
+  name: EndWrite()
+  nameWithType: ICommandBuffer.EndWrite()
+  fullName: ZenECS.Core.ICommandBuffer.EndWrite()
+  spec.csharp:
+  - uid: ZenECS.Core.ICommandBuffer.EndWrite
+    name: EndWrite
+    href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_EndWrite
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.ICommandBuffer.EndWrite
+    name: EndWrite
+    href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_EndWrite
+  - name: (
+  - name: )
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+- uid: ZenECS.Core.IWorldCommandBufferApi
+  commentId: T:ZenECS.Core.IWorldCommandBufferApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldCommandBufferApi.html
+  name: IWorldCommandBufferApi
+  nameWithType: IWorldCommandBufferApi
+  fullName: ZenECS.Core.IWorldCommandBufferApi
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.ICommandBuffer.EndWrite*
+  commentId: Overload:ZenECS.Core.ICommandBuffer.EndWrite
+  href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_EndWrite
+  name: EndWrite
+  nameWithType: ICommandBuffer.EndWrite
+  fullName: ZenECS.Core.ICommandBuffer.EndWrite
+- uid: ZenECS.Core.Entity
+  commentId: T:ZenECS.Core.Entity
+  parent: ZenECS.Core
+  href: ZenECS.Core.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: ZenECS.Core.Entity
+- uid: ZenECS.Core.ICommandBuffer.CreateEntity*
+  commentId: Overload:ZenECS.Core.ICommandBuffer.CreateEntity
+  href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_CreateEntity
+  name: CreateEntity
+  nameWithType: ICommandBuffer.CreateEntity
+  fullName: ZenECS.Core.ICommandBuffer.CreateEntity
+- uid: ZenECS.Core.ICommandBuffer.DestroyEntity*
+  commentId: Overload:ZenECS.Core.ICommandBuffer.DestroyEntity
+  href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_DestroyEntity_ZenECS_Core_Entity_
+  name: DestroyEntity
+  nameWithType: ICommandBuffer.DestroyEntity
+  fullName: ZenECS.Core.ICommandBuffer.DestroyEntity
+- uid: ZenECS.Core.ICommandBuffer.AddComponent*
+  commentId: Overload:ZenECS.Core.ICommandBuffer.AddComponent
+  href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_AddComponent__1_ZenECS_Core_Entity___0__
+  name: AddComponent
+  nameWithType: ICommandBuffer.AddComponent
+  fullName: ZenECS.Core.ICommandBuffer.AddComponent
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: ZenECS.Core.ICommandBuffer.AddComponentBoxed*
+  commentId: Overload:ZenECS.Core.ICommandBuffer.AddComponentBoxed
+  href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_AddComponentBoxed_ZenECS_Core_Entity_System_Object_
+  name: AddComponentBoxed
+  nameWithType: ICommandBuffer.AddComponentBoxed
+  fullName: ZenECS.Core.ICommandBuffer.AddComponentBoxed
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: ZenECS.Core.ICommandBuffer.ReplaceComponent*
+  commentId: Overload:ZenECS.Core.ICommandBuffer.ReplaceComponent
+  href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_ReplaceComponent__1_ZenECS_Core_Entity___0__
+  name: ReplaceComponent
+  nameWithType: ICommandBuffer.ReplaceComponent
+  fullName: ZenECS.Core.ICommandBuffer.ReplaceComponent
+- uid: ZenECS.Core.ICommandBuffer.ReplaceComponentBoxed*
+  commentId: Overload:ZenECS.Core.ICommandBuffer.ReplaceComponentBoxed
+  href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_ReplaceComponentBoxed_ZenECS_Core_Entity_System_Object_
+  name: ReplaceComponentBoxed
+  nameWithType: ICommandBuffer.ReplaceComponentBoxed
+  fullName: ZenECS.Core.ICommandBuffer.ReplaceComponentBoxed
+- uid: ZenECS.Core.ICommandBuffer.RemoveComponent*
+  commentId: Overload:ZenECS.Core.ICommandBuffer.RemoveComponent
+  href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_RemoveComponent__1_ZenECS_Core_Entity_
+  name: RemoveComponent
+  nameWithType: ICommandBuffer.RemoveComponent
+  fullName: ZenECS.Core.ICommandBuffer.RemoveComponent
+- uid: ZenECS.Core.ICommandBuffer.RemoveComponentTyped*
+  commentId: Overload:ZenECS.Core.ICommandBuffer.RemoveComponentTyped
+  href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_RemoveComponentTyped_ZenECS_Core_Entity_System_Type_
+  name: RemoveComponentTyped
+  nameWithType: ICommandBuffer.RemoveComponentTyped
+  fullName: ZenECS.Core.ICommandBuffer.RemoveComponentTyped
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: ZenECS.Core.ICommandBuffer.SetSingleton*
+  commentId: Overload:ZenECS.Core.ICommandBuffer.SetSingleton
+  href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_SetSingleton__1___0__
+  name: SetSingleton
+  nameWithType: ICommandBuffer.SetSingleton
+  fullName: ZenECS.Core.ICommandBuffer.SetSingleton
+- uid: ZenECS.Core.ICommandBuffer.SetSingletonTyped*
+  commentId: Overload:ZenECS.Core.ICommandBuffer.SetSingletonTyped
+  href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_SetSingletonTyped_System_Type_System_Object_
+  name: SetSingletonTyped
+  nameWithType: ICommandBuffer.SetSingletonTyped
+  fullName: ZenECS.Core.ICommandBuffer.SetSingletonTyped
+- uid: ZenECS.Core.ICommandBuffer.RemoveSingleton*
+  commentId: Overload:ZenECS.Core.ICommandBuffer.RemoveSingleton
+  href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_RemoveSingleton__1
+  name: RemoveSingleton
+  nameWithType: ICommandBuffer.RemoveSingleton
+  fullName: ZenECS.Core.ICommandBuffer.RemoveSingleton
+- uid: ZenECS.Core.ICommandBuffer.RemoveSingletonTyped*
+  commentId: Overload:ZenECS.Core.ICommandBuffer.RemoveSingletonTyped
+  href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_RemoveSingletonTyped_System_Type_
+  name: RemoveSingletonTyped
+  nameWithType: ICommandBuffer.RemoveSingletonTyped
+  fullName: ZenECS.Core.ICommandBuffer.RemoveSingletonTyped
+- uid: ZenECS.Core.ICommandBuffer.DestroyAllEntities*
+  commentId: Overload:ZenECS.Core.ICommandBuffer.DestroyAllEntities
+  href: ZenECS.Core.ICommandBuffer.html#ZenECS_Core_ICommandBuffer_DestroyAllEntities
+  name: DestroyAllEntities
+  nameWithType: ICommandBuffer.DestroyAllEntities
+  fullName: ZenECS.Core.ICommandBuffer.DestroyAllEntities

@@ -1,0 +1,375 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity.Blueprints
+  commentId: N:ZenECS.Adapter.Unity.Blueprints
+  id: ZenECS.Adapter.Unity.Blueprints
+  children:
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprint
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool2
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool3
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool4
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float2
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float3
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float4
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int2
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int3
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt2
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt3
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt4
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry
+  langs:
+  - csharp
+  - vb
+  name: ZenECS.Adapter.Unity.Blueprints
+  nameWithType: ZenECS.Adapter.Unity.Blueprints
+  fullName: ZenECS.Adapter.Unity.Blueprints
+  type: Namespace
+  assemblies:
+  - ZenECS.Adapter.Unity
+references:
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprint
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.html
+  name: EntityBlueprint
+  nameWithType: EntityBlueprint
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  name: EntityBlueprintComponentJson
+  nameWithType: EntityBlueprintComponentJson
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float2
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float2
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  name: EntityBlueprintComponentJson.Float2
+  nameWithType: EntityBlueprintComponentJson.Float2
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float2
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float2
+    name: Float2
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float2.html
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float2
+    name: Float2
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float2.html
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float3
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float3
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  name: EntityBlueprintComponentJson.Float3
+  nameWithType: EntityBlueprintComponentJson.Float3
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float3
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float3
+    name: Float3
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float3.html
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float3
+    name: Float3
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float3.html
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float4
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float4
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  name: EntityBlueprintComponentJson.Float4
+  nameWithType: EntityBlueprintComponentJson.Float4
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float4
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float4
+    name: Float4
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float4.html
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float4
+    name: Float4
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Float4.html
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int2
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int2
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  name: EntityBlueprintComponentJson.Int2
+  nameWithType: EntityBlueprintComponentJson.Int2
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int2
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int2
+    name: Int2
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int2.html
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int2
+    name: Int2
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int2.html
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int3
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int3
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  name: EntityBlueprintComponentJson.Int3
+  nameWithType: EntityBlueprintComponentJson.Int3
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int3
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int3
+    name: Int3
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int3.html
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int3
+    name: Int3
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int3.html
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  name: EntityBlueprintComponentJson.Int4
+  nameWithType: EntityBlueprintComponentJson.Int4
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4
+    name: Int4
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4.html
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4
+    name: Int4
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4.html
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt2
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt2
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  name: EntityBlueprintComponentJson.UInt2
+  nameWithType: EntityBlueprintComponentJson.UInt2
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt2
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt2
+    name: UInt2
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt2.html
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt2
+    name: UInt2
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt2.html
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt3
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt3
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  name: EntityBlueprintComponentJson.UInt3
+  nameWithType: EntityBlueprintComponentJson.UInt3
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt3
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt3
+    name: UInt3
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt3.html
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt3
+    name: UInt3
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt3.html
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt4
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt4
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  name: EntityBlueprintComponentJson.UInt4
+  nameWithType: EntityBlueprintComponentJson.UInt4
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt4
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt4
+    name: UInt4
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt4.html
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt4
+    name: UInt4
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.UInt4.html
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool2
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool2
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  name: EntityBlueprintComponentJson.Bool2
+  nameWithType: EntityBlueprintComponentJson.Bool2
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool2
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool2
+    name: Bool2
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool2.html
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool2
+    name: Bool2
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool2.html
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool3
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool3
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  name: EntityBlueprintComponentJson.Bool3
+  nameWithType: EntityBlueprintComponentJson.Bool3
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool3
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool3
+    name: Bool3
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool3.html
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool3
+    name: Bool3
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool3.html
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool4
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool4
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  name: EntityBlueprintComponentJson.Bool4
+  nameWithType: EntityBlueprintComponentJson.Bool4
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool4
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool4
+    name: Bool4
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool4.html
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson
+    name: EntityBlueprintComponentJson
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool4
+    name: Bool4
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Bool4.html
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+  parent: ZenECS.Adapter.Unity.Blueprints
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html
+  name: EntityBlueprintData
+  nameWithType: EntityBlueprintData
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html
+  name: EntityBlueprintData.Entry
+  nameWithType: EntityBlueprintData.Entry
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+    name: EntityBlueprintData
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry
+    name: Entry
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry.html
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+    name: EntityBlueprintData
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry
+    name: Entry
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.Entry.html
+- uid: ZenECS.Adapter.Unity.Blueprints
+  commentId: N:ZenECS.Adapter.Unity.Blueprints
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.Blueprints
+  nameWithType: ZenECS.Adapter.Unity.Blueprints
+  fullName: ZenECS.Adapter.Unity.Blueprints
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints
+    name: Blueprints
+    href: ZenECS.Adapter.Unity.Blueprints.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints
+    name: Blueprints
+    href: ZenECS.Adapter.Unity.Blueprints.html

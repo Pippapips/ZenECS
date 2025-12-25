@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: Unity.Collections
+  commentId: N:Unity.Collections
+  id: Unity.Collections
+  children:
+  - Unity.Collections.FixedString64Bytes
+  langs:
+  - csharp
+  - vb
+  name: Unity.Collections
+  nameWithType: Unity.Collections
+  fullName: Unity.Collections
+  type: Namespace
+  assemblies:
+  - ZenECS.Adapter.Unity
+references:
+- uid: Unity.Collections.FixedString64Bytes
+  commentId: T:Unity.Collections.FixedString64Bytes
+  href: Unity.Collections.FixedString64Bytes.html
+  name: FixedString64Bytes
+  nameWithType: FixedString64Bytes
+  fullName: Unity.Collections.FixedString64Bytes

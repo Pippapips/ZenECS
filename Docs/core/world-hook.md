@@ -2,24 +2,45 @@
 
 > Docs / Core / World Hook
 
-Hooks lifecycle and event sources.
+Hooks provide lifecycle events and interception points for component operations.
 
 ## Overview
 
-- TODO
+World hooks enable:
 
-## How it works
+- **Lifecycle Events**: React to world events
+- **Component Interception**: Intercept component operations
+- **Custom Logic**: Add custom behavior
+- **Validation**: Validate component values
 
-- TODO
+## API Surface
 
-## API surface
+### Write Permission Hook
 
-- TODO
+```csharp
+world.Hooks.AddWritePermission((entity, componentType) =>
+{
+    // Custom permission logic
+    return HasPermission(entity, componentType);
+});
+```
+
+### Value Validator
+
+```csharp
+world.Hooks.AddValidator<Health>(health =>
+{
+    // Validate health values
+    return health.Current >= 0 && health.Current <= health.Max;
+});
+```
 
 ## Examples
 
-- TODO
+See [Write Hooks & Validators](./write-hooks-validators.md) for detailed examples.
 
-## FAQ
+## See Also
 
-- TODO
+- [Write Hooks & Validators](./write-hooks-validators.md) - Detailed guide
+- [World](./world.md) - World management
+- [Advanced Topics](../guides/advanced-topics.md) - Advanced patterns

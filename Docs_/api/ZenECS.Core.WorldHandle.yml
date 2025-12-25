@@ -1,0 +1,1017 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.WorldHandle
+  commentId: T:ZenECS.Core.WorldHandle
+  id: WorldHandle
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.WorldHandle.#ctor(ZenECS.Core.IKernel,ZenECS.Core.WorldId)
+  - ZenECS.Core.WorldHandle.Equals(System.Object)
+  - ZenECS.Core.WorldHandle.Equals(ZenECS.Core.WorldHandle)
+  - ZenECS.Core.WorldHandle.GetHashCode
+  - ZenECS.Core.WorldHandle.Id
+  - ZenECS.Core.WorldHandle.IsAlive
+  - ZenECS.Core.WorldHandle.ResolveOrThrow
+  - ZenECS.Core.WorldHandle.ToString
+  - ZenECS.Core.WorldHandle.TryResolve(ZenECS.Core.IWorld@)
+  - ZenECS.Core.WorldHandle.op_Equality(ZenECS.Core.WorldHandle,ZenECS.Core.WorldHandle)
+  - ZenECS.Core.WorldHandle.op_Inequality(ZenECS.Core.WorldHandle,ZenECS.Core.WorldHandle)
+  langs:
+  - csharp
+  - vb
+  name: WorldHandle
+  nameWithType: WorldHandle
+  fullName: ZenECS.Core.WorldHandle
+  type: Struct
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: WorldHandle
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+    startLine: 47
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    A safe, serializable reference to a world.
+
+    The handle keeps only the <code>(IKernel, WorldId)</code> pair and resolves the
+
+    current live <xref href="ZenECS.Core.IWorld" data-throw-if-not-resolved="false"></xref> via the kernel when needed.
+  remarks: >-
+    <p>
+
+    <b>Why a handle?</b> Storing direct <xref href="ZenECS.Core.IWorld" data-throw-if-not-resolved="false"></xref> references is unsafe
+
+    across destruction or re-creation. <xref href="ZenECS.Core.WorldHandle" data-throw-if-not-resolved="false"></xref> guarantees that
+
+    callers explicitly resolve the world through <xref href="ZenECS.Core.IKernel" data-throw-if-not-resolved="false"></xref>, which
+
+    prevents use-after-dispose and supports multi-world identity.
+
+    </p>
+
+    <p>
+
+    <b>Typical usage</b>
+
+
+    <pre><code class="lang-csharp">// Store identity only (safe to serialize).
+
+    var handle = new WorldHandle(kernel, world.Id);
+
+
+    // Later in a system or adapter:
+
+    if (handle.TryResolve(out var w))
+
+    {
+        // Use the world
+    }
+
+    // or
+
+    var w2 = handle.ResolveOrThrow(); // throws if not alive</code></pre>
+
+    </p>
+  example: []
+  syntax:
+    content: 'public readonly struct WorldHandle : IEquatable<WorldHandle>'
+    content.vb: Public Structure WorldHandle Implements IEquatable(Of WorldHandle)
+  implements:
+  - System.IEquatable{ZenECS.Core.WorldHandle}
+  inheritedMembers:
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: ZenECS.Core.WorldHandle.Id
+  commentId: P:ZenECS.Core.WorldHandle.Id
+  id: Id
+  parent: ZenECS.Core.WorldHandle
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: WorldHandle.Id
+  fullName: ZenECS.Core.WorldHandle.Id
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Id
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+    startLine: 57
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Immutable identifier of the target world.
+  example: []
+  syntax:
+    content: public WorldId Id { get; }
+    parameters: []
+    return:
+      type: ZenECS.Core.WorldId
+    content.vb: Public ReadOnly Property Id As WorldId
+  overload: ZenECS.Core.WorldHandle.Id*
+- uid: ZenECS.Core.WorldHandle.#ctor(ZenECS.Core.IKernel,ZenECS.Core.WorldId)
+  commentId: M:ZenECS.Core.WorldHandle.#ctor(ZenECS.Core.IKernel,ZenECS.Core.WorldId)
+  id: '#ctor(ZenECS.Core.IKernel,ZenECS.Core.WorldId)'
+  parent: ZenECS.Core.WorldHandle
+  langs:
+  - csharp
+  - vb
+  name: WorldHandle(IKernel, WorldId)
+  nameWithType: WorldHandle.WorldHandle(IKernel, WorldId)
+  fullName: ZenECS.Core.WorldHandle.WorldHandle(ZenECS.Core.IKernel, ZenECS.Core.WorldId)
+  type: Constructor
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: .ctor
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+    startLine: 65
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Create a new world handle bound to a kernel and a world id.
+  example: []
+  syntax:
+    content: public WorldHandle(IKernel kernel, WorldId id)
+    parameters:
+    - id: kernel
+      type: ZenECS.Core.IKernel
+      description: Kernel that owns and can resolve the world.
+    - id: id
+      type: ZenECS.Core.WorldId
+      description: Identifier of the world to reference.
+    content.vb: Public Sub New(kernel As IKernel, id As WorldId)
+  overload: ZenECS.Core.WorldHandle.#ctor*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when <code class="paramref">kernel</code> is null.
+  nameWithType.vb: WorldHandle.New(IKernel, WorldId)
+  fullName.vb: ZenECS.Core.WorldHandle.New(ZenECS.Core.IKernel, ZenECS.Core.WorldId)
+  name.vb: New(IKernel, WorldId)
+- uid: ZenECS.Core.WorldHandle.TryResolve(ZenECS.Core.IWorld@)
+  commentId: M:ZenECS.Core.WorldHandle.TryResolve(ZenECS.Core.IWorld@)
+  id: TryResolve(ZenECS.Core.IWorld@)
+  parent: ZenECS.Core.WorldHandle
+  langs:
+  - csharp
+  - vb
+  name: TryResolve(out IWorld?)
+  nameWithType: WorldHandle.TryResolve(out IWorld?)
+  fullName: ZenECS.Core.WorldHandle.TryResolve(out ZenECS.Core.IWorld?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: TryResolve
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+    startLine: 81
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Attempt to resolve this handle to a live <xref href="ZenECS.Core.IWorld" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public bool TryResolve(out IWorld? world)
+    parameters:
+    - id: world
+      type: ZenECS.Core.IWorld
+      description: >-
+        When this method returns, contains the live world if resolution succeeded;
+
+        otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the world is currently alive in the kernel; otherwise <code>false</code>.
+    content.vb: Public Function TryResolve(world As IWorld) As Boolean
+  overload: ZenECS.Core.WorldHandle.TryResolve*
+  nameWithType.vb: WorldHandle.TryResolve(IWorld)
+  fullName.vb: ZenECS.Core.WorldHandle.TryResolve(ZenECS.Core.IWorld)
+  name.vb: TryResolve(IWorld)
+- uid: ZenECS.Core.WorldHandle.ResolveOrThrow
+  commentId: M:ZenECS.Core.WorldHandle.ResolveOrThrow
+  id: ResolveOrThrow
+  parent: ZenECS.Core.WorldHandle
+  langs:
+  - csharp
+  - vb
+  name: ResolveOrThrow()
+  nameWithType: WorldHandle.ResolveOrThrow()
+  fullName: ZenECS.Core.WorldHandle.ResolveOrThrow()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ResolveOrThrow
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+    startLine: 99
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Resolve this handle to a live <xref href="ZenECS.Core.IWorld" data-throw-if-not-resolved="false"></xref> or throw if the world is not alive.
+  example: []
+  syntax:
+    content: public IWorld? ResolveOrThrow()
+    return:
+      type: ZenECS.Core.IWorld
+      description: The resolved live world instance.
+    content.vb: Public Function ResolveOrThrow() As IWorld
+  overload: ZenECS.Core.WorldHandle.ResolveOrThrow*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Thrown if the referenced world was destroyed or has never been created.
+- uid: ZenECS.Core.WorldHandle.IsAlive
+  commentId: M:ZenECS.Core.WorldHandle.IsAlive
+  id: IsAlive
+  parent: ZenECS.Core.WorldHandle
+  langs:
+  - csharp
+  - vb
+  name: IsAlive()
+  nameWithType: WorldHandle.IsAlive()
+  fullName: ZenECS.Core.WorldHandle.IsAlive()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IsAlive
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+    startLine: 109
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Check whether the referenced world is currently alive (registered in the kernel).
+  example: []
+  syntax:
+    content: public bool IsAlive()
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the world is alive; otherwise <code>false</code>.
+    content.vb: Public Function IsAlive() As Boolean
+  overload: ZenECS.Core.WorldHandle.IsAlive*
+- uid: ZenECS.Core.WorldHandle.ToString
+  commentId: M:ZenECS.Core.WorldHandle.ToString
+  id: ToString
+  parent: ZenECS.Core.WorldHandle
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: WorldHandle.ToString()
+  fullName: ZenECS.Core.WorldHandle.ToString()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ToString
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+    startLine: 114
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Returns a human-readable representation that includes the world id.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.ValueType.ToString
+  overload: ZenECS.Core.WorldHandle.ToString*
+- uid: ZenECS.Core.WorldHandle.Equals(ZenECS.Core.WorldHandle)
+  commentId: M:ZenECS.Core.WorldHandle.Equals(ZenECS.Core.WorldHandle)
+  id: Equals(ZenECS.Core.WorldHandle)
+  parent: ZenECS.Core.WorldHandle
+  langs:
+  - csharp
+  - vb
+  name: Equals(WorldHandle)
+  nameWithType: WorldHandle.Equals(WorldHandle)
+  fullName: ZenECS.Core.WorldHandle.Equals(ZenECS.Core.WorldHandle)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Equals
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+    startLine: 120
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Value equality: two handles are equal if they reference the same kernel instance
+
+    and the same <xref href="ZenECS.Core.WorldId" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public bool Equals(WorldHandle other)
+    parameters:
+    - id: other
+      type: ZenECS.Core.WorldHandle
+    return:
+      type: System.Boolean
+    content.vb: Public Function Equals(other As WorldHandle) As Boolean
+  overload: ZenECS.Core.WorldHandle.Equals*
+  implements:
+  - System.IEquatable{ZenECS.Core.WorldHandle}.Equals(ZenECS.Core.WorldHandle)
+- uid: ZenECS.Core.WorldHandle.Equals(System.Object)
+  commentId: M:ZenECS.Core.WorldHandle.Equals(System.Object)
+  id: Equals(System.Object)
+  parent: ZenECS.Core.WorldHandle
+  langs:
+  - csharp
+  - vb
+  name: Equals(object?)
+  nameWithType: WorldHandle.Equals(object?)
+  fullName: ZenECS.Core.WorldHandle.Equals(object?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Equals
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+    startLine: 125
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Value equality override (see <xref href="ZenECS.Core.WorldHandle.Equals(ZenECS.Core.WorldHandle)" data-throw-if-not-resolved="false"></xref>).
+  example: []
+  syntax:
+    content: public override bool Equals(object? obj)
+    parameters:
+    - id: obj
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides Function Equals(obj As Object) As Boolean
+  overridden: System.ValueType.Equals(System.Object)
+  overload: ZenECS.Core.WorldHandle.Equals*
+  nameWithType.vb: WorldHandle.Equals(Object)
+  fullName.vb: ZenECS.Core.WorldHandle.Equals(Object)
+  name.vb: Equals(Object)
+- uid: ZenECS.Core.WorldHandle.GetHashCode
+  commentId: M:ZenECS.Core.WorldHandle.GetHashCode
+  id: GetHashCode
+  parent: ZenECS.Core.WorldHandle
+  langs:
+  - csharp
+  - vb
+  name: GetHashCode()
+  nameWithType: WorldHandle.GetHashCode()
+  fullName: ZenECS.Core.WorldHandle.GetHashCode()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: GetHashCode
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+    startLine: 130
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Hash code composed from the kernel instance and the world id.
+  example: []
+  syntax:
+    content: public override int GetHashCode()
+    return:
+      type: System.Int32
+    content.vb: Public Overrides Function GetHashCode() As Integer
+  overridden: System.ValueType.GetHashCode
+  overload: ZenECS.Core.WorldHandle.GetHashCode*
+- uid: ZenECS.Core.WorldHandle.op_Equality(ZenECS.Core.WorldHandle,ZenECS.Core.WorldHandle)
+  commentId: M:ZenECS.Core.WorldHandle.op_Equality(ZenECS.Core.WorldHandle,ZenECS.Core.WorldHandle)
+  id: op_Equality(ZenECS.Core.WorldHandle,ZenECS.Core.WorldHandle)
+  parent: ZenECS.Core.WorldHandle
+  langs:
+  - csharp
+  - vb
+  name: operator ==(WorldHandle, WorldHandle)
+  nameWithType: WorldHandle.operator ==(WorldHandle, WorldHandle)
+  fullName: ZenECS.Core.WorldHandle.operator ==(ZenECS.Core.WorldHandle, ZenECS.Core.WorldHandle)
+  type: Operator
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: op_Equality
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+    startLine: 135
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Equality operator (see <xref href="ZenECS.Core.WorldHandle.Equals(ZenECS.Core.WorldHandle)" data-throw-if-not-resolved="false"></xref>).
+  example: []
+  syntax:
+    content: public static bool operator ==(WorldHandle a, WorldHandle b)
+    parameters:
+    - id: a
+      type: ZenECS.Core.WorldHandle
+    - id: b
+      type: ZenECS.Core.WorldHandle
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator =(a As WorldHandle, b As WorldHandle) As Boolean
+  overload: ZenECS.Core.WorldHandle.op_Equality*
+  nameWithType.vb: WorldHandle.=(WorldHandle, WorldHandle)
+  fullName.vb: ZenECS.Core.WorldHandle.=(ZenECS.Core.WorldHandle, ZenECS.Core.WorldHandle)
+  name.vb: =(WorldHandle, WorldHandle)
+- uid: ZenECS.Core.WorldHandle.op_Inequality(ZenECS.Core.WorldHandle,ZenECS.Core.WorldHandle)
+  commentId: M:ZenECS.Core.WorldHandle.op_Inequality(ZenECS.Core.WorldHandle,ZenECS.Core.WorldHandle)
+  id: op_Inequality(ZenECS.Core.WorldHandle,ZenECS.Core.WorldHandle)
+  parent: ZenECS.Core.WorldHandle
+  langs:
+  - csharp
+  - vb
+  name: operator !=(WorldHandle, WorldHandle)
+  nameWithType: WorldHandle.operator !=(WorldHandle, WorldHandle)
+  fullName: ZenECS.Core.WorldHandle.operator !=(ZenECS.Core.WorldHandle, ZenECS.Core.WorldHandle)
+  type: Operator
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: op_Inequality
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
+    startLine: 140
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Inequality operator (see <xref href="ZenECS.Core.WorldHandle.Equals(ZenECS.Core.WorldHandle)" data-throw-if-not-resolved="false"></xref>).
+  example: []
+  syntax:
+    content: public static bool operator !=(WorldHandle a, WorldHandle b)
+    parameters:
+    - id: a
+      type: ZenECS.Core.WorldHandle
+    - id: b
+      type: ZenECS.Core.WorldHandle
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator <>(a As WorldHandle, b As WorldHandle) As Boolean
+  overload: ZenECS.Core.WorldHandle.op_Inequality*
+  nameWithType.vb: WorldHandle.<>(WorldHandle, WorldHandle)
+  fullName.vb: ZenECS.Core.WorldHandle.<>(ZenECS.Core.WorldHandle, ZenECS.Core.WorldHandle)
+  name.vb: <>(WorldHandle, WorldHandle)
+references:
+- uid: ZenECS.Core.IWorld
+  commentId: T:ZenECS.Core.IWorld
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorld.html
+  name: IWorld
+  nameWithType: IWorld
+  fullName: ZenECS.Core.IWorld
+- uid: ZenECS.Core.WorldHandle
+  commentId: T:ZenECS.Core.WorldHandle
+  parent: ZenECS.Core
+  href: ZenECS.Core.WorldHandle.html
+  name: WorldHandle
+  nameWithType: WorldHandle
+  fullName: ZenECS.Core.WorldHandle
+- uid: ZenECS.Core.IKernel
+  commentId: T:ZenECS.Core.IKernel
+  parent: ZenECS.Core
+  href: ZenECS.Core.IKernel.html
+  name: IKernel
+  nameWithType: IKernel
+  fullName: ZenECS.Core.IKernel
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: System.IEquatable{ZenECS.Core.WorldHandle}
+  commentId: T:System.IEquatable{ZenECS.Core.WorldHandle}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<WorldHandle>
+  nameWithType: IEquatable<WorldHandle>
+  fullName: System.IEquatable<ZenECS.Core.WorldHandle>
+  nameWithType.vb: IEquatable(Of WorldHandle)
+  fullName.vb: System.IEquatable(Of ZenECS.Core.WorldHandle)
+  name.vb: IEquatable(Of WorldHandle)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: ZenECS.Core.WorldHandle
+    name: WorldHandle
+    href: ZenECS.Core.WorldHandle.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.WorldHandle
+    name: WorldHandle
+    href: ZenECS.Core.WorldHandle.html
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: ZenECS.Core.WorldHandle.Id*
+  commentId: Overload:ZenECS.Core.WorldHandle.Id
+  href: ZenECS.Core.WorldHandle.html#ZenECS_Core_WorldHandle_Id
+  name: Id
+  nameWithType: WorldHandle.Id
+  fullName: ZenECS.Core.WorldHandle.Id
+- uid: ZenECS.Core.WorldId
+  commentId: T:ZenECS.Core.WorldId
+  parent: ZenECS.Core
+  href: ZenECS.Core.WorldId.html
+  name: WorldId
+  nameWithType: WorldId
+  fullName: ZenECS.Core.WorldId
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+  name: ArgumentNullException
+  nameWithType: ArgumentNullException
+  fullName: System.ArgumentNullException
+- uid: ZenECS.Core.WorldHandle.#ctor*
+  commentId: Overload:ZenECS.Core.WorldHandle.#ctor
+  href: ZenECS.Core.WorldHandle.html#ZenECS_Core_WorldHandle__ctor_ZenECS_Core_IKernel_ZenECS_Core_WorldId_
+  name: WorldHandle
+  nameWithType: WorldHandle.WorldHandle
+  fullName: ZenECS.Core.WorldHandle.WorldHandle
+  nameWithType.vb: WorldHandle.New
+  fullName.vb: ZenECS.Core.WorldHandle.New
+  name.vb: New
+- uid: ZenECS.Core.WorldHandle.TryResolve*
+  commentId: Overload:ZenECS.Core.WorldHandle.TryResolve
+  href: ZenECS.Core.WorldHandle.html#ZenECS_Core_WorldHandle_TryResolve_ZenECS_Core_IWorld__
+  name: TryResolve
+  nameWithType: WorldHandle.TryResolve
+  fullName: ZenECS.Core.WorldHandle.TryResolve
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.InvalidOperationException
+  commentId: T:System.InvalidOperationException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+  name: InvalidOperationException
+  nameWithType: InvalidOperationException
+  fullName: System.InvalidOperationException
+- uid: ZenECS.Core.WorldHandle.ResolveOrThrow*
+  commentId: Overload:ZenECS.Core.WorldHandle.ResolveOrThrow
+  href: ZenECS.Core.WorldHandle.html#ZenECS_Core_WorldHandle_ResolveOrThrow
+  name: ResolveOrThrow
+  nameWithType: WorldHandle.ResolveOrThrow
+  fullName: ZenECS.Core.WorldHandle.ResolveOrThrow
+- uid: ZenECS.Core.WorldHandle.IsAlive*
+  commentId: Overload:ZenECS.Core.WorldHandle.IsAlive
+  href: ZenECS.Core.WorldHandle.html#ZenECS_Core_WorldHandle_IsAlive
+  name: IsAlive
+  nameWithType: WorldHandle.IsAlive
+  fullName: ZenECS.Core.WorldHandle.IsAlive
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: ZenECS.Core.WorldHandle.ToString*
+  commentId: Overload:ZenECS.Core.WorldHandle.ToString
+  href: ZenECS.Core.WorldHandle.html#ZenECS_Core_WorldHandle_ToString
+  name: ToString
+  nameWithType: WorldHandle.ToString
+  fullName: ZenECS.Core.WorldHandle.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: ZenECS.Core.WorldHandle.Equals*
+  commentId: Overload:ZenECS.Core.WorldHandle.Equals
+  href: ZenECS.Core.WorldHandle.html#ZenECS_Core_WorldHandle_Equals_ZenECS_Core_WorldHandle_
+  name: Equals
+  nameWithType: WorldHandle.Equals
+  fullName: ZenECS.Core.WorldHandle.Equals
+- uid: System.IEquatable{ZenECS.Core.WorldHandle}.Equals(ZenECS.Core.WorldHandle)
+  commentId: M:System.IEquatable{ZenECS.Core.WorldHandle}.Equals(ZenECS.Core.WorldHandle)
+  parent: System.IEquatable{ZenECS.Core.WorldHandle}
+  definition: System.IEquatable`1.Equals(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(WorldHandle)
+  nameWithType: IEquatable<WorldHandle>.Equals(WorldHandle)
+  fullName: System.IEquatable<ZenECS.Core.WorldHandle>.Equals(ZenECS.Core.WorldHandle)
+  nameWithType.vb: IEquatable(Of WorldHandle).Equals(WorldHandle)
+  fullName.vb: System.IEquatable(Of ZenECS.Core.WorldHandle).Equals(ZenECS.Core.WorldHandle)
+  spec.csharp:
+  - uid: System.IEquatable{ZenECS.Core.WorldHandle}.Equals(ZenECS.Core.WorldHandle)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: ZenECS.Core.WorldHandle
+    name: WorldHandle
+    href: ZenECS.Core.WorldHandle.html
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable{ZenECS.Core.WorldHandle}.Equals(ZenECS.Core.WorldHandle)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: ZenECS.Core.WorldHandle
+    name: WorldHandle
+    href: ZenECS.Core.WorldHandle.html
+  - name: )
+- uid: System.IEquatable`1.Equals(`0)
+  commentId: M:System.IEquatable`1.Equals(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(T)
+  nameWithType: IEquatable<T>.Equals(T)
+  fullName: System.IEquatable<T>.Equals(T)
+  nameWithType.vb: IEquatable(Of T).Equals(T)
+  fullName.vb: System.IEquatable(Of T).Equals(T)
+  spec.csharp:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+- uid: ZenECS.Core.WorldHandle.Equals(ZenECS.Core.WorldHandle)
+  commentId: M:ZenECS.Core.WorldHandle.Equals(ZenECS.Core.WorldHandle)
+  href: ZenECS.Core.WorldHandle.html#ZenECS_Core_WorldHandle_Equals_ZenECS_Core_WorldHandle_
+  name: Equals(WorldHandle)
+  nameWithType: WorldHandle.Equals(WorldHandle)
+  fullName: ZenECS.Core.WorldHandle.Equals(ZenECS.Core.WorldHandle)
+  spec.csharp:
+  - uid: ZenECS.Core.WorldHandle.Equals(ZenECS.Core.WorldHandle)
+    name: Equals
+    href: ZenECS.Core.WorldHandle.html#ZenECS_Core_WorldHandle_Equals_ZenECS_Core_WorldHandle_
+  - name: (
+  - uid: ZenECS.Core.WorldHandle
+    name: WorldHandle
+    href: ZenECS.Core.WorldHandle.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.WorldHandle.Equals(ZenECS.Core.WorldHandle)
+    name: Equals
+    href: ZenECS.Core.WorldHandle.html#ZenECS_Core_WorldHandle_Equals_ZenECS_Core_WorldHandle_
+  - name: (
+  - uid: ZenECS.Core.WorldHandle
+    name: WorldHandle
+    href: ZenECS.Core.WorldHandle.html
+  - name: )
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: ZenECS.Core.WorldHandle.GetHashCode*
+  commentId: Overload:ZenECS.Core.WorldHandle.GetHashCode
+  href: ZenECS.Core.WorldHandle.html#ZenECS_Core_WorldHandle_GetHashCode
+  name: GetHashCode
+  nameWithType: WorldHandle.GetHashCode
+  fullName: ZenECS.Core.WorldHandle.GetHashCode
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: ZenECS.Core.WorldHandle.op_Equality*
+  commentId: Overload:ZenECS.Core.WorldHandle.op_Equality
+  href: ZenECS.Core.WorldHandle.html#ZenECS_Core_WorldHandle_op_Equality_ZenECS_Core_WorldHandle_ZenECS_Core_WorldHandle_
+  name: operator ==
+  nameWithType: WorldHandle.operator ==
+  fullName: ZenECS.Core.WorldHandle.operator ==
+  nameWithType.vb: WorldHandle.=
+  fullName.vb: ZenECS.Core.WorldHandle.=
+  name.vb: =
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: ZenECS.Core.WorldHandle.op_Equality*
+    name: ==
+    href: ZenECS.Core.WorldHandle.html#ZenECS_Core_WorldHandle_op_Equality_ZenECS_Core_WorldHandle_ZenECS_Core_WorldHandle_
+- uid: ZenECS.Core.WorldHandle.op_Inequality*
+  commentId: Overload:ZenECS.Core.WorldHandle.op_Inequality
+  href: ZenECS.Core.WorldHandle.html#ZenECS_Core_WorldHandle_op_Inequality_ZenECS_Core_WorldHandle_ZenECS_Core_WorldHandle_
+  name: operator !=
+  nameWithType: WorldHandle.operator !=
+  fullName: ZenECS.Core.WorldHandle.operator !=
+  nameWithType.vb: WorldHandle.<>
+  fullName.vb: ZenECS.Core.WorldHandle.<>
+  name.vb: <>
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: ZenECS.Core.WorldHandle.op_Inequality*
+    name: '!='
+    href: ZenECS.Core.WorldHandle.html#ZenECS_Core_WorldHandle_op_Inequality_ZenECS_Core_WorldHandle_ZenECS_Core_WorldHandle_

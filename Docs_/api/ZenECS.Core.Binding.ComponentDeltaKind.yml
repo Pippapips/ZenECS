@@ -1,0 +1,189 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Binding.ComponentDeltaKind
+  commentId: T:ZenECS.Core.Binding.ComponentDeltaKind
+  id: ComponentDeltaKind
+  parent: ZenECS.Core.Binding
+  children:
+  - ZenECS.Core.Binding.ComponentDeltaKind.Added
+  - ZenECS.Core.Binding.ComponentDeltaKind.Changed
+  - ZenECS.Core.Binding.ComponentDeltaKind.Removed
+  - ZenECS.Core.Binding.ComponentDeltaKind.Snapshot
+  langs:
+  - csharp
+  - vb
+  name: ComponentDeltaKind
+  nameWithType: ComponentDeltaKind
+  fullName: ZenECS.Core.Binding.ComponentDeltaKind
+  type: Enum
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ComponentDeltaKind
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+    startLine: 19
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: Kind of component change that occurred on an entity.
+  example: []
+  syntax:
+    content: public enum ComponentDeltaKind
+    content.vb: Public Enum ComponentDeltaKind
+- uid: ZenECS.Core.Binding.ComponentDeltaKind.Added
+  commentId: F:ZenECS.Core.Binding.ComponentDeltaKind.Added
+  id: Added
+  parent: ZenECS.Core.Binding.ComponentDeltaKind
+  langs:
+  - csharp
+  - vb
+  name: Added
+  nameWithType: ComponentDeltaKind.Added
+  fullName: ZenECS.Core.Binding.ComponentDeltaKind.Added
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Added
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+    startLine: 24
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: Component was added to the entity.
+  example: []
+  syntax:
+    content: Added = 0
+    return:
+      type: ZenECS.Core.Binding.ComponentDeltaKind
+- uid: ZenECS.Core.Binding.ComponentDeltaKind.Changed
+  commentId: F:ZenECS.Core.Binding.ComponentDeltaKind.Changed
+  id: Changed
+  parent: ZenECS.Core.Binding.ComponentDeltaKind
+  langs:
+  - csharp
+  - vb
+  name: Changed
+  nameWithType: ComponentDeltaKind.Changed
+  fullName: ZenECS.Core.Binding.ComponentDeltaKind.Changed
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Changed
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+    startLine: 29
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: Component value changed in place on the entity.
+  example: []
+  syntax:
+    content: Changed = 1
+    return:
+      type: ZenECS.Core.Binding.ComponentDeltaKind
+- uid: ZenECS.Core.Binding.ComponentDeltaKind.Removed
+  commentId: F:ZenECS.Core.Binding.ComponentDeltaKind.Removed
+  id: Removed
+  parent: ZenECS.Core.Binding.ComponentDeltaKind
+  langs:
+  - csharp
+  - vb
+  name: Removed
+  nameWithType: ComponentDeltaKind.Removed
+  fullName: ZenECS.Core.Binding.ComponentDeltaKind.Removed
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Removed
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+    startLine: 34
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: Component was removed from the entity.
+  example: []
+  syntax:
+    content: Removed = 2
+    return:
+      type: ZenECS.Core.Binding.ComponentDeltaKind
+- uid: ZenECS.Core.Binding.ComponentDeltaKind.Snapshot
+  commentId: F:ZenECS.Core.Binding.ComponentDeltaKind.Snapshot
+  id: Snapshot
+  parent: ZenECS.Core.Binding.ComponentDeltaKind
+  langs:
+  - csharp
+  - vb
+  name: Snapshot
+  nameWithType: ComponentDeltaKind.Snapshot
+  fullName: ZenECS.Core.Binding.ComponentDeltaKind.Snapshot
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Snapshot
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+    startLine: 41
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Snapshot of the current component value on the entity, dispatched
+
+    when a binder is first attached so it can mirror the existing state.
+
+    No structural change occurred; this is a sync-of-record event.
+  example: []
+  syntax:
+    content: Snapshot = 3
+    return:
+      type: ZenECS.Core.Binding.ComponentDeltaKind
+references:
+- uid: ZenECS.Core.Binding
+  commentId: N:ZenECS.Core.Binding
+  href: ZenECS.html
+  name: ZenECS.Core.Binding
+  nameWithType: ZenECS.Core.Binding
+  fullName: ZenECS.Core.Binding
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+- uid: ZenECS.Core.Binding.ComponentDeltaKind
+  commentId: T:ZenECS.Core.Binding.ComponentDeltaKind
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.ComponentDeltaKind.html
+  name: ComponentDeltaKind
+  nameWithType: ComponentDeltaKind
+  fullName: ZenECS.Core.Binding.ComponentDeltaKind

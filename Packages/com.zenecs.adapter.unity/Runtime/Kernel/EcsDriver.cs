@@ -149,18 +149,18 @@ namespace ZenECS.Adapter.Unity
         private void Awake()
         {
 #if UNITY_2022_2_OR_NEWER
-            var first = FindFirstObjectByType<EcsDriver>(FindObjectsInactive.Include);
+            var first = Object.FindFirstObjectByType<EcsDriver>(FindObjectsInactive.Include);
 #else
-            var first = FindObjectOfType<EcsDriver>(true);
+            var first = Object.FindObjectOfType<EcsDriver>(true);
 #endif
             if (first != null && first != this)
             {
                 Debug.LogWarning("[EcsDriver] Duplicate found. Destroying the newer one.");
 
                 if (Application.isPlaying)
-                    Destroy(gameObject);
+                    Object.Destroy(gameObject);
                 else
-                    DestroyImmediate(gameObject);
+                    Object.DestroyImmediate(gameObject);
 
                 return;
             }

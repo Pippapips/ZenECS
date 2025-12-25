@@ -1,0 +1,161 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Systems
+  commentId: N:ZenECS.Core.Systems
+  id: ZenECS.Core.Systems
+  children:
+  - ZenECS.Core.Systems.FixedDecisionGroupAttribute
+  - ZenECS.Core.Systems.FixedGroupAttribute
+  - ZenECS.Core.Systems.FixedInputGroupAttribute
+  - ZenECS.Core.Systems.FixedPostGroupAttribute
+  - ZenECS.Core.Systems.FrameInputGroupAttribute
+  - ZenECS.Core.Systems.FrameSyncGroupAttribute
+  - ZenECS.Core.Systems.FrameUIGroupAttribute
+  - ZenECS.Core.Systems.FrameViewGroupAttribute
+  - ZenECS.Core.Systems.GroupAttribute
+  - ZenECS.Core.Systems.ISystem
+  - ZenECS.Core.Systems.ISystemEnabledFlag
+  - ZenECS.Core.Systems.ISystemLifecycle
+  - ZenECS.Core.Systems.OrderAfterAttribute
+  - ZenECS.Core.Systems.OrderBeforeAttribute
+  - ZenECS.Core.Systems.SystemGroup
+  - ZenECS.Core.Systems.SystemUtil
+  langs:
+  - csharp
+  - vb
+  name: ZenECS.Core.Systems
+  nameWithType: ZenECS.Core.Systems
+  fullName: ZenECS.Core.Systems
+  type: Namespace
+  assemblies:
+  - ZenECS.Core
+references:
+- uid: ZenECS.Core.Systems.ISystemEnabledFlag
+  commentId: T:ZenECS.Core.Systems.ISystemEnabledFlag
+  href: ZenECS.Core.Systems.ISystemEnabledFlag.html
+  name: ISystemEnabledFlag
+  nameWithType: ISystemEnabledFlag
+  fullName: ZenECS.Core.Systems.ISystemEnabledFlag
+- uid: ZenECS.Core.Systems.SystemGroup
+  commentId: T:ZenECS.Core.Systems.SystemGroup
+  parent: ZenECS.Core.Systems
+  href: ZenECS.Core.Systems.SystemGroup.html
+  name: SystemGroup
+  nameWithType: SystemGroup
+  fullName: ZenECS.Core.Systems.SystemGroup
+- uid: ZenECS.Core.Systems.ISystem
+  commentId: T:ZenECS.Core.Systems.ISystem
+  parent: ZenECS.Core.Systems
+  href: ZenECS.Core.Systems.ISystem.html
+  name: ISystem
+  nameWithType: ISystem
+  fullName: ZenECS.Core.Systems.ISystem
+- uid: ZenECS.Core.Systems.ISystemLifecycle
+  commentId: T:ZenECS.Core.Systems.ISystemLifecycle
+  href: ZenECS.Core.Systems.ISystemLifecycle.html
+  name: ISystemLifecycle
+  nameWithType: ISystemLifecycle
+  fullName: ZenECS.Core.Systems.ISystemLifecycle
+- uid: ZenECS.Core.Systems.GroupAttribute
+  commentId: T:ZenECS.Core.Systems.GroupAttribute
+  parent: ZenECS.Core.Systems
+  href: ZenECS.Core.Systems.GroupAttribute.html
+  name: GroupAttribute
+  nameWithType: GroupAttribute
+  fullName: ZenECS.Core.Systems.GroupAttribute
+- uid: ZenECS.Core.Systems.FixedInputGroupAttribute
+  commentId: T:ZenECS.Core.Systems.FixedInputGroupAttribute
+  href: ZenECS.Core.Systems.FixedInputGroupAttribute.html
+  name: FixedInputGroupAttribute
+  nameWithType: FixedInputGroupAttribute
+  fullName: ZenECS.Core.Systems.FixedInputGroupAttribute
+- uid: ZenECS.Core.Systems.FixedDecisionGroupAttribute
+  commentId: T:ZenECS.Core.Systems.FixedDecisionGroupAttribute
+  href: ZenECS.Core.Systems.FixedDecisionGroupAttribute.html
+  name: FixedDecisionGroupAttribute
+  nameWithType: FixedDecisionGroupAttribute
+  fullName: ZenECS.Core.Systems.FixedDecisionGroupAttribute
+- uid: ZenECS.Core.Systems.FixedGroupAttribute
+  commentId: T:ZenECS.Core.Systems.FixedGroupAttribute
+  href: ZenECS.Core.Systems.FixedGroupAttribute.html
+  name: FixedGroupAttribute
+  nameWithType: FixedGroupAttribute
+  fullName: ZenECS.Core.Systems.FixedGroupAttribute
+- uid: ZenECS.Core.Systems.FixedPostGroupAttribute
+  commentId: T:ZenECS.Core.Systems.FixedPostGroupAttribute
+  href: ZenECS.Core.Systems.FixedPostGroupAttribute.html
+  name: FixedPostGroupAttribute
+  nameWithType: FixedPostGroupAttribute
+  fullName: ZenECS.Core.Systems.FixedPostGroupAttribute
+- uid: ZenECS.Core.Systems.FrameInputGroupAttribute
+  commentId: T:ZenECS.Core.Systems.FrameInputGroupAttribute
+  href: ZenECS.Core.Systems.FrameInputGroupAttribute.html
+  name: FrameInputGroupAttribute
+  nameWithType: FrameInputGroupAttribute
+  fullName: ZenECS.Core.Systems.FrameInputGroupAttribute
+- uid: ZenECS.Core.Systems.FrameSyncGroupAttribute
+  commentId: T:ZenECS.Core.Systems.FrameSyncGroupAttribute
+  href: ZenECS.Core.Systems.FrameSyncGroupAttribute.html
+  name: FrameSyncGroupAttribute
+  nameWithType: FrameSyncGroupAttribute
+  fullName: ZenECS.Core.Systems.FrameSyncGroupAttribute
+- uid: ZenECS.Core.Systems.FrameViewGroupAttribute
+  commentId: T:ZenECS.Core.Systems.FrameViewGroupAttribute
+  href: ZenECS.Core.Systems.FrameViewGroupAttribute.html
+  name: FrameViewGroupAttribute
+  nameWithType: FrameViewGroupAttribute
+  fullName: ZenECS.Core.Systems.FrameViewGroupAttribute
+- uid: ZenECS.Core.Systems.FrameUIGroupAttribute
+  commentId: T:ZenECS.Core.Systems.FrameUIGroupAttribute
+  href: ZenECS.Core.Systems.FrameUIGroupAttribute.html
+  name: FrameUIGroupAttribute
+  nameWithType: FrameUIGroupAttribute
+  fullName: ZenECS.Core.Systems.FrameUIGroupAttribute
+- uid: ZenECS.Core.Systems.OrderBeforeAttribute
+  commentId: T:ZenECS.Core.Systems.OrderBeforeAttribute
+  href: ZenECS.Core.Systems.OrderBeforeAttribute.html
+  name: OrderBeforeAttribute
+  nameWithType: OrderBeforeAttribute
+  fullName: ZenECS.Core.Systems.OrderBeforeAttribute
+- uid: ZenECS.Core.Systems.OrderAfterAttribute
+  commentId: T:ZenECS.Core.Systems.OrderAfterAttribute
+  href: ZenECS.Core.Systems.OrderAfterAttribute.html
+  name: OrderAfterAttribute
+  nameWithType: OrderAfterAttribute
+  fullName: ZenECS.Core.Systems.OrderAfterAttribute
+- uid: ZenECS.Core.Systems.SystemUtil
+  commentId: T:ZenECS.Core.Systems.SystemUtil
+  href: ZenECS.Core.Systems.SystemUtil.html
+  name: SystemUtil
+  nameWithType: SystemUtil
+  fullName: ZenECS.Core.Systems.SystemUtil
+- uid: ZenECS.Core.Systems
+  commentId: N:ZenECS.Core.Systems
+  href: ZenECS.html
+  name: ZenECS.Core.Systems
+  nameWithType: ZenECS.Core.Systems
+  fullName: ZenECS.Core.Systems
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Systems
+    name: Systems
+    href: ZenECS.Core.Systems.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Systems
+    name: Systems
+    href: ZenECS.Core.Systems.html

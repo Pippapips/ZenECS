@@ -1,0 +1,2985 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Kernel
+  commentId: T:ZenECS.Core.Kernel
+  id: Kernel
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.Kernel.#ctor(ZenECS.Core.KernelOptions,ZenECS.Core.Config.IEcsLogger)
+  - ZenECS.Core.Kernel.BeginFrame(System.Single)
+  - ZenECS.Core.Kernel.ClearCurrentWorld
+  - ZenECS.Core.Kernel.CreateWorld(System.Nullable{ZenECS.Core.WorldConfig},System.String,System.Collections.Generic.IEnumerable{System.String},System.Nullable{ZenECS.Core.WorldId},System.Boolean)
+  - ZenECS.Core.Kernel.CurrentWorld
+  - ZenECS.Core.Kernel.CurrentWorldChanged
+  - ZenECS.Core.Kernel.DestroyWorld(ZenECS.Core.IWorld)
+  - ZenECS.Core.Kernel.Dispose
+  - ZenECS.Core.Kernel.Disposed
+  - ZenECS.Core.Kernel.FindByAnyTag(System.String[])
+  - ZenECS.Core.Kernel.FindByName(System.String)
+  - ZenECS.Core.Kernel.FindByNamePrefix(System.String)
+  - ZenECS.Core.Kernel.FindByTag(System.String)
+  - ZenECS.Core.Kernel.FixedFrameCount
+  - ZenECS.Core.Kernel.FixedFrameIndexInFrame
+  - ZenECS.Core.Kernel.FixedStep(System.Single)
+  - ZenECS.Core.Kernel.FrameCount
+  - ZenECS.Core.Kernel.GetAllWorld
+  - ZenECS.Core.Kernel.IsPaused
+  - ZenECS.Core.Kernel.IsRunning
+  - ZenECS.Core.Kernel.LateFrame(System.Single)
+  - ZenECS.Core.Kernel.Options
+  - ZenECS.Core.Kernel.Pause
+  - ZenECS.Core.Kernel.PumpAndLateFrame(System.Single,System.Single,System.Int32)
+  - ZenECS.Core.Kernel.Resume
+  - ZenECS.Core.Kernel.SetCurrentWorld(ZenECS.Core.IWorld)
+  - ZenECS.Core.Kernel.SetCurrentWorld(ZenECS.Core.WorldHandle)
+  - ZenECS.Core.Kernel.SimulationAccumulatorSeconds
+  - ZenECS.Core.Kernel.TogglePause
+  - ZenECS.Core.Kernel.TotalSimulatedSeconds
+  - ZenECS.Core.Kernel.TotalTimeSeconds
+  - ZenECS.Core.Kernel.TryGet(ZenECS.Core.WorldId,ZenECS.Core.IWorld@)
+  - ZenECS.Core.Kernel.WorldCreated
+  - ZenECS.Core.Kernel.WorldDestroyed
+  langs:
+  - csharp
+  - vb
+  name: Kernel
+  nameWithType: Kernel
+  fullName: ZenECS.Core.Kernel
+  type: Class
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Kernel
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 47
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Manages the lifecycle, lookup and ticking of multiple worlds.
+  remarks: >-
+    <p>
+
+    External code must interact with world state via the world's API surfaces,
+
+    not through kernel internals. The kernel is responsible for:
+
+    </p>
+
+    <ul><li>Creating and destroying worlds and their DI scopes.</li><li>Indexing worlds by id, name, and tags.</li><li>Stepping all or a single selected world.</li><li>Tracking global time counters for frames and fixed steps.</li></ul>
+  example: []
+  syntax:
+    content: 'public sealed class Kernel : IKernel, IDisposable'
+    content.vb: Public NotInheritable Class Kernel Implements IKernel, IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - ZenECS.Core.IKernel
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: ZenECS.Core.Kernel.IsRunning
+  commentId: P:ZenECS.Core.Kernel.IsRunning
+  id: IsRunning
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: IsRunning
+  nameWithType: Kernel.IsRunning
+  fullName: ZenECS.Core.Kernel.IsRunning
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IsRunning
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 78
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets a value indicating whether the kernel is currently running.
+  remarks: >-
+    Becomes <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> after construction and remains so until
+
+    <xref href="System.IDisposable.Dispose" data-throw-if-not-resolved="false"></xref> is called.
+  example: []
+  syntax:
+    content: public bool IsRunning { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsRunning As Boolean
+  overload: ZenECS.Core.Kernel.IsRunning*
+  implements:
+  - ZenECS.Core.IKernel.IsRunning
+- uid: ZenECS.Core.Kernel.IsPaused
+  commentId: P:ZenECS.Core.Kernel.IsPaused
+  id: IsPaused
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: IsPaused
+  nameWithType: Kernel.IsPaused
+  fullName: ZenECS.Core.Kernel.IsPaused
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IsPaused
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 81
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets a value indicating whether the kernel is paused.
+  remarks: >-
+    When paused, the kernel ignores tick calls (<xref href="ZenECS.Core.IKernel.BeginFrame(System.Single)" data-throw-if-not-resolved="false"></xref>,
+
+    <xref href="ZenECS.Core.IKernel.FixedStep(System.Single)" data-throw-if-not-resolved="false"></xref>, <xref href="ZenECS.Core.IKernel.LateFrame(System.Single)" data-throw-if-not-resolved="false"></xref>).
+  example: []
+  syntax:
+    content: public bool IsPaused { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsPaused As Boolean
+  overload: ZenECS.Core.Kernel.IsPaused*
+  implements:
+  - ZenECS.Core.IKernel.IsPaused
+- uid: ZenECS.Core.Kernel.SimulationAccumulatorSeconds
+  commentId: P:ZenECS.Core.Kernel.SimulationAccumulatorSeconds
+  id: SimulationAccumulatorSeconds
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: SimulationAccumulatorSeconds
+  nameWithType: Kernel.SimulationAccumulatorSeconds
+  fullName: ZenECS.Core.Kernel.SimulationAccumulatorSeconds
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SimulationAccumulatorSeconds
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 84
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets the unconsumed delta time accumulated for fixed stepping (in seconds).
+  example: []
+  syntax:
+    content: public float SimulationAccumulatorSeconds { get; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public ReadOnly Property SimulationAccumulatorSeconds As Single
+  overload: ZenECS.Core.Kernel.SimulationAccumulatorSeconds*
+  implements:
+  - ZenECS.Core.IKernel.SimulationAccumulatorSeconds
+- uid: ZenECS.Core.Kernel.TotalTimeSeconds
+  commentId: P:ZenECS.Core.Kernel.TotalTimeSeconds
+  id: TotalTimeSeconds
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: TotalTimeSeconds
+  nameWithType: Kernel.TotalTimeSeconds
+  fullName: ZenECS.Core.Kernel.TotalTimeSeconds
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: TotalTimeSeconds
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 87
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Gets the total elapsed time (in seconds) that has been passed to
+
+    <xref href="ZenECS.Core.IKernel.BeginFrame(System.Single)" data-throw-if-not-resolved="false"></xref> while running.
+  example: []
+  syntax:
+    content: public float TotalTimeSeconds { get; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public ReadOnly Property TotalTimeSeconds As Single
+  overload: ZenECS.Core.Kernel.TotalTimeSeconds*
+  implements:
+  - ZenECS.Core.IKernel.TotalTimeSeconds
+- uid: ZenECS.Core.Kernel.FrameCount
+  commentId: P:ZenECS.Core.Kernel.FrameCount
+  id: FrameCount
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: FrameCount
+  nameWithType: Kernel.FrameCount
+  fullName: ZenECS.Core.Kernel.FrameCount
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FrameCount
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 90
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets the total number of <xref href="ZenECS.Core.IKernel.BeginFrame(System.Single)" data-throw-if-not-resolved="false"></xref> calls processed.
+  example: []
+  syntax:
+    content: public long FrameCount { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property FrameCount As Long
+  overload: ZenECS.Core.Kernel.FrameCount*
+  implements:
+  - ZenECS.Core.IKernel.FrameCount
+- uid: ZenECS.Core.Kernel.FixedFrameCount
+  commentId: P:ZenECS.Core.Kernel.FixedFrameCount
+  id: FixedFrameCount
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: FixedFrameCount
+  nameWithType: Kernel.FixedFrameCount
+  fullName: ZenECS.Core.Kernel.FixedFrameCount
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FixedFrameCount
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 93
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets the total number of <xref href="ZenECS.Core.IKernel.FixedStep(System.Single)" data-throw-if-not-resolved="false"></xref> calls processed.
+  example: []
+  syntax:
+    content: public long FixedFrameCount { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property FixedFrameCount As Long
+  overload: ZenECS.Core.Kernel.FixedFrameCount*
+  implements:
+  - ZenECS.Core.IKernel.FixedFrameCount
+- uid: ZenECS.Core.Kernel.FixedFrameIndexInFrame
+  commentId: P:ZenECS.Core.Kernel.FixedFrameIndexInFrame
+  id: FixedFrameIndexInFrame
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: FixedFrameIndexInFrame
+  nameWithType: Kernel.FixedFrameIndexInFrame
+  fullName: ZenECS.Core.Kernel.FixedFrameIndexInFrame
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FixedFrameIndexInFrame
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 96
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets the 1-based index of the current fixed step within the last frame.
+  remarks: >-
+    This index resets to 0 at the beginning of each frame and is incremented
+
+    on every <xref href="ZenECS.Core.IKernel.FixedStep(System.Single)" data-throw-if-not-resolved="false"></xref> call during that frame.
+  example: []
+  syntax:
+    content: public int FixedFrameIndexInFrame { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property FixedFrameIndexInFrame As Integer
+  overload: ZenECS.Core.Kernel.FixedFrameIndexInFrame*
+  implements:
+  - ZenECS.Core.IKernel.FixedFrameIndexInFrame
+- uid: ZenECS.Core.Kernel.TotalSimulatedSeconds
+  commentId: P:ZenECS.Core.Kernel.TotalSimulatedSeconds
+  id: TotalSimulatedSeconds
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: TotalSimulatedSeconds
+  nameWithType: Kernel.TotalSimulatedSeconds
+  fullName: ZenECS.Core.Kernel.TotalSimulatedSeconds
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: TotalSimulatedSeconds
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 99
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Gets the accumulated simulated time in seconds processed by
+
+    <xref href="ZenECS.Core.IKernel.FixedStep(System.Single)" data-throw-if-not-resolved="false"></xref> only.
+  remarks: >-
+    This value excludes raw wall-clock deltas and reflects strictly the sum
+
+    of fixed-step deltas.
+  example: []
+  syntax:
+    content: public double TotalSimulatedSeconds { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public ReadOnly Property TotalSimulatedSeconds As Double
+  overload: ZenECS.Core.Kernel.TotalSimulatedSeconds*
+  implements:
+  - ZenECS.Core.IKernel.TotalSimulatedSeconds
+- uid: ZenECS.Core.Kernel.CurrentWorld
+  commentId: P:ZenECS.Core.Kernel.CurrentWorld
+  id: CurrentWorld
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: CurrentWorld
+  nameWithType: Kernel.CurrentWorld
+  fullName: ZenECS.Core.Kernel.CurrentWorld
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: CurrentWorld
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 104
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets the currently selected world, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if none.
+  example: []
+  syntax:
+    content: public IWorld? CurrentWorld { get; }
+    parameters: []
+    return:
+      type: ZenECS.Core.IWorld
+    content.vb: Public ReadOnly Property CurrentWorld As IWorld
+  overload: ZenECS.Core.Kernel.CurrentWorld*
+  implements:
+  - ZenECS.Core.IKernel.CurrentWorld
+- uid: ZenECS.Core.Kernel.Options
+  commentId: P:ZenECS.Core.Kernel.Options
+  id: Options
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: Options
+  nameWithType: Kernel.Options
+  fullName: ZenECS.Core.Kernel.Options
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Options
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 107
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets the behavioral options for world creation and ticking.
+  example: []
+  syntax:
+    content: public KernelOptions? Options { get; }
+    parameters: []
+    return:
+      type: ZenECS.Core.KernelOptions
+    content.vb: Public ReadOnly Property Options As KernelOptions
+  overload: ZenECS.Core.Kernel.Options*
+  implements:
+  - ZenECS.Core.IKernel.Options
+- uid: ZenECS.Core.Kernel.WorldCreated
+  commentId: E:ZenECS.Core.Kernel.WorldCreated
+  id: WorldCreated
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: WorldCreated
+  nameWithType: Kernel.WorldCreated
+  fullName: ZenECS.Core.Kernel.WorldCreated
+  type: Event
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: WorldCreated
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 110
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Occurs when a world is created and registered with the kernel.
+  example: []
+  syntax:
+    content: public event Action<IWorld>? WorldCreated
+    return:
+      type: System.Action{ZenECS.Core.IWorld}
+    content.vb: Public Event WorldCreated As Action(Of IWorld)
+  implements:
+  - ZenECS.Core.IKernel.WorldCreated
+- uid: ZenECS.Core.Kernel.WorldDestroyed
+  commentId: E:ZenECS.Core.Kernel.WorldDestroyed
+  id: WorldDestroyed
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: WorldDestroyed
+  nameWithType: Kernel.WorldDestroyed
+  fullName: ZenECS.Core.Kernel.WorldDestroyed
+  type: Event
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: WorldDestroyed
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 113
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Occurs after a world has been destroyed and deregistered.
+  example: []
+  syntax:
+    content: public event Action<IWorld>? WorldDestroyed
+    return:
+      type: System.Action{ZenECS.Core.IWorld}
+    content.vb: Public Event WorldDestroyed As Action(Of IWorld)
+  implements:
+  - ZenECS.Core.IKernel.WorldDestroyed
+- uid: ZenECS.Core.Kernel.CurrentWorldChanged
+  commentId: E:ZenECS.Core.Kernel.CurrentWorldChanged
+  id: CurrentWorldChanged
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: CurrentWorldChanged
+  nameWithType: Kernel.CurrentWorldChanged
+  fullName: ZenECS.Core.Kernel.CurrentWorldChanged
+  type: Event
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: CurrentWorldChanged
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 116
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Occurs whenever <xref href="ZenECS.Core.IKernel.CurrentWorld" data-throw-if-not-resolved="false"></xref> changes.
+  remarks: >-
+    The first parameter is the previous current world (may be null), and
+
+    the second is the new one (may also be null).
+  example: []
+  syntax:
+    content: public event Action<IWorld?, IWorld?>? CurrentWorldChanged
+    return:
+      type: System.Action{ZenECS.Core.IWorld,ZenECS.Core.IWorld}
+    content.vb: Public Event CurrentWorldChanged As Action(Of IWorld, IWorld)
+  implements:
+  - ZenECS.Core.IKernel.CurrentWorldChanged
+- uid: ZenECS.Core.Kernel.Disposed
+  commentId: E:ZenECS.Core.Kernel.Disposed
+  id: Disposed
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: Disposed
+  nameWithType: Kernel.Disposed
+  fullName: ZenECS.Core.Kernel.Disposed
+  type: Event
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Disposed
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 119
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Occurs when the kernel is disposed.
+  example: []
+  syntax:
+    content: public event Action? Disposed
+    return:
+      type: System.Action
+    content.vb: Public Event Disposed As Action
+  implements:
+  - ZenECS.Core.IKernel.Disposed
+- uid: ZenECS.Core.Kernel.#ctor(ZenECS.Core.KernelOptions,ZenECS.Core.Config.IEcsLogger)
+  commentId: M:ZenECS.Core.Kernel.#ctor(ZenECS.Core.KernelOptions,ZenECS.Core.Config.IEcsLogger)
+  id: '#ctor(ZenECS.Core.KernelOptions,ZenECS.Core.Config.IEcsLogger)'
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: Kernel(KernelOptions?, IEcsLogger?)
+  nameWithType: Kernel.Kernel(KernelOptions?, IEcsLogger?)
+  fullName: ZenECS.Core.Kernel.Kernel(ZenECS.Core.KernelOptions?, ZenECS.Core.Config.IEcsLogger?)
+  type: Constructor
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: .ctor
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 132
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Initializes a new instance of the <xref href="ZenECS.Core.Kernel" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public Kernel(KernelOptions? options = null, IEcsLogger? logger = null)
+    parameters:
+    - id: options
+      type: ZenECS.Core.KernelOptions
+      description: Optional kernel options; a default is used when omitted.
+    - id: logger
+      type: ZenECS.Core.Config.IEcsLogger
+      description: Optional logger to plug into <xref href="ZenECS.Core.Config.EcsRuntimeOptions.Log" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Public Sub New(options As KernelOptions = Nothing, logger As IEcsLogger = Nothing)
+  overload: ZenECS.Core.Kernel.#ctor*
+  nameWithType.vb: Kernel.New(KernelOptions, IEcsLogger)
+  fullName.vb: ZenECS.Core.Kernel.New(ZenECS.Core.KernelOptions, ZenECS.Core.Config.IEcsLogger)
+  name.vb: New(KernelOptions, IEcsLogger)
+- uid: ZenECS.Core.Kernel.Dispose
+  commentId: M:ZenECS.Core.Kernel.Dispose
+  id: Dispose
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: Kernel.Dispose()
+  fullName: ZenECS.Core.Kernel.Dispose()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Dispose
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 146
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Disposes the kernel and all worlds it owns.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: ZenECS.Core.Kernel.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+- uid: ZenECS.Core.Kernel.CreateWorld(System.Nullable{ZenECS.Core.WorldConfig},System.String,System.Collections.Generic.IEnumerable{System.String},System.Nullable{ZenECS.Core.WorldId},System.Boolean)
+  commentId: M:ZenECS.Core.Kernel.CreateWorld(System.Nullable{ZenECS.Core.WorldConfig},System.String,System.Collections.Generic.IEnumerable{System.String},System.Nullable{ZenECS.Core.WorldId},System.Boolean)
+  id: CreateWorld(System.Nullable{ZenECS.Core.WorldConfig},System.String,System.Collections.Generic.IEnumerable{System.String},System.Nullable{ZenECS.Core.WorldId},System.Boolean)
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: CreateWorld(WorldConfig?, string?, IEnumerable<string>?, WorldId?, bool)
+  nameWithType: Kernel.CreateWorld(WorldConfig?, string?, IEnumerable<string>?, WorldId?, bool)
+  fullName: ZenECS.Core.Kernel.CreateWorld(ZenECS.Core.WorldConfig?, string?, System.Collections.Generic.IEnumerable<string>?, ZenECS.Core.WorldId?, bool)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: CreateWorld
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 166
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Creates a new world (and its DI scope).
+  example: []
+  syntax:
+    content: public IWorld CreateWorld(WorldConfig? cfg = null, string? name = null, IEnumerable<string>? tags = null, WorldId? presetId = null, bool setAsCurrent = false)
+    parameters:
+    - id: cfg
+      type: System.Nullable{ZenECS.Core.WorldConfig}
+      description: Optional world configuration; a default is used when omitted.
+    - id: name
+      type: System.String
+      description: Optional display name; auto-generated when omitted.
+    - id: tags
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: Optional tags for discovery and grouping.
+    - id: presetId
+      type: System.Nullable{ZenECS.Core.WorldId}
+      description: Optional preassigned id; otherwise generated via <xref href="ZenECS.Core.KernelOptions.NewWorldId" data-throw-if-not-resolved="false"></xref>.
+    - id: setAsCurrent
+      type: System.Boolean
+      description: >-
+        If <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, the created world is immediately selected as
+
+        <xref href="ZenECS.Core.IKernel.CurrentWorld" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: ZenECS.Core.IWorld
+      description: The created world instance.
+    content.vb: Public Function CreateWorld(cfg As WorldConfig? = Nothing, name As String = Nothing, tags As IEnumerable(Of String) = Nothing, presetId As WorldId? = Nothing, setAsCurrent As Boolean = False) As IWorld
+  overload: ZenECS.Core.Kernel.CreateWorld*
+  implements:
+  - ZenECS.Core.IKernel.CreateWorld(System.Nullable{ZenECS.Core.WorldConfig},System.String,System.Collections.Generic.IEnumerable{System.String},System.Nullable{ZenECS.Core.WorldId},System.Boolean)
+  nameWithType.vb: Kernel.CreateWorld(WorldConfig?, String, IEnumerable(Of String), WorldId?, Boolean)
+  fullName.vb: ZenECS.Core.Kernel.CreateWorld(ZenECS.Core.WorldConfig?, String, System.Collections.Generic.IEnumerable(Of String), ZenECS.Core.WorldId?, Boolean)
+  name.vb: CreateWorld(WorldConfig?, String, IEnumerable(Of String), WorldId?, Boolean)
+- uid: ZenECS.Core.Kernel.DestroyWorld(ZenECS.Core.IWorld)
+  commentId: M:ZenECS.Core.Kernel.DestroyWorld(ZenECS.Core.IWorld)
+  id: DestroyWorld(ZenECS.Core.IWorld)
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: DestroyWorld(IWorld)
+  nameWithType: Kernel.DestroyWorld(IWorld)
+  fullName: ZenECS.Core.Kernel.DestroyWorld(ZenECS.Core.IWorld)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: DestroyWorld
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 205
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Destroys a previously created world.
+  remarks: This method is a no-op if the world is not registered in the kernel.
+  example: []
+  syntax:
+    content: public void DestroyWorld(IWorld world)
+    parameters:
+    - id: world
+      type: ZenECS.Core.IWorld
+      description: World instance to destroy.
+    content.vb: Public Sub DestroyWorld(world As IWorld)
+  overload: ZenECS.Core.Kernel.DestroyWorld*
+  implements:
+  - ZenECS.Core.IKernel.DestroyWorld(ZenECS.Core.IWorld)
+- uid: ZenECS.Core.Kernel.GetAllWorld
+  commentId: M:ZenECS.Core.Kernel.GetAllWorld
+  id: GetAllWorld
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: GetAllWorld()
+  nameWithType: Kernel.GetAllWorld()
+  fullName: ZenECS.Core.Kernel.GetAllWorld()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: GetAllWorld
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 221
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Returns a snapshot enumerable of all registered worlds.
+  example: []
+  syntax:
+    content: public IEnumerable<IWorld> GetAllWorld()
+    return:
+      type: System.Collections.Generic.IEnumerable{ZenECS.Core.IWorld}
+    content.vb: Public Function GetAllWorld() As IEnumerable(Of IWorld)
+  overload: ZenECS.Core.Kernel.GetAllWorld*
+  implements:
+  - ZenECS.Core.IKernel.GetAllWorld
+- uid: ZenECS.Core.Kernel.TryGet(ZenECS.Core.WorldId,ZenECS.Core.IWorld@)
+  commentId: M:ZenECS.Core.Kernel.TryGet(ZenECS.Core.WorldId,ZenECS.Core.IWorld@)
+  id: TryGet(ZenECS.Core.WorldId,ZenECS.Core.IWorld@)
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: TryGet(WorldId, out IWorld?)
+  nameWithType: Kernel.TryGet(WorldId, out IWorld?)
+  fullName: ZenECS.Core.Kernel.TryGet(ZenECS.Core.WorldId, out ZenECS.Core.IWorld?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: TryGet
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 227
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Attempts to get a live world by id.
+  example: []
+  syntax:
+    content: public bool TryGet(WorldId id, out IWorld? world)
+    parameters:
+    - id: id
+      type: ZenECS.Core.WorldId
+      description: World identifier.
+    - id: world
+      type: ZenECS.Core.IWorld
+      description: >-
+        When this method returns, contains the world if found; otherwise
+
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if a matching world was found; otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Function TryGet(id As WorldId, world As IWorld) As Boolean
+  overload: ZenECS.Core.Kernel.TryGet*
+  implements:
+  - ZenECS.Core.IKernel.TryGet(ZenECS.Core.WorldId,ZenECS.Core.IWorld@)
+  nameWithType.vb: Kernel.TryGet(WorldId, IWorld)
+  fullName.vb: ZenECS.Core.Kernel.TryGet(ZenECS.Core.WorldId, ZenECS.Core.IWorld)
+  name.vb: TryGet(WorldId, IWorld)
+- uid: ZenECS.Core.Kernel.FindByName(System.String)
+  commentId: M:ZenECS.Core.Kernel.FindByName(System.String)
+  id: FindByName(System.String)
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: FindByName(string)
+  nameWithType: Kernel.FindByName(string)
+  fullName: ZenECS.Core.Kernel.FindByName(string)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FindByName
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 231
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Finds worlds by exact name.
+  example: []
+  syntax:
+    content: public IEnumerable<IWorld> FindByName(string name)
+    parameters:
+    - id: name
+      type: System.String
+      description: Name to match.
+    return:
+      type: System.Collections.Generic.IEnumerable{ZenECS.Core.IWorld}
+      description: >-
+        An enumerable of worlds whose <xref href="ZenECS.Core.IWorld.Name" data-throw-if-not-resolved="false"></xref> equals <code class="paramref">name</code>.
+
+        Multiple worlds may share the same name.
+    content.vb: Public Function FindByName(name As String) As IEnumerable(Of IWorld)
+  overload: ZenECS.Core.Kernel.FindByName*
+  implements:
+  - ZenECS.Core.IKernel.FindByName(System.String)
+  nameWithType.vb: Kernel.FindByName(String)
+  fullName.vb: ZenECS.Core.Kernel.FindByName(String)
+  name.vb: FindByName(String)
+- uid: ZenECS.Core.Kernel.FindByTag(System.String)
+  commentId: M:ZenECS.Core.Kernel.FindByTag(System.String)
+  id: FindByTag(System.String)
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: FindByTag(string)
+  nameWithType: Kernel.FindByTag(string)
+  fullName: ZenECS.Core.Kernel.FindByTag(string)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FindByTag
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 249
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Finds worlds that contain the given tag.
+  example: []
+  syntax:
+    content: public IEnumerable<IWorld> FindByTag(string tag)
+    parameters:
+    - id: tag
+      type: System.String
+      description: Tag to search for.
+    return:
+      type: System.Collections.Generic.IEnumerable{ZenECS.Core.IWorld}
+      description: Worlds that have <code class="paramref">tag</code> in their tag list.
+    content.vb: Public Function FindByTag(tag As String) As IEnumerable(Of IWorld)
+  overload: ZenECS.Core.Kernel.FindByTag*
+  implements:
+  - ZenECS.Core.IKernel.FindByTag(System.String)
+  nameWithType.vb: Kernel.FindByTag(String)
+  fullName.vb: ZenECS.Core.Kernel.FindByTag(String)
+  name.vb: FindByTag(String)
+- uid: ZenECS.Core.Kernel.FindByAnyTag(System.String[])
+  commentId: M:ZenECS.Core.Kernel.FindByAnyTag(System.String[])
+  id: FindByAnyTag(System.String[])
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: FindByAnyTag(params string[])
+  nameWithType: Kernel.FindByAnyTag(params string[])
+  fullName: ZenECS.Core.Kernel.FindByAnyTag(params string[])
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FindByAnyTag
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 267
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Returns worlds that match any of the provided tags (case-insensitive).
+  example: []
+  syntax:
+    content: public IEnumerable<IWorld> FindByAnyTag(params string[] tags)
+    parameters:
+    - id: tags
+      type: System.String[]
+      description: Tags to match against.
+    return:
+      type: System.Collections.Generic.IEnumerable{ZenECS.Core.IWorld}
+    content.vb: Public Function FindByAnyTag(ParamArray tags As String()) As IEnumerable(Of IWorld)
+  overload: ZenECS.Core.Kernel.FindByAnyTag*
+  implements:
+  - ZenECS.Core.IKernel.FindByAnyTag(System.String[])
+  nameWithType.vb: Kernel.FindByAnyTag(ParamArray String())
+  fullName.vb: ZenECS.Core.Kernel.FindByAnyTag(ParamArray String())
+  name.vb: FindByAnyTag(ParamArray String())
+- uid: ZenECS.Core.Kernel.FindByNamePrefix(System.String)
+  commentId: M:ZenECS.Core.Kernel.FindByNamePrefix(System.String)
+  id: FindByNamePrefix(System.String)
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: FindByNamePrefix(string)
+  nameWithType: Kernel.FindByNamePrefix(string)
+  fullName: ZenECS.Core.Kernel.FindByNamePrefix(string)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FindByNamePrefix
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 314
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Finds worlds whose names start with the given prefix (case-insensitive).
+  example: []
+  syntax:
+    content: public IEnumerable<IWorld> FindByNamePrefix(string prefix)
+    parameters:
+    - id: prefix
+      type: System.String
+      description: Name prefix to match.
+    return:
+      type: System.Collections.Generic.IEnumerable{ZenECS.Core.IWorld}
+    content.vb: Public Function FindByNamePrefix(prefix As String) As IEnumerable(Of IWorld)
+  overload: ZenECS.Core.Kernel.FindByNamePrefix*
+  implements:
+  - ZenECS.Core.IKernel.FindByNamePrefix(System.String)
+  nameWithType.vb: Kernel.FindByNamePrefix(String)
+  fullName.vb: ZenECS.Core.Kernel.FindByNamePrefix(String)
+  name.vb: FindByNamePrefix(String)
+- uid: ZenECS.Core.Kernel.SetCurrentWorld(ZenECS.Core.IWorld)
+  commentId: M:ZenECS.Core.Kernel.SetCurrentWorld(ZenECS.Core.IWorld)
+  id: SetCurrentWorld(ZenECS.Core.IWorld)
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: SetCurrentWorld(IWorld)
+  nameWithType: Kernel.SetCurrentWorld(IWorld)
+  fullName: ZenECS.Core.Kernel.SetCurrentWorld(ZenECS.Core.IWorld)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SetCurrentWorld
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 348
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Sets the current world by instance.
+  remarks: >-
+    Internally wraps the world into a <xref href="ZenECS.Core.WorldHandle" data-throw-if-not-resolved="false"></xref> and resolves
+
+    it again to ensure a consistent code path.
+  example: []
+  syntax:
+    content: public void SetCurrentWorld(IWorld world)
+    parameters:
+    - id: world
+      type: ZenECS.Core.IWorld
+      description: World to mark as current.
+    content.vb: Public Sub SetCurrentWorld(world As IWorld)
+  overload: ZenECS.Core.Kernel.SetCurrentWorld*
+  implements:
+  - ZenECS.Core.IKernel.SetCurrentWorld(ZenECS.Core.IWorld)
+- uid: ZenECS.Core.Kernel.SetCurrentWorld(ZenECS.Core.WorldHandle)
+  commentId: M:ZenECS.Core.Kernel.SetCurrentWorld(ZenECS.Core.WorldHandle)
+  id: SetCurrentWorld(ZenECS.Core.WorldHandle)
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: SetCurrentWorld(WorldHandle)
+  nameWithType: Kernel.SetCurrentWorld(WorldHandle)
+  fullName: ZenECS.Core.Kernel.SetCurrentWorld(ZenECS.Core.WorldHandle)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SetCurrentWorld
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 354
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Sets the current world using a safe handle that resolves or throws.
+  example: []
+  syntax:
+    content: public void SetCurrentWorld(WorldHandle handle)
+    parameters:
+    - id: handle
+      type: ZenECS.Core.WorldHandle
+      description: World handle that resolves to an <xref href="ZenECS.Core.IWorld" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Public Sub SetCurrentWorld(handle As WorldHandle)
+  overload: ZenECS.Core.Kernel.SetCurrentWorld*
+  implements:
+  - ZenECS.Core.IKernel.SetCurrentWorld(ZenECS.Core.WorldHandle)
+- uid: ZenECS.Core.Kernel.ClearCurrentWorld
+  commentId: M:ZenECS.Core.Kernel.ClearCurrentWorld
+  id: ClearCurrentWorld
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: ClearCurrentWorld()
+  nameWithType: Kernel.ClearCurrentWorld()
+  fullName: ZenECS.Core.Kernel.ClearCurrentWorld()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ClearCurrentWorld
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 365
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Clears the current selection so that there is no current world.
+  example: []
+  syntax:
+    content: public void ClearCurrentWorld()
+    content.vb: Public Sub ClearCurrentWorld()
+  overload: ZenECS.Core.Kernel.ClearCurrentWorld*
+  implements:
+  - ZenECS.Core.IKernel.ClearCurrentWorld
+- uid: ZenECS.Core.Kernel.BeginFrame(System.Single)
+  commentId: M:ZenECS.Core.Kernel.BeginFrame(System.Single)
+  id: BeginFrame(System.Single)
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: BeginFrame(float)
+  nameWithType: Kernel.BeginFrame(float)
+  fullName: ZenECS.Core.Kernel.BeginFrame(float)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: BeginFrame
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 375
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Advances variable-rate frame logic for all eligible worlds.
+  example: []
+  syntax:
+    content: public void BeginFrame(float dt)
+    parameters:
+    - id: dt
+      type: System.Single
+      description: Delta time for this frame (seconds). Negative values are clamped to 0.
+    content.vb: Public Sub BeginFrame(dt As Single)
+  overload: ZenECS.Core.Kernel.BeginFrame*
+  implements:
+  - ZenECS.Core.IKernel.BeginFrame(System.Single)
+  nameWithType.vb: Kernel.BeginFrame(Single)
+  fullName.vb: ZenECS.Core.Kernel.BeginFrame(Single)
+  name.vb: BeginFrame(Single)
+- uid: ZenECS.Core.Kernel.FixedStep(System.Single)
+  commentId: M:ZenECS.Core.Kernel.FixedStep(System.Single)
+  id: FixedStep(System.Single)
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: FixedStep(float)
+  nameWithType: Kernel.FixedStep(float)
+  fullName: ZenECS.Core.Kernel.FixedStep(float)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FixedStep
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 406
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Advances fixed-rate simulation logic for all eligible worlds.
+  example: []
+  syntax:
+    content: public void FixedStep(float fixedDelta)
+    parameters:
+    - id: fixedDelta
+      type: System.Single
+      description: Fixed step duration (seconds).
+    content.vb: Public Sub FixedStep(fixedDelta As Single)
+  overload: ZenECS.Core.Kernel.FixedStep*
+  implements:
+  - ZenECS.Core.IKernel.FixedStep(System.Single)
+  nameWithType.vb: Kernel.FixedStep(Single)
+  fullName.vb: ZenECS.Core.Kernel.FixedStep(Single)
+  name.vb: FixedStep(Single)
+- uid: ZenECS.Core.Kernel.LateFrame(System.Single)
+  commentId: M:ZenECS.Core.Kernel.LateFrame(System.Single)
+  id: LateFrame(System.Single)
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: LateFrame(float)
+  nameWithType: Kernel.LateFrame(float)
+  fullName: ZenECS.Core.Kernel.LateFrame(float)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: LateFrame
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 439
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Advances presentation phase and interpolation for all eligible worlds.
+  example: []
+  syntax:
+    content: public void LateFrame(float alpha = 1)
+    parameters:
+    - id: alpha
+      type: System.Single
+      description: Blend factor in [0,1] derived from accumulator/fixedDelta.
+    content.vb: Public Sub LateFrame(alpha As Single = 1)
+  overload: ZenECS.Core.Kernel.LateFrame*
+  implements:
+  - ZenECS.Core.IKernel.LateFrame(System.Single)
+  nameWithType.vb: Kernel.LateFrame(Single)
+  fullName.vb: ZenECS.Core.Kernel.LateFrame(Single)
+  name.vb: LateFrame(Single)
+- uid: ZenECS.Core.Kernel.PumpAndLateFrame(System.Single,System.Single,System.Int32)
+  commentId: M:ZenECS.Core.Kernel.PumpAndLateFrame(System.Single,System.Single,System.Int32)
+  id: PumpAndLateFrame(System.Single,System.Single,System.Int32)
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: PumpAndLateFrame(float, float, int)
+  nameWithType: Kernel.PumpAndLateFrame(float, float, int)
+  fullName: ZenECS.Core.Kernel.PumpAndLateFrame(float, float, int)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: PumpAndLateFrame
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 462
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Performs a combined step:
+
+    <xref href="ZenECS.Core.IKernel.BeginFrame(System.Single)" data-throw-if-not-resolved="false"></xref>, zero or more <xref href="ZenECS.Core.IKernel.FixedStep(System.Single)" data-throw-if-not-resolved="false"></xref> calls,
+
+    and finally <xref href="ZenECS.Core.IKernel.LateFrame(System.Single)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public int PumpAndLateFrame(float dt, float fixedDelta, int maxSubSteps)
+    parameters:
+    - id: dt
+      type: System.Single
+      description: Delta time to add to the accumulator (seconds).
+    - id: fixedDelta
+      type: System.Single
+      description: Fixed step duration (seconds).
+    - id: maxSubSteps
+      type: System.Int32
+      description: Maximum number of fixed substeps to process this frame.
+    return:
+      type: System.Int32
+      description: The number of fixed steps executed.
+    content.vb: Public Function PumpAndLateFrame(dt As Single, fixedDelta As Single, maxSubSteps As Integer) As Integer
+  overload: ZenECS.Core.Kernel.PumpAndLateFrame*
+  implements:
+  - ZenECS.Core.IKernel.PumpAndLateFrame(System.Single,System.Single,System.Int32)
+  nameWithType.vb: Kernel.PumpAndLateFrame(Single, Single, Integer)
+  fullName.vb: ZenECS.Core.Kernel.PumpAndLateFrame(Single, Single, Integer)
+  name.vb: PumpAndLateFrame(Single, Single, Integer)
+- uid: ZenECS.Core.Kernel.Pause
+  commentId: M:ZenECS.Core.Kernel.Pause
+  id: Pause
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: Pause()
+  nameWithType: Kernel.Pause()
+  fullName: ZenECS.Core.Kernel.Pause()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Pause
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 487
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Pauses all ticking.
+  remarks: >-
+    While paused, <xref href="ZenECS.Core.IKernel.BeginFrame(System.Single)" data-throw-if-not-resolved="false"></xref>, <xref href="ZenECS.Core.IKernel.FixedStep(System.Single)" data-throw-if-not-resolved="false"></xref>,
+
+    and <xref href="ZenECS.Core.IKernel.LateFrame(System.Single)" data-throw-if-not-resolved="false"></xref> calls are ignored.
+  example: []
+  syntax:
+    content: public void Pause()
+    content.vb: Public Sub Pause()
+  overload: ZenECS.Core.Kernel.Pause*
+  implements:
+  - ZenECS.Core.IKernel.Pause
+- uid: ZenECS.Core.Kernel.Resume
+  commentId: M:ZenECS.Core.Kernel.Resume
+  id: Resume
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: Resume()
+  nameWithType: Kernel.Resume()
+  fullName: ZenECS.Core.Kernel.Resume()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Resume
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 493
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Resumes ticking after a previous call to <xref href="ZenECS.Core.IKernel.Pause" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public void Resume()
+    content.vb: Public Sub [Resume]()
+  overload: ZenECS.Core.Kernel.Resume*
+  implements:
+  - ZenECS.Core.IKernel.Resume
+- uid: ZenECS.Core.Kernel.TogglePause
+  commentId: M:ZenECS.Core.Kernel.TogglePause
+  id: TogglePause
+  parent: ZenECS.Core.Kernel
+  langs:
+  - csharp
+  - vb
+  name: TogglePause()
+  nameWithType: Kernel.TogglePause()
+  fullName: ZenECS.Core.Kernel.TogglePause()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: TogglePause
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
+    startLine: 499
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Toggles the paused state.
+  example: []
+  syntax:
+    content: public void TogglePause()
+    content.vb: Public Sub TogglePause()
+  overload: ZenECS.Core.Kernel.TogglePause*
+  implements:
+  - ZenECS.Core.IKernel.TogglePause
+references:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: ZenECS.Core.IKernel
+  commentId: T:ZenECS.Core.IKernel
+  parent: ZenECS.Core
+  href: ZenECS.Core.IKernel.html
+  name: IKernel
+  nameWithType: IKernel
+  fullName: ZenECS.Core.IKernel
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+- uid: ZenECS.Core.Kernel.IsRunning*
+  commentId: Overload:ZenECS.Core.Kernel.IsRunning
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_IsRunning
+  name: IsRunning
+  nameWithType: Kernel.IsRunning
+  fullName: ZenECS.Core.Kernel.IsRunning
+- uid: ZenECS.Core.IKernel.IsRunning
+  commentId: P:ZenECS.Core.IKernel.IsRunning
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_IsRunning
+  name: IsRunning
+  nameWithType: IKernel.IsRunning
+  fullName: ZenECS.Core.IKernel.IsRunning
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: ZenECS.Core.IKernel.BeginFrame(System.Single)
+  commentId: M:ZenECS.Core.IKernel.BeginFrame(System.Single)
+  parent: ZenECS.Core.IKernel
+  isExternal: true
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_BeginFrame_System_Single_
+  name: BeginFrame(float)
+  nameWithType: IKernel.BeginFrame(float)
+  fullName: ZenECS.Core.IKernel.BeginFrame(float)
+  nameWithType.vb: IKernel.BeginFrame(Single)
+  fullName.vb: ZenECS.Core.IKernel.BeginFrame(Single)
+  name.vb: BeginFrame(Single)
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.BeginFrame(System.Single)
+    name: BeginFrame
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_BeginFrame_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.BeginFrame(System.Single)
+    name: BeginFrame
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_BeginFrame_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: ZenECS.Core.IKernel.FixedStep(System.Single)
+  commentId: M:ZenECS.Core.IKernel.FixedStep(System.Single)
+  parent: ZenECS.Core.IKernel
+  isExternal: true
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FixedStep_System_Single_
+  name: FixedStep(float)
+  nameWithType: IKernel.FixedStep(float)
+  fullName: ZenECS.Core.IKernel.FixedStep(float)
+  nameWithType.vb: IKernel.FixedStep(Single)
+  fullName.vb: ZenECS.Core.IKernel.FixedStep(Single)
+  name.vb: FixedStep(Single)
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.FixedStep(System.Single)
+    name: FixedStep
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FixedStep_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.FixedStep(System.Single)
+    name: FixedStep
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FixedStep_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: ZenECS.Core.IKernel.LateFrame(System.Single)
+  commentId: M:ZenECS.Core.IKernel.LateFrame(System.Single)
+  parent: ZenECS.Core.IKernel
+  isExternal: true
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_LateFrame_System_Single_
+  name: LateFrame(float)
+  nameWithType: IKernel.LateFrame(float)
+  fullName: ZenECS.Core.IKernel.LateFrame(float)
+  nameWithType.vb: IKernel.LateFrame(Single)
+  fullName.vb: ZenECS.Core.IKernel.LateFrame(Single)
+  name.vb: LateFrame(Single)
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.LateFrame(System.Single)
+    name: LateFrame
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_LateFrame_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.LateFrame(System.Single)
+    name: LateFrame
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_LateFrame_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: ZenECS.Core.Kernel.IsPaused*
+  commentId: Overload:ZenECS.Core.Kernel.IsPaused
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_IsPaused
+  name: IsPaused
+  nameWithType: Kernel.IsPaused
+  fullName: ZenECS.Core.Kernel.IsPaused
+- uid: ZenECS.Core.IKernel.IsPaused
+  commentId: P:ZenECS.Core.IKernel.IsPaused
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_IsPaused
+  name: IsPaused
+  nameWithType: IKernel.IsPaused
+  fullName: ZenECS.Core.IKernel.IsPaused
+- uid: ZenECS.Core.Kernel.SimulationAccumulatorSeconds*
+  commentId: Overload:ZenECS.Core.Kernel.SimulationAccumulatorSeconds
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_SimulationAccumulatorSeconds
+  name: SimulationAccumulatorSeconds
+  nameWithType: Kernel.SimulationAccumulatorSeconds
+  fullName: ZenECS.Core.Kernel.SimulationAccumulatorSeconds
+- uid: ZenECS.Core.IKernel.SimulationAccumulatorSeconds
+  commentId: P:ZenECS.Core.IKernel.SimulationAccumulatorSeconds
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_SimulationAccumulatorSeconds
+  name: SimulationAccumulatorSeconds
+  nameWithType: IKernel.SimulationAccumulatorSeconds
+  fullName: ZenECS.Core.IKernel.SimulationAccumulatorSeconds
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: ZenECS.Core.Kernel.TotalTimeSeconds*
+  commentId: Overload:ZenECS.Core.Kernel.TotalTimeSeconds
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_TotalTimeSeconds
+  name: TotalTimeSeconds
+  nameWithType: Kernel.TotalTimeSeconds
+  fullName: ZenECS.Core.Kernel.TotalTimeSeconds
+- uid: ZenECS.Core.IKernel.TotalTimeSeconds
+  commentId: P:ZenECS.Core.IKernel.TotalTimeSeconds
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_TotalTimeSeconds
+  name: TotalTimeSeconds
+  nameWithType: IKernel.TotalTimeSeconds
+  fullName: ZenECS.Core.IKernel.TotalTimeSeconds
+- uid: ZenECS.Core.Kernel.FrameCount*
+  commentId: Overload:ZenECS.Core.Kernel.FrameCount
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_FrameCount
+  name: FrameCount
+  nameWithType: Kernel.FrameCount
+  fullName: ZenECS.Core.Kernel.FrameCount
+- uid: ZenECS.Core.IKernel.FrameCount
+  commentId: P:ZenECS.Core.IKernel.FrameCount
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FrameCount
+  name: FrameCount
+  nameWithType: IKernel.FrameCount
+  fullName: ZenECS.Core.IKernel.FrameCount
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: ZenECS.Core.Kernel.FixedFrameCount*
+  commentId: Overload:ZenECS.Core.Kernel.FixedFrameCount
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_FixedFrameCount
+  name: FixedFrameCount
+  nameWithType: Kernel.FixedFrameCount
+  fullName: ZenECS.Core.Kernel.FixedFrameCount
+- uid: ZenECS.Core.IKernel.FixedFrameCount
+  commentId: P:ZenECS.Core.IKernel.FixedFrameCount
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FixedFrameCount
+  name: FixedFrameCount
+  nameWithType: IKernel.FixedFrameCount
+  fullName: ZenECS.Core.IKernel.FixedFrameCount
+- uid: ZenECS.Core.Kernel.FixedFrameIndexInFrame*
+  commentId: Overload:ZenECS.Core.Kernel.FixedFrameIndexInFrame
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_FixedFrameIndexInFrame
+  name: FixedFrameIndexInFrame
+  nameWithType: Kernel.FixedFrameIndexInFrame
+  fullName: ZenECS.Core.Kernel.FixedFrameIndexInFrame
+- uid: ZenECS.Core.IKernel.FixedFrameIndexInFrame
+  commentId: P:ZenECS.Core.IKernel.FixedFrameIndexInFrame
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FixedFrameIndexInFrame
+  name: FixedFrameIndexInFrame
+  nameWithType: IKernel.FixedFrameIndexInFrame
+  fullName: ZenECS.Core.IKernel.FixedFrameIndexInFrame
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: ZenECS.Core.Kernel.TotalSimulatedSeconds*
+  commentId: Overload:ZenECS.Core.Kernel.TotalSimulatedSeconds
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_TotalSimulatedSeconds
+  name: TotalSimulatedSeconds
+  nameWithType: Kernel.TotalSimulatedSeconds
+  fullName: ZenECS.Core.Kernel.TotalSimulatedSeconds
+- uid: ZenECS.Core.IKernel.TotalSimulatedSeconds
+  commentId: P:ZenECS.Core.IKernel.TotalSimulatedSeconds
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_TotalSimulatedSeconds
+  name: TotalSimulatedSeconds
+  nameWithType: IKernel.TotalSimulatedSeconds
+  fullName: ZenECS.Core.IKernel.TotalSimulatedSeconds
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: ZenECS.Core.Kernel.CurrentWorld*
+  commentId: Overload:ZenECS.Core.Kernel.CurrentWorld
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_CurrentWorld
+  name: CurrentWorld
+  nameWithType: Kernel.CurrentWorld
+  fullName: ZenECS.Core.Kernel.CurrentWorld
+- uid: ZenECS.Core.IKernel.CurrentWorld
+  commentId: P:ZenECS.Core.IKernel.CurrentWorld
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_CurrentWorld
+  name: CurrentWorld
+  nameWithType: IKernel.CurrentWorld
+  fullName: ZenECS.Core.IKernel.CurrentWorld
+- uid: ZenECS.Core.IWorld
+  commentId: T:ZenECS.Core.IWorld
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorld.html
+  name: IWorld
+  nameWithType: IWorld
+  fullName: ZenECS.Core.IWorld
+- uid: ZenECS.Core.Kernel.Options*
+  commentId: Overload:ZenECS.Core.Kernel.Options
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_Options
+  name: Options
+  nameWithType: Kernel.Options
+  fullName: ZenECS.Core.Kernel.Options
+- uid: ZenECS.Core.IKernel.Options
+  commentId: P:ZenECS.Core.IKernel.Options
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_Options
+  name: Options
+  nameWithType: IKernel.Options
+  fullName: ZenECS.Core.IKernel.Options
+- uid: ZenECS.Core.KernelOptions
+  commentId: T:ZenECS.Core.KernelOptions
+  parent: ZenECS.Core
+  href: ZenECS.Core.KernelOptions.html
+  name: KernelOptions
+  nameWithType: KernelOptions
+  fullName: ZenECS.Core.KernelOptions
+- uid: ZenECS.Core.IKernel.WorldCreated
+  commentId: E:ZenECS.Core.IKernel.WorldCreated
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_WorldCreated
+  name: WorldCreated
+  nameWithType: IKernel.WorldCreated
+  fullName: ZenECS.Core.IKernel.WorldCreated
+- uid: System.Action{ZenECS.Core.IWorld}
+  commentId: T:System.Action{ZenECS.Core.IWorld}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<IWorld>
+  nameWithType: Action<IWorld>
+  fullName: System.Action<ZenECS.Core.IWorld>
+  nameWithType.vb: Action(Of IWorld)
+  fullName.vb: System.Action(Of ZenECS.Core.IWorld)
+  name.vb: Action(Of IWorld)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ZenECS.Core.IKernel.WorldDestroyed
+  commentId: E:ZenECS.Core.IKernel.WorldDestroyed
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_WorldDestroyed
+  name: WorldDestroyed
+  nameWithType: IKernel.WorldDestroyed
+  fullName: ZenECS.Core.IKernel.WorldDestroyed
+- uid: ZenECS.Core.IKernel.CurrentWorldChanged
+  commentId: E:ZenECS.Core.IKernel.CurrentWorldChanged
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_CurrentWorldChanged
+  name: CurrentWorldChanged
+  nameWithType: IKernel.CurrentWorldChanged
+  fullName: ZenECS.Core.IKernel.CurrentWorldChanged
+- uid: System.Action{ZenECS.Core.IWorld,ZenECS.Core.IWorld}
+  commentId: T:System.Action{ZenECS.Core.IWorld,ZenECS.Core.IWorld}
+  parent: System
+  definition: System.Action`2
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<IWorld, IWorld>
+  nameWithType: Action<IWorld, IWorld>
+  fullName: System.Action<ZenECS.Core.IWorld, ZenECS.Core.IWorld>
+  nameWithType.vb: Action(Of IWorld, IWorld)
+  fullName.vb: System.Action(Of ZenECS.Core.IWorld, ZenECS.Core.IWorld)
+  name.vb: Action(Of IWorld, IWorld)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: )
+- uid: System.Action`2
+  commentId: T:System.Action`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<T1, T2>
+  nameWithType: Action<T1, T2>
+  fullName: System.Action<T1, T2>
+  nameWithType.vb: Action(Of T1, T2)
+  fullName.vb: System.Action(Of T1, T2)
+  name.vb: Action(Of T1, T2)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: ZenECS.Core.IKernel.Disposed
+  commentId: E:ZenECS.Core.IKernel.Disposed
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_Disposed
+  name: Disposed
+  nameWithType: IKernel.Disposed
+  fullName: ZenECS.Core.IKernel.Disposed
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action
+  name: Action
+  nameWithType: Action
+  fullName: System.Action
+- uid: ZenECS.Core.Kernel
+  commentId: T:ZenECS.Core.Kernel
+  href: ZenECS.Core.Kernel.html
+  name: Kernel
+  nameWithType: Kernel
+  fullName: ZenECS.Core.Kernel
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.Log
+  commentId: P:ZenECS.Core.Config.EcsRuntimeOptions.Log
+  href: ZenECS.Core.Config.EcsRuntimeOptions.html#ZenECS_Core_Config_EcsRuntimeOptions_Log
+  name: Log
+  nameWithType: EcsRuntimeOptions.Log
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.Log
+- uid: ZenECS.Core.Kernel.#ctor*
+  commentId: Overload:ZenECS.Core.Kernel.#ctor
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel__ctor_ZenECS_Core_KernelOptions_ZenECS_Core_Config_IEcsLogger_
+  name: Kernel
+  nameWithType: Kernel.Kernel
+  fullName: ZenECS.Core.Kernel.Kernel
+  nameWithType.vb: Kernel.New
+  fullName.vb: ZenECS.Core.Kernel.New
+  name.vb: New
+- uid: ZenECS.Core.Config.IEcsLogger
+  commentId: T:ZenECS.Core.Config.IEcsLogger
+  parent: ZenECS.Core.Config
+  href: ZenECS.Core.Config.IEcsLogger.html
+  name: IEcsLogger
+  nameWithType: IEcsLogger
+  fullName: ZenECS.Core.Config.IEcsLogger
+- uid: ZenECS.Core.Config
+  commentId: N:ZenECS.Core.Config
+  href: ZenECS.html
+  name: ZenECS.Core.Config
+  nameWithType: ZenECS.Core.Config
+  fullName: ZenECS.Core.Config
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Config
+    name: Config
+    href: ZenECS.Core.Config.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Config
+    name: Config
+    href: ZenECS.Core.Config.html
+- uid: ZenECS.Core.Kernel.Dispose*
+  commentId: Overload:ZenECS.Core.Kernel.Dispose
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_Dispose
+  name: Dispose
+  nameWithType: Kernel.Dispose
+  fullName: ZenECS.Core.Kernel.Dispose
+- uid: ZenECS.Core.KernelOptions.NewWorldId
+  commentId: M:ZenECS.Core.KernelOptions.NewWorldId
+  href: ZenECS.Core.KernelOptions.html#ZenECS_Core_KernelOptions_NewWorldId
+  name: NewWorldId()
+  nameWithType: KernelOptions.NewWorldId()
+  fullName: ZenECS.Core.KernelOptions.NewWorldId()
+  spec.csharp:
+  - uid: ZenECS.Core.KernelOptions.NewWorldId
+    name: NewWorldId
+    href: ZenECS.Core.KernelOptions.html#ZenECS_Core_KernelOptions_NewWorldId
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.KernelOptions.NewWorldId
+    name: NewWorldId
+    href: ZenECS.Core.KernelOptions.html#ZenECS_Core_KernelOptions_NewWorldId
+  - name: (
+  - name: )
+- uid: ZenECS.Core.Kernel.CreateWorld*
+  commentId: Overload:ZenECS.Core.Kernel.CreateWorld
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_CreateWorld_System_Nullable_ZenECS_Core_WorldConfig__System_String_System_Collections_Generic_IEnumerable_System_String__System_Nullable_ZenECS_Core_WorldId__System_Boolean_
+  name: CreateWorld
+  nameWithType: Kernel.CreateWorld
+  fullName: ZenECS.Core.Kernel.CreateWorld
+- uid: ZenECS.Core.IKernel.CreateWorld(System.Nullable{ZenECS.Core.WorldConfig},System.String,System.Collections.Generic.IEnumerable{System.String},System.Nullable{ZenECS.Core.WorldId},System.Boolean)
+  commentId: M:ZenECS.Core.IKernel.CreateWorld(System.Nullable{ZenECS.Core.WorldConfig},System.String,System.Collections.Generic.IEnumerable{System.String},System.Nullable{ZenECS.Core.WorldId},System.Boolean)
+  parent: ZenECS.Core.IKernel
+  isExternal: true
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_CreateWorld_System_Nullable_ZenECS_Core_WorldConfig__System_String_System_Collections_Generic_IEnumerable_System_String__System_Nullable_ZenECS_Core_WorldId__System_Boolean_
+  name: CreateWorld(WorldConfig?, string, IEnumerable<string>, WorldId?, bool)
+  nameWithType: IKernel.CreateWorld(WorldConfig?, string, IEnumerable<string>, WorldId?, bool)
+  fullName: ZenECS.Core.IKernel.CreateWorld(ZenECS.Core.WorldConfig?, string, System.Collections.Generic.IEnumerable<string>, ZenECS.Core.WorldId?, bool)
+  nameWithType.vb: IKernel.CreateWorld(WorldConfig?, String, IEnumerable(Of String), WorldId?, Boolean)
+  fullName.vb: ZenECS.Core.IKernel.CreateWorld(ZenECS.Core.WorldConfig?, String, System.Collections.Generic.IEnumerable(Of String), ZenECS.Core.WorldId?, Boolean)
+  name.vb: CreateWorld(WorldConfig?, String, IEnumerable(Of String), WorldId?, Boolean)
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.CreateWorld(System.Nullable{ZenECS.Core.WorldConfig},System.String,System.Collections.Generic.IEnumerable{System.String},System.Nullable{ZenECS.Core.WorldId},System.Boolean)
+    name: CreateWorld
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_CreateWorld_System_Nullable_ZenECS_Core_WorldConfig__System_String_System_Collections_Generic_IEnumerable_System_String__System_Nullable_ZenECS_Core_WorldId__System_Boolean_
+  - name: (
+  - uid: ZenECS.Core.WorldConfig
+    name: WorldConfig
+    href: ZenECS.Core.WorldConfig.html
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.WorldId
+    name: WorldId
+    href: ZenECS.Core.WorldId.html
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.CreateWorld(System.Nullable{ZenECS.Core.WorldConfig},System.String,System.Collections.Generic.IEnumerable{System.String},System.Nullable{ZenECS.Core.WorldId},System.Boolean)
+    name: CreateWorld
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_CreateWorld_System_Nullable_ZenECS_Core_WorldConfig__System_String_System_Collections_Generic_IEnumerable_System_String__System_Nullable_ZenECS_Core_WorldId__System_Boolean_
+  - name: (
+  - uid: ZenECS.Core.WorldConfig
+    name: WorldConfig
+    href: ZenECS.Core.WorldConfig.html
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.WorldId
+    name: WorldId
+    href: ZenECS.Core.WorldId.html
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Nullable{ZenECS.Core.WorldConfig}
+  commentId: T:System.Nullable{ZenECS.Core.WorldConfig}
+  parent: System
+  definition: System.Nullable`1
+  href: ZenECS.Core.WorldConfig.html
+  name: WorldConfig?
+  nameWithType: WorldConfig?
+  fullName: ZenECS.Core.WorldConfig?
+  spec.csharp:
+  - uid: ZenECS.Core.WorldConfig
+    name: WorldConfig
+    href: ZenECS.Core.WorldConfig.html
+  - name: '?'
+  spec.vb:
+  - uid: ZenECS.Core.WorldConfig
+    name: WorldConfig
+    href: ZenECS.Core.WorldConfig.html
+  - name: '?'
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<string>
+  nameWithType: IEnumerable<string>
+  fullName: System.Collections.Generic.IEnumerable<string>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Nullable{ZenECS.Core.WorldId}
+  commentId: T:System.Nullable{ZenECS.Core.WorldId}
+  parent: System
+  definition: System.Nullable`1
+  href: ZenECS.Core.WorldId.html
+  name: WorldId?
+  nameWithType: WorldId?
+  fullName: ZenECS.Core.WorldId?
+  spec.csharp:
+  - uid: ZenECS.Core.WorldId
+    name: WorldId
+    href: ZenECS.Core.WorldId.html
+  - name: '?'
+  spec.vb:
+  - uid: ZenECS.Core.WorldId
+    name: WorldId
+    href: ZenECS.Core.WorldId.html
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: ZenECS.Core.Kernel.DestroyWorld*
+  commentId: Overload:ZenECS.Core.Kernel.DestroyWorld
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_DestroyWorld_ZenECS_Core_IWorld_
+  name: DestroyWorld
+  nameWithType: Kernel.DestroyWorld
+  fullName: ZenECS.Core.Kernel.DestroyWorld
+- uid: ZenECS.Core.IKernel.DestroyWorld(ZenECS.Core.IWorld)
+  commentId: M:ZenECS.Core.IKernel.DestroyWorld(ZenECS.Core.IWorld)
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_DestroyWorld_ZenECS_Core_IWorld_
+  name: DestroyWorld(IWorld)
+  nameWithType: IKernel.DestroyWorld(IWorld)
+  fullName: ZenECS.Core.IKernel.DestroyWorld(ZenECS.Core.IWorld)
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.DestroyWorld(ZenECS.Core.IWorld)
+    name: DestroyWorld
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_DestroyWorld_ZenECS_Core_IWorld_
+  - name: (
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.DestroyWorld(ZenECS.Core.IWorld)
+    name: DestroyWorld
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_DestroyWorld_ZenECS_Core_IWorld_
+  - name: (
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: )
+- uid: ZenECS.Core.Kernel.GetAllWorld*
+  commentId: Overload:ZenECS.Core.Kernel.GetAllWorld
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_GetAllWorld
+  name: GetAllWorld
+  nameWithType: Kernel.GetAllWorld
+  fullName: ZenECS.Core.Kernel.GetAllWorld
+- uid: ZenECS.Core.IKernel.GetAllWorld
+  commentId: M:ZenECS.Core.IKernel.GetAllWorld
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_GetAllWorld
+  name: GetAllWorld()
+  nameWithType: IKernel.GetAllWorld()
+  fullName: ZenECS.Core.IKernel.GetAllWorld()
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.GetAllWorld
+    name: GetAllWorld
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_GetAllWorld
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.GetAllWorld
+    name: GetAllWorld
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_GetAllWorld
+  - name: (
+  - name: )
+- uid: System.Collections.Generic.IEnumerable{ZenECS.Core.IWorld}
+  commentId: T:System.Collections.Generic.IEnumerable{ZenECS.Core.IWorld}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<IWorld>
+  nameWithType: IEnumerable<IWorld>
+  fullName: System.Collections.Generic.IEnumerable<ZenECS.Core.IWorld>
+  nameWithType.vb: IEnumerable(Of IWorld)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of ZenECS.Core.IWorld)
+  name.vb: IEnumerable(Of IWorld)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: )
+- uid: ZenECS.Core.Kernel.TryGet*
+  commentId: Overload:ZenECS.Core.Kernel.TryGet
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_TryGet_ZenECS_Core_WorldId_ZenECS_Core_IWorld__
+  name: TryGet
+  nameWithType: Kernel.TryGet
+  fullName: ZenECS.Core.Kernel.TryGet
+- uid: ZenECS.Core.IKernel.TryGet(ZenECS.Core.WorldId,ZenECS.Core.IWorld@)
+  commentId: M:ZenECS.Core.IKernel.TryGet(ZenECS.Core.WorldId,ZenECS.Core.IWorld@)
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_TryGet_ZenECS_Core_WorldId_ZenECS_Core_IWorld__
+  name: TryGet(WorldId, out IWorld)
+  nameWithType: IKernel.TryGet(WorldId, out IWorld)
+  fullName: ZenECS.Core.IKernel.TryGet(ZenECS.Core.WorldId, out ZenECS.Core.IWorld)
+  nameWithType.vb: IKernel.TryGet(WorldId, IWorld)
+  fullName.vb: ZenECS.Core.IKernel.TryGet(ZenECS.Core.WorldId, ZenECS.Core.IWorld)
+  name.vb: TryGet(WorldId, IWorld)
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.TryGet(ZenECS.Core.WorldId,ZenECS.Core.IWorld@)
+    name: TryGet
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_TryGet_ZenECS_Core_WorldId_ZenECS_Core_IWorld__
+  - name: (
+  - uid: ZenECS.Core.WorldId
+    name: WorldId
+    href: ZenECS.Core.WorldId.html
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.TryGet(ZenECS.Core.WorldId,ZenECS.Core.IWorld@)
+    name: TryGet
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_TryGet_ZenECS_Core_WorldId_ZenECS_Core_IWorld__
+  - name: (
+  - uid: ZenECS.Core.WorldId
+    name: WorldId
+    href: ZenECS.Core.WorldId.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: )
+- uid: ZenECS.Core.WorldId
+  commentId: T:ZenECS.Core.WorldId
+  parent: ZenECS.Core
+  href: ZenECS.Core.WorldId.html
+  name: WorldId
+  nameWithType: WorldId
+  fullName: ZenECS.Core.WorldId
+- uid: ZenECS.Core.IWorld.Name
+  commentId: P:ZenECS.Core.IWorld.Name
+  href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_Name
+  name: Name
+  nameWithType: IWorld.Name
+  fullName: ZenECS.Core.IWorld.Name
+- uid: ZenECS.Core.Kernel.FindByName*
+  commentId: Overload:ZenECS.Core.Kernel.FindByName
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_FindByName_System_String_
+  name: FindByName
+  nameWithType: Kernel.FindByName
+  fullName: ZenECS.Core.Kernel.FindByName
+- uid: ZenECS.Core.IKernel.FindByName(System.String)
+  commentId: M:ZenECS.Core.IKernel.FindByName(System.String)
+  parent: ZenECS.Core.IKernel
+  isExternal: true
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByName_System_String_
+  name: FindByName(string)
+  nameWithType: IKernel.FindByName(string)
+  fullName: ZenECS.Core.IKernel.FindByName(string)
+  nameWithType.vb: IKernel.FindByName(String)
+  fullName.vb: ZenECS.Core.IKernel.FindByName(String)
+  name.vb: FindByName(String)
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.FindByName(System.String)
+    name: FindByName
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByName_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.FindByName(System.String)
+    name: FindByName
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByName_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: ZenECS.Core.Kernel.FindByTag*
+  commentId: Overload:ZenECS.Core.Kernel.FindByTag
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_FindByTag_System_String_
+  name: FindByTag
+  nameWithType: Kernel.FindByTag
+  fullName: ZenECS.Core.Kernel.FindByTag
+- uid: ZenECS.Core.IKernel.FindByTag(System.String)
+  commentId: M:ZenECS.Core.IKernel.FindByTag(System.String)
+  parent: ZenECS.Core.IKernel
+  isExternal: true
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByTag_System_String_
+  name: FindByTag(string)
+  nameWithType: IKernel.FindByTag(string)
+  fullName: ZenECS.Core.IKernel.FindByTag(string)
+  nameWithType.vb: IKernel.FindByTag(String)
+  fullName.vb: ZenECS.Core.IKernel.FindByTag(String)
+  name.vb: FindByTag(String)
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.FindByTag(System.String)
+    name: FindByTag
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByTag_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.FindByTag(System.String)
+    name: FindByTag
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByTag_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: ZenECS.Core.Kernel.FindByAnyTag*
+  commentId: Overload:ZenECS.Core.Kernel.FindByAnyTag
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_FindByAnyTag_System_String___
+  name: FindByAnyTag
+  nameWithType: Kernel.FindByAnyTag
+  fullName: ZenECS.Core.Kernel.FindByAnyTag
+- uid: ZenECS.Core.IKernel.FindByAnyTag(System.String[])
+  commentId: M:ZenECS.Core.IKernel.FindByAnyTag(System.String[])
+  parent: ZenECS.Core.IKernel
+  isExternal: true
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByAnyTag_System_String___
+  name: FindByAnyTag(params string[])
+  nameWithType: IKernel.FindByAnyTag(params string[])
+  fullName: ZenECS.Core.IKernel.FindByAnyTag(params string[])
+  nameWithType.vb: IKernel.FindByAnyTag(ParamArray String())
+  fullName.vb: ZenECS.Core.IKernel.FindByAnyTag(ParamArray String())
+  name.vb: FindByAnyTag(ParamArray String())
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.FindByAnyTag(System.String[])
+    name: FindByAnyTag
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByAnyTag_System_String___
+  - name: (
+  - name: params
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.FindByAnyTag(System.String[])
+    name: FindByAnyTag
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByAnyTag_System_String___
+  - name: (
+  - name: ParamArray
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+  - name: )
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+- uid: ZenECS.Core.Kernel.FindByNamePrefix*
+  commentId: Overload:ZenECS.Core.Kernel.FindByNamePrefix
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_FindByNamePrefix_System_String_
+  name: FindByNamePrefix
+  nameWithType: Kernel.FindByNamePrefix
+  fullName: ZenECS.Core.Kernel.FindByNamePrefix
+- uid: ZenECS.Core.IKernel.FindByNamePrefix(System.String)
+  commentId: M:ZenECS.Core.IKernel.FindByNamePrefix(System.String)
+  parent: ZenECS.Core.IKernel
+  isExternal: true
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByNamePrefix_System_String_
+  name: FindByNamePrefix(string)
+  nameWithType: IKernel.FindByNamePrefix(string)
+  fullName: ZenECS.Core.IKernel.FindByNamePrefix(string)
+  nameWithType.vb: IKernel.FindByNamePrefix(String)
+  fullName.vb: ZenECS.Core.IKernel.FindByNamePrefix(String)
+  name.vb: FindByNamePrefix(String)
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.FindByNamePrefix(System.String)
+    name: FindByNamePrefix
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByNamePrefix_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.FindByNamePrefix(System.String)
+    name: FindByNamePrefix
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByNamePrefix_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: ZenECS.Core.WorldHandle
+  commentId: T:ZenECS.Core.WorldHandle
+  parent: ZenECS.Core
+  href: ZenECS.Core.WorldHandle.html
+  name: WorldHandle
+  nameWithType: WorldHandle
+  fullName: ZenECS.Core.WorldHandle
+- uid: ZenECS.Core.Kernel.SetCurrentWorld*
+  commentId: Overload:ZenECS.Core.Kernel.SetCurrentWorld
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_SetCurrentWorld_ZenECS_Core_IWorld_
+  name: SetCurrentWorld
+  nameWithType: Kernel.SetCurrentWorld
+  fullName: ZenECS.Core.Kernel.SetCurrentWorld
+- uid: ZenECS.Core.IKernel.SetCurrentWorld(ZenECS.Core.IWorld)
+  commentId: M:ZenECS.Core.IKernel.SetCurrentWorld(ZenECS.Core.IWorld)
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_SetCurrentWorld_ZenECS_Core_IWorld_
+  name: SetCurrentWorld(IWorld)
+  nameWithType: IKernel.SetCurrentWorld(IWorld)
+  fullName: ZenECS.Core.IKernel.SetCurrentWorld(ZenECS.Core.IWorld)
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.SetCurrentWorld(ZenECS.Core.IWorld)
+    name: SetCurrentWorld
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_SetCurrentWorld_ZenECS_Core_IWorld_
+  - name: (
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.SetCurrentWorld(ZenECS.Core.IWorld)
+    name: SetCurrentWorld
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_SetCurrentWorld_ZenECS_Core_IWorld_
+  - name: (
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: )
+- uid: ZenECS.Core.IKernel.SetCurrentWorld(ZenECS.Core.WorldHandle)
+  commentId: M:ZenECS.Core.IKernel.SetCurrentWorld(ZenECS.Core.WorldHandle)
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_SetCurrentWorld_ZenECS_Core_WorldHandle_
+  name: SetCurrentWorld(WorldHandle)
+  nameWithType: IKernel.SetCurrentWorld(WorldHandle)
+  fullName: ZenECS.Core.IKernel.SetCurrentWorld(ZenECS.Core.WorldHandle)
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.SetCurrentWorld(ZenECS.Core.WorldHandle)
+    name: SetCurrentWorld
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_SetCurrentWorld_ZenECS_Core_WorldHandle_
+  - name: (
+  - uid: ZenECS.Core.WorldHandle
+    name: WorldHandle
+    href: ZenECS.Core.WorldHandle.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.SetCurrentWorld(ZenECS.Core.WorldHandle)
+    name: SetCurrentWorld
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_SetCurrentWorld_ZenECS_Core_WorldHandle_
+  - name: (
+  - uid: ZenECS.Core.WorldHandle
+    name: WorldHandle
+    href: ZenECS.Core.WorldHandle.html
+  - name: )
+- uid: ZenECS.Core.Kernel.ClearCurrentWorld*
+  commentId: Overload:ZenECS.Core.Kernel.ClearCurrentWorld
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_ClearCurrentWorld
+  name: ClearCurrentWorld
+  nameWithType: Kernel.ClearCurrentWorld
+  fullName: ZenECS.Core.Kernel.ClearCurrentWorld
+- uid: ZenECS.Core.IKernel.ClearCurrentWorld
+  commentId: M:ZenECS.Core.IKernel.ClearCurrentWorld
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_ClearCurrentWorld
+  name: ClearCurrentWorld()
+  nameWithType: IKernel.ClearCurrentWorld()
+  fullName: ZenECS.Core.IKernel.ClearCurrentWorld()
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.ClearCurrentWorld
+    name: ClearCurrentWorld
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_ClearCurrentWorld
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.ClearCurrentWorld
+    name: ClearCurrentWorld
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_ClearCurrentWorld
+  - name: (
+  - name: )
+- uid: ZenECS.Core.Kernel.BeginFrame*
+  commentId: Overload:ZenECS.Core.Kernel.BeginFrame
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_BeginFrame_System_Single_
+  name: BeginFrame
+  nameWithType: Kernel.BeginFrame
+  fullName: ZenECS.Core.Kernel.BeginFrame
+- uid: ZenECS.Core.Kernel.FixedStep*
+  commentId: Overload:ZenECS.Core.Kernel.FixedStep
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_FixedStep_System_Single_
+  name: FixedStep
+  nameWithType: Kernel.FixedStep
+  fullName: ZenECS.Core.Kernel.FixedStep
+- uid: ZenECS.Core.Kernel.LateFrame*
+  commentId: Overload:ZenECS.Core.Kernel.LateFrame
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_LateFrame_System_Single_
+  name: LateFrame
+  nameWithType: Kernel.LateFrame
+  fullName: ZenECS.Core.Kernel.LateFrame
+- uid: ZenECS.Core.Kernel.PumpAndLateFrame*
+  commentId: Overload:ZenECS.Core.Kernel.PumpAndLateFrame
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_PumpAndLateFrame_System_Single_System_Single_System_Int32_
+  name: PumpAndLateFrame
+  nameWithType: Kernel.PumpAndLateFrame
+  fullName: ZenECS.Core.Kernel.PumpAndLateFrame
+- uid: ZenECS.Core.IKernel.PumpAndLateFrame(System.Single,System.Single,System.Int32)
+  commentId: M:ZenECS.Core.IKernel.PumpAndLateFrame(System.Single,System.Single,System.Int32)
+  parent: ZenECS.Core.IKernel
+  isExternal: true
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_PumpAndLateFrame_System_Single_System_Single_System_Int32_
+  name: PumpAndLateFrame(float, float, int)
+  nameWithType: IKernel.PumpAndLateFrame(float, float, int)
+  fullName: ZenECS.Core.IKernel.PumpAndLateFrame(float, float, int)
+  nameWithType.vb: IKernel.PumpAndLateFrame(Single, Single, Integer)
+  fullName.vb: ZenECS.Core.IKernel.PumpAndLateFrame(Single, Single, Integer)
+  name.vb: PumpAndLateFrame(Single, Single, Integer)
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.PumpAndLateFrame(System.Single,System.Single,System.Int32)
+    name: PumpAndLateFrame
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_PumpAndLateFrame_System_Single_System_Single_System_Int32_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.PumpAndLateFrame(System.Single,System.Single,System.Int32)
+    name: PumpAndLateFrame
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_PumpAndLateFrame_System_Single_System_Single_System_Int32_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: ZenECS.Core.Kernel.Pause*
+  commentId: Overload:ZenECS.Core.Kernel.Pause
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_Pause
+  name: Pause
+  nameWithType: Kernel.Pause
+  fullName: ZenECS.Core.Kernel.Pause
+- uid: ZenECS.Core.IKernel.Pause
+  commentId: M:ZenECS.Core.IKernel.Pause
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_Pause
+  name: Pause()
+  nameWithType: IKernel.Pause()
+  fullName: ZenECS.Core.IKernel.Pause()
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.Pause
+    name: Pause
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_Pause
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.Pause
+    name: Pause
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_Pause
+  - name: (
+  - name: )
+- uid: ZenECS.Core.Kernel.Resume*
+  commentId: Overload:ZenECS.Core.Kernel.Resume
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_Resume
+  name: Resume
+  nameWithType: Kernel.Resume
+  fullName: ZenECS.Core.Kernel.Resume
+- uid: ZenECS.Core.IKernel.Resume
+  commentId: M:ZenECS.Core.IKernel.Resume
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_Resume
+  name: Resume()
+  nameWithType: IKernel.Resume()
+  fullName: ZenECS.Core.IKernel.Resume()
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.Resume
+    name: Resume
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_Resume
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.Resume
+    name: Resume
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_Resume
+  - name: (
+  - name: )
+- uid: ZenECS.Core.Kernel.TogglePause*
+  commentId: Overload:ZenECS.Core.Kernel.TogglePause
+  href: ZenECS.Core.Kernel.html#ZenECS_Core_Kernel_TogglePause
+  name: TogglePause
+  nameWithType: Kernel.TogglePause
+  fullName: ZenECS.Core.Kernel.TogglePause
+- uid: ZenECS.Core.IKernel.TogglePause
+  commentId: M:ZenECS.Core.IKernel.TogglePause
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_TogglePause
+  name: TogglePause()
+  nameWithType: IKernel.TogglePause()
+  fullName: ZenECS.Core.IKernel.TogglePause()
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.TogglePause
+    name: TogglePause
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_TogglePause
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.TogglePause
+    name: TogglePause
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_TogglePause
+  - name: (
+  - name: )

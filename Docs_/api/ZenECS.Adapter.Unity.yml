@@ -1,0 +1,44 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity
+  commentId: N:ZenECS.Adapter.Unity
+  id: ZenECS.Adapter.Unity
+  children:
+  - ZenECS.Adapter.Unity.KernelLocator
+  - ZenECS.Adapter.Unity.WorldSystemCreator
+  - ZenECS.Adapter.Unity.ZenEcsUnityBridge
+  - ZenECS.Adapter.Unity.ZenReadOnlyInInspectorAttribute
+  langs:
+  - csharp
+  - vb
+  name: ZenECS.Adapter.Unity
+  nameWithType: ZenECS.Adapter.Unity
+  fullName: ZenECS.Adapter.Unity
+  type: Namespace
+  assemblies:
+  - ZenECS.Adapter.Unity
+references:
+- uid: ZenECS.Adapter.Unity.ZenReadOnlyInInspectorAttribute
+  commentId: T:ZenECS.Adapter.Unity.ZenReadOnlyInInspectorAttribute
+  href: ZenECS.Adapter.Unity.ZenReadOnlyInInspectorAttribute.html
+  name: ZenReadOnlyInInspectorAttribute
+  nameWithType: ZenReadOnlyInInspectorAttribute
+  fullName: ZenECS.Adapter.Unity.ZenReadOnlyInInspectorAttribute
+- uid: ZenECS.Adapter.Unity.KernelLocator
+  commentId: T:ZenECS.Adapter.Unity.KernelLocator
+  href: ZenECS.Adapter.Unity.KernelLocator.html
+  name: KernelLocator
+  nameWithType: KernelLocator
+  fullName: ZenECS.Adapter.Unity.KernelLocator
+- uid: ZenECS.Adapter.Unity.ZenEcsUnityBridge
+  commentId: T:ZenECS.Adapter.Unity.ZenEcsUnityBridge
+  href: ZenECS.Adapter.Unity.ZenEcsUnityBridge.html
+  name: ZenEcsUnityBridge
+  nameWithType: ZenEcsUnityBridge
+  fullName: ZenECS.Adapter.Unity.ZenEcsUnityBridge
+- uid: ZenECS.Adapter.Unity.WorldSystemCreator
+  commentId: T:ZenECS.Adapter.Unity.WorldSystemCreator
+  href: ZenECS.Adapter.Unity.WorldSystemCreator.html
+  name: WorldSystemCreator
+  nameWithType: WorldSystemCreator
+  fullName: ZenECS.Adapter.Unity.WorldSystemCreator

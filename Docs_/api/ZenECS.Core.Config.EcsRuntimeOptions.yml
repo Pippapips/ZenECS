@@ -1,0 +1,654 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Config.EcsRuntimeOptions
+  commentId: T:ZenECS.Core.Config.EcsRuntimeOptions
+  id: EcsRuntimeOptions
+  parent: ZenECS.Core.Config
+  children:
+  - ZenECS.Core.Config.EcsRuntimeOptions.Log
+  - ZenECS.Core.Config.EcsRuntimeOptions.OnUnhandledError
+  - ZenECS.Core.Config.EcsRuntimeOptions.Report(System.Exception,System.String)
+  - ZenECS.Core.Config.EcsRuntimeOptions.WritePolicy
+  langs:
+  - csharp
+  - vb
+  name: EcsRuntimeOptions
+  nameWithType: EcsRuntimeOptions
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions
+  type: Class
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: EcsRuntimeOptions
+    path: ../Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
+    startLine: 24
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Config
+  summary: Centralized collection of runtime options and diagnostic hooks that influence core behavior.
+  remarks: >-
+    Configure these options during application bootstrap (before systems start). They are static,
+
+    process-wide settings and are intended to be read frequently but written infrequently.
+  example: []
+  syntax:
+    content: public static class EcsRuntimeOptions
+    content.vb: Public Module EcsRuntimeOptions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.Log
+  commentId: P:ZenECS.Core.Config.EcsRuntimeOptions.Log
+  id: Log
+  parent: ZenECS.Core.Config.EcsRuntimeOptions
+  langs:
+  - csharp
+  - vb
+  name: Log
+  nameWithType: EcsRuntimeOptions.Log
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.Log
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Log
+    path: ../Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
+    startLine: 35
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Config
+  summary: >-
+    Gets or sets the current logger instance used by the core.
+
+    Defaults to a no-op logger (NullLogger).
+  remarks: Replace this during startup to surface core diagnostics to your logging system.
+  example: []
+  syntax:
+    content: public static IEcsLogger Log { get; set; }
+    parameters: []
+    return:
+      type: ZenECS.Core.Config.IEcsLogger
+    content.vb: Public Shared Property Log As IEcsLogger
+  overload: ZenECS.Core.Config.EcsRuntimeOptions.Log*
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.WritePolicy
+  commentId: P:ZenECS.Core.Config.EcsRuntimeOptions.WritePolicy
+  id: WritePolicy
+  parent: ZenECS.Core.Config.EcsRuntimeOptions
+  langs:
+  - csharp
+  - vb
+  name: WritePolicy
+  nameWithType: EcsRuntimeOptions.WritePolicy
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.WritePolicy
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: WritePolicy
+    path: ../Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
+    startLine: 68
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Config
+  summary: Gets or sets the global policy the core uses when a structural write is denied.
+  remarks: >-
+    Default is <xref href="ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Throw" data-throw-if-not-resolved="false"></xref> to surface issues early.
+
+    Consider <xref href="ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Log" data-throw-if-not-resolved="false"></xref> for friendlier behavior in non-dev environments.
+  example: []
+  syntax:
+    content: public static EcsRuntimeOptions.WriteFailurePolicy WritePolicy { get; set; }
+    parameters: []
+    return:
+      type: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+    content.vb: Public Shared Property WritePolicy As EcsRuntimeOptions.WriteFailurePolicy
+  overload: ZenECS.Core.Config.EcsRuntimeOptions.WritePolicy*
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.OnUnhandledError
+  commentId: P:ZenECS.Core.Config.EcsRuntimeOptions.OnUnhandledError
+  id: OnUnhandledError
+  parent: ZenECS.Core.Config.EcsRuntimeOptions
+  langs:
+  - csharp
+  - vb
+  name: OnUnhandledError
+  nameWithType: EcsRuntimeOptions.OnUnhandledError
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.OnUnhandledError
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: OnUnhandledError
+    path: ../Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
+    startLine: 75
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Config
+  summary: Optional global callback invoked whenever a critical runtime error is reported via <xref href="ZenECS.Core.Config.EcsRuntimeOptions.Report(System.Exception%2cSystem.String)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public static Action<Exception>? OnUnhandledError { get; set; }
+    parameters: []
+    return:
+      type: System.Action{System.Exception}
+    content.vb: Public Shared Property OnUnhandledError As Action(Of Exception)
+  overload: ZenECS.Core.Config.EcsRuntimeOptions.OnUnhandledError*
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.Report(System.Exception,System.String)
+  commentId: M:ZenECS.Core.Config.EcsRuntimeOptions.Report(System.Exception,System.String)
+  id: Report(System.Exception,System.String)
+  parent: ZenECS.Core.Config.EcsRuntimeOptions
+  langs:
+  - csharp
+  - vb
+  name: Report(Exception, string)
+  nameWithType: EcsRuntimeOptions.Report(Exception, string)
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.Report(System.Exception, string)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Report
+    path: ../Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
+    startLine: 83
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Config
+  summary: >-
+    Reports a non-fatal exception through the configured logger and invokes
+
+    <xref href="ZenECS.Core.Config.EcsRuntimeOptions.OnUnhandledError" data-throw-if-not-resolved="false"></xref> (if set). Both paths are guarded with try/catch.
+  example: []
+  syntax:
+    content: public static void Report(Exception ex, string context = "")
+    parameters:
+    - id: ex
+      type: System.Exception
+      description: The exception to report.
+    - id: context
+      type: System.String
+      description: Optional context string (system/operation name).
+    content.vb: Public Shared Sub Report(ex As Exception, context As String = "")
+  overload: ZenECS.Core.Config.EcsRuntimeOptions.Report*
+  nameWithType.vb: EcsRuntimeOptions.Report(Exception, String)
+  fullName.vb: ZenECS.Core.Config.EcsRuntimeOptions.Report(System.Exception, String)
+  name.vb: Report(Exception, String)
+references:
+- uid: ZenECS.Core.Config
+  commentId: N:ZenECS.Core.Config
+  href: ZenECS.html
+  name: ZenECS.Core.Config
+  nameWithType: ZenECS.Core.Config
+  fullName: ZenECS.Core.Config
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Config
+    name: Config
+    href: ZenECS.Core.Config.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Config
+    name: Config
+    href: ZenECS.Core.Config.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.Log*
+  commentId: Overload:ZenECS.Core.Config.EcsRuntimeOptions.Log
+  href: ZenECS.Core.Config.EcsRuntimeOptions.html#ZenECS_Core_Config_EcsRuntimeOptions_Log
+  name: Log
+  nameWithType: EcsRuntimeOptions.Log
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.Log
+- uid: ZenECS.Core.Config.IEcsLogger
+  commentId: T:ZenECS.Core.Config.IEcsLogger
+  parent: ZenECS.Core.Config
+  href: ZenECS.Core.Config.IEcsLogger.html
+  name: IEcsLogger
+  nameWithType: IEcsLogger
+  fullName: ZenECS.Core.Config.IEcsLogger
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Throw
+  commentId: F:ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Throw
+  href: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.html#ZenECS_Core_Config_EcsRuntimeOptions_WriteFailurePolicy_Throw
+  name: Throw
+  nameWithType: EcsRuntimeOptions.WriteFailurePolicy.Throw
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Throw
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Log
+  commentId: F:ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Log
+  href: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.html#ZenECS_Core_Config_EcsRuntimeOptions_WriteFailurePolicy_Log
+  name: Log
+  nameWithType: EcsRuntimeOptions.WriteFailurePolicy.Log
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.Log
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.WritePolicy*
+  commentId: Overload:ZenECS.Core.Config.EcsRuntimeOptions.WritePolicy
+  href: ZenECS.Core.Config.EcsRuntimeOptions.html#ZenECS_Core_Config_EcsRuntimeOptions_WritePolicy
+  name: WritePolicy
+  nameWithType: EcsRuntimeOptions.WritePolicy
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.WritePolicy
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+  commentId: T:ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+  parent: ZenECS.Core.Config
+  href: ZenECS.Core.Config.EcsRuntimeOptions.html
+  name: EcsRuntimeOptions.WriteFailurePolicy
+  nameWithType: EcsRuntimeOptions.WriteFailurePolicy
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+  spec.csharp:
+  - uid: ZenECS.Core.Config.EcsRuntimeOptions
+    name: EcsRuntimeOptions
+    href: ZenECS.Core.Config.EcsRuntimeOptions.html
+  - name: .
+  - uid: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+    name: WriteFailurePolicy
+    href: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.html
+  spec.vb:
+  - uid: ZenECS.Core.Config.EcsRuntimeOptions
+    name: EcsRuntimeOptions
+    href: ZenECS.Core.Config.EcsRuntimeOptions.html
+  - name: .
+  - uid: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy
+    name: WriteFailurePolicy
+    href: ZenECS.Core.Config.EcsRuntimeOptions.WriteFailurePolicy.html
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.Report(System.Exception,System.String)
+  commentId: M:ZenECS.Core.Config.EcsRuntimeOptions.Report(System.Exception,System.String)
+  isExternal: true
+  href: ZenECS.Core.Config.EcsRuntimeOptions.html#ZenECS_Core_Config_EcsRuntimeOptions_Report_System_Exception_System_String_
+  name: Report(Exception, string)
+  nameWithType: EcsRuntimeOptions.Report(Exception, string)
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.Report(System.Exception, string)
+  nameWithType.vb: EcsRuntimeOptions.Report(Exception, String)
+  fullName.vb: ZenECS.Core.Config.EcsRuntimeOptions.Report(System.Exception, String)
+  name.vb: Report(Exception, String)
+  spec.csharp:
+  - uid: ZenECS.Core.Config.EcsRuntimeOptions.Report(System.Exception,System.String)
+    name: Report
+    href: ZenECS.Core.Config.EcsRuntimeOptions.html#ZenECS_Core_Config_EcsRuntimeOptions_Report_System_Exception_System_String_
+  - name: (
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.Config.EcsRuntimeOptions.Report(System.Exception,System.String)
+    name: Report
+    href: ZenECS.Core.Config.EcsRuntimeOptions.html#ZenECS_Core_Config_EcsRuntimeOptions_Report_System_Exception_System_String_
+  - name: (
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.OnUnhandledError*
+  commentId: Overload:ZenECS.Core.Config.EcsRuntimeOptions.OnUnhandledError
+  href: ZenECS.Core.Config.EcsRuntimeOptions.html#ZenECS_Core_Config_EcsRuntimeOptions_OnUnhandledError
+  name: OnUnhandledError
+  nameWithType: EcsRuntimeOptions.OnUnhandledError
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.OnUnhandledError
+- uid: System.Action{System.Exception}
+  commentId: T:System.Action{System.Exception}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<Exception>
+  nameWithType: Action<Exception>
+  fullName: System.Action<System.Exception>
+  nameWithType.vb: Action(Of Exception)
+  fullName.vb: System.Action(Of System.Exception)
+  name.vb: Action(Of Exception)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.OnUnhandledError
+  commentId: P:ZenECS.Core.Config.EcsRuntimeOptions.OnUnhandledError
+  href: ZenECS.Core.Config.EcsRuntimeOptions.html#ZenECS_Core_Config_EcsRuntimeOptions_OnUnhandledError
+  name: OnUnhandledError
+  nameWithType: EcsRuntimeOptions.OnUnhandledError
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.OnUnhandledError
+- uid: ZenECS.Core.Config.EcsRuntimeOptions.Report*
+  commentId: Overload:ZenECS.Core.Config.EcsRuntimeOptions.Report
+  href: ZenECS.Core.Config.EcsRuntimeOptions.html#ZenECS_Core_Config_EcsRuntimeOptions_Report_System_Exception_System_String_
+  name: Report
+  nameWithType: EcsRuntimeOptions.Report
+  fullName: ZenECS.Core.Config.EcsRuntimeOptions.Report
+- uid: System.Exception
+  commentId: T:System.Exception
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

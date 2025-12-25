@@ -1,0 +1,1207 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Entity
+  commentId: T:ZenECS.Core.Entity
+  id: Entity
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.Entity.#ctor(System.Int32,System.Int32)
+  - ZenECS.Core.Entity.Equals(System.Object)
+  - ZenECS.Core.Entity.Equals(ZenECS.Core.Entity)
+  - ZenECS.Core.Entity.Gen
+  - ZenECS.Core.Entity.GenMask
+  - ZenECS.Core.Entity.GenShift
+  - ZenECS.Core.Entity.GetHashCode
+  - ZenECS.Core.Entity.Handle
+  - ZenECS.Core.Entity.Id
+  - ZenECS.Core.Entity.IdMask
+  - ZenECS.Core.Entity.IsNone
+  - ZenECS.Core.Entity.IsValid
+  - ZenECS.Core.Entity.None
+  - ZenECS.Core.Entity.Pack(System.Int32,System.Int32)
+  - ZenECS.Core.Entity.ToString
+  - ZenECS.Core.Entity.Unpack(System.UInt64)
+  - ZenECS.Core.Entity.op_Explicit(ZenECS.Core.Entity)~System.Int32
+  - ZenECS.Core.Entity.op_Explicit(ZenECS.Core.Entity)~System.UInt64
+  langs:
+  - csharp
+  - vb
+  name: Entity
+  nameWithType: Entity
+  fullName: ZenECS.Core.Entity
+  type: Struct
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Entity
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 24
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Packed 64-bit entity handle:
+
+    <pre><code class="lang-csharp">[ Gen (32 bits) | Id (32 bits) ]</code></pre>
+  remarks: All data access should go through the world to validate liveness/generation.
+  example: []
+  syntax:
+    content: 'public readonly struct Entity : IEquatable<Entity>'
+    content.vb: Public Structure Entity Implements IEquatable(Of Entity)
+  implements:
+  - System.IEquatable{ZenECS.Core.Entity}
+  inheritedMembers:
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: ZenECS.Core.Entity.None
+  commentId: F:ZenECS.Core.Entity.None
+  id: None
+  parent: ZenECS.Core.Entity
+  langs:
+  - csharp
+  - vb
+  name: None
+  nameWithType: Entity.None
+  fullName: ZenECS.Core.Entity.None
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: None
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 26
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  syntax:
+    content: public static readonly Entity None
+    return:
+      type: ZenECS.Core.Entity
+    content.vb: Public Shared ReadOnly None As Entity
+- uid: ZenECS.Core.Entity.Handle
+  commentId: F:ZenECS.Core.Entity.Handle
+  id: Handle
+  parent: ZenECS.Core.Entity
+  langs:
+  - csharp
+  - vb
+  name: Handle
+  nameWithType: Entity.Handle
+  fullName: ZenECS.Core.Entity.Handle
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Handle
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 29
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Raw 64-bit handle value (upper 32 = generation, lower 32 = id).
+  example: []
+  syntax:
+    content: public readonly ulong Handle
+    return:
+      type: System.UInt64
+    content.vb: Public ReadOnly Handle As ULong
+- uid: ZenECS.Core.Entity.GenShift
+  commentId: F:ZenECS.Core.Entity.GenShift
+  id: GenShift
+  parent: ZenECS.Core.Entity
+  langs:
+  - csharp
+  - vb
+  name: GenShift
+  nameWithType: Entity.GenShift
+  fullName: ZenECS.Core.Entity.GenShift
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: GenShift
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 32
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Bit shift amount for extracting the generation (upper 32 bits).
+  example: []
+  syntax:
+    content: public const int GenShift = 32
+    return:
+      type: System.Int32
+    content.vb: Public Const GenShift As Integer = 32
+- uid: ZenECS.Core.Entity.IdMask
+  commentId: F:ZenECS.Core.Entity.IdMask
+  id: IdMask
+  parent: ZenECS.Core.Entity
+  langs:
+  - csharp
+  - vb
+  name: IdMask
+  nameWithType: Entity.IdMask
+  fullName: ZenECS.Core.Entity.IdMask
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IdMask
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 35
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Mask for the lower 32 bits (entity id).
+  example: []
+  syntax:
+    content: public const ulong IdMask = 4294967295
+    return:
+      type: System.UInt64
+    content.vb: Public Const IdMask As ULong = 4294967295
+- uid: ZenECS.Core.Entity.GenMask
+  commentId: F:ZenECS.Core.Entity.GenMask
+  id: GenMask
+  parent: ZenECS.Core.Entity
+  langs:
+  - csharp
+  - vb
+  name: GenMask
+  nameWithType: Entity.GenMask
+  fullName: ZenECS.Core.Entity.GenMask
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: GenMask
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 38
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Mask for the upper 32 bits (generation).
+  example: []
+  syntax:
+    content: public const ulong GenMask = 18446744069414584320
+    return:
+      type: System.UInt64
+    content.vb: Public Const GenMask As ULong = 18446744069414584320
+- uid: ZenECS.Core.Entity.Id
+  commentId: P:ZenECS.Core.Entity.Id
+  id: Id
+  parent: ZenECS.Core.Entity
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: Entity.Id
+  fullName: ZenECS.Core.Entity.Id
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Id
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 41
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets the entity id (lower 32 bits).
+  example: []
+  syntax:
+    content: public int Id { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Id As Integer
+  overload: ZenECS.Core.Entity.Id*
+- uid: ZenECS.Core.Entity.Gen
+  commentId: P:ZenECS.Core.Entity.Gen
+  id: Gen
+  parent: ZenECS.Core.Entity
+  langs:
+  - csharp
+  - vb
+  name: Gen
+  nameWithType: Entity.Gen
+  fullName: ZenECS.Core.Entity.Gen
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Gen
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 44
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets the generation (upper 32 bits).
+  example: []
+  syntax:
+    content: public int Gen { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Gen As Integer
+  overload: ZenECS.Core.Entity.Gen*
+- uid: ZenECS.Core.Entity.#ctor(System.Int32,System.Int32)
+  commentId: M:ZenECS.Core.Entity.#ctor(System.Int32,System.Int32)
+  id: '#ctor(System.Int32,System.Int32)'
+  parent: ZenECS.Core.Entity
+  langs:
+  - csharp
+  - vb
+  name: Entity(int, int)
+  nameWithType: Entity.Entity(int, int)
+  fullName: ZenECS.Core.Entity.Entity(int, int)
+  type: Constructor
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: .ctor
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 47
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Create a new packed handle from an <code class="paramref">id</code> and <code class="paramref">gen</code>.
+  example: []
+  syntax:
+    content: public Entity(int id, int gen)
+    parameters:
+    - id: id
+      type: System.Int32
+    - id: gen
+      type: System.Int32
+    content.vb: Public Sub New(id As Integer, gen As Integer)
+  overload: ZenECS.Core.Entity.#ctor*
+  nameWithType.vb: Entity.New(Integer, Integer)
+  fullName.vb: ZenECS.Core.Entity.New(Integer, Integer)
+  name.vb: New(Integer, Integer)
+- uid: ZenECS.Core.Entity.Pack(System.Int32,System.Int32)
+  commentId: M:ZenECS.Core.Entity.Pack(System.Int32,System.Int32)
+  id: Pack(System.Int32,System.Int32)
+  parent: ZenECS.Core.Entity
+  langs:
+  - csharp
+  - vb
+  name: Pack(int, int)
+  nameWithType: Entity.Pack(int, int)
+  fullName: ZenECS.Core.Entity.Pack(int, int)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Pack
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 50
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Packs an id and generation into a 64-bit handle.
+  example: []
+  syntax:
+    content: public static ulong Pack(int id, int gen)
+    parameters:
+    - id: id
+      type: System.Int32
+    - id: gen
+      type: System.Int32
+    return:
+      type: System.UInt64
+    content.vb: Public Shared Function Pack(id As Integer, gen As Integer) As ULong
+  overload: ZenECS.Core.Entity.Pack*
+  nameWithType.vb: Entity.Pack(Integer, Integer)
+  fullName.vb: ZenECS.Core.Entity.Pack(Integer, Integer)
+  name.vb: Pack(Integer, Integer)
+- uid: ZenECS.Core.Entity.Unpack(System.UInt64)
+  commentId: M:ZenECS.Core.Entity.Unpack(System.UInt64)
+  id: Unpack(System.UInt64)
+  parent: ZenECS.Core.Entity
+  langs:
+  - csharp
+  - vb
+  name: Unpack(ulong)
+  nameWithType: Entity.Unpack(ulong)
+  fullName: ZenECS.Core.Entity.Unpack(ulong)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Unpack
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 54
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Unpacks a 64-bit handle into its (<code>id</code>, <code>gen</code>) components.
+  example: []
+  syntax:
+    content: public static (int id, int gen) Unpack(ulong handle)
+    parameters:
+    - id: handle
+      type: System.UInt64
+    return:
+      type: System.ValueTuple{System.Int32,System.Int32}
+    content.vb: Public Shared Function Unpack(handle As ULong) As (id As Integer, gen As Integer)
+  overload: ZenECS.Core.Entity.Unpack*
+  nameWithType.vb: Entity.Unpack(ULong)
+  fullName.vb: ZenECS.Core.Entity.Unpack(ULong)
+  name.vb: Unpack(ULong)
+- uid: ZenECS.Core.Entity.Equals(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.Entity.Equals(ZenECS.Core.Entity)
+  id: Equals(ZenECS.Core.Entity)
+  parent: ZenECS.Core.Entity
+  langs:
+  - csharp
+  - vb
+  name: Equals(Entity)
+  nameWithType: Entity.Equals(Entity)
+  fullName: ZenECS.Core.Entity.Equals(ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Equals
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 58
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Indicates whether the current object is equal to another object of the same type.
+  example: []
+  syntax:
+    content: public bool Equals(Entity other)
+    parameters:
+    - id: other
+      type: ZenECS.Core.Entity
+      description: An object to compare with this object.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the current object is equal to the <code class="paramref">other</code> parameter; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Function Equals(other As Entity) As Boolean
+  overload: ZenECS.Core.Entity.Equals*
+  implements:
+  - System.IEquatable{ZenECS.Core.Entity}.Equals(ZenECS.Core.Entity)
+- uid: ZenECS.Core.Entity.Equals(System.Object)
+  commentId: M:ZenECS.Core.Entity.Equals(System.Object)
+  id: Equals(System.Object)
+  parent: ZenECS.Core.Entity
+  langs:
+  - csharp
+  - vb
+  name: Equals(object?)
+  nameWithType: Entity.Equals(object?)
+  fullName: ZenECS.Core.Entity.Equals(object?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Equals
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 61
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Indicates whether this instance and a specified object are equal.
+  example: []
+  syntax:
+    content: public override bool Equals(object? obj)
+    parameters:
+    - id: obj
+      type: System.Object
+      description: The object to compare with the current instance.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if <code class="paramref">obj</code> and this instance are the same type and represent the same value; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Overrides Function Equals(obj As Object) As Boolean
+  overridden: System.ValueType.Equals(System.Object)
+  overload: ZenECS.Core.Entity.Equals*
+  nameWithType.vb: Entity.Equals(Object)
+  fullName.vb: ZenECS.Core.Entity.Equals(Object)
+  name.vb: Equals(Object)
+- uid: ZenECS.Core.Entity.GetHashCode
+  commentId: M:ZenECS.Core.Entity.GetHashCode
+  id: GetHashCode
+  parent: ZenECS.Core.Entity
+  langs:
+  - csharp
+  - vb
+  name: GetHashCode()
+  nameWithType: Entity.GetHashCode()
+  fullName: ZenECS.Core.Entity.GetHashCode()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: GetHashCode
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 64
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Returns the hash code for this instance.
+  example: []
+  syntax:
+    content: public override int GetHashCode()
+    return:
+      type: System.Int32
+      description: A 32-bit signed integer that is the hash code for this instance.
+    content.vb: Public Overrides Function GetHashCode() As Integer
+  overridden: System.ValueType.GetHashCode
+  overload: ZenECS.Core.Entity.GetHashCode*
+- uid: ZenECS.Core.Entity.ToString
+  commentId: M:ZenECS.Core.Entity.ToString
+  id: ToString
+  parent: ZenECS.Core.Entity
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: Entity.ToString()
+  fullName: ZenECS.Core.Entity.ToString()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ToString
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 67
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Returns a human-readable string showing id and generation.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.ValueType.ToString
+  overload: ZenECS.Core.Entity.ToString*
+- uid: ZenECS.Core.Entity.op_Explicit(ZenECS.Core.Entity)~System.Int32
+  commentId: M:ZenECS.Core.Entity.op_Explicit(ZenECS.Core.Entity)~System.Int32
+  id: op_Explicit(ZenECS.Core.Entity)~System.Int32
+  parent: ZenECS.Core.Entity
+  langs:
+  - csharp
+  - vb
+  name: explicit operator int(Entity)
+  nameWithType: Entity.explicit operator int(Entity)
+  fullName: ZenECS.Core.Entity.explicit operator int(ZenECS.Core.Entity)
+  type: Operator
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: op_Explicit
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 70
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Explicitly converts an <xref href="ZenECS.Core.Entity" data-throw-if-not-resolved="false"></xref> to its id (lower 32 bits).
+  example: []
+  syntax:
+    content: public static explicit operator int(Entity e)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+    return:
+      type: System.Int32
+    content.vb: Public Shared Narrowing Operator CType(e As Entity) As Integer
+  overload: ZenECS.Core.Entity.op_Explicit*
+  nameWithType.vb: Entity.CType(Entity)
+  fullName.vb: ZenECS.Core.Entity.CType(ZenECS.Core.Entity)
+  name.vb: CType(Entity)
+- uid: ZenECS.Core.Entity.op_Explicit(ZenECS.Core.Entity)~System.UInt64
+  commentId: M:ZenECS.Core.Entity.op_Explicit(ZenECS.Core.Entity)~System.UInt64
+  id: op_Explicit(ZenECS.Core.Entity)~System.UInt64
+  parent: ZenECS.Core.Entity
+  langs:
+  - csharp
+  - vb
+  name: explicit operator ulong(Entity)
+  nameWithType: Entity.explicit operator ulong(Entity)
+  fullName: ZenECS.Core.Entity.explicit operator ulong(ZenECS.Core.Entity)
+  type: Operator
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: op_Explicit
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 73
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Explicitly converts an <xref href="ZenECS.Core.Entity" data-throw-if-not-resolved="false"></xref> to its raw 64-bit handle.
+  example: []
+  syntax:
+    content: public static explicit operator ulong(Entity e)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+    return:
+      type: System.UInt64
+    content.vb: Public Shared Narrowing Operator CType(e As Entity) As ULong
+  overload: ZenECS.Core.Entity.op_Explicit*
+  nameWithType.vb: Entity.CType(Entity)
+  fullName.vb: ZenECS.Core.Entity.CType(ZenECS.Core.Entity)
+  name.vb: CType(Entity)
+- uid: ZenECS.Core.Entity.IsNone
+  commentId: P:ZenECS.Core.Entity.IsNone
+  id: IsNone
+  parent: ZenECS.Core.Entity
+  langs:
+  - csharp
+  - vb
+  name: IsNone
+  nameWithType: Entity.IsNone
+  fullName: ZenECS.Core.Entity.IsNone
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IsNone
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 78
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Returns true if this entity is Entity.None (zero handle).
+  example: []
+  syntax:
+    content: public bool IsNone { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsNone As Boolean
+  overload: ZenECS.Core.Entity.IsNone*
+- uid: ZenECS.Core.Entity.IsValid
+  commentId: P:ZenECS.Core.Entity.IsValid
+  id: IsValid
+  parent: ZenECS.Core.Entity
+  langs:
+  - csharp
+  - vb
+  name: IsValid
+  nameWithType: Entity.IsValid
+  fullName: ZenECS.Core.Entity.IsValid
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IsValid
+    path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
+    startLine: 84
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Returns true if this entity is not Entity.None.
+
+    (Note: does NOT guarantee the entity is alive; world must validate liveness.)
+  example: []
+  syntax:
+    content: public bool IsValid { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsValid As Boolean
+  overload: ZenECS.Core.Entity.IsValid*
+references:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: System.IEquatable{ZenECS.Core.Entity}
+  commentId: T:System.IEquatable{ZenECS.Core.Entity}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<Entity>
+  nameWithType: IEquatable<Entity>
+  fullName: System.IEquatable<ZenECS.Core.Entity>
+  nameWithType.vb: IEquatable(Of Entity)
+  fullName.vb: System.IEquatable(Of ZenECS.Core.Entity)
+  name.vb: IEquatable(Of Entity)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: ZenECS.Core.Entity
+  commentId: T:ZenECS.Core.Entity
+  parent: ZenECS.Core
+  href: ZenECS.Core.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: ZenECS.Core.Entity
+- uid: System.UInt64
+  commentId: T:System.UInt64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uint64
+  name: ulong
+  nameWithType: ulong
+  fullName: ulong
+  nameWithType.vb: ULong
+  fullName.vb: ULong
+  name.vb: ULong
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: ZenECS.Core.Entity.Id*
+  commentId: Overload:ZenECS.Core.Entity.Id
+  href: ZenECS.Core.Entity.html#ZenECS_Core_Entity_Id
+  name: Id
+  nameWithType: Entity.Id
+  fullName: ZenECS.Core.Entity.Id
+- uid: ZenECS.Core.Entity.Gen*
+  commentId: Overload:ZenECS.Core.Entity.Gen
+  href: ZenECS.Core.Entity.html#ZenECS_Core_Entity_Gen
+  name: Gen
+  nameWithType: Entity.Gen
+  fullName: ZenECS.Core.Entity.Gen
+- uid: ZenECS.Core.Entity.#ctor*
+  commentId: Overload:ZenECS.Core.Entity.#ctor
+  href: ZenECS.Core.Entity.html#ZenECS_Core_Entity__ctor_System_Int32_System_Int32_
+  name: Entity
+  nameWithType: Entity.Entity
+  fullName: ZenECS.Core.Entity.Entity
+  nameWithType.vb: Entity.New
+  fullName.vb: ZenECS.Core.Entity.New
+  name.vb: New
+- uid: ZenECS.Core.Entity.Pack*
+  commentId: Overload:ZenECS.Core.Entity.Pack
+  href: ZenECS.Core.Entity.html#ZenECS_Core_Entity_Pack_System_Int32_System_Int32_
+  name: Pack
+  nameWithType: Entity.Pack
+  fullName: ZenECS.Core.Entity.Pack
+- uid: ZenECS.Core.Entity.Unpack*
+  commentId: Overload:ZenECS.Core.Entity.Unpack
+  href: ZenECS.Core.Entity.html#ZenECS_Core_Entity_Unpack_System_UInt64_
+  name: Unpack
+  nameWithType: Entity.Unpack
+  fullName: ZenECS.Core.Entity.Unpack
+- uid: System.ValueTuple{System.Int32,System.Int32}
+  commentId: T:System.ValueTuple{System.Int32,System.Int32}
+  parent: System
+  definition: System.ValueTuple`2
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: (int id, int gen)
+  nameWithType: (int id, int gen)
+  fullName: (int id, int gen)
+  nameWithType.vb: (id As Integer, gen As Integer)
+  fullName.vb: (id As Integer, gen As Integer)
+  name.vb: (id As Integer, gen As Integer)
+  spec.csharp:
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32}.id
+    name: id
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.id
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32}.gen
+    name: gen
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.gen
+  - name: )
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{System.Int32,System.Int32}.id
+    name: id
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.id
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32}.gen
+    name: gen
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.gen
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.ValueTuple`2
+  commentId: T:System.ValueTuple`2
+  name: (T1, T2)
+  nameWithType: (T1, T2)
+  fullName: (T1, T2)
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  spec.vb:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: ZenECS.Core.Entity.Equals*
+  commentId: Overload:ZenECS.Core.Entity.Equals
+  href: ZenECS.Core.Entity.html#ZenECS_Core_Entity_Equals_ZenECS_Core_Entity_
+  name: Equals
+  nameWithType: Entity.Equals
+  fullName: ZenECS.Core.Entity.Equals
+- uid: System.IEquatable{ZenECS.Core.Entity}.Equals(ZenECS.Core.Entity)
+  commentId: M:System.IEquatable{ZenECS.Core.Entity}.Equals(ZenECS.Core.Entity)
+  parent: System.IEquatable{ZenECS.Core.Entity}
+  definition: System.IEquatable`1.Equals(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(Entity)
+  nameWithType: IEquatable<Entity>.Equals(Entity)
+  fullName: System.IEquatable<ZenECS.Core.Entity>.Equals(ZenECS.Core.Entity)
+  nameWithType.vb: IEquatable(Of Entity).Equals(Entity)
+  fullName.vb: System.IEquatable(Of ZenECS.Core.Entity).Equals(ZenECS.Core.Entity)
+  spec.csharp:
+  - uid: System.IEquatable{ZenECS.Core.Entity}.Equals(ZenECS.Core.Entity)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable{ZenECS.Core.Entity}.Equals(ZenECS.Core.Entity)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.IEquatable`1.Equals(`0)
+  commentId: M:System.IEquatable`1.Equals(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(T)
+  nameWithType: IEquatable<T>.Equals(T)
+  fullName: System.IEquatable<T>.Equals(T)
+  nameWithType.vb: IEquatable(Of T).Equals(T)
+  fullName.vb: System.IEquatable(Of T).Equals(T)
+  spec.csharp:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: ZenECS.Core.Entity.GetHashCode*
+  commentId: Overload:ZenECS.Core.Entity.GetHashCode
+  href: ZenECS.Core.Entity.html#ZenECS_Core_Entity_GetHashCode
+  name: GetHashCode
+  nameWithType: Entity.GetHashCode
+  fullName: ZenECS.Core.Entity.GetHashCode
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: ZenECS.Core.Entity.ToString*
+  commentId: Overload:ZenECS.Core.Entity.ToString
+  href: ZenECS.Core.Entity.html#ZenECS_Core_Entity_ToString
+  name: ToString
+  nameWithType: Entity.ToString
+  fullName: ZenECS.Core.Entity.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: ZenECS.Core.Entity.op_Explicit*
+  commentId: Overload:ZenECS.Core.Entity.op_Explicit
+  name: explicit operator
+  nameWithType: Entity.explicit operator
+  fullName: ZenECS.Core.Entity.explicit operator
+  nameWithType.vb: Entity.CType
+  fullName.vb: ZenECS.Core.Entity.CType
+  name.vb: CType
+  spec.csharp:
+  - name: explicit
+  - name: " "
+  - name: operator
+- uid: ZenECS.Core.Entity.IsNone*
+  commentId: Overload:ZenECS.Core.Entity.IsNone
+  href: ZenECS.Core.Entity.html#ZenECS_Core_Entity_IsNone
+  name: IsNone
+  nameWithType: Entity.IsNone
+  fullName: ZenECS.Core.Entity.IsNone
+- uid: ZenECS.Core.Entity.IsValid*
+  commentId: Overload:ZenECS.Core.Entity.IsValid
+  href: ZenECS.Core.Entity.html#ZenECS_Core_Entity_IsValid
+  name: IsValid
+  nameWithType: Entity.IsValid
+  fullName: ZenECS.Core.Entity.IsValid

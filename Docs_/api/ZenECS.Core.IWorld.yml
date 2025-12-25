@@ -1,0 +1,4794 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.IWorld
+  commentId: T:ZenECS.Core.IWorld
+  id: IWorld
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.IWorld.FrameCount
+  - ZenECS.Core.IWorld.GenerationOf(System.Int32)
+  - ZenECS.Core.IWorld.Id
+  - ZenECS.Core.IWorld.IsDisposing
+  - ZenECS.Core.IWorld.IsPaused
+  - ZenECS.Core.IWorld.Kernel
+  - ZenECS.Core.IWorld.Name
+  - ZenECS.Core.IWorld.Pause
+  - ZenECS.Core.IWorld.Reset(System.Boolean)
+  - ZenECS.Core.IWorld.Resume
+  - ZenECS.Core.IWorld.Tags
+  - ZenECS.Core.IWorld.Tick
+  langs:
+  - csharp
+  - vb
+  name: IWorld
+  nameWithType: IWorld
+  fullName: ZenECS.Core.IWorld
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IWorld
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+    startLine: 34
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Public façade for a single ECS world.
+  remarks: >-
+    <p>
+
+    A world instance owns and coordinates all ECS concerns for a given
+
+    simulation space: entity/component storage, querying, contexts, binders,
+
+    messaging, hooks, snapshots, command buffers, and workers.
+
+    </p>
+
+    <p>
+
+    The world is designed to be composable: it can exist alongside other
+
+    worlds inside a single <xref href="ZenECS.Core.IKernel" data-throw-if-not-resolved="false"></xref> and can be paused, reset,
+
+    or destroyed independently.
+
+    </p>
+  example: []
+  syntax:
+    content: 'public interface IWorld : IDisposable, IWorldQueryApi, IWorldQuerySpanApi, IWorldEntityApi, IWorldComponentApi, IWorldContextApi, IWorldBinderApi, IWorldSnapshotApi, IWorldMessagesApi, IWorldHookApi, IWorldCommandBufferApi, IWorldWorkerApi, IWorldSystemsApi'
+    content.vb: Public Interface IWorld Inherits IDisposable, IWorldQueryApi, IWorldQuerySpanApi, IWorldEntityApi, IWorldComponentApi, IWorldContextApi, IWorldBinderApi, IWorldSnapshotApi, IWorldMessagesApi, IWorldHookApi, IWorldCommandBufferApi, IWorldWorkerApi, IWorldSystemsApi
+  inheritedMembers:
+  - System.IDisposable.Dispose
+  - ZenECS.Core.IWorldQueryApi.Query``1(ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQueryApi.Query``2(ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQueryApi.Query``3(ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQueryApi.Query``4(ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQueryApi.Query``5(ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQueryApi.Query``6(ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQueryApi.Query``7(ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQueryApi.Query``8(ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``1(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``2(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``3(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``4(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``5(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``6(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``7(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``8(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQuerySpanApi.Process``1(System.ReadOnlySpan{ZenECS.Core.Entity},ZenECS.Core.RefAction{{T}})
+  - ZenECS.Core.IWorldEntityApi.AliveCount
+  - ZenECS.Core.IWorldEntityApi.IsAlive(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldEntityApi.IsAlive(System.Int32,System.Int32)
+  - ZenECS.Core.IWorldEntityApi.GetAllEntities
+  - ZenECS.Core.IWorldComponentApi.HasComponent``1(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldComponentApi.HasComponentBoxed(ZenECS.Core.Entity,System.Type)
+  - ZenECS.Core.IWorldComponentApi.SnapshotComponent``1(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldComponentApi.SnapshotComponentBoxed(ZenECS.Core.Entity,System.Object)
+  - ZenECS.Core.IWorldComponentApi.SnapshotComponentTyped(ZenECS.Core.Entity,System.Type)
+  - ZenECS.Core.IWorldComponentApi.ReadComponent``1(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldComponentApi.TryReadComponent``1(ZenECS.Core.Entity,{T}@)
+  - ZenECS.Core.IWorldComponentApi.GetAllComponents(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldComponentApi.GetSingleton``1
+  - ZenECS.Core.IWorldComponentApi.TryGetSingleton``1({T}@)
+  - ZenECS.Core.IWorldComponentApi.HasSingleton(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldComponentApi.GetAllSingletons
+  - ZenECS.Core.IWorldContextApi.RegisterContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  - ZenECS.Core.IWorldContextApi.HasContext(ZenECS.Core.Entity,System.Type)
+  - ZenECS.Core.IWorldContextApi.HasContext``1(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldContextApi.GetAllContexts(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldContextApi.RemoveContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  - ZenECS.Core.IWorldContextApi.ReinitializeContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  - ZenECS.Core.IWorldBinderApi.HasBinder``1(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldBinderApi.AttachBinder(ZenECS.Core.Entity,ZenECS.Core.Binding.IBinder)
+  - ZenECS.Core.IWorldBinderApi.DetachAllBinders(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity,ZenECS.Core.Binding.IBinder)
+  - ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity,System.Type)
+  - ZenECS.Core.IWorldBinderApi.GetAllBinders(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldBinderApi.GetAllBinderList(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldSnapshotApi.SaveFullSnapshotBinary(System.IO.Stream)
+  - ZenECS.Core.IWorldSnapshotApi.LoadFullSnapshotBinary(System.IO.Stream)
+  - ZenECS.Core.IWorldMessagesApi.Subscribe``1(System.Action{{T}})
+  - ZenECS.Core.IWorldMessagesApi.Publish``1({T}@)
+  - ZenECS.Core.IWorldHookApi.AddWritePermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  - ZenECS.Core.IWorldHookApi.RemoveWritePermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  - ZenECS.Core.IWorldHookApi.ClearWritePermissions
+  - ZenECS.Core.IWorldHookApi.AddReadPermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  - ZenECS.Core.IWorldHookApi.RemoveReadPermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  - ZenECS.Core.IWorldHookApi.ClearReadPermissions
+  - ZenECS.Core.IWorldHookApi.AddValidator(System.Func{System.Object,System.Boolean})
+  - ZenECS.Core.IWorldHookApi.RemoveValidator(System.Func{System.Object,System.Boolean})
+  - ZenECS.Core.IWorldHookApi.ClearValidators
+  - ZenECS.Core.IWorldHookApi.AddValidator``1(System.Func{{T},System.Boolean})
+  - ZenECS.Core.IWorldHookApi.RemoveValidator``1(System.Func{{T},System.Boolean})
+  - ZenECS.Core.IWorldHookApi.ClearTypedValidators
+  - ZenECS.Core.IWorldCommandBufferApi.BeginWrite
+  - ZenECS.Core.IWorldCommandBufferApi.ExternalCommandCount
+  - ZenECS.Core.IWorldCommandBufferApi.HasExternalCommand
+  - ZenECS.Core.IWorldCommandBufferApi.ExternalCommandEnqueue(ZenECS.Core.ExternalCommand)
+  - ZenECS.Core.IWorldCommandBufferApi.ExternalCommandClear
+  - ZenECS.Core.IWorldWorkerApi.RunScheduledJobs
+  - ZenECS.Core.IWorldSystemsApi.AddSystem(ZenECS.Core.Systems.ISystem)
+  - ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable{ZenECS.Core.Systems.ISystem})
+  - ZenECS.Core.IWorldSystemsApi.RemoveSystem``1
+  - ZenECS.Core.IWorldSystemsApi.RemoveSystem(System.Type)
+  - ZenECS.Core.IWorldSystemsApi.TryGetSystem``1({T}@)
+  - ZenECS.Core.IWorldSystemsApi.TryGetSystem(System.Type,ZenECS.Core.Systems.ISystem@)
+  - ZenECS.Core.IWorldSystemsApi.GetAllSystems
+  - ZenECS.Core.IWorldSystemsApi.SetEnabledSystem``1(System.Boolean)
+  - ZenECS.Core.IWorldSystemsApi.IsEnabledSystem``1
+  - ZenECS.Core.IWorldSystemsApi.IsEnabledSystem(System.Type)
+- uid: ZenECS.Core.IWorld.Kernel
+  commentId: P:ZenECS.Core.IWorld.Kernel
+  id: Kernel
+  parent: ZenECS.Core.IWorld
+  langs:
+  - csharp
+  - vb
+  name: Kernel
+  nameWithType: IWorld.Kernel
+  fullName: ZenECS.Core.IWorld.Kernel
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Kernel
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+    startLine: 55
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets the kernel that owns this world instance.
+  remarks: >-
+    Use this to navigate back to multi-world coordination features such as
+
+    world discovery, stepping, and selection.
+  example: []
+  syntax:
+    content: IKernel Kernel { get; }
+    parameters: []
+    return:
+      type: ZenECS.Core.IKernel
+    content.vb: ReadOnly Property Kernel As IKernel
+  overload: ZenECS.Core.IWorld.Kernel*
+- uid: ZenECS.Core.IWorld.Id
+  commentId: P:ZenECS.Core.IWorld.Id
+  id: Id
+  parent: ZenECS.Core.IWorld
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: IWorld.Id
+  fullName: ZenECS.Core.IWorld.Id
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Id
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+    startLine: 70
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets the stable identity of this world.
+  remarks: >-
+    <p>
+
+    <xref href="ZenECS.Core.WorldId" data-throw-if-not-resolved="false"></xref> has value semantics and can safely be stored,
+
+    logged, or transmitted. It does not change during the world's lifetime.
+
+    </p>
+
+    <p>
+
+    To resolve an id back to a live world, use
+
+    <xref href="ZenECS.Core.IKernel.TryGet(ZenECS.Core.WorldId%2cZenECS.Core.IWorld%40)" data-throw-if-not-resolved="false"></xref>.
+
+    </p>
+  example: []
+  syntax:
+    content: WorldId Id { get; }
+    parameters: []
+    return:
+      type: ZenECS.Core.WorldId
+    content.vb: ReadOnly Property Id As WorldId
+  overload: ZenECS.Core.IWorld.Id*
+- uid: ZenECS.Core.IWorld.Name
+  commentId: P:ZenECS.Core.IWorld.Name
+  id: Name
+  parent: ZenECS.Core.IWorld
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: IWorld.Name
+  fullName: ZenECS.Core.IWorld.Name
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Name
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+    startLine: 79
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets or sets the human-readable name of this world.
+  remarks: >-
+    The name is not guaranteed to be unique; use <xref href="ZenECS.Core.IWorld.Id" data-throw-if-not-resolved="false"></xref> for
+
+    identity and <xref href="ZenECS.Core.IKernel.FindByName(System.String)" data-throw-if-not-resolved="false"></xref> for discovery.
+  example: []
+  syntax:
+    content: string Name { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Property Name As String
+  overload: ZenECS.Core.IWorld.Name*
+- uid: ZenECS.Core.IWorld.Tags
+  commentId: P:ZenECS.Core.IWorld.Tags
+  id: Tags
+  parent: ZenECS.Core.IWorld
+  langs:
+  - csharp
+  - vb
+  name: Tags
+  nameWithType: IWorld.Tags
+  fullName: ZenECS.Core.IWorld.Tags
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Tags
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+    startLine: 90
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets the read-only set of tags associated with this world.
+  remarks: >-
+    Tags are intended for discovery and grouping, for example:
+
+    <code>"Gameplay"</code>, <code>"Spectator"</code>, <code>"Server"</code>, etc.
+
+    Use <xref href="ZenECS.Core.IKernel.FindByTag(System.String)" data-throw-if-not-resolved="false"></xref> or
+
+    <xref href="ZenECS.Core.IKernel.FindByAnyTag(System.String%5b%5d)" data-throw-if-not-resolved="false"></xref> to query by tag.
+  example: []
+  syntax:
+    content: IReadOnlyCollection<string> Tags { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyCollection{System.String}
+    content.vb: ReadOnly Property Tags As IReadOnlyCollection(Of String)
+  overload: ZenECS.Core.IWorld.Tags*
+- uid: ZenECS.Core.IWorld.FrameCount
+  commentId: P:ZenECS.Core.IWorld.FrameCount
+  id: FrameCount
+  parent: ZenECS.Core.IWorld
+  langs:
+  - csharp
+  - vb
+  name: FrameCount
+  nameWithType: IWorld.FrameCount
+  fullName: ZenECS.Core.IWorld.FrameCount
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FrameCount
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+    startLine: 100
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets the number of frames processed by this world.
+  remarks: >-
+    Incremented once per successful frame tick (e.g. once per
+
+    <code>BeginFrame/FrameInput/FrameSync</code> pass) while the world is not
+
+    paused.
+  example: []
+  syntax:
+    content: long FrameCount { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: ReadOnly Property FrameCount As Long
+  overload: ZenECS.Core.IWorld.FrameCount*
+- uid: ZenECS.Core.IWorld.Tick
+  commentId: P:ZenECS.Core.IWorld.Tick
+  id: Tick
+  parent: ZenECS.Core.IWorld
+  langs:
+  - csharp
+  - vb
+  name: Tick
+  nameWithType: IWorld.Tick
+  fullName: ZenECS.Core.IWorld.Tick
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Tick
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+    startLine: 112
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets the world-local simulation tick counter.
+  remarks: >-
+    <p>
+
+    This is typically incremented once per fixed-step simulation tick and
+
+    is useful for deterministic bookkeeping, such as time-based effects
+
+    or recording when an event occurred in the simulation.
+
+    </p>
+  example: []
+  syntax:
+    content: long Tick { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: ReadOnly Property Tick As Long
+  overload: ZenECS.Core.IWorld.Tick*
+- uid: ZenECS.Core.IWorld.IsPaused
+  commentId: P:ZenECS.Core.IWorld.IsPaused
+  id: IsPaused
+  parent: ZenECS.Core.IWorld
+  langs:
+  - csharp
+  - vb
+  name: IsPaused
+  nameWithType: IWorld.IsPaused
+  fullName: ZenECS.Core.IWorld.IsPaused
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IsPaused
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+    startLine: 126
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets a value indicating whether this world is paused.
+  remarks: >-
+    <p>
+
+    World-level pause is independent of kernel-level pause:
+
+    the kernel may continue ticking, but individual worlds can be stopped.
+
+    </p>
+
+    <p>
+
+    System runners must respect this flag and avoid stepping paused worlds.
+
+    </p>
+  example: []
+  syntax:
+    content: bool IsPaused { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property IsPaused As Boolean
+  overload: ZenECS.Core.IWorld.IsPaused*
+- uid: ZenECS.Core.IWorld.IsDisposing
+  commentId: P:ZenECS.Core.IWorld.IsDisposing
+  id: IsDisposing
+  parent: ZenECS.Core.IWorld
+  langs:
+  - csharp
+  - vb
+  name: IsDisposing
+  nameWithType: IWorld.IsDisposing
+  fullName: ZenECS.Core.IWorld.IsDisposing
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IsDisposing
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+    startLine: 135
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets a value indicating whether this world is in the process of disposing.
+  remarks: >-
+    This flag can be used by systems or external code to avoid scheduling
+
+    new work or spawning entities while the world is shutting down.
+  example: []
+  syntax:
+    content: bool IsDisposing { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property IsDisposing As Boolean
+  overload: ZenECS.Core.IWorld.IsDisposing*
+- uid: ZenECS.Core.IWorld.Pause
+  commentId: M:ZenECS.Core.IWorld.Pause
+  id: Pause
+  parent: ZenECS.Core.IWorld
+  langs:
+  - csharp
+  - vb
+  name: Pause()
+  nameWithType: IWorld.Pause()
+  fullName: ZenECS.Core.IWorld.Pause()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Pause
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+    startLine: 149
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Pauses stepping for this world only.
+  remarks: >-
+    <p>
+
+    When paused, core stepping callbacks (frame and fixed-step) should be
+
+    skipped for this world even if the <xref href="ZenECS.Core.IKernel" data-throw-if-not-resolved="false"></xref> continues to tick.
+
+    </p>
+
+    <p>
+
+    Pausing a world is idempotent; calling it multiple times has no extra effect.
+
+    </p>
+  example: []
+  syntax:
+    content: void Pause()
+    content.vb: Sub Pause()
+  overload: ZenECS.Core.IWorld.Pause*
+- uid: ZenECS.Core.IWorld.Resume
+  commentId: M:ZenECS.Core.IWorld.Resume
+  id: Resume
+  parent: ZenECS.Core.IWorld
+  langs:
+  - csharp
+  - vb
+  name: Resume()
+  nameWithType: IWorld.Resume()
+  fullName: ZenECS.Core.IWorld.Resume()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Resume
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+    startLine: 158
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Resumes stepping for this world after a previous pause.
+  remarks: >-
+    This reverses the effect of <xref href="ZenECS.Core.IWorld.Pause" data-throw-if-not-resolved="false"></xref> and allows the kernel
+
+    to step this world again during frame and fixed-step ticks.
+  example: []
+  syntax:
+    content: void Resume()
+    content.vb: Sub [Resume]()
+  overload: ZenECS.Core.IWorld.Resume*
+- uid: ZenECS.Core.IWorld.Reset(System.Boolean)
+  commentId: M:ZenECS.Core.IWorld.Reset(System.Boolean)
+  id: Reset(System.Boolean)
+  parent: ZenECS.Core.IWorld
+  langs:
+  - csharp
+  - vb
+  name: Reset(bool)
+  nameWithType: IWorld.Reset(bool)
+  fullName: ZenECS.Core.IWorld.Reset(bool)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Reset
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+    startLine: 179
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Resets world storage and subsystems.
+  remarks: >-
+    <p>
+
+    A reset clears entities, components, and subsystems, but the world
+
+    object itself and its identity (<xref href="ZenECS.Core.IWorld.Id" data-throw-if-not-resolved="false"></xref>, <xref href="ZenECS.Core.IWorld.Name" data-throw-if-not-resolved="false"></xref>,
+
+    <xref href="ZenECS.Core.IWorld.Tags" data-throw-if-not-resolved="false"></xref>) remain valid.
+
+    </p>
+
+    <p>
+
+    Systems may receive reinitialization according to the world's
+
+    implementation policy.
+
+    </p>
+  example: []
+  syntax:
+    content: void Reset(bool keepCapacity)
+    parameters:
+    - id: keepCapacity
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> to retain internal array capacities for a faster
+
+        reset (soft reset); <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> to rebuild storage from the
+
+        initial configuration (hard reset).
+    content.vb: Sub Reset(keepCapacity As Boolean)
+  overload: ZenECS.Core.IWorld.Reset*
+  nameWithType.vb: IWorld.Reset(Boolean)
+  fullName.vb: ZenECS.Core.IWorld.Reset(Boolean)
+  name.vb: Reset(Boolean)
+- uid: ZenECS.Core.IWorld.GenerationOf(System.Int32)
+  commentId: M:ZenECS.Core.IWorld.GenerationOf(System.Int32)
+  id: GenerationOf(System.Int32)
+  parent: ZenECS.Core.IWorld
+  langs:
+  - csharp
+  - vb
+  name: GenerationOf(int)
+  nameWithType: IWorld.GenerationOf(int)
+  fullName: ZenECS.Core.IWorld.GenerationOf(int)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: GenerationOf
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
+    startLine: 196
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets the current generation value for an internal entity id.
+  remarks: >-
+    <p>
+
+    Generations are used to validate <code>Entity</code> handles and detect
+
+    stale references: an <code>Entity</code> is valid only if both its id and
+
+    generation match the values stored in the world.
+
+    </p>
+  example: []
+  syntax:
+    content: int GenerationOf(int id)
+    parameters:
+    - id: id
+      type: System.Int32
+      description: Internal entity id (index) to query.
+    return:
+      type: System.Int32
+      description: >-
+        The generation associated with the specified id.
+
+        Returns <code>0</code> or another sentinel for ids that are not in use.
+    content.vb: Function GenerationOf(id As Integer) As Integer
+  overload: ZenECS.Core.IWorld.GenerationOf*
+  nameWithType.vb: IWorld.GenerationOf(Integer)
+  fullName.vb: ZenECS.Core.IWorld.GenerationOf(Integer)
+  name.vb: GenerationOf(Integer)
+references:
+- uid: ZenECS.Core.IKernel
+  commentId: T:ZenECS.Core.IKernel
+  parent: ZenECS.Core
+  href: ZenECS.Core.IKernel.html
+  name: IKernel
+  nameWithType: IKernel
+  fullName: ZenECS.Core.IKernel
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+- uid: ZenECS.Core.IWorldQueryApi.Query``1(ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQueryApi.Query``1(ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQueryApi
+  href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__1_ZenECS_Core_Filter_
+  name: Query<T1>(Filter)
+  nameWithType: IWorldQueryApi.Query<T1>(Filter)
+  fullName: ZenECS.Core.IWorldQueryApi.Query<T1>(ZenECS.Core.Filter)
+  nameWithType.vb: IWorldQueryApi.Query(Of T1)(Filter)
+  fullName.vb: ZenECS.Core.IWorldQueryApi.Query(Of T1)(ZenECS.Core.Filter)
+  name.vb: Query(Of T1)(Filter)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldQueryApi.Query``1(ZenECS.Core.Filter)
+    name: Query
+    href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__1_ZenECS_Core_Filter_
+  - name: <
+  - name: T1
+  - name: '>'
+  - name: (
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldQueryApi.Query``1(ZenECS.Core.Filter)
+    name: Query
+    href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__1_ZenECS_Core_Filter_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: )
+  - name: (
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+- uid: ZenECS.Core.IWorldQueryApi.Query``2(ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQueryApi.Query``2(ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQueryApi
+  href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__2_ZenECS_Core_Filter_
+  name: Query<T1, T2>(Filter)
+  nameWithType: IWorldQueryApi.Query<T1, T2>(Filter)
+  fullName: ZenECS.Core.IWorldQueryApi.Query<T1, T2>(ZenECS.Core.Filter)
+  nameWithType.vb: IWorldQueryApi.Query(Of T1, T2)(Filter)
+  fullName.vb: ZenECS.Core.IWorldQueryApi.Query(Of T1, T2)(ZenECS.Core.Filter)
+  name.vb: Query(Of T1, T2)(Filter)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldQueryApi.Query``2(ZenECS.Core.Filter)
+    name: Query
+    href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__2_ZenECS_Core_Filter_
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: '>'
+  - name: (
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldQueryApi.Query``2(ZenECS.Core.Filter)
+    name: Query
+    href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__2_ZenECS_Core_Filter_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  - name: (
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+- uid: ZenECS.Core.IWorldQueryApi.Query``3(ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQueryApi.Query``3(ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQueryApi
+  href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__3_ZenECS_Core_Filter_
+  name: Query<T1, T2, T3>(Filter)
+  nameWithType: IWorldQueryApi.Query<T1, T2, T3>(Filter)
+  fullName: ZenECS.Core.IWorldQueryApi.Query<T1, T2, T3>(ZenECS.Core.Filter)
+  nameWithType.vb: IWorldQueryApi.Query(Of T1, T2, T3)(Filter)
+  fullName.vb: ZenECS.Core.IWorldQueryApi.Query(Of T1, T2, T3)(ZenECS.Core.Filter)
+  name.vb: Query(Of T1, T2, T3)(Filter)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldQueryApi.Query``3(ZenECS.Core.Filter)
+    name: Query
+    href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__3_ZenECS_Core_Filter_
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: '>'
+  - name: (
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldQueryApi.Query``3(ZenECS.Core.Filter)
+    name: Query
+    href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__3_ZenECS_Core_Filter_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: )
+  - name: (
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+- uid: ZenECS.Core.IWorldQueryApi.Query``4(ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQueryApi.Query``4(ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQueryApi
+  href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__4_ZenECS_Core_Filter_
+  name: Query<T1, T2, T3, T4>(Filter)
+  nameWithType: IWorldQueryApi.Query<T1, T2, T3, T4>(Filter)
+  fullName: ZenECS.Core.IWorldQueryApi.Query<T1, T2, T3, T4>(ZenECS.Core.Filter)
+  nameWithType.vb: IWorldQueryApi.Query(Of T1, T2, T3, T4)(Filter)
+  fullName.vb: ZenECS.Core.IWorldQueryApi.Query(Of T1, T2, T3, T4)(ZenECS.Core.Filter)
+  name.vb: Query(Of T1, T2, T3, T4)(Filter)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldQueryApi.Query``4(ZenECS.Core.Filter)
+    name: Query
+    href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__4_ZenECS_Core_Filter_
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: '>'
+  - name: (
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldQueryApi.Query``4(ZenECS.Core.Filter)
+    name: Query
+    href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__4_ZenECS_Core_Filter_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: )
+  - name: (
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+- uid: ZenECS.Core.IWorldQueryApi.Query``5(ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQueryApi.Query``5(ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQueryApi
+  href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__5_ZenECS_Core_Filter_
+  name: Query<T1, T2, T3, T4, T5>(Filter)
+  nameWithType: IWorldQueryApi.Query<T1, T2, T3, T4, T5>(Filter)
+  fullName: ZenECS.Core.IWorldQueryApi.Query<T1, T2, T3, T4, T5>(ZenECS.Core.Filter)
+  nameWithType.vb: IWorldQueryApi.Query(Of T1, T2, T3, T4, T5)(Filter)
+  fullName.vb: ZenECS.Core.IWorldQueryApi.Query(Of T1, T2, T3, T4, T5)(ZenECS.Core.Filter)
+  name.vb: Query(Of T1, T2, T3, T4, T5)(Filter)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldQueryApi.Query``5(ZenECS.Core.Filter)
+    name: Query
+    href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__5_ZenECS_Core_Filter_
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: '>'
+  - name: (
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldQueryApi.Query``5(ZenECS.Core.Filter)
+    name: Query
+    href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__5_ZenECS_Core_Filter_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: )
+  - name: (
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+- uid: ZenECS.Core.IWorldQueryApi.Query``6(ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQueryApi.Query``6(ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQueryApi
+  href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__6_ZenECS_Core_Filter_
+  name: Query<T1, T2, T3, T4, T5, T6>(Filter)
+  nameWithType: IWorldQueryApi.Query<T1, T2, T3, T4, T5, T6>(Filter)
+  fullName: ZenECS.Core.IWorldQueryApi.Query<T1, T2, T3, T4, T5, T6>(ZenECS.Core.Filter)
+  nameWithType.vb: IWorldQueryApi.Query(Of T1, T2, T3, T4, T5, T6)(Filter)
+  fullName.vb: ZenECS.Core.IWorldQueryApi.Query(Of T1, T2, T3, T4, T5, T6)(ZenECS.Core.Filter)
+  name.vb: Query(Of T1, T2, T3, T4, T5, T6)(Filter)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldQueryApi.Query``6(ZenECS.Core.Filter)
+    name: Query
+    href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__6_ZenECS_Core_Filter_
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: '>'
+  - name: (
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldQueryApi.Query``6(ZenECS.Core.Filter)
+    name: Query
+    href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__6_ZenECS_Core_Filter_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: )
+  - name: (
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+- uid: ZenECS.Core.IWorldQueryApi.Query``7(ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQueryApi.Query``7(ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQueryApi
+  href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__7_ZenECS_Core_Filter_
+  name: Query<T1, T2, T3, T4, T5, T6, T7>(Filter)
+  nameWithType: IWorldQueryApi.Query<T1, T2, T3, T4, T5, T6, T7>(Filter)
+  fullName: ZenECS.Core.IWorldQueryApi.Query<T1, T2, T3, T4, T5, T6, T7>(ZenECS.Core.Filter)
+  nameWithType.vb: IWorldQueryApi.Query(Of T1, T2, T3, T4, T5, T6, T7)(Filter)
+  fullName.vb: ZenECS.Core.IWorldQueryApi.Query(Of T1, T2, T3, T4, T5, T6, T7)(ZenECS.Core.Filter)
+  name.vb: Query(Of T1, T2, T3, T4, T5, T6, T7)(Filter)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldQueryApi.Query``7(ZenECS.Core.Filter)
+    name: Query
+    href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__7_ZenECS_Core_Filter_
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: '>'
+  - name: (
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldQueryApi.Query``7(ZenECS.Core.Filter)
+    name: Query
+    href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__7_ZenECS_Core_Filter_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: )
+  - name: (
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+- uid: ZenECS.Core.IWorldQueryApi.Query``8(ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQueryApi.Query``8(ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQueryApi
+  href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__8_ZenECS_Core_Filter_
+  name: Query<T1, T2, T3, T4, T5, T6, T7, T8>(Filter)
+  nameWithType: IWorldQueryApi.Query<T1, T2, T3, T4, T5, T6, T7, T8>(Filter)
+  fullName: ZenECS.Core.IWorldQueryApi.Query<T1, T2, T3, T4, T5, T6, T7, T8>(ZenECS.Core.Filter)
+  nameWithType.vb: IWorldQueryApi.Query(Of T1, T2, T3, T4, T5, T6, T7, T8)(Filter)
+  fullName.vb: ZenECS.Core.IWorldQueryApi.Query(Of T1, T2, T3, T4, T5, T6, T7, T8)(ZenECS.Core.Filter)
+  name.vb: Query(Of T1, T2, T3, T4, T5, T6, T7, T8)(Filter)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldQueryApi.Query``8(ZenECS.Core.Filter)
+    name: Query
+    href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__8_ZenECS_Core_Filter_
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: ','
+  - name: " "
+  - name: T8
+  - name: '>'
+  - name: (
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldQueryApi.Query``8(ZenECS.Core.Filter)
+    name: Query
+    href: ZenECS.Core.IWorldQueryApi.html#ZenECS_Core_IWorldQueryApi_Query__8_ZenECS_Core_Filter_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: ','
+  - name: " "
+  - name: T8
+  - name: )
+  - name: (
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+- uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``1(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``1(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQuerySpanApi
+  isExternal: true
+  href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__1_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  name: QueryToSpan<T1>(Span<Entity>, Filter)
+  nameWithType: IWorldQuerySpanApi.QueryToSpan<T1>(Span<Entity>, Filter)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan<T1>(System.Span<ZenECS.Core.Entity>, ZenECS.Core.Filter)
+  nameWithType.vb: IWorldQuerySpanApi.QueryToSpan(Of T1)(Span(Of Entity), Filter)
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan(Of T1)(System.Span(Of ZenECS.Core.Entity), ZenECS.Core.Filter)
+  name.vb: QueryToSpan(Of T1)(Span(Of Entity), Filter)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``1(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+    name: QueryToSpan
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__1_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  - name: <
+  - name: T1
+  - name: '>'
+  - name: (
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``1(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+    name: QueryToSpan
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__1_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: )
+  - name: (
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+- uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``2(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``2(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQuerySpanApi
+  isExternal: true
+  href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__2_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  name: QueryToSpan<T1, T2>(Span<Entity>, Filter)
+  nameWithType: IWorldQuerySpanApi.QueryToSpan<T1, T2>(Span<Entity>, Filter)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan<T1, T2>(System.Span<ZenECS.Core.Entity>, ZenECS.Core.Filter)
+  nameWithType.vb: IWorldQuerySpanApi.QueryToSpan(Of T1, T2)(Span(Of Entity), Filter)
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan(Of T1, T2)(System.Span(Of ZenECS.Core.Entity), ZenECS.Core.Filter)
+  name.vb: QueryToSpan(Of T1, T2)(Span(Of Entity), Filter)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``2(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+    name: QueryToSpan
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__2_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: '>'
+  - name: (
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``2(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+    name: QueryToSpan
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__2_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  - name: (
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+- uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``3(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``3(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQuerySpanApi
+  isExternal: true
+  href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__3_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  name: QueryToSpan<T1, T2, T3>(Span<Entity>, Filter)
+  nameWithType: IWorldQuerySpanApi.QueryToSpan<T1, T2, T3>(Span<Entity>, Filter)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan<T1, T2, T3>(System.Span<ZenECS.Core.Entity>, ZenECS.Core.Filter)
+  nameWithType.vb: IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3)(Span(Of Entity), Filter)
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3)(System.Span(Of ZenECS.Core.Entity), ZenECS.Core.Filter)
+  name.vb: QueryToSpan(Of T1, T2, T3)(Span(Of Entity), Filter)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``3(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+    name: QueryToSpan
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__3_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: '>'
+  - name: (
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``3(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+    name: QueryToSpan
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__3_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: )
+  - name: (
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+- uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``4(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``4(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQuerySpanApi
+  isExternal: true
+  href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__4_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  name: QueryToSpan<T1, T2, T3, T4>(Span<Entity>, Filter)
+  nameWithType: IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4>(Span<Entity>, Filter)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4>(System.Span<ZenECS.Core.Entity>, ZenECS.Core.Filter)
+  nameWithType.vb: IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4)(Span(Of Entity), Filter)
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4)(System.Span(Of ZenECS.Core.Entity), ZenECS.Core.Filter)
+  name.vb: QueryToSpan(Of T1, T2, T3, T4)(Span(Of Entity), Filter)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``4(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+    name: QueryToSpan
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__4_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: '>'
+  - name: (
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``4(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+    name: QueryToSpan
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__4_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: )
+  - name: (
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+- uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``5(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``5(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQuerySpanApi
+  isExternal: true
+  href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__5_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  name: QueryToSpan<T1, T2, T3, T4, T5>(Span<Entity>, Filter)
+  nameWithType: IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4, T5>(Span<Entity>, Filter)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4, T5>(System.Span<ZenECS.Core.Entity>, ZenECS.Core.Filter)
+  nameWithType.vb: IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4, T5)(Span(Of Entity), Filter)
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4, T5)(System.Span(Of ZenECS.Core.Entity), ZenECS.Core.Filter)
+  name.vb: QueryToSpan(Of T1, T2, T3, T4, T5)(Span(Of Entity), Filter)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``5(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+    name: QueryToSpan
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__5_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: '>'
+  - name: (
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``5(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+    name: QueryToSpan
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__5_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: )
+  - name: (
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+- uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``6(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``6(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQuerySpanApi
+  isExternal: true
+  href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__6_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  name: QueryToSpan<T1, T2, T3, T4, T5, T6>(Span<Entity>, Filter)
+  nameWithType: IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4, T5, T6>(Span<Entity>, Filter)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4, T5, T6>(System.Span<ZenECS.Core.Entity>, ZenECS.Core.Filter)
+  nameWithType.vb: IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4, T5, T6)(Span(Of Entity), Filter)
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4, T5, T6)(System.Span(Of ZenECS.Core.Entity), ZenECS.Core.Filter)
+  name.vb: QueryToSpan(Of T1, T2, T3, T4, T5, T6)(Span(Of Entity), Filter)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``6(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+    name: QueryToSpan
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__6_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: '>'
+  - name: (
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``6(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+    name: QueryToSpan
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__6_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: )
+  - name: (
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+- uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``7(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``7(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQuerySpanApi
+  isExternal: true
+  href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__7_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  name: QueryToSpan<T1, T2, T3, T4, T5, T6, T7>(Span<Entity>, Filter)
+  nameWithType: IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4, T5, T6, T7>(Span<Entity>, Filter)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4, T5, T6, T7>(System.Span<ZenECS.Core.Entity>, ZenECS.Core.Filter)
+  nameWithType.vb: IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4, T5, T6, T7)(Span(Of Entity), Filter)
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4, T5, T6, T7)(System.Span(Of ZenECS.Core.Entity), ZenECS.Core.Filter)
+  name.vb: QueryToSpan(Of T1, T2, T3, T4, T5, T6, T7)(Span(Of Entity), Filter)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``7(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+    name: QueryToSpan
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__7_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: '>'
+  - name: (
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``7(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+    name: QueryToSpan
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__7_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: )
+  - name: (
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+- uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``8(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``8(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQuerySpanApi
+  isExternal: true
+  href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__8_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  name: QueryToSpan<T1, T2, T3, T4, T5, T6, T7, T8>(Span<Entity>, Filter)
+  nameWithType: IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4, T5, T6, T7, T8>(Span<Entity>, Filter)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4, T5, T6, T7, T8>(System.Span<ZenECS.Core.Entity>, ZenECS.Core.Filter)
+  nameWithType.vb: IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4, T5, T6, T7, T8)(Span(Of Entity), Filter)
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4, T5, T6, T7, T8)(System.Span(Of ZenECS.Core.Entity), ZenECS.Core.Filter)
+  name.vb: QueryToSpan(Of T1, T2, T3, T4, T5, T6, T7, T8)(Span(Of Entity), Filter)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``8(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+    name: QueryToSpan
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__8_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: ','
+  - name: " "
+  - name: T8
+  - name: '>'
+  - name: (
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``8(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+    name: QueryToSpan
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__8_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: ','
+  - name: " "
+  - name: T8
+  - name: )
+  - name: (
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: )
+- uid: ZenECS.Core.IWorldQuerySpanApi.Process``1(System.ReadOnlySpan{ZenECS.Core.Entity},ZenECS.Core.RefAction{{T}})
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.Process``1(System.ReadOnlySpan{ZenECS.Core.Entity},ZenECS.Core.RefAction{``0})
+  parent: ZenECS.Core.IWorldQuerySpanApi
+  definition: ZenECS.Core.IWorldQuerySpanApi.Process``1(System.ReadOnlySpan{ZenECS.Core.Entity},ZenECS.Core.RefAction{``0})
+  href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_Process__1_System_ReadOnlySpan_ZenECS_Core_Entity__ZenECS_Core_RefAction___0__
+  name: Process<T>(ReadOnlySpan<Entity>, RefAction<T>)
+  nameWithType: IWorldQuerySpanApi.Process<T>(ReadOnlySpan<Entity>, RefAction<T>)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.Process<T>(System.ReadOnlySpan<ZenECS.Core.Entity>, ZenECS.Core.RefAction<T>)
+  nameWithType.vb: IWorldQuerySpanApi.Process(Of T)(ReadOnlySpan(Of Entity), RefAction(Of T))
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.Process(Of T)(System.ReadOnlySpan(Of ZenECS.Core.Entity), ZenECS.Core.RefAction(Of T))
+  name.vb: Process(Of T)(ReadOnlySpan(Of Entity), RefAction(Of T))
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.Process``1(System.ReadOnlySpan{ZenECS.Core.Entity},ZenECS.Core.RefAction{``0})
+    name: Process
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_Process__1_System_ReadOnlySpan_ZenECS_Core_Entity__ZenECS_Core_RefAction___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.RefAction`1
+    name: RefAction
+    href: ZenECS.Core.RefAction-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.Process``1(System.ReadOnlySpan{ZenECS.Core.Entity},ZenECS.Core.RefAction{``0})
+    name: Process
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_Process__1_System_ReadOnlySpan_ZenECS_Core_Entity__ZenECS_Core_RefAction___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.RefAction`1
+    name: RefAction
+    href: ZenECS.Core.RefAction-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: ZenECS.Core.IWorldEntityApi.AliveCount
+  commentId: P:ZenECS.Core.IWorldEntityApi.AliveCount
+  parent: ZenECS.Core.IWorldEntityApi
+  href: ZenECS.Core.IWorldEntityApi.html#ZenECS_Core_IWorldEntityApi_AliveCount
+  name: AliveCount
+  nameWithType: IWorldEntityApi.AliveCount
+  fullName: ZenECS.Core.IWorldEntityApi.AliveCount
+- uid: ZenECS.Core.IWorldEntityApi.IsAlive(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldEntityApi.IsAlive(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldEntityApi
+  href: ZenECS.Core.IWorldEntityApi.html#ZenECS_Core_IWorldEntityApi_IsAlive_ZenECS_Core_Entity_
+  name: IsAlive(Entity)
+  nameWithType: IWorldEntityApi.IsAlive(Entity)
+  fullName: ZenECS.Core.IWorldEntityApi.IsAlive(ZenECS.Core.Entity)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldEntityApi.IsAlive(ZenECS.Core.Entity)
+    name: IsAlive
+    href: ZenECS.Core.IWorldEntityApi.html#ZenECS_Core_IWorldEntityApi_IsAlive_ZenECS_Core_Entity_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldEntityApi.IsAlive(ZenECS.Core.Entity)
+    name: IsAlive
+    href: ZenECS.Core.IWorldEntityApi.html#ZenECS_Core_IWorldEntityApi_IsAlive_ZenECS_Core_Entity_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: ZenECS.Core.IWorldEntityApi.IsAlive(System.Int32,System.Int32)
+  commentId: M:ZenECS.Core.IWorldEntityApi.IsAlive(System.Int32,System.Int32)
+  parent: ZenECS.Core.IWorldEntityApi
+  isExternal: true
+  href: ZenECS.Core.IWorldEntityApi.html#ZenECS_Core_IWorldEntityApi_IsAlive_System_Int32_System_Int32_
+  name: IsAlive(int, int)
+  nameWithType: IWorldEntityApi.IsAlive(int, int)
+  fullName: ZenECS.Core.IWorldEntityApi.IsAlive(int, int)
+  nameWithType.vb: IWorldEntityApi.IsAlive(Integer, Integer)
+  fullName.vb: ZenECS.Core.IWorldEntityApi.IsAlive(Integer, Integer)
+  name.vb: IsAlive(Integer, Integer)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldEntityApi.IsAlive(System.Int32,System.Int32)
+    name: IsAlive
+    href: ZenECS.Core.IWorldEntityApi.html#ZenECS_Core_IWorldEntityApi_IsAlive_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldEntityApi.IsAlive(System.Int32,System.Int32)
+    name: IsAlive
+    href: ZenECS.Core.IWorldEntityApi.html#ZenECS_Core_IWorldEntityApi_IsAlive_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: ZenECS.Core.IWorldEntityApi.GetAllEntities
+  commentId: M:ZenECS.Core.IWorldEntityApi.GetAllEntities
+  parent: ZenECS.Core.IWorldEntityApi
+  href: ZenECS.Core.IWorldEntityApi.html#ZenECS_Core_IWorldEntityApi_GetAllEntities
+  name: GetAllEntities()
+  nameWithType: IWorldEntityApi.GetAllEntities()
+  fullName: ZenECS.Core.IWorldEntityApi.GetAllEntities()
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldEntityApi.GetAllEntities
+    name: GetAllEntities
+    href: ZenECS.Core.IWorldEntityApi.html#ZenECS_Core_IWorldEntityApi_GetAllEntities
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldEntityApi.GetAllEntities
+    name: GetAllEntities
+    href: ZenECS.Core.IWorldEntityApi.html#ZenECS_Core_IWorldEntityApi_GetAllEntities
+  - name: (
+  - name: )
+- uid: ZenECS.Core.IWorldComponentApi.HasComponent``1(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldComponentApi.HasComponent``1(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldComponentApi
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_HasComponent__1_ZenECS_Core_Entity_
+  name: HasComponent<T>(Entity)
+  nameWithType: IWorldComponentApi.HasComponent<T>(Entity)
+  fullName: ZenECS.Core.IWorldComponentApi.HasComponent<T>(ZenECS.Core.Entity)
+  nameWithType.vb: IWorldComponentApi.HasComponent(Of T)(Entity)
+  fullName.vb: ZenECS.Core.IWorldComponentApi.HasComponent(Of T)(ZenECS.Core.Entity)
+  name.vb: HasComponent(Of T)(Entity)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldComponentApi.HasComponent``1(ZenECS.Core.Entity)
+    name: HasComponent
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_HasComponent__1_ZenECS_Core_Entity_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldComponentApi.HasComponent``1(ZenECS.Core.Entity)
+    name: HasComponent
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_HasComponent__1_ZenECS_Core_Entity_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: ZenECS.Core.IWorldComponentApi.HasComponentBoxed(ZenECS.Core.Entity,System.Type)
+  commentId: M:ZenECS.Core.IWorldComponentApi.HasComponentBoxed(ZenECS.Core.Entity,System.Type)
+  parent: ZenECS.Core.IWorldComponentApi
+  isExternal: true
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_HasComponentBoxed_ZenECS_Core_Entity_System_Type_
+  name: HasComponentBoxed(Entity, Type)
+  nameWithType: IWorldComponentApi.HasComponentBoxed(Entity, Type)
+  fullName: ZenECS.Core.IWorldComponentApi.HasComponentBoxed(ZenECS.Core.Entity, System.Type)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldComponentApi.HasComponentBoxed(ZenECS.Core.Entity,System.Type)
+    name: HasComponentBoxed
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_HasComponentBoxed_ZenECS_Core_Entity_System_Type_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldComponentApi.HasComponentBoxed(ZenECS.Core.Entity,System.Type)
+    name: HasComponentBoxed
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_HasComponentBoxed_ZenECS_Core_Entity_System_Type_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: ZenECS.Core.IWorldComponentApi.SnapshotComponent``1(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldComponentApi.SnapshotComponent``1(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldComponentApi
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_SnapshotComponent__1_ZenECS_Core_Entity_
+  name: SnapshotComponent<T>(Entity)
+  nameWithType: IWorldComponentApi.SnapshotComponent<T>(Entity)
+  fullName: ZenECS.Core.IWorldComponentApi.SnapshotComponent<T>(ZenECS.Core.Entity)
+  nameWithType.vb: IWorldComponentApi.SnapshotComponent(Of T)(Entity)
+  fullName.vb: ZenECS.Core.IWorldComponentApi.SnapshotComponent(Of T)(ZenECS.Core.Entity)
+  name.vb: SnapshotComponent(Of T)(Entity)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldComponentApi.SnapshotComponent``1(ZenECS.Core.Entity)
+    name: SnapshotComponent
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_SnapshotComponent__1_ZenECS_Core_Entity_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldComponentApi.SnapshotComponent``1(ZenECS.Core.Entity)
+    name: SnapshotComponent
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_SnapshotComponent__1_ZenECS_Core_Entity_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: ZenECS.Core.IWorldComponentApi.SnapshotComponentBoxed(ZenECS.Core.Entity,System.Object)
+  commentId: M:ZenECS.Core.IWorldComponentApi.SnapshotComponentBoxed(ZenECS.Core.Entity,System.Object)
+  parent: ZenECS.Core.IWorldComponentApi
+  isExternal: true
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_SnapshotComponentBoxed_ZenECS_Core_Entity_System_Object_
+  name: SnapshotComponentBoxed(Entity, object)
+  nameWithType: IWorldComponentApi.SnapshotComponentBoxed(Entity, object)
+  fullName: ZenECS.Core.IWorldComponentApi.SnapshotComponentBoxed(ZenECS.Core.Entity, object)
+  nameWithType.vb: IWorldComponentApi.SnapshotComponentBoxed(Entity, Object)
+  fullName.vb: ZenECS.Core.IWorldComponentApi.SnapshotComponentBoxed(ZenECS.Core.Entity, Object)
+  name.vb: SnapshotComponentBoxed(Entity, Object)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldComponentApi.SnapshotComponentBoxed(ZenECS.Core.Entity,System.Object)
+    name: SnapshotComponentBoxed
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_SnapshotComponentBoxed_ZenECS_Core_Entity_System_Object_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldComponentApi.SnapshotComponentBoxed(ZenECS.Core.Entity,System.Object)
+    name: SnapshotComponentBoxed
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_SnapshotComponentBoxed_ZenECS_Core_Entity_System_Object_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: ZenECS.Core.IWorldComponentApi.SnapshotComponentTyped(ZenECS.Core.Entity,System.Type)
+  commentId: M:ZenECS.Core.IWorldComponentApi.SnapshotComponentTyped(ZenECS.Core.Entity,System.Type)
+  parent: ZenECS.Core.IWorldComponentApi
+  isExternal: true
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_SnapshotComponentTyped_ZenECS_Core_Entity_System_Type_
+  name: SnapshotComponentTyped(Entity, Type)
+  nameWithType: IWorldComponentApi.SnapshotComponentTyped(Entity, Type)
+  fullName: ZenECS.Core.IWorldComponentApi.SnapshotComponentTyped(ZenECS.Core.Entity, System.Type)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldComponentApi.SnapshotComponentTyped(ZenECS.Core.Entity,System.Type)
+    name: SnapshotComponentTyped
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_SnapshotComponentTyped_ZenECS_Core_Entity_System_Type_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldComponentApi.SnapshotComponentTyped(ZenECS.Core.Entity,System.Type)
+    name: SnapshotComponentTyped
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_SnapshotComponentTyped_ZenECS_Core_Entity_System_Type_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: ZenECS.Core.IWorldComponentApi.ReadComponent``1(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldComponentApi.ReadComponent``1(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldComponentApi
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_ReadComponent__1_ZenECS_Core_Entity_
+  name: ReadComponent<T>(Entity)
+  nameWithType: IWorldComponentApi.ReadComponent<T>(Entity)
+  fullName: ZenECS.Core.IWorldComponentApi.ReadComponent<T>(ZenECS.Core.Entity)
+  nameWithType.vb: IWorldComponentApi.ReadComponent(Of T)(Entity)
+  fullName.vb: ZenECS.Core.IWorldComponentApi.ReadComponent(Of T)(ZenECS.Core.Entity)
+  name.vb: ReadComponent(Of T)(Entity)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldComponentApi.ReadComponent``1(ZenECS.Core.Entity)
+    name: ReadComponent
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_ReadComponent__1_ZenECS_Core_Entity_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldComponentApi.ReadComponent``1(ZenECS.Core.Entity)
+    name: ReadComponent
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_ReadComponent__1_ZenECS_Core_Entity_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: ZenECS.Core.IWorldComponentApi.TryReadComponent``1(ZenECS.Core.Entity,{T}@)
+  commentId: M:ZenECS.Core.IWorldComponentApi.TryReadComponent``1(ZenECS.Core.Entity,``0@)
+  parent: ZenECS.Core.IWorldComponentApi
+  definition: ZenECS.Core.IWorldComponentApi.TryReadComponent``1(ZenECS.Core.Entity,``0@)
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_TryReadComponent__1_ZenECS_Core_Entity___0__
+  name: TryReadComponent<T>(Entity, out T)
+  nameWithType: IWorldComponentApi.TryReadComponent<T>(Entity, out T)
+  fullName: ZenECS.Core.IWorldComponentApi.TryReadComponent<T>(ZenECS.Core.Entity, out T)
+  nameWithType.vb: IWorldComponentApi.TryReadComponent(Of T)(Entity, T)
+  fullName.vb: ZenECS.Core.IWorldComponentApi.TryReadComponent(Of T)(ZenECS.Core.Entity, T)
+  name.vb: TryReadComponent(Of T)(Entity, T)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldComponentApi.TryReadComponent``1(ZenECS.Core.Entity,``0@)
+    name: TryReadComponent
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_TryReadComponent__1_ZenECS_Core_Entity___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldComponentApi.TryReadComponent``1(ZenECS.Core.Entity,``0@)
+    name: TryReadComponent
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_TryReadComponent__1_ZenECS_Core_Entity___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+- uid: ZenECS.Core.IWorldComponentApi.GetAllComponents(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldComponentApi.GetAllComponents(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldComponentApi
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_GetAllComponents_ZenECS_Core_Entity_
+  name: GetAllComponents(Entity)
+  nameWithType: IWorldComponentApi.GetAllComponents(Entity)
+  fullName: ZenECS.Core.IWorldComponentApi.GetAllComponents(ZenECS.Core.Entity)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldComponentApi.GetAllComponents(ZenECS.Core.Entity)
+    name: GetAllComponents
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_GetAllComponents_ZenECS_Core_Entity_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldComponentApi.GetAllComponents(ZenECS.Core.Entity)
+    name: GetAllComponents
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_GetAllComponents_ZenECS_Core_Entity_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: ZenECS.Core.IWorldComponentApi.GetSingleton``1
+  commentId: M:ZenECS.Core.IWorldComponentApi.GetSingleton``1
+  parent: ZenECS.Core.IWorldComponentApi
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_GetSingleton__1
+  name: GetSingleton<T>()
+  nameWithType: IWorldComponentApi.GetSingleton<T>()
+  fullName: ZenECS.Core.IWorldComponentApi.GetSingleton<T>()
+  nameWithType.vb: IWorldComponentApi.GetSingleton(Of T)()
+  fullName.vb: ZenECS.Core.IWorldComponentApi.GetSingleton(Of T)()
+  name.vb: GetSingleton(Of T)()
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldComponentApi.GetSingleton``1
+    name: GetSingleton
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_GetSingleton__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldComponentApi.GetSingleton``1
+    name: GetSingleton
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_GetSingleton__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: ZenECS.Core.IWorldComponentApi.TryGetSingleton``1({T}@)
+  commentId: M:ZenECS.Core.IWorldComponentApi.TryGetSingleton``1(``0@)
+  parent: ZenECS.Core.IWorldComponentApi
+  definition: ZenECS.Core.IWorldComponentApi.TryGetSingleton``1(``0@)
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_TryGetSingleton__1___0__
+  name: TryGetSingleton<T>(out T)
+  nameWithType: IWorldComponentApi.TryGetSingleton<T>(out T)
+  fullName: ZenECS.Core.IWorldComponentApi.TryGetSingleton<T>(out T)
+  nameWithType.vb: IWorldComponentApi.TryGetSingleton(Of T)(T)
+  fullName.vb: ZenECS.Core.IWorldComponentApi.TryGetSingleton(Of T)(T)
+  name.vb: TryGetSingleton(Of T)(T)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldComponentApi.TryGetSingleton``1(``0@)
+    name: TryGetSingleton
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_TryGetSingleton__1___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: out
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldComponentApi.TryGetSingleton``1(``0@)
+    name: TryGetSingleton
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_TryGetSingleton__1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: )
+- uid: ZenECS.Core.IWorldComponentApi.HasSingleton(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldComponentApi.HasSingleton(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldComponentApi
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_HasSingleton_ZenECS_Core_Entity_
+  name: HasSingleton(Entity)
+  nameWithType: IWorldComponentApi.HasSingleton(Entity)
+  fullName: ZenECS.Core.IWorldComponentApi.HasSingleton(ZenECS.Core.Entity)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldComponentApi.HasSingleton(ZenECS.Core.Entity)
+    name: HasSingleton
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_HasSingleton_ZenECS_Core_Entity_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldComponentApi.HasSingleton(ZenECS.Core.Entity)
+    name: HasSingleton
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_HasSingleton_ZenECS_Core_Entity_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: ZenECS.Core.IWorldComponentApi.GetAllSingletons
+  commentId: M:ZenECS.Core.IWorldComponentApi.GetAllSingletons
+  parent: ZenECS.Core.IWorldComponentApi
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_GetAllSingletons
+  name: GetAllSingletons()
+  nameWithType: IWorldComponentApi.GetAllSingletons()
+  fullName: ZenECS.Core.IWorldComponentApi.GetAllSingletons()
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldComponentApi.GetAllSingletons
+    name: GetAllSingletons
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_GetAllSingletons
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldComponentApi.GetAllSingletons
+    name: GetAllSingletons
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_GetAllSingletons
+  - name: (
+  - name: )
+- uid: ZenECS.Core.IWorldContextApi.RegisterContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  commentId: M:ZenECS.Core.IWorldContextApi.RegisterContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  parent: ZenECS.Core.IWorldContextApi
+  href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_RegisterContext_ZenECS_Core_Entity_ZenECS_Core_Binding_IContext_
+  name: RegisterContext(Entity, IContext)
+  nameWithType: IWorldContextApi.RegisterContext(Entity, IContext)
+  fullName: ZenECS.Core.IWorldContextApi.RegisterContext(ZenECS.Core.Entity, ZenECS.Core.Binding.IContext)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldContextApi.RegisterContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+    name: RegisterContext
+    href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_RegisterContext_ZenECS_Core_Entity_ZenECS_Core_Binding_IContext_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Binding.IContext
+    name: IContext
+    href: ZenECS.Core.Binding.IContext.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldContextApi.RegisterContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+    name: RegisterContext
+    href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_RegisterContext_ZenECS_Core_Entity_ZenECS_Core_Binding_IContext_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Binding.IContext
+    name: IContext
+    href: ZenECS.Core.Binding.IContext.html
+  - name: )
+- uid: ZenECS.Core.IWorldContextApi.HasContext(ZenECS.Core.Entity,System.Type)
+  commentId: M:ZenECS.Core.IWorldContextApi.HasContext(ZenECS.Core.Entity,System.Type)
+  parent: ZenECS.Core.IWorldContextApi
+  isExternal: true
+  href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_HasContext_ZenECS_Core_Entity_System_Type_
+  name: HasContext(Entity, Type)
+  nameWithType: IWorldContextApi.HasContext(Entity, Type)
+  fullName: ZenECS.Core.IWorldContextApi.HasContext(ZenECS.Core.Entity, System.Type)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldContextApi.HasContext(ZenECS.Core.Entity,System.Type)
+    name: HasContext
+    href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_HasContext_ZenECS_Core_Entity_System_Type_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldContextApi.HasContext(ZenECS.Core.Entity,System.Type)
+    name: HasContext
+    href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_HasContext_ZenECS_Core_Entity_System_Type_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: ZenECS.Core.IWorldContextApi.HasContext``1(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldContextApi.HasContext``1(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldContextApi
+  href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_HasContext__1_ZenECS_Core_Entity_
+  name: HasContext<T>(Entity)
+  nameWithType: IWorldContextApi.HasContext<T>(Entity)
+  fullName: ZenECS.Core.IWorldContextApi.HasContext<T>(ZenECS.Core.Entity)
+  nameWithType.vb: IWorldContextApi.HasContext(Of T)(Entity)
+  fullName.vb: ZenECS.Core.IWorldContextApi.HasContext(Of T)(ZenECS.Core.Entity)
+  name.vb: HasContext(Of T)(Entity)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldContextApi.HasContext``1(ZenECS.Core.Entity)
+    name: HasContext
+    href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_HasContext__1_ZenECS_Core_Entity_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldContextApi.HasContext``1(ZenECS.Core.Entity)
+    name: HasContext
+    href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_HasContext__1_ZenECS_Core_Entity_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: ZenECS.Core.IWorldContextApi.GetAllContexts(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldContextApi.GetAllContexts(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldContextApi
+  href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_GetAllContexts_ZenECS_Core_Entity_
+  name: GetAllContexts(Entity)
+  nameWithType: IWorldContextApi.GetAllContexts(Entity)
+  fullName: ZenECS.Core.IWorldContextApi.GetAllContexts(ZenECS.Core.Entity)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldContextApi.GetAllContexts(ZenECS.Core.Entity)
+    name: GetAllContexts
+    href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_GetAllContexts_ZenECS_Core_Entity_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldContextApi.GetAllContexts(ZenECS.Core.Entity)
+    name: GetAllContexts
+    href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_GetAllContexts_ZenECS_Core_Entity_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: ZenECS.Core.IWorldContextApi.RemoveContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  commentId: M:ZenECS.Core.IWorldContextApi.RemoveContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  parent: ZenECS.Core.IWorldContextApi
+  href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_RemoveContext_ZenECS_Core_Entity_ZenECS_Core_Binding_IContext_
+  name: RemoveContext(Entity, IContext)
+  nameWithType: IWorldContextApi.RemoveContext(Entity, IContext)
+  fullName: ZenECS.Core.IWorldContextApi.RemoveContext(ZenECS.Core.Entity, ZenECS.Core.Binding.IContext)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldContextApi.RemoveContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+    name: RemoveContext
+    href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_RemoveContext_ZenECS_Core_Entity_ZenECS_Core_Binding_IContext_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Binding.IContext
+    name: IContext
+    href: ZenECS.Core.Binding.IContext.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldContextApi.RemoveContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+    name: RemoveContext
+    href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_RemoveContext_ZenECS_Core_Entity_ZenECS_Core_Binding_IContext_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Binding.IContext
+    name: IContext
+    href: ZenECS.Core.Binding.IContext.html
+  - name: )
+- uid: ZenECS.Core.IWorldContextApi.ReinitializeContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  commentId: M:ZenECS.Core.IWorldContextApi.ReinitializeContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+  parent: ZenECS.Core.IWorldContextApi
+  href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_ReinitializeContext_ZenECS_Core_Entity_ZenECS_Core_Binding_IContext_
+  name: ReinitializeContext(Entity, IContext)
+  nameWithType: IWorldContextApi.ReinitializeContext(Entity, IContext)
+  fullName: ZenECS.Core.IWorldContextApi.ReinitializeContext(ZenECS.Core.Entity, ZenECS.Core.Binding.IContext)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldContextApi.ReinitializeContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+    name: ReinitializeContext
+    href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_ReinitializeContext_ZenECS_Core_Entity_ZenECS_Core_Binding_IContext_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Binding.IContext
+    name: IContext
+    href: ZenECS.Core.Binding.IContext.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldContextApi.ReinitializeContext(ZenECS.Core.Entity,ZenECS.Core.Binding.IContext)
+    name: ReinitializeContext
+    href: ZenECS.Core.IWorldContextApi.html#ZenECS_Core_IWorldContextApi_ReinitializeContext_ZenECS_Core_Entity_ZenECS_Core_Binding_IContext_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Binding.IContext
+    name: IContext
+    href: ZenECS.Core.Binding.IContext.html
+  - name: )
+- uid: ZenECS.Core.IWorldBinderApi.HasBinder``1(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldBinderApi.HasBinder``1(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldBinderApi
+  href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_HasBinder__1_ZenECS_Core_Entity_
+  name: HasBinder<T>(Entity)
+  nameWithType: IWorldBinderApi.HasBinder<T>(Entity)
+  fullName: ZenECS.Core.IWorldBinderApi.HasBinder<T>(ZenECS.Core.Entity)
+  nameWithType.vb: IWorldBinderApi.HasBinder(Of T)(Entity)
+  fullName.vb: ZenECS.Core.IWorldBinderApi.HasBinder(Of T)(ZenECS.Core.Entity)
+  name.vb: HasBinder(Of T)(Entity)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldBinderApi.HasBinder``1(ZenECS.Core.Entity)
+    name: HasBinder
+    href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_HasBinder__1_ZenECS_Core_Entity_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldBinderApi.HasBinder``1(ZenECS.Core.Entity)
+    name: HasBinder
+    href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_HasBinder__1_ZenECS_Core_Entity_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: ZenECS.Core.IWorldBinderApi.AttachBinder(ZenECS.Core.Entity,ZenECS.Core.Binding.IBinder)
+  commentId: M:ZenECS.Core.IWorldBinderApi.AttachBinder(ZenECS.Core.Entity,ZenECS.Core.Binding.IBinder)
+  parent: ZenECS.Core.IWorldBinderApi
+  href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_AttachBinder_ZenECS_Core_Entity_ZenECS_Core_Binding_IBinder_
+  name: AttachBinder(Entity, IBinder)
+  nameWithType: IWorldBinderApi.AttachBinder(Entity, IBinder)
+  fullName: ZenECS.Core.IWorldBinderApi.AttachBinder(ZenECS.Core.Entity, ZenECS.Core.Binding.IBinder)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldBinderApi.AttachBinder(ZenECS.Core.Entity,ZenECS.Core.Binding.IBinder)
+    name: AttachBinder
+    href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_AttachBinder_ZenECS_Core_Entity_ZenECS_Core_Binding_IBinder_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Binding.IBinder
+    name: IBinder
+    href: ZenECS.Core.Binding.IBinder.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldBinderApi.AttachBinder(ZenECS.Core.Entity,ZenECS.Core.Binding.IBinder)
+    name: AttachBinder
+    href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_AttachBinder_ZenECS_Core_Entity_ZenECS_Core_Binding_IBinder_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Binding.IBinder
+    name: IBinder
+    href: ZenECS.Core.Binding.IBinder.html
+  - name: )
+- uid: ZenECS.Core.IWorldBinderApi.DetachAllBinders(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldBinderApi.DetachAllBinders(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldBinderApi
+  href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_DetachAllBinders_ZenECS_Core_Entity_
+  name: DetachAllBinders(Entity)
+  nameWithType: IWorldBinderApi.DetachAllBinders(Entity)
+  fullName: ZenECS.Core.IWorldBinderApi.DetachAllBinders(ZenECS.Core.Entity)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldBinderApi.DetachAllBinders(ZenECS.Core.Entity)
+    name: DetachAllBinders
+    href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_DetachAllBinders_ZenECS_Core_Entity_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldBinderApi.DetachAllBinders(ZenECS.Core.Entity)
+    name: DetachAllBinders
+    href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_DetachAllBinders_ZenECS_Core_Entity_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity,ZenECS.Core.Binding.IBinder)
+  commentId: M:ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity,ZenECS.Core.Binding.IBinder)
+  parent: ZenECS.Core.IWorldBinderApi
+  href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_DetachBinder_ZenECS_Core_Entity_ZenECS_Core_Binding_IBinder_
+  name: DetachBinder(Entity, IBinder)
+  nameWithType: IWorldBinderApi.DetachBinder(Entity, IBinder)
+  fullName: ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity, ZenECS.Core.Binding.IBinder)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity,ZenECS.Core.Binding.IBinder)
+    name: DetachBinder
+    href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_DetachBinder_ZenECS_Core_Entity_ZenECS_Core_Binding_IBinder_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Binding.IBinder
+    name: IBinder
+    href: ZenECS.Core.Binding.IBinder.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity,ZenECS.Core.Binding.IBinder)
+    name: DetachBinder
+    href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_DetachBinder_ZenECS_Core_Entity_ZenECS_Core_Binding_IBinder_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Binding.IBinder
+    name: IBinder
+    href: ZenECS.Core.Binding.IBinder.html
+  - name: )
+- uid: ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity,System.Type)
+  commentId: M:ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity,System.Type)
+  parent: ZenECS.Core.IWorldBinderApi
+  isExternal: true
+  href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_DetachBinder_ZenECS_Core_Entity_System_Type_
+  name: DetachBinder(Entity, Type)
+  nameWithType: IWorldBinderApi.DetachBinder(Entity, Type)
+  fullName: ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity, System.Type)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity,System.Type)
+    name: DetachBinder
+    href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_DetachBinder_ZenECS_Core_Entity_System_Type_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldBinderApi.DetachBinder(ZenECS.Core.Entity,System.Type)
+    name: DetachBinder
+    href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_DetachBinder_ZenECS_Core_Entity_System_Type_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: ZenECS.Core.IWorldBinderApi.GetAllBinders(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldBinderApi.GetAllBinders(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldBinderApi
+  href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_GetAllBinders_ZenECS_Core_Entity_
+  name: GetAllBinders(Entity)
+  nameWithType: IWorldBinderApi.GetAllBinders(Entity)
+  fullName: ZenECS.Core.IWorldBinderApi.GetAllBinders(ZenECS.Core.Entity)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldBinderApi.GetAllBinders(ZenECS.Core.Entity)
+    name: GetAllBinders
+    href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_GetAllBinders_ZenECS_Core_Entity_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldBinderApi.GetAllBinders(ZenECS.Core.Entity)
+    name: GetAllBinders
+    href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_GetAllBinders_ZenECS_Core_Entity_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: ZenECS.Core.IWorldBinderApi.GetAllBinderList(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldBinderApi.GetAllBinderList(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldBinderApi
+  href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_GetAllBinderList_ZenECS_Core_Entity_
+  name: GetAllBinderList(Entity)
+  nameWithType: IWorldBinderApi.GetAllBinderList(Entity)
+  fullName: ZenECS.Core.IWorldBinderApi.GetAllBinderList(ZenECS.Core.Entity)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldBinderApi.GetAllBinderList(ZenECS.Core.Entity)
+    name: GetAllBinderList
+    href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_GetAllBinderList_ZenECS_Core_Entity_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldBinderApi.GetAllBinderList(ZenECS.Core.Entity)
+    name: GetAllBinderList
+    href: ZenECS.Core.IWorldBinderApi.html#ZenECS_Core_IWorldBinderApi_GetAllBinderList_ZenECS_Core_Entity_
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: ZenECS.Core.IWorldSnapshotApi.SaveFullSnapshotBinary(System.IO.Stream)
+  commentId: M:ZenECS.Core.IWorldSnapshotApi.SaveFullSnapshotBinary(System.IO.Stream)
+  parent: ZenECS.Core.IWorldSnapshotApi
+  isExternal: true
+  href: ZenECS.Core.IWorldSnapshotApi.html#ZenECS_Core_IWorldSnapshotApi_SaveFullSnapshotBinary_System_IO_Stream_
+  name: SaveFullSnapshotBinary(Stream)
+  nameWithType: IWorldSnapshotApi.SaveFullSnapshotBinary(Stream)
+  fullName: ZenECS.Core.IWorldSnapshotApi.SaveFullSnapshotBinary(System.IO.Stream)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldSnapshotApi.SaveFullSnapshotBinary(System.IO.Stream)
+    name: SaveFullSnapshotBinary
+    href: ZenECS.Core.IWorldSnapshotApi.html#ZenECS_Core_IWorldSnapshotApi_SaveFullSnapshotBinary_System_IO_Stream_
+  - name: (
+  - uid: System.IO.Stream
+    name: Stream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldSnapshotApi.SaveFullSnapshotBinary(System.IO.Stream)
+    name: SaveFullSnapshotBinary
+    href: ZenECS.Core.IWorldSnapshotApi.html#ZenECS_Core_IWorldSnapshotApi_SaveFullSnapshotBinary_System_IO_Stream_
+  - name: (
+  - uid: System.IO.Stream
+    name: Stream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  - name: )
+- uid: ZenECS.Core.IWorldSnapshotApi.LoadFullSnapshotBinary(System.IO.Stream)
+  commentId: M:ZenECS.Core.IWorldSnapshotApi.LoadFullSnapshotBinary(System.IO.Stream)
+  parent: ZenECS.Core.IWorldSnapshotApi
+  isExternal: true
+  href: ZenECS.Core.IWorldSnapshotApi.html#ZenECS_Core_IWorldSnapshotApi_LoadFullSnapshotBinary_System_IO_Stream_
+  name: LoadFullSnapshotBinary(Stream)
+  nameWithType: IWorldSnapshotApi.LoadFullSnapshotBinary(Stream)
+  fullName: ZenECS.Core.IWorldSnapshotApi.LoadFullSnapshotBinary(System.IO.Stream)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldSnapshotApi.LoadFullSnapshotBinary(System.IO.Stream)
+    name: LoadFullSnapshotBinary
+    href: ZenECS.Core.IWorldSnapshotApi.html#ZenECS_Core_IWorldSnapshotApi_LoadFullSnapshotBinary_System_IO_Stream_
+  - name: (
+  - uid: System.IO.Stream
+    name: Stream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldSnapshotApi.LoadFullSnapshotBinary(System.IO.Stream)
+    name: LoadFullSnapshotBinary
+    href: ZenECS.Core.IWorldSnapshotApi.html#ZenECS_Core_IWorldSnapshotApi_LoadFullSnapshotBinary_System_IO_Stream_
+  - name: (
+  - uid: System.IO.Stream
+    name: Stream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  - name: )
+- uid: ZenECS.Core.IWorldMessagesApi.Subscribe``1(System.Action{{T}})
+  commentId: M:ZenECS.Core.IWorldMessagesApi.Subscribe``1(System.Action{``0})
+  parent: ZenECS.Core.IWorldMessagesApi
+  definition: ZenECS.Core.IWorldMessagesApi.Subscribe``1(System.Action{``0})
+  href: ZenECS.Core.IWorldMessagesApi.html#ZenECS_Core_IWorldMessagesApi_Subscribe__1_System_Action___0__
+  name: Subscribe<T>(Action<T>)
+  nameWithType: IWorldMessagesApi.Subscribe<T>(Action<T>)
+  fullName: ZenECS.Core.IWorldMessagesApi.Subscribe<T>(System.Action<T>)
+  nameWithType.vb: IWorldMessagesApi.Subscribe(Of T)(Action(Of T))
+  fullName.vb: ZenECS.Core.IWorldMessagesApi.Subscribe(Of T)(System.Action(Of T))
+  name.vb: Subscribe(Of T)(Action(Of T))
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldMessagesApi.Subscribe``1(System.Action{``0})
+    name: Subscribe
+    href: ZenECS.Core.IWorldMessagesApi.html#ZenECS_Core_IWorldMessagesApi_Subscribe__1_System_Action___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldMessagesApi.Subscribe``1(System.Action{``0})
+    name: Subscribe
+    href: ZenECS.Core.IWorldMessagesApi.html#ZenECS_Core_IWorldMessagesApi_Subscribe__1_System_Action___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: ZenECS.Core.IWorldMessagesApi.Publish``1({T}@)
+  commentId: M:ZenECS.Core.IWorldMessagesApi.Publish``1(``0@)
+  parent: ZenECS.Core.IWorldMessagesApi
+  definition: ZenECS.Core.IWorldMessagesApi.Publish``1(``0@)
+  href: ZenECS.Core.IWorldMessagesApi.html#ZenECS_Core_IWorldMessagesApi_Publish__1___0__
+  name: Publish<T>(in T)
+  nameWithType: IWorldMessagesApi.Publish<T>(in T)
+  fullName: ZenECS.Core.IWorldMessagesApi.Publish<T>(in T)
+  nameWithType.vb: IWorldMessagesApi.Publish(Of T)(T)
+  fullName.vb: ZenECS.Core.IWorldMessagesApi.Publish(Of T)(T)
+  name.vb: Publish(Of T)(T)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldMessagesApi.Publish``1(``0@)
+    name: Publish
+    href: ZenECS.Core.IWorldMessagesApi.html#ZenECS_Core_IWorldMessagesApi_Publish__1___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: in
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldMessagesApi.Publish``1(``0@)
+    name: Publish
+    href: ZenECS.Core.IWorldMessagesApi.html#ZenECS_Core_IWorldMessagesApi_Publish__1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: )
+- uid: ZenECS.Core.IWorldHookApi.AddWritePermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.AddWritePermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  parent: ZenECS.Core.IWorldHookApi
+  isExternal: true
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddWritePermission_System_Func_ZenECS_Core_Entity_System_Type_System_Boolean__
+  name: AddWritePermission(Func<Entity, Type, bool>)
+  nameWithType: IWorldHookApi.AddWritePermission(Func<Entity, Type, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.AddWritePermission(System.Func<ZenECS.Core.Entity, System.Type, bool>)
+  nameWithType.vb: IWorldHookApi.AddWritePermission(Func(Of Entity, Type, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.AddWritePermission(System.Func(Of ZenECS.Core.Entity, System.Type, Boolean))
+  name.vb: AddWritePermission(Func(Of Entity, Type, Boolean))
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldHookApi.AddWritePermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+    name: AddWritePermission
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddWritePermission_System_Func_ZenECS_Core_Entity_System_Type_System_Boolean__
+  - name: (
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldHookApi.AddWritePermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+    name: AddWritePermission
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddWritePermission_System_Func_ZenECS_Core_Entity_System_Type_System_Boolean__
+  - name: (
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: ZenECS.Core.IWorldHookApi.RemoveWritePermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.RemoveWritePermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  parent: ZenECS.Core.IWorldHookApi
+  isExternal: true
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_RemoveWritePermission_System_Func_ZenECS_Core_Entity_System_Type_System_Boolean__
+  name: RemoveWritePermission(Func<Entity, Type, bool>)
+  nameWithType: IWorldHookApi.RemoveWritePermission(Func<Entity, Type, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.RemoveWritePermission(System.Func<ZenECS.Core.Entity, System.Type, bool>)
+  nameWithType.vb: IWorldHookApi.RemoveWritePermission(Func(Of Entity, Type, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.RemoveWritePermission(System.Func(Of ZenECS.Core.Entity, System.Type, Boolean))
+  name.vb: RemoveWritePermission(Func(Of Entity, Type, Boolean))
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldHookApi.RemoveWritePermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+    name: RemoveWritePermission
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_RemoveWritePermission_System_Func_ZenECS_Core_Entity_System_Type_System_Boolean__
+  - name: (
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldHookApi.RemoveWritePermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+    name: RemoveWritePermission
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_RemoveWritePermission_System_Func_ZenECS_Core_Entity_System_Type_System_Boolean__
+  - name: (
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: ZenECS.Core.IWorldHookApi.ClearWritePermissions
+  commentId: M:ZenECS.Core.IWorldHookApi.ClearWritePermissions
+  parent: ZenECS.Core.IWorldHookApi
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_ClearWritePermissions
+  name: ClearWritePermissions()
+  nameWithType: IWorldHookApi.ClearWritePermissions()
+  fullName: ZenECS.Core.IWorldHookApi.ClearWritePermissions()
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldHookApi.ClearWritePermissions
+    name: ClearWritePermissions
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_ClearWritePermissions
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldHookApi.ClearWritePermissions
+    name: ClearWritePermissions
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_ClearWritePermissions
+  - name: (
+  - name: )
+- uid: ZenECS.Core.IWorldHookApi.AddReadPermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.AddReadPermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  parent: ZenECS.Core.IWorldHookApi
+  isExternal: true
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddReadPermission_System_Func_ZenECS_Core_Entity_System_Type_System_Boolean__
+  name: AddReadPermission(Func<Entity, Type, bool>)
+  nameWithType: IWorldHookApi.AddReadPermission(Func<Entity, Type, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.AddReadPermission(System.Func<ZenECS.Core.Entity, System.Type, bool>)
+  nameWithType.vb: IWorldHookApi.AddReadPermission(Func(Of Entity, Type, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.AddReadPermission(System.Func(Of ZenECS.Core.Entity, System.Type, Boolean))
+  name.vb: AddReadPermission(Func(Of Entity, Type, Boolean))
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldHookApi.AddReadPermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+    name: AddReadPermission
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddReadPermission_System_Func_ZenECS_Core_Entity_System_Type_System_Boolean__
+  - name: (
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldHookApi.AddReadPermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+    name: AddReadPermission
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddReadPermission_System_Func_ZenECS_Core_Entity_System_Type_System_Boolean__
+  - name: (
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: ZenECS.Core.IWorldHookApi.RemoveReadPermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.RemoveReadPermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  parent: ZenECS.Core.IWorldHookApi
+  isExternal: true
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_RemoveReadPermission_System_Func_ZenECS_Core_Entity_System_Type_System_Boolean__
+  name: RemoveReadPermission(Func<Entity, Type, bool>)
+  nameWithType: IWorldHookApi.RemoveReadPermission(Func<Entity, Type, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.RemoveReadPermission(System.Func<ZenECS.Core.Entity, System.Type, bool>)
+  nameWithType.vb: IWorldHookApi.RemoveReadPermission(Func(Of Entity, Type, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.RemoveReadPermission(System.Func(Of ZenECS.Core.Entity, System.Type, Boolean))
+  name.vb: RemoveReadPermission(Func(Of Entity, Type, Boolean))
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldHookApi.RemoveReadPermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+    name: RemoveReadPermission
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_RemoveReadPermission_System_Func_ZenECS_Core_Entity_System_Type_System_Boolean__
+  - name: (
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldHookApi.RemoveReadPermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+    name: RemoveReadPermission
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_RemoveReadPermission_System_Func_ZenECS_Core_Entity_System_Type_System_Boolean__
+  - name: (
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: ZenECS.Core.IWorldHookApi.ClearReadPermissions
+  commentId: M:ZenECS.Core.IWorldHookApi.ClearReadPermissions
+  parent: ZenECS.Core.IWorldHookApi
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_ClearReadPermissions
+  name: ClearReadPermissions()
+  nameWithType: IWorldHookApi.ClearReadPermissions()
+  fullName: ZenECS.Core.IWorldHookApi.ClearReadPermissions()
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldHookApi.ClearReadPermissions
+    name: ClearReadPermissions
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_ClearReadPermissions
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldHookApi.ClearReadPermissions
+    name: ClearReadPermissions
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_ClearReadPermissions
+  - name: (
+  - name: )
+- uid: ZenECS.Core.IWorldHookApi.AddValidator(System.Func{System.Object,System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.AddValidator(System.Func{System.Object,System.Boolean})
+  parent: ZenECS.Core.IWorldHookApi
+  isExternal: true
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddValidator_System_Func_System_Object_System_Boolean__
+  name: AddValidator(Func<object, bool>)
+  nameWithType: IWorldHookApi.AddValidator(Func<object, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.AddValidator(System.Func<object, bool>)
+  nameWithType.vb: IWorldHookApi.AddValidator(Func(Of Object, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.AddValidator(System.Func(Of Object, Boolean))
+  name.vb: AddValidator(Func(Of Object, Boolean))
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldHookApi.AddValidator(System.Func{System.Object,System.Boolean})
+    name: AddValidator
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddValidator_System_Func_System_Object_System_Boolean__
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldHookApi.AddValidator(System.Func{System.Object,System.Boolean})
+    name: AddValidator
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddValidator_System_Func_System_Object_System_Boolean__
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: ZenECS.Core.IWorldHookApi.RemoveValidator(System.Func{System.Object,System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.RemoveValidator(System.Func{System.Object,System.Boolean})
+  parent: ZenECS.Core.IWorldHookApi
+  isExternal: true
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_RemoveValidator_System_Func_System_Object_System_Boolean__
+  name: RemoveValidator(Func<object, bool>)
+  nameWithType: IWorldHookApi.RemoveValidator(Func<object, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.RemoveValidator(System.Func<object, bool>)
+  nameWithType.vb: IWorldHookApi.RemoveValidator(Func(Of Object, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.RemoveValidator(System.Func(Of Object, Boolean))
+  name.vb: RemoveValidator(Func(Of Object, Boolean))
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldHookApi.RemoveValidator(System.Func{System.Object,System.Boolean})
+    name: RemoveValidator
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_RemoveValidator_System_Func_System_Object_System_Boolean__
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldHookApi.RemoveValidator(System.Func{System.Object,System.Boolean})
+    name: RemoveValidator
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_RemoveValidator_System_Func_System_Object_System_Boolean__
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: ZenECS.Core.IWorldHookApi.ClearValidators
+  commentId: M:ZenECS.Core.IWorldHookApi.ClearValidators
+  parent: ZenECS.Core.IWorldHookApi
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_ClearValidators
+  name: ClearValidators()
+  nameWithType: IWorldHookApi.ClearValidators()
+  fullName: ZenECS.Core.IWorldHookApi.ClearValidators()
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldHookApi.ClearValidators
+    name: ClearValidators
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_ClearValidators
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldHookApi.ClearValidators
+    name: ClearValidators
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_ClearValidators
+  - name: (
+  - name: )
+- uid: ZenECS.Core.IWorldHookApi.AddValidator``1(System.Func{{T},System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.AddValidator``1(System.Func{``0,System.Boolean})
+  parent: ZenECS.Core.IWorldHookApi
+  definition: ZenECS.Core.IWorldHookApi.AddValidator``1(System.Func{``0,System.Boolean})
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddValidator__1_System_Func___0_System_Boolean__
+  name: AddValidator<T>(Func<T, bool>)
+  nameWithType: IWorldHookApi.AddValidator<T>(Func<T, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.AddValidator<T>(System.Func<T, bool>)
+  nameWithType.vb: IWorldHookApi.AddValidator(Of T)(Func(Of T, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.AddValidator(Of T)(System.Func(Of T, Boolean))
+  name.vb: AddValidator(Of T)(Func(Of T, Boolean))
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldHookApi.AddValidator``1(System.Func{``0,System.Boolean})
+    name: AddValidator
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddValidator__1_System_Func___0_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldHookApi.AddValidator``1(System.Func{``0,System.Boolean})
+    name: AddValidator
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddValidator__1_System_Func___0_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: ZenECS.Core.IWorldHookApi.RemoveValidator``1(System.Func{{T},System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.RemoveValidator``1(System.Func{``0,System.Boolean})
+  parent: ZenECS.Core.IWorldHookApi
+  definition: ZenECS.Core.IWorldHookApi.RemoveValidator``1(System.Func{``0,System.Boolean})
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_RemoveValidator__1_System_Func___0_System_Boolean__
+  name: RemoveValidator<T>(Func<T, bool>)
+  nameWithType: IWorldHookApi.RemoveValidator<T>(Func<T, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.RemoveValidator<T>(System.Func<T, bool>)
+  nameWithType.vb: IWorldHookApi.RemoveValidator(Of T)(Func(Of T, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.RemoveValidator(Of T)(System.Func(Of T, Boolean))
+  name.vb: RemoveValidator(Of T)(Func(Of T, Boolean))
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldHookApi.RemoveValidator``1(System.Func{``0,System.Boolean})
+    name: RemoveValidator
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_RemoveValidator__1_System_Func___0_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldHookApi.RemoveValidator``1(System.Func{``0,System.Boolean})
+    name: RemoveValidator
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_RemoveValidator__1_System_Func___0_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: ZenECS.Core.IWorldHookApi.ClearTypedValidators
+  commentId: M:ZenECS.Core.IWorldHookApi.ClearTypedValidators
+  parent: ZenECS.Core.IWorldHookApi
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_ClearTypedValidators
+  name: ClearTypedValidators()
+  nameWithType: IWorldHookApi.ClearTypedValidators()
+  fullName: ZenECS.Core.IWorldHookApi.ClearTypedValidators()
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldHookApi.ClearTypedValidators
+    name: ClearTypedValidators
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_ClearTypedValidators
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldHookApi.ClearTypedValidators
+    name: ClearTypedValidators
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_ClearTypedValidators
+  - name: (
+  - name: )
+- uid: ZenECS.Core.IWorldCommandBufferApi.BeginWrite
+  commentId: M:ZenECS.Core.IWorldCommandBufferApi.BeginWrite
+  parent: ZenECS.Core.IWorldCommandBufferApi
+  href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_BeginWrite
+  name: BeginWrite()
+  nameWithType: IWorldCommandBufferApi.BeginWrite()
+  fullName: ZenECS.Core.IWorldCommandBufferApi.BeginWrite()
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldCommandBufferApi.BeginWrite
+    name: BeginWrite
+    href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_BeginWrite
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldCommandBufferApi.BeginWrite
+    name: BeginWrite
+    href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_BeginWrite
+  - name: (
+  - name: )
+- uid: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandCount
+  commentId: P:ZenECS.Core.IWorldCommandBufferApi.ExternalCommandCount
+  parent: ZenECS.Core.IWorldCommandBufferApi
+  href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_ExternalCommandCount
+  name: ExternalCommandCount
+  nameWithType: IWorldCommandBufferApi.ExternalCommandCount
+  fullName: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandCount
+- uid: ZenECS.Core.IWorldCommandBufferApi.HasExternalCommand
+  commentId: P:ZenECS.Core.IWorldCommandBufferApi.HasExternalCommand
+  parent: ZenECS.Core.IWorldCommandBufferApi
+  href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_HasExternalCommand
+  name: HasExternalCommand
+  nameWithType: IWorldCommandBufferApi.HasExternalCommand
+  fullName: ZenECS.Core.IWorldCommandBufferApi.HasExternalCommand
+- uid: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandEnqueue(ZenECS.Core.ExternalCommand)
+  commentId: M:ZenECS.Core.IWorldCommandBufferApi.ExternalCommandEnqueue(ZenECS.Core.ExternalCommand)
+  parent: ZenECS.Core.IWorldCommandBufferApi
+  href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_ExternalCommandEnqueue_ZenECS_Core_ExternalCommand_
+  name: ExternalCommandEnqueue(ExternalCommand)
+  nameWithType: IWorldCommandBufferApi.ExternalCommandEnqueue(ExternalCommand)
+  fullName: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandEnqueue(ZenECS.Core.ExternalCommand)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandEnqueue(ZenECS.Core.ExternalCommand)
+    name: ExternalCommandEnqueue
+    href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_ExternalCommandEnqueue_ZenECS_Core_ExternalCommand_
+  - name: (
+  - uid: ZenECS.Core.ExternalCommand
+    name: ExternalCommand
+    href: ZenECS.Core.ExternalCommand.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandEnqueue(ZenECS.Core.ExternalCommand)
+    name: ExternalCommandEnqueue
+    href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_ExternalCommandEnqueue_ZenECS_Core_ExternalCommand_
+  - name: (
+  - uid: ZenECS.Core.ExternalCommand
+    name: ExternalCommand
+    href: ZenECS.Core.ExternalCommand.html
+  - name: )
+- uid: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandClear
+  commentId: M:ZenECS.Core.IWorldCommandBufferApi.ExternalCommandClear
+  parent: ZenECS.Core.IWorldCommandBufferApi
+  href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_ExternalCommandClear
+  name: ExternalCommandClear()
+  nameWithType: IWorldCommandBufferApi.ExternalCommandClear()
+  fullName: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandClear()
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandClear
+    name: ExternalCommandClear
+    href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_ExternalCommandClear
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldCommandBufferApi.ExternalCommandClear
+    name: ExternalCommandClear
+    href: ZenECS.Core.IWorldCommandBufferApi.html#ZenECS_Core_IWorldCommandBufferApi_ExternalCommandClear
+  - name: (
+  - name: )
+- uid: ZenECS.Core.IWorldWorkerApi.RunScheduledJobs
+  commentId: M:ZenECS.Core.IWorldWorkerApi.RunScheduledJobs
+  parent: ZenECS.Core.IWorldWorkerApi
+  href: ZenECS.Core.IWorldWorkerApi.html#ZenECS_Core_IWorldWorkerApi_RunScheduledJobs
+  name: RunScheduledJobs()
+  nameWithType: IWorldWorkerApi.RunScheduledJobs()
+  fullName: ZenECS.Core.IWorldWorkerApi.RunScheduledJobs()
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldWorkerApi.RunScheduledJobs
+    name: RunScheduledJobs
+    href: ZenECS.Core.IWorldWorkerApi.html#ZenECS_Core_IWorldWorkerApi_RunScheduledJobs
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldWorkerApi.RunScheduledJobs
+    name: RunScheduledJobs
+    href: ZenECS.Core.IWorldWorkerApi.html#ZenECS_Core_IWorldWorkerApi_RunScheduledJobs
+  - name: (
+  - name: )
+- uid: ZenECS.Core.IWorldSystemsApi.AddSystem(ZenECS.Core.Systems.ISystem)
+  commentId: M:ZenECS.Core.IWorldSystemsApi.AddSystem(ZenECS.Core.Systems.ISystem)
+  parent: ZenECS.Core.IWorldSystemsApi
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_AddSystem_ZenECS_Core_Systems_ISystem_
+  name: AddSystem(ISystem)
+  nameWithType: IWorldSystemsApi.AddSystem(ISystem)
+  fullName: ZenECS.Core.IWorldSystemsApi.AddSystem(ZenECS.Core.Systems.ISystem)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldSystemsApi.AddSystem(ZenECS.Core.Systems.ISystem)
+    name: AddSystem
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_AddSystem_ZenECS_Core_Systems_ISystem_
+  - name: (
+  - uid: ZenECS.Core.Systems.ISystem
+    name: ISystem
+    href: ZenECS.Core.Systems.ISystem.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldSystemsApi.AddSystem(ZenECS.Core.Systems.ISystem)
+    name: AddSystem
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_AddSystem_ZenECS_Core_Systems_ISystem_
+  - name: (
+  - uid: ZenECS.Core.Systems.ISystem
+    name: ISystem
+    href: ZenECS.Core.Systems.ISystem.html
+  - name: )
+- uid: ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable{ZenECS.Core.Systems.ISystem})
+  commentId: M:ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable{ZenECS.Core.Systems.ISystem})
+  parent: ZenECS.Core.IWorldSystemsApi
+  isExternal: true
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_AddSystems_System_Collections_Generic_IEnumerable_ZenECS_Core_Systems_ISystem__
+  name: AddSystems(IEnumerable<ISystem>)
+  nameWithType: IWorldSystemsApi.AddSystems(IEnumerable<ISystem>)
+  fullName: ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable<ZenECS.Core.Systems.ISystem>)
+  nameWithType.vb: IWorldSystemsApi.AddSystems(IEnumerable(Of ISystem))
+  fullName.vb: ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable(Of ZenECS.Core.Systems.ISystem))
+  name.vb: AddSystems(IEnumerable(Of ISystem))
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable{ZenECS.Core.Systems.ISystem})
+    name: AddSystems
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_AddSystems_System_Collections_Generic_IEnumerable_ZenECS_Core_Systems_ISystem__
+  - name: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: ZenECS.Core.Systems.ISystem
+    name: ISystem
+    href: ZenECS.Core.Systems.ISystem.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable{ZenECS.Core.Systems.ISystem})
+    name: AddSystems
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_AddSystems_System_Collections_Generic_IEnumerable_ZenECS_Core_Systems_ISystem__
+  - name: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Systems.ISystem
+    name: ISystem
+    href: ZenECS.Core.Systems.ISystem.html
+  - name: )
+  - name: )
+- uid: ZenECS.Core.IWorldSystemsApi.RemoveSystem``1
+  commentId: M:ZenECS.Core.IWorldSystemsApi.RemoveSystem``1
+  parent: ZenECS.Core.IWorldSystemsApi
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_RemoveSystem__1
+  name: RemoveSystem<T>()
+  nameWithType: IWorldSystemsApi.RemoveSystem<T>()
+  fullName: ZenECS.Core.IWorldSystemsApi.RemoveSystem<T>()
+  nameWithType.vb: IWorldSystemsApi.RemoveSystem(Of T)()
+  fullName.vb: ZenECS.Core.IWorldSystemsApi.RemoveSystem(Of T)()
+  name.vb: RemoveSystem(Of T)()
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldSystemsApi.RemoveSystem``1
+    name: RemoveSystem
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_RemoveSystem__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldSystemsApi.RemoveSystem``1
+    name: RemoveSystem
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_RemoveSystem__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: ZenECS.Core.IWorldSystemsApi.RemoveSystem(System.Type)
+  commentId: M:ZenECS.Core.IWorldSystemsApi.RemoveSystem(System.Type)
+  parent: ZenECS.Core.IWorldSystemsApi
+  isExternal: true
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_RemoveSystem_System_Type_
+  name: RemoveSystem(Type)
+  nameWithType: IWorldSystemsApi.RemoveSystem(Type)
+  fullName: ZenECS.Core.IWorldSystemsApi.RemoveSystem(System.Type)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldSystemsApi.RemoveSystem(System.Type)
+    name: RemoveSystem
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_RemoveSystem_System_Type_
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldSystemsApi.RemoveSystem(System.Type)
+    name: RemoveSystem
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_RemoveSystem_System_Type_
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: ZenECS.Core.IWorldSystemsApi.TryGetSystem``1({T}@)
+  commentId: M:ZenECS.Core.IWorldSystemsApi.TryGetSystem``1(``0@)
+  parent: ZenECS.Core.IWorldSystemsApi
+  definition: ZenECS.Core.IWorldSystemsApi.TryGetSystem``1(``0@)
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_TryGetSystem__1___0__
+  name: TryGetSystem<T>(out T)
+  nameWithType: IWorldSystemsApi.TryGetSystem<T>(out T)
+  fullName: ZenECS.Core.IWorldSystemsApi.TryGetSystem<T>(out T)
+  nameWithType.vb: IWorldSystemsApi.TryGetSystem(Of T)(T)
+  fullName.vb: ZenECS.Core.IWorldSystemsApi.TryGetSystem(Of T)(T)
+  name.vb: TryGetSystem(Of T)(T)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldSystemsApi.TryGetSystem``1(``0@)
+    name: TryGetSystem
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_TryGetSystem__1___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: out
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldSystemsApi.TryGetSystem``1(``0@)
+    name: TryGetSystem
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_TryGetSystem__1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: )
+- uid: ZenECS.Core.IWorldSystemsApi.TryGetSystem(System.Type,ZenECS.Core.Systems.ISystem@)
+  commentId: M:ZenECS.Core.IWorldSystemsApi.TryGetSystem(System.Type,ZenECS.Core.Systems.ISystem@)
+  parent: ZenECS.Core.IWorldSystemsApi
+  isExternal: true
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_TryGetSystem_System_Type_ZenECS_Core_Systems_ISystem__
+  name: TryGetSystem(Type, out ISystem)
+  nameWithType: IWorldSystemsApi.TryGetSystem(Type, out ISystem)
+  fullName: ZenECS.Core.IWorldSystemsApi.TryGetSystem(System.Type, out ZenECS.Core.Systems.ISystem)
+  nameWithType.vb: IWorldSystemsApi.TryGetSystem(Type, ISystem)
+  fullName.vb: ZenECS.Core.IWorldSystemsApi.TryGetSystem(System.Type, ZenECS.Core.Systems.ISystem)
+  name.vb: TryGetSystem(Type, ISystem)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldSystemsApi.TryGetSystem(System.Type,ZenECS.Core.Systems.ISystem@)
+    name: TryGetSystem
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_TryGetSystem_System_Type_ZenECS_Core_Systems_ISystem__
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: ZenECS.Core.Systems.ISystem
+    name: ISystem
+    href: ZenECS.Core.Systems.ISystem.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldSystemsApi.TryGetSystem(System.Type,ZenECS.Core.Systems.ISystem@)
+    name: TryGetSystem
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_TryGetSystem_System_Type_ZenECS_Core_Systems_ISystem__
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Systems.ISystem
+    name: ISystem
+    href: ZenECS.Core.Systems.ISystem.html
+  - name: )
+- uid: ZenECS.Core.IWorldSystemsApi.GetAllSystems
+  commentId: M:ZenECS.Core.IWorldSystemsApi.GetAllSystems
+  parent: ZenECS.Core.IWorldSystemsApi
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_GetAllSystems
+  name: GetAllSystems()
+  nameWithType: IWorldSystemsApi.GetAllSystems()
+  fullName: ZenECS.Core.IWorldSystemsApi.GetAllSystems()
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldSystemsApi.GetAllSystems
+    name: GetAllSystems
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_GetAllSystems
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldSystemsApi.GetAllSystems
+    name: GetAllSystems
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_GetAllSystems
+  - name: (
+  - name: )
+- uid: ZenECS.Core.IWorldSystemsApi.SetEnabledSystem``1(System.Boolean)
+  commentId: M:ZenECS.Core.IWorldSystemsApi.SetEnabledSystem``1(System.Boolean)
+  parent: ZenECS.Core.IWorldSystemsApi
+  isExternal: true
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_SetEnabledSystem__1_System_Boolean_
+  name: SetEnabledSystem<T>(bool)
+  nameWithType: IWorldSystemsApi.SetEnabledSystem<T>(bool)
+  fullName: ZenECS.Core.IWorldSystemsApi.SetEnabledSystem<T>(bool)
+  nameWithType.vb: IWorldSystemsApi.SetEnabledSystem(Of T)(Boolean)
+  fullName.vb: ZenECS.Core.IWorldSystemsApi.SetEnabledSystem(Of T)(Boolean)
+  name.vb: SetEnabledSystem(Of T)(Boolean)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldSystemsApi.SetEnabledSystem``1(System.Boolean)
+    name: SetEnabledSystem
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_SetEnabledSystem__1_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldSystemsApi.SetEnabledSystem``1(System.Boolean)
+    name: SetEnabledSystem
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_SetEnabledSystem__1_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: ZenECS.Core.IWorldSystemsApi.IsEnabledSystem``1
+  commentId: M:ZenECS.Core.IWorldSystemsApi.IsEnabledSystem``1
+  parent: ZenECS.Core.IWorldSystemsApi
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_IsEnabledSystem__1
+  name: IsEnabledSystem<T>()
+  nameWithType: IWorldSystemsApi.IsEnabledSystem<T>()
+  fullName: ZenECS.Core.IWorldSystemsApi.IsEnabledSystem<T>()
+  nameWithType.vb: IWorldSystemsApi.IsEnabledSystem(Of T)()
+  fullName.vb: ZenECS.Core.IWorldSystemsApi.IsEnabledSystem(Of T)()
+  name.vb: IsEnabledSystem(Of T)()
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldSystemsApi.IsEnabledSystem``1
+    name: IsEnabledSystem
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_IsEnabledSystem__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldSystemsApi.IsEnabledSystem``1
+    name: IsEnabledSystem
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_IsEnabledSystem__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: ZenECS.Core.IWorldSystemsApi.IsEnabledSystem(System.Type)
+  commentId: M:ZenECS.Core.IWorldSystemsApi.IsEnabledSystem(System.Type)
+  parent: ZenECS.Core.IWorldSystemsApi
+  isExternal: true
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_IsEnabledSystem_System_Type_
+  name: IsEnabledSystem(Type)
+  nameWithType: IWorldSystemsApi.IsEnabledSystem(Type)
+  fullName: ZenECS.Core.IWorldSystemsApi.IsEnabledSystem(System.Type)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldSystemsApi.IsEnabledSystem(System.Type)
+    name: IsEnabledSystem
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_IsEnabledSystem_System_Type_
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldSystemsApi.IsEnabledSystem(System.Type)
+    name: IsEnabledSystem
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_IsEnabledSystem_System_Type_
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: ZenECS.Core.IWorldQueryApi
+  commentId: T:ZenECS.Core.IWorldQueryApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldQueryApi.html
+  name: IWorldQueryApi
+  nameWithType: IWorldQueryApi
+  fullName: ZenECS.Core.IWorldQueryApi
+- uid: ZenECS.Core.IWorldQuerySpanApi
+  commentId: T:ZenECS.Core.IWorldQuerySpanApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldQuerySpanApi.html
+  name: IWorldQuerySpanApi
+  nameWithType: IWorldQuerySpanApi
+  fullName: ZenECS.Core.IWorldQuerySpanApi
+- uid: ZenECS.Core.IWorldQuerySpanApi.Process``1(System.ReadOnlySpan{ZenECS.Core.Entity},ZenECS.Core.RefAction{``0})
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.Process``1(System.ReadOnlySpan{ZenECS.Core.Entity},ZenECS.Core.RefAction{``0})
+  isExternal: true
+  href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_Process__1_System_ReadOnlySpan_ZenECS_Core_Entity__ZenECS_Core_RefAction___0__
+  name: Process<T>(ReadOnlySpan<Entity>, RefAction<T>)
+  nameWithType: IWorldQuerySpanApi.Process<T>(ReadOnlySpan<Entity>, RefAction<T>)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.Process<T>(System.ReadOnlySpan<ZenECS.Core.Entity>, ZenECS.Core.RefAction<T>)
+  nameWithType.vb: IWorldQuerySpanApi.Process(Of T)(ReadOnlySpan(Of Entity), RefAction(Of T))
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.Process(Of T)(System.ReadOnlySpan(Of ZenECS.Core.Entity), ZenECS.Core.RefAction(Of T))
+  name.vb: Process(Of T)(ReadOnlySpan(Of Entity), RefAction(Of T))
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.Process``1(System.ReadOnlySpan{ZenECS.Core.Entity},ZenECS.Core.RefAction{``0})
+    name: Process
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_Process__1_System_ReadOnlySpan_ZenECS_Core_Entity__ZenECS_Core_RefAction___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.RefAction`1
+    name: RefAction
+    href: ZenECS.Core.RefAction-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldQuerySpanApi.Process``1(System.ReadOnlySpan{ZenECS.Core.Entity},ZenECS.Core.RefAction{``0})
+    name: Process
+    href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_Process__1_System_ReadOnlySpan_ZenECS_Core_Entity__ZenECS_Core_RefAction___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.RefAction`1
+    name: RefAction
+    href: ZenECS.Core.RefAction-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: ZenECS.Core.IWorldEntityApi
+  commentId: T:ZenECS.Core.IWorldEntityApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldEntityApi.html
+  name: IWorldEntityApi
+  nameWithType: IWorldEntityApi
+  fullName: ZenECS.Core.IWorldEntityApi
+- uid: ZenECS.Core.IWorldComponentApi
+  commentId: T:ZenECS.Core.IWorldComponentApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldComponentApi.html
+  name: IWorldComponentApi
+  nameWithType: IWorldComponentApi
+  fullName: ZenECS.Core.IWorldComponentApi
+- uid: ZenECS.Core.IWorldComponentApi.TryReadComponent``1(ZenECS.Core.Entity,``0@)
+  commentId: M:ZenECS.Core.IWorldComponentApi.TryReadComponent``1(ZenECS.Core.Entity,``0@)
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_TryReadComponent__1_ZenECS_Core_Entity___0__
+  name: TryReadComponent<T>(Entity, out T)
+  nameWithType: IWorldComponentApi.TryReadComponent<T>(Entity, out T)
+  fullName: ZenECS.Core.IWorldComponentApi.TryReadComponent<T>(ZenECS.Core.Entity, out T)
+  nameWithType.vb: IWorldComponentApi.TryReadComponent(Of T)(Entity, T)
+  fullName.vb: ZenECS.Core.IWorldComponentApi.TryReadComponent(Of T)(ZenECS.Core.Entity, T)
+  name.vb: TryReadComponent(Of T)(Entity, T)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldComponentApi.TryReadComponent``1(ZenECS.Core.Entity,``0@)
+    name: TryReadComponent
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_TryReadComponent__1_ZenECS_Core_Entity___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldComponentApi.TryReadComponent``1(ZenECS.Core.Entity,``0@)
+    name: TryReadComponent
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_TryReadComponent__1_ZenECS_Core_Entity___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+- uid: ZenECS.Core.IWorldComponentApi.TryGetSingleton``1(``0@)
+  commentId: M:ZenECS.Core.IWorldComponentApi.TryGetSingleton``1(``0@)
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_TryGetSingleton__1___0__
+  name: TryGetSingleton<T>(out T)
+  nameWithType: IWorldComponentApi.TryGetSingleton<T>(out T)
+  fullName: ZenECS.Core.IWorldComponentApi.TryGetSingleton<T>(out T)
+  nameWithType.vb: IWorldComponentApi.TryGetSingleton(Of T)(T)
+  fullName.vb: ZenECS.Core.IWorldComponentApi.TryGetSingleton(Of T)(T)
+  name.vb: TryGetSingleton(Of T)(T)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldComponentApi.TryGetSingleton``1(``0@)
+    name: TryGetSingleton
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_TryGetSingleton__1___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: out
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldComponentApi.TryGetSingleton``1(``0@)
+    name: TryGetSingleton
+    href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_TryGetSingleton__1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: )
+- uid: ZenECS.Core.IWorldContextApi
+  commentId: T:ZenECS.Core.IWorldContextApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldContextApi.html
+  name: IWorldContextApi
+  nameWithType: IWorldContextApi
+  fullName: ZenECS.Core.IWorldContextApi
+- uid: ZenECS.Core.IWorldBinderApi
+  commentId: T:ZenECS.Core.IWorldBinderApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldBinderApi.html
+  name: IWorldBinderApi
+  nameWithType: IWorldBinderApi
+  fullName: ZenECS.Core.IWorldBinderApi
+- uid: ZenECS.Core.IWorldSnapshotApi
+  commentId: T:ZenECS.Core.IWorldSnapshotApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldSnapshotApi.html
+  name: IWorldSnapshotApi
+  nameWithType: IWorldSnapshotApi
+  fullName: ZenECS.Core.IWorldSnapshotApi
+- uid: ZenECS.Core.IWorldMessagesApi.Subscribe``1(System.Action{``0})
+  commentId: M:ZenECS.Core.IWorldMessagesApi.Subscribe``1(System.Action{``0})
+  isExternal: true
+  href: ZenECS.Core.IWorldMessagesApi.html#ZenECS_Core_IWorldMessagesApi_Subscribe__1_System_Action___0__
+  name: Subscribe<T>(Action<T>)
+  nameWithType: IWorldMessagesApi.Subscribe<T>(Action<T>)
+  fullName: ZenECS.Core.IWorldMessagesApi.Subscribe<T>(System.Action<T>)
+  nameWithType.vb: IWorldMessagesApi.Subscribe(Of T)(Action(Of T))
+  fullName.vb: ZenECS.Core.IWorldMessagesApi.Subscribe(Of T)(System.Action(Of T))
+  name.vb: Subscribe(Of T)(Action(Of T))
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldMessagesApi.Subscribe``1(System.Action{``0})
+    name: Subscribe
+    href: ZenECS.Core.IWorldMessagesApi.html#ZenECS_Core_IWorldMessagesApi_Subscribe__1_System_Action___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldMessagesApi.Subscribe``1(System.Action{``0})
+    name: Subscribe
+    href: ZenECS.Core.IWorldMessagesApi.html#ZenECS_Core_IWorldMessagesApi_Subscribe__1_System_Action___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: ZenECS.Core.IWorldMessagesApi
+  commentId: T:ZenECS.Core.IWorldMessagesApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldMessagesApi.html
+  name: IWorldMessagesApi
+  nameWithType: IWorldMessagesApi
+  fullName: ZenECS.Core.IWorldMessagesApi
+- uid: ZenECS.Core.IWorldMessagesApi.Publish``1(``0@)
+  commentId: M:ZenECS.Core.IWorldMessagesApi.Publish``1(``0@)
+  href: ZenECS.Core.IWorldMessagesApi.html#ZenECS_Core_IWorldMessagesApi_Publish__1___0__
+  name: Publish<T>(in T)
+  nameWithType: IWorldMessagesApi.Publish<T>(in T)
+  fullName: ZenECS.Core.IWorldMessagesApi.Publish<T>(in T)
+  nameWithType.vb: IWorldMessagesApi.Publish(Of T)(T)
+  fullName.vb: ZenECS.Core.IWorldMessagesApi.Publish(Of T)(T)
+  name.vb: Publish(Of T)(T)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldMessagesApi.Publish``1(``0@)
+    name: Publish
+    href: ZenECS.Core.IWorldMessagesApi.html#ZenECS_Core_IWorldMessagesApi_Publish__1___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: in
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldMessagesApi.Publish``1(``0@)
+    name: Publish
+    href: ZenECS.Core.IWorldMessagesApi.html#ZenECS_Core_IWorldMessagesApi_Publish__1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: )
+- uid: ZenECS.Core.IWorldHookApi
+  commentId: T:ZenECS.Core.IWorldHookApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldHookApi.html
+  name: IWorldHookApi
+  nameWithType: IWorldHookApi
+  fullName: ZenECS.Core.IWorldHookApi
+- uid: ZenECS.Core.IWorldHookApi.AddValidator``1(System.Func{``0,System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.AddValidator``1(System.Func{``0,System.Boolean})
+  isExternal: true
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddValidator__1_System_Func___0_System_Boolean__
+  name: AddValidator<T>(Func<T, bool>)
+  nameWithType: IWorldHookApi.AddValidator<T>(Func<T, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.AddValidator<T>(System.Func<T, bool>)
+  nameWithType.vb: IWorldHookApi.AddValidator(Of T)(Func(Of T, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.AddValidator(Of T)(System.Func(Of T, Boolean))
+  name.vb: AddValidator(Of T)(Func(Of T, Boolean))
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldHookApi.AddValidator``1(System.Func{``0,System.Boolean})
+    name: AddValidator
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddValidator__1_System_Func___0_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldHookApi.AddValidator``1(System.Func{``0,System.Boolean})
+    name: AddValidator
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddValidator__1_System_Func___0_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: ZenECS.Core.IWorldHookApi.RemoveValidator``1(System.Func{``0,System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.RemoveValidator``1(System.Func{``0,System.Boolean})
+  isExternal: true
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_RemoveValidator__1_System_Func___0_System_Boolean__
+  name: RemoveValidator<T>(Func<T, bool>)
+  nameWithType: IWorldHookApi.RemoveValidator<T>(Func<T, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.RemoveValidator<T>(System.Func<T, bool>)
+  nameWithType.vb: IWorldHookApi.RemoveValidator(Of T)(Func(Of T, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.RemoveValidator(Of T)(System.Func(Of T, Boolean))
+  name.vb: RemoveValidator(Of T)(Func(Of T, Boolean))
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldHookApi.RemoveValidator``1(System.Func{``0,System.Boolean})
+    name: RemoveValidator
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_RemoveValidator__1_System_Func___0_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldHookApi.RemoveValidator``1(System.Func{``0,System.Boolean})
+    name: RemoveValidator
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_RemoveValidator__1_System_Func___0_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: ZenECS.Core.IWorldCommandBufferApi
+  commentId: T:ZenECS.Core.IWorldCommandBufferApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldCommandBufferApi.html
+  name: IWorldCommandBufferApi
+  nameWithType: IWorldCommandBufferApi
+  fullName: ZenECS.Core.IWorldCommandBufferApi
+- uid: ZenECS.Core.IWorldWorkerApi
+  commentId: T:ZenECS.Core.IWorldWorkerApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldWorkerApi.html
+  name: IWorldWorkerApi
+  nameWithType: IWorldWorkerApi
+  fullName: ZenECS.Core.IWorldWorkerApi
+- uid: ZenECS.Core.IWorldSystemsApi
+  commentId: T:ZenECS.Core.IWorldSystemsApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldSystemsApi.html
+  name: IWorldSystemsApi
+  nameWithType: IWorldSystemsApi
+  fullName: ZenECS.Core.IWorldSystemsApi
+- uid: ZenECS.Core.IWorldSystemsApi.TryGetSystem``1(``0@)
+  commentId: M:ZenECS.Core.IWorldSystemsApi.TryGetSystem``1(``0@)
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_TryGetSystem__1___0__
+  name: TryGetSystem<T>(out T)
+  nameWithType: IWorldSystemsApi.TryGetSystem<T>(out T)
+  fullName: ZenECS.Core.IWorldSystemsApi.TryGetSystem<T>(out T)
+  nameWithType.vb: IWorldSystemsApi.TryGetSystem(Of T)(T)
+  fullName.vb: ZenECS.Core.IWorldSystemsApi.TryGetSystem(Of T)(T)
+  name.vb: TryGetSystem(Of T)(T)
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldSystemsApi.TryGetSystem``1(``0@)
+    name: TryGetSystem
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_TryGetSystem__1___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: out
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldSystemsApi.TryGetSystem``1(``0@)
+    name: TryGetSystem
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_TryGetSystem__1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.IWorld.Kernel*
+  commentId: Overload:ZenECS.Core.IWorld.Kernel
+  href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_Kernel
+  name: Kernel
+  nameWithType: IWorld.Kernel
+  fullName: ZenECS.Core.IWorld.Kernel
+- uid: ZenECS.Core.WorldId
+  commentId: T:ZenECS.Core.WorldId
+  parent: ZenECS.Core
+  href: ZenECS.Core.WorldId.html
+  name: WorldId
+  nameWithType: WorldId
+  fullName: ZenECS.Core.WorldId
+- uid: ZenECS.Core.IKernel.TryGet(ZenECS.Core.WorldId,ZenECS.Core.IWorld@)
+  commentId: M:ZenECS.Core.IKernel.TryGet(ZenECS.Core.WorldId,ZenECS.Core.IWorld@)
+  parent: ZenECS.Core.IKernel
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_TryGet_ZenECS_Core_WorldId_ZenECS_Core_IWorld__
+  name: TryGet(WorldId, out IWorld)
+  nameWithType: IKernel.TryGet(WorldId, out IWorld)
+  fullName: ZenECS.Core.IKernel.TryGet(ZenECS.Core.WorldId, out ZenECS.Core.IWorld)
+  nameWithType.vb: IKernel.TryGet(WorldId, IWorld)
+  fullName.vb: ZenECS.Core.IKernel.TryGet(ZenECS.Core.WorldId, ZenECS.Core.IWorld)
+  name.vb: TryGet(WorldId, IWorld)
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.TryGet(ZenECS.Core.WorldId,ZenECS.Core.IWorld@)
+    name: TryGet
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_TryGet_ZenECS_Core_WorldId_ZenECS_Core_IWorld__
+  - name: (
+  - uid: ZenECS.Core.WorldId
+    name: WorldId
+    href: ZenECS.Core.WorldId.html
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.TryGet(ZenECS.Core.WorldId,ZenECS.Core.IWorld@)
+    name: TryGet
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_TryGet_ZenECS_Core_WorldId_ZenECS_Core_IWorld__
+  - name: (
+  - uid: ZenECS.Core.WorldId
+    name: WorldId
+    href: ZenECS.Core.WorldId.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: )
+- uid: ZenECS.Core.IWorld.Id*
+  commentId: Overload:ZenECS.Core.IWorld.Id
+  href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_Id
+  name: Id
+  nameWithType: IWorld.Id
+  fullName: ZenECS.Core.IWorld.Id
+- uid: ZenECS.Core.IWorld.Id
+  commentId: P:ZenECS.Core.IWorld.Id
+  href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_Id
+  name: Id
+  nameWithType: IWorld.Id
+  fullName: ZenECS.Core.IWorld.Id
+- uid: ZenECS.Core.IKernel.FindByName(System.String)
+  commentId: M:ZenECS.Core.IKernel.FindByName(System.String)
+  parent: ZenECS.Core.IKernel
+  isExternal: true
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByName_System_String_
+  name: FindByName(string)
+  nameWithType: IKernel.FindByName(string)
+  fullName: ZenECS.Core.IKernel.FindByName(string)
+  nameWithType.vb: IKernel.FindByName(String)
+  fullName.vb: ZenECS.Core.IKernel.FindByName(String)
+  name.vb: FindByName(String)
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.FindByName(System.String)
+    name: FindByName
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByName_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.FindByName(System.String)
+    name: FindByName
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByName_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: ZenECS.Core.IWorld.Name*
+  commentId: Overload:ZenECS.Core.IWorld.Name
+  href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_Name
+  name: Name
+  nameWithType: IWorld.Name
+  fullName: ZenECS.Core.IWorld.Name
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: ZenECS.Core.IKernel.FindByTag(System.String)
+  commentId: M:ZenECS.Core.IKernel.FindByTag(System.String)
+  parent: ZenECS.Core.IKernel
+  isExternal: true
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByTag_System_String_
+  name: FindByTag(string)
+  nameWithType: IKernel.FindByTag(string)
+  fullName: ZenECS.Core.IKernel.FindByTag(string)
+  nameWithType.vb: IKernel.FindByTag(String)
+  fullName.vb: ZenECS.Core.IKernel.FindByTag(String)
+  name.vb: FindByTag(String)
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.FindByTag(System.String)
+    name: FindByTag
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByTag_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.FindByTag(System.String)
+    name: FindByTag
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByTag_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: ZenECS.Core.IKernel.FindByAnyTag(System.String[])
+  commentId: M:ZenECS.Core.IKernel.FindByAnyTag(System.String[])
+  parent: ZenECS.Core.IKernel
+  isExternal: true
+  href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByAnyTag_System_String___
+  name: FindByAnyTag(params string[])
+  nameWithType: IKernel.FindByAnyTag(params string[])
+  fullName: ZenECS.Core.IKernel.FindByAnyTag(params string[])
+  nameWithType.vb: IKernel.FindByAnyTag(ParamArray String())
+  fullName.vb: ZenECS.Core.IKernel.FindByAnyTag(ParamArray String())
+  name.vb: FindByAnyTag(ParamArray String())
+  spec.csharp:
+  - uid: ZenECS.Core.IKernel.FindByAnyTag(System.String[])
+    name: FindByAnyTag
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByAnyTag_System_String___
+  - name: (
+  - name: params
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IKernel.FindByAnyTag(System.String[])
+    name: FindByAnyTag
+    href: ZenECS.Core.IKernel.html#ZenECS_Core_IKernel_FindByAnyTag_System_String___
+  - name: (
+  - name: ParamArray
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+  - name: )
+- uid: ZenECS.Core.IWorld.Tags*
+  commentId: Overload:ZenECS.Core.IWorld.Tags
+  href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_Tags
+  name: Tags
+  nameWithType: IWorld.Tags
+  fullName: ZenECS.Core.IWorld.Tags
+- uid: System.Collections.Generic.IReadOnlyCollection{System.String}
+  commentId: T:System.Collections.Generic.IReadOnlyCollection{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyCollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<string>
+  nameWithType: IReadOnlyCollection<string>
+  fullName: System.Collections.Generic.IReadOnlyCollection<string>
+  nameWithType.vb: IReadOnlyCollection(Of String)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of String)
+  name.vb: IReadOnlyCollection(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyCollection`1
+  commentId: T:System.Collections.Generic.IReadOnlyCollection`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<T>
+  nameWithType: IReadOnlyCollection<T>
+  fullName: System.Collections.Generic.IReadOnlyCollection<T>
+  nameWithType.vb: IReadOnlyCollection(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of T)
+  name.vb: IReadOnlyCollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: ZenECS.Core.IWorld.FrameCount*
+  commentId: Overload:ZenECS.Core.IWorld.FrameCount
+  href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_FrameCount
+  name: FrameCount
+  nameWithType: IWorld.FrameCount
+  fullName: ZenECS.Core.IWorld.FrameCount
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: ZenECS.Core.IWorld.Tick*
+  commentId: Overload:ZenECS.Core.IWorld.Tick
+  href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_Tick
+  name: Tick
+  nameWithType: IWorld.Tick
+  fullName: ZenECS.Core.IWorld.Tick
+- uid: ZenECS.Core.IWorld.IsPaused*
+  commentId: Overload:ZenECS.Core.IWorld.IsPaused
+  href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_IsPaused
+  name: IsPaused
+  nameWithType: IWorld.IsPaused
+  fullName: ZenECS.Core.IWorld.IsPaused
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: ZenECS.Core.IWorld.IsDisposing*
+  commentId: Overload:ZenECS.Core.IWorld.IsDisposing
+  href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_IsDisposing
+  name: IsDisposing
+  nameWithType: IWorld.IsDisposing
+  fullName: ZenECS.Core.IWorld.IsDisposing
+- uid: ZenECS.Core.IWorld.Pause*
+  commentId: Overload:ZenECS.Core.IWorld.Pause
+  href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_Pause
+  name: Pause
+  nameWithType: IWorld.Pause
+  fullName: ZenECS.Core.IWorld.Pause
+- uid: ZenECS.Core.IWorld.Pause
+  commentId: M:ZenECS.Core.IWorld.Pause
+  href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_Pause
+  name: Pause()
+  nameWithType: IWorld.Pause()
+  fullName: ZenECS.Core.IWorld.Pause()
+  spec.csharp:
+  - uid: ZenECS.Core.IWorld.Pause
+    name: Pause
+    href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_Pause
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorld.Pause
+    name: Pause
+    href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_Pause
+  - name: (
+  - name: )
+- uid: ZenECS.Core.IWorld.Resume*
+  commentId: Overload:ZenECS.Core.IWorld.Resume
+  href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_Resume
+  name: Resume
+  nameWithType: IWorld.Resume
+  fullName: ZenECS.Core.IWorld.Resume
+- uid: ZenECS.Core.IWorld.Name
+  commentId: P:ZenECS.Core.IWorld.Name
+  href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_Name
+  name: Name
+  nameWithType: IWorld.Name
+  fullName: ZenECS.Core.IWorld.Name
+- uid: ZenECS.Core.IWorld.Tags
+  commentId: P:ZenECS.Core.IWorld.Tags
+  href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_Tags
+  name: Tags
+  nameWithType: IWorld.Tags
+  fullName: ZenECS.Core.IWorld.Tags
+- uid: ZenECS.Core.IWorld.Reset*
+  commentId: Overload:ZenECS.Core.IWorld.Reset
+  href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_Reset_System_Boolean_
+  name: Reset
+  nameWithType: IWorld.Reset
+  fullName: ZenECS.Core.IWorld.Reset
+- uid: ZenECS.Core.IWorld.GenerationOf*
+  commentId: Overload:ZenECS.Core.IWorld.GenerationOf
+  href: ZenECS.Core.IWorld.html#ZenECS_Core_IWorld_GenerationOf_System_Int32_
+  name: GenerationOf
+  nameWithType: IWorld.GenerationOf
+  fullName: ZenECS.Core.IWorld.GenerationOf
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer

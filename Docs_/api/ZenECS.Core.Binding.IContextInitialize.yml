@@ -1,0 +1,204 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Binding.IContextInitialize
+  commentId: T:ZenECS.Core.Binding.IContextInitialize
+  id: IContextInitialize
+  parent: ZenECS.Core.Binding
+  children:
+  - ZenECS.Core.Binding.IContextInitialize.Deinitialize(ZenECS.Core.IWorld,ZenECS.Core.Entity)
+  - ZenECS.Core.Binding.IContextInitialize.Initialize(ZenECS.Core.IWorld,ZenECS.Core.Entity,ZenECS.Core.Binding.IContextLookup)
+  langs:
+  - csharp
+  - vb
+  name: IContextInitialize
+  nameWithType: IContextInitialize
+  fullName: ZenECS.Core.Binding.IContextInitialize
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IContextInitialize
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
+    startLine: 143
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Optional lifecycle interface called by the context registry when
+
+    contexts are added to or removed from an entity.
+  example: []
+  syntax:
+    content: public interface IContextInitialize
+    content.vb: Public Interface IContextInitialize
+- uid: ZenECS.Core.Binding.IContextInitialize.Initialize(ZenECS.Core.IWorld,ZenECS.Core.Entity,ZenECS.Core.Binding.IContextLookup)
+  commentId: M:ZenECS.Core.Binding.IContextInitialize.Initialize(ZenECS.Core.IWorld,ZenECS.Core.Entity,ZenECS.Core.Binding.IContextLookup)
+  id: Initialize(ZenECS.Core.IWorld,ZenECS.Core.Entity,ZenECS.Core.Binding.IContextLookup)
+  parent: ZenECS.Core.Binding.IContextInitialize
+  langs:
+  - csharp
+  - vb
+  name: Initialize(IWorld, Entity, IContextLookup)
+  nameWithType: IContextInitialize.Initialize(IWorld, Entity, IContextLookup)
+  fullName: ZenECS.Core.Binding.IContextInitialize.Initialize(ZenECS.Core.IWorld, ZenECS.Core.Entity, ZenECS.Core.Binding.IContextLookup)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Initialize
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
+    startLine: 153
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Called once when the context is first registered for the entity.
+
+    Implementations may resolve additional contexts via
+
+    <code class="paramref">l</code> and cache any required state.
+  example: []
+  syntax:
+    content: void Initialize(IWorld w, Entity e, IContextLookup l)
+    parameters:
+    - id: w
+      type: ZenECS.Core.IWorld
+      description: World that owns the entity.
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Entity the context is attached to.
+    - id: l
+      type: ZenECS.Core.Binding.IContextLookup
+      description: Lookup service for resolving other contexts.
+    content.vb: Sub Initialize(w As IWorld, e As Entity, l As IContextLookup)
+  overload: ZenECS.Core.Binding.IContextInitialize.Initialize*
+- uid: ZenECS.Core.Binding.IContextInitialize.Deinitialize(ZenECS.Core.IWorld,ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.Binding.IContextInitialize.Deinitialize(ZenECS.Core.IWorld,ZenECS.Core.Entity)
+  id: Deinitialize(ZenECS.Core.IWorld,ZenECS.Core.Entity)
+  parent: ZenECS.Core.Binding.IContextInitialize
+  langs:
+  - csharp
+  - vb
+  name: Deinitialize(IWorld, Entity)
+  nameWithType: IContextInitialize.Deinitialize(IWorld, Entity)
+  fullName: ZenECS.Core.Binding.IContextInitialize.Deinitialize(ZenECS.Core.IWorld, ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Deinitialize
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
+    startLine: 162
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Called when the context is removed, or when the entity or world
+
+    is being destroyed. Implementations should release resources and
+
+    unsubscribe from any external systems here.
+  example: []
+  syntax:
+    content: void Deinitialize(IWorld w, Entity e)
+    parameters:
+    - id: w
+      type: ZenECS.Core.IWorld
+      description: World that owns the entity.
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Entity the context was attached to.
+    content.vb: Sub Deinitialize(w As IWorld, e As Entity)
+  overload: ZenECS.Core.Binding.IContextInitialize.Deinitialize*
+references:
+- uid: ZenECS.Core.Binding
+  commentId: N:ZenECS.Core.Binding
+  href: ZenECS.html
+  name: ZenECS.Core.Binding
+  nameWithType: ZenECS.Core.Binding
+  fullName: ZenECS.Core.Binding
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+- uid: ZenECS.Core.Binding.IContextInitialize.Initialize*
+  commentId: Overload:ZenECS.Core.Binding.IContextInitialize.Initialize
+  href: ZenECS.Core.Binding.IContextInitialize.html#ZenECS_Core_Binding_IContextInitialize_Initialize_ZenECS_Core_IWorld_ZenECS_Core_Entity_ZenECS_Core_Binding_IContextLookup_
+  name: Initialize
+  nameWithType: IContextInitialize.Initialize
+  fullName: ZenECS.Core.Binding.IContextInitialize.Initialize
+- uid: ZenECS.Core.IWorld
+  commentId: T:ZenECS.Core.IWorld
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorld.html
+  name: IWorld
+  nameWithType: IWorld
+  fullName: ZenECS.Core.IWorld
+- uid: ZenECS.Core.Entity
+  commentId: T:ZenECS.Core.Entity
+  parent: ZenECS.Core
+  href: ZenECS.Core.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: ZenECS.Core.Entity
+- uid: ZenECS.Core.Binding.IContextLookup
+  commentId: T:ZenECS.Core.Binding.IContextLookup
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IContextLookup.html
+  name: IContextLookup
+  nameWithType: IContextLookup
+  fullName: ZenECS.Core.Binding.IContextLookup
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.Binding.IContextInitialize.Deinitialize*
+  commentId: Overload:ZenECS.Core.Binding.IContextInitialize.Deinitialize
+  href: ZenECS.Core.Binding.IContextInitialize.html#ZenECS_Core_Binding_IContextInitialize_Deinitialize_ZenECS_Core_IWorld_ZenECS_Core_Entity_
+  name: Deinitialize
+  nameWithType: IContextInitialize.Deinitialize
+  fullName: ZenECS.Core.Binding.IContextInitialize.Deinitialize

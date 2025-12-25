@@ -1,0 +1,615 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Serialization.PostLoadMigrationRegistry
+  commentId: T:ZenECS.Core.Serialization.PostLoadMigrationRegistry
+  id: PostLoadMigrationRegistry
+  parent: ZenECS.Core.Serialization
+  children:
+  - ZenECS.Core.Serialization.PostLoadMigrationRegistry.Clear
+  - ZenECS.Core.Serialization.PostLoadMigrationRegistry.EnsureRegistered``1(System.Func{``0})
+  - ZenECS.Core.Serialization.PostLoadMigrationRegistry.IsRegistered``1
+  - ZenECS.Core.Serialization.PostLoadMigrationRegistry.Register(ZenECS.Core.Serialization.IPostLoadMigration)
+  - ZenECS.Core.Serialization.PostLoadMigrationRegistry.RunAll(ZenECS.Core.IWorld)
+  langs:
+  - csharp
+  - vb
+  name: PostLoadMigrationRegistry
+  nameWithType: PostLoadMigrationRegistry
+  fullName: ZenECS.Core.Serialization.PostLoadMigrationRegistry
+  type: Class
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: PostLoadMigrationRegistry
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
+    startLine: 22
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Central registry responsible for holding and executing post-load migrations.
+  example: []
+  syntax:
+    content: public static class PostLoadMigrationRegistry
+    content.vb: Public Module PostLoadMigrationRegistry
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: ZenECS.Core.Serialization.PostLoadMigrationRegistry.Register(ZenECS.Core.Serialization.IPostLoadMigration)
+  commentId: M:ZenECS.Core.Serialization.PostLoadMigrationRegistry.Register(ZenECS.Core.Serialization.IPostLoadMigration)
+  id: Register(ZenECS.Core.Serialization.IPostLoadMigration)
+  parent: ZenECS.Core.Serialization.PostLoadMigrationRegistry
+  langs:
+  - csharp
+  - vb
+  name: Register(IPostLoadMigration)
+  nameWithType: PostLoadMigrationRegistry.Register(IPostLoadMigration)
+  fullName: ZenECS.Core.Serialization.PostLoadMigrationRegistry.Register(ZenECS.Core.Serialization.IPostLoadMigration)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Register
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
+    startLine: 32
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Register a migration instance. Duplicate types are ignored.
+  example: []
+  syntax:
+    content: public static bool Register(IPostLoadMigration mig)
+    parameters:
+    - id: mig
+      type: ZenECS.Core.Serialization.IPostLoadMigration
+      description: Migration instance.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if registered; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> if ignored.
+    content.vb: Public Shared Function Register(mig As IPostLoadMigration) As Boolean
+  overload: ZenECS.Core.Serialization.PostLoadMigrationRegistry.Register*
+- uid: ZenECS.Core.Serialization.PostLoadMigrationRegistry.IsRegistered``1
+  commentId: M:ZenECS.Core.Serialization.PostLoadMigrationRegistry.IsRegistered``1
+  id: IsRegistered``1
+  parent: ZenECS.Core.Serialization.PostLoadMigrationRegistry
+  langs:
+  - csharp
+  - vb
+  name: IsRegistered<T>()
+  nameWithType: PostLoadMigrationRegistry.IsRegistered<T>()
+  fullName: ZenECS.Core.Serialization.PostLoadMigrationRegistry.IsRegistered<T>()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IsRegistered
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
+    startLine: 46
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Check whether a migration of type <code class="typeparamref">T</code> is already registered.
+  example: []
+  syntax:
+    content: 'public static bool IsRegistered<T>() where T : IPostLoadMigration'
+    typeParameters:
+    - id: T
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsRegistered(Of T As IPostLoadMigration)() As Boolean
+  overload: ZenECS.Core.Serialization.PostLoadMigrationRegistry.IsRegistered*
+  nameWithType.vb: PostLoadMigrationRegistry.IsRegistered(Of T)()
+  fullName.vb: ZenECS.Core.Serialization.PostLoadMigrationRegistry.IsRegistered(Of T)()
+  name.vb: IsRegistered(Of T)()
+- uid: ZenECS.Core.Serialization.PostLoadMigrationRegistry.EnsureRegistered``1(System.Func{``0})
+  commentId: M:ZenECS.Core.Serialization.PostLoadMigrationRegistry.EnsureRegistered``1(System.Func{``0})
+  id: EnsureRegistered``1(System.Func{``0})
+  parent: ZenECS.Core.Serialization.PostLoadMigrationRegistry
+  langs:
+  - csharp
+  - vb
+  name: EnsureRegistered<T>(Func<T>)
+  nameWithType: PostLoadMigrationRegistry.EnsureRegistered<T>(Func<T>)
+  fullName: ZenECS.Core.Serialization.PostLoadMigrationRegistry.EnsureRegistered<T>(System.Func<T>)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: EnsureRegistered
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
+    startLine: 52
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Ensure a migration exists by registering a newly created instance if absent.
+  example: []
+  syntax:
+    content: 'public static bool EnsureRegistered<T>(Func<T> factory) where T : class, IPostLoadMigration'
+    parameters:
+    - id: factory
+      type: System.Func{{T}}
+    typeParameters:
+    - id: T
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function EnsureRegistered(Of T As {Class, IPostLoadMigration})(factory As Func(Of T)) As Boolean
+  overload: ZenECS.Core.Serialization.PostLoadMigrationRegistry.EnsureRegistered*
+  nameWithType.vb: PostLoadMigrationRegistry.EnsureRegistered(Of T)(Func(Of T))
+  fullName.vb: ZenECS.Core.Serialization.PostLoadMigrationRegistry.EnsureRegistered(Of T)(System.Func(Of T))
+  name.vb: EnsureRegistered(Of T)(Func(Of T))
+- uid: ZenECS.Core.Serialization.PostLoadMigrationRegistry.RunAll(ZenECS.Core.IWorld)
+  commentId: M:ZenECS.Core.Serialization.PostLoadMigrationRegistry.RunAll(ZenECS.Core.IWorld)
+  id: RunAll(ZenECS.Core.IWorld)
+  parent: ZenECS.Core.Serialization.PostLoadMigrationRegistry
+  langs:
+  - csharp
+  - vb
+  name: RunAll(IWorld)
+  nameWithType: PostLoadMigrationRegistry.RunAll(IWorld)
+  fullName: ZenECS.Core.Serialization.PostLoadMigrationRegistry.RunAll(ZenECS.Core.IWorld)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RunAll
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
+    startLine: 63
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Execute all registered migrations in deterministic order.
+  example: []
+  syntax:
+    content: public static void RunAll(IWorld world)
+    parameters:
+    - id: world
+      type: ZenECS.Core.IWorld
+      description: Target world.
+    content.vb: Public Shared Sub RunAll(world As IWorld)
+  overload: ZenECS.Core.Serialization.PostLoadMigrationRegistry.RunAll*
+- uid: ZenECS.Core.Serialization.PostLoadMigrationRegistry.Clear
+  commentId: M:ZenECS.Core.Serialization.PostLoadMigrationRegistry.Clear
+  id: Clear
+  parent: ZenECS.Core.Serialization.PostLoadMigrationRegistry
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: PostLoadMigrationRegistry.Clear()
+  fullName: ZenECS.Core.Serialization.PostLoadMigrationRegistry.Clear()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Clear
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
+    startLine: 78
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Remove all registered migrations and type keys. Intended for tests/resets.
+  example: []
+  syntax:
+    content: public static void Clear()
+    content.vb: Public Shared Sub Clear()
+  overload: ZenECS.Core.Serialization.PostLoadMigrationRegistry.Clear*
+references:
+- uid: ZenECS.Core.Serialization
+  commentId: N:ZenECS.Core.Serialization
+  href: ZenECS.html
+  name: ZenECS.Core.Serialization
+  nameWithType: ZenECS.Core.Serialization
+  fullName: ZenECS.Core.Serialization
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Serialization
+    name: Serialization
+    href: ZenECS.Core.Serialization.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Serialization
+    name: Serialization
+    href: ZenECS.Core.Serialization.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.Serialization.PostLoadMigrationRegistry.Register*
+  commentId: Overload:ZenECS.Core.Serialization.PostLoadMigrationRegistry.Register
+  href: ZenECS.Core.Serialization.PostLoadMigrationRegistry.html#ZenECS_Core_Serialization_PostLoadMigrationRegistry_Register_ZenECS_Core_Serialization_IPostLoadMigration_
+  name: Register
+  nameWithType: PostLoadMigrationRegistry.Register
+  fullName: ZenECS.Core.Serialization.PostLoadMigrationRegistry.Register
+- uid: ZenECS.Core.Serialization.IPostLoadMigration
+  commentId: T:ZenECS.Core.Serialization.IPostLoadMigration
+  parent: ZenECS.Core.Serialization
+  href: ZenECS.Core.Serialization.IPostLoadMigration.html
+  name: IPostLoadMigration
+  nameWithType: IPostLoadMigration
+  fullName: ZenECS.Core.Serialization.IPostLoadMigration
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: ZenECS.Core.Serialization.PostLoadMigrationRegistry.IsRegistered*
+  commentId: Overload:ZenECS.Core.Serialization.PostLoadMigrationRegistry.IsRegistered
+  href: ZenECS.Core.Serialization.PostLoadMigrationRegistry.html#ZenECS_Core_Serialization_PostLoadMigrationRegistry_IsRegistered__1
+  name: IsRegistered
+  nameWithType: PostLoadMigrationRegistry.IsRegistered
+  fullName: ZenECS.Core.Serialization.PostLoadMigrationRegistry.IsRegistered
+- uid: ZenECS.Core.Serialization.PostLoadMigrationRegistry.EnsureRegistered*
+  commentId: Overload:ZenECS.Core.Serialization.PostLoadMigrationRegistry.EnsureRegistered
+  href: ZenECS.Core.Serialization.PostLoadMigrationRegistry.html#ZenECS_Core_Serialization_PostLoadMigrationRegistry_EnsureRegistered__1_System_Func___0__
+  name: EnsureRegistered
+  nameWithType: PostLoadMigrationRegistry.EnsureRegistered
+  fullName: ZenECS.Core.Serialization.PostLoadMigrationRegistry.EnsureRegistered
+- uid: System.Func{{T}}
+  commentId: T:System.Func{``0}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<T>
+  nameWithType: Func<T>
+  fullName: System.Func<T>
+  nameWithType.vb: Func(Of T)
+  fullName.vb: System.Func(Of T)
+  name.vb: Func(Of T)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: ZenECS.Core.Serialization.PostLoadMigrationRegistry.RunAll*
+  commentId: Overload:ZenECS.Core.Serialization.PostLoadMigrationRegistry.RunAll
+  href: ZenECS.Core.Serialization.PostLoadMigrationRegistry.html#ZenECS_Core_Serialization_PostLoadMigrationRegistry_RunAll_ZenECS_Core_IWorld_
+  name: RunAll
+  nameWithType: PostLoadMigrationRegistry.RunAll
+  fullName: ZenECS.Core.Serialization.PostLoadMigrationRegistry.RunAll
+- uid: ZenECS.Core.IWorld
+  commentId: T:ZenECS.Core.IWorld
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorld.html
+  name: IWorld
+  nameWithType: IWorld
+  fullName: ZenECS.Core.IWorld
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.Serialization.PostLoadMigrationRegistry.Clear*
+  commentId: Overload:ZenECS.Core.Serialization.PostLoadMigrationRegistry.Clear
+  href: ZenECS.Core.Serialization.PostLoadMigrationRegistry.html#ZenECS_Core_Serialization_PostLoadMigrationRegistry_Clear
+  name: Clear
+  nameWithType: PostLoadMigrationRegistry.Clear
+  fullName: ZenECS.Core.Serialization.PostLoadMigrationRegistry.Clear

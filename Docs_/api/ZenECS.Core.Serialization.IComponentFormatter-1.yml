@@ -1,0 +1,261 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Serialization.IComponentFormatter`1
+  commentId: T:ZenECS.Core.Serialization.IComponentFormatter`1
+  id: IComponentFormatter`1
+  parent: ZenECS.Core.Serialization
+  children:
+  - ZenECS.Core.Serialization.IComponentFormatter`1.ReadTyped(ZenECS.Core.Serialization.ISnapshotBackend)
+  - ZenECS.Core.Serialization.IComponentFormatter`1.Write(`0@,ZenECS.Core.Serialization.ISnapshotBackend)
+  langs:
+  - csharp
+  - vb
+  name: IComponentFormatter<T>
+  nameWithType: IComponentFormatter<T>
+  fullName: ZenECS.Core.Serialization.IComponentFormatter<T>
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/IComponentFormatter.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IComponentFormatter
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/IComponentFormatter.cs
+    startLine: 46
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Strongly-typed formatter that avoids boxing and exposes typed read/write.
+  example: []
+  syntax:
+    content: 'public interface IComponentFormatter<T> : IComponentFormatter where T : struct'
+    typeParameters:
+    - id: T
+      description: Component value type (typically a <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/struct">struct</a>).
+    content.vb: Public Interface IComponentFormatter(Of T As Structure) Inherits IComponentFormatter
+  inheritedMembers:
+  - ZenECS.Core.Serialization.IComponentFormatter.ComponentType
+  - ZenECS.Core.Serialization.IComponentFormatter.Write(System.Object,ZenECS.Core.Serialization.ISnapshotBackend)
+  - ZenECS.Core.Serialization.IComponentFormatter.Read(ZenECS.Core.Serialization.ISnapshotBackend)
+  nameWithType.vb: IComponentFormatter(Of T)
+  fullName.vb: ZenECS.Core.Serialization.IComponentFormatter(Of T)
+  name.vb: IComponentFormatter(Of T)
+- uid: ZenECS.Core.Serialization.IComponentFormatter`1.Write(`0@,ZenECS.Core.Serialization.ISnapshotBackend)
+  commentId: M:ZenECS.Core.Serialization.IComponentFormatter`1.Write(`0@,ZenECS.Core.Serialization.ISnapshotBackend)
+  id: Write(`0@,ZenECS.Core.Serialization.ISnapshotBackend)
+  parent: ZenECS.Core.Serialization.IComponentFormatter`1
+  langs:
+  - csharp
+  - vb
+  name: Write(in T, ISnapshotBackend)
+  nameWithType: IComponentFormatter<T>.Write(in T, ISnapshotBackend)
+  fullName: ZenECS.Core.Serialization.IComponentFormatter<T>.Write(in T, ZenECS.Core.Serialization.ISnapshotBackend)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/IComponentFormatter.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Write
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/IComponentFormatter.cs
+    startLine: 51
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Write a typed component value to the backend.
+  example: []
+  syntax:
+    content: void Write(in T value, ISnapshotBackend backend)
+    parameters:
+    - id: value
+      type: '{T}'
+      description: Component value.
+    - id: backend
+      type: ZenECS.Core.Serialization.ISnapshotBackend
+      description: Snapshot I/O backend.
+    content.vb: Sub Write(value As T, backend As ISnapshotBackend)
+  overload: ZenECS.Core.Serialization.IComponentFormatter`1.Write*
+  nameWithType.vb: IComponentFormatter(Of T).Write(T, ISnapshotBackend)
+  fullName.vb: ZenECS.Core.Serialization.IComponentFormatter(Of T).Write(T, ZenECS.Core.Serialization.ISnapshotBackend)
+  name.vb: Write(T, ISnapshotBackend)
+- uid: ZenECS.Core.Serialization.IComponentFormatter`1.ReadTyped(ZenECS.Core.Serialization.ISnapshotBackend)
+  commentId: M:ZenECS.Core.Serialization.IComponentFormatter`1.ReadTyped(ZenECS.Core.Serialization.ISnapshotBackend)
+  id: ReadTyped(ZenECS.Core.Serialization.ISnapshotBackend)
+  parent: ZenECS.Core.Serialization.IComponentFormatter`1
+  langs:
+  - csharp
+  - vb
+  name: ReadTyped(ISnapshotBackend)
+  nameWithType: IComponentFormatter<T>.ReadTyped(ISnapshotBackend)
+  fullName: ZenECS.Core.Serialization.IComponentFormatter<T>.ReadTyped(ZenECS.Core.Serialization.ISnapshotBackend)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Serialization/Api/IComponentFormatter.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ReadTyped
+    path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/IComponentFormatter.cs
+    startLine: 56
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Serialization
+  summary: Read a typed component value from the backend.
+  example: []
+  syntax:
+    content: T ReadTyped(ISnapshotBackend backend)
+    parameters:
+    - id: backend
+      type: ZenECS.Core.Serialization.ISnapshotBackend
+      description: Snapshot I/O backend.
+    return:
+      type: '{T}'
+      description: Deserialized component value.
+    content.vb: Function ReadTyped(backend As ISnapshotBackend) As T
+  overload: ZenECS.Core.Serialization.IComponentFormatter`1.ReadTyped*
+  nameWithType.vb: IComponentFormatter(Of T).ReadTyped(ISnapshotBackend)
+  fullName.vb: ZenECS.Core.Serialization.IComponentFormatter(Of T).ReadTyped(ZenECS.Core.Serialization.ISnapshotBackend)
+references:
+- uid: ZenECS.Core.Serialization
+  commentId: N:ZenECS.Core.Serialization
+  href: ZenECS.html
+  name: ZenECS.Core.Serialization
+  nameWithType: ZenECS.Core.Serialization
+  fullName: ZenECS.Core.Serialization
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Serialization
+    name: Serialization
+    href: ZenECS.Core.Serialization.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Serialization
+    name: Serialization
+    href: ZenECS.Core.Serialization.html
+- uid: ZenECS.Core.Serialization.IComponentFormatter.ComponentType
+  commentId: P:ZenECS.Core.Serialization.IComponentFormatter.ComponentType
+  parent: ZenECS.Core.Serialization.IComponentFormatter
+  href: ZenECS.Core.Serialization.IComponentFormatter.html#ZenECS_Core_Serialization_IComponentFormatter_ComponentType
+  name: ComponentType
+  nameWithType: IComponentFormatter.ComponentType
+  fullName: ZenECS.Core.Serialization.IComponentFormatter.ComponentType
+- uid: ZenECS.Core.Serialization.IComponentFormatter.Write(System.Object,ZenECS.Core.Serialization.ISnapshotBackend)
+  commentId: M:ZenECS.Core.Serialization.IComponentFormatter.Write(System.Object,ZenECS.Core.Serialization.ISnapshotBackend)
+  parent: ZenECS.Core.Serialization.IComponentFormatter
+  isExternal: true
+  href: ZenECS.Core.Serialization.IComponentFormatter.html#ZenECS_Core_Serialization_IComponentFormatter_Write_System_Object_ZenECS_Core_Serialization_ISnapshotBackend_
+  name: Write(object, ISnapshotBackend)
+  nameWithType: IComponentFormatter.Write(object, ISnapshotBackend)
+  fullName: ZenECS.Core.Serialization.IComponentFormatter.Write(object, ZenECS.Core.Serialization.ISnapshotBackend)
+  nameWithType.vb: IComponentFormatter.Write(Object, ISnapshotBackend)
+  fullName.vb: ZenECS.Core.Serialization.IComponentFormatter.Write(Object, ZenECS.Core.Serialization.ISnapshotBackend)
+  name.vb: Write(Object, ISnapshotBackend)
+  spec.csharp:
+  - uid: ZenECS.Core.Serialization.IComponentFormatter.Write(System.Object,ZenECS.Core.Serialization.ISnapshotBackend)
+    name: Write
+    href: ZenECS.Core.Serialization.IComponentFormatter.html#ZenECS_Core_Serialization_IComponentFormatter_Write_System_Object_ZenECS_Core_Serialization_ISnapshotBackend_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Serialization.ISnapshotBackend
+    name: ISnapshotBackend
+    href: ZenECS.Core.Serialization.ISnapshotBackend.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.Serialization.IComponentFormatter.Write(System.Object,ZenECS.Core.Serialization.ISnapshotBackend)
+    name: Write
+    href: ZenECS.Core.Serialization.IComponentFormatter.html#ZenECS_Core_Serialization_IComponentFormatter_Write_System_Object_ZenECS_Core_Serialization_ISnapshotBackend_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Serialization.ISnapshotBackend
+    name: ISnapshotBackend
+    href: ZenECS.Core.Serialization.ISnapshotBackend.html
+  - name: )
+- uid: ZenECS.Core.Serialization.IComponentFormatter.Read(ZenECS.Core.Serialization.ISnapshotBackend)
+  commentId: M:ZenECS.Core.Serialization.IComponentFormatter.Read(ZenECS.Core.Serialization.ISnapshotBackend)
+  parent: ZenECS.Core.Serialization.IComponentFormatter
+  href: ZenECS.Core.Serialization.IComponentFormatter.html#ZenECS_Core_Serialization_IComponentFormatter_Read_ZenECS_Core_Serialization_ISnapshotBackend_
+  name: Read(ISnapshotBackend)
+  nameWithType: IComponentFormatter.Read(ISnapshotBackend)
+  fullName: ZenECS.Core.Serialization.IComponentFormatter.Read(ZenECS.Core.Serialization.ISnapshotBackend)
+  spec.csharp:
+  - uid: ZenECS.Core.Serialization.IComponentFormatter.Read(ZenECS.Core.Serialization.ISnapshotBackend)
+    name: Read
+    href: ZenECS.Core.Serialization.IComponentFormatter.html#ZenECS_Core_Serialization_IComponentFormatter_Read_ZenECS_Core_Serialization_ISnapshotBackend_
+  - name: (
+  - uid: ZenECS.Core.Serialization.ISnapshotBackend
+    name: ISnapshotBackend
+    href: ZenECS.Core.Serialization.ISnapshotBackend.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.Serialization.IComponentFormatter.Read(ZenECS.Core.Serialization.ISnapshotBackend)
+    name: Read
+    href: ZenECS.Core.Serialization.IComponentFormatter.html#ZenECS_Core_Serialization_IComponentFormatter_Read_ZenECS_Core_Serialization_ISnapshotBackend_
+  - name: (
+  - uid: ZenECS.Core.Serialization.ISnapshotBackend
+    name: ISnapshotBackend
+    href: ZenECS.Core.Serialization.ISnapshotBackend.html
+  - name: )
+- uid: ZenECS.Core.Serialization.IComponentFormatter
+  commentId: T:ZenECS.Core.Serialization.IComponentFormatter
+  parent: ZenECS.Core.Serialization
+  href: ZenECS.Core.Serialization.IComponentFormatter.html
+  name: IComponentFormatter
+  nameWithType: IComponentFormatter
+  fullName: ZenECS.Core.Serialization.IComponentFormatter
+- uid: ZenECS.Core.Serialization.IComponentFormatter`1.Write*
+  commentId: Overload:ZenECS.Core.Serialization.IComponentFormatter`1.Write
+  href: ZenECS.Core.Serialization.IComponentFormatter-1.html#ZenECS_Core_Serialization_IComponentFormatter_1_Write__0__ZenECS_Core_Serialization_ISnapshotBackend_
+  name: Write
+  nameWithType: IComponentFormatter<T>.Write
+  fullName: ZenECS.Core.Serialization.IComponentFormatter<T>.Write
+  nameWithType.vb: IComponentFormatter(Of T).Write
+  fullName.vb: ZenECS.Core.Serialization.IComponentFormatter(Of T).Write
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: ZenECS.Core.Serialization.ISnapshotBackend
+  commentId: T:ZenECS.Core.Serialization.ISnapshotBackend
+  parent: ZenECS.Core.Serialization
+  href: ZenECS.Core.Serialization.ISnapshotBackend.html
+  name: ISnapshotBackend
+  nameWithType: ISnapshotBackend
+  fullName: ZenECS.Core.Serialization.ISnapshotBackend
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: ZenECS.Core.Serialization.IComponentFormatter`1.ReadTyped*
+  commentId: Overload:ZenECS.Core.Serialization.IComponentFormatter`1.ReadTyped
+  href: ZenECS.Core.Serialization.IComponentFormatter-1.html#ZenECS_Core_Serialization_IComponentFormatter_1_ReadTyped_ZenECS_Core_Serialization_ISnapshotBackend_
+  name: ReadTyped
+  nameWithType: IComponentFormatter<T>.ReadTyped
+  fullName: ZenECS.Core.Serialization.IComponentFormatter<T>.ReadTyped
+  nameWithType.vb: IComponentFormatter(Of T).ReadTyped
+  fullName.vb: ZenECS.Core.Serialization.IComponentFormatter(Of T).ReadTyped

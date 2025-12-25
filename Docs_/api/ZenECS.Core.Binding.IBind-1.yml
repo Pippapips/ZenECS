@@ -1,0 +1,163 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Binding.IBind`1
+  commentId: T:ZenECS.Core.Binding.IBind`1
+  id: IBind`1
+  parent: ZenECS.Core.Binding
+  children:
+  - ZenECS.Core.Binding.IBind`1.OnDelta(ZenECS.Core.Binding.ComponentDelta{`0}@)
+  langs:
+  - csharp
+  - vb
+  name: IBind<T>
+  nameWithType: IBind<T>
+  fullName: ZenECS.Core.Binding.IBind<T>
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IBind
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+    startLine: 87
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: Implemented by binders interested in receiving deltas for component <code class="typeparamref">T</code>.
+  example: []
+  syntax:
+    content: 'public interface IBind<T> where T : struct'
+    typeParameters:
+    - id: T
+      description: Component type.
+    content.vb: Public Interface IBind(Of T As Structure)
+  nameWithType.vb: IBind(Of T)
+  fullName.vb: ZenECS.Core.Binding.IBind(Of T)
+  name.vb: IBind(Of T)
+- uid: ZenECS.Core.Binding.IBind`1.OnDelta(ZenECS.Core.Binding.ComponentDelta{`0}@)
+  commentId: M:ZenECS.Core.Binding.IBind`1.OnDelta(ZenECS.Core.Binding.ComponentDelta{`0}@)
+  id: OnDelta(ZenECS.Core.Binding.ComponentDelta{`0}@)
+  parent: ZenECS.Core.Binding.IBind`1
+  langs:
+  - csharp
+  - vb
+  name: OnDelta(in ComponentDelta<T>)
+  nameWithType: IBind<T>.OnDelta(in ComponentDelta<T>)
+  fullName: ZenECS.Core.Binding.IBind<T>.OnDelta(in ZenECS.Core.Binding.ComponentDelta<T>)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: OnDelta
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+    startLine: 93
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: Called when a delta for <code class="typeparamref">T</code> is dispatched.
+  example: []
+  syntax:
+    content: void OnDelta(in ComponentDelta<T> delta)
+    parameters:
+    - id: delta
+      type: ZenECS.Core.Binding.ComponentDelta{{T}}
+      description: Delta payload (value-type).
+    content.vb: Sub OnDelta(delta As ComponentDelta(Of T))
+  overload: ZenECS.Core.Binding.IBind`1.OnDelta*
+  nameWithType.vb: IBind(Of T).OnDelta(ComponentDelta(Of T))
+  fullName.vb: ZenECS.Core.Binding.IBind(Of T).OnDelta(ZenECS.Core.Binding.ComponentDelta(Of T))
+  name.vb: OnDelta(ComponentDelta(Of T))
+references:
+- uid: ZenECS.Core.Binding
+  commentId: N:ZenECS.Core.Binding
+  href: ZenECS.html
+  name: ZenECS.Core.Binding
+  nameWithType: ZenECS.Core.Binding
+  fullName: ZenECS.Core.Binding
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+- uid: ZenECS.Core.Binding.IBind`1.OnDelta*
+  commentId: Overload:ZenECS.Core.Binding.IBind`1.OnDelta
+  href: ZenECS.Core.Binding.IBind-1.html#ZenECS_Core_Binding_IBind_1_OnDelta_ZenECS_Core_Binding_ComponentDelta__0___
+  name: OnDelta
+  nameWithType: IBind<T>.OnDelta
+  fullName: ZenECS.Core.Binding.IBind<T>.OnDelta
+  nameWithType.vb: IBind(Of T).OnDelta
+  fullName.vb: ZenECS.Core.Binding.IBind(Of T).OnDelta
+- uid: ZenECS.Core.Binding.ComponentDelta{{T}}
+  commentId: T:ZenECS.Core.Binding.ComponentDelta{`0}
+  parent: ZenECS.Core.Binding
+  definition: ZenECS.Core.Binding.ComponentDelta`1
+  href: ZenECS.Core.Binding.ComponentDelta-1.html
+  name: ComponentDelta<T>
+  nameWithType: ComponentDelta<T>
+  fullName: ZenECS.Core.Binding.ComponentDelta<T>
+  nameWithType.vb: ComponentDelta(Of T)
+  fullName.vb: ZenECS.Core.Binding.ComponentDelta(Of T)
+  name.vb: ComponentDelta(Of T)
+  spec.csharp:
+  - uid: ZenECS.Core.Binding.ComponentDelta`1
+    name: ComponentDelta
+    href: ZenECS.Core.Binding.ComponentDelta-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.Binding.ComponentDelta`1
+    name: ComponentDelta
+    href: ZenECS.Core.Binding.ComponentDelta-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ZenECS.Core.Binding.ComponentDelta`1
+  commentId: T:ZenECS.Core.Binding.ComponentDelta`1
+  href: ZenECS.Core.Binding.ComponentDelta-1.html
+  name: ComponentDelta<T>
+  nameWithType: ComponentDelta<T>
+  fullName: ZenECS.Core.Binding.ComponentDelta<T>
+  nameWithType.vb: ComponentDelta(Of T)
+  fullName.vb: ZenECS.Core.Binding.ComponentDelta(Of T)
+  name.vb: ComponentDelta(Of T)
+  spec.csharp:
+  - uid: ZenECS.Core.Binding.ComponentDelta`1
+    name: ComponentDelta
+    href: ZenECS.Core.Binding.ComponentDelta-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.Binding.ComponentDelta`1
+    name: ComponentDelta
+    href: ZenECS.Core.Binding.ComponentDelta-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+        <DocumentationFile>bin\Release\netstandard2.1\ZenECS.Adapter.Unity.xml</DocumentationFile>
+        <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)obj\</BaseIntermediateOutputPath>
+        <OutputPath>$(MSBuildThisFileDirectory)bin\$(Configuration)\</OutputPath>
+        <IsPackable>false</IsPackable>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    </PropertyGroup>
+    
+    <!-- Runtime 소스 포함 -->
+    <ItemGroup>
+        <Compile Include="..\Packages\com.zenecs.adapter.unity\Runtime\**\*.cs" Exclude="..\Packages\com.zenecs.adapter.unity\Runtime\**\*.gen.cs" />
+        <None Remove="..\Packages\com.zenecs.adapter.unity\**\*.meta" />
+        <None Remove="..\Packages\com.zenecs.adapter.unity\Runtime\**\*.asmdef" />
+        <Compile Remove="obj/**" />
+        <None Remove="obj/**" />
+    </ItemGroup>
+    
+    <!-- Editor 소스 포함 (조건부) -->
+    <ItemGroup Condition="'$(IncludeEditor)' == 'true'">
+        <Compile Include="..\Packages\com.zenecs.adapter.unity\Editor\**\*.cs" Exclude="..\Packages\com.zenecs.adapter.unity\Editor\**\*.gen.cs" />
+    </ItemGroup>
+    
+    <!-- 참조 -->
+    <ItemGroup>
+        <ProjectReference Include="$(MSBuildThisFileDirectory)ZenECS.Core.csproj" />
+    </ItemGroup>
+    
+    <!-- Define Constants -->
+    <!-- UNITY를 정의하여 Unity 전용 코드가 컴파일되도록 함 -->
+    <!-- 하지만 Unity 어셈블리가 없으므로, Unity 타입을 사용하는 코드는 조건부 컴파일로 처리되어야 함 -->
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);ZENECS_ADAPTER_UNITY;UNITY</DefineConstants>
+    </PropertyGroup>
+    
+    <!-- Unity 어셈블리 스텁 (DocFX 빌드용) -->
+    <!-- Unity가 설치되어 있지 않은 환경에서도 컴파일되도록 스텁 타입 제공 -->
+    <ItemGroup>
+        <Compile Include="$(MSBuildThisFileDirectory)UnityStubs.cs" />
+    </ItemGroup>
+</Project>

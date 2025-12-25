@@ -1,0 +1,962 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.IWorldComponentApi
+  commentId: T:ZenECS.Core.IWorldComponentApi
+  id: IWorldComponentApi
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.IWorldComponentApi.GetAllComponents(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldComponentApi.GetAllSingletons
+  - ZenECS.Core.IWorldComponentApi.GetSingleton``1
+  - ZenECS.Core.IWorldComponentApi.HasComponentBoxed(ZenECS.Core.Entity,System.Type)
+  - ZenECS.Core.IWorldComponentApi.HasComponent``1(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldComponentApi.HasSingleton(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldComponentApi.ReadComponent``1(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldComponentApi.SnapshotComponentBoxed(ZenECS.Core.Entity,System.Object)
+  - ZenECS.Core.IWorldComponentApi.SnapshotComponentTyped(ZenECS.Core.Entity,System.Type)
+  - ZenECS.Core.IWorldComponentApi.SnapshotComponent``1(ZenECS.Core.Entity)
+  - ZenECS.Core.IWorldComponentApi.TryGetSingleton``1(``0@)
+  - ZenECS.Core.IWorldComponentApi.TryReadComponent``1(ZenECS.Core.Entity,``0@)
+  langs:
+  - csharp
+  - vb
+  name: IWorldComponentApi
+  nameWithType: IWorldComponentApi
+  fullName: ZenECS.Core.IWorldComponentApi
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IWorldComponentApi
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+    startLine: 53
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Typed component operations and ref accessors for a world.
+  remarks: >-
+    <p>
+
+    This interface exposes read and presence checks, snapshot helpers, and
+
+    singleton queries. Mutating operations (add/replace/remove) are typically
+
+    part of the concrete world implementation and may be further gated by
+
+    permission and validation hooks.
+
+    </p>
+
+    <p>
+
+    The world guarantees that component storage is pooled, enabling
+
+    allocation-free access through ref-returning APIs on the implementation side.
+
+    </p>
+  example: []
+  syntax:
+    content: public interface IWorldComponentApi
+    content.vb: Public Interface IWorldComponentApi
+- uid: ZenECS.Core.IWorldComponentApi.HasComponent``1(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldComponentApi.HasComponent``1(ZenECS.Core.Entity)
+  id: HasComponent``1(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldComponentApi
+  langs:
+  - csharp
+  - vb
+  name: HasComponent<T>(Entity)
+  nameWithType: IWorldComponentApi.HasComponent<T>(Entity)
+  fullName: ZenECS.Core.IWorldComponentApi.HasComponent<T>(ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: HasComponent
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+    startLine: 64
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Checks whether an entity has a component of type <code class="typeparamref">T</code>.
+  example: []
+  syntax:
+    content: 'bool HasComponent<T>(Entity e) where T : struct'
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    typeParameters:
+    - id: T
+      description: Component value type.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the entity has a component of type
+
+        <code class="typeparamref">T</code>; otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function HasComponent(Of T As Structure)(e As Entity) As Boolean
+  overload: ZenECS.Core.IWorldComponentApi.HasComponent*
+  nameWithType.vb: IWorldComponentApi.HasComponent(Of T)(Entity)
+  fullName.vb: ZenECS.Core.IWorldComponentApi.HasComponent(Of T)(ZenECS.Core.Entity)
+  name.vb: HasComponent(Of T)(Entity)
+- uid: ZenECS.Core.IWorldComponentApi.HasComponentBoxed(ZenECS.Core.Entity,System.Type)
+  commentId: M:ZenECS.Core.IWorldComponentApi.HasComponentBoxed(ZenECS.Core.Entity,System.Type)
+  id: HasComponentBoxed(ZenECS.Core.Entity,System.Type)
+  parent: ZenECS.Core.IWorldComponentApi
+  langs:
+  - csharp
+  - vb
+  name: HasComponentBoxed(Entity, Type?)
+  nameWithType: IWorldComponentApi.HasComponentBoxed(Entity, Type?)
+  fullName: ZenECS.Core.IWorldComponentApi.HasComponentBoxed(ZenECS.Core.Entity, System.Type?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: HasComponentBoxed
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+    startLine: 75
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Checks whether an entity has a component for a runtime component type.
+  example: []
+  syntax:
+    content: bool HasComponentBoxed(Entity e, Type? componentType)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    - id: componentType
+      type: System.Type
+      description: Component value type.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the entity has a component of the given type;
+
+        otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function HasComponentBoxed(e As Entity, componentType As Type) As Boolean
+  overload: ZenECS.Core.IWorldComponentApi.HasComponentBoxed*
+  nameWithType.vb: IWorldComponentApi.HasComponentBoxed(Entity, Type)
+  fullName.vb: ZenECS.Core.IWorldComponentApi.HasComponentBoxed(ZenECS.Core.Entity, System.Type)
+  name.vb: HasComponentBoxed(Entity, Type)
+- uid: ZenECS.Core.IWorldComponentApi.SnapshotComponent``1(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldComponentApi.SnapshotComponent``1(ZenECS.Core.Entity)
+  id: SnapshotComponent``1(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldComponentApi
+  langs:
+  - csharp
+  - vb
+  name: SnapshotComponent<T>(Entity)
+  nameWithType: IWorldComponentApi.SnapshotComponent<T>(Entity)
+  fullName: ZenECS.Core.IWorldComponentApi.SnapshotComponent<T>(ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SnapshotComponent
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+    startLine: 93
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Dispatches a snapshot delta for an existing component without changing its value.
+  remarks: >-
+    <p>
+
+    A snapshot delta is typically used when a binder attaches to an entity
+
+    and needs the current component value to be pushed as-is into the
+
+    presentation layer (the <code>Snapshot</code> kind in <code>ComponentDeltaKind</code>).
+
+    </p>
+  example: []
+  syntax:
+    content: 'bool SnapshotComponent<T>(Entity e) where T : struct'
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    typeParameters:
+    - id: T
+      description: Component value type.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the entity has the component and a snapshot
+
+        was dispatched; otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function SnapshotComponent(Of T As Structure)(e As Entity) As Boolean
+  overload: ZenECS.Core.IWorldComponentApi.SnapshotComponent*
+  nameWithType.vb: IWorldComponentApi.SnapshotComponent(Of T)(Entity)
+  fullName.vb: ZenECS.Core.IWorldComponentApi.SnapshotComponent(Of T)(ZenECS.Core.Entity)
+  name.vb: SnapshotComponent(Of T)(Entity)
+- uid: ZenECS.Core.IWorldComponentApi.SnapshotComponentBoxed(ZenECS.Core.Entity,System.Object)
+  commentId: M:ZenECS.Core.IWorldComponentApi.SnapshotComponentBoxed(ZenECS.Core.Entity,System.Object)
+  id: SnapshotComponentBoxed(ZenECS.Core.Entity,System.Object)
+  parent: ZenECS.Core.IWorldComponentApi
+  langs:
+  - csharp
+  - vb
+  name: SnapshotComponentBoxed(Entity, object?)
+  nameWithType: IWorldComponentApi.SnapshotComponentBoxed(Entity, object?)
+  fullName: ZenECS.Core.IWorldComponentApi.SnapshotComponentBoxed(ZenECS.Core.Entity, object?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SnapshotComponentBoxed
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+    startLine: 108
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Dispatches a snapshot delta for a component whose type is inferred
+
+    from a boxed value.
+  example: []
+  syntax:
+    content: bool SnapshotComponentBoxed(Entity e, object? boxed)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    - id: boxed
+      type: System.Object
+      description: >-
+        Boxed component value; its runtime type is used to resolve the component
+
+        type. Implementations may require this to be a non-null value type.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if a matching component exists and a snapshot
+
+        was dispatched; otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function SnapshotComponentBoxed(e As Entity, boxed As Object) As Boolean
+  overload: ZenECS.Core.IWorldComponentApi.SnapshotComponentBoxed*
+  nameWithType.vb: IWorldComponentApi.SnapshotComponentBoxed(Entity, Object)
+  fullName.vb: ZenECS.Core.IWorldComponentApi.SnapshotComponentBoxed(ZenECS.Core.Entity, Object)
+  name.vb: SnapshotComponentBoxed(Entity, Object)
+- uid: ZenECS.Core.IWorldComponentApi.SnapshotComponentTyped(ZenECS.Core.Entity,System.Type)
+  commentId: M:ZenECS.Core.IWorldComponentApi.SnapshotComponentTyped(ZenECS.Core.Entity,System.Type)
+  id: SnapshotComponentTyped(ZenECS.Core.Entity,System.Type)
+  parent: ZenECS.Core.IWorldComponentApi
+  langs:
+  - csharp
+  - vb
+  name: SnapshotComponentTyped(Entity, Type?)
+  nameWithType: IWorldComponentApi.SnapshotComponentTyped(Entity, Type?)
+  fullName: ZenECS.Core.IWorldComponentApi.SnapshotComponentTyped(ZenECS.Core.Entity, System.Type?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SnapshotComponentTyped
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+    startLine: 119
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Dispatches a snapshot delta for a component identified by runtime type.
+  example: []
+  syntax:
+    content: bool SnapshotComponentTyped(Entity e, Type? t)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    - id: t
+      type: System.Type
+      description: Component value type.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if a matching component exists and a snapshot
+
+        was dispatched; otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function SnapshotComponentTyped(e As Entity, t As Type) As Boolean
+  overload: ZenECS.Core.IWorldComponentApi.SnapshotComponentTyped*
+  nameWithType.vb: IWorldComponentApi.SnapshotComponentTyped(Entity, Type)
+  fullName.vb: ZenECS.Core.IWorldComponentApi.SnapshotComponentTyped(ZenECS.Core.Entity, System.Type)
+  name.vb: SnapshotComponentTyped(Entity, Type)
+- uid: ZenECS.Core.IWorldComponentApi.ReadComponent``1(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldComponentApi.ReadComponent``1(ZenECS.Core.Entity)
+  id: ReadComponent``1(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldComponentApi
+  langs:
+  - csharp
+  - vb
+  name: ReadComponent<T>(Entity)
+  nameWithType: IWorldComponentApi.ReadComponent<T>(Entity)
+  fullName: ZenECS.Core.IWorldComponentApi.ReadComponent<T>(ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ReadComponent
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+    startLine: 133
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Reads a component value by value (non-ref) from an entity.
+  remarks: >-
+    This is typically implemented as a thin wrapper around an internal
+
+    ref-returning accessor such as <code>RefComponent&lt;T&gt;(Entity)</code>.
+  example: []
+  syntax:
+    content: 'T ReadComponent<T>(Entity e) where T : struct'
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    typeParameters:
+    - id: T
+      description: Component value type.
+    return:
+      type: '{T}'
+      description: The current component value.
+    content.vb: Function ReadComponent(Of T As Structure)(e As Entity) As T
+  overload: ZenECS.Core.IWorldComponentApi.ReadComponent*
+  nameWithType.vb: IWorldComponentApi.ReadComponent(Of T)(Entity)
+  fullName.vb: ZenECS.Core.IWorldComponentApi.ReadComponent(Of T)(ZenECS.Core.Entity)
+  name.vb: ReadComponent(Of T)(Entity)
+- uid: ZenECS.Core.IWorldComponentApi.TryReadComponent``1(ZenECS.Core.Entity,``0@)
+  commentId: M:ZenECS.Core.IWorldComponentApi.TryReadComponent``1(ZenECS.Core.Entity,``0@)
+  id: TryReadComponent``1(ZenECS.Core.Entity,``0@)
+  parent: ZenECS.Core.IWorldComponentApi
+  langs:
+  - csharp
+  - vb
+  name: TryReadComponent<T>(Entity, out T)
+  nameWithType: IWorldComponentApi.TryReadComponent<T>(Entity, out T)
+  fullName: ZenECS.Core.IWorldComponentApi.TryReadComponent<T>(ZenECS.Core.Entity, out T)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: TryReadComponent
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+    startLine: 148
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Attempts to read a component value from an entity.
+  example: []
+  syntax:
+    content: 'bool TryReadComponent<T>(Entity e, out T value) where T : struct'
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    - id: value
+      type: '{T}'
+      description: >-
+        When this method returns, contains the component value if present;
+
+        otherwise the default value of <code class="typeparamref">T</code>.
+    typeParameters:
+    - id: T
+      description: Component value type.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the entity has the component; otherwise
+
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function TryReadComponent(Of T As Structure)(e As Entity, value As T) As Boolean
+  overload: ZenECS.Core.IWorldComponentApi.TryReadComponent*
+  nameWithType.vb: IWorldComponentApi.TryReadComponent(Of T)(Entity, T)
+  fullName.vb: ZenECS.Core.IWorldComponentApi.TryReadComponent(Of T)(ZenECS.Core.Entity, T)
+  name.vb: TryReadComponent(Of T)(Entity, T)
+- uid: ZenECS.Core.IWorldComponentApi.GetAllComponents(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldComponentApi.GetAllComponents(ZenECS.Core.Entity)
+  id: GetAllComponents(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldComponentApi
+  langs:
+  - csharp
+  - vb
+  name: GetAllComponents(Entity)
+  nameWithType: IWorldComponentApi.GetAllComponents(Entity)
+  fullName: ZenECS.Core.IWorldComponentApi.GetAllComponents(ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: GetAllComponents
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+    startLine: 162
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Enumerates all components currently present on an entity as boxed values.
+  remarks: >-
+    This is primarily intended for tooling, debugging, and generic inspectors
+
+    where the component types are not known at compile time.
+  example: []
+  syntax:
+    content: IEnumerable<(Type type, object? boxed)> GetAllComponents(Entity e)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Target entity.
+    return:
+      type: System.Collections.Generic.IEnumerable{System.ValueTuple{System.Type,System.Object}}
+      description: >-
+        A sequence of tuples where <code>type</code> is the component type and
+
+        <code>boxed</code> is the boxed component value.
+    content.vb: Function GetAllComponents(e As Entity) As IEnumerable(Of (type As Type, boxed As Object))
+  overload: ZenECS.Core.IWorldComponentApi.GetAllComponents*
+- uid: ZenECS.Core.IWorldComponentApi.GetSingleton``1
+  commentId: M:ZenECS.Core.IWorldComponentApi.GetSingleton``1
+  id: GetSingleton``1
+  parent: ZenECS.Core.IWorldComponentApi
+  langs:
+  - csharp
+  - vb
+  name: GetSingleton<T>()
+  nameWithType: IWorldComponentApi.GetSingleton<T>()
+  fullName: ZenECS.Core.IWorldComponentApi.GetSingleton<T>()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: GetSingleton
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+    startLine: 175
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets the singleton component value for type <code class="typeparamref">T</code>.
+  example: []
+  syntax:
+    content: 'T GetSingleton<T>() where T : struct, IWorldSingletonComponent'
+    typeParameters:
+    - id: T
+      description: Component value type implementing <xref href="ZenECS.Core.IWorldSingletonComponent" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: '{T}'
+      description: The singleton component value.
+    content.vb: Function GetSingleton(Of T As {Structure, IWorldSingletonComponent})() As T
+  overload: ZenECS.Core.IWorldComponentApi.GetSingleton*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: >-
+      Thrown if there is no singleton of type <code class="typeparamref">T</code> or if
+
+      the singleton invariant is violated (multiple entities own the component).
+  nameWithType.vb: IWorldComponentApi.GetSingleton(Of T)()
+  fullName.vb: ZenECS.Core.IWorldComponentApi.GetSingleton(Of T)()
+  name.vb: GetSingleton(Of T)()
+- uid: ZenECS.Core.IWorldComponentApi.TryGetSingleton``1(``0@)
+  commentId: M:ZenECS.Core.IWorldComponentApi.TryGetSingleton``1(``0@)
+  id: TryGetSingleton``1(``0@)
+  parent: ZenECS.Core.IWorldComponentApi
+  langs:
+  - csharp
+  - vb
+  name: TryGetSingleton<T>(out T)
+  nameWithType: IWorldComponentApi.TryGetSingleton<T>(out T)
+  fullName: ZenECS.Core.IWorldComponentApi.TryGetSingleton<T>(out T)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: TryGetSingleton
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+    startLine: 191
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Attempts to get the singleton component value for type <code class="typeparamref">T</code>.
+  example: []
+  syntax:
+    content: 'bool TryGetSingleton<T>(out T value) where T : struct, IWorldSingletonComponent'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: >-
+        When this method returns, contains the singleton value if present;
+
+        otherwise the default value for <code class="typeparamref">T</code>.
+    typeParameters:
+    - id: T
+      description: Component value type implementing <xref href="ZenECS.Core.IWorldSingletonComponent" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if a singleton exists; otherwise
+
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function TryGetSingleton(Of T As {Structure, IWorldSingletonComponent})(value As T) As Boolean
+  overload: ZenECS.Core.IWorldComponentApi.TryGetSingleton*
+  nameWithType.vb: IWorldComponentApi.TryGetSingleton(Of T)(T)
+  fullName.vb: ZenECS.Core.IWorldComponentApi.TryGetSingleton(Of T)(T)
+  name.vb: TryGetSingleton(Of T)(T)
+- uid: ZenECS.Core.IWorldComponentApi.HasSingleton(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.IWorldComponentApi.HasSingleton(ZenECS.Core.Entity)
+  id: HasSingleton(ZenECS.Core.Entity)
+  parent: ZenECS.Core.IWorldComponentApi
+  langs:
+  - csharp
+  - vb
+  name: HasSingleton(Entity)
+  nameWithType: IWorldComponentApi.HasSingleton(Entity)
+  fullName: ZenECS.Core.IWorldComponentApi.HasSingleton(ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: HasSingleton
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+    startLine: 201
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Checks whether the specified entity owns any singleton component.
+  example: []
+  syntax:
+    content: bool HasSingleton(Entity e)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Entity to inspect.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the entity is the owner of at least one
+
+        <xref href="ZenECS.Core.IWorldSingletonComponent" data-throw-if-not-resolved="false"></xref>; otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function HasSingleton(e As Entity) As Boolean
+  overload: ZenECS.Core.IWorldComponentApi.HasSingleton*
+- uid: ZenECS.Core.IWorldComponentApi.GetAllSingletons
+  commentId: M:ZenECS.Core.IWorldComponentApi.GetAllSingletons
+  id: GetAllSingletons
+  parent: ZenECS.Core.IWorldComponentApi
+  langs:
+  - csharp
+  - vb
+  name: GetAllSingletons()
+  nameWithType: IWorldComponentApi.GetAllSingletons()
+  fullName: ZenECS.Core.IWorldComponentApi.GetAllSingletons()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: GetAllSingletons
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
+    startLine: 209
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Returns all singleton components currently registered in this world.
+  example: []
+  syntax:
+    content: IEnumerable<(Type type, Entity owner)> GetAllSingletons()
+    return:
+      type: System.Collections.Generic.IEnumerable{System.ValueTuple{System.Type,ZenECS.Core.Entity}}
+      description: A sequence of tuples containing the component type and the owning entity.
+    content.vb: Function GetAllSingletons() As IEnumerable(Of (type As Type, owner As Entity))
+  overload: ZenECS.Core.IWorldComponentApi.GetAllSingletons*
+references:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.IWorldComponentApi.HasComponent*
+  commentId: Overload:ZenECS.Core.IWorldComponentApi.HasComponent
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_HasComponent__1_ZenECS_Core_Entity_
+  name: HasComponent
+  nameWithType: IWorldComponentApi.HasComponent
+  fullName: ZenECS.Core.IWorldComponentApi.HasComponent
+- uid: ZenECS.Core.Entity
+  commentId: T:ZenECS.Core.Entity
+  parent: ZenECS.Core
+  href: ZenECS.Core.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: ZenECS.Core.Entity
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.IWorldComponentApi.HasComponentBoxed*
+  commentId: Overload:ZenECS.Core.IWorldComponentApi.HasComponentBoxed
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_HasComponentBoxed_ZenECS_Core_Entity_System_Type_
+  name: HasComponentBoxed
+  nameWithType: IWorldComponentApi.HasComponentBoxed
+  fullName: ZenECS.Core.IWorldComponentApi.HasComponentBoxed
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: ZenECS.Core.IWorldComponentApi.SnapshotComponent*
+  commentId: Overload:ZenECS.Core.IWorldComponentApi.SnapshotComponent
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_SnapshotComponent__1_ZenECS_Core_Entity_
+  name: SnapshotComponent
+  nameWithType: IWorldComponentApi.SnapshotComponent
+  fullName: ZenECS.Core.IWorldComponentApi.SnapshotComponent
+- uid: ZenECS.Core.IWorldComponentApi.SnapshotComponentBoxed*
+  commentId: Overload:ZenECS.Core.IWorldComponentApi.SnapshotComponentBoxed
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_SnapshotComponentBoxed_ZenECS_Core_Entity_System_Object_
+  name: SnapshotComponentBoxed
+  nameWithType: IWorldComponentApi.SnapshotComponentBoxed
+  fullName: ZenECS.Core.IWorldComponentApi.SnapshotComponentBoxed
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: ZenECS.Core.IWorldComponentApi.SnapshotComponentTyped*
+  commentId: Overload:ZenECS.Core.IWorldComponentApi.SnapshotComponentTyped
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_SnapshotComponentTyped_ZenECS_Core_Entity_System_Type_
+  name: SnapshotComponentTyped
+  nameWithType: IWorldComponentApi.SnapshotComponentTyped
+  fullName: ZenECS.Core.IWorldComponentApi.SnapshotComponentTyped
+- uid: ZenECS.Core.IWorldComponentApi.ReadComponent*
+  commentId: Overload:ZenECS.Core.IWorldComponentApi.ReadComponent
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_ReadComponent__1_ZenECS_Core_Entity_
+  name: ReadComponent
+  nameWithType: IWorldComponentApi.ReadComponent
+  fullName: ZenECS.Core.IWorldComponentApi.ReadComponent
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: ZenECS.Core.IWorldComponentApi.TryReadComponent*
+  commentId: Overload:ZenECS.Core.IWorldComponentApi.TryReadComponent
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_TryReadComponent__1_ZenECS_Core_Entity___0__
+  name: TryReadComponent
+  nameWithType: IWorldComponentApi.TryReadComponent
+  fullName: ZenECS.Core.IWorldComponentApi.TryReadComponent
+- uid: ZenECS.Core.IWorldComponentApi.GetAllComponents*
+  commentId: Overload:ZenECS.Core.IWorldComponentApi.GetAllComponents
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_GetAllComponents_ZenECS_Core_Entity_
+  name: GetAllComponents
+  nameWithType: IWorldComponentApi.GetAllComponents
+  fullName: ZenECS.Core.IWorldComponentApi.GetAllComponents
+- uid: System.Collections.Generic.IEnumerable{System.ValueTuple{System.Type,System.Object}}
+  commentId: T:System.Collections.Generic.IEnumerable{System.ValueTuple{System.Type,System.Object}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<(Type type, object boxed)>
+  nameWithType: IEnumerable<(Type type, object boxed)>
+  fullName: System.Collections.Generic.IEnumerable<(System.Type type, object boxed)>
+  nameWithType.vb: IEnumerable(Of (type As Type, boxed As Object))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of (type As System.Type, boxed As Object))
+  name.vb: IEnumerable(Of (type As Type, boxed As Object))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: " "
+  - uid: System.ValueTuple{System.Type,System.Object}.type
+    name: type
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.type,system.object-.type
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: " "
+  - uid: System.ValueTuple{System.Type,System.Object}.boxed
+    name: boxed
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.type,system.object-.boxed
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.Type,System.Object}.type
+    name: type
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.type,system.object-.type
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Type,System.Object}.boxed
+    name: boxed
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.type,system.object-.boxed
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: ZenECS.Core.IWorldSingletonComponent
+  commentId: T:ZenECS.Core.IWorldSingletonComponent
+  href: ZenECS.Core.IWorldSingletonComponent.html
+  name: IWorldSingletonComponent
+  nameWithType: IWorldSingletonComponent
+  fullName: ZenECS.Core.IWorldSingletonComponent
+- uid: System.InvalidOperationException
+  commentId: T:System.InvalidOperationException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+  name: InvalidOperationException
+  nameWithType: InvalidOperationException
+  fullName: System.InvalidOperationException
+- uid: ZenECS.Core.IWorldComponentApi.GetSingleton*
+  commentId: Overload:ZenECS.Core.IWorldComponentApi.GetSingleton
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_GetSingleton__1
+  name: GetSingleton
+  nameWithType: IWorldComponentApi.GetSingleton
+  fullName: ZenECS.Core.IWorldComponentApi.GetSingleton
+- uid: ZenECS.Core.IWorldComponentApi.TryGetSingleton*
+  commentId: Overload:ZenECS.Core.IWorldComponentApi.TryGetSingleton
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_TryGetSingleton__1___0__
+  name: TryGetSingleton
+  nameWithType: IWorldComponentApi.TryGetSingleton
+  fullName: ZenECS.Core.IWorldComponentApi.TryGetSingleton
+- uid: ZenECS.Core.IWorldComponentApi.HasSingleton*
+  commentId: Overload:ZenECS.Core.IWorldComponentApi.HasSingleton
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_HasSingleton_ZenECS_Core_Entity_
+  name: HasSingleton
+  nameWithType: IWorldComponentApi.HasSingleton
+  fullName: ZenECS.Core.IWorldComponentApi.HasSingleton
+- uid: ZenECS.Core.IWorldComponentApi.GetAllSingletons*
+  commentId: Overload:ZenECS.Core.IWorldComponentApi.GetAllSingletons
+  href: ZenECS.Core.IWorldComponentApi.html#ZenECS_Core_IWorldComponentApi_GetAllSingletons
+  name: GetAllSingletons
+  nameWithType: IWorldComponentApi.GetAllSingletons
+  fullName: ZenECS.Core.IWorldComponentApi.GetAllSingletons
+- uid: System.Collections.Generic.IEnumerable{System.ValueTuple{System.Type,ZenECS.Core.Entity}}
+  commentId: T:System.Collections.Generic.IEnumerable{System.ValueTuple{System.Type,ZenECS.Core.Entity}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<(Type type, Entity owner)>
+  nameWithType: IEnumerable<(Type type, Entity owner)>
+  fullName: System.Collections.Generic.IEnumerable<(System.Type type, ZenECS.Core.Entity owner)>
+  nameWithType.vb: IEnumerable(Of (type As Type, owner As Entity))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of (type As System.Type, owner As ZenECS.Core.Entity))
+  name.vb: IEnumerable(Of (type As Type, owner As Entity))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: " "
+  - uid: System.ValueTuple{System.Type,ZenECS.Core.Entity}.type
+    name: type
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.type,zenecs.core.entity-.type
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: " "
+  - uid: System.ValueTuple{System.Type,ZenECS.Core.Entity}.owner
+    name: owner
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.type,zenecs.core.entity-.owner
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.Type,ZenECS.Core.Entity}.type
+    name: type
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.type,zenecs.core.entity-.type
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Type,ZenECS.Core.Entity}.owner
+    name: owner
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.type,zenecs.core.entity-.owner
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  - name: )

@@ -1,0 +1,549 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Binding.ComponentDelta`1
+  commentId: T:ZenECS.Core.Binding.ComponentDelta`1
+  id: ComponentDelta`1
+  parent: ZenECS.Core.Binding
+  children:
+  - ZenECS.Core.Binding.ComponentDelta`1.#ctor(ZenECS.Core.Entity,ZenECS.Core.Binding.ComponentDeltaKind,`0@)
+  - ZenECS.Core.Binding.ComponentDelta`1.Entity
+  - ZenECS.Core.Binding.ComponentDelta`1.Kind
+  - ZenECS.Core.Binding.ComponentDelta`1.Value
+  langs:
+  - csharp
+  - vb
+  name: ComponentDelta<T>
+  nameWithType: ComponentDelta<T>
+  fullName: ZenECS.Core.Binding.ComponentDelta<T>
+  type: Struct
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ComponentDelta
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+    startLine: 48
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: Immutable value describing a component delta for an <xref href="ZenECS.Core.Binding.ComponentDelta%601.Entity" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: 'public readonly struct ComponentDelta<T> where T : struct'
+    typeParameters:
+    - id: T
+      description: Component type.
+    content.vb: Public Structure ComponentDelta(Of T As Structure)
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  nameWithType.vb: ComponentDelta(Of T)
+  fullName.vb: ZenECS.Core.Binding.ComponentDelta(Of T)
+  name.vb: ComponentDelta(Of T)
+- uid: ZenECS.Core.Binding.ComponentDelta`1.Entity
+  commentId: P:ZenECS.Core.Binding.ComponentDelta`1.Entity
+  id: Entity
+  parent: ZenECS.Core.Binding.ComponentDelta`1
+  langs:
+  - csharp
+  - vb
+  name: Entity
+  nameWithType: ComponentDelta<T>.Entity
+  fullName: ZenECS.Core.Binding.ComponentDelta<T>.Entity
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Entity
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+    startLine: 53
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: Entity where the change happened.
+  example: []
+  syntax:
+    content: public Entity Entity { get; }
+    parameters: []
+    return:
+      type: ZenECS.Core.Entity
+    content.vb: Public ReadOnly Property Entity As Entity
+  overload: ZenECS.Core.Binding.ComponentDelta`1.Entity*
+  nameWithType.vb: ComponentDelta(Of T).Entity
+  fullName.vb: ZenECS.Core.Binding.ComponentDelta(Of T).Entity
+- uid: ZenECS.Core.Binding.ComponentDelta`1.Kind
+  commentId: P:ZenECS.Core.Binding.ComponentDelta`1.Kind
+  id: Kind
+  parent: ZenECS.Core.Binding.ComponentDelta`1
+  langs:
+  - csharp
+  - vb
+  name: Kind
+  nameWithType: ComponentDelta<T>.Kind
+  fullName: ZenECS.Core.Binding.ComponentDelta<T>.Kind
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Kind
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+    startLine: 58
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: Kind of change (added, changed, removed, or snapshot).
+  example: []
+  syntax:
+    content: public ComponentDeltaKind Kind { get; }
+    parameters: []
+    return:
+      type: ZenECS.Core.Binding.ComponentDeltaKind
+    content.vb: Public ReadOnly Property Kind As ComponentDeltaKind
+  overload: ZenECS.Core.Binding.ComponentDelta`1.Kind*
+  nameWithType.vb: ComponentDelta(Of T).Kind
+  fullName.vb: ZenECS.Core.Binding.ComponentDelta(Of T).Kind
+- uid: ZenECS.Core.Binding.ComponentDelta`1.Value
+  commentId: P:ZenECS.Core.Binding.ComponentDelta`1.Value
+  id: Value
+  parent: ZenECS.Core.Binding.ComponentDelta`1
+  langs:
+  - csharp
+  - vb
+  name: Value
+  nameWithType: ComponentDelta<T>.Value
+  fullName: ZenECS.Core.Binding.ComponentDelta<T>.Value
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Value
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+    startLine: 67
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: >-
+    Component value associated with this delta.
+
+    For <xref href="ZenECS.Core.Binding.ComponentDeltaKind.Added" data-throw-if-not-resolved="false"></xref>,
+
+    <xref href="ZenECS.Core.Binding.ComponentDeltaKind.Changed" data-throw-if-not-resolved="false"></xref> and
+
+    <xref href="ZenECS.Core.Binding.ComponentDeltaKind.Snapshot" data-throw-if-not-resolved="false"></xref> this is the
+
+    current value on the entity at dispatch time.
+  example: []
+  syntax:
+    content: public T Value { get; }
+    parameters: []
+    return:
+      type: '{T}'
+    content.vb: Public ReadOnly Property Value As T
+  overload: ZenECS.Core.Binding.ComponentDelta`1.Value*
+  nameWithType.vb: ComponentDelta(Of T).Value
+  fullName.vb: ZenECS.Core.Binding.ComponentDelta(Of T).Value
+- uid: ZenECS.Core.Binding.ComponentDelta`1.#ctor(ZenECS.Core.Entity,ZenECS.Core.Binding.ComponentDeltaKind,`0@)
+  commentId: M:ZenECS.Core.Binding.ComponentDelta`1.#ctor(ZenECS.Core.Entity,ZenECS.Core.Binding.ComponentDeltaKind,`0@)
+  id: '#ctor(ZenECS.Core.Entity,ZenECS.Core.Binding.ComponentDeltaKind,`0@)'
+  parent: ZenECS.Core.Binding.ComponentDelta`1
+  langs:
+  - csharp
+  - vb
+  name: ComponentDelta(Entity, ComponentDeltaKind, in T)
+  nameWithType: ComponentDelta<T>.ComponentDelta(Entity, ComponentDeltaKind, in T)
+  fullName: ZenECS.Core.Binding.ComponentDelta<T>.ComponentDelta(ZenECS.Core.Entity, ZenECS.Core.Binding.ComponentDeltaKind, in T)
+  type: Constructor
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: .ctor
+    path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
+    startLine: 75
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Binding
+  summary: Create a new delta value.
+  example: []
+  syntax:
+    content: public ComponentDelta(Entity e, ComponentDeltaKind k, in T v = default)
+    parameters:
+    - id: e
+      type: ZenECS.Core.Entity
+      description: Entity where the delta occurred.
+    - id: k
+      type: ZenECS.Core.Binding.ComponentDeltaKind
+      description: Kind of delta.
+    - id: v
+      type: '{T}'
+      description: Component value at the time of the delta.
+    content.vb: Public Sub New(e As Entity, k As ComponentDeltaKind, v As T = Nothing)
+  overload: ZenECS.Core.Binding.ComponentDelta`1.#ctor*
+  nameWithType.vb: ComponentDelta(Of T).New(Entity, ComponentDeltaKind, T)
+  fullName.vb: ZenECS.Core.Binding.ComponentDelta(Of T).New(ZenECS.Core.Entity, ZenECS.Core.Binding.ComponentDeltaKind, T)
+  name.vb: New(Entity, ComponentDeltaKind, T)
+references:
+- uid: ZenECS.Core.Binding.ComponentDelta`1.Entity
+  commentId: P:ZenECS.Core.Binding.ComponentDelta`1.Entity
+  href: ZenECS.Core.Binding.ComponentDelta-1.html#ZenECS_Core_Binding_ComponentDelta_1_Entity
+  name: Entity
+  nameWithType: ComponentDelta<T>.Entity
+  fullName: ZenECS.Core.Binding.ComponentDelta<T>.Entity
+  nameWithType.vb: ComponentDelta(Of T).Entity
+  fullName.vb: ZenECS.Core.Binding.ComponentDelta(Of T).Entity
+- uid: ZenECS.Core.Binding
+  commentId: N:ZenECS.Core.Binding
+  href: ZenECS.html
+  name: ZenECS.Core.Binding
+  nameWithType: ZenECS.Core.Binding
+  fullName: ZenECS.Core.Binding
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.Binding.ComponentDelta`1.Entity*
+  commentId: Overload:ZenECS.Core.Binding.ComponentDelta`1.Entity
+  href: ZenECS.Core.Binding.ComponentDelta-1.html#ZenECS_Core_Binding_ComponentDelta_1_Entity
+  name: Entity
+  nameWithType: ComponentDelta<T>.Entity
+  fullName: ZenECS.Core.Binding.ComponentDelta<T>.Entity
+  nameWithType.vb: ComponentDelta(Of T).Entity
+  fullName.vb: ZenECS.Core.Binding.ComponentDelta(Of T).Entity
+- uid: ZenECS.Core.Entity
+  commentId: T:ZenECS.Core.Entity
+  parent: ZenECS.Core
+  href: ZenECS.Core.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: ZenECS.Core.Entity
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.Binding.ComponentDelta`1.Kind*
+  commentId: Overload:ZenECS.Core.Binding.ComponentDelta`1.Kind
+  href: ZenECS.Core.Binding.ComponentDelta-1.html#ZenECS_Core_Binding_ComponentDelta_1_Kind
+  name: Kind
+  nameWithType: ComponentDelta<T>.Kind
+  fullName: ZenECS.Core.Binding.ComponentDelta<T>.Kind
+  nameWithType.vb: ComponentDelta(Of T).Kind
+  fullName.vb: ZenECS.Core.Binding.ComponentDelta(Of T).Kind
+- uid: ZenECS.Core.Binding.ComponentDeltaKind
+  commentId: T:ZenECS.Core.Binding.ComponentDeltaKind
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.ComponentDeltaKind.html
+  name: ComponentDeltaKind
+  nameWithType: ComponentDeltaKind
+  fullName: ZenECS.Core.Binding.ComponentDeltaKind
+- uid: ZenECS.Core.Binding.ComponentDeltaKind.Added
+  commentId: F:ZenECS.Core.Binding.ComponentDeltaKind.Added
+  href: ZenECS.Core.Binding.ComponentDeltaKind.html#ZenECS_Core_Binding_ComponentDeltaKind_Added
+  name: Added
+  nameWithType: ComponentDeltaKind.Added
+  fullName: ZenECS.Core.Binding.ComponentDeltaKind.Added
+- uid: ZenECS.Core.Binding.ComponentDeltaKind.Changed
+  commentId: F:ZenECS.Core.Binding.ComponentDeltaKind.Changed
+  href: ZenECS.Core.Binding.ComponentDeltaKind.html#ZenECS_Core_Binding_ComponentDeltaKind_Changed
+  name: Changed
+  nameWithType: ComponentDeltaKind.Changed
+  fullName: ZenECS.Core.Binding.ComponentDeltaKind.Changed
+- uid: ZenECS.Core.Binding.ComponentDeltaKind.Snapshot
+  commentId: F:ZenECS.Core.Binding.ComponentDeltaKind.Snapshot
+  href: ZenECS.Core.Binding.ComponentDeltaKind.html#ZenECS_Core_Binding_ComponentDeltaKind_Snapshot
+  name: Snapshot
+  nameWithType: ComponentDeltaKind.Snapshot
+  fullName: ZenECS.Core.Binding.ComponentDeltaKind.Snapshot
+- uid: ZenECS.Core.Binding.ComponentDelta`1.Value*
+  commentId: Overload:ZenECS.Core.Binding.ComponentDelta`1.Value
+  href: ZenECS.Core.Binding.ComponentDelta-1.html#ZenECS_Core_Binding_ComponentDelta_1_Value
+  name: Value
+  nameWithType: ComponentDelta<T>.Value
+  fullName: ZenECS.Core.Binding.ComponentDelta<T>.Value
+  nameWithType.vb: ComponentDelta(Of T).Value
+  fullName.vb: ZenECS.Core.Binding.ComponentDelta(Of T).Value
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: ZenECS.Core.Binding.ComponentDelta`1.#ctor*
+  commentId: Overload:ZenECS.Core.Binding.ComponentDelta`1.#ctor
+  href: ZenECS.Core.Binding.ComponentDelta-1.html#ZenECS_Core_Binding_ComponentDelta_1__ctor_ZenECS_Core_Entity_ZenECS_Core_Binding_ComponentDeltaKind__0__
+  name: ComponentDelta
+  nameWithType: ComponentDelta<T>.ComponentDelta
+  fullName: ZenECS.Core.Binding.ComponentDelta<T>.ComponentDelta
+  nameWithType.vb: ComponentDelta(Of T).New
+  fullName.vb: ZenECS.Core.Binding.ComponentDelta(Of T).New
+  name.vb: New

@@ -1,0 +1,1033 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.ExternalCommand
+  commentId: T:ZenECS.Core.ExternalCommand
+  id: ExternalCommand
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.ExternalCommand.AddComponent(ZenECS.Core.Entity,System.Type,System.Object)
+  - ZenECS.Core.ExternalCommand.ComponentBoxed
+  - ZenECS.Core.ExternalCommand.ComponentType
+  - ZenECS.Core.ExternalCommand.CreateEntity(System.Action{ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer})
+  - ZenECS.Core.ExternalCommand.CreatedCallback
+  - ZenECS.Core.ExternalCommand.DestroyEntity(ZenECS.Core.Entity)
+  - ZenECS.Core.ExternalCommand.Entity
+  - ZenECS.Core.ExternalCommand.Kind
+  - ZenECS.Core.ExternalCommand.RemoveComponent(ZenECS.Core.Entity,System.Type)
+  - ZenECS.Core.ExternalCommand.RemoveSingleton(System.Type)
+  - ZenECS.Core.ExternalCommand.ReplaceComponent(ZenECS.Core.Entity,System.Type,System.Object)
+  - ZenECS.Core.ExternalCommand.SetSingleton(System.Type,System.Object)
+  langs:
+  - csharp
+  - vb
+  name: ExternalCommand
+  nameWithType: ExternalCommand
+  fullName: ZenECS.Core.ExternalCommand
+  type: Struct
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ExternalCommand
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 77
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Represents a single external world mutation request that can be enqueued
+
+    by external systems (for example, networking or UI layers) and later
+
+    applied to the world via a command buffer.
+  remarks: >-
+    <p>
+
+    External commands are consumed by the internal
+
+    <code>World.ExternalCommandFlushTo</code> method, which translates them into
+
+    command-buffer operations and applies them at a deterministic simulation
+
+    barrier.
+
+    </p>
+  example: []
+  syntax:
+    content: public readonly struct ExternalCommand
+    content.vb: Public Structure ExternalCommand
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: ZenECS.Core.ExternalCommand.Kind
+  commentId: P:ZenECS.Core.ExternalCommand.Kind
+  id: Kind
+  parent: ZenECS.Core.ExternalCommand
+  langs:
+  - csharp
+  - vb
+  name: Kind
+  nameWithType: ExternalCommand.Kind
+  fullName: ZenECS.Core.ExternalCommand.Kind
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Kind
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 82
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Gets the type of operation requested.
+  example: []
+  syntax:
+    content: public ExternalCommandKind Kind { get; }
+    parameters: []
+    return:
+      type: ZenECS.Core.ExternalCommandKind
+    content.vb: Public ReadOnly Property Kind As ExternalCommandKind
+  overload: ZenECS.Core.ExternalCommand.Kind*
+- uid: ZenECS.Core.ExternalCommand.Entity
+  commentId: P:ZenECS.Core.ExternalCommand.Entity
+  id: Entity
+  parent: ZenECS.Core.ExternalCommand
+  langs:
+  - csharp
+  - vb
+  name: Entity
+  nameWithType: ExternalCommand.Entity
+  fullName: ZenECS.Core.ExternalCommand.Entity
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Entity
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 88
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Gets the entity that this command targets, if applicable.
+
+    For singleton operations, this is typically <xref href="ZenECS.Core.Entity.None" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public Entity Entity { get; }
+    parameters: []
+    return:
+      type: ZenECS.Core.Entity
+    content.vb: Public ReadOnly Property Entity As Entity
+  overload: ZenECS.Core.ExternalCommand.Entity*
+- uid: ZenECS.Core.ExternalCommand.ComponentType
+  commentId: P:ZenECS.Core.ExternalCommand.ComponentType
+  id: ComponentType
+  parent: ZenECS.Core.ExternalCommand
+  langs:
+  - csharp
+  - vb
+  name: ComponentType
+  nameWithType: ExternalCommand.ComponentType
+  fullName: ZenECS.Core.ExternalCommand.ComponentType
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ComponentType
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 94
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Gets the component type for component-related operations.
+
+    For non-component operations, this property is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+  example: []
+  syntax:
+    content: public Type? ComponentType { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: Public ReadOnly Property ComponentType As Type
+  overload: ZenECS.Core.ExternalCommand.ComponentType*
+- uid: ZenECS.Core.ExternalCommand.ComponentBoxed
+  commentId: P:ZenECS.Core.ExternalCommand.ComponentBoxed
+  id: ComponentBoxed
+  parent: ZenECS.Core.ExternalCommand
+  langs:
+  - csharp
+  - vb
+  name: ComponentBoxed
+  nameWithType: ExternalCommand.ComponentBoxed
+  fullName: ZenECS.Core.ExternalCommand.ComponentBoxed
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ComponentBoxed
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 101
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Gets the boxed component value for
+
+    <xref href="ZenECS.Core.ExternalCommandKind.AddComponent" data-throw-if-not-resolved="false"></xref> and
+
+    <xref href="ZenECS.Core.ExternalCommandKind.ReplaceComponent" data-throw-if-not-resolved="false"></xref> operations.
+  example: []
+  syntax:
+    content: public object? ComponentBoxed { get; }
+    parameters: []
+    return:
+      type: System.Object
+    content.vb: Public ReadOnly Property ComponentBoxed As Object
+  overload: ZenECS.Core.ExternalCommand.ComponentBoxed*
+- uid: ZenECS.Core.ExternalCommand.CreatedCallback
+  commentId: P:ZenECS.Core.ExternalCommand.CreatedCallback
+  id: CreatedCallback
+  parent: ZenECS.Core.ExternalCommand
+  langs:
+  - csharp
+  - vb
+  name: CreatedCallback
+  nameWithType: ExternalCommand.CreatedCallback
+  fullName: ZenECS.Core.ExternalCommand.CreatedCallback
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: CreatedCallback
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 115
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Gets an optional callback that is invoked when a
+
+    <xref href="ZenECS.Core.ExternalCommandKind.CreateEntity" data-throw-if-not-resolved="false"></xref> command is applied and the
+
+    new entity handle is known.
+  remarks: >-
+    <p>
+
+    The callback receives both the newly created <xref href="ZenECS.Core.ExternalCommand.Entity" data-throw-if-not-resolved="false"></xref> and
+
+    the <xref href="ZenECS.Core.ICommandBuffer" data-throw-if-not-resolved="false"></xref> used to record the operation, allowing
+
+    additional commands to be chained onto the same buffer.
+
+    </p>
+  example: []
+  syntax:
+    content: public Action<Entity, ICommandBuffer>? CreatedCallback { get; }
+    parameters: []
+    return:
+      type: System.Action{ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer}
+    content.vb: Public ReadOnly Property CreatedCallback As Action(Of Entity, ICommandBuffer)
+  overload: ZenECS.Core.ExternalCommand.CreatedCallback*
+- uid: ZenECS.Core.ExternalCommand.CreateEntity(System.Action{ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer})
+  commentId: M:ZenECS.Core.ExternalCommand.CreateEntity(System.Action{ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer})
+  id: CreateEntity(System.Action{ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer})
+  parent: ZenECS.Core.ExternalCommand
+  langs:
+  - csharp
+  - vb
+  name: CreateEntity(Action<Entity, ICommandBuffer>?)
+  nameWithType: ExternalCommand.CreateEntity(Action<Entity, ICommandBuffer>?)
+  fullName: ZenECS.Core.ExternalCommand.CreateEntity(System.Action<ZenECS.Core.Entity, ZenECS.Core.ICommandBuffer>?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: CreateEntity
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 154
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Creates a <xref href="ZenECS.Core.ExternalCommandKind.CreateEntity" data-throw-if-not-resolved="false"></xref> command.
+  example: []
+  syntax:
+    content: public static ExternalCommand CreateEntity(Action<Entity, ICommandBuffer>? onCreated = null)
+    parameters:
+    - id: onCreated
+      type: System.Action{ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer}
+      description: >-
+        Optional callback invoked when the entity has been created and its
+
+        handle is known. The callback also receives the <xref href="ZenECS.Core.ICommandBuffer" data-throw-if-not-resolved="false"></xref>
+
+        used to record the operation.
+    return:
+      type: ZenECS.Core.ExternalCommand
+      description: A new <xref href="ZenECS.Core.ExternalCommand" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Shared Function CreateEntity(onCreated As Action(Of Entity, ICommandBuffer) = Nothing) As ExternalCommand
+  overload: ZenECS.Core.ExternalCommand.CreateEntity*
+  nameWithType.vb: ExternalCommand.CreateEntity(Action(Of Entity, ICommandBuffer))
+  fullName.vb: ZenECS.Core.ExternalCommand.CreateEntity(System.Action(Of ZenECS.Core.Entity, ZenECS.Core.ICommandBuffer))
+  name.vb: CreateEntity(Action(Of Entity, ICommandBuffer))
+- uid: ZenECS.Core.ExternalCommand.DestroyEntity(ZenECS.Core.Entity)
+  commentId: M:ZenECS.Core.ExternalCommand.DestroyEntity(ZenECS.Core.Entity)
+  id: DestroyEntity(ZenECS.Core.Entity)
+  parent: ZenECS.Core.ExternalCommand
+  langs:
+  - csharp
+  - vb
+  name: DestroyEntity(Entity)
+  nameWithType: ExternalCommand.DestroyEntity(Entity)
+  fullName: ZenECS.Core.ExternalCommand.DestroyEntity(ZenECS.Core.Entity)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: DestroyEntity
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 167
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Creates a <xref href="ZenECS.Core.ExternalCommandKind.DestroyEntity" data-throw-if-not-resolved="false"></xref> command.
+  example: []
+  syntax:
+    content: public static ExternalCommand DestroyEntity(Entity entity)
+    parameters:
+    - id: entity
+      type: ZenECS.Core.Entity
+      description: Target entity to destroy.
+    return:
+      type: ZenECS.Core.ExternalCommand
+      description: A new <xref href="ZenECS.Core.ExternalCommand" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Shared Function DestroyEntity(entity As Entity) As ExternalCommand
+  overload: ZenECS.Core.ExternalCommand.DestroyEntity*
+- uid: ZenECS.Core.ExternalCommand.AddComponent(ZenECS.Core.Entity,System.Type,System.Object)
+  commentId: M:ZenECS.Core.ExternalCommand.AddComponent(ZenECS.Core.Entity,System.Type,System.Object)
+  id: AddComponent(ZenECS.Core.Entity,System.Type,System.Object)
+  parent: ZenECS.Core.ExternalCommand
+  langs:
+  - csharp
+  - vb
+  name: AddComponent(Entity, Type, object?)
+  nameWithType: ExternalCommand.AddComponent(Entity, Type, object?)
+  fullName: ZenECS.Core.ExternalCommand.AddComponent(ZenECS.Core.Entity, System.Type, object?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: AddComponent
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 185
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Creates an <xref href="ZenECS.Core.ExternalCommandKind.AddComponent" data-throw-if-not-resolved="false"></xref> command.
+  example: []
+  syntax:
+    content: public static ExternalCommand AddComponent(Entity entity, Type componentType, object? boxed)
+    parameters:
+    - id: entity
+      type: ZenECS.Core.Entity
+      description: Entity that should receive the component.
+    - id: componentType
+      type: System.Type
+      description: Component type to add.
+    - id: boxed
+      type: System.Object
+      description: Boxed component value.
+    return:
+      type: ZenECS.Core.ExternalCommand
+      description: A new <xref href="ZenECS.Core.ExternalCommand" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Shared Function AddComponent(entity As Entity, componentType As Type, boxed As Object) As ExternalCommand
+  overload: ZenECS.Core.ExternalCommand.AddComponent*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when <code class="paramref">componentType</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+  nameWithType.vb: ExternalCommand.AddComponent(Entity, Type, Object)
+  fullName.vb: ZenECS.Core.ExternalCommand.AddComponent(ZenECS.Core.Entity, System.Type, Object)
+  name.vb: AddComponent(Entity, Type, Object)
+- uid: ZenECS.Core.ExternalCommand.ReplaceComponent(ZenECS.Core.Entity,System.Type,System.Object)
+  commentId: M:ZenECS.Core.ExternalCommand.ReplaceComponent(ZenECS.Core.Entity,System.Type,System.Object)
+  id: ReplaceComponent(ZenECS.Core.Entity,System.Type,System.Object)
+  parent: ZenECS.Core.ExternalCommand
+  langs:
+  - csharp
+  - vb
+  name: ReplaceComponent(Entity, Type, object?)
+  nameWithType: ExternalCommand.ReplaceComponent(Entity, Type, object?)
+  fullName: ZenECS.Core.ExternalCommand.ReplaceComponent(ZenECS.Core.Entity, System.Type, object?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ReplaceComponent
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 208
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Creates an <xref href="ZenECS.Core.ExternalCommandKind.ReplaceComponent" data-throw-if-not-resolved="false"></xref> command.
+  example: []
+  syntax:
+    content: public static ExternalCommand ReplaceComponent(Entity entity, Type componentType, object? boxed)
+    parameters:
+    - id: entity
+      type: ZenECS.Core.Entity
+      description: Entity whose component should be replaced.
+    - id: componentType
+      type: System.Type
+      description: Component type to replace.
+    - id: boxed
+      type: System.Object
+      description: New boxed component value.
+    return:
+      type: ZenECS.Core.ExternalCommand
+      description: A new <xref href="ZenECS.Core.ExternalCommand" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Shared Function ReplaceComponent(entity As Entity, componentType As Type, boxed As Object) As ExternalCommand
+  overload: ZenECS.Core.ExternalCommand.ReplaceComponent*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when <code class="paramref">componentType</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+  nameWithType.vb: ExternalCommand.ReplaceComponent(Entity, Type, Object)
+  fullName.vb: ZenECS.Core.ExternalCommand.ReplaceComponent(ZenECS.Core.Entity, System.Type, Object)
+  name.vb: ReplaceComponent(Entity, Type, Object)
+- uid: ZenECS.Core.ExternalCommand.RemoveComponent(ZenECS.Core.Entity,System.Type)
+  commentId: M:ZenECS.Core.ExternalCommand.RemoveComponent(ZenECS.Core.Entity,System.Type)
+  id: RemoveComponent(ZenECS.Core.Entity,System.Type)
+  parent: ZenECS.Core.ExternalCommand
+  langs:
+  - csharp
+  - vb
+  name: RemoveComponent(Entity, Type)
+  nameWithType: ExternalCommand.RemoveComponent(Entity, Type)
+  fullName: ZenECS.Core.ExternalCommand.RemoveComponent(ZenECS.Core.Entity, System.Type)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RemoveComponent
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 230
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Creates an <xref href="ZenECS.Core.ExternalCommandKind.RemoveComponent" data-throw-if-not-resolved="false"></xref> command.
+  example: []
+  syntax:
+    content: public static ExternalCommand RemoveComponent(Entity entity, Type componentType)
+    parameters:
+    - id: entity
+      type: ZenECS.Core.Entity
+      description: Entity from which the component should be removed.
+    - id: componentType
+      type: System.Type
+      description: Component type to remove.
+    return:
+      type: ZenECS.Core.ExternalCommand
+      description: A new <xref href="ZenECS.Core.ExternalCommand" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Shared Function RemoveComponent(entity As Entity, componentType As Type) As ExternalCommand
+  overload: ZenECS.Core.ExternalCommand.RemoveComponent*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when <code class="paramref">componentType</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+- uid: ZenECS.Core.ExternalCommand.SetSingleton(System.Type,System.Object)
+  commentId: M:ZenECS.Core.ExternalCommand.SetSingleton(System.Type,System.Object)
+  id: SetSingleton(System.Type,System.Object)
+  parent: ZenECS.Core.ExternalCommand
+  langs:
+  - csharp
+  - vb
+  name: SetSingleton(Type, object?)
+  nameWithType: ExternalCommand.SetSingleton(Type, object?)
+  fullName: ZenECS.Core.ExternalCommand.SetSingleton(System.Type, object?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: SetSingleton
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 252
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Creates an <xref href="ZenECS.Core.ExternalCommandKind.SetSingleton" data-throw-if-not-resolved="false"></xref> command.
+  example: []
+  syntax:
+    content: public static ExternalCommand SetSingleton(Type componentType, object? boxed)
+    parameters:
+    - id: componentType
+      type: System.Type
+      description: Singleton component type.
+    - id: boxed
+      type: System.Object
+      description: Boxed component value.
+    return:
+      type: ZenECS.Core.ExternalCommand
+      description: A new <xref href="ZenECS.Core.ExternalCommand" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Shared Function SetSingleton(componentType As Type, boxed As Object) As ExternalCommand
+  overload: ZenECS.Core.ExternalCommand.SetSingleton*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when <code class="paramref">componentType</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+  nameWithType.vb: ExternalCommand.SetSingleton(Type, Object)
+  fullName.vb: ZenECS.Core.ExternalCommand.SetSingleton(System.Type, Object)
+  name.vb: SetSingleton(Type, Object)
+- uid: ZenECS.Core.ExternalCommand.RemoveSingleton(System.Type)
+  commentId: M:ZenECS.Core.ExternalCommand.RemoveSingleton(System.Type)
+  id: RemoveSingleton(System.Type)
+  parent: ZenECS.Core.ExternalCommand
+  langs:
+  - csharp
+  - vb
+  name: RemoveSingleton(Type)
+  nameWithType: ExternalCommand.RemoveSingleton(Type)
+  fullName: ZenECS.Core.ExternalCommand.RemoveSingleton(System.Type)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RemoveSingleton
+    path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
+    startLine: 273
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Creates an <xref href="ZenECS.Core.ExternalCommandKind.RemoveSingleton" data-throw-if-not-resolved="false"></xref> command.
+  example: []
+  syntax:
+    content: public static ExternalCommand RemoveSingleton(Type componentType)
+    parameters:
+    - id: componentType
+      type: System.Type
+      description: Singleton component type to remove.
+    return:
+      type: ZenECS.Core.ExternalCommand
+      description: A new <xref href="ZenECS.Core.ExternalCommand" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Shared Function RemoveSingleton(componentType As Type) As ExternalCommand
+  overload: ZenECS.Core.ExternalCommand.RemoveSingleton*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when <code class="paramref">componentType</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+references:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.ExternalCommand.Kind*
+  commentId: Overload:ZenECS.Core.ExternalCommand.Kind
+  href: ZenECS.Core.ExternalCommand.html#ZenECS_Core_ExternalCommand_Kind
+  name: Kind
+  nameWithType: ExternalCommand.Kind
+  fullName: ZenECS.Core.ExternalCommand.Kind
+- uid: ZenECS.Core.ExternalCommandKind
+  commentId: T:ZenECS.Core.ExternalCommandKind
+  parent: ZenECS.Core
+  href: ZenECS.Core.ExternalCommandKind.html
+  name: ExternalCommandKind
+  nameWithType: ExternalCommandKind
+  fullName: ZenECS.Core.ExternalCommandKind
+- uid: ZenECS.Core.Entity.None
+  commentId: F:ZenECS.Core.Entity.None
+  href: ZenECS.Core.Entity.html#ZenECS_Core_Entity_None
+  name: None
+  nameWithType: Entity.None
+  fullName: ZenECS.Core.Entity.None
+- uid: ZenECS.Core.ExternalCommand.Entity*
+  commentId: Overload:ZenECS.Core.ExternalCommand.Entity
+  href: ZenECS.Core.ExternalCommand.html#ZenECS_Core_ExternalCommand_Entity
+  name: Entity
+  nameWithType: ExternalCommand.Entity
+  fullName: ZenECS.Core.ExternalCommand.Entity
+- uid: ZenECS.Core.Entity
+  commentId: T:ZenECS.Core.Entity
+  parent: ZenECS.Core
+  href: ZenECS.Core.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: ZenECS.Core.Entity
+- uid: ZenECS.Core.ExternalCommand.ComponentType*
+  commentId: Overload:ZenECS.Core.ExternalCommand.ComponentType
+  href: ZenECS.Core.ExternalCommand.html#ZenECS_Core_ExternalCommand_ComponentType
+  name: ComponentType
+  nameWithType: ExternalCommand.ComponentType
+  fullName: ZenECS.Core.ExternalCommand.ComponentType
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: ZenECS.Core.ExternalCommandKind.AddComponent
+  commentId: F:ZenECS.Core.ExternalCommandKind.AddComponent
+  href: ZenECS.Core.ExternalCommandKind.html#ZenECS_Core_ExternalCommandKind_AddComponent
+  name: AddComponent
+  nameWithType: ExternalCommandKind.AddComponent
+  fullName: ZenECS.Core.ExternalCommandKind.AddComponent
+- uid: ZenECS.Core.ExternalCommandKind.ReplaceComponent
+  commentId: F:ZenECS.Core.ExternalCommandKind.ReplaceComponent
+  href: ZenECS.Core.ExternalCommandKind.html#ZenECS_Core_ExternalCommandKind_ReplaceComponent
+  name: ReplaceComponent
+  nameWithType: ExternalCommandKind.ReplaceComponent
+  fullName: ZenECS.Core.ExternalCommandKind.ReplaceComponent
+- uid: ZenECS.Core.ExternalCommand.ComponentBoxed*
+  commentId: Overload:ZenECS.Core.ExternalCommand.ComponentBoxed
+  href: ZenECS.Core.ExternalCommand.html#ZenECS_Core_ExternalCommand_ComponentBoxed
+  name: ComponentBoxed
+  nameWithType: ExternalCommand.ComponentBoxed
+  fullName: ZenECS.Core.ExternalCommand.ComponentBoxed
+- uid: ZenECS.Core.ExternalCommandKind.CreateEntity
+  commentId: F:ZenECS.Core.ExternalCommandKind.CreateEntity
+  href: ZenECS.Core.ExternalCommandKind.html#ZenECS_Core_ExternalCommandKind_CreateEntity
+  name: CreateEntity
+  nameWithType: ExternalCommandKind.CreateEntity
+  fullName: ZenECS.Core.ExternalCommandKind.CreateEntity
+- uid: ZenECS.Core.ExternalCommand.Entity
+  commentId: P:ZenECS.Core.ExternalCommand.Entity
+  href: ZenECS.Core.ExternalCommand.html#ZenECS_Core_ExternalCommand_Entity
+  name: Entity
+  nameWithType: ExternalCommand.Entity
+  fullName: ZenECS.Core.ExternalCommand.Entity
+- uid: ZenECS.Core.ICommandBuffer
+  commentId: T:ZenECS.Core.ICommandBuffer
+  parent: ZenECS.Core
+  href: ZenECS.Core.ICommandBuffer.html
+  name: ICommandBuffer
+  nameWithType: ICommandBuffer
+  fullName: ZenECS.Core.ICommandBuffer
+- uid: ZenECS.Core.ExternalCommand.CreatedCallback*
+  commentId: Overload:ZenECS.Core.ExternalCommand.CreatedCallback
+  href: ZenECS.Core.ExternalCommand.html#ZenECS_Core_ExternalCommand_CreatedCallback
+  name: CreatedCallback
+  nameWithType: ExternalCommand.CreatedCallback
+  fullName: ZenECS.Core.ExternalCommand.CreatedCallback
+- uid: System.Action{ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer}
+  commentId: T:System.Action{ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer}
+  parent: System
+  definition: System.Action`2
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<Entity, ICommandBuffer>
+  nameWithType: Action<Entity, ICommandBuffer>
+  fullName: System.Action<ZenECS.Core.Entity, ZenECS.Core.ICommandBuffer>
+  nameWithType.vb: Action(Of Entity, ICommandBuffer)
+  fullName.vb: System.Action(Of ZenECS.Core.Entity, ZenECS.Core.ICommandBuffer)
+  name.vb: Action(Of Entity, ICommandBuffer)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.ICommandBuffer
+    name: ICommandBuffer
+    href: ZenECS.Core.ICommandBuffer.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.ICommandBuffer
+    name: ICommandBuffer
+    href: ZenECS.Core.ICommandBuffer.html
+  - name: )
+- uid: System.Action`2
+  commentId: T:System.Action`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<T1, T2>
+  nameWithType: Action<T1, T2>
+  fullName: System.Action<T1, T2>
+  nameWithType.vb: Action(Of T1, T2)
+  fullName.vb: System.Action(Of T1, T2)
+  name.vb: Action(Of T1, T2)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: ZenECS.Core.ExternalCommand
+  commentId: T:ZenECS.Core.ExternalCommand
+  parent: ZenECS.Core
+  href: ZenECS.Core.ExternalCommand.html
+  name: ExternalCommand
+  nameWithType: ExternalCommand
+  fullName: ZenECS.Core.ExternalCommand
+- uid: ZenECS.Core.ExternalCommand.CreateEntity*
+  commentId: Overload:ZenECS.Core.ExternalCommand.CreateEntity
+  href: ZenECS.Core.ExternalCommand.html#ZenECS_Core_ExternalCommand_CreateEntity_System_Action_ZenECS_Core_Entity_ZenECS_Core_ICommandBuffer__
+  name: CreateEntity
+  nameWithType: ExternalCommand.CreateEntity
+  fullName: ZenECS.Core.ExternalCommand.CreateEntity
+- uid: ZenECS.Core.ExternalCommandKind.DestroyEntity
+  commentId: F:ZenECS.Core.ExternalCommandKind.DestroyEntity
+  href: ZenECS.Core.ExternalCommandKind.html#ZenECS_Core_ExternalCommandKind_DestroyEntity
+  name: DestroyEntity
+  nameWithType: ExternalCommandKind.DestroyEntity
+  fullName: ZenECS.Core.ExternalCommandKind.DestroyEntity
+- uid: ZenECS.Core.ExternalCommand.DestroyEntity*
+  commentId: Overload:ZenECS.Core.ExternalCommand.DestroyEntity
+  href: ZenECS.Core.ExternalCommand.html#ZenECS_Core_ExternalCommand_DestroyEntity_ZenECS_Core_Entity_
+  name: DestroyEntity
+  nameWithType: ExternalCommand.DestroyEntity
+  fullName: ZenECS.Core.ExternalCommand.DestroyEntity
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+  name: ArgumentNullException
+  nameWithType: ArgumentNullException
+  fullName: System.ArgumentNullException
+- uid: ZenECS.Core.ExternalCommand.AddComponent*
+  commentId: Overload:ZenECS.Core.ExternalCommand.AddComponent
+  href: ZenECS.Core.ExternalCommand.html#ZenECS_Core_ExternalCommand_AddComponent_ZenECS_Core_Entity_System_Type_System_Object_
+  name: AddComponent
+  nameWithType: ExternalCommand.AddComponent
+  fullName: ZenECS.Core.ExternalCommand.AddComponent
+- uid: ZenECS.Core.ExternalCommand.ReplaceComponent*
+  commentId: Overload:ZenECS.Core.ExternalCommand.ReplaceComponent
+  href: ZenECS.Core.ExternalCommand.html#ZenECS_Core_ExternalCommand_ReplaceComponent_ZenECS_Core_Entity_System_Type_System_Object_
+  name: ReplaceComponent
+  nameWithType: ExternalCommand.ReplaceComponent
+  fullName: ZenECS.Core.ExternalCommand.ReplaceComponent
+- uid: ZenECS.Core.ExternalCommandKind.RemoveComponent
+  commentId: F:ZenECS.Core.ExternalCommandKind.RemoveComponent
+  href: ZenECS.Core.ExternalCommandKind.html#ZenECS_Core_ExternalCommandKind_RemoveComponent
+  name: RemoveComponent
+  nameWithType: ExternalCommandKind.RemoveComponent
+  fullName: ZenECS.Core.ExternalCommandKind.RemoveComponent
+- uid: ZenECS.Core.ExternalCommand.RemoveComponent*
+  commentId: Overload:ZenECS.Core.ExternalCommand.RemoveComponent
+  href: ZenECS.Core.ExternalCommand.html#ZenECS_Core_ExternalCommand_RemoveComponent_ZenECS_Core_Entity_System_Type_
+  name: RemoveComponent
+  nameWithType: ExternalCommand.RemoveComponent
+  fullName: ZenECS.Core.ExternalCommand.RemoveComponent
+- uid: ZenECS.Core.ExternalCommandKind.SetSingleton
+  commentId: F:ZenECS.Core.ExternalCommandKind.SetSingleton
+  href: ZenECS.Core.ExternalCommandKind.html#ZenECS_Core_ExternalCommandKind_SetSingleton
+  name: SetSingleton
+  nameWithType: ExternalCommandKind.SetSingleton
+  fullName: ZenECS.Core.ExternalCommandKind.SetSingleton
+- uid: ZenECS.Core.ExternalCommand.SetSingleton*
+  commentId: Overload:ZenECS.Core.ExternalCommand.SetSingleton
+  href: ZenECS.Core.ExternalCommand.html#ZenECS_Core_ExternalCommand_SetSingleton_System_Type_System_Object_
+  name: SetSingleton
+  nameWithType: ExternalCommand.SetSingleton
+  fullName: ZenECS.Core.ExternalCommand.SetSingleton
+- uid: ZenECS.Core.ExternalCommandKind.RemoveSingleton
+  commentId: F:ZenECS.Core.ExternalCommandKind.RemoveSingleton
+  href: ZenECS.Core.ExternalCommandKind.html#ZenECS_Core_ExternalCommandKind_RemoveSingleton
+  name: RemoveSingleton
+  nameWithType: ExternalCommandKind.RemoveSingleton
+  fullName: ZenECS.Core.ExternalCommandKind.RemoveSingleton
+- uid: ZenECS.Core.ExternalCommand.RemoveSingleton*
+  commentId: Overload:ZenECS.Core.ExternalCommand.RemoveSingleton
+  href: ZenECS.Core.ExternalCommand.html#ZenECS_Core_ExternalCommand_RemoveSingleton_System_Type_
+  name: RemoveSingleton
+  nameWithType: ExternalCommand.RemoveSingleton
+  fullName: ZenECS.Core.ExternalCommand.RemoveSingleton

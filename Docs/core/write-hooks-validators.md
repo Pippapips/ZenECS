@@ -2,24 +2,77 @@
 
 > Docs / Core / Write Hooks & Validators
 
-Policies and guard rails for writes.
+Control component writes with permission hooks and value validators.
 
 ## Overview
 
-- TODO
+Write hooks and validators provide:
 
-## How it works
+- **Write Permissions**: Control who can write components
+- **Value Validation**: Validate component values before write
+- **Security**: Prevent unauthorized modifications
+- **Data Integrity**: Ensure valid component states
 
-- TODO
+## API Surface
 
-## API surface
+### Write Permission Hook
 
-- TODO
+```csharp
+world.Hooks.AddWritePermission((entity, componentType) =>
+{
+    // Custom permission logic
+    if (componentType == typeof(Health))
+    {
+        return HasHealthPermission(entity);
+    }
+    return true;
+});
+```
+
+### Value Validator
+
+```csharp
+world.Hooks.AddValidator<Health>(health =>
+{
+    // Validate health values
+    if (health.Current < 0)
+        return false;
+    if (health.Current > health.Max)
+        return false;
+    return true;
+});
+```
 
 ## Examples
 
-- TODO
+### Permission Hook
 
-## FAQ
+```csharp
+// Only admins can modify admin components
+world.Hooks.AddWritePermission((entity, componentType) =>
+{
+    if (componentType == typeof(AdminComponent))
+    {
+        return world.HasComponent<Admin>(entity);
+    }
+    return true;
+});
+```
 
-- TODO
+### Value Validator
+
+```csharp
+// Ensure health is within bounds
+world.Hooks.AddValidator<Health>(health =>
+{
+    return health.Current >= 0 && 
+           health.Current <= health.Max &&
+           health.Max > 0;
+});
+```
+
+## See Also
+
+- [World Hook](./world-hook.md) - Hook system
+- [Samples](../samples/07-writehooks-validators.md) - Sample project
+- [Advanced Topics](../guides/advanced-topics.md) - Advanced patterns

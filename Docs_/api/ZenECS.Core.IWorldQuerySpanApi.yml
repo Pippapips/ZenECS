@@ -1,0 +1,762 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.IWorldQuerySpanApi
+  commentId: T:ZenECS.Core.IWorldQuerySpanApi
+  id: IWorldQuerySpanApi
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.IWorldQuerySpanApi.Process``1(System.ReadOnlySpan{ZenECS.Core.Entity},ZenECS.Core.RefAction{``0})
+  - ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``1(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``2(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``3(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``4(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``5(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``6(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``7(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  - ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``8(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  langs:
+  - csharp
+  - vb
+  name: IWorldQuerySpanApi
+  nameWithType: IWorldQuerySpanApi
+  fullName: ZenECS.Core.IWorldQuerySpanApi
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IWorldQuerySpanApi
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+    startLine: 31
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Span-oriented query surface for zero-allocation collection and batch
+
+    processing. Use alongside <xref href="ZenECS.Core.IWorldQueryApi" data-throw-if-not-resolved="false"></xref> to first collect
+
+    entities, then process their components in tight loops.
+  example: []
+  syntax:
+    content: public interface IWorldQuerySpanApi
+    content.vb: Public Interface IWorldQuerySpanApi
+- uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``1(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``1(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  id: QueryToSpan``1(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQuerySpanApi
+  langs:
+  - csharp
+  - vb
+  name: QueryToSpan<T1>(Span<Entity>, Filter)
+  nameWithType: IWorldQuerySpanApi.QueryToSpan<T1>(Span<Entity>, Filter)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan<T1>(System.Span<ZenECS.Core.Entity>, ZenECS.Core.Filter)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: QueryToSpan
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+    startLine: 42
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Collect entities having <code class="typeparamref">T1</code> into <code class="paramref">dst</code>.
+  example: []
+  syntax:
+    content: 'int QueryToSpan<T1>(Span<Entity> dst, Filter f = default) where T1 : struct'
+    parameters:
+    - id: dst
+      type: System.Span{ZenECS.Core.Entity}
+      description: Destination span to write entity handles to.
+    - id: f
+      type: ZenECS.Core.Filter
+      description: Optional filter (with/without any/all buckets).
+    typeParameters:
+    - id: T1
+      description: Required component type.
+    return:
+      type: System.Int32
+      description: Number of entities written (≤ <code class="paramref">dst</code> length).
+    content.vb: Function QueryToSpan(Of T1 As Structure)(dst As Span(Of Entity), f As Filter = Nothing) As Integer
+  overload: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan*
+  nameWithType.vb: IWorldQuerySpanApi.QueryToSpan(Of T1)(Span(Of Entity), Filter)
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan(Of T1)(System.Span(Of ZenECS.Core.Entity), ZenECS.Core.Filter)
+  name.vb: QueryToSpan(Of T1)(Span(Of Entity), Filter)
+- uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``2(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``2(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  id: QueryToSpan``2(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQuerySpanApi
+  langs:
+  - csharp
+  - vb
+  name: QueryToSpan<T1, T2>(Span<Entity>, Filter)
+  nameWithType: IWorldQuerySpanApi.QueryToSpan<T1, T2>(Span<Entity>, Filter)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan<T1, T2>(System.Span<ZenECS.Core.Entity>, ZenECS.Core.Filter)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: QueryToSpan
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+    startLine: 55
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Collect entities having <code class="typeparamref">T1</code> and <code class="typeparamref">T2</code>
+
+    into <code class="paramref">dst</code>.
+  example: []
+  syntax:
+    content: 'int QueryToSpan<T1, T2>(Span<Entity> dst, Filter f = default) where T1 : struct where T2 : struct'
+    parameters:
+    - id: dst
+      type: System.Span{ZenECS.Core.Entity}
+      description: Destination span to write entity handles to.
+    - id: f
+      type: ZenECS.Core.Filter
+      description: Optional filter (with/without any/all buckets).
+    typeParameters:
+    - id: T1
+      description: First required component type.
+    - id: T2
+      description: Second required component type.
+    return:
+      type: System.Int32
+      description: Number of entities written (≤ <code class="paramref">dst</code> length).
+    content.vb: Function QueryToSpan(Of T1 As Structure, T2 As Structure)(dst As Span(Of Entity), f As Filter = Nothing) As Integer
+  overload: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan*
+  nameWithType.vb: IWorldQuerySpanApi.QueryToSpan(Of T1, T2)(Span(Of Entity), Filter)
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan(Of T1, T2)(System.Span(Of ZenECS.Core.Entity), ZenECS.Core.Filter)
+  name.vb: QueryToSpan(Of T1, T2)(Span(Of Entity), Filter)
+- uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``3(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``3(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  id: QueryToSpan``3(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQuerySpanApi
+  langs:
+  - csharp
+  - vb
+  name: QueryToSpan<T1, T2, T3>(Span<Entity>, Filter)
+  nameWithType: IWorldQuerySpanApi.QueryToSpan<T1, T2, T3>(Span<Entity>, Filter)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan<T1, T2, T3>(System.Span<ZenECS.Core.Entity>, ZenECS.Core.Filter)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: QueryToSpan
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+    startLine: 71
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Collect entities having <code class="typeparamref">T1</code>,
+
+    <code class="typeparamref">T2</code> and <code class="typeparamref">T3</code> into
+
+    <code class="paramref">dst</code>.
+  example: []
+  syntax:
+    content: 'int QueryToSpan<T1, T2, T3>(Span<Entity> dst, Filter f = default) where T1 : struct where T2 : struct where T3 : struct'
+    parameters:
+    - id: dst
+      type: System.Span{ZenECS.Core.Entity}
+      description: Destination span to write entity handles to.
+    - id: f
+      type: ZenECS.Core.Filter
+      description: Optional filter (with/without any/all buckets).
+    typeParameters:
+    - id: T1
+      description: First required component type.
+    - id: T2
+      description: Second required component type.
+    - id: T3
+      description: Third required component type.
+    return:
+      type: System.Int32
+      description: Number of entities written (≤ <code class="paramref">dst</code> length).
+    content.vb: Function QueryToSpan(Of T1 As Structure, T2 As Structure, T3 As Structure)(dst As Span(Of Entity), f As Filter = Nothing) As Integer
+  overload: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan*
+  nameWithType.vb: IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3)(Span(Of Entity), Filter)
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3)(System.Span(Of ZenECS.Core.Entity), ZenECS.Core.Filter)
+  name.vb: QueryToSpan(Of T1, T2, T3)(Span(Of Entity), Filter)
+- uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``4(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``4(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  id: QueryToSpan``4(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQuerySpanApi
+  langs:
+  - csharp
+  - vb
+  name: QueryToSpan<T1, T2, T3, T4>(Span<Entity>, Filter)
+  nameWithType: IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4>(Span<Entity>, Filter)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4>(System.Span<ZenECS.Core.Entity>, ZenECS.Core.Filter)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: QueryToSpan
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+    startLine: 87
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Collect entities having <code class="typeparamref">T1</code>…<code class="typeparamref">T4</code>
+
+    into <code class="paramref">dst</code>.
+  example: []
+  syntax:
+    content: 'int QueryToSpan<T1, T2, T3, T4>(Span<Entity> dst, Filter f = default) where T1 : struct where T2 : struct where T3 : struct where T4 : struct'
+    parameters:
+    - id: dst
+      type: System.Span{ZenECS.Core.Entity}
+      description: Destination span to write entity handles to.
+    - id: f
+      type: ZenECS.Core.Filter
+      description: Optional filter (with/without any/all buckets).
+    typeParameters:
+    - id: T1
+      description: First required component type.
+    - id: T2
+      description: Second required component type.
+    - id: T3
+      description: Third required component type.
+    - id: T4
+      description: Fourth required component type.
+    return:
+      type: System.Int32
+      description: Number of entities written (≤ <code class="paramref">dst</code> length).
+    content.vb: Function QueryToSpan(Of T1 As Structure, T2 As Structure, T3 As Structure, T4 As Structure)(dst As Span(Of Entity), f As Filter = Nothing) As Integer
+  overload: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan*
+  nameWithType.vb: IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4)(Span(Of Entity), Filter)
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4)(System.Span(Of ZenECS.Core.Entity), ZenECS.Core.Filter)
+  name.vb: QueryToSpan(Of T1, T2, T3, T4)(Span(Of Entity), Filter)
+- uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``5(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``5(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  id: QueryToSpan``5(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQuerySpanApi
+  langs:
+  - csharp
+  - vb
+  name: QueryToSpan<T1, T2, T3, T4, T5>(Span<Entity>, Filter)
+  nameWithType: IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4, T5>(Span<Entity>, Filter)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4, T5>(System.Span<ZenECS.Core.Entity>, ZenECS.Core.Filter)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: QueryToSpan
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+    startLine: 104
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Collect entities having <code class="typeparamref">T1</code>…<code class="typeparamref">T5</code>
+
+    into <code class="paramref">dst</code>.
+  example: []
+  syntax:
+    content: 'int QueryToSpan<T1, T2, T3, T4, T5>(Span<Entity> dst, Filter f = default) where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct'
+    parameters:
+    - id: dst
+      type: System.Span{ZenECS.Core.Entity}
+      description: Destination span to write entity handles to.
+    - id: f
+      type: ZenECS.Core.Filter
+      description: Optional filter (with/without any/all buckets).
+    typeParameters:
+    - id: T1
+      description: First required component type.
+    - id: T2
+      description: Second required component type.
+    - id: T3
+      description: Third required component type.
+    - id: T4
+      description: Fourth required component type.
+    - id: T5
+      description: Fifth required component type.
+    return:
+      type: System.Int32
+      description: Number of entities written (≤ <code class="paramref">dst</code> length).
+    content.vb: Function QueryToSpan(Of T1 As Structure, T2 As Structure, T3 As Structure, T4 As Structure, T5 As Structure)(dst As Span(Of Entity), f As Filter = Nothing) As Integer
+  overload: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan*
+  nameWithType.vb: IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4, T5)(Span(Of Entity), Filter)
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4, T5)(System.Span(Of ZenECS.Core.Entity), ZenECS.Core.Filter)
+  name.vb: QueryToSpan(Of T1, T2, T3, T4, T5)(Span(Of Entity), Filter)
+- uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``6(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``6(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  id: QueryToSpan``6(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQuerySpanApi
+  langs:
+  - csharp
+  - vb
+  name: QueryToSpan<T1, T2, T3, T4, T5, T6>(Span<Entity>, Filter)
+  nameWithType: IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4, T5, T6>(Span<Entity>, Filter)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4, T5, T6>(System.Span<ZenECS.Core.Entity>, ZenECS.Core.Filter)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: QueryToSpan
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+    startLine: 122
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Collect entities having <code class="typeparamref">T1</code>…<code class="typeparamref">T6</code>
+
+    into <code class="paramref">dst</code>.
+  example: []
+  syntax:
+    content: 'int QueryToSpan<T1, T2, T3, T4, T5, T6>(Span<Entity> dst, Filter f = default) where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct where T6 : struct'
+    parameters:
+    - id: dst
+      type: System.Span{ZenECS.Core.Entity}
+      description: Destination span to write entity handles to.
+    - id: f
+      type: ZenECS.Core.Filter
+      description: Optional filter (with/without any/all buckets).
+    typeParameters:
+    - id: T1
+      description: First required component type.
+    - id: T2
+      description: Second required component type.
+    - id: T3
+      description: Third required component type.
+    - id: T4
+      description: Fourth required component type.
+    - id: T5
+      description: Fifth required component type.
+    - id: T6
+      description: Sixth required component type.
+    return:
+      type: System.Int32
+      description: Number of entities written (≤ <code class="paramref">dst</code> length).
+    content.vb: Function QueryToSpan(Of T1 As Structure, T2 As Structure, T3 As Structure, T4 As Structure, T5 As Structure, T6 As Structure)(dst As Span(Of Entity), f As Filter = Nothing) As Integer
+  overload: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan*
+  nameWithType.vb: IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4, T5, T6)(Span(Of Entity), Filter)
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4, T5, T6)(System.Span(Of ZenECS.Core.Entity), ZenECS.Core.Filter)
+  name.vb: QueryToSpan(Of T1, T2, T3, T4, T5, T6)(Span(Of Entity), Filter)
+- uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``7(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``7(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  id: QueryToSpan``7(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQuerySpanApi
+  langs:
+  - csharp
+  - vb
+  name: QueryToSpan<T1, T2, T3, T4, T5, T6, T7>(Span<Entity>, Filter)
+  nameWithType: IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4, T5, T6, T7>(Span<Entity>, Filter)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4, T5, T6, T7>(System.Span<ZenECS.Core.Entity>, ZenECS.Core.Filter)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: QueryToSpan
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+    startLine: 142
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Collect entities having <code class="typeparamref">T1</code>…<code class="typeparamref">T7</code>
+
+    into <code class="paramref">dst</code>.
+  example: []
+  syntax:
+    content: 'int QueryToSpan<T1, T2, T3, T4, T5, T6, T7>(Span<Entity> dst, Filter f = default) where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct where T6 : struct where T7 : struct'
+    parameters:
+    - id: dst
+      type: System.Span{ZenECS.Core.Entity}
+      description: Destination span to write entity handles to.
+    - id: f
+      type: ZenECS.Core.Filter
+      description: Optional filter (with/without any/all buckets).
+    typeParameters:
+    - id: T1
+      description: First required component type.
+    - id: T2
+      description: Second required component type.
+    - id: T3
+      description: Third required component type.
+    - id: T4
+      description: Fourth required component type.
+    - id: T5
+      description: Fifth required component type.
+    - id: T6
+      description: Sixth required component type.
+    - id: T7
+      description: Seventh required component type.
+    return:
+      type: System.Int32
+      description: Number of entities written (≤ <code class="paramref">dst</code> length).
+    content.vb: Function QueryToSpan(Of T1 As Structure, T2 As Structure, T3 As Structure, T4 As Structure, T5 As Structure, T6 As Structure, T7 As Structure)(dst As Span(Of Entity), f As Filter = Nothing) As Integer
+  overload: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan*
+  nameWithType.vb: IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4, T5, T6, T7)(Span(Of Entity), Filter)
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4, T5, T6, T7)(System.Span(Of ZenECS.Core.Entity), ZenECS.Core.Filter)
+  name.vb: QueryToSpan(Of T1, T2, T3, T4, T5, T6, T7)(Span(Of Entity), Filter)
+- uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``8(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.QueryToSpan``8(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  id: QueryToSpan``8(System.Span{ZenECS.Core.Entity},ZenECS.Core.Filter)
+  parent: ZenECS.Core.IWorldQuerySpanApi
+  langs:
+  - csharp
+  - vb
+  name: QueryToSpan<T1, T2, T3, T4, T5, T6, T7, T8>(Span<Entity>, Filter)
+  nameWithType: IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4, T5, T6, T7, T8>(Span<Entity>, Filter)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan<T1, T2, T3, T4, T5, T6, T7, T8>(System.Span<ZenECS.Core.Entity>, ZenECS.Core.Filter)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: QueryToSpan
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+    startLine: 163
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Collect entities having <code class="typeparamref">T1</code>…<code class="typeparamref">T8</code>
+
+    into <code class="paramref">dst</code>.
+  example: []
+  syntax:
+    content: 'int QueryToSpan<T1, T2, T3, T4, T5, T6, T7, T8>(Span<Entity> dst, Filter f = default) where T1 : struct where T2 : struct where T3 : struct where T4 : struct where T5 : struct where T6 : struct where T7 : struct where T8 : struct'
+    parameters:
+    - id: dst
+      type: System.Span{ZenECS.Core.Entity}
+      description: Destination span to write entity handles to.
+    - id: f
+      type: ZenECS.Core.Filter
+      description: Optional filter (with/without any/all buckets).
+    typeParameters:
+    - id: T1
+      description: First required component type.
+    - id: T2
+      description: Second required component type.
+    - id: T3
+      description: Third required component type.
+    - id: T4
+      description: Fourth required component type.
+    - id: T5
+      description: Fifth required component type.
+    - id: T6
+      description: Sixth required component type.
+    - id: T7
+      description: Seventh required component type.
+    - id: T8
+      description: Eighth required component type.
+    return:
+      type: System.Int32
+      description: Number of entities written (≤ <code class="paramref">dst</code> length).
+    content.vb: Function QueryToSpan(Of T1 As Structure, T2 As Structure, T3 As Structure, T4 As Structure, T5 As Structure, T6 As Structure, T7 As Structure, T8 As Structure)(dst As Span(Of Entity), f As Filter = Nothing) As Integer
+  overload: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan*
+  nameWithType.vb: IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4, T5, T6, T7, T8)(Span(Of Entity), Filter)
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan(Of T1, T2, T3, T4, T5, T6, T7, T8)(System.Span(Of ZenECS.Core.Entity), ZenECS.Core.Filter)
+  name.vb: QueryToSpan(Of T1, T2, T3, T4, T5, T6, T7, T8)(Span(Of Entity), Filter)
+- uid: ZenECS.Core.IWorldQuerySpanApi.Process``1(System.ReadOnlySpan{ZenECS.Core.Entity},ZenECS.Core.RefAction{``0})
+  commentId: M:ZenECS.Core.IWorldQuerySpanApi.Process``1(System.ReadOnlySpan{ZenECS.Core.Entity},ZenECS.Core.RefAction{``0})
+  id: Process``1(System.ReadOnlySpan{ZenECS.Core.Entity},ZenECS.Core.RefAction{``0})
+  parent: ZenECS.Core.IWorldQuerySpanApi
+  langs:
+  - csharp
+  - vb
+  name: Process<T>(ReadOnlySpan<Entity>, RefAction<T>)
+  nameWithType: IWorldQuerySpanApi.Process<T>(ReadOnlySpan<Entity>, RefAction<T>)
+  fullName: ZenECS.Core.IWorldQuerySpanApi.Process<T>(System.ReadOnlySpan<ZenECS.Core.Entity>, ZenECS.Core.RefAction<T>)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Process
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
+    startLine: 179
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Iterate <code class="paramref">ents</code> and apply <code class="paramref">action</code> to each
+
+    existing <code class="typeparamref">T</code> component by reference.
+
+    Dead entities and entities lacking the component are skipped.
+  example: []
+  syntax:
+    content: 'void Process<T>(ReadOnlySpan<Entity> ents, RefAction<T> action) where T : struct'
+    parameters:
+    - id: ents
+      type: System.ReadOnlySpan{ZenECS.Core.Entity}
+      description: Input entity span (commonly the slice returned from <code>QueryToSpan</code>).
+    - id: action
+      type: ZenECS.Core.RefAction{{T}}
+      description: Delegate invoked with a <code>ref T</code> for each matching entity.
+    typeParameters:
+    - id: T
+      description: Component type.
+    content.vb: Sub Process(Of T As Structure)(ents As ReadOnlySpan(Of Entity), action As RefAction(Of T))
+  overload: ZenECS.Core.IWorldQuerySpanApi.Process*
+  nameWithType.vb: IWorldQuerySpanApi.Process(Of T)(ReadOnlySpan(Of Entity), RefAction(Of T))
+  fullName.vb: ZenECS.Core.IWorldQuerySpanApi.Process(Of T)(System.ReadOnlySpan(Of ZenECS.Core.Entity), ZenECS.Core.RefAction(Of T))
+  name.vb: Process(Of T)(ReadOnlySpan(Of Entity), RefAction(Of T))
+references:
+- uid: ZenECS.Core.IWorldQueryApi
+  commentId: T:ZenECS.Core.IWorldQueryApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldQueryApi.html
+  name: IWorldQueryApi
+  nameWithType: IWorldQueryApi
+  fullName: ZenECS.Core.IWorldQueryApi
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan*
+  commentId: Overload:ZenECS.Core.IWorldQuerySpanApi.QueryToSpan
+  href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_QueryToSpan__1_System_Span_ZenECS_Core_Entity__ZenECS_Core_Filter_
+  name: QueryToSpan
+  nameWithType: IWorldQuerySpanApi.QueryToSpan
+  fullName: ZenECS.Core.IWorldQuerySpanApi.QueryToSpan
+- uid: System.Span{ZenECS.Core.Entity}
+  commentId: T:System.Span{ZenECS.Core.Entity}
+  parent: System
+  definition: System.Span`1
+  href: https://learn.microsoft.com/dotnet/api/system.span-1
+  name: Span<Entity>
+  nameWithType: Span<Entity>
+  fullName: System.Span<ZenECS.Core.Entity>
+  nameWithType.vb: Span(Of Entity)
+  fullName.vb: System.Span(Of ZenECS.Core.Entity)
+  name.vb: Span(Of Entity)
+  spec.csharp:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: ZenECS.Core.Filter
+  commentId: T:ZenECS.Core.Filter
+  parent: ZenECS.Core
+  href: ZenECS.Core.Filter.html
+  name: Filter
+  nameWithType: Filter
+  fullName: ZenECS.Core.Filter
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Span`1
+  commentId: T:System.Span`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.span-1
+  name: Span<T>
+  nameWithType: Span<T>
+  fullName: System.Span<T>
+  nameWithType.vb: Span(Of T)
+  fullName.vb: System.Span(Of T)
+  name.vb: Span(Of T)
+  spec.csharp:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.IWorldQuerySpanApi.Process*
+  commentId: Overload:ZenECS.Core.IWorldQuerySpanApi.Process
+  href: ZenECS.Core.IWorldQuerySpanApi.html#ZenECS_Core_IWorldQuerySpanApi_Process__1_System_ReadOnlySpan_ZenECS_Core_Entity__ZenECS_Core_RefAction___0__
+  name: Process
+  nameWithType: IWorldQuerySpanApi.Process
+  fullName: ZenECS.Core.IWorldQuerySpanApi.Process
+- uid: System.ReadOnlySpan{ZenECS.Core.Entity}
+  commentId: T:System.ReadOnlySpan{ZenECS.Core.Entity}
+  parent: System
+  definition: System.ReadOnlySpan`1
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<Entity>
+  nameWithType: ReadOnlySpan<Entity>
+  fullName: System.ReadOnlySpan<ZenECS.Core.Entity>
+  nameWithType.vb: ReadOnlySpan(Of Entity)
+  fullName.vb: System.ReadOnlySpan(Of ZenECS.Core.Entity)
+  name.vb: ReadOnlySpan(Of Entity)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: ZenECS.Core.RefAction{{T}}
+  commentId: T:ZenECS.Core.RefAction{``0}
+  parent: ZenECS.Core
+  definition: ZenECS.Core.RefAction`1
+  href: ZenECS.Core.RefAction-1.html
+  name: RefAction<T>
+  nameWithType: RefAction<T>
+  fullName: ZenECS.Core.RefAction<T>
+  nameWithType.vb: RefAction(Of T)
+  fullName.vb: ZenECS.Core.RefAction(Of T)
+  name.vb: RefAction(Of T)
+  spec.csharp:
+  - uid: ZenECS.Core.RefAction`1
+    name: RefAction
+    href: ZenECS.Core.RefAction-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.RefAction`1
+    name: RefAction
+    href: ZenECS.Core.RefAction-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.ReadOnlySpan`1
+  commentId: T:System.ReadOnlySpan`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<T>
+  nameWithType: ReadOnlySpan<T>
+  fullName: System.ReadOnlySpan<T>
+  nameWithType.vb: ReadOnlySpan(Of T)
+  fullName.vb: System.ReadOnlySpan(Of T)
+  name.vb: ReadOnlySpan(Of T)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ZenECS.Core.RefAction`1
+  commentId: T:ZenECS.Core.RefAction`1
+  href: ZenECS.Core.RefAction-1.html
+  name: RefAction<T>
+  nameWithType: RefAction<T>
+  fullName: ZenECS.Core.RefAction<T>
+  nameWithType.vb: RefAction(Of T)
+  fullName.vb: ZenECS.Core.RefAction(Of T)
+  name.vb: RefAction(Of T)
+  spec.csharp:
+  - uid: ZenECS.Core.RefAction`1
+    name: RefAction
+    href: ZenECS.Core.RefAction-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.RefAction`1
+    name: RefAction
+    href: ZenECS.Core.RefAction-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

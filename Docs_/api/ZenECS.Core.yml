@@ -1,0 +1,1614 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  id: ZenECS.Core
+  children:
+  - ZenECS.Core.ComponentEvents
+  - ZenECS.Core.Entity
+  - ZenECS.Core.EntityEvents
+  - ZenECS.Core.ExternalCommand
+  - ZenECS.Core.ExternalCommandKind
+  - ZenECS.Core.Filter
+  - ZenECS.Core.Filter.Builder
+  - ZenECS.Core.GrowthPolicy
+  - ZenECS.Core.ICommandBuffer
+  - ZenECS.Core.IKernel
+  - ZenECS.Core.IWorld
+  - ZenECS.Core.IWorldBinderApi
+  - ZenECS.Core.IWorldCommandBufferApi
+  - ZenECS.Core.IWorldComponentApi
+  - ZenECS.Core.IWorldContextApi
+  - ZenECS.Core.IWorldEntityApi
+  - ZenECS.Core.IWorldHookApi
+  - ZenECS.Core.IWorldMessagesApi
+  - ZenECS.Core.IWorldQueryApi
+  - ZenECS.Core.IWorldQuerySpanApi
+  - ZenECS.Core.IWorldResetApi
+  - ZenECS.Core.IWorldSingletonComponent
+  - ZenECS.Core.IWorldSnapshotApi
+  - ZenECS.Core.IWorldSystemsApi
+  - ZenECS.Core.IWorldWorkerApi
+  - ZenECS.Core.Kernel
+  - ZenECS.Core.KernelOptions
+  - ZenECS.Core.QueryEnumerable`1
+  - ZenECS.Core.QueryEnumerable`1.Enumerator
+  - ZenECS.Core.QueryEnumerable`1.Result
+  - ZenECS.Core.QueryEnumerable`2
+  - ZenECS.Core.QueryEnumerable`2.Enumerator
+  - ZenECS.Core.QueryEnumerable`2.Result
+  - ZenECS.Core.QueryEnumerable`3
+  - ZenECS.Core.QueryEnumerable`3.Enumerator
+  - ZenECS.Core.QueryEnumerable`3.Result
+  - ZenECS.Core.QueryEnumerable`4
+  - ZenECS.Core.QueryEnumerable`4.Enumerator
+  - ZenECS.Core.QueryEnumerable`4.Result
+  - ZenECS.Core.QueryEnumerable`5
+  - ZenECS.Core.QueryEnumerable`5.Enumerator
+  - ZenECS.Core.QueryEnumerable`5.Result
+  - ZenECS.Core.QueryEnumerable`6
+  - ZenECS.Core.QueryEnumerable`6.Enumerator
+  - ZenECS.Core.QueryEnumerable`6.Result
+  - ZenECS.Core.QueryEnumerable`7
+  - ZenECS.Core.QueryEnumerable`7.Enumerator
+  - ZenECS.Core.QueryEnumerable`7.Result
+  - ZenECS.Core.QueryEnumerable`8
+  - ZenECS.Core.QueryEnumerable`8.Enumerator
+  - ZenECS.Core.QueryEnumerable`8.Result
+  - ZenECS.Core.RefAction`1
+  - ZenECS.Core.WorldConfig
+  - ZenECS.Core.WorldHandle
+  - ZenECS.Core.WorldId
+  - ZenECS.Core.ZenComponentAttribute
+  - ZenECS.Core.ZenDefaults
+  - ZenECS.Core.ZenFormatterForAttribute
+  - ZenECS.Core.ZenSystemWatchAttribute
+  langs:
+  - csharp
+  - vb
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  type: Namespace
+  assemblies:
+  - ZenECS.Core
+references:
+- uid: ZenECS.Core.ZenComponentAttribute
+  commentId: T:ZenECS.Core.ZenComponentAttribute
+  href: ZenECS.Core.ZenComponentAttribute.html
+  name: ZenComponentAttribute
+  nameWithType: ZenComponentAttribute
+  fullName: ZenECS.Core.ZenComponentAttribute
+- uid: ZenECS.Core.ZenDefaults
+  commentId: T:ZenECS.Core.ZenDefaults
+  href: ZenECS.Core.ZenDefaults.html
+  name: ZenDefaults
+  nameWithType: ZenDefaults
+  fullName: ZenECS.Core.ZenDefaults
+- uid: ZenECS.Core.ZenFormatterForAttribute
+  commentId: T:ZenECS.Core.ZenFormatterForAttribute
+  href: ZenECS.Core.ZenFormatterForAttribute.html
+  name: ZenFormatterForAttribute
+  nameWithType: ZenFormatterForAttribute
+  fullName: ZenECS.Core.ZenFormatterForAttribute
+- uid: ZenECS.Core.ZenSystemWatchAttribute
+  commentId: T:ZenECS.Core.ZenSystemWatchAttribute
+  href: ZenECS.Core.ZenSystemWatchAttribute.html
+  name: ZenSystemWatchAttribute
+  nameWithType: ZenSystemWatchAttribute
+  fullName: ZenECS.Core.ZenSystemWatchAttribute
+- uid: ZenECS.Core.Entity
+  commentId: T:ZenECS.Core.Entity
+  parent: ZenECS.Core
+  href: ZenECS.Core.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: ZenECS.Core.Entity
+- uid: ZenECS.Core.WorldHandle
+  commentId: T:ZenECS.Core.WorldHandle
+  parent: ZenECS.Core
+  href: ZenECS.Core.WorldHandle.html
+  name: WorldHandle
+  nameWithType: WorldHandle
+  fullName: ZenECS.Core.WorldHandle
+- uid: ZenECS.Core.WorldId
+  commentId: T:ZenECS.Core.WorldId
+  parent: ZenECS.Core
+  href: ZenECS.Core.WorldId.html
+  name: WorldId
+  nameWithType: WorldId
+  fullName: ZenECS.Core.WorldId
+- uid: ZenECS.Core.ExternalCommandKind
+  commentId: T:ZenECS.Core.ExternalCommandKind
+  parent: ZenECS.Core
+  href: ZenECS.Core.ExternalCommandKind.html
+  name: ExternalCommandKind
+  nameWithType: ExternalCommandKind
+  fullName: ZenECS.Core.ExternalCommandKind
+- uid: ZenECS.Core.ExternalCommand
+  commentId: T:ZenECS.Core.ExternalCommand
+  parent: ZenECS.Core
+  href: ZenECS.Core.ExternalCommand.html
+  name: ExternalCommand
+  nameWithType: ExternalCommand
+  fullName: ZenECS.Core.ExternalCommand
+- uid: ZenECS.Core.ICommandBuffer
+  commentId: T:ZenECS.Core.ICommandBuffer
+  parent: ZenECS.Core
+  href: ZenECS.Core.ICommandBuffer.html
+  name: ICommandBuffer
+  nameWithType: ICommandBuffer
+  fullName: ZenECS.Core.ICommandBuffer
+- uid: ZenECS.Core.ComponentEvents
+  commentId: T:ZenECS.Core.ComponentEvents
+  href: ZenECS.Core.ComponentEvents.html
+  name: ComponentEvents
+  nameWithType: ComponentEvents
+  fullName: ZenECS.Core.ComponentEvents
+- uid: ZenECS.Core.EntityEvents
+  commentId: T:ZenECS.Core.EntityEvents
+  href: ZenECS.Core.EntityEvents.html
+  name: EntityEvents
+  nameWithType: EntityEvents
+  fullName: ZenECS.Core.EntityEvents
+- uid: ZenECS.Core.IKernel
+  commentId: T:ZenECS.Core.IKernel
+  parent: ZenECS.Core
+  href: ZenECS.Core.IKernel.html
+  name: IKernel
+  nameWithType: IKernel
+  fullName: ZenECS.Core.IKernel
+- uid: ZenECS.Core.Kernel
+  commentId: T:ZenECS.Core.Kernel
+  href: ZenECS.Core.Kernel.html
+  name: Kernel
+  nameWithType: Kernel
+  fullName: ZenECS.Core.Kernel
+- uid: ZenECS.Core.KernelOptions
+  commentId: T:ZenECS.Core.KernelOptions
+  parent: ZenECS.Core
+  href: ZenECS.Core.KernelOptions.html
+  name: KernelOptions
+  nameWithType: KernelOptions
+  fullName: ZenECS.Core.KernelOptions
+- uid: ZenECS.Core.IWorld
+  commentId: T:ZenECS.Core.IWorld
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorld.html
+  name: IWorld
+  nameWithType: IWorld
+  fullName: ZenECS.Core.IWorld
+- uid: ZenECS.Core.IWorldBinderApi
+  commentId: T:ZenECS.Core.IWorldBinderApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldBinderApi.html
+  name: IWorldBinderApi
+  nameWithType: IWorldBinderApi
+  fullName: ZenECS.Core.IWorldBinderApi
+- uid: ZenECS.Core.IWorldCommandBufferApi
+  commentId: T:ZenECS.Core.IWorldCommandBufferApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldCommandBufferApi.html
+  name: IWorldCommandBufferApi
+  nameWithType: IWorldCommandBufferApi
+  fullName: ZenECS.Core.IWorldCommandBufferApi
+- uid: ZenECS.Core.IWorldSingletonComponent
+  commentId: T:ZenECS.Core.IWorldSingletonComponent
+  href: ZenECS.Core.IWorldSingletonComponent.html
+  name: IWorldSingletonComponent
+  nameWithType: IWorldSingletonComponent
+  fullName: ZenECS.Core.IWorldSingletonComponent
+- uid: ZenECS.Core.IWorldComponentApi
+  commentId: T:ZenECS.Core.IWorldComponentApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldComponentApi.html
+  name: IWorldComponentApi
+  nameWithType: IWorldComponentApi
+  fullName: ZenECS.Core.IWorldComponentApi
+- uid: ZenECS.Core.IWorldContextApi
+  commentId: T:ZenECS.Core.IWorldContextApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldContextApi.html
+  name: IWorldContextApi
+  nameWithType: IWorldContextApi
+  fullName: ZenECS.Core.IWorldContextApi
+- uid: ZenECS.Core.IWorldEntityApi
+  commentId: T:ZenECS.Core.IWorldEntityApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldEntityApi.html
+  name: IWorldEntityApi
+  nameWithType: IWorldEntityApi
+  fullName: ZenECS.Core.IWorldEntityApi
+- uid: ZenECS.Core.IWorldHookApi
+  commentId: T:ZenECS.Core.IWorldHookApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldHookApi.html
+  name: IWorldHookApi
+  nameWithType: IWorldHookApi
+  fullName: ZenECS.Core.IWorldHookApi
+- uid: ZenECS.Core.IWorldMessagesApi
+  commentId: T:ZenECS.Core.IWorldMessagesApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldMessagesApi.html
+  name: IWorldMessagesApi
+  nameWithType: IWorldMessagesApi
+  fullName: ZenECS.Core.IWorldMessagesApi
+- uid: ZenECS.Core.IWorldQueryApi
+  commentId: T:ZenECS.Core.IWorldQueryApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldQueryApi.html
+  name: IWorldQueryApi
+  nameWithType: IWorldQueryApi
+  fullName: ZenECS.Core.IWorldQueryApi
+- uid: ZenECS.Core.RefAction`1
+  commentId: T:ZenECS.Core.RefAction`1
+  href: ZenECS.Core.RefAction-1.html
+  name: RefAction<T>
+  nameWithType: RefAction<T>
+  fullName: ZenECS.Core.RefAction<T>
+  nameWithType.vb: RefAction(Of T)
+  fullName.vb: ZenECS.Core.RefAction(Of T)
+  name.vb: RefAction(Of T)
+  spec.csharp:
+  - uid: ZenECS.Core.RefAction`1
+    name: RefAction
+    href: ZenECS.Core.RefAction-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.RefAction`1
+    name: RefAction
+    href: ZenECS.Core.RefAction-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ZenECS.Core.IWorldQuerySpanApi
+  commentId: T:ZenECS.Core.IWorldQuerySpanApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldQuerySpanApi.html
+  name: IWorldQuerySpanApi
+  nameWithType: IWorldQuerySpanApi
+  fullName: ZenECS.Core.IWorldQuerySpanApi
+- uid: ZenECS.Core.IWorldResetApi
+  commentId: T:ZenECS.Core.IWorldResetApi
+  href: ZenECS.Core.IWorldResetApi.html
+  name: IWorldResetApi
+  nameWithType: IWorldResetApi
+  fullName: ZenECS.Core.IWorldResetApi
+- uid: ZenECS.Core.IWorldSnapshotApi
+  commentId: T:ZenECS.Core.IWorldSnapshotApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldSnapshotApi.html
+  name: IWorldSnapshotApi
+  nameWithType: IWorldSnapshotApi
+  fullName: ZenECS.Core.IWorldSnapshotApi
+- uid: ZenECS.Core.IWorldSystemsApi
+  commentId: T:ZenECS.Core.IWorldSystemsApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldSystemsApi.html
+  name: IWorldSystemsApi
+  nameWithType: IWorldSystemsApi
+  fullName: ZenECS.Core.IWorldSystemsApi
+- uid: ZenECS.Core.IWorldWorkerApi
+  commentId: T:ZenECS.Core.IWorldWorkerApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldWorkerApi.html
+  name: IWorldWorkerApi
+  nameWithType: IWorldWorkerApi
+  fullName: ZenECS.Core.IWorldWorkerApi
+- uid: ZenECS.Core.GrowthPolicy
+  commentId: T:ZenECS.Core.GrowthPolicy
+  parent: ZenECS.Core
+  href: ZenECS.Core.GrowthPolicy.html
+  name: GrowthPolicy
+  nameWithType: GrowthPolicy
+  fullName: ZenECS.Core.GrowthPolicy
+- uid: ZenECS.Core.WorldConfig
+  commentId: T:ZenECS.Core.WorldConfig
+  href: ZenECS.Core.WorldConfig.html
+  name: WorldConfig
+  nameWithType: WorldConfig
+  fullName: ZenECS.Core.WorldConfig
+- uid: ZenECS.Core.Filter
+  commentId: T:ZenECS.Core.Filter
+  parent: ZenECS.Core
+  href: ZenECS.Core.Filter.html
+  name: Filter
+  nameWithType: Filter
+  fullName: ZenECS.Core.Filter
+- uid: ZenECS.Core.Filter.Builder
+  commentId: T:ZenECS.Core.Filter.Builder
+  parent: ZenECS.Core
+  href: ZenECS.Core.Filter.html
+  name: Filter.Builder
+  nameWithType: Filter.Builder
+  fullName: ZenECS.Core.Filter.Builder
+  spec.csharp:
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: .
+  - uid: ZenECS.Core.Filter.Builder
+    name: Builder
+    href: ZenECS.Core.Filter.Builder.html
+  spec.vb:
+  - uid: ZenECS.Core.Filter
+    name: Filter
+    href: ZenECS.Core.Filter.html
+  - name: .
+  - uid: ZenECS.Core.Filter.Builder
+    name: Builder
+    href: ZenECS.Core.Filter.Builder.html
+- uid: ZenECS.Core.QueryEnumerable`1
+  commentId: T:ZenECS.Core.QueryEnumerable`1
+  href: ZenECS.Core.QueryEnumerable-1.html
+  name: QueryEnumerable<T1>
+  nameWithType: QueryEnumerable<T1>
+  fullName: ZenECS.Core.QueryEnumerable<T1>
+  nameWithType.vb: QueryEnumerable(Of T1)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1)
+  name.vb: QueryEnumerable(Of T1)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`1
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-1.html
+  - name: <
+  - name: T1
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`1
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable`1.Result
+  commentId: T:ZenECS.Core.QueryEnumerable`1.Result
+  parent: ZenECS.Core
+  href: ZenECS.Core.QueryEnumerable-1.html
+  name: QueryEnumerable<T1>.Result
+  nameWithType: QueryEnumerable<T1>.Result
+  fullName: ZenECS.Core.QueryEnumerable<T1>.Result
+  nameWithType.vb: QueryEnumerable(Of T1).Result
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1).Result
+  name.vb: QueryEnumerable(Of T1).Result
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`1
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-1.html
+  - name: <
+  - name: T1
+  - name: '>'
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`1.Result
+    name: Result
+    href: ZenECS.Core.QueryEnumerable-1.Result.html
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`1
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: )
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`1.Result
+    name: Result
+    href: ZenECS.Core.QueryEnumerable-1.Result.html
+- uid: ZenECS.Core.QueryEnumerable`1.Enumerator
+  commentId: T:ZenECS.Core.QueryEnumerable`1.Enumerator
+  parent: ZenECS.Core
+  href: ZenECS.Core.QueryEnumerable-1.html
+  name: QueryEnumerable<T1>.Enumerator
+  nameWithType: QueryEnumerable<T1>.Enumerator
+  fullName: ZenECS.Core.QueryEnumerable<T1>.Enumerator
+  nameWithType.vb: QueryEnumerable(Of T1).Enumerator
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1).Enumerator
+  name.vb: QueryEnumerable(Of T1).Enumerator
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`1
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-1.html
+  - name: <
+  - name: T1
+  - name: '>'
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`1.Enumerator
+    name: Enumerator
+    href: ZenECS.Core.QueryEnumerable-1.Enumerator.html
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`1
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: )
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`1.Enumerator
+    name: Enumerator
+    href: ZenECS.Core.QueryEnumerable-1.Enumerator.html
+- uid: ZenECS.Core.QueryEnumerable`2
+  commentId: T:ZenECS.Core.QueryEnumerable`2
+  href: ZenECS.Core.QueryEnumerable-2.html
+  name: QueryEnumerable<T1, T2>
+  nameWithType: QueryEnumerable<T1, T2>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2>
+  nameWithType.vb: QueryEnumerable(Of T1, T2)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2)
+  name.vb: QueryEnumerable(Of T1, T2)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`2
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-2.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`2
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable`2.Result
+  commentId: T:ZenECS.Core.QueryEnumerable`2.Result
+  parent: ZenECS.Core
+  href: ZenECS.Core.QueryEnumerable-2.html
+  name: QueryEnumerable<T1, T2>.Result
+  nameWithType: QueryEnumerable<T1, T2>.Result
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2>.Result
+  nameWithType.vb: QueryEnumerable(Of T1, T2).Result
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2).Result
+  name.vb: QueryEnumerable(Of T1, T2).Result
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`2
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-2.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: '>'
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`2.Result
+    name: Result
+    href: ZenECS.Core.QueryEnumerable-2.Result.html
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`2
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`2.Result
+    name: Result
+    href: ZenECS.Core.QueryEnumerable-2.Result.html
+- uid: ZenECS.Core.QueryEnumerable`2.Enumerator
+  commentId: T:ZenECS.Core.QueryEnumerable`2.Enumerator
+  parent: ZenECS.Core
+  href: ZenECS.Core.QueryEnumerable-2.html
+  name: QueryEnumerable<T1, T2>.Enumerator
+  nameWithType: QueryEnumerable<T1, T2>.Enumerator
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2>.Enumerator
+  nameWithType.vb: QueryEnumerable(Of T1, T2).Enumerator
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2).Enumerator
+  name.vb: QueryEnumerable(Of T1, T2).Enumerator
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`2
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-2.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: '>'
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`2.Enumerator
+    name: Enumerator
+    href: ZenECS.Core.QueryEnumerable-2.Enumerator.html
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`2
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`2.Enumerator
+    name: Enumerator
+    href: ZenECS.Core.QueryEnumerable-2.Enumerator.html
+- uid: ZenECS.Core.QueryEnumerable`3
+  commentId: T:ZenECS.Core.QueryEnumerable`3
+  href: ZenECS.Core.QueryEnumerable-3.html
+  name: QueryEnumerable<T1, T2, T3>
+  nameWithType: QueryEnumerable<T1, T2, T3>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3>
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3)
+  name.vb: QueryEnumerable(Of T1, T2, T3)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`3
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-3.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`3
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-3.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable`3.Result
+  commentId: T:ZenECS.Core.QueryEnumerable`3.Result
+  parent: ZenECS.Core
+  href: ZenECS.Core.QueryEnumerable-3.html
+  name: QueryEnumerable<T1, T2, T3>.Result
+  nameWithType: QueryEnumerable<T1, T2, T3>.Result
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3>.Result
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3).Result
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3).Result
+  name.vb: QueryEnumerable(Of T1, T2, T3).Result
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`3
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-3.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: '>'
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`3.Result
+    name: Result
+    href: ZenECS.Core.QueryEnumerable-3.Result.html
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`3
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-3.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: )
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`3.Result
+    name: Result
+    href: ZenECS.Core.QueryEnumerable-3.Result.html
+- uid: ZenECS.Core.QueryEnumerable`3.Enumerator
+  commentId: T:ZenECS.Core.QueryEnumerable`3.Enumerator
+  parent: ZenECS.Core
+  href: ZenECS.Core.QueryEnumerable-3.html
+  name: QueryEnumerable<T1, T2, T3>.Enumerator
+  nameWithType: QueryEnumerable<T1, T2, T3>.Enumerator
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3>.Enumerator
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3).Enumerator
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3).Enumerator
+  name.vb: QueryEnumerable(Of T1, T2, T3).Enumerator
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`3
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-3.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: '>'
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`3.Enumerator
+    name: Enumerator
+    href: ZenECS.Core.QueryEnumerable-3.Enumerator.html
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`3
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-3.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: )
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`3.Enumerator
+    name: Enumerator
+    href: ZenECS.Core.QueryEnumerable-3.Enumerator.html
+- uid: ZenECS.Core.QueryEnumerable`4
+  commentId: T:ZenECS.Core.QueryEnumerable`4
+  href: ZenECS.Core.QueryEnumerable-4.html
+  name: QueryEnumerable<T1, T2, T3, T4>
+  nameWithType: QueryEnumerable<T1, T2, T3, T4>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4>
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4)
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`4
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-4.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`4
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-4.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable`4.Result
+  commentId: T:ZenECS.Core.QueryEnumerable`4.Result
+  parent: ZenECS.Core
+  href: ZenECS.Core.QueryEnumerable-4.html
+  name: QueryEnumerable<T1, T2, T3, T4>.Result
+  nameWithType: QueryEnumerable<T1, T2, T3, T4>.Result
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4>.Result
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4).Result
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4).Result
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4).Result
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`4
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-4.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: '>'
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`4.Result
+    name: Result
+    href: ZenECS.Core.QueryEnumerable-4.Result.html
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`4
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-4.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: )
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`4.Result
+    name: Result
+    href: ZenECS.Core.QueryEnumerable-4.Result.html
+- uid: ZenECS.Core.QueryEnumerable`4.Enumerator
+  commentId: T:ZenECS.Core.QueryEnumerable`4.Enumerator
+  parent: ZenECS.Core
+  href: ZenECS.Core.QueryEnumerable-4.html
+  name: QueryEnumerable<T1, T2, T3, T4>.Enumerator
+  nameWithType: QueryEnumerable<T1, T2, T3, T4>.Enumerator
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4>.Enumerator
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4).Enumerator
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4).Enumerator
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4).Enumerator
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`4
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-4.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: '>'
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`4.Enumerator
+    name: Enumerator
+    href: ZenECS.Core.QueryEnumerable-4.Enumerator.html
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`4
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-4.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: )
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`4.Enumerator
+    name: Enumerator
+    href: ZenECS.Core.QueryEnumerable-4.Enumerator.html
+- uid: ZenECS.Core.QueryEnumerable`5
+  commentId: T:ZenECS.Core.QueryEnumerable`5
+  href: ZenECS.Core.QueryEnumerable-5.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5>
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5>
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5)
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`5
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-5.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`5
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-5.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable`5.Result
+  commentId: T:ZenECS.Core.QueryEnumerable`5.Result
+  parent: ZenECS.Core
+  href: ZenECS.Core.QueryEnumerable-5.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5>.Result
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5>.Result
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5>.Result
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5).Result
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5).Result
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5).Result
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`5
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-5.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: '>'
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`5.Result
+    name: Result
+    href: ZenECS.Core.QueryEnumerable-5.Result.html
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`5
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-5.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: )
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`5.Result
+    name: Result
+    href: ZenECS.Core.QueryEnumerable-5.Result.html
+- uid: ZenECS.Core.QueryEnumerable`5.Enumerator
+  commentId: T:ZenECS.Core.QueryEnumerable`5.Enumerator
+  parent: ZenECS.Core
+  href: ZenECS.Core.QueryEnumerable-5.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5>.Enumerator
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5>.Enumerator
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5>.Enumerator
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5).Enumerator
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5).Enumerator
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5).Enumerator
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`5
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-5.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: '>'
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`5.Enumerator
+    name: Enumerator
+    href: ZenECS.Core.QueryEnumerable-5.Enumerator.html
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`5
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-5.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: )
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`5.Enumerator
+    name: Enumerator
+    href: ZenECS.Core.QueryEnumerable-5.Enumerator.html
+- uid: ZenECS.Core.QueryEnumerable`6
+  commentId: T:ZenECS.Core.QueryEnumerable`6
+  href: ZenECS.Core.QueryEnumerable-6.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5, T6>
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6>
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6)
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`6
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-6.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`6
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-6.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable`6.Result
+  commentId: T:ZenECS.Core.QueryEnumerable`6.Result
+  parent: ZenECS.Core
+  href: ZenECS.Core.QueryEnumerable-6.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5, T6>.Result
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6>.Result
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6>.Result
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6).Result
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6).Result
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6).Result
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`6
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-6.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: '>'
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`6.Result
+    name: Result
+    href: ZenECS.Core.QueryEnumerable-6.Result.html
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`6
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-6.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: )
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`6.Result
+    name: Result
+    href: ZenECS.Core.QueryEnumerable-6.Result.html
+- uid: ZenECS.Core.QueryEnumerable`6.Enumerator
+  commentId: T:ZenECS.Core.QueryEnumerable`6.Enumerator
+  parent: ZenECS.Core
+  href: ZenECS.Core.QueryEnumerable-6.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5, T6>.Enumerator
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6>.Enumerator
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6>.Enumerator
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6).Enumerator
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6).Enumerator
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6).Enumerator
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`6
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-6.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: '>'
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`6.Enumerator
+    name: Enumerator
+    href: ZenECS.Core.QueryEnumerable-6.Enumerator.html
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`6
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-6.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: )
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`6.Enumerator
+    name: Enumerator
+    href: ZenECS.Core.QueryEnumerable-6.Enumerator.html
+- uid: ZenECS.Core.QueryEnumerable`7
+  commentId: T:ZenECS.Core.QueryEnumerable`7
+  href: ZenECS.Core.QueryEnumerable-7.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7)
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`7
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-7.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`7
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-7.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable`7.Result
+  commentId: T:ZenECS.Core.QueryEnumerable`7.Result
+  parent: ZenECS.Core
+  href: ZenECS.Core.QueryEnumerable-7.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>.Result
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>.Result
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>.Result
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7).Result
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7).Result
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7).Result
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`7
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-7.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: '>'
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`7.Result
+    name: Result
+    href: ZenECS.Core.QueryEnumerable-7.Result.html
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`7
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-7.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: )
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`7.Result
+    name: Result
+    href: ZenECS.Core.QueryEnumerable-7.Result.html
+- uid: ZenECS.Core.QueryEnumerable`7.Enumerator
+  commentId: T:ZenECS.Core.QueryEnumerable`7.Enumerator
+  parent: ZenECS.Core
+  href: ZenECS.Core.QueryEnumerable-7.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>.Enumerator
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>.Enumerator
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6, T7>.Enumerator
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7).Enumerator
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7).Enumerator
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7).Enumerator
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`7
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-7.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: '>'
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`7.Enumerator
+    name: Enumerator
+    href: ZenECS.Core.QueryEnumerable-7.Enumerator.html
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`7
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-7.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: )
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`7.Enumerator
+    name: Enumerator
+    href: ZenECS.Core.QueryEnumerable-7.Enumerator.html
+- uid: ZenECS.Core.QueryEnumerable`8
+  commentId: T:ZenECS.Core.QueryEnumerable`8
+  href: ZenECS.Core.QueryEnumerable-8.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7, T8)
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7, T8)
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7, T8)
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`8
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-8.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: ','
+  - name: " "
+  - name: T8
+  - name: '>'
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`8
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-8.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: ','
+  - name: " "
+  - name: T8
+  - name: )
+- uid: ZenECS.Core.QueryEnumerable`8.Result
+  commentId: T:ZenECS.Core.QueryEnumerable`8.Result
+  parent: ZenECS.Core
+  href: ZenECS.Core.QueryEnumerable-8.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>.Result
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>.Result
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>.Result
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7, T8).Result
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7, T8).Result
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7, T8).Result
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`8
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-8.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: ','
+  - name: " "
+  - name: T8
+  - name: '>'
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`8.Result
+    name: Result
+    href: ZenECS.Core.QueryEnumerable-8.Result.html
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`8
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-8.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: ','
+  - name: " "
+  - name: T8
+  - name: )
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`8.Result
+    name: Result
+    href: ZenECS.Core.QueryEnumerable-8.Result.html
+- uid: ZenECS.Core.QueryEnumerable`8.Enumerator
+  commentId: T:ZenECS.Core.QueryEnumerable`8.Enumerator
+  parent: ZenECS.Core
+  href: ZenECS.Core.QueryEnumerable-8.html
+  name: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>.Enumerator
+  nameWithType: QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>.Enumerator
+  fullName: ZenECS.Core.QueryEnumerable<T1, T2, T3, T4, T5, T6, T7, T8>.Enumerator
+  nameWithType.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7, T8).Enumerator
+  fullName.vb: ZenECS.Core.QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7, T8).Enumerator
+  name.vb: QueryEnumerable(Of T1, T2, T3, T4, T5, T6, T7, T8).Enumerator
+  spec.csharp:
+  - uid: ZenECS.Core.QueryEnumerable`8
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-8.html
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: ','
+  - name: " "
+  - name: T8
+  - name: '>'
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`8.Enumerator
+    name: Enumerator
+    href: ZenECS.Core.QueryEnumerable-8.Enumerator.html
+  spec.vb:
+  - uid: ZenECS.Core.QueryEnumerable`8
+    name: QueryEnumerable
+    href: ZenECS.Core.QueryEnumerable-8.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: ','
+  - name: " "
+  - name: T8
+  - name: )
+  - name: .
+  - uid: ZenECS.Core.QueryEnumerable`8.Enumerator
+    name: Enumerator
+    href: ZenECS.Core.QueryEnumerable-8.Enumerator.html
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html

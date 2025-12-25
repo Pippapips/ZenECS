@@ -1,41 +1,206 @@
-# ZenECS Mono-Repo Template
+# ZenECS
 
-This repository hosts **ZenECS Core** and **ZenECS Adapter for Unity** in a single Git mono-repo.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![.NET Standard](https://img.shields.io/badge/.NET-Standard%202.1-blue.svg)](https://docs.microsoft.com/en-us/dotnet/standard/net-standard)
+[![Unity](https://img.shields.io/badge/Unity-2021.3%2B-black.svg)](https://unity.com/)
 
-- UPM (Git URL): `Packages/com.zenecs.core`, `Packages/com.zenecs.adapter.unity`
-- NuGet (Core): `src/ZenECS.Core/ZenECS.Core.csproj` links Core sources from UPM runtime
-- Split tags (optional): `upm-core-x.y.z`, `upm-adapter-x.y.z`
+> **A pure C# Entity-Component-System framework built for Clean Architecture and Reactive Programming.**
 
-## Install (Unity via Git URL)
+ZenECS is a modern ECS runtime that helps you build maintainable, testable, and scalable game architectures. Whether you're building Unity games, standalone .NET applications, or server simulations, ZenECS provides the foundation for clean code that scales.
 
-```jsonc
-{
-  "dependencies": {
-    "com.zenecs.core": "https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.core#v1.0.0",
-    "com.zenecs.adapter.unity": "https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.adapter.unity#v1.0.0"
-  }
-}
-```
+---
 
-## Install (Unity via split tags)
+## 🎯 What is ZenECS?
 
-```jsonc
-{
-  "dependencies": {
-    "com.zenecs.core": "https://github.com/Pippapips/ZenECS.git#upm-core-1.0.0",
-    "com.zenecs.adapter.unity": "https://github.com/Pippapips/ZenECS.git#upm-adapter-1.0.0"
-  }
-}
-```
+ZenECS is an **Entity-Component-System (ECS)** framework that separates your game logic into three distinct layers:
 
-## Install (NuGet)
+- **Data Layer** (Components) — Pure data structures, no logic
+- **Simulation Layer** (Systems) — Pure functions that transform component data
+- **Presentation Layer** (Binders) — Reactive view updates that respond to data changes
+
+Unlike traditional OOP architectures, ZenECS enforces **unidirectional data flow**: Views publish messages → Systems process and mutate state → Presentation reads (read-only). This eliminates circular dependencies and makes your codebase predictable and testable.
+
+---
+
+## ✨ Why ZenECS?
+
+### 🏗️ Clean Architecture by Design
+
+**Stop fighting your codebase.** ZenECS enforces clear boundaries between layers:
+
+- ✅ **View never writes directly** — All mutations happen through messages and systems
+- ✅ **Systems are pure functions** — Easy to test, reason about, and debug
+- ✅ **Multi-world isolation** — Perfect for split-screen, networking, or modular game modes
+- ✅ **Zero dependencies** — Pure .NET Standard 2.1, works with Unity, Godot, or standalone .NET
+- ✅ **Testable by default** — Minimal public API, sealed scopes, clear lifecycle
+
+### ⚡ Reactive Programming Built-In
+
+**Build event-driven architectures** without the complexity:
+
+- ✅ **Message Bus** — Struct-based pub/sub with deterministic delivery
+- ✅ **ComponentDelta Bindings** — Automatic change detection and reactive view updates
+- ✅ **Unidirectional Flow** — View → Message → System → State → Presentation
+- ✅ **UniRx Integration** — Optional bridge to `IObservable<T>` for reactive composition
+
+### 🎯 Production Ready
+
+**Built for real projects:**
+
+- ✅ **Deterministic Stepping** — Reproducible simulations for networking and replays
+- ✅ **Command Buffers** — Thread-safe batching of structural changes
+- ✅ **Snapshot I/O** — Save/load with version migrations
+- ✅ **Thread Safety** — Concurrent world indexing built-in
+
+---
+
+## 🚀 Quick Start
+
+### Unity (Recommended)
+
+1. **Install via Package Manager:**
+   ```json
+   {
+     "dependencies": {
+       "com.zenecs.core": "https://github.com/Pippapips/ZenECS_deprecated.git?path=Packages/com.zenecs.core#v1.0.0",
+       "com.zenecs.adapter.unity": "https://github.com/Pippapips/ZenECS_deprecated.git?path=Packages/com.zenecs.adapter.unity#v1.0.0"
+     }
+   }
+   ```
+
+2. **Add EcsDriver to your scene:**
+   ```csharp
+   using ZenECS.Adapter.Unity;
+   using ZenECS.Core;
+   
+   // Kernel is automatically created
+   var kernel = KernelLocator.Current;
+   var world = kernel.CreateWorld("GameWorld", setAsCurrent: true);
+   ```
+
+3. **Create a system:**
+   ```csharp
+   [FixedGroup]
+   public sealed class MoveSystem : ISystem
+   {
+       public void Run(IWorld w, float dt)
+       {
+           using var cmd = w.BeginWrite();
+           foreach (var (e, pos, vel) in w.Query<Position, Velocity>())
+           {
+               cmd.ReplaceComponent(e, new Position(
+                   pos.X + vel.X * dt,
+                   pos.Y + vel.Y * dt
+               ));
+           }
+       }
+   }
+   ```
+
+4. **Register and run:**
+   ```csharp
+   world.AddSystems([new MoveSystem()]);
+   // EcsDriver automatically calls kernel.BeginFrame/FixedStep/LateFrame
+   ```
+
+### .NET (Standalone)
 
 ```bash
 dotnet add package ZenECS.Core --version 1.0.0
 ```
 
-## Release
-- Tag `core-vX.Y.Z` to publish NuGet (CI).
-- Run the **UPM Split & Tag** workflow with versions to create `upm-core-*` / `upm-adapter-*` tags.
+```csharp
+using ZenECS.Core;
+
+// Create kernel and world
+var kernel = new Kernel();
+var world = kernel.CreateWorld("Game");
+
+// Register systems
+world.AddSystems([new MoveSystem()]);
+
+// Game loop
+while (running)
+{
+    float dt = GetDeltaTime();
+    kernel.PumpAndLateFrame(dt, fixedDelta: 1f/60f, maxSubStepsPerFrame: 4);
+}
+```
+
+---
+
+## 📦 Packages
+
+This repository contains two packages:
+
+### [ZenECS Core](../Packages/com.zenecs.core/README.md)
+The engine-agnostic ECS runtime. Works with Unity, Godot, or standalone .NET applications.
+
+**Key Features:**
+- Multi-world kernel with deterministic stepping
+- Message bus for event-driven architecture
+- ComponentDelta bindings for reactive views
+- Command buffers for thread-safe batching
+- Snapshot I/O with migrations
+
+### [ZenECS Adapter Unity](../Packages/com.zenecs.adapter.unity/README.md)
+Optional Unity integration layer. Bridges ZenECS with Unity's lifecycle and editor tools.
+
+**Key Features:**
+- `EcsDriver` for automatic kernel lifecycle management
+- `EntityLink` for GameObject ↔ Entity binding
+- `EntityBlueprint` for ScriptableObject-based entity spawning
+- Editor tools (ECS Explorer, custom inspectors)
+- UniRx and Zenject integration
+
+---
+
+## 📚 Documentation
+
+- **[Core Documentation](../Packages/com.zenecs.core/README.md)** — Complete API reference and concepts
+- **[Unity Adapter Documentation](../Packages/com.zenecs.adapter.unity/README.md)** — Unity-specific integration guide
+- **[Full Documentation](../Docs/README.md)** — Comprehensive guides and tutorials
+
+---
+
+## 🎓 Learn More
+
+### Core Concepts
+
+- **Entities** — Containers for components
+- **Components** — Pure data structures (structs)
+- **Systems** — Pure functions that transform component data
+- **Messages** — Event-driven communication between layers
+- **Binders** — Reactive view updates based on component changes
+
+### Architecture Patterns
+
+- **View → Message → System → State** — Unidirectional data flow
+- **Multi-World** — Isolated simulation spaces
+- **Command Buffers** — Batch structural changes
+- **ComponentDelta** — Automatic change detection
+
+---
+
+## 🔗 Quick Links
+
+- **[Core README](../Packages/com.zenecs.core/README.md)** — Detailed Core documentation
+- **[Adapter Unity README](../Packages/com.zenecs.adapter.unity/README.md)** — Unity integration guide
+- **[Documentation Index](../Docs/README.md)** — Full documentation
+- **[Samples](../Packages/com.zenecs.core/Samples~)** — Example projects
+
+---
+
+## 📄 License
 
 MIT © Pippapips Limited
+
+---
+
+## 🚦 Status
+
+**Release Candidate** — 1.0 APIs are locked. Documentation and samples are being finalized.
+
+---
+
+**Ready to build better architectures?** Start with the [Core README](../Packages/com.zenecs.core/README.md) or [Unity Adapter README](../Packages/com.zenecs.adapter.unity/README.md) for detailed guides.

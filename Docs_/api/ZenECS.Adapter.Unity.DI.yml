@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity.DI
+  commentId: N:ZenECS.Adapter.Unity.DI
+  id: ZenECS.Adapter.Unity.DI
+  children:
+  - ZenECS.Adapter.Unity.DI.ProjectInstaller
+  langs:
+  - csharp
+  - vb
+  name: ZenECS.Adapter.Unity.DI
+  nameWithType: ZenECS.Adapter.Unity.DI
+  fullName: ZenECS.Adapter.Unity.DI
+  type: Namespace
+  assemblies:
+  - ZenECS.Adapter.Unity
+references:
+- uid: ZenECS.Adapter.Unity.DI.ProjectInstaller
+  commentId: T:ZenECS.Adapter.Unity.DI.ProjectInstaller
+  href: ZenECS.Adapter.Unity.DI.ProjectInstaller.html
+  name: ProjectInstaller
+  nameWithType: ProjectInstaller
+  fullName: ZenECS.Adapter.Unity.DI.ProjectInstaller

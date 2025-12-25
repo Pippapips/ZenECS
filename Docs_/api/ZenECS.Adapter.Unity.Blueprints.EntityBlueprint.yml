@@ -1,0 +1,1200 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprint
+  id: EntityBlueprint
+  parent: ZenECS.Adapter.Unity.Blueprints
+  children:
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Data
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Spawn(ZenECS.Core.IWorld,ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver,System.Action{ZenECS.Core.Entity})
+  langs:
+  - csharp
+  - vb
+  name: EntityBlueprint
+  nameWithType: EntityBlueprint
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint
+  type: Class
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprint.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: EntityBlueprint
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprint.cs
+    startLine: 53
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Blueprints
+  summary: Unity-side blueprint for spawning preconfigured entities.
+  remarks: >-
+    <p>
+
+    An <xref href="ZenECS.Adapter.Unity.Blueprints.EntityBlueprint" data-throw-if-not-resolved="false"></xref> captures a snapshot of ECS component
+
+    data (<xref href="ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData" data-throw-if-not-resolved="false"></xref>), plus a set of context assets
+
+    and binders that should be attached when the entity is created.
+
+    </p>
+
+    <p>
+
+    Typical usage:
+
+    </p>
+
+    <ol><li>
+
+    Author the component snapshot and contexts in the inspector.
+
+    </li><li>
+
+    At runtime, call <xref href="ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Spawn(ZenECS.Core.IWorld%2cZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver%2cSystem.Action%7bZenECS.Core.Entity%7d)" data-throw-if-not-resolved="false"></xref> with a target world to enqueue
+
+    creation of the entity and application of the snapshot.
+
+    </li><li>
+
+    Optionally use <code class="paramref">sharedContextResolver</code> to resolve
+
+    shared contexts when spawning.
+
+    </li></ol>
+  example: []
+  syntax:
+    content: >-
+      [CreateAssetMenu(menuName = "ZenECS/Entity Blueprint", fileName = "EntityBlueprint")]
+
+      public sealed class EntityBlueprint : ScriptableObject
+    content.vb: >-
+      <CreateAssetMenu(menuName:="ZenECS/Entity Blueprint", fileName:="EntityBlueprint")>
+
+      Public NotInheritable Class EntityBlueprint Inherits ScriptableObject
+  inheritance:
+  - System.Object
+  - UnityEngine.Object
+  - UnityEngine.ScriptableObject
+  inheritedMembers:
+  - UnityEngine.Object.name
+  - UnityEngine.Object.FindObjectOfType``1(System.Boolean)
+  - UnityEngine.Object.FindFirstObjectByType``1(UnityEngine.FindObjectsInactive)
+  - UnityEngine.Object.Destroy(UnityEngine.Object)
+  - UnityEngine.Object.Destroy(UnityEngine.GameObject)
+  - UnityEngine.Object.DestroyImmediate(UnityEngine.Object)
+  - UnityEngine.Object.DestroyImmediate(UnityEngine.GameObject)
+  - UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)
+  - UnityEngine.Object.DontDestroyOnLoad(UnityEngine.GameObject)
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  attributes:
+  - type: UnityEngine.CreateAssetMenuAttribute
+    ctor: UnityEngine.CreateAssetMenuAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: menuName
+      type: System.String
+      value: ZenECS/Entity Blueprint
+    - name: fileName
+      type: System.String
+      value: EntityBlueprint
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Data
+  commentId: P:ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Data
+  id: Data
+  parent: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint
+  langs:
+  - csharp
+  - vb
+  name: Data
+  nameWithType: EntityBlueprint.Data
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Data
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprint.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Data
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprint.cs
+    startLine: 67
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Blueprints
+  summary: Gets the serialized component snapshot associated with this blueprint.
+  remarks: >-
+    The returned <xref href="ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData" data-throw-if-not-resolved="false"></xref> contains a list of
+
+    component entries encoded as JSON strings. It is consumed by
+
+    <xref href="ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.ApplyTo(ZenECS.Core.IWorld%2cZenECS.Core.Entity%2cZenECS.Core.ICommandBuffer)" data-throw-if-not-resolved="false"></xref> during entity creation.
+  example: []
+  syntax:
+    content: public EntityBlueprintData Data { get; }
+    parameters: []
+    return:
+      type: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+    content.vb: Public ReadOnly Property Data As EntityBlueprintData
+  overload: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Data*
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Spawn(ZenECS.Core.IWorld,ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver,System.Action{ZenECS.Core.Entity})
+  commentId: M:ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Spawn(ZenECS.Core.IWorld,ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver,System.Action{ZenECS.Core.Entity})
+  id: Spawn(ZenECS.Core.IWorld,ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver,System.Action{ZenECS.Core.Entity})
+  parent: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint
+  langs:
+  - csharp
+  - vb
+  name: Spawn(IWorld, ISharedContextResolver?, Action<Entity>?)
+  nameWithType: EntityBlueprint.Spawn(IWorld, ISharedContextResolver?, Action<Entity>?)
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Spawn(ZenECS.Core.IWorld, ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver?, System.Action<ZenECS.Core.Entity>?)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprint.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Spawn
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprint.cs
+    startLine: 130
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Blueprints
+  summary: >-
+    Spawns an entity and applies the blueprint's component snapshot,
+
+    contexts, and binders.
+  remarks: >-
+    <p>
+
+    This method enqueues an <xref href="ZenECS.Core.ExternalCommand.CreateEntity(System.Action%7bZenECS.Core.Entity%2cZenECS.Core.ICommandBuffer%7d)" data-throw-if-not-resolved="false"></xref>
+
+    into the world rather than creating the entity immediately. The
+
+    actual creation and attachment happen when the world's external
+
+    command queue is processed.
+
+    </p>
+
+    <p>
+
+    The spawn pipeline inside the command:
+
+    </p>
+
+    <ol><li>
+
+    Applies the component snapshot via <xref href="ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.ApplyTo(ZenECS.Core.IWorld%2cZenECS.Core.Entity%2cZenECS.Core.ICommandBuffer)" data-throw-if-not-resolved="false"></xref>.
+
+    </li><li>
+
+    Registers contexts from <xref href="ZenECS.Adapter.Unity.Blueprints.EntityBlueprint._contextAssets" data-throw-if-not-resolved="false"></xref>:
+
+    <ul><li>
+
+    <xref href="ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset" data-throw-if-not-resolved="false"></xref>: resolved via
+
+    <code class="paramref">sharedContextResolver</code> and registered using
+
+    IWorld.RegisterContext(Entity, IContext).
+
+    </li><li>
+
+    <xref href="ZenECS.Adapter.Unity.Binding.Contexts.Assets.PerEntityContextAsset" data-throw-if-not-resolved="false"></xref>: creates a fresh context and
+
+    registers it for the entity.
+
+    </li></ul>
+
+    </li><li>
+
+    Creates binders from <xref href="ZenECS.Adapter.Unity.Blueprints.EntityBlueprint._binderAssets" data-throw-if-not-resolved="false"></xref>: each
+
+    <xref href="ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset" data-throw-if-not-resolved="false"></xref> creates a fresh binder and attaches it
+
+    to the entity.
+
+    </li><li>
+
+    Invokes <code class="paramref">onCreated</code> if provided.
+
+    </li></ol>
+  example: []
+  syntax:
+    content: public void Spawn(IWorld world, ISharedContextResolver? sharedContextResolver, Action<Entity>? onCreated = null)
+    parameters:
+    - id: world
+      type: ZenECS.Core.IWorld
+      description: Target <xref href="ZenECS.Core.IWorld" data-throw-if-not-resolved="false"></xref> where the new entity will be created.
+    - id: sharedContextResolver
+      type: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+      description: >-
+        Optional shared-context resolver used to resolve
+
+        <xref href="ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset" data-throw-if-not-resolved="false"></xref> markers into concrete
+
+        <xref href="ZenECS.Core.Binding.IContext" data-throw-if-not-resolved="false"></xref> instances. When <code>null</code>, shared context
+
+        markers are ignored.
+    - id: onCreated
+      type: System.Action{ZenECS.Core.Entity}
+      description: >-
+        Optional callback invoked after the entity has been created and all
+
+        components, contexts, and binders have been applied.
+    content.vb: Public Sub Spawn(world As IWorld, sharedContextResolver As ISharedContextResolver, onCreated As Action(Of Entity) = Nothing)
+  overload: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Spawn*
+  nameWithType.vb: EntityBlueprint.Spawn(IWorld, ISharedContextResolver, Action(Of Entity))
+  fullName.vb: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Spawn(ZenECS.Core.IWorld, ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver, System.Action(Of ZenECS.Core.Entity))
+  name.vb: Spawn(IWorld, ISharedContextResolver, Action(Of Entity))
+references:
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprint
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.html
+  name: EntityBlueprint
+  nameWithType: EntityBlueprint
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+  parent: ZenECS.Adapter.Unity.Blueprints
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html
+  name: EntityBlueprintData
+  nameWithType: EntityBlueprintData
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Spawn(ZenECS.Core.IWorld,ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver,System.Action{ZenECS.Core.Entity})
+  commentId: M:ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Spawn(ZenECS.Core.IWorld,ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver,System.Action{ZenECS.Core.Entity})
+  isExternal: true
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprint_Spawn_ZenECS_Core_IWorld_ZenECS_Adapter_Unity_Binding_Contexts_ISharedContextResolver_System_Action_ZenECS_Core_Entity__
+  name: Spawn(IWorld, ISharedContextResolver, Action<Entity>)
+  nameWithType: EntityBlueprint.Spawn(IWorld, ISharedContextResolver, Action<Entity>)
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Spawn(ZenECS.Core.IWorld, ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver, System.Action<ZenECS.Core.Entity>)
+  nameWithType.vb: EntityBlueprint.Spawn(IWorld, ISharedContextResolver, Action(Of Entity))
+  fullName.vb: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Spawn(ZenECS.Core.IWorld, ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver, System.Action(Of ZenECS.Core.Entity))
+  name.vb: Spawn(IWorld, ISharedContextResolver, Action(Of Entity))
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Spawn(ZenECS.Core.IWorld,ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver,System.Action{ZenECS.Core.Entity})
+    name: Spawn
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprint_Spawn_ZenECS_Core_IWorld_ZenECS_Adapter_Unity_Binding_Contexts_ISharedContextResolver_System_Action_ZenECS_Core_Entity__
+  - name: (
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+    name: ISharedContextResolver
+    href: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Spawn(ZenECS.Core.IWorld,ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver,System.Action{ZenECS.Core.Entity})
+    name: Spawn
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprint_Spawn_ZenECS_Core_IWorld_ZenECS_Adapter_Unity_Binding_Contexts_ISharedContextResolver_System_Action_ZenECS_Core_Entity__
+  - name: (
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+    name: ISharedContextResolver
+    href: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+  - name: )
+- uid: ZenECS.Adapter.Unity.Blueprints
+  commentId: N:ZenECS.Adapter.Unity.Blueprints
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.Blueprints
+  nameWithType: ZenECS.Adapter.Unity.Blueprints
+  fullName: ZenECS.Adapter.Unity.Blueprints
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints
+    name: Blueprints
+    href: ZenECS.Adapter.Unity.Blueprints.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints
+    name: Blueprints
+    href: ZenECS.Adapter.Unity.Blueprints.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: UnityEngine.Object
+  commentId: T:UnityEngine.Object
+  parent: UnityEngine
+  href: UnityEngine.Object.html
+  name: Object
+  nameWithType: Object
+  fullName: UnityEngine.Object
+- uid: UnityEngine.ScriptableObject
+  commentId: T:UnityEngine.ScriptableObject
+  parent: UnityEngine
+  href: UnityEngine.ScriptableObject.html
+  name: ScriptableObject
+  nameWithType: ScriptableObject
+  fullName: UnityEngine.ScriptableObject
+- uid: UnityEngine.Object.name
+  commentId: P:UnityEngine.Object.name
+  parent: UnityEngine.Object
+  href: UnityEngine.Object.html#UnityEngine_Object_name
+  name: name
+  nameWithType: Object.name
+  fullName: UnityEngine.Object.name
+- uid: UnityEngine.Object.FindObjectOfType``1(System.Boolean)
+  commentId: M:UnityEngine.Object.FindObjectOfType``1(System.Boolean)
+  parent: UnityEngine.Object
+  isExternal: true
+  href: UnityEngine.Object.html#UnityEngine_Object_FindObjectOfType__1_System_Boolean_
+  name: FindObjectOfType<T>(bool)
+  nameWithType: Object.FindObjectOfType<T>(bool)
+  fullName: UnityEngine.Object.FindObjectOfType<T>(bool)
+  nameWithType.vb: Object.FindObjectOfType(Of T)(Boolean)
+  fullName.vb: UnityEngine.Object.FindObjectOfType(Of T)(Boolean)
+  name.vb: FindObjectOfType(Of T)(Boolean)
+  spec.csharp:
+  - uid: UnityEngine.Object.FindObjectOfType``1(System.Boolean)
+    name: FindObjectOfType
+    href: UnityEngine.Object.html#UnityEngine_Object_FindObjectOfType__1_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: UnityEngine.Object.FindObjectOfType``1(System.Boolean)
+    name: FindObjectOfType
+    href: UnityEngine.Object.html#UnityEngine_Object_FindObjectOfType__1_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: UnityEngine.Object.FindFirstObjectByType``1(UnityEngine.FindObjectsInactive)
+  commentId: M:UnityEngine.Object.FindFirstObjectByType``1(UnityEngine.FindObjectsInactive)
+  parent: UnityEngine.Object
+  href: UnityEngine.Object.html#UnityEngine_Object_FindFirstObjectByType__1_UnityEngine_FindObjectsInactive_
+  name: FindFirstObjectByType<T>(FindObjectsInactive)
+  nameWithType: Object.FindFirstObjectByType<T>(FindObjectsInactive)
+  fullName: UnityEngine.Object.FindFirstObjectByType<T>(UnityEngine.FindObjectsInactive)
+  nameWithType.vb: Object.FindFirstObjectByType(Of T)(FindObjectsInactive)
+  fullName.vb: UnityEngine.Object.FindFirstObjectByType(Of T)(UnityEngine.FindObjectsInactive)
+  name.vb: FindFirstObjectByType(Of T)(FindObjectsInactive)
+  spec.csharp:
+  - uid: UnityEngine.Object.FindFirstObjectByType``1(UnityEngine.FindObjectsInactive)
+    name: FindFirstObjectByType
+    href: UnityEngine.Object.html#UnityEngine_Object_FindFirstObjectByType__1_UnityEngine_FindObjectsInactive_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: UnityEngine.FindObjectsInactive
+    name: FindObjectsInactive
+    href: UnityEngine.FindObjectsInactive.html
+  - name: )
+  spec.vb:
+  - uid: UnityEngine.Object.FindFirstObjectByType``1(UnityEngine.FindObjectsInactive)
+    name: FindFirstObjectByType
+    href: UnityEngine.Object.html#UnityEngine_Object_FindFirstObjectByType__1_UnityEngine_FindObjectsInactive_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: UnityEngine.FindObjectsInactive
+    name: FindObjectsInactive
+    href: UnityEngine.FindObjectsInactive.html
+  - name: )
+- uid: UnityEngine.Object.Destroy(UnityEngine.Object)
+  commentId: M:UnityEngine.Object.Destroy(UnityEngine.Object)
+  parent: UnityEngine.Object
+  href: UnityEngine.Object.html#UnityEngine_Object_Destroy_UnityEngine_Object_
+  name: Destroy(Object)
+  nameWithType: Object.Destroy(Object)
+  fullName: UnityEngine.Object.Destroy(UnityEngine.Object)
+  spec.csharp:
+  - uid: UnityEngine.Object.Destroy(UnityEngine.Object)
+    name: Destroy
+    href: UnityEngine.Object.html#UnityEngine_Object_Destroy_UnityEngine_Object_
+  - name: (
+  - uid: UnityEngine.Object
+    name: Object
+    href: UnityEngine.Object.html
+  - name: )
+  spec.vb:
+  - uid: UnityEngine.Object.Destroy(UnityEngine.Object)
+    name: Destroy
+    href: UnityEngine.Object.html#UnityEngine_Object_Destroy_UnityEngine_Object_
+  - name: (
+  - uid: UnityEngine.Object
+    name: Object
+    href: UnityEngine.Object.html
+  - name: )
+- uid: UnityEngine.Object.Destroy(UnityEngine.GameObject)
+  commentId: M:UnityEngine.Object.Destroy(UnityEngine.GameObject)
+  parent: UnityEngine.Object
+  href: UnityEngine.Object.html#UnityEngine_Object_Destroy_UnityEngine_GameObject_
+  name: Destroy(GameObject)
+  nameWithType: Object.Destroy(GameObject)
+  fullName: UnityEngine.Object.Destroy(UnityEngine.GameObject)
+  spec.csharp:
+  - uid: UnityEngine.Object.Destroy(UnityEngine.GameObject)
+    name: Destroy
+    href: UnityEngine.Object.html#UnityEngine_Object_Destroy_UnityEngine_GameObject_
+  - name: (
+  - uid: UnityEngine.GameObject
+    name: GameObject
+    href: UnityEngine.GameObject.html
+  - name: )
+  spec.vb:
+  - uid: UnityEngine.Object.Destroy(UnityEngine.GameObject)
+    name: Destroy
+    href: UnityEngine.Object.html#UnityEngine_Object_Destroy_UnityEngine_GameObject_
+  - name: (
+  - uid: UnityEngine.GameObject
+    name: GameObject
+    href: UnityEngine.GameObject.html
+  - name: )
+- uid: UnityEngine.Object.DestroyImmediate(UnityEngine.Object)
+  commentId: M:UnityEngine.Object.DestroyImmediate(UnityEngine.Object)
+  parent: UnityEngine.Object
+  href: UnityEngine.Object.html#UnityEngine_Object_DestroyImmediate_UnityEngine_Object_
+  name: DestroyImmediate(Object)
+  nameWithType: Object.DestroyImmediate(Object)
+  fullName: UnityEngine.Object.DestroyImmediate(UnityEngine.Object)
+  spec.csharp:
+  - uid: UnityEngine.Object.DestroyImmediate(UnityEngine.Object)
+    name: DestroyImmediate
+    href: UnityEngine.Object.html#UnityEngine_Object_DestroyImmediate_UnityEngine_Object_
+  - name: (
+  - uid: UnityEngine.Object
+    name: Object
+    href: UnityEngine.Object.html
+  - name: )
+  spec.vb:
+  - uid: UnityEngine.Object.DestroyImmediate(UnityEngine.Object)
+    name: DestroyImmediate
+    href: UnityEngine.Object.html#UnityEngine_Object_DestroyImmediate_UnityEngine_Object_
+  - name: (
+  - uid: UnityEngine.Object
+    name: Object
+    href: UnityEngine.Object.html
+  - name: )
+- uid: UnityEngine.Object.DestroyImmediate(UnityEngine.GameObject)
+  commentId: M:UnityEngine.Object.DestroyImmediate(UnityEngine.GameObject)
+  parent: UnityEngine.Object
+  href: UnityEngine.Object.html#UnityEngine_Object_DestroyImmediate_UnityEngine_GameObject_
+  name: DestroyImmediate(GameObject)
+  nameWithType: Object.DestroyImmediate(GameObject)
+  fullName: UnityEngine.Object.DestroyImmediate(UnityEngine.GameObject)
+  spec.csharp:
+  - uid: UnityEngine.Object.DestroyImmediate(UnityEngine.GameObject)
+    name: DestroyImmediate
+    href: UnityEngine.Object.html#UnityEngine_Object_DestroyImmediate_UnityEngine_GameObject_
+  - name: (
+  - uid: UnityEngine.GameObject
+    name: GameObject
+    href: UnityEngine.GameObject.html
+  - name: )
+  spec.vb:
+  - uid: UnityEngine.Object.DestroyImmediate(UnityEngine.GameObject)
+    name: DestroyImmediate
+    href: UnityEngine.Object.html#UnityEngine_Object_DestroyImmediate_UnityEngine_GameObject_
+  - name: (
+  - uid: UnityEngine.GameObject
+    name: GameObject
+    href: UnityEngine.GameObject.html
+  - name: )
+- uid: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)
+  commentId: M:UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)
+  parent: UnityEngine.Object
+  href: UnityEngine.Object.html#UnityEngine_Object_DontDestroyOnLoad_UnityEngine_Object_
+  name: DontDestroyOnLoad(Object)
+  nameWithType: Object.DontDestroyOnLoad(Object)
+  fullName: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)
+  spec.csharp:
+  - uid: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)
+    name: DontDestroyOnLoad
+    href: UnityEngine.Object.html#UnityEngine_Object_DontDestroyOnLoad_UnityEngine_Object_
+  - name: (
+  - uid: UnityEngine.Object
+    name: Object
+    href: UnityEngine.Object.html
+  - name: )
+  spec.vb:
+  - uid: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)
+    name: DontDestroyOnLoad
+    href: UnityEngine.Object.html#UnityEngine_Object_DontDestroyOnLoad_UnityEngine_Object_
+  - name: (
+  - uid: UnityEngine.Object
+    name: Object
+    href: UnityEngine.Object.html
+  - name: )
+- uid: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.GameObject)
+  commentId: M:UnityEngine.Object.DontDestroyOnLoad(UnityEngine.GameObject)
+  parent: UnityEngine.Object
+  href: UnityEngine.Object.html#UnityEngine_Object_DontDestroyOnLoad_UnityEngine_GameObject_
+  name: DontDestroyOnLoad(GameObject)
+  nameWithType: Object.DontDestroyOnLoad(GameObject)
+  fullName: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.GameObject)
+  spec.csharp:
+  - uid: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.GameObject)
+    name: DontDestroyOnLoad
+    href: UnityEngine.Object.html#UnityEngine_Object_DontDestroyOnLoad_UnityEngine_GameObject_
+  - name: (
+  - uid: UnityEngine.GameObject
+    name: GameObject
+    href: UnityEngine.GameObject.html
+  - name: )
+  spec.vb:
+  - uid: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.GameObject)
+    name: DontDestroyOnLoad
+    href: UnityEngine.Object.html#UnityEngine_Object_DontDestroyOnLoad_UnityEngine_GameObject_
+  - name: (
+  - uid: UnityEngine.GameObject
+    name: GameObject
+    href: UnityEngine.GameObject.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: UnityEngine
+  commentId: N:UnityEngine
+  href: UnityEngine.html
+  name: UnityEngine
+  nameWithType: UnityEngine
+  fullName: UnityEngine
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.ApplyTo(ZenECS.Core.IWorld,ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer)
+  commentId: M:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.ApplyTo(ZenECS.Core.IWorld,ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer)
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprintData_ApplyTo_ZenECS_Core_IWorld_ZenECS_Core_Entity_ZenECS_Core_ICommandBuffer_
+  name: ApplyTo(IWorld, Entity, ICommandBuffer)
+  nameWithType: EntityBlueprintData.ApplyTo(IWorld, Entity, ICommandBuffer)
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.ApplyTo(ZenECS.Core.IWorld, ZenECS.Core.Entity, ZenECS.Core.ICommandBuffer)
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.ApplyTo(ZenECS.Core.IWorld,ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer)
+    name: ApplyTo
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprintData_ApplyTo_ZenECS_Core_IWorld_ZenECS_Core_Entity_ZenECS_Core_ICommandBuffer_
+  - name: (
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.ICommandBuffer
+    name: ICommandBuffer
+    href: ZenECS.Core.ICommandBuffer.html
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.ApplyTo(ZenECS.Core.IWorld,ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer)
+    name: ApplyTo
+    href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintData.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprintData_ApplyTo_ZenECS_Core_IWorld_ZenECS_Core_Entity_ZenECS_Core_ICommandBuffer_
+  - name: (
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.ICommandBuffer
+    name: ICommandBuffer
+    href: ZenECS.Core.ICommandBuffer.html
+  - name: )
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Data*
+  commentId: Overload:ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Data
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprint_Data
+  name: Data
+  nameWithType: EntityBlueprint.Data
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Data
+- uid: ZenECS.Core.IWorld
+  commentId: T:ZenECS.Core.IWorld
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorld.html
+  name: IWorld
+  nameWithType: IWorld
+  fullName: ZenECS.Core.IWorld
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset
+  commentId: T:ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset
+  parent: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  href: ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset.html
+  name: SharedContextAsset
+  nameWithType: SharedContextAsset
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.Assets.SharedContextAsset
+- uid: ZenECS.Core.Binding.IContext
+  commentId: T:ZenECS.Core.Binding.IContext
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IContext.html
+  name: IContext
+  nameWithType: IContext
+  fullName: ZenECS.Core.Binding.IContext
+- uid: ZenECS.Core.ExternalCommand.CreateEntity(System.Action{ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer})
+  commentId: M:ZenECS.Core.ExternalCommand.CreateEntity(System.Action{ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer})
+  isExternal: true
+  href: ZenECS.Core.ExternalCommand.html#ZenECS_Core_ExternalCommand_CreateEntity_System_Action_ZenECS_Core_Entity_ZenECS_Core_ICommandBuffer__
+  name: CreateEntity(Action<Entity, ICommandBuffer>)
+  nameWithType: ExternalCommand.CreateEntity(Action<Entity, ICommandBuffer>)
+  fullName: ZenECS.Core.ExternalCommand.CreateEntity(System.Action<ZenECS.Core.Entity, ZenECS.Core.ICommandBuffer>)
+  nameWithType.vb: ExternalCommand.CreateEntity(Action(Of Entity, ICommandBuffer))
+  fullName.vb: ZenECS.Core.ExternalCommand.CreateEntity(System.Action(Of ZenECS.Core.Entity, ZenECS.Core.ICommandBuffer))
+  name.vb: CreateEntity(Action(Of Entity, ICommandBuffer))
+  spec.csharp:
+  - uid: ZenECS.Core.ExternalCommand.CreateEntity(System.Action{ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer})
+    name: CreateEntity
+    href: ZenECS.Core.ExternalCommand.html#ZenECS_Core_ExternalCommand_CreateEntity_System_Action_ZenECS_Core_Entity_ZenECS_Core_ICommandBuffer__
+  - name: (
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.ICommandBuffer
+    name: ICommandBuffer
+    href: ZenECS.Core.ICommandBuffer.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.ExternalCommand.CreateEntity(System.Action{ZenECS.Core.Entity,ZenECS.Core.ICommandBuffer})
+    name: CreateEntity
+    href: ZenECS.Core.ExternalCommand.html#ZenECS_Core_ExternalCommand_CreateEntity_System_Action_ZenECS_Core_Entity_ZenECS_Core_ICommandBuffer__
+  - name: (
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: ZenECS.Core.ICommandBuffer
+    name: ICommandBuffer
+    href: ZenECS.Core.ICommandBuffer.html
+  - name: )
+  - name: )
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint._contextAssets
+  commentId: F:ZenECS.Adapter.Unity.Blueprints.EntityBlueprint._contextAssets
+  name: _contextAssets
+  nameWithType: EntityBlueprint._contextAssets
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint._contextAssets
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets.PerEntityContextAsset
+  commentId: T:ZenECS.Adapter.Unity.Binding.Contexts.Assets.PerEntityContextAsset
+  href: ZenECS.Adapter.Unity.Binding.Contexts.Assets.PerEntityContextAsset.html
+  name: PerEntityContextAsset
+  nameWithType: PerEntityContextAsset
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.Assets.PerEntityContextAsset
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint._binderAssets
+  commentId: F:ZenECS.Adapter.Unity.Blueprints.EntityBlueprint._binderAssets
+  name: _binderAssets
+  nameWithType: EntityBlueprint._binderAssets
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint._binderAssets
+- uid: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset
+  commentId: T:ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset
+  href: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.html
+  name: BinderAsset
+  nameWithType: BinderAsset
+  fullName: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Spawn*
+  commentId: Overload:ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Spawn
+  href: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.html#ZenECS_Adapter_Unity_Blueprints_EntityBlueprint_Spawn_ZenECS_Core_IWorld_ZenECS_Adapter_Unity_Binding_Contexts_ISharedContextResolver_System_Action_ZenECS_Core_Entity__
+  name: Spawn
+  nameWithType: EntityBlueprint.Spawn
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprint.Spawn
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+  commentId: T:ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+  parent: ZenECS.Adapter.Unity.Binding.Contexts
+  href: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver.html
+  name: ISharedContextResolver
+  nameWithType: ISharedContextResolver
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.ISharedContextResolver
+- uid: System.Action{ZenECS.Core.Entity}
+  commentId: T:System.Action{ZenECS.Core.Entity}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<Entity>
+  nameWithType: Action<Entity>
+  fullName: System.Action<ZenECS.Core.Entity>
+  nameWithType.vb: Action(Of Entity)
+  fullName.vb: System.Action(Of ZenECS.Core.Entity)
+  name.vb: Action(Of Entity)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: )
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  commentId: N:ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  nameWithType: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding
+    name: Binding
+    href: ZenECS.Adapter.Unity.Binding.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts
+    name: Contexts
+    href: ZenECS.Adapter.Unity.Binding.Contexts.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+    name: Assets
+    href: ZenECS.Adapter.Unity.Binding.Contexts.Assets.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding
+    name: Binding
+    href: ZenECS.Adapter.Unity.Binding.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts
+    name: Contexts
+    href: ZenECS.Adapter.Unity.Binding.Contexts.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts.Assets
+    name: Assets
+    href: ZenECS.Adapter.Unity.Binding.Contexts.Assets.html
+- uid: ZenECS.Core.Binding
+  commentId: N:ZenECS.Core.Binding
+  href: ZenECS.html
+  name: ZenECS.Core.Binding
+  nameWithType: ZenECS.Core.Binding
+  fullName: ZenECS.Core.Binding
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+- uid: ZenECS.Adapter.Unity.Binding.Contexts
+  commentId: N:ZenECS.Adapter.Unity.Binding.Contexts
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.Binding.Contexts
+  nameWithType: ZenECS.Adapter.Unity.Binding.Contexts
+  fullName: ZenECS.Adapter.Unity.Binding.Contexts
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding
+    name: Binding
+    href: ZenECS.Adapter.Unity.Binding.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts
+    name: Contexts
+    href: ZenECS.Adapter.Unity.Binding.Contexts.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding
+    name: Binding
+    href: ZenECS.Adapter.Unity.Binding.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Contexts
+    name: Contexts
+    href: ZenECS.Adapter.Unity.Binding.Contexts.html
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

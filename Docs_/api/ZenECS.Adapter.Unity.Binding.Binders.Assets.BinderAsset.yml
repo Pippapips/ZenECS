@@ -1,0 +1,836 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset
+  commentId: T:ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset
+  id: BinderAsset
+  parent: ZenECS.Adapter.Unity.Binding.Binders.Assets
+  children:
+  - ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.BinderType
+  - ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.Create
+  langs:
+  - csharp
+  - vb
+  name: BinderAsset
+  nameWithType: BinderAsset
+  fullName: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset
+  type: Class
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Binders/Assets/BinderAsset.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: BinderAsset
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Binders/Assets/BinderAsset.cs
+    startLine: 55
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Binding.Binders.Assets
+  summary: Base asset for Unity-side binder configuration.
+  remarks: >-
+    <p>
+
+    <xref href="ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset" data-throw-if-not-resolved="false"></xref> is the root ScriptableObject type used by
+
+    ZenECS binding to describe how Unity-facing binders are created and
+
+    wired. Concrete subclasses act as configuration containers and factory
+
+    descriptors that create binder instances per entity.
+
+    </p>
+
+    <p>
+
+    The typical lifecycle is:
+
+    </p>
+
+    <ol><li>
+
+    The asset is referenced by some binding configuration or blueprint.
+
+    </li><li>
+
+    When an entity is created, the asset's <xref href="ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.Create" data-throw-if-not-resolved="false"></xref> method is
+
+    called to allocate the concrete binder instance.
+
+    </li><li>
+
+    The caller attaches the returned binder to the entity or world and
+
+    manages its disposal when the entity is destroyed.
+
+    </li></ol>
+
+    <p>
+
+    At runtime, higher-level binding code or systems are responsible for:
+
+    </p>
+
+    <ul><li>Interpreting the configuration stored in the asset.</li><li>Instantiating the appropriate binder objects.</li><li>Managing their lifetime alongside ECS entities or worlds.</li></ul>
+  example: []
+  syntax:
+    content: 'public abstract class BinderAsset : ScriptableObject'
+    content.vb: Public MustInherit Class BinderAsset Inherits ScriptableObject
+  inheritance:
+  - System.Object
+  - UnityEngine.Object
+  - UnityEngine.ScriptableObject
+  inheritedMembers:
+  - UnityEngine.ScriptableObject.OnValidate
+  - UnityEngine.Object.name
+  - UnityEngine.Object.FindObjectOfType``1(System.Boolean)
+  - UnityEngine.Object.FindFirstObjectByType``1(UnityEngine.FindObjectsInactive)
+  - UnityEngine.Object.Destroy(UnityEngine.Object)
+  - UnityEngine.Object.Destroy(UnityEngine.GameObject)
+  - UnityEngine.Object.DestroyImmediate(UnityEngine.Object)
+  - UnityEngine.Object.DestroyImmediate(UnityEngine.GameObject)
+  - UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)
+  - UnityEngine.Object.DontDestroyOnLoad(UnityEngine.GameObject)
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.BinderType
+  commentId: P:ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.BinderType
+  id: BinderType
+  parent: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset
+  langs:
+  - csharp
+  - vb
+  name: BinderType
+  nameWithType: BinderAsset.BinderType
+  fullName: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.BinderType
+  type: Property
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Binders/Assets/BinderAsset.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: BinderType
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Binders/Assets/BinderAsset.cs
+    startLine: 71
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Binding.Binders.Assets
+  summary: >-
+    Gets the concrete <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the binder instances
+
+    produced by this asset.
+  remarks: >-
+    <p>
+
+    Implementations should return the runtime type of the
+
+    <xref href="ZenECS.Core.Binding.IBinder" data-throw-if-not-resolved="false"></xref> created in <xref href="ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.Create" data-throw-if-not-resolved="false"></xref>.
+
+    </p>
+
+    <p>
+
+    This metadata is used by tooling or binding code that needs to
+
+    introspect the binder type without instantiating it.
+
+    </p>
+  example: []
+  syntax:
+    content: public abstract Type BinderType { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: Public MustOverride ReadOnly Property BinderType As Type
+  overload: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.BinderType*
+- uid: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.Create
+  commentId: M:ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.Create
+  id: Create
+  parent: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset
+  langs:
+  - csharp
+  - vb
+  name: Create()
+  nameWithType: BinderAsset.Create()
+  fullName: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.Create()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Binders/Assets/BinderAsset.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Create
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Binders/Assets/BinderAsset.cs
+    startLine: 91
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Binding.Binders.Assets
+  summary: Creates a new binder instance for an entity.
+  remarks: >-
+    <p>
+
+    This method does not automatically attach the binder to any entity
+
+    or world. The caller is responsible for:
+
+    </p>
+
+    <ul><li>Associating the binder with the target entity.</li><li>Registering it with any relevant systems or worlds.</li><li>Disposing it when the owning entity is destroyed.</li></ul>
+  example: []
+  syntax:
+    content: public abstract IBinder Create()
+    return:
+      type: ZenECS.Core.Binding.IBinder
+      description: >-
+        A newly created <xref href="ZenECS.Core.Binding.IBinder" data-throw-if-not-resolved="false"></xref> instance that is intended to
+
+        be owned by a single entity.
+    content.vb: Public MustOverride Function Create() As IBinder
+  overload: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.Create*
+references:
+- uid: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset
+  commentId: T:ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset
+  href: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.html
+  name: BinderAsset
+  nameWithType: BinderAsset
+  fullName: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset
+- uid: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.Create
+  commentId: M:ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.Create
+  href: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.html#ZenECS_Adapter_Unity_Binding_Binders_Assets_BinderAsset_Create
+  name: Create()
+  nameWithType: BinderAsset.Create()
+  fullName: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.Create()
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.Create
+    name: Create
+    href: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.html#ZenECS_Adapter_Unity_Binding_Binders_Assets_BinderAsset_Create
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.Create
+    name: Create
+    href: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.html#ZenECS_Adapter_Unity_Binding_Binders_Assets_BinderAsset_Create
+  - name: (
+  - name: )
+- uid: ZenECS.Adapter.Unity.Binding.Binders.Assets
+  commentId: N:ZenECS.Adapter.Unity.Binding.Binders.Assets
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.Binding.Binders.Assets
+  nameWithType: ZenECS.Adapter.Unity.Binding.Binders.Assets
+  fullName: ZenECS.Adapter.Unity.Binding.Binders.Assets
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding
+    name: Binding
+    href: ZenECS.Adapter.Unity.Binding.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Binders
+    name: Binders
+    href: ZenECS.Adapter.Unity.Binding.Binders.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Binders.Assets
+    name: Assets
+    href: ZenECS.Adapter.Unity.Binding.Binders.Assets.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding
+    name: Binding
+    href: ZenECS.Adapter.Unity.Binding.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Binders
+    name: Binders
+    href: ZenECS.Adapter.Unity.Binding.Binders.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Binding.Binders.Assets
+    name: Assets
+    href: ZenECS.Adapter.Unity.Binding.Binders.Assets.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: UnityEngine.Object
+  commentId: T:UnityEngine.Object
+  parent: UnityEngine
+  href: UnityEngine.Object.html
+  name: Object
+  nameWithType: Object
+  fullName: UnityEngine.Object
+- uid: UnityEngine.ScriptableObject
+  commentId: T:UnityEngine.ScriptableObject
+  parent: UnityEngine
+  href: UnityEngine.ScriptableObject.html
+  name: ScriptableObject
+  nameWithType: ScriptableObject
+  fullName: UnityEngine.ScriptableObject
+- uid: UnityEngine.ScriptableObject.OnValidate
+  commentId: M:UnityEngine.ScriptableObject.OnValidate
+  parent: UnityEngine.ScriptableObject
+  href: UnityEngine.ScriptableObject.html#UnityEngine_ScriptableObject_OnValidate
+  name: OnValidate()
+  nameWithType: ScriptableObject.OnValidate()
+  fullName: UnityEngine.ScriptableObject.OnValidate()
+  spec.csharp:
+  - uid: UnityEngine.ScriptableObject.OnValidate
+    name: OnValidate
+    href: UnityEngine.ScriptableObject.html#UnityEngine_ScriptableObject_OnValidate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: UnityEngine.ScriptableObject.OnValidate
+    name: OnValidate
+    href: UnityEngine.ScriptableObject.html#UnityEngine_ScriptableObject_OnValidate
+  - name: (
+  - name: )
+- uid: UnityEngine.Object.name
+  commentId: P:UnityEngine.Object.name
+  parent: UnityEngine.Object
+  href: UnityEngine.Object.html#UnityEngine_Object_name
+  name: name
+  nameWithType: Object.name
+  fullName: UnityEngine.Object.name
+- uid: UnityEngine.Object.FindObjectOfType``1(System.Boolean)
+  commentId: M:UnityEngine.Object.FindObjectOfType``1(System.Boolean)
+  parent: UnityEngine.Object
+  isExternal: true
+  href: UnityEngine.Object.html#UnityEngine_Object_FindObjectOfType__1_System_Boolean_
+  name: FindObjectOfType<T>(bool)
+  nameWithType: Object.FindObjectOfType<T>(bool)
+  fullName: UnityEngine.Object.FindObjectOfType<T>(bool)
+  nameWithType.vb: Object.FindObjectOfType(Of T)(Boolean)
+  fullName.vb: UnityEngine.Object.FindObjectOfType(Of T)(Boolean)
+  name.vb: FindObjectOfType(Of T)(Boolean)
+  spec.csharp:
+  - uid: UnityEngine.Object.FindObjectOfType``1(System.Boolean)
+    name: FindObjectOfType
+    href: UnityEngine.Object.html#UnityEngine_Object_FindObjectOfType__1_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: UnityEngine.Object.FindObjectOfType``1(System.Boolean)
+    name: FindObjectOfType
+    href: UnityEngine.Object.html#UnityEngine_Object_FindObjectOfType__1_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: UnityEngine.Object.FindFirstObjectByType``1(UnityEngine.FindObjectsInactive)
+  commentId: M:UnityEngine.Object.FindFirstObjectByType``1(UnityEngine.FindObjectsInactive)
+  parent: UnityEngine.Object
+  href: UnityEngine.Object.html#UnityEngine_Object_FindFirstObjectByType__1_UnityEngine_FindObjectsInactive_
+  name: FindFirstObjectByType<T>(FindObjectsInactive)
+  nameWithType: Object.FindFirstObjectByType<T>(FindObjectsInactive)
+  fullName: UnityEngine.Object.FindFirstObjectByType<T>(UnityEngine.FindObjectsInactive)
+  nameWithType.vb: Object.FindFirstObjectByType(Of T)(FindObjectsInactive)
+  fullName.vb: UnityEngine.Object.FindFirstObjectByType(Of T)(UnityEngine.FindObjectsInactive)
+  name.vb: FindFirstObjectByType(Of T)(FindObjectsInactive)
+  spec.csharp:
+  - uid: UnityEngine.Object.FindFirstObjectByType``1(UnityEngine.FindObjectsInactive)
+    name: FindFirstObjectByType
+    href: UnityEngine.Object.html#UnityEngine_Object_FindFirstObjectByType__1_UnityEngine_FindObjectsInactive_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: UnityEngine.FindObjectsInactive
+    name: FindObjectsInactive
+    href: UnityEngine.FindObjectsInactive.html
+  - name: )
+  spec.vb:
+  - uid: UnityEngine.Object.FindFirstObjectByType``1(UnityEngine.FindObjectsInactive)
+    name: FindFirstObjectByType
+    href: UnityEngine.Object.html#UnityEngine_Object_FindFirstObjectByType__1_UnityEngine_FindObjectsInactive_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: UnityEngine.FindObjectsInactive
+    name: FindObjectsInactive
+    href: UnityEngine.FindObjectsInactive.html
+  - name: )
+- uid: UnityEngine.Object.Destroy(UnityEngine.Object)
+  commentId: M:UnityEngine.Object.Destroy(UnityEngine.Object)
+  parent: UnityEngine.Object
+  href: UnityEngine.Object.html#UnityEngine_Object_Destroy_UnityEngine_Object_
+  name: Destroy(Object)
+  nameWithType: Object.Destroy(Object)
+  fullName: UnityEngine.Object.Destroy(UnityEngine.Object)
+  spec.csharp:
+  - uid: UnityEngine.Object.Destroy(UnityEngine.Object)
+    name: Destroy
+    href: UnityEngine.Object.html#UnityEngine_Object_Destroy_UnityEngine_Object_
+  - name: (
+  - uid: UnityEngine.Object
+    name: Object
+    href: UnityEngine.Object.html
+  - name: )
+  spec.vb:
+  - uid: UnityEngine.Object.Destroy(UnityEngine.Object)
+    name: Destroy
+    href: UnityEngine.Object.html#UnityEngine_Object_Destroy_UnityEngine_Object_
+  - name: (
+  - uid: UnityEngine.Object
+    name: Object
+    href: UnityEngine.Object.html
+  - name: )
+- uid: UnityEngine.Object.Destroy(UnityEngine.GameObject)
+  commentId: M:UnityEngine.Object.Destroy(UnityEngine.GameObject)
+  parent: UnityEngine.Object
+  href: UnityEngine.Object.html#UnityEngine_Object_Destroy_UnityEngine_GameObject_
+  name: Destroy(GameObject)
+  nameWithType: Object.Destroy(GameObject)
+  fullName: UnityEngine.Object.Destroy(UnityEngine.GameObject)
+  spec.csharp:
+  - uid: UnityEngine.Object.Destroy(UnityEngine.GameObject)
+    name: Destroy
+    href: UnityEngine.Object.html#UnityEngine_Object_Destroy_UnityEngine_GameObject_
+  - name: (
+  - uid: UnityEngine.GameObject
+    name: GameObject
+    href: UnityEngine.GameObject.html
+  - name: )
+  spec.vb:
+  - uid: UnityEngine.Object.Destroy(UnityEngine.GameObject)
+    name: Destroy
+    href: UnityEngine.Object.html#UnityEngine_Object_Destroy_UnityEngine_GameObject_
+  - name: (
+  - uid: UnityEngine.GameObject
+    name: GameObject
+    href: UnityEngine.GameObject.html
+  - name: )
+- uid: UnityEngine.Object.DestroyImmediate(UnityEngine.Object)
+  commentId: M:UnityEngine.Object.DestroyImmediate(UnityEngine.Object)
+  parent: UnityEngine.Object
+  href: UnityEngine.Object.html#UnityEngine_Object_DestroyImmediate_UnityEngine_Object_
+  name: DestroyImmediate(Object)
+  nameWithType: Object.DestroyImmediate(Object)
+  fullName: UnityEngine.Object.DestroyImmediate(UnityEngine.Object)
+  spec.csharp:
+  - uid: UnityEngine.Object.DestroyImmediate(UnityEngine.Object)
+    name: DestroyImmediate
+    href: UnityEngine.Object.html#UnityEngine_Object_DestroyImmediate_UnityEngine_Object_
+  - name: (
+  - uid: UnityEngine.Object
+    name: Object
+    href: UnityEngine.Object.html
+  - name: )
+  spec.vb:
+  - uid: UnityEngine.Object.DestroyImmediate(UnityEngine.Object)
+    name: DestroyImmediate
+    href: UnityEngine.Object.html#UnityEngine_Object_DestroyImmediate_UnityEngine_Object_
+  - name: (
+  - uid: UnityEngine.Object
+    name: Object
+    href: UnityEngine.Object.html
+  - name: )
+- uid: UnityEngine.Object.DestroyImmediate(UnityEngine.GameObject)
+  commentId: M:UnityEngine.Object.DestroyImmediate(UnityEngine.GameObject)
+  parent: UnityEngine.Object
+  href: UnityEngine.Object.html#UnityEngine_Object_DestroyImmediate_UnityEngine_GameObject_
+  name: DestroyImmediate(GameObject)
+  nameWithType: Object.DestroyImmediate(GameObject)
+  fullName: UnityEngine.Object.DestroyImmediate(UnityEngine.GameObject)
+  spec.csharp:
+  - uid: UnityEngine.Object.DestroyImmediate(UnityEngine.GameObject)
+    name: DestroyImmediate
+    href: UnityEngine.Object.html#UnityEngine_Object_DestroyImmediate_UnityEngine_GameObject_
+  - name: (
+  - uid: UnityEngine.GameObject
+    name: GameObject
+    href: UnityEngine.GameObject.html
+  - name: )
+  spec.vb:
+  - uid: UnityEngine.Object.DestroyImmediate(UnityEngine.GameObject)
+    name: DestroyImmediate
+    href: UnityEngine.Object.html#UnityEngine_Object_DestroyImmediate_UnityEngine_GameObject_
+  - name: (
+  - uid: UnityEngine.GameObject
+    name: GameObject
+    href: UnityEngine.GameObject.html
+  - name: )
+- uid: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)
+  commentId: M:UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)
+  parent: UnityEngine.Object
+  href: UnityEngine.Object.html#UnityEngine_Object_DontDestroyOnLoad_UnityEngine_Object_
+  name: DontDestroyOnLoad(Object)
+  nameWithType: Object.DontDestroyOnLoad(Object)
+  fullName: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)
+  spec.csharp:
+  - uid: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)
+    name: DontDestroyOnLoad
+    href: UnityEngine.Object.html#UnityEngine_Object_DontDestroyOnLoad_UnityEngine_Object_
+  - name: (
+  - uid: UnityEngine.Object
+    name: Object
+    href: UnityEngine.Object.html
+  - name: )
+  spec.vb:
+  - uid: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.Object)
+    name: DontDestroyOnLoad
+    href: UnityEngine.Object.html#UnityEngine_Object_DontDestroyOnLoad_UnityEngine_Object_
+  - name: (
+  - uid: UnityEngine.Object
+    name: Object
+    href: UnityEngine.Object.html
+  - name: )
+- uid: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.GameObject)
+  commentId: M:UnityEngine.Object.DontDestroyOnLoad(UnityEngine.GameObject)
+  parent: UnityEngine.Object
+  href: UnityEngine.Object.html#UnityEngine_Object_DontDestroyOnLoad_UnityEngine_GameObject_
+  name: DontDestroyOnLoad(GameObject)
+  nameWithType: Object.DontDestroyOnLoad(GameObject)
+  fullName: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.GameObject)
+  spec.csharp:
+  - uid: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.GameObject)
+    name: DontDestroyOnLoad
+    href: UnityEngine.Object.html#UnityEngine_Object_DontDestroyOnLoad_UnityEngine_GameObject_
+  - name: (
+  - uid: UnityEngine.GameObject
+    name: GameObject
+    href: UnityEngine.GameObject.html
+  - name: )
+  spec.vb:
+  - uid: UnityEngine.Object.DontDestroyOnLoad(UnityEngine.GameObject)
+    name: DontDestroyOnLoad
+    href: UnityEngine.Object.html#UnityEngine_Object_DontDestroyOnLoad_UnityEngine_GameObject_
+  - name: (
+  - uid: UnityEngine.GameObject
+    name: GameObject
+    href: UnityEngine.GameObject.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: UnityEngine
+  commentId: N:UnityEngine
+  href: UnityEngine.html
+  name: UnityEngine
+  nameWithType: UnityEngine
+  fullName: UnityEngine
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: ZenECS.Core.Binding.IBinder
+  commentId: T:ZenECS.Core.Binding.IBinder
+  parent: ZenECS.Core.Binding
+  href: ZenECS.Core.Binding.IBinder.html
+  name: IBinder
+  nameWithType: IBinder
+  fullName: ZenECS.Core.Binding.IBinder
+- uid: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.BinderType*
+  commentId: Overload:ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.BinderType
+  href: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.html#ZenECS_Adapter_Unity_Binding_Binders_Assets_BinderAsset_BinderType
+  name: BinderType
+  nameWithType: BinderAsset.BinderType
+  fullName: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.BinderType
+- uid: ZenECS.Core.Binding
+  commentId: N:ZenECS.Core.Binding
+  href: ZenECS.html
+  name: ZenECS.Core.Binding
+  nameWithType: ZenECS.Core.Binding
+  fullName: ZenECS.Core.Binding
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Binding
+    name: Binding
+    href: ZenECS.Core.Binding.html
+- uid: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.Create*
+  commentId: Overload:ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.Create
+  href: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.html#ZenECS_Adapter_Unity_Binding_Binders_Assets_BinderAsset_Create
+  name: Create
+  nameWithType: BinderAsset.Create
+  fullName: ZenECS.Adapter.Unity.Binding.Binders.Assets.BinderAsset.Create

@@ -6,12 +6,17 @@
         {
           "src": "../src",
           "files": [
-            "**/*.csproj"
+            "ZenECS.Core.csproj",
+            "ZenECS.Adapter.Unity.csproj"
           ]
         }
       ],
       "dest": "api",
-      "filter": "apiFilter.yml"
+      "filter": "apiFilter.yml",
+      "properties": {
+        "TargetFramework": "netstandard2.1",
+        "Configuration": "Release"
+      }
     }
   ],
   "build": {
@@ -23,6 +28,20 @@
         "exclude": [
           "_site/**"
         ]
+      },
+      {
+        "files": [
+          "../README.md"
+        ],
+        "src": "..",
+        "dest": "."
+      },
+      {
+        "files": [
+          "**/*.md"
+        ],
+        "src": "../Docs",
+        "dest": "docs"
       }
     ],
     "resource": [
@@ -38,10 +57,18 @@
       "modern"
     ],
     "globalMetadata": {
-      "_appName": "mysite",
-      "_appTitle": "mysite",
+      "_appName": "ZenECS",
+      "_appTitle": "ZenECS Documentation",
+      "_appFooter": "MIT © Pippapips Limited",
       "_enableSearch": true,
+      "_enableNewTab": true,
       "pdf": true
+    },
+    "fileMetadata": {
+      "priority": {
+        "**/README.md": 1,
+        "**/index.md": 1
+      }
     }
   }
 }

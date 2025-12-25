@@ -1,0 +1,445 @@
+### YamlMime:ManagedReference
+items:
+- uid: UnityEngine.JsonUtility
+  commentId: T:UnityEngine.JsonUtility
+  id: JsonUtility
+  parent: UnityEngine
+  children:
+  - UnityEngine.JsonUtility.FromJson(System.String,System.Type)
+  - UnityEngine.JsonUtility.FromJson``1(System.String)
+  - UnityEngine.JsonUtility.ToJson(System.Object,System.Boolean)
+  langs:
+  - csharp
+  - vb
+  name: JsonUtility
+  nameWithType: JsonUtility
+  fullName: UnityEngine.JsonUtility
+  type: Class
+  source:
+    remote:
+      path: src/UnityStubs.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: JsonUtility
+    path: ../src/UnityStubs.cs
+    startLine: 157
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: UnityEngine
+  syntax:
+    content: public static class JsonUtility
+    content.vb: Public Module JsonUtility
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: UnityEngine.JsonUtility.ToJson(System.Object,System.Boolean)
+  commentId: M:UnityEngine.JsonUtility.ToJson(System.Object,System.Boolean)
+  id: ToJson(System.Object,System.Boolean)
+  parent: UnityEngine.JsonUtility
+  langs:
+  - csharp
+  - vb
+  name: ToJson(object, bool)
+  nameWithType: JsonUtility.ToJson(object, bool)
+  fullName: UnityEngine.JsonUtility.ToJson(object, bool)
+  type: Method
+  source:
+    remote:
+      path: src/UnityStubs.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ToJson
+    path: ../src/UnityStubs.cs
+    startLine: 159
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: UnityEngine
+  syntax:
+    content: public static string ToJson(object obj, bool prettyPrint = false)
+    parameters:
+    - id: obj
+      type: System.Object
+    - id: prettyPrint
+      type: System.Boolean
+    return:
+      type: System.String
+    content.vb: Public Shared Function ToJson(obj As Object, prettyPrint As Boolean = False) As String
+  overload: UnityEngine.JsonUtility.ToJson*
+  nameWithType.vb: JsonUtility.ToJson(Object, Boolean)
+  fullName.vb: UnityEngine.JsonUtility.ToJson(Object, Boolean)
+  name.vb: ToJson(Object, Boolean)
+- uid: UnityEngine.JsonUtility.FromJson``1(System.String)
+  commentId: M:UnityEngine.JsonUtility.FromJson``1(System.String)
+  id: FromJson``1(System.String)
+  parent: UnityEngine.JsonUtility
+  langs:
+  - csharp
+  - vb
+  name: FromJson<T>(string)
+  nameWithType: JsonUtility.FromJson<T>(string)
+  fullName: UnityEngine.JsonUtility.FromJson<T>(string)
+  type: Method
+  source:
+    remote:
+      path: src/UnityStubs.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FromJson
+    path: ../src/UnityStubs.cs
+    startLine: 160
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: UnityEngine
+  syntax:
+    content: 'public static T? FromJson<T>(string json) where T : class'
+    parameters:
+    - id: json
+      type: System.String
+    typeParameters:
+    - id: T
+    return:
+      type: '{T}'
+    content.vb: Public Shared Function FromJson(Of T As Class)(json As String) As T
+  overload: UnityEngine.JsonUtility.FromJson*
+  nameWithType.vb: JsonUtility.FromJson(Of T)(String)
+  fullName.vb: UnityEngine.JsonUtility.FromJson(Of T)(String)
+  name.vb: FromJson(Of T)(String)
+- uid: UnityEngine.JsonUtility.FromJson(System.String,System.Type)
+  commentId: M:UnityEngine.JsonUtility.FromJson(System.String,System.Type)
+  id: FromJson(System.String,System.Type)
+  parent: UnityEngine.JsonUtility
+  langs:
+  - csharp
+  - vb
+  name: FromJson(string, Type)
+  nameWithType: JsonUtility.FromJson(string, Type)
+  fullName: UnityEngine.JsonUtility.FromJson(string, System.Type)
+  type: Method
+  source:
+    remote:
+      path: src/UnityStubs.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: FromJson
+    path: ../src/UnityStubs.cs
+    startLine: 161
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: UnityEngine
+  syntax:
+    content: public static object? FromJson(string json, Type type)
+    parameters:
+    - id: json
+      type: System.String
+    - id: type
+      type: System.Type
+    return:
+      type: System.Object
+    content.vb: Public Shared Function FromJson(json As String, type As Type) As Object
+  overload: UnityEngine.JsonUtility.FromJson*
+  nameWithType.vb: JsonUtility.FromJson(String, Type)
+  fullName.vb: UnityEngine.JsonUtility.FromJson(String, System.Type)
+  name.vb: FromJson(String, Type)
+references:
+- uid: UnityEngine
+  commentId: N:UnityEngine
+  href: UnityEngine.html
+  name: UnityEngine
+  nameWithType: UnityEngine
+  fullName: UnityEngine
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: UnityEngine.JsonUtility.ToJson*
+  commentId: Overload:UnityEngine.JsonUtility.ToJson
+  href: UnityEngine.JsonUtility.html#UnityEngine_JsonUtility_ToJson_System_Object_System_Boolean_
+  name: ToJson
+  nameWithType: JsonUtility.ToJson
+  fullName: UnityEngine.JsonUtility.ToJson
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: UnityEngine.JsonUtility.FromJson*
+  commentId: Overload:UnityEngine.JsonUtility.FromJson
+  href: UnityEngine.JsonUtility.html#UnityEngine_JsonUtility_FromJson__1_System_String_
+  name: FromJson
+  nameWithType: JsonUtility.FromJson
+  fullName: UnityEngine.JsonUtility.FromJson
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type

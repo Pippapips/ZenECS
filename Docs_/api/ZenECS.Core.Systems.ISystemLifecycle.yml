@@ -1,0 +1,220 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Systems.ISystemLifecycle
+  commentId: T:ZenECS.Core.Systems.ISystemLifecycle
+  id: ISystemLifecycle
+  parent: ZenECS.Core.Systems
+  children:
+  - ZenECS.Core.Systems.ISystemLifecycle.Initialize(ZenECS.Core.IWorld)
+  - ZenECS.Core.Systems.ISystemLifecycle.Shutdown
+  langs:
+  - csharp
+  - vb
+  name: ISystemLifecycle
+  nameWithType: ISystemLifecycle
+  fullName: ZenECS.Core.Systems.ISystemLifecycle
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystemLifecycle.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ISystemLifecycle
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystemLifecycle.cs
+    startLine: 19
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Systems
+  summary: Provides optional lifecycle hooks for systems that need explicit setup/teardown.
+  example: []
+  syntax:
+    content: 'public interface ISystemLifecycle : ISystem'
+    content.vb: Public Interface ISystemLifecycle Inherits ISystem
+  inheritedMembers:
+  - ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld,System.Single)
+- uid: ZenECS.Core.Systems.ISystemLifecycle.Initialize(ZenECS.Core.IWorld)
+  commentId: M:ZenECS.Core.Systems.ISystemLifecycle.Initialize(ZenECS.Core.IWorld)
+  id: Initialize(ZenECS.Core.IWorld)
+  parent: ZenECS.Core.Systems.ISystemLifecycle
+  langs:
+  - csharp
+  - vb
+  name: Initialize(IWorld)
+  nameWithType: ISystemLifecycle.Initialize(IWorld)
+  fullName: ZenECS.Core.Systems.ISystemLifecycle.Initialize(ZenECS.Core.IWorld)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystemLifecycle.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Initialize
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystemLifecycle.cs
+    startLine: 26
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Systems
+  summary: >-
+    Called once before the first execution of any systems in the world.
+
+    Use this to allocate caches or resolve references.
+  example: []
+  syntax:
+    content: void Initialize(IWorld w)
+    parameters:
+    - id: w
+      type: ZenECS.Core.IWorld
+      description: The ECS world instance.
+    content.vb: Sub Initialize(w As IWorld)
+  overload: ZenECS.Core.Systems.ISystemLifecycle.Initialize*
+- uid: ZenECS.Core.Systems.ISystemLifecycle.Shutdown
+  commentId: M:ZenECS.Core.Systems.ISystemLifecycle.Shutdown
+  id: Shutdown
+  parent: ZenECS.Core.Systems.ISystemLifecycle
+  langs:
+  - csharp
+  - vb
+  name: Shutdown()
+  nameWithType: ISystemLifecycle.Shutdown()
+  fullName: ZenECS.Core.Systems.ISystemLifecycle.Shutdown()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystemLifecycle.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Shutdown
+    path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystemLifecycle.cs
+    startLine: 32
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Systems
+  summary: >-
+    Called once when the system runner shuts down systems (e.g., world dispose).
+
+    Use this to release resources or unsubscribe from external events.
+  example: []
+  syntax:
+    content: void Shutdown()
+    content.vb: Sub Shutdown()
+  overload: ZenECS.Core.Systems.ISystemLifecycle.Shutdown*
+references:
+- uid: ZenECS.Core.Systems
+  commentId: N:ZenECS.Core.Systems
+  href: ZenECS.html
+  name: ZenECS.Core.Systems
+  nameWithType: ZenECS.Core.Systems
+  fullName: ZenECS.Core.Systems
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Systems
+    name: Systems
+    href: ZenECS.Core.Systems.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Systems
+    name: Systems
+    href: ZenECS.Core.Systems.html
+- uid: ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld,System.Single)
+  commentId: M:ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld,System.Single)
+  parent: ZenECS.Core.Systems.ISystem
+  isExternal: true
+  href: ZenECS.Core.Systems.ISystem.html#ZenECS_Core_Systems_ISystem_Run_ZenECS_Core_IWorld_System_Single_
+  name: Run(IWorld, float)
+  nameWithType: ISystem.Run(IWorld, float)
+  fullName: ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld, float)
+  nameWithType.vb: ISystem.Run(IWorld, Single)
+  fullName.vb: ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld, Single)
+  name.vb: Run(IWorld, Single)
+  spec.csharp:
+  - uid: ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld,System.Single)
+    name: Run
+    href: ZenECS.Core.Systems.ISystem.html#ZenECS_Core_Systems_ISystem_Run_ZenECS_Core_IWorld_System_Single_
+  - name: (
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.Systems.ISystem.Run(ZenECS.Core.IWorld,System.Single)
+    name: Run
+    href: ZenECS.Core.Systems.ISystem.html#ZenECS_Core_Systems_ISystem_Run_ZenECS_Core_IWorld_System_Single_
+  - name: (
+  - uid: ZenECS.Core.IWorld
+    name: IWorld
+    href: ZenECS.Core.IWorld.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: ZenECS.Core.Systems.ISystem
+  commentId: T:ZenECS.Core.Systems.ISystem
+  parent: ZenECS.Core.Systems
+  href: ZenECS.Core.Systems.ISystem.html
+  name: ISystem
+  nameWithType: ISystem
+  fullName: ZenECS.Core.Systems.ISystem
+- uid: ZenECS.Core.Systems.ISystemLifecycle.Initialize*
+  commentId: Overload:ZenECS.Core.Systems.ISystemLifecycle.Initialize
+  href: ZenECS.Core.Systems.ISystemLifecycle.html#ZenECS_Core_Systems_ISystemLifecycle_Initialize_ZenECS_Core_IWorld_
+  name: Initialize
+  nameWithType: ISystemLifecycle.Initialize
+  fullName: ZenECS.Core.Systems.ISystemLifecycle.Initialize
+- uid: ZenECS.Core.IWorld
+  commentId: T:ZenECS.Core.IWorld
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorld.html
+  name: IWorld
+  nameWithType: IWorld
+  fullName: ZenECS.Core.IWorld
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.Systems.ISystemLifecycle.Shutdown*
+  commentId: Overload:ZenECS.Core.Systems.ISystemLifecycle.Shutdown
+  href: ZenECS.Core.Systems.ISystemLifecycle.html#ZenECS_Core_Systems_ISystemLifecycle_Shutdown
+  name: Shutdown
+  nameWithType: ISystemLifecycle.Shutdown
+  fullName: ZenECS.Core.Systems.ISystemLifecycle.Shutdown

@@ -1,0 +1,426 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4
+  commentId: T:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4
+  id: EntityBlueprintComponentJson.Int4
+  parent: ZenECS.Adapter.Unity.Blueprints
+  children:
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4.w
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4.x
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4.y
+  - ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4.z
+  langs:
+  - csharp
+  - vb
+  name: EntityBlueprintComponentJson.Int4
+  nameWithType: EntityBlueprintComponentJson.Int4
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4
+  type: Struct
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintComponentJson.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Int4
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintComponentJson.cs
+    startLine: 142
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Blueprints
+  summary: Serializable representation of an <code>int4</code>-like value.
+  example: []
+  syntax:
+    content: >-
+      [Serializable]
+
+      public struct EntityBlueprintComponentJson.Int4
+    content.vb: >-
+      <Serializable>
+
+      Public Structure EntityBlueprintComponentJson.Int4
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  attributes:
+  - type: System.SerializableAttribute
+    ctor: System.SerializableAttribute.#ctor
+    arguments: []
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4.x
+  commentId: F:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4.x
+  id: x
+  parent: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4
+  langs:
+  - csharp
+  - vb
+  name: x
+  nameWithType: EntityBlueprintComponentJson.Int4.x
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4.x
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintComponentJson.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: x
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintComponentJson.cs
+    startLine: 142
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Blueprints
+  syntax:
+    content: public int x
+    return:
+      type: System.Int32
+    content.vb: Public x As Integer
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4.y
+  commentId: F:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4.y
+  id: y
+  parent: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4
+  langs:
+  - csharp
+  - vb
+  name: y
+  nameWithType: EntityBlueprintComponentJson.Int4.y
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4.y
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintComponentJson.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: y
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintComponentJson.cs
+    startLine: 142
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Blueprints
+  syntax:
+    content: public int y
+    return:
+      type: System.Int32
+    content.vb: Public y As Integer
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4.z
+  commentId: F:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4.z
+  id: z
+  parent: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4
+  langs:
+  - csharp
+  - vb
+  name: z
+  nameWithType: EntityBlueprintComponentJson.Int4.z
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4.z
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintComponentJson.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: z
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintComponentJson.cs
+    startLine: 142
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Blueprints
+  syntax:
+    content: public int z
+    return:
+      type: System.Int32
+    content.vb: Public z As Integer
+- uid: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4.w
+  commentId: F:ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4.w
+  id: w
+  parent: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4
+  langs:
+  - csharp
+  - vb
+  name: w
+  nameWithType: EntityBlueprintComponentJson.Int4.w
+  fullName: ZenECS.Adapter.Unity.Blueprints.EntityBlueprintComponentJson.Int4.w
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintComponentJson.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: w
+    path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintComponentJson.cs
+    startLine: 142
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: ZenECS.Adapter.Unity.Blueprints
+  syntax:
+    content: public int w
+    return:
+      type: System.Int32
+    content.vb: Public w As Integer
+references:
+- uid: ZenECS.Adapter.Unity.Blueprints
+  commentId: N:ZenECS.Adapter.Unity.Blueprints
+  href: ZenECS.html
+  name: ZenECS.Adapter.Unity.Blueprints
+  nameWithType: ZenECS.Adapter.Unity.Blueprints
+  fullName: ZenECS.Adapter.Unity.Blueprints
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints
+    name: Blueprints
+    href: ZenECS.Adapter.Unity.Blueprints.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Adapter
+    name: Adapter
+    href: ZenECS.Adapter.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity
+    name: Unity
+    href: ZenECS.Adapter.Unity.html
+  - name: .
+  - uid: ZenECS.Adapter.Unity.Blueprints
+    name: Blueprints
+    href: ZenECS.Adapter.Unity.Blueprints.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer

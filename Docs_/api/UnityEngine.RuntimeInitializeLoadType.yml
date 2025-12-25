@@ -1,0 +1,69 @@
+### YamlMime:ManagedReference
+items:
+- uid: UnityEngine.RuntimeInitializeLoadType
+  commentId: T:UnityEngine.RuntimeInitializeLoadType
+  id: RuntimeInitializeLoadType
+  parent: UnityEngine
+  children:
+  - UnityEngine.RuntimeInitializeLoadType.BeforeSceneLoad
+  langs:
+  - csharp
+  - vb
+  name: RuntimeInitializeLoadType
+  nameWithType: RuntimeInitializeLoadType
+  fullName: UnityEngine.RuntimeInitializeLoadType
+  type: Enum
+  source:
+    remote:
+      path: src/UnityStubs.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RuntimeInitializeLoadType
+    path: ../src/UnityStubs.cs
+    startLine: 117
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: UnityEngine
+  syntax:
+    content: public enum RuntimeInitializeLoadType
+    content.vb: Public Enum RuntimeInitializeLoadType
+- uid: UnityEngine.RuntimeInitializeLoadType.BeforeSceneLoad
+  commentId: F:UnityEngine.RuntimeInitializeLoadType.BeforeSceneLoad
+  id: BeforeSceneLoad
+  parent: UnityEngine.RuntimeInitializeLoadType
+  langs:
+  - csharp
+  - vb
+  name: BeforeSceneLoad
+  nameWithType: RuntimeInitializeLoadType.BeforeSceneLoad
+  fullName: UnityEngine.RuntimeInitializeLoadType.BeforeSceneLoad
+  type: Field
+  source:
+    remote:
+      path: src/UnityStubs.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: BeforeSceneLoad
+    path: ../src/UnityStubs.cs
+    startLine: 119
+  assemblies:
+  - ZenECS.Adapter.Unity
+  namespace: UnityEngine
+  syntax:
+    content: BeforeSceneLoad = 0
+    return:
+      type: UnityEngine.RuntimeInitializeLoadType
+references:
+- uid: UnityEngine
+  commentId: N:UnityEngine
+  href: UnityEngine.html
+  name: UnityEngine
+  nameWithType: UnityEngine
+  fullName: UnityEngine
+- uid: UnityEngine.RuntimeInitializeLoadType
+  commentId: T:UnityEngine.RuntimeInitializeLoadType
+  parent: UnityEngine
+  href: UnityEngine.RuntimeInitializeLoadType.html
+  name: RuntimeInitializeLoadType
+  nameWithType: RuntimeInitializeLoadType
+  fullName: UnityEngine.RuntimeInitializeLoadType

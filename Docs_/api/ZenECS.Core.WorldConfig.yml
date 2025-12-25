@@ -1,0 +1,612 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.WorldConfig
+  commentId: T:ZenECS.Core.WorldConfig
+  id: WorldConfig
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.WorldConfig.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,ZenECS.Core.GrowthPolicy,System.Int32)
+  - ZenECS.Core.WorldConfig.GrowthPolicy
+  - ZenECS.Core.WorldConfig.GrowthStep
+  - ZenECS.Core.WorldConfig.InitialBinderBuckets
+  - ZenECS.Core.WorldConfig.InitialBinderPerEntityBuckets
+  - ZenECS.Core.WorldConfig.InitialEntityCapacity
+  - ZenECS.Core.WorldConfig.InitialFreeIdCapacity
+  - ZenECS.Core.WorldConfig.InitialPoolBuckets
+  langs:
+  - csharp
+  - vb
+  name: WorldConfig
+  nameWithType: WorldConfig
+  fullName: ZenECS.Core.WorldConfig
+  type: Struct
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: WorldConfig
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+    startLine: 51
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Immutable configuration for world storage.
+  remarks: >-
+    <p>
+
+    Used at world construction time to size entity arrays, component pools,
+
+    and binder registries, and to define growth behavior when capacity is
+
+    exceeded.
+
+    </p>
+
+    <p>
+
+    Values are clamped to sensible minimums to avoid degenerate allocations
+
+    (for example, at least 16 entity slots, 16 pool buckets, etc.).
+
+    </p>
+  example: []
+  syntax:
+    content: public readonly struct WorldConfig
+    content.vb: Public Structure WorldConfig
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: ZenECS.Core.WorldConfig.InitialEntityCapacity
+  commentId: F:ZenECS.Core.WorldConfig.InitialEntityCapacity
+  id: InitialEntityCapacity
+  parent: ZenECS.Core.WorldConfig
+  langs:
+  - csharp
+  - vb
+  name: InitialEntityCapacity
+  nameWithType: WorldConfig.InitialEntityCapacity
+  fullName: ZenECS.Core.WorldConfig.InitialEntityCapacity
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: InitialEntityCapacity
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+    startLine: 56
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Initial entity slot count (sizes <code>Alive</code>/<code>Generation</code> arrays).
+  example: []
+  syntax:
+    content: public readonly int InitialEntityCapacity
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly InitialEntityCapacity As Integer
+- uid: ZenECS.Core.WorldConfig.InitialPoolBuckets
+  commentId: F:ZenECS.Core.WorldConfig.InitialPoolBuckets
+  id: InitialPoolBuckets
+  parent: ZenECS.Core.WorldConfig
+  langs:
+  - csharp
+  - vb
+  name: InitialPoolBuckets
+  nameWithType: WorldConfig.InitialPoolBuckets
+  fullName: ZenECS.Core.WorldConfig.InitialPoolBuckets
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: InitialPoolBuckets
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+    startLine: 62
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Initial bucket count for the component-pool dictionary (hash table).
+
+    Higher values reduce collisions and rehash frequency.
+  example: []
+  syntax:
+    content: public readonly int InitialPoolBuckets
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly InitialPoolBuckets As Integer
+- uid: ZenECS.Core.WorldConfig.InitialBinderBuckets
+  commentId: F:ZenECS.Core.WorldConfig.InitialBinderBuckets
+  id: InitialBinderBuckets
+  parent: ZenECS.Core.WorldConfig
+  langs:
+  - csharp
+  - vb
+  name: InitialBinderBuckets
+  nameWithType: WorldConfig.InitialBinderBuckets
+  fullName: ZenECS.Core.WorldConfig.InitialBinderBuckets
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: InitialBinderBuckets
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+    startLine: 67
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Initial bucket count for binder registries.
+  example: []
+  syntax:
+    content: public readonly int InitialBinderBuckets
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly InitialBinderBuckets As Integer
+- uid: ZenECS.Core.WorldConfig.InitialBinderPerEntityBuckets
+  commentId: F:ZenECS.Core.WorldConfig.InitialBinderPerEntityBuckets
+  id: InitialBinderPerEntityBuckets
+  parent: ZenECS.Core.WorldConfig
+  langs:
+  - csharp
+  - vb
+  name: InitialBinderPerEntityBuckets
+  nameWithType: WorldConfig.InitialBinderPerEntityBuckets
+  fullName: ZenECS.Core.WorldConfig.InitialBinderPerEntityBuckets
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: InitialBinderPerEntityBuckets
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+    startLine: 72
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Initial per-entity binder-bucket count.
+  example: []
+  syntax:
+    content: public readonly int InitialBinderPerEntityBuckets
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly InitialBinderPerEntityBuckets As Integer
+- uid: ZenECS.Core.WorldConfig.InitialFreeIdCapacity
+  commentId: F:ZenECS.Core.WorldConfig.InitialFreeIdCapacity
+  id: InitialFreeIdCapacity
+  parent: ZenECS.Core.WorldConfig
+  langs:
+  - csharp
+  - vb
+  name: InitialFreeIdCapacity
+  nameWithType: WorldConfig.InitialFreeIdCapacity
+  fullName: ZenECS.Core.WorldConfig.InitialFreeIdCapacity
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: InitialFreeIdCapacity
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+    startLine: 78
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Initial capacity of the free-id stack used to recycle entity IDs.
+
+    Increase if create/destroy churn is expected to be high.
+  example: []
+  syntax:
+    content: public readonly int InitialFreeIdCapacity
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly InitialFreeIdCapacity As Integer
+- uid: ZenECS.Core.WorldConfig.GrowthPolicy
+  commentId: F:ZenECS.Core.WorldConfig.GrowthPolicy
+  id: GrowthPolicy
+  parent: ZenECS.Core.WorldConfig
+  langs:
+  - csharp
+  - vb
+  name: GrowthPolicy
+  nameWithType: WorldConfig.GrowthPolicy
+  fullName: ZenECS.Core.WorldConfig.GrowthPolicy
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: GrowthPolicy
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+    startLine: 83
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Array/pool expansion policy when capacity is exceeded.
+  example: []
+  syntax:
+    content: public readonly GrowthPolicy GrowthPolicy
+    return:
+      type: ZenECS.Core.GrowthPolicy
+    content.vb: Public ReadOnly GrowthPolicy As GrowthPolicy
+- uid: ZenECS.Core.WorldConfig.GrowthStep
+  commentId: F:ZenECS.Core.WorldConfig.GrowthStep
+  id: GrowthStep
+  parent: ZenECS.Core.WorldConfig
+  langs:
+  - csharp
+  - vb
+  name: GrowthStep
+  nameWithType: WorldConfig.GrowthStep
+  fullName: ZenECS.Core.WorldConfig.GrowthStep
+  type: Field
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: GrowthStep
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+    startLine: 89
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: >-
+    Number of slots added per expansion when using
+
+    <xref href="ZenECS.Core.GrowthPolicy.Step" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public readonly int GrowthStep
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly GrowthStep As Integer
+- uid: ZenECS.Core.WorldConfig.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,ZenECS.Core.GrowthPolicy,System.Int32)
+  commentId: M:ZenECS.Core.WorldConfig.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,ZenECS.Core.GrowthPolicy,System.Int32)
+  id: '#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,ZenECS.Core.GrowthPolicy,System.Int32)'
+  parent: ZenECS.Core.WorldConfig
+  langs:
+  - csharp
+  - vb
+  name: WorldConfig(int, int, int, int, int, GrowthPolicy, int)
+  nameWithType: WorldConfig.WorldConfig(int, int, int, int, int, GrowthPolicy, int)
+  fullName: ZenECS.Core.WorldConfig.WorldConfig(int, int, int, int, int, ZenECS.Core.GrowthPolicy, int)
+  type: Constructor
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: .ctor
+    path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
+    startLine: 117
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Create a new world configuration with sensible bounds.
+  example: []
+  syntax:
+    content: public WorldConfig(int initialEntityCapacity = 256, int initialPoolBuckets = 256, int initialBinderBuckets = 1024, int initialBinderPerEntityBuckets = 4, int initialFreeIdCapacity = 128, GrowthPolicy growthPolicy = GrowthPolicy.Doubling, int growthStep = 256)
+    parameters:
+    - id: initialEntityCapacity
+      type: System.Int32
+      description: Entity slots; clamped to ≥ 16.
+    - id: initialPoolBuckets
+      type: System.Int32
+      description: Pool dictionary buckets; clamped to ≥ 16.
+    - id: initialBinderBuckets
+      type: System.Int32
+      description: Binder registry buckets; clamped to ≥ 16.
+    - id: initialBinderPerEntityBuckets
+      type: System.Int32
+      description: Per-entity binder buckets; clamped to ≥ 4.
+    - id: initialFreeIdCapacity
+      type: System.Int32
+      description: Free-id stack capacity; clamped to ≥ 16.
+    - id: growthPolicy
+      type: ZenECS.Core.GrowthPolicy
+      description: >-
+        Resize strategy:
+
+        <xref href="ZenECS.Core.GrowthPolicy.Doubling" data-throw-if-not-resolved="false"></xref> or
+
+        <xref href="ZenECS.Core.GrowthPolicy.Step" data-throw-if-not-resolved="false"></xref>.
+    - id: growthStep
+      type: System.Int32
+      description: Slots added per expansion when using Step; clamped to ≥ 32.
+    content.vb: Public Sub New(initialEntityCapacity As Integer = 256, initialPoolBuckets As Integer = 256, initialBinderBuckets As Integer = 1024, initialBinderPerEntityBuckets As Integer = 4, initialFreeIdCapacity As Integer = 128, growthPolicy As GrowthPolicy = GrowthPolicy.Doubling, growthStep As Integer = 256)
+  overload: ZenECS.Core.WorldConfig.#ctor*
+  nameWithType.vb: WorldConfig.New(Integer, Integer, Integer, Integer, Integer, GrowthPolicy, Integer)
+  fullName.vb: ZenECS.Core.WorldConfig.New(Integer, Integer, Integer, Integer, Integer, ZenECS.Core.GrowthPolicy, Integer)
+  name.vb: New(Integer, Integer, Integer, Integer, Integer, GrowthPolicy, Integer)
+references:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: ZenECS.Core.GrowthPolicy
+  commentId: T:ZenECS.Core.GrowthPolicy
+  parent: ZenECS.Core
+  href: ZenECS.Core.GrowthPolicy.html
+  name: GrowthPolicy
+  nameWithType: GrowthPolicy
+  fullName: ZenECS.Core.GrowthPolicy
+- uid: ZenECS.Core.GrowthPolicy.Step
+  commentId: F:ZenECS.Core.GrowthPolicy.Step
+  href: ZenECS.Core.GrowthPolicy.html#ZenECS_Core_GrowthPolicy_Step
+  name: Step
+  nameWithType: GrowthPolicy.Step
+  fullName: ZenECS.Core.GrowthPolicy.Step
+- uid: ZenECS.Core.GrowthPolicy.Doubling
+  commentId: F:ZenECS.Core.GrowthPolicy.Doubling
+  href: ZenECS.Core.GrowthPolicy.html#ZenECS_Core_GrowthPolicy_Doubling
+  name: Doubling
+  nameWithType: GrowthPolicy.Doubling
+  fullName: ZenECS.Core.GrowthPolicy.Doubling
+- uid: ZenECS.Core.WorldConfig.#ctor*
+  commentId: Overload:ZenECS.Core.WorldConfig.#ctor
+  href: ZenECS.Core.WorldConfig.html#ZenECS_Core_WorldConfig__ctor_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_ZenECS_Core_GrowthPolicy_System_Int32_
+  name: WorldConfig
+  nameWithType: WorldConfig.WorldConfig
+  fullName: ZenECS.Core.WorldConfig.WorldConfig
+  nameWithType.vb: WorldConfig.New
+  fullName.vb: ZenECS.Core.WorldConfig.New
+  name.vb: New

@@ -1,0 +1,108 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Messaging.IMessage
+  commentId: T:ZenECS.Core.Messaging.IMessage
+  id: IMessage
+  parent: ZenECS.Core.Messaging
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: IMessage
+  nameWithType: IMessage
+  fullName: ZenECS.Core.Messaging.IMessage
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Messaging/Api/IMessage.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IMessage
+    path: ../Packages/com.zenecs.core/Runtime/Messaging/Api/IMessage.cs
+    startLine: 28
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Messaging
+  summary: Marker interface for messages that can be published on the world message bus.
+  remarks: >-
+    <p>
+
+    All messages flowing through <xref href="ZenECS.Core.IWorldMessagesApi" data-throw-if-not-resolved="false"></xref> are required
+
+    to be value types (<code>struct</code>) that also implement this interface.
+
+    </p>
+
+    <p>
+
+    Using value types keeps GC pressure low and makes it cheap to broadcast
+
+    small, frequently published messages such as events, commands, and
+
+    notifications between systems.
+
+    </p>
+  example: []
+  syntax:
+    content: public interface IMessage
+    content.vb: Public Interface IMessage
+references:
+- uid: ZenECS.Core.IWorldMessagesApi
+  commentId: T:ZenECS.Core.IWorldMessagesApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldMessagesApi.html
+  name: IWorldMessagesApi
+  nameWithType: IWorldMessagesApi
+  fullName: ZenECS.Core.IWorldMessagesApi
+- uid: ZenECS.Core.Messaging
+  commentId: N:ZenECS.Core.Messaging
+  href: ZenECS.html
+  name: ZenECS.Core.Messaging
+  nameWithType: ZenECS.Core.Messaging
+  fullName: ZenECS.Core.Messaging
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Messaging
+    name: Messaging
+    href: ZenECS.Core.Messaging.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Messaging
+    name: Messaging
+    href: ZenECS.Core.Messaging.html
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html

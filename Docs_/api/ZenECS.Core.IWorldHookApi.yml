@@ -1,0 +1,963 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.IWorldHookApi
+  commentId: T:ZenECS.Core.IWorldHookApi
+  id: IWorldHookApi
+  parent: ZenECS.Core
+  children:
+  - ZenECS.Core.IWorldHookApi.AddReadPermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  - ZenECS.Core.IWorldHookApi.AddValidator(System.Func{System.Object,System.Boolean})
+  - ZenECS.Core.IWorldHookApi.AddValidator``1(System.Func{``0,System.Boolean})
+  - ZenECS.Core.IWorldHookApi.AddWritePermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  - ZenECS.Core.IWorldHookApi.ClearReadPermissions
+  - ZenECS.Core.IWorldHookApi.ClearTypedValidators
+  - ZenECS.Core.IWorldHookApi.ClearValidators
+  - ZenECS.Core.IWorldHookApi.ClearWritePermissions
+  - ZenECS.Core.IWorldHookApi.RemoveReadPermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  - ZenECS.Core.IWorldHookApi.RemoveValidator(System.Func{System.Object,System.Boolean})
+  - ZenECS.Core.IWorldHookApi.RemoveValidator``1(System.Func{``0,System.Boolean})
+  - ZenECS.Core.IWorldHookApi.RemoveWritePermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  langs:
+  - csharp
+  - vb
+  name: IWorldHookApi
+  nameWithType: IWorldHookApi
+  fullName: ZenECS.Core.IWorldHookApi
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IWorldHookApi
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+    startLine: 40
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: World-level surface for configuring read/write permissions and value validators.
+  remarks: >-
+    <p>
+
+    Component APIs use this hook interface to decide whether a read or write
+
+    operation is allowed, and whether a value passes validation, before
+
+    mutating world state.
+
+    </p>
+
+    <p>
+
+    Typical use cases include:
+
+    </p>
+
+    <ul><li>Preventing structural changes during specific phases.</li><li>Enforcing server-authoritative write rules in clients.</li><li>Adding invariants or data-shape checks for components.</li><li>Temporarily locking specific entities or types.</li></ul>
+
+    <p>
+
+    All hooks are per-world and can be cleared/reset, which is especially
+
+    useful in tests and editor tooling.
+
+    </p>
+  example: []
+  syntax:
+    content: public interface IWorldHookApi
+    content.vb: Public Interface IWorldHookApi
+- uid: ZenECS.Core.IWorldHookApi.AddWritePermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.AddWritePermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  id: AddWritePermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  parent: ZenECS.Core.IWorldHookApi
+  langs:
+  - csharp
+  - vb
+  name: AddWritePermission(Func<Entity, Type, bool>)
+  nameWithType: IWorldHookApi.AddWritePermission(Func<Entity, Type, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.AddWritePermission(System.Func<ZenECS.Core.Entity, System.Type, bool>)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: AddWritePermission
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+    startLine: 57
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Adds a write-permission predicate.
+  remarks: >-
+    <p>
+
+    All registered predicates are evaluated when a write is attempted.
+
+    Implementations typically combine them using logical AND
+
+    (that is, all predicates must allow the write).
+
+    </p>
+  example: []
+  syntax:
+    content: void AddWritePermission(Func<Entity, Type, bool> hook)
+    parameters:
+    - id: hook
+      type: System.Func{ZenECS.Core.Entity,System.Type,System.Boolean}
+      description: >-
+        Predicate that receives the target <xref href="ZenECS.Core.Entity" data-throw-if-not-resolved="false"></xref> and component
+
+        <xref href="System.Type" data-throw-if-not-resolved="false"></xref> and returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the write
+
+        is allowed, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> to deny it.
+    content.vb: Sub AddWritePermission(hook As Func(Of Entity, Type, Boolean))
+  overload: ZenECS.Core.IWorldHookApi.AddWritePermission*
+  nameWithType.vb: IWorldHookApi.AddWritePermission(Func(Of Entity, Type, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.AddWritePermission(System.Func(Of ZenECS.Core.Entity, System.Type, Boolean))
+  name.vb: AddWritePermission(Func(Of Entity, Type, Boolean))
+- uid: ZenECS.Core.IWorldHookApi.RemoveWritePermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.RemoveWritePermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  id: RemoveWritePermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  parent: ZenECS.Core.IWorldHookApi
+  langs:
+  - csharp
+  - vb
+  name: RemoveWritePermission(Func<Entity, Type, bool>)
+  nameWithType: IWorldHookApi.RemoveWritePermission(Func<Entity, Type, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.RemoveWritePermission(System.Func<ZenECS.Core.Entity, System.Type, bool>)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RemoveWritePermission
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+    startLine: 67
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Removes a previously added write-permission predicate.
+  example: []
+  syntax:
+    content: bool RemoveWritePermission(Func<Entity, Type, bool> hook)
+    parameters:
+    - id: hook
+      type: System.Func{ZenECS.Core.Entity,System.Type,System.Boolean}
+      description: Previously registered predicate to remove.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the predicate was found and removed;
+
+        otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function RemoveWritePermission(hook As Func(Of Entity, Type, Boolean)) As Boolean
+  overload: ZenECS.Core.IWorldHookApi.RemoveWritePermission*
+  nameWithType.vb: IWorldHookApi.RemoveWritePermission(Func(Of Entity, Type, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.RemoveWritePermission(System.Func(Of ZenECS.Core.Entity, System.Type, Boolean))
+  name.vb: RemoveWritePermission(Func(Of Entity, Type, Boolean))
+- uid: ZenECS.Core.IWorldHookApi.ClearWritePermissions
+  commentId: M:ZenECS.Core.IWorldHookApi.ClearWritePermissions
+  id: ClearWritePermissions
+  parent: ZenECS.Core.IWorldHookApi
+  langs:
+  - csharp
+  - vb
+  name: ClearWritePermissions()
+  nameWithType: IWorldHookApi.ClearWritePermissions()
+  fullName: ZenECS.Core.IWorldHookApi.ClearWritePermissions()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ClearWritePermissions
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+    startLine: 76
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Clears all write-permission predicates for this world.
+  remarks: >-
+    After calling this method, write-permission decisions fall back to
+
+    the default behavior (for example, phase-based write policy only).
+  example: []
+  syntax:
+    content: void ClearWritePermissions()
+    content.vb: Sub ClearWritePermissions()
+  overload: ZenECS.Core.IWorldHookApi.ClearWritePermissions*
+- uid: ZenECS.Core.IWorldHookApi.AddReadPermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.AddReadPermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  id: AddReadPermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  parent: ZenECS.Core.IWorldHookApi
+  langs:
+  - csharp
+  - vb
+  name: AddReadPermission(Func<Entity, Type, bool>)
+  nameWithType: IWorldHookApi.AddReadPermission(Func<Entity, Type, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.AddReadPermission(System.Func<ZenECS.Core.Entity, System.Type, bool>)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: AddReadPermission
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+    startLine: 92
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Adds a read-permission predicate.
+  remarks: >-
+    <p>
+
+    Read hooks are especially useful when implementing debug tooling or
+
+    spectator modes that should not expose all entities or components.
+
+    </p>
+  example: []
+  syntax:
+    content: void AddReadPermission(Func<Entity, Type, bool> hook)
+    parameters:
+    - id: hook
+      type: System.Func{ZenECS.Core.Entity,System.Type,System.Boolean}
+      description: >-
+        Predicate that receives the target <xref href="ZenECS.Core.Entity" data-throw-if-not-resolved="false"></xref> and component
+
+        <xref href="System.Type" data-throw-if-not-resolved="false"></xref> and returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the read
+
+        is allowed, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> to deny it.
+    content.vb: Sub AddReadPermission(hook As Func(Of Entity, Type, Boolean))
+  overload: ZenECS.Core.IWorldHookApi.AddReadPermission*
+  nameWithType.vb: IWorldHookApi.AddReadPermission(Func(Of Entity, Type, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.AddReadPermission(System.Func(Of ZenECS.Core.Entity, System.Type, Boolean))
+  name.vb: AddReadPermission(Func(Of Entity, Type, Boolean))
+- uid: ZenECS.Core.IWorldHookApi.RemoveReadPermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.RemoveReadPermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  id: RemoveReadPermission(System.Func{ZenECS.Core.Entity,System.Type,System.Boolean})
+  parent: ZenECS.Core.IWorldHookApi
+  langs:
+  - csharp
+  - vb
+  name: RemoveReadPermission(Func<Entity, Type, bool>)
+  nameWithType: IWorldHookApi.RemoveReadPermission(Func<Entity, Type, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.RemoveReadPermission(System.Func<ZenECS.Core.Entity, System.Type, bool>)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RemoveReadPermission
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+    startLine: 102
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Removes a previously added read-permission predicate.
+  example: []
+  syntax:
+    content: bool RemoveReadPermission(Func<Entity, Type, bool> hook)
+    parameters:
+    - id: hook
+      type: System.Func{ZenECS.Core.Entity,System.Type,System.Boolean}
+      description: Previously registered predicate to remove.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the predicate was found and removed;
+
+        otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function RemoveReadPermission(hook As Func(Of Entity, Type, Boolean)) As Boolean
+  overload: ZenECS.Core.IWorldHookApi.RemoveReadPermission*
+  nameWithType.vb: IWorldHookApi.RemoveReadPermission(Func(Of Entity, Type, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.RemoveReadPermission(System.Func(Of ZenECS.Core.Entity, System.Type, Boolean))
+  name.vb: RemoveReadPermission(Func(Of Entity, Type, Boolean))
+- uid: ZenECS.Core.IWorldHookApi.ClearReadPermissions
+  commentId: M:ZenECS.Core.IWorldHookApi.ClearReadPermissions
+  id: ClearReadPermissions
+  parent: ZenECS.Core.IWorldHookApi
+  langs:
+  - csharp
+  - vb
+  name: ClearReadPermissions()
+  nameWithType: IWorldHookApi.ClearReadPermissions()
+  fullName: ZenECS.Core.IWorldHookApi.ClearReadPermissions()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ClearReadPermissions
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+    startLine: 111
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Clears all read-permission predicates for this world.
+  remarks: >-
+    After calling this method, read-permission decisions fall back to
+
+    the default behavior (for example, no additional read restrictions).
+  example: []
+  syntax:
+    content: void ClearReadPermissions()
+    content.vb: Sub ClearReadPermissions()
+  overload: ZenECS.Core.IWorldHookApi.ClearReadPermissions*
+- uid: ZenECS.Core.IWorldHookApi.AddValidator(System.Func{System.Object,System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.AddValidator(System.Func{System.Object,System.Boolean})
+  id: AddValidator(System.Func{System.Object,System.Boolean})
+  parent: ZenECS.Core.IWorldHookApi
+  langs:
+  - csharp
+  - vb
+  name: AddValidator(Func<object, bool>)
+  nameWithType: IWorldHookApi.AddValidator(Func<object, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.AddValidator(System.Func<object, bool>)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: AddValidator
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+    startLine: 131
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Adds an object-level validator invoked on write attempts.
+  remarks: >-
+    <p>
+
+    Object-level validators are type-agnostic and see the boxed value,
+
+    which is useful for generic checks such as "no NaN in numeric
+
+    fields" or "no nulls in nested collections".
+
+    </p>
+
+    <p>
+
+    For type-specific rules, prefer <xref href="ZenECS.Core.IWorldHookApi.AddValidator%60%601(System.Func%7b%60%600%2cSystem.Boolean%7d)" data-throw-if-not-resolved="false"></xref>.
+
+    </p>
+  example: []
+  syntax:
+    content: void AddValidator(Func<object, bool> hook)
+    parameters:
+    - id: hook
+      type: System.Func{System.Object,System.Boolean}
+      description: >-
+        Validator delegate that receives a boxed component value and
+
+        returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if it is considered valid, or
+
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> to reject the write.
+    content.vb: Sub AddValidator(hook As Func(Of Object, Boolean))
+  overload: ZenECS.Core.IWorldHookApi.AddValidator*
+  nameWithType.vb: IWorldHookApi.AddValidator(Func(Of Object, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.AddValidator(System.Func(Of Object, Boolean))
+  name.vb: AddValidator(Func(Of Object, Boolean))
+- uid: ZenECS.Core.IWorldHookApi.RemoveValidator(System.Func{System.Object,System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.RemoveValidator(System.Func{System.Object,System.Boolean})
+  id: RemoveValidator(System.Func{System.Object,System.Boolean})
+  parent: ZenECS.Core.IWorldHookApi
+  langs:
+  - csharp
+  - vb
+  name: RemoveValidator(Func<object, bool>)
+  nameWithType: IWorldHookApi.RemoveValidator(Func<object, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.RemoveValidator(System.Func<object, bool>)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RemoveValidator
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+    startLine: 141
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Removes a previously added object-level validator.
+  example: []
+  syntax:
+    content: bool RemoveValidator(Func<object, bool> hook)
+    parameters:
+    - id: hook
+      type: System.Func{System.Object,System.Boolean}
+      description: Previously registered validator to remove.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the validator was found and removed;
+
+        otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function RemoveValidator(hook As Func(Of Object, Boolean)) As Boolean
+  overload: ZenECS.Core.IWorldHookApi.RemoveValidator*
+  nameWithType.vb: IWorldHookApi.RemoveValidator(Func(Of Object, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.RemoveValidator(System.Func(Of Object, Boolean))
+  name.vb: RemoveValidator(Func(Of Object, Boolean))
+- uid: ZenECS.Core.IWorldHookApi.ClearValidators
+  commentId: M:ZenECS.Core.IWorldHookApi.ClearValidators
+  id: ClearValidators
+  parent: ZenECS.Core.IWorldHookApi
+  langs:
+  - csharp
+  - vb
+  name: ClearValidators()
+  nameWithType: IWorldHookApi.ClearValidators()
+  fullName: ZenECS.Core.IWorldHookApi.ClearValidators()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ClearValidators
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+    startLine: 150
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Clears all object-level validators for this world.
+  remarks: >-
+    After calling this method, only typed validators (see
+
+    <xref href="ZenECS.Core.IWorldHookApi.AddValidator%60%601(System.Func%7b%60%600%2cSystem.Boolean%7d)" data-throw-if-not-resolved="false"></xref>) contribute to validation.
+  example: []
+  syntax:
+    content: void ClearValidators()
+    content.vb: Sub ClearValidators()
+  overload: ZenECS.Core.IWorldHookApi.ClearValidators*
+- uid: ZenECS.Core.IWorldHookApi.AddValidator``1(System.Func{``0,System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.AddValidator``1(System.Func{``0,System.Boolean})
+  id: AddValidator``1(System.Func{``0,System.Boolean})
+  parent: ZenECS.Core.IWorldHookApi
+  langs:
+  - csharp
+  - vb
+  name: AddValidator<T>(Func<T, bool>)
+  nameWithType: IWorldHookApi.AddValidator<T>(Func<T, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.AddValidator<T>(System.Func<T, bool>)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: AddValidator
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+    startLine: 168
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Adds a typed validator invoked when writing components of type <code class="typeparamref">T</code>.
+  remarks: >-
+    <p>
+
+    Typed validators run before the value is written and can be combined
+
+    with object-level validators. They are ideal for type-specific rules,
+
+    such as clamping ranges or enforcing invariants.
+
+    </p>
+  example: []
+  syntax:
+    content: 'void AddValidator<T>(Func<T, bool> predicate) where T : struct'
+    parameters:
+    - id: predicate
+      type: System.Func{{T},System.Boolean}
+      description: >-
+        Predicate that receives the component value and returns
+
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if it is valid, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> to
+
+        reject the write.
+    typeParameters:
+    - id: T
+      description: Component value type.
+    content.vb: Sub AddValidator(Of T As Structure)(predicate As Func(Of T, Boolean))
+  overload: ZenECS.Core.IWorldHookApi.AddValidator*
+  nameWithType.vb: IWorldHookApi.AddValidator(Of T)(Func(Of T, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.AddValidator(Of T)(System.Func(Of T, Boolean))
+  name.vb: AddValidator(Of T)(Func(Of T, Boolean))
+- uid: ZenECS.Core.IWorldHookApi.RemoveValidator``1(System.Func{``0,System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.RemoveValidator``1(System.Func{``0,System.Boolean})
+  id: RemoveValidator``1(System.Func{``0,System.Boolean})
+  parent: ZenECS.Core.IWorldHookApi
+  langs:
+  - csharp
+  - vb
+  name: RemoveValidator<T>(Func<T, bool>)
+  nameWithType: IWorldHookApi.RemoveValidator<T>(Func<T, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.RemoveValidator<T>(System.Func<T, bool>)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: RemoveValidator
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+    startLine: 179
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Removes a previously added typed validator for <code class="typeparamref">T</code>.
+  example: []
+  syntax:
+    content: 'bool RemoveValidator<T>(Func<T, bool> predicate) where T : struct'
+    parameters:
+    - id: predicate
+      type: System.Func{{T},System.Boolean}
+      description: Previously registered validator to remove.
+    typeParameters:
+    - id: T
+      description: Component value type.
+    return:
+      type: System.Boolean
+      description: >-
+        <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the validator was found and removed;
+
+        otherwise <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function RemoveValidator(Of T As Structure)(predicate As Func(Of T, Boolean)) As Boolean
+  overload: ZenECS.Core.IWorldHookApi.RemoveValidator*
+  nameWithType.vb: IWorldHookApi.RemoveValidator(Of T)(Func(Of T, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.RemoveValidator(Of T)(System.Func(Of T, Boolean))
+  name.vb: RemoveValidator(Of T)(Func(Of T, Boolean))
+- uid: ZenECS.Core.IWorldHookApi.ClearTypedValidators
+  commentId: M:ZenECS.Core.IWorldHookApi.ClearTypedValidators
+  id: ClearTypedValidators
+  parent: ZenECS.Core.IWorldHookApi
+  langs:
+  - csharp
+  - vb
+  name: ClearTypedValidators()
+  nameWithType: IWorldHookApi.ClearTypedValidators()
+  fullName: ZenECS.Core.IWorldHookApi.ClearTypedValidators()
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: ClearTypedValidators
+    path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
+    startLine: 188
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core
+  summary: Clears all typed validators for all component types in this world.
+  remarks: >-
+    Type-specific validation is disabled until new validators are
+
+    registered via <xref href="ZenECS.Core.IWorldHookApi.AddValidator%60%601(System.Func%7b%60%600%2cSystem.Boolean%7d)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: void ClearTypedValidators()
+    content.vb: Sub ClearTypedValidators()
+  overload: ZenECS.Core.IWorldHookApi.ClearTypedValidators*
+references:
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+- uid: ZenECS.Core.Entity
+  commentId: T:ZenECS.Core.Entity
+  parent: ZenECS.Core
+  href: ZenECS.Core.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: ZenECS.Core.Entity
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: ZenECS.Core.IWorldHookApi.AddWritePermission*
+  commentId: Overload:ZenECS.Core.IWorldHookApi.AddWritePermission
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddWritePermission_System_Func_ZenECS_Core_Entity_System_Type_System_Boolean__
+  name: AddWritePermission
+  nameWithType: IWorldHookApi.AddWritePermission
+  fullName: ZenECS.Core.IWorldHookApi.AddWritePermission
+- uid: System.Func{ZenECS.Core.Entity,System.Type,System.Boolean}
+  commentId: T:System.Func{ZenECS.Core.Entity,System.Type,System.Boolean}
+  parent: System
+  definition: System.Func`3
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<Entity, Type, bool>
+  nameWithType: Func<Entity, Type, bool>
+  fullName: System.Func<ZenECS.Core.Entity, System.Type, bool>
+  nameWithType.vb: Func(Of Entity, Type, Boolean)
+  fullName.vb: System.Func(Of ZenECS.Core.Entity, System.Type, Boolean)
+  name.vb: Func(Of Entity, Type, Boolean)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Entity
+    name: Entity
+    href: ZenECS.Core.Entity.html
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Func`3
+  commentId: T:System.Func`3
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<T1, T2, TResult>
+  nameWithType: Func<T1, T2, TResult>
+  fullName: System.Func<T1, T2, TResult>
+  nameWithType.vb: Func(Of T1, T2, TResult)
+  fullName.vb: System.Func(Of T1, T2, TResult)
+  name.vb: Func(Of T1, T2, TResult)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: ZenECS.Core.IWorldHookApi.RemoveWritePermission*
+  commentId: Overload:ZenECS.Core.IWorldHookApi.RemoveWritePermission
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_RemoveWritePermission_System_Func_ZenECS_Core_Entity_System_Type_System_Boolean__
+  name: RemoveWritePermission
+  nameWithType: IWorldHookApi.RemoveWritePermission
+  fullName: ZenECS.Core.IWorldHookApi.RemoveWritePermission
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: ZenECS.Core.IWorldHookApi.ClearWritePermissions*
+  commentId: Overload:ZenECS.Core.IWorldHookApi.ClearWritePermissions
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_ClearWritePermissions
+  name: ClearWritePermissions
+  nameWithType: IWorldHookApi.ClearWritePermissions
+  fullName: ZenECS.Core.IWorldHookApi.ClearWritePermissions
+- uid: ZenECS.Core.IWorldHookApi.AddReadPermission*
+  commentId: Overload:ZenECS.Core.IWorldHookApi.AddReadPermission
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddReadPermission_System_Func_ZenECS_Core_Entity_System_Type_System_Boolean__
+  name: AddReadPermission
+  nameWithType: IWorldHookApi.AddReadPermission
+  fullName: ZenECS.Core.IWorldHookApi.AddReadPermission
+- uid: ZenECS.Core.IWorldHookApi.RemoveReadPermission*
+  commentId: Overload:ZenECS.Core.IWorldHookApi.RemoveReadPermission
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_RemoveReadPermission_System_Func_ZenECS_Core_Entity_System_Type_System_Boolean__
+  name: RemoveReadPermission
+  nameWithType: IWorldHookApi.RemoveReadPermission
+  fullName: ZenECS.Core.IWorldHookApi.RemoveReadPermission
+- uid: ZenECS.Core.IWorldHookApi.ClearReadPermissions*
+  commentId: Overload:ZenECS.Core.IWorldHookApi.ClearReadPermissions
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_ClearReadPermissions
+  name: ClearReadPermissions
+  nameWithType: IWorldHookApi.ClearReadPermissions
+  fullName: ZenECS.Core.IWorldHookApi.ClearReadPermissions
+- uid: ZenECS.Core.IWorldHookApi.AddValidator``1(System.Func{``0,System.Boolean})
+  commentId: M:ZenECS.Core.IWorldHookApi.AddValidator``1(System.Func{``0,System.Boolean})
+  isExternal: true
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddValidator__1_System_Func___0_System_Boolean__
+  name: AddValidator<T>(Func<T, bool>)
+  nameWithType: IWorldHookApi.AddValidator<T>(Func<T, bool>)
+  fullName: ZenECS.Core.IWorldHookApi.AddValidator<T>(System.Func<T, bool>)
+  nameWithType.vb: IWorldHookApi.AddValidator(Of T)(Func(Of T, Boolean))
+  fullName.vb: ZenECS.Core.IWorldHookApi.AddValidator(Of T)(System.Func(Of T, Boolean))
+  name.vb: AddValidator(Of T)(Func(Of T, Boolean))
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldHookApi.AddValidator``1(System.Func{``0,System.Boolean})
+    name: AddValidator
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddValidator__1_System_Func___0_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldHookApi.AddValidator``1(System.Func{``0,System.Boolean})
+    name: AddValidator
+    href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddValidator__1_System_Func___0_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: ZenECS.Core.IWorldHookApi.AddValidator*
+  commentId: Overload:ZenECS.Core.IWorldHookApi.AddValidator
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_AddValidator_System_Func_System_Object_System_Boolean__
+  name: AddValidator
+  nameWithType: IWorldHookApi.AddValidator
+  fullName: ZenECS.Core.IWorldHookApi.AddValidator
+- uid: System.Func{System.Object,System.Boolean}
+  commentId: T:System.Func{System.Object,System.Boolean}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<object, bool>
+  nameWithType: Func<object, bool>
+  fullName: System.Func<object, bool>
+  nameWithType.vb: Func(Of Object, Boolean)
+  fullName.vb: System.Func(Of Object, Boolean)
+  name.vb: Func(Of Object, Boolean)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: ZenECS.Core.IWorldHookApi.RemoveValidator*
+  commentId: Overload:ZenECS.Core.IWorldHookApi.RemoveValidator
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_RemoveValidator_System_Func_System_Object_System_Boolean__
+  name: RemoveValidator
+  nameWithType: IWorldHookApi.RemoveValidator
+  fullName: ZenECS.Core.IWorldHookApi.RemoveValidator
+- uid: ZenECS.Core.IWorldHookApi.ClearValidators*
+  commentId: Overload:ZenECS.Core.IWorldHookApi.ClearValidators
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_ClearValidators
+  name: ClearValidators
+  nameWithType: IWorldHookApi.ClearValidators
+  fullName: ZenECS.Core.IWorldHookApi.ClearValidators
+- uid: System.Func{{T},System.Boolean}
+  commentId: T:System.Func{``0,System.Boolean}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, bool>
+  nameWithType: Func<T, bool>
+  fullName: System.Func<T, bool>
+  nameWithType.vb: Func(Of T, Boolean)
+  fullName.vb: System.Func(Of T, Boolean)
+  name.vb: Func(Of T, Boolean)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: ZenECS.Core.IWorldHookApi.ClearTypedValidators*
+  commentId: Overload:ZenECS.Core.IWorldHookApi.ClearTypedValidators
+  href: ZenECS.Core.IWorldHookApi.html#ZenECS_Core_IWorldHookApi_ClearTypedValidators
+  name: ClearTypedValidators
+  nameWithType: IWorldHookApi.ClearTypedValidators
+  fullName: ZenECS.Core.IWorldHookApi.ClearTypedValidators

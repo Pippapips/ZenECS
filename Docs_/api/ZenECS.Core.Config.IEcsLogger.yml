@@ -1,0 +1,229 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Config.IEcsLogger
+  commentId: T:ZenECS.Core.Config.IEcsLogger
+  id: IEcsLogger
+  parent: ZenECS.Core.Config
+  children:
+  - ZenECS.Core.Config.IEcsLogger.Error(System.String)
+  - ZenECS.Core.Config.IEcsLogger.Info(System.String)
+  - ZenECS.Core.Config.IEcsLogger.Warn(System.String)
+  langs:
+  - csharp
+  - vb
+  name: IEcsLogger
+  nameWithType: IEcsLogger
+  fullName: ZenECS.Core.Config.IEcsLogger
+  type: Interface
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Config/IEcsLogger.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: IEcsLogger
+    path: ../Packages/com.zenecs.core/Runtime/Core/Config/IEcsLogger.cs
+    startLine: 30
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Config
+  summary: Minimal logging surface used by the core.
+  remarks: >-
+    <p>
+
+    Implement this interface to bridge ZenECS logging into your engine or
+
+    framework logs (for example Unity console, Serilog, NLog, etc.).
+
+    </p>
+
+    <p>
+
+    The interface is intentionally small: it only accepts fully formatted
+
+    string messages and does not prescribe structured logging or formatting
+
+    helpers, so the core remains free of external logging dependencies.
+
+    </p>
+  example: []
+  syntax:
+    content: public interface IEcsLogger
+    content.vb: Public Interface IEcsLogger
+- uid: ZenECS.Core.Config.IEcsLogger.Info(System.String)
+  commentId: M:ZenECS.Core.Config.IEcsLogger.Info(System.String)
+  id: Info(System.String)
+  parent: ZenECS.Core.Config.IEcsLogger
+  langs:
+  - csharp
+  - vb
+  name: Info(string)
+  nameWithType: IEcsLogger.Info(string)
+  fullName: ZenECS.Core.Config.IEcsLogger.Info(string)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Config/IEcsLogger.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Info
+    path: ../Packages/com.zenecs.core/Runtime/Core/Config/IEcsLogger.cs
+    startLine: 38
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Config
+  summary: Writes an informational message.
+  example: []
+  syntax:
+    content: void Info(string message)
+    parameters:
+    - id: message
+      type: System.String
+      description: Human-readable message to record at informational level.
+    content.vb: Sub Info(message As String)
+  overload: ZenECS.Core.Config.IEcsLogger.Info*
+  nameWithType.vb: IEcsLogger.Info(String)
+  fullName.vb: ZenECS.Core.Config.IEcsLogger.Info(String)
+  name.vb: Info(String)
+- uid: ZenECS.Core.Config.IEcsLogger.Warn(System.String)
+  commentId: M:ZenECS.Core.Config.IEcsLogger.Warn(System.String)
+  id: Warn(System.String)
+  parent: ZenECS.Core.Config.IEcsLogger
+  langs:
+  - csharp
+  - vb
+  name: Warn(string)
+  nameWithType: IEcsLogger.Warn(string)
+  fullName: ZenECS.Core.Config.IEcsLogger.Warn(string)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Config/IEcsLogger.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Warn
+    path: ../Packages/com.zenecs.core/Runtime/Core/Config/IEcsLogger.cs
+    startLine: 47
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Config
+  summary: Writes a warning message.
+  example: []
+  syntax:
+    content: void Warn(string message)
+    parameters:
+    - id: message
+      type: System.String
+      description: >-
+        Human-readable message to record at warning level, typically used
+
+        for unexpected but non-fatal conditions.
+    content.vb: Sub Warn(message As String)
+  overload: ZenECS.Core.Config.IEcsLogger.Warn*
+  nameWithType.vb: IEcsLogger.Warn(String)
+  fullName.vb: ZenECS.Core.Config.IEcsLogger.Warn(String)
+  name.vb: Warn(String)
+- uid: ZenECS.Core.Config.IEcsLogger.Error(System.String)
+  commentId: M:ZenECS.Core.Config.IEcsLogger.Error(System.String)
+  id: Error(System.String)
+  parent: ZenECS.Core.Config.IEcsLogger
+  langs:
+  - csharp
+  - vb
+  name: Error(string)
+  nameWithType: IEcsLogger.Error(string)
+  fullName: ZenECS.Core.Config.IEcsLogger.Error(string)
+  type: Method
+  source:
+    remote:
+      path: Packages/com.zenecs.core/Runtime/Core/Config/IEcsLogger.cs
+      branch: main
+      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+    id: Error
+    path: ../Packages/com.zenecs.core/Runtime/Core/Config/IEcsLogger.cs
+    startLine: 56
+  assemblies:
+  - ZenECS.Core
+  namespace: ZenECS.Core.Config
+  summary: Writes an error message.
+  example: []
+  syntax:
+    content: void Error(string message)
+    parameters:
+    - id: message
+      type: System.String
+      description: >-
+        Human-readable message to record at error level, typically used
+
+        for failures and critical issues.
+    content.vb: Sub [Error](message As String)
+  overload: ZenECS.Core.Config.IEcsLogger.Error*
+  nameWithType.vb: IEcsLogger.Error(String)
+  fullName.vb: ZenECS.Core.Config.IEcsLogger.Error(String)
+  name.vb: Error(String)
+references:
+- uid: ZenECS.Core.Config
+  commentId: N:ZenECS.Core.Config
+  href: ZenECS.html
+  name: ZenECS.Core.Config
+  nameWithType: ZenECS.Core.Config
+  fullName: ZenECS.Core.Config
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Config
+    name: Config
+    href: ZenECS.Core.Config.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  - name: .
+  - uid: ZenECS.Core.Config
+    name: Config
+    href: ZenECS.Core.Config.html
+- uid: ZenECS.Core.Config.IEcsLogger.Info*
+  commentId: Overload:ZenECS.Core.Config.IEcsLogger.Info
+  href: ZenECS.Core.Config.IEcsLogger.html#ZenECS_Core_Config_IEcsLogger_Info_System_String_
+  name: Info
+  nameWithType: IEcsLogger.Info
+  fullName: ZenECS.Core.Config.IEcsLogger.Info
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ZenECS.Core.Config.IEcsLogger.Warn*
+  commentId: Overload:ZenECS.Core.Config.IEcsLogger.Warn
+  href: ZenECS.Core.Config.IEcsLogger.html#ZenECS_Core_Config_IEcsLogger_Warn_System_String_
+  name: Warn
+  nameWithType: IEcsLogger.Warn
+  fullName: ZenECS.Core.Config.IEcsLogger.Warn
+- uid: ZenECS.Core.Config.IEcsLogger.Error*
+  commentId: Overload:ZenECS.Core.Config.IEcsLogger.Error
+  href: ZenECS.Core.Config.IEcsLogger.html#ZenECS_Core_Config_IEcsLogger_Error_System_String_
+  name: Error
+  nameWithType: IEcsLogger.Error
+  fullName: ZenECS.Core.Config.IEcsLogger.Error

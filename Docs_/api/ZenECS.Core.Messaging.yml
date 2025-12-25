@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: ZenECS.Core.Messaging
+  commentId: N:ZenECS.Core.Messaging
+  id: ZenECS.Core.Messaging
+  children:
+  - ZenECS.Core.Messaging.IMessage
+  langs:
+  - csharp
+  - vb
+  name: ZenECS.Core.Messaging
+  nameWithType: ZenECS.Core.Messaging
+  fullName: ZenECS.Core.Messaging
+  type: Namespace
+  assemblies:
+  - ZenECS.Core
+references:
+- uid: ZenECS.Core.Messaging.IMessage
+  commentId: T:ZenECS.Core.Messaging.IMessage
+  href: ZenECS.Core.Messaging.IMessage.html
+  name: IMessage
+  nameWithType: IMessage
+  fullName: ZenECS.Core.Messaging.IMessage
