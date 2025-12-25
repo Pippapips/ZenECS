@@ -18,7 +18,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RuntimeInitializeOnLoadMethodAttribute
     path: ../src/UnityStubs.cs
     startLine: 122
@@ -89,7 +89,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: loadType
     path: ../src/UnityStubs.cs
     startLine: 124
@@ -118,7 +118,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: .ctor
     path: ../src/UnityStubs.cs
     startLine: 125

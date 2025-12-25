@@ -24,7 +24,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Result
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
     startLine: 912
@@ -61,7 +61,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Entity
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
     startLine: 914
@@ -90,7 +90,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Component1
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
     startLine: 915
@@ -119,7 +119,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Component2
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
     startLine: 916
@@ -148,7 +148,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Component3
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
     startLine: 917
@@ -177,7 +177,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Component4
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
     startLine: 918
@@ -206,7 +206,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Component5
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
     startLine: 919
@@ -235,7 +235,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: .ctor
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
     startLine: 924
@@ -279,7 +279,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Deconstruct
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
     startLine: 937

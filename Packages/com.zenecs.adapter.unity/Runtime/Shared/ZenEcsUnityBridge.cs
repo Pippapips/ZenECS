@@ -38,11 +38,11 @@ namespace ZenECS.Adapter.Unity
     /// <see cref="SystemPresetResolver"/> — used to instantiate
     /// <see cref="ISystem"/> implementations from presets or type lists.
     /// </description></item>
-    /// <item><description>
-    /// <see cref="SharedContextResolver"/> — used to resolve shared
-    /// <see cref="Binding.Contexts.Assets.SharedContextAsset"/> markers to
-    /// concrete <see cref="IContext"/> instances.
-    /// </description></item>
+        /// <item><description>
+        /// <see cref="SharedContextResolver"/> — used to resolve shared
+        /// <see cref="Binding.Contexts.Assets.SharedContextAsset"/> markers to
+        /// concrete <see cref="ZenECS.Core.Binding.IContext"/> instances.
+        /// </description></item>
     /// </list>
     /// <para>
     /// The bridge intentionally contains no direct references to
@@ -90,7 +90,7 @@ namespace ZenECS.Adapter.Unity
         /// <see cref="Binding.Contexts.Assets.SharedContextAsset"/> markers,
         /// for example from <see cref="Blueprints.EntityBlueprint"/> during
         /// entity spawn. It maps marker assets or context types to concrete
-        /// <see cref="IContext"/> instances that are then registered with worlds.
+        /// <see cref="ZenECS.Core.Binding.IContext"/> instances that are then registered with worlds.
         /// </para>
         /// <para>
         /// When this property is <c>null</c>, shared-context resolution is

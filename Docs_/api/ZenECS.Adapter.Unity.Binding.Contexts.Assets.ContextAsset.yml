@@ -16,7 +16,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/Assets/ContextAsset.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ContextAsset
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/Assets/ContextAsset.cs
     startLine: 50

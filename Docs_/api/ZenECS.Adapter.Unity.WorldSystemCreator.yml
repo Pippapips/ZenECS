@@ -20,7 +20,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/World/WorldSystemCreator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: WorldSystemCreator
     path: ../Packages/com.zenecs.adapter.unity/Runtime/World/WorldSystemCreator.cs
     startLine: 59
@@ -51,7 +51,7 @@ items:
 
     Instantiates the systems (via DI or <xref href="System.Activator" data-throw-if-not-resolved="false"></xref>) and
 
-    registers them into the world using IWorld.AddSystems.
+    registers them into the world using <xref href="ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable%7bZenECS.Core.Systems.ISystem%7d)" data-throw-if-not-resolved="false"></xref>.
 
     </li></ol>
 
@@ -59,11 +59,11 @@ items:
 
     When the <code>ZENECS_ZENJECT</code> scripting define is set, the installer
 
-    inherits from MonoInstaller and can resolve systems via
+    inherits from Zenject MonoInstaller and can resolve systems via
 
     an <xref href="ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver" data-throw-if-not-resolved="false"></xref> (typically bound in
 
-    ProjectInstaller). Without Zenject, it falls back to
+    <xref href="ZenECS.Adapter.Unity.DI.ProjectInstaller" data-throw-if-not-resolved="false"></xref>). Without Zenject, it falls back to
 
     a lightweight <xref href="UnityEngine.MonoBehaviour" data-throw-if-not-resolved="false"></xref> that uses
 
@@ -111,7 +111,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/World/WorldSystemCreator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: worldName
     path: ../Packages/com.zenecs.adapter.unity/Runtime/World/WorldSystemCreator.cs
     startLine: 72
@@ -162,7 +162,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/World/WorldSystemCreator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: worldTags
     path: ../Packages/com.zenecs.adapter.unity/Runtime/World/WorldSystemCreator.cs
     startLine: 83
@@ -209,7 +209,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/World/WorldSystemCreator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: systemTypes
     path: ../Packages/com.zenecs.adapter.unity/Runtime/World/WorldSystemCreator.cs
     startLine: 102
@@ -288,7 +288,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/World/WorldSystemCreator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: systemPresets
     path: ../Packages/com.zenecs.adapter.unity/Runtime/World/WorldSystemCreator.cs
     startLine: 117
@@ -422,6 +422,49 @@ references:
   name: Activator
   nameWithType: Activator
   fullName: System.Activator
+- uid: ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable{ZenECS.Core.Systems.ISystem})
+  commentId: M:ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable{ZenECS.Core.Systems.ISystem})
+  parent: ZenECS.Core.IWorldSystemsApi
+  isExternal: true
+  href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_AddSystems_System_Collections_Generic_IEnumerable_ZenECS_Core_Systems_ISystem__
+  name: AddSystems(IEnumerable<ISystem>)
+  nameWithType: IWorldSystemsApi.AddSystems(IEnumerable<ISystem>)
+  fullName: ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable<ZenECS.Core.Systems.ISystem>)
+  nameWithType.vb: IWorldSystemsApi.AddSystems(IEnumerable(Of ISystem))
+  fullName.vb: ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable(Of ZenECS.Core.Systems.ISystem))
+  name.vb: AddSystems(IEnumerable(Of ISystem))
+  spec.csharp:
+  - uid: ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable{ZenECS.Core.Systems.ISystem})
+    name: AddSystems
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_AddSystems_System_Collections_Generic_IEnumerable_ZenECS_Core_Systems_ISystem__
+  - name: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: ZenECS.Core.Systems.ISystem
+    name: ISystem
+    href: ZenECS.Core.Systems.ISystem.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Core.IWorldSystemsApi.AddSystems(System.Collections.Generic.IEnumerable{ZenECS.Core.Systems.ISystem})
+    name: AddSystems
+    href: ZenECS.Core.IWorldSystemsApi.html#ZenECS_Core_IWorldSystemsApi_AddSystems_System_Collections_Generic_IEnumerable_ZenECS_Core_Systems_ISystem__
+  - name: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: ZenECS.Core.Systems.ISystem
+    name: ISystem
+    href: ZenECS.Core.Systems.ISystem.html
+  - name: )
+  - name: )
 - uid: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
   commentId: T:ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
   parent: ZenECS.Adapter.Unity.SystemPresets
@@ -429,6 +472,12 @@ references:
   name: ISystemPresetResolver
   nameWithType: ISystemPresetResolver
   fullName: ZenECS.Adapter.Unity.SystemPresets.ISystemPresetResolver
+- uid: ZenECS.Adapter.Unity.DI.ProjectInstaller
+  commentId: T:ZenECS.Adapter.Unity.DI.ProjectInstaller
+  href: ZenECS.Adapter.Unity.DI.ProjectInstaller.html
+  name: ProjectInstaller
+  nameWithType: ProjectInstaller
+  fullName: ZenECS.Adapter.Unity.DI.ProjectInstaller
 - uid: UnityEngine.MonoBehaviour
   commentId: T:UnityEngine.MonoBehaviour
   parent: UnityEngine
@@ -954,6 +1003,13 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.object.tostring
   - name: (
   - name: )
+- uid: ZenECS.Core.IWorldSystemsApi
+  commentId: T:ZenECS.Core.IWorldSystemsApi
+  parent: ZenECS.Core
+  href: ZenECS.Core.IWorldSystemsApi.html
+  name: IWorldSystemsApi
+  nameWithType: IWorldSystemsApi
+  fullName: ZenECS.Core.IWorldSystemsApi
 - uid: ZenECS.Adapter.Unity.SystemPresets
   commentId: N:ZenECS.Adapter.Unity.SystemPresets
   href: ZenECS.html
@@ -1005,6 +1061,28 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: ZenECS.Core
+  commentId: N:ZenECS.Core
+  href: ZenECS.html
+  name: ZenECS.Core
+  nameWithType: ZenECS.Core
+  fullName: ZenECS.Core
+  spec.csharp:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
+  spec.vb:
+  - uid: ZenECS
+    name: ZenECS
+    href: ZenECS.html
+  - name: .
+  - uid: ZenECS.Core
+    name: Core
+    href: ZenECS.Core.html
 - uid: ZenECS.Adapter.Unity.KernelLocator.CurrentWorld
   commentId: P:ZenECS.Adapter.Unity.KernelLocator.CurrentWorld
   href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_CurrentWorld

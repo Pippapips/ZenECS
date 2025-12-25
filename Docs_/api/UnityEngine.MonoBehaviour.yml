@@ -17,7 +17,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: MonoBehaviour
     path: ../src/UnityStubs.cs
     startLine: 48
@@ -69,7 +69,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: .ctor
     path: ../src/UnityStubs.cs
     startLine: 50

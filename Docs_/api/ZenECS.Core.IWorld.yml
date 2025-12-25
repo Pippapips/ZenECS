@@ -28,7 +28,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IWorld
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
     startLine: 34
@@ -155,7 +155,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Kernel
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
     startLine: 55
@@ -190,7 +190,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Id
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
     startLine: 70
@@ -237,7 +237,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Name
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
     startLine: 79
@@ -272,7 +272,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Tags
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
     startLine: 90
@@ -311,7 +311,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FrameCount
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
     startLine: 100
@@ -348,7 +348,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Tick
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
     startLine: 112
@@ -389,7 +389,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IsPaused
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
     startLine: 126
@@ -434,7 +434,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IsDisposing
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
     startLine: 135
@@ -469,7 +469,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Pause
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
     startLine: 149
@@ -511,7 +511,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Resume
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
     startLine: 158
@@ -543,7 +543,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Reset
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
     startLine: 179
@@ -601,7 +601,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: GenerationOf
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorld.cs
     startLine: 196

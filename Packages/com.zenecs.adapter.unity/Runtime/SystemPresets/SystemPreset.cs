@@ -49,7 +49,7 @@ namespace ZenECS.Adapter.Unity.SystemPresets
         /// <see cref="GetValidTypes"/>.
         /// </para>
         /// <para>
-        /// In the editor, <see cref="OnValidate"/> performs additional cleanup:
+        /// In the editor, Unity's OnValidate performs additional cleanup:
         /// it preserves empty slots for future selection while removing
         /// invalid or duplicate entries.
         /// </para>

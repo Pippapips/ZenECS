@@ -20,7 +20,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ComponentDeltaKind
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
     startLine: 19
@@ -47,7 +47,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Added
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
     startLine: 24
@@ -75,7 +75,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Changed
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
     startLine: 29
@@ -103,7 +103,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Removed
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
     startLine: 34
@@ -131,7 +131,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Snapshot
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
     startLine: 41

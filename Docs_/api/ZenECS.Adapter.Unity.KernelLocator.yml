@@ -35,7 +35,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: KernelLocator
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 54
@@ -64,7 +64,7 @@ items:
 
     If neither exists, automatically create a new <xref href="ZenECS.Adapter.Unity.EcsDriver" data-throw-if-not-resolved="false"></xref>
 
-    GameObject (optionally marked GameObject.DontDestroyOnLoad)
+    GameObject (optionally marked with DontDestroyOnLoad)
 
     and create a kernel from it.
 
@@ -106,7 +106,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: TryGetCurrent
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 91
@@ -133,9 +133,9 @@ items:
 
     <xref href="ZenECS.Adapter.Unity.EcsDriver" data-throw-if-not-resolved="false"></xref> in the scene (first found). If the driver
 
-    exists but its <xref href="ZenECS.Adapter.Unity.EcsDriver.Kernel" data-throw-if-not-resolved="false"></xref> is <code>null</code>, the
+    exists but its Kernel property is <code>null</code>, the
 
-    kernel is automatically created via EcsDriver.CreateKernel().
+    kernel is automatically created via the driver's CreateKernel method.
 
     </li><li>
 
@@ -179,7 +179,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Current
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 162
@@ -226,7 +226,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: CreateEcsDriver
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 183
@@ -279,7 +279,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: CreateEcsDriverWithKernel
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 210
@@ -326,7 +326,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: CurrentWorld
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 227
@@ -369,7 +369,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: TryGetWorldById
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 276
@@ -416,7 +416,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FindByName
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 290
@@ -460,7 +460,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FindByNamePrefix
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 304
@@ -504,7 +504,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: TryGetWorldByName
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 319
@@ -551,7 +551,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SetCurrentWorld
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 333
@@ -589,7 +589,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: EnsureWorld
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 360
@@ -636,7 +636,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FindByTag
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 391
@@ -680,7 +680,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FindByAnyTag
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 405
@@ -724,7 +724,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FindByAllTags
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 427
@@ -780,7 +780,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: TryGetWorldByTag
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 471
@@ -824,7 +824,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: EnsureWorld
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 492
@@ -874,7 +874,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AllWorldsById
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 520
@@ -911,7 +911,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AllWorldsByName
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 544
@@ -957,7 +957,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AllWorlds
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Kernel/KernelLocator.cs
     startLine: 569

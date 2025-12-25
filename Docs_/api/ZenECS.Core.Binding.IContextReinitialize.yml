@@ -17,7 +17,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IContextReinitialize
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
     startLine: 174
@@ -56,7 +56,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Reinitialize
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
     startLine: 183

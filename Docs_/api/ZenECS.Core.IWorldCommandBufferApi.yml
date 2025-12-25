@@ -21,7 +21,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IWorldCommandBufferApi
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
     startLine: 34
@@ -72,7 +72,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: BeginWrite
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
     startLine: 47
@@ -113,7 +113,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ExternalCommandCount
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
     startLine: 53
@@ -147,7 +147,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: HasExternalCommand
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
     startLine: 59
@@ -181,7 +181,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ExternalCommandEnqueue
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
     startLine: 66
@@ -216,7 +216,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ExternalCommandClear
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldCommandBufferApi.cs
     startLine: 71

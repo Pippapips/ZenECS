@@ -24,7 +24,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: WorldId
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
     startLine: 36
@@ -84,7 +84,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Value
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
     startLine: 41
@@ -115,7 +115,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: .ctor
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
     startLine: 47
@@ -150,7 +150,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Equals
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
     startLine: 53
@@ -186,7 +186,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Equals
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
     startLine: 60
@@ -227,7 +227,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: GetHashCode
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
     startLine: 65
@@ -258,7 +258,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ToString
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
     startLine: 70
@@ -289,7 +289,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: op_Equality
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
     startLine: 75
@@ -327,7 +327,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: op_Inequality
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldId.cs
     startLine: 80

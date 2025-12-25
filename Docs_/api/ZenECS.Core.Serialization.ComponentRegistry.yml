@@ -24,7 +24,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Registry/ComponentRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ComponentRegistry
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/ComponentRegistry.cs
     startLine: 25
@@ -65,7 +65,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Registry/ComponentRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: TryGetType
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/ComponentRegistry.cs
     startLine: 35
@@ -103,7 +103,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Registry/ComponentRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: TryGetId
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/ComponentRegistry.cs
     startLine: 38
@@ -141,7 +141,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Registry/ComponentRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Register
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/ComponentRegistry.cs
     startLine: 43
@@ -177,7 +177,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Registry/ComponentRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Register
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/ComponentRegistry.cs
     startLine: 50
@@ -216,7 +216,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Registry/ComponentRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RegisterFormatter
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/ComponentRegistry.cs
     startLine: 60
@@ -248,7 +248,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Registry/ComponentRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RegisterFormatter
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/ComponentRegistry.cs
     startLine: 73
@@ -286,7 +286,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Registry/ComponentRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ValidateStrictStableIdMatch
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/ComponentRegistry.cs
     startLine: 89
@@ -331,7 +331,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Registry/ComponentRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: GetFormatter
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/ComponentRegistry.cs
     startLine: 153

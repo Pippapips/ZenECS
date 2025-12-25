@@ -24,7 +24,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: WorldConfig
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
     startLine: 51
@@ -76,7 +76,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: InitialEntityCapacity
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
     startLine: 56
@@ -105,7 +105,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: InitialPoolBuckets
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
     startLine: 62
@@ -137,7 +137,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: InitialBinderBuckets
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
     startLine: 67
@@ -166,7 +166,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: InitialBinderPerEntityBuckets
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
     startLine: 72
@@ -195,7 +195,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: InitialFreeIdCapacity
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
     startLine: 78
@@ -227,7 +227,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: GrowthPolicy
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
     startLine: 83
@@ -256,7 +256,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: GrowthStep
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
     startLine: 89
@@ -288,7 +288,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: .ctor
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldConfig.cs
     startLine: 117

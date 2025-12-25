@@ -17,7 +17,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Attributes/ZenDefaults.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ZenDefaults
     path: ../Packages/com.zenecs.core/Runtime/Attributes/ZenDefaults.cs
     startLine: 23
@@ -59,7 +59,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Attributes/ZenDefaults.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: CreateWithDefaults
     path: ../Packages/com.zenecs.core/Runtime/Attributes/ZenDefaults.cs
     startLine: 37

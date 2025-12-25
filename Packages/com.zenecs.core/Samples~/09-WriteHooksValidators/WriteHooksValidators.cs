@@ -10,7 +10,7 @@
 //   • CommandBuffer usage for entity creation
 //   • Kernel.PumpAndLateFrame for frame loop
 //
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

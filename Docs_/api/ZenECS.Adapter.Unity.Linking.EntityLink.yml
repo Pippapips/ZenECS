@@ -21,7 +21,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityLink.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: EntityLink
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityLink.cs
     startLine: 35
@@ -90,7 +90,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityLink.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: World
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityLink.cs
     startLine: 41
@@ -121,7 +121,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityLink.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Entity
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityLink.cs
     startLine: 46
@@ -152,7 +152,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityLink.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IsAlive
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityLink.cs
     startLine: 52
@@ -186,7 +186,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityLink.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Attach
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityLink.cs
     startLine: 66
@@ -234,7 +234,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityLink.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Detach
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityLink.cs
     startLine: 88

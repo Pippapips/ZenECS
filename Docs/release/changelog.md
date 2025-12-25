@@ -77,8 +77,8 @@ If upgrading from pre-1.0 versions:
 
 ## Links
 
-- [Unreleased]: https://github.com/Pippapips/ZenECS_deprecated/compare/1.0.0...HEAD
-- [1.0.0]: https://github.com/Pippapips/ZenECS_deprecated/releases/tag/v1.0.0
+- [Unreleased]: https://github.com/Pippapips/ZenECS/compare/1.0.0...HEAD
+- [1.0.0]: https://github.com/Pippapips/ZenECS/releases/tag/v1.0.0
 
 ---
 

@@ -19,7 +19,7 @@ Install ZenECS Core and Unity Adapter packages via Unity Package Manager.
 3. Click **+** button → **Add package from git URL...**
 4. Enter the URL:
    ```
-   https://github.com/Pippapips/ZenECS_deprecated.git?path=Packages/com.zenecs.core#v1.0.0
+   https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.core#v1.0.0
    ```
 5. Click **Add**
 
@@ -37,7 +37,7 @@ Or add to `Packages/manifest.json`:
 ```json
 {
   "dependencies": {
-    "com.zenecs.core": "file:../../ZenECS_deprecated/Packages/com.zenecs.core"
+    "com.zenecs.core": "file:../../ZenECS/Packages/com.zenecs.core"
   }
 }
 ```
@@ -51,7 +51,7 @@ The Unity Adapter provides Unity-specific integration features.
 1. In Package Manager, click **+** → **Add package from git URL...**
 2. Enter:
    ```
-   https://github.com/Pippapips/ZenECS_deprecated.git?path=Packages/com.zenecs.adapter.unity#v1.0.0
+   https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.adapter.unity#v1.0.0
    ```
 3. Click **Add**
 

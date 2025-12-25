@@ -28,7 +28,7 @@ namespace ZenECS.Core.Binding.Internal
     /// </para>
     /// <para>
     /// It also propagates attach/detach notifications to binders using
-    /// <see cref="IBinder.ContextAttached"/> and <see cref="IBinder.ContextDetached"/>,
+    /// <see cref="IContextAwareBinder.ContextAttached"/> and <see cref="IContextAwareBinder.ContextDetached"/>,
     /// so the view layer can react to context changes.
     /// </para>
     /// </remarks>

@@ -42,9 +42,9 @@ namespace ZenECS.Adapter.Unity
     /// <see cref="EcsDriver.Kernel"/> if available.
     /// </description></item>
     /// <item><description>
-    /// If neither exists, automatically create a new <see cref="EcsDriver"/>
-    /// GameObject (optionally marked <see cref="GameObject.DontDestroyOnLoad"/>)
-    /// and create a kernel from it.
+        /// If neither exists, automatically create a new <see cref="EcsDriver"/>
+        /// GameObject (optionally marked with DontDestroyOnLoad)
+        /// and create a kernel from it.
     /// </description></item>
     /// </list>
     /// <para>
@@ -79,12 +79,12 @@ namespace ZenECS.Adapter.Unity
         /// </description></item>
         /// <item><description>
         /// <see cref="EcsDriver"/> in the scene (first found). If the driver
-        /// exists but its <see cref="EcsDriver.Kernel"/> is <c>null</c>, the
-        /// kernel is automatically created via <see cref="EcsDriver.CreateKernel()"/>.
+        /// exists but its Kernel property is <c>null</c>, the
+        /// kernel is automatically created via the driver's CreateKernel method.
         /// </description></item>
         /// <item><description>
         /// Automatic creation of an <see cref="EcsDriver"/> via
-        /// <see cref="CreateEcsDriverWithKernel"/>, which also creates a
+        /// <see cref="CreateEcsDriverWithKernel(KernelOptions?, bool)"/>, which also creates a
         /// kernel instance.
         /// </description></item>
         /// </list>

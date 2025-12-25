@@ -119,6 +119,7 @@ namespace ZenECS.Core.Systems.Internal
         /// <summary>
         /// Build a plan by grouping, validating, and sorting the given systems.
         /// </summary>
+        /// <param name="w">The world instance to use for system planning.</param>
         /// <param name="systems">System instances to analyze; may be <c>null</c>.</param>
         /// <returns>A <see cref="Plan"/> or <c>null</c> if <paramref name="systems"/> is <c>null</c>.</returns>
         /// <exception cref="InvalidOperationException">

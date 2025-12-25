@@ -19,7 +19,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IAttachOrderMarker
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 55
@@ -49,7 +49,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AttachOrder
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 61
@@ -83,7 +83,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ResetAttachOrder
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 66
@@ -111,7 +111,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SetAttachOrder
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 72

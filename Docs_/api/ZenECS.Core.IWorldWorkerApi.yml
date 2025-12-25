@@ -17,7 +17,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldWorkerApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IWorldWorkerApi
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldWorkerApi.cs
     startLine: 30
@@ -62,7 +62,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldWorkerApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RunScheduledJobs
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldWorkerApi.cs
     startLine: 45

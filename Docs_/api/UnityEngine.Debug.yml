@@ -21,7 +21,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Debug
     path: ../src/UnityStubs.cs
     startLine: 137
@@ -56,7 +56,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Log
     path: ../src/UnityStubs.cs
     startLine: 139
@@ -88,7 +88,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: LogWarning
     path: ../src/UnityStubs.cs
     startLine: 140
@@ -120,7 +120,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: LogWarning
     path: ../src/UnityStubs.cs
     startLine: 141
@@ -154,7 +154,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: LogError
     path: ../src/UnityStubs.cs
     startLine: 142
@@ -186,7 +186,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: LogError
     path: ../src/UnityStubs.cs
     startLine: 143

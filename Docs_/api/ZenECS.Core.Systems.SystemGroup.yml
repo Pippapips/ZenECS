@@ -25,7 +25,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SystemGroup
     path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
     startLine: 55
@@ -70,7 +70,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Unknown
     path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
     startLine: 60
@@ -98,7 +98,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FixedInput
     path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
     startLine: 67
@@ -126,7 +126,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FixedDecision
     path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
     startLine: 72
@@ -154,7 +154,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FixedSimulation
     path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
     startLine: 77
@@ -182,7 +182,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FixedPost
     path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
     startLine: 82
@@ -210,7 +210,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FrameInput
     path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
     startLine: 89
@@ -238,7 +238,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FrameSync
     path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
     startLine: 94
@@ -266,7 +266,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FrameView
     path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
     startLine: 99
@@ -294,7 +294,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FrameUI
     path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
     startLine: 104

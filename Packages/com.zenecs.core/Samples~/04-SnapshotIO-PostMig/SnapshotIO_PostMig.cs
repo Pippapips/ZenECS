@@ -8,7 +8,7 @@
 //   • Versioned component migration (PositionV1 → PositionV2)
 //   • PostLoadMigration hook example
 //
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

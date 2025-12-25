@@ -16,7 +16,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RefAction
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQuerySpanApi.cs
     startLine: 24

@@ -35,18 +35,16 @@ namespace ZenECS.Adapter.Unity.DI
     /// <remarks>
     /// <para>
     /// When the <c>ZENECS_ZENJECT</c> scripting define is enabled, this
-    /// <see cref="ProjectInstaller"/> is used as a Zenject
-    /// <see cref="MonoInstaller"/> to:
+    /// <see cref="ProjectInstaller"/> is used as a Zenject MonoInstaller to:
     /// </para>
     /// <list type="number">
     /// <item><description>
     /// Create the global <see cref="IKernel"/> via
-    /// <see cref="KernelLocator.CreateEcsDriverWithKernel(KernelOptions)"/>.
+    /// <see cref="KernelLocator.CreateEcsDriverWithKernel(KernelOptions?, bool)"/>.
     /// </description></item>
-    /// <item><description>
-    /// Bind the kernel and shared service resolvers into the Zenject
-    /// <see cref="DiContainer"/>.
-    /// </description></item>
+        /// <item><description>
+        /// Bind the kernel and shared service resolvers into the Zenject container.
+        /// </description></item>
     /// <item><description>
     /// Expose the resolved services through <see cref="ZenEcsUnityBridge"/>
     /// for convenient access by editor tooling and runtime code.

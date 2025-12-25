@@ -23,7 +23,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Registry
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
     startLine: 108
@@ -59,7 +59,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Register
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
     startLine: 130
@@ -102,7 +102,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Unregister
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
     startLine: 149
@@ -148,7 +148,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: UnregisterAll
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
     startLine: 165
@@ -186,7 +186,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: TryGet
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
     startLine: 187
@@ -238,7 +238,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Callback
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
     startLine: 212
@@ -287,7 +287,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: HasLink
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
     startLine: 227
@@ -328,7 +328,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: EnumerateViews
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
     startLine: 275

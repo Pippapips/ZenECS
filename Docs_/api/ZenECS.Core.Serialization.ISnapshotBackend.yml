@@ -31,7 +31,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ISnapshotBackend
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
     startLine: 21
@@ -63,7 +63,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: WriteBytes
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
     startLine: 26
@@ -97,7 +97,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ReadBytes
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
     startLine: 29
@@ -133,7 +133,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: WriteInt
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
     startLine: 34
@@ -167,7 +167,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ReadInt
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
     startLine: 37
@@ -197,7 +197,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: WriteUInt
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
     startLine: 40
@@ -231,7 +231,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ReadUInt
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
     startLine: 43
@@ -261,7 +261,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: WriteFloat
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
     startLine: 46
@@ -295,7 +295,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ReadFloat
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
     startLine: 49
@@ -325,7 +325,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: WriteString
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
     startLine: 52
@@ -359,7 +359,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ReadString
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
     startLine: 55
@@ -389,7 +389,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: WriteBool
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
     startLine: 58
@@ -423,7 +423,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ReadBool
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
     startLine: 61
@@ -453,7 +453,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Position
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
     startLine: 66
@@ -484,7 +484,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Rewind
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
     startLine: 69
@@ -512,7 +512,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Length
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/ISnapshotBackend.cs
     startLine: 72

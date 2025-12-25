@@ -19,7 +19,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Implementations/BinaryComponentFormatter.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: BinaryComponentFormatter
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Implementations/BinaryComponentFormatter.cs
     startLine: 22
@@ -68,7 +68,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Implementations/BinaryComponentFormatter.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ComponentType
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Implementations/BinaryComponentFormatter.cs
     startLine: 25
@@ -103,7 +103,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Implementations/BinaryComponentFormatter.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Write
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Implementations/BinaryComponentFormatter.cs
     startLine: 32
@@ -143,7 +143,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Implementations/BinaryComponentFormatter.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ReadTyped
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Implementations/BinaryComponentFormatter.cs
     startLine: 39

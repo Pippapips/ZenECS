@@ -29,7 +29,6 @@ namespace ZenECS.Core.Internal
         /// </summary>
         /// <param name="e">Target entity.</param>
         /// <param name="binder">Binder instance to attach.</param>
-        /// <param name="options">Attachment policy (strict/relaxed).</param>
         public void AttachBinder(Entity e, IBinder? binder)
         {
             _bindingRouter.Attach(this, e, binder);

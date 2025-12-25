@@ -6,7 +6,12 @@
         {
           "src": "../src",
           "files": [
-            "ZenECS.Core.csproj",
+            "ZenECS.Core.csproj"
+          ]
+        },
+        {
+          "src": "../src",
+          "files": [
             "ZenECS.Adapter.Unity.csproj"
           ]
         }
@@ -16,7 +21,8 @@
       "properties": {
         "TargetFramework": "netstandard2.1",
         "Configuration": "Release"
-      }
+      },
+      "noRestore": false
     }
   ],
   "build": {
@@ -31,7 +37,7 @@
       },
       {
         "files": [
-          "../README.md"
+          "README.md"
         ],
         "src": "..",
         "dest": "."
@@ -47,7 +53,8 @@
     "resource": [
       {
         "files": [
-          "images/**"
+          "favicon.ico",
+          "logo.svg"
         ]
       }
     ],

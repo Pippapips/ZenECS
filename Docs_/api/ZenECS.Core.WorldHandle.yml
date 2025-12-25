@@ -27,7 +27,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: WorldHandle
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
     startLine: 47
@@ -101,7 +101,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Id
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
     startLine: 57
@@ -132,7 +132,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: .ctor
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
     startLine: 65
@@ -174,7 +174,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: TryResolve
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
     startLine: 81
@@ -215,7 +215,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ResolveOrThrow
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
     startLine: 99
@@ -250,7 +250,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IsAlive
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
     startLine: 109
@@ -281,7 +281,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ToString
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
     startLine: 114
@@ -312,7 +312,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Equals
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
     startLine: 120
@@ -350,7 +350,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Equals
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
     startLine: 125
@@ -387,7 +387,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: GetHashCode
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
     startLine: 130
@@ -418,7 +418,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: op_Equality
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
     startLine: 135
@@ -456,7 +456,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: op_Inequality
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/WorldHandle.cs
     startLine: 140

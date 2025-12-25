@@ -38,20 +38,20 @@ namespace ZenECS.Adapter.Unity.SystemPresets
     /// The behavior depends on the <c>ZENECS_ZENJECT</c> scripting define:
     /// </para>
     /// <list type="bullet">
-    /// <item><description>
-    /// <b>Zenject mode</b> (<c>ZENECS_ZENJECT</c> defined): systems are
-    /// instantiated via <see cref="DiContainer.Instantiate(Type)"/>.
-    /// </description></item>
+        /// <item><description>
+        /// <b>Zenject mode</b> (<c>ZENECS_ZENJECT</c> defined): systems are
+        /// instantiated via Zenject DiContainer.Instantiate.
+        /// </description></item>
     /// <item><description>
     /// <b>Non-Zenject mode</b>: systems are instantiated via
     /// <see cref="Activator.CreateInstance(Type)"/>.
     /// </description></item>
     /// </list>
     /// <para>
-    /// In both modes, if <see cref="ZenEcsUnityBridge.Kernel"/> has a
-    /// non-null <see cref="IKernel.CurrentWorld"/>, the resolver checks
-    /// <see cref="IWorld.TryGetSystem(Type, out ISystem)"/> and skips any type
-    /// for which a system already exists.
+        /// In both modes, if <see cref="ZenEcsUnityBridge.Kernel"/> has a
+        /// non-null CurrentWorld property, the resolver checks
+        /// <see cref="ZenECS.Core.IWorldSystemsApi.TryGetSystem(Type, out ISystem)"/> and skips any type
+        /// for which a system already exists.
     /// </para>
     /// </remarks>
     public sealed class SystemPresetResolver : ISystemPresetResolver
@@ -111,13 +111,13 @@ namespace ZenECS.Adapter.Unity.SystemPresets
         /// <list type="number">
         /// <item><description>
         /// If <see cref="ZenEcsUnityBridge.Kernel"/> and its
-        /// <see cref="IKernel.CurrentWorld"/> are non-null, call
-        /// <see cref="IWorld.TryGetSystem(Type, out ISystem)"/>; if a system
+        /// CurrentWorld property are non-null, call
+        /// <see cref="ZenECS.Core.IWorldSystemsApi.TryGetSystem(Type, out ISystem)"/>; if a system
         /// is already registered for <c>T</c>, it is skipped.
         /// </description></item>
         /// <item><description>
         /// Otherwise, a new instance is created using either Zenject
-        /// (<see cref="DiContainer.Instantiate(Type)"/>) or
+        /// (DiContainer.Instantiate) or
         /// <see cref="Activator.CreateInstance(Type)"/>.
         /// </description></item>
         /// <item><description>

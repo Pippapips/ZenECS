@@ -20,7 +20,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Vector4
     path: ../src/UnityStubs.cs
     startLine: 102
@@ -52,7 +52,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: x
     path: ../src/UnityStubs.cs
     startLine: 104
@@ -79,7 +79,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: y
     path: ../src/UnityStubs.cs
     startLine: 104
@@ -106,7 +106,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: z
     path: ../src/UnityStubs.cs
     startLine: 104
@@ -133,7 +133,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: w
     path: ../src/UnityStubs.cs
     startLine: 104

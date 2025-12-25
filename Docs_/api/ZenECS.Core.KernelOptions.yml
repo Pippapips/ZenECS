@@ -21,7 +21,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/KernelOptions.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: KernelOptions
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/KernelOptions.cs
     startLine: 44
@@ -89,7 +89,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/KernelOptions.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: NewWorldIdFactory
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/KernelOptions.cs
     startLine: 58
@@ -131,7 +131,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/KernelOptions.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AutoNamePrefix
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/KernelOptions.cs
     startLine: 69
@@ -169,7 +169,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/KernelOptions.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: StepOnlyCurrentWhenSelected
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/KernelOptions.cs
     startLine: 83
@@ -214,7 +214,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/KernelOptions.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AutoSelectNewWorld
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/KernelOptions.cs
     startLine: 95
@@ -255,7 +255,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/KernelOptions.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: NewWorldId
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/KernelOptions.cs
     startLine: 107

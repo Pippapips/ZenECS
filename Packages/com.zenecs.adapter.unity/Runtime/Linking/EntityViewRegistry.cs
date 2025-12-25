@@ -60,7 +60,7 @@ namespace ZenECS.Adapter.Unity.Linking
         /// It clears all entries in the registry's internal dictionary.
         /// </para>
         /// <para>
-        /// The <see cref="ConditionalWeakTable"/> will automatically remove the
+        /// The <see cref="System.Runtime.CompilerServices.ConditionalWeakTable{TKey, TValue}"/> will automatically remove the
         /// registry entry when the world is garbage collected, but calling this
         /// method ensures immediate cleanup of the dictionary contents.
         /// </para>
@@ -82,12 +82,12 @@ namespace ZenECS.Adapter.Unity.Linking
         /// <remarks>
         /// <para>
         /// <b>Note:</b> This method currently performs no operation because
-        /// <see cref="ConditionalWeakTable"/> automatically removes entries when
+        /// <see cref="System.Runtime.CompilerServices.ConditionalWeakTable{TKey, TValue}"/> automatically removes entries when
         /// the key (world) is garbage collected. The method is provided for API
         /// consistency and potential future extensibility.
         /// </para>
         /// <para>
-        /// <see cref="ConditionalWeakTable"/> does not expose a way to enumerate
+        /// <see cref="System.Runtime.CompilerServices.ConditionalWeakTable{TKey, TValue}"/> does not expose a way to enumerate
         /// keys, so manual cleanup of dead entries is not possible. The garbage
         /// collector handles cleanup automatically when worlds are no longer
         /// referenced.

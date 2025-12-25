@@ -19,7 +19,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: EntityViewRegistry
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
     startLine: 34
@@ -72,7 +72,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: For
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
     startLine: 49
@@ -110,7 +110,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: CleanupWorld
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
     startLine: 67
@@ -131,7 +131,7 @@ items:
 
     <p>
 
-    The ConditionalWeakTable will automatically remove the
+    The <xref href="System.Runtime.CompilerServices.ConditionalWeakTable%602" data-throw-if-not-resolved="false"></xref> will automatically remove the
 
     registry entry when the world is garbage collected, but calling this
 
@@ -162,7 +162,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: CleanupDeadWorlds
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Linking/EntityViewRegistry.cs
     startLine: 99
@@ -175,7 +175,7 @@ items:
 
     <b>Note:</b> This method currently performs no operation because
 
-    ConditionalWeakTable automatically removes entries when
+    <xref href="System.Runtime.CompilerServices.ConditionalWeakTable%602" data-throw-if-not-resolved="false"></xref> automatically removes entries when
 
     the key (world) is garbage collected. The method is provided for API
 
@@ -185,7 +185,7 @@ items:
 
     <p>
 
-    ConditionalWeakTable does not expose a way to enumerate
+    <xref href="System.Runtime.CompilerServices.ConditionalWeakTable%602" data-throw-if-not-resolved="false"></xref> does not expose a way to enumerate
 
     keys, so manual cleanup of dead entries is not possible. The garbage
 

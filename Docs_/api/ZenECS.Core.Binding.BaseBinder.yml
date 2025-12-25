@@ -40,7 +40,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: BaseBinder
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 152
@@ -87,7 +87,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Done
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 164
@@ -121,7 +121,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: World
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 169
@@ -152,7 +152,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Contexts
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 174
@@ -183,7 +183,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Enabled
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 177
@@ -219,7 +219,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Entity
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 180
@@ -229,7 +229,7 @@ items:
   summary: >-
     The entity this binder is currently attached to.
 
-    Contains Entity.Default (default value) when detached.
+    Contains <xref href="ZenECS.Core.Entity.None" data-throw-if-not-resolved="false"></xref> (default value) when detached.
   example: []
   syntax:
     content: public Entity Entity { get; }
@@ -255,7 +255,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ApplyOrder
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 183
@@ -291,7 +291,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AttachOrder
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 186
@@ -327,7 +327,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ResetAttachOrder
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 189
@@ -357,7 +357,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ResetApplyOrder
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 195
@@ -387,7 +387,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ResetApplyOrderAndAttachOrder
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 201
@@ -420,7 +420,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SetAttachOrder
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 208
@@ -457,7 +457,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SetApplyOrder
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 214
@@ -494,7 +494,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SetApplyOrderAndAttachOrder
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 220
@@ -537,7 +537,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: MarkDone
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 230
@@ -568,7 +568,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Bind
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 236
@@ -611,7 +611,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Unbind
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 262
@@ -646,7 +646,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ContextAttached
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 280
@@ -683,7 +683,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ContextDetached
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 286
@@ -720,7 +720,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Apply
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 292
@@ -762,7 +762,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: OnBind
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 305
@@ -797,7 +797,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: OnUnbind
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 311
@@ -828,7 +828,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: OnApply
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 319
@@ -866,7 +866,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: OnContextAttached
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 326
@@ -901,7 +901,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: OnContextDetached
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 333
@@ -1410,6 +1410,12 @@ references:
   name: Enabled
   nameWithType: IBinderEnabledFlag.Enabled
   fullName: ZenECS.Core.Binding.IBinderEnabledFlag.Enabled
+- uid: ZenECS.Core.Entity.None
+  commentId: F:ZenECS.Core.Entity.None
+  href: ZenECS.Core.Entity.html#ZenECS_Core_Entity_None
+  name: None
+  nameWithType: Entity.None
+  fullName: ZenECS.Core.Entity.None
 - uid: ZenECS.Core.Binding.BaseBinder.Entity*
   commentId: Overload:ZenECS.Core.Binding.BaseBinder.Entity
   href: ZenECS.Core.Binding.BaseBinder.html#ZenECS_Core_Binding_BaseBinder_Entity

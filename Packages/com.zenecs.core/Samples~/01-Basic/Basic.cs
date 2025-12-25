@@ -9,7 +9,7 @@
 //   • PrintPositionsSystem reads and prints Position each frame (PresentationGroup)
 //   • Shows typical Pump + LateFrame loop structure
 //
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

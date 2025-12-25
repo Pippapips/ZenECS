@@ -19,7 +19,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintData.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: EntityBlueprintData
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintData.cs
     startLine: 44
@@ -95,7 +95,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintData.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: entries
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintData.cs
     startLine: 68
@@ -124,7 +124,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintData.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ApplyTo
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintData.cs
     startLine: 104
@@ -194,7 +194,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintData.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Resolve
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintData.cs
     startLine: 133

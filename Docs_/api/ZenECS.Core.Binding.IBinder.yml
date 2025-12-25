@@ -25,7 +25,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IBinder
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 78
@@ -59,7 +59,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Entity
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 84
@@ -69,7 +69,7 @@ items:
   summary: >-
     The entity this binder is currently attached to.
 
-    Contains Entity.Default (default value) when detached.
+    Contains <xref href="ZenECS.Core.Entity.None" data-throw-if-not-resolved="false"></xref> (default value) when detached.
   example: []
   syntax:
     content: Entity Entity { get; }
@@ -93,7 +93,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ApplyOrder
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 90
@@ -127,7 +127,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SetApplyOrder
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 96
@@ -162,7 +162,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SetApplyOrderAndAttachOrder
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 104
@@ -203,7 +203,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ResetApplyOrder
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 109
@@ -231,7 +231,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ResetApplyOrderAndAttachOrder
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 115
@@ -262,7 +262,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Bind
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 124
@@ -303,7 +303,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Unbind
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 131
@@ -336,7 +336,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Apply
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 140
@@ -527,6 +527,12 @@ references:
   name: IBinderEnabledFlag
   nameWithType: IBinderEnabledFlag
   fullName: ZenECS.Core.Binding.IBinderEnabledFlag
+- uid: ZenECS.Core.Entity.None
+  commentId: F:ZenECS.Core.Entity.None
+  href: ZenECS.Core.Entity.html#ZenECS_Core_Entity_None
+  name: None
+  nameWithType: Entity.None
+  fullName: ZenECS.Core.Entity.None
 - uid: ZenECS.Core.Binding.IBinder.Entity*
   commentId: Overload:ZenECS.Core.Binding.IBinder.Entity
   href: ZenECS.Core.Binding.IBinder.html#ZenECS_Core_Binding_IBinder_Entity

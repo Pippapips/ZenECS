@@ -44,17 +44,17 @@ namespace ZenECS.Adapter.Unity
     /// <see cref="systemTypes"/>, deduplicating by concrete type.
     /// </description></item>
     /// <item><description>
-    /// Instantiates the systems (via DI or <see cref="Activator"/>) and
-    /// registers them into the world using <see cref="IWorld.AddSystems"/>.
+        /// Instantiates the systems (via DI or <see cref="Activator"/>) and
+        /// registers them into the world using <see cref="IWorldSystemsApi.AddSystems"/>.
     /// </description></item>
     /// </list>
     /// <para>
-    /// When the <c>ZENECS_ZENJECT</c> scripting define is set, the installer
-    /// inherits from <see cref="MonoInstaller"/> and can resolve systems via
-    /// an <see cref="ISystemPresetResolver"/> (typically bound in
-    /// <see cref="ProjectInstaller"/>). Without Zenject, it falls back to
-    /// a lightweight <see cref="MonoBehaviour"/> that uses
-    /// <see cref="Activator.CreateInstance(Type)"/> for system construction.
+        /// When the <c>ZENECS_ZENJECT</c> scripting define is set, the installer
+        /// inherits from Zenject MonoInstaller and can resolve systems via
+        /// an <see cref="ISystemPresetResolver"/> (typically bound in
+        /// <see cref="ZenECS.Adapter.Unity.DI.ProjectInstaller"/>). Without Zenject, it falls back to
+        /// a lightweight <see cref="MonoBehaviour"/> that uses
+        /// <see cref="Activator.CreateInstance(Type)"/> for system construction.
     /// </para>
     /// </remarks>
     public sealed class WorldSystemCreator : MonoBehaviour
@@ -124,9 +124,12 @@ namespace ZenECS.Adapter.Unity
 
         /// <summary>
         /// Optional resolver used to instantiate systems when Zenject is
-        /// available.
+        /// available. This field is set via dependency injection when
+        /// <c>ZENECS_ZENJECT</c> is defined.
         /// </summary>
+#pragma warning disable CS0649 // Field is set via Zenject [Inject] attribute
         private ISystemPresetResolver? _worldPresetResolver;
+#pragma warning restore CS0649
 
 #if ZENECS_ZENJECT
         /// <summary>
@@ -155,7 +158,7 @@ namespace ZenECS.Adapter.Unity
         /// <remarks>
         /// <para>
         /// In non-Zenject mode, systems are instantiated using
-        /// <see cref="InstantiateSystemsActivator"/>.
+        /// <see cref="Activator.CreateInstance(Type)"/>.
         /// </para>
         /// </remarks>
         private void Awake()
@@ -213,11 +216,11 @@ namespace ZenECS.Adapter.Unity
         /// <item><description>
         /// Instantiates systems either via
         /// <see cref="ISystemPresetResolver.InstantiateSystems"/> (Zenject
-        /// mode) or <see cref="InstantiateSystemsActivator"/>.
+        /// mode) or <see cref="Activator.CreateInstance(Type)"/>.
         /// </description></item>
         /// <item><description>
         /// Adds the instantiated systems to the world via
-        /// <see cref="IWorld.AddSystems"/>.
+        /// <see cref="IWorldSystemsApi.AddSystems"/>.
         /// </description></item>
         /// </list>
         /// </remarks>

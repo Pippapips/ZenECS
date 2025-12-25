@@ -19,7 +19,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: JsonUtility
     path: ../src/UnityStubs.cs
     startLine: 157
@@ -54,7 +54,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ToJson
     path: ../src/UnityStubs.cs
     startLine: 159
@@ -90,7 +90,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FromJson
     path: ../src/UnityStubs.cs
     startLine: 160
@@ -126,7 +126,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FromJson
     path: ../src/UnityStubs.cs
     startLine: 161

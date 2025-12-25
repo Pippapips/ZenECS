@@ -28,7 +28,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IWorldHookApi
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
     startLine: 40
@@ -81,7 +81,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AddWritePermission
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
     startLine: 57
@@ -131,7 +131,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RemoveWritePermission
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
     startLine: 67
@@ -172,7 +172,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ClearWritePermissions
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
     startLine: 76
@@ -204,7 +204,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AddReadPermission
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
     startLine: 92
@@ -252,7 +252,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RemoveReadPermission
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
     startLine: 102
@@ -293,7 +293,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ClearReadPermissions
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
     startLine: 111
@@ -325,7 +325,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AddValidator
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
     startLine: 131
@@ -381,7 +381,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RemoveValidator
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
     startLine: 141
@@ -422,7 +422,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ClearValidators
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
     startLine: 150
@@ -454,7 +454,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AddValidator
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
     startLine: 168
@@ -507,7 +507,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RemoveValidator
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
     startLine: 179
@@ -551,7 +551,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ClearTypedValidators
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldHookApi.cs
     startLine: 188

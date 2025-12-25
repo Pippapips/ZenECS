@@ -50,7 +50,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Kernel
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 47
@@ -99,7 +99,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IsRunning
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 78
@@ -136,7 +136,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IsPaused
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 81
@@ -173,7 +173,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SimulationAccumulatorSeconds
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 84
@@ -206,7 +206,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: TotalTimeSeconds
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 87
@@ -242,7 +242,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FrameCount
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 90
@@ -275,7 +275,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FixedFrameCount
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 93
@@ -308,7 +308,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FixedFrameIndexInFrame
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 96
@@ -345,7 +345,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: TotalSimulatedSeconds
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 99
@@ -385,7 +385,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: CurrentWorld
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 104
@@ -418,7 +418,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Options
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 107
@@ -451,7 +451,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: WorldCreated
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 110
@@ -482,7 +482,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: WorldDestroyed
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 113
@@ -513,7 +513,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: CurrentWorldChanged
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 116
@@ -548,7 +548,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Disposed
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 119
@@ -579,7 +579,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: .ctor
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 132
@@ -617,7 +617,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Dispose
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 146
@@ -647,7 +647,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: CreateWorld
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 166
@@ -702,7 +702,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: DestroyWorld
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 205
@@ -737,7 +737,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: GetAllWorld
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 221
@@ -769,7 +769,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: TryGet
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 227
@@ -815,7 +815,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FindByName
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 231
@@ -858,7 +858,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FindByTag
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 249
@@ -898,7 +898,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FindByAnyTag
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 267
@@ -937,7 +937,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FindByNamePrefix
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 314
@@ -976,7 +976,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SetCurrentWorld
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 348
@@ -1014,7 +1014,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SetCurrentWorld
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 354
@@ -1048,7 +1048,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ClearCurrentWorld
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 365
@@ -1078,7 +1078,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: BeginFrame
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 375
@@ -1115,7 +1115,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FixedStep
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 406
@@ -1152,7 +1152,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: LateFrame
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 439
@@ -1189,7 +1189,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: PumpAndLateFrame
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 462
@@ -1240,7 +1240,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Pause
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 487
@@ -1274,7 +1274,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Resume
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 493
@@ -1304,7 +1304,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: TogglePause
     path: ../Packages/com.zenecs.core/Runtime/Execution/Kernel/Kernel.cs
     startLine: 499

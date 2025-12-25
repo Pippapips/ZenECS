@@ -80,7 +80,7 @@ namespace ZenECS.Core.Binding
     {
         /// <summary>
         /// The entity this binder is currently attached to.
-        /// Contains <see cref="Entity.Default"/> (default value) when detached.
+        /// Contains <see cref="Entity.None"/> (default value) when detached.
         /// </summary>
         Entity Entity { get; }
 

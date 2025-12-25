@@ -228,4 +228,4 @@ Done.
 
 ## License
 
-MIT © 2025 Pippapips Limited.
+MIT © 2026 Pippapips Limited.

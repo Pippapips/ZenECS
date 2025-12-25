@@ -23,7 +23,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ExternalCommandKind
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
     startLine: 24
@@ -53,7 +53,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: CreateEntity
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
     startLine: 30
@@ -84,7 +84,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: DestroyEntity
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
     startLine: 35
@@ -112,7 +112,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AddComponent
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
     startLine: 40
@@ -140,7 +140,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ReplaceComponent
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
     startLine: 46
@@ -171,7 +171,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RemoveComponent
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
     startLine: 51
@@ -199,7 +199,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SetSingleton
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
     startLine: 56
@@ -227,7 +227,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RemoveSingleton
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ExternalCommand.cs
     startLine: 61

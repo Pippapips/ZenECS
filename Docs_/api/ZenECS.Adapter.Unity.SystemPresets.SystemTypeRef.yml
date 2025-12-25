@@ -20,7 +20,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SystemTypeRef
     path: ../Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
     startLine: 45
@@ -99,7 +99,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AssemblyQualifiedName
     path: ../Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
     startLine: 74
@@ -138,7 +138,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Resolve
     path: ../Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
     startLine: 101
@@ -189,7 +189,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ToString
     path: ../Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
     startLine: 113
@@ -224,7 +224,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FromType
     path: ../Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeRef.cs
     startLine: 127

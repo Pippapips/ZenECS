@@ -9,7 +9,7 @@
 //   • Presentation runs in Late (read-only)
 //   • Uses EcsKernel.Start(...) to register systems (no manual InitializeSystems)
 //
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

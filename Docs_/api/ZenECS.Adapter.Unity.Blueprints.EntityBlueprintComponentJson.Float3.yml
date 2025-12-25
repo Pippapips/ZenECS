@@ -19,7 +19,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintComponentJson.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Float3
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintComponentJson.cs
     startLine: 122
@@ -63,7 +63,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintComponentJson.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: x
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintComponentJson.cs
     startLine: 122
@@ -90,7 +90,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintComponentJson.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: y
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintComponentJson.cs
     startLine: 122
@@ -117,7 +117,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintComponentJson.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: z
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Blueprints/EntityBlueprintComponentJson.cs
     startLine: 122

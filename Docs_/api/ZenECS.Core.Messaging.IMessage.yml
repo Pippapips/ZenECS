@@ -16,7 +16,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Messaging/Api/IMessage.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IMessage
     path: ../Packages/com.zenecs.core/Runtime/Messaging/Api/IMessage.cs
     startLine: 28

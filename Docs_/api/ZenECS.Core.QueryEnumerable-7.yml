@@ -17,7 +17,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: QueryEnumerable
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
     startLine: 1270
@@ -69,7 +69,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: GetEnumerator
     path: ../Packages/com.zenecs.core/Runtime/World/Config/WorldQueryEnumerables.cs
     startLine: 1345

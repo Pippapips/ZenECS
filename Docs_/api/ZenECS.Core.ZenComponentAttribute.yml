@@ -17,7 +17,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Attributes/ZenComponentAttribute.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ZenComponentAttribute
     path: ../Packages/com.zenecs.core/Runtime/Attributes/ZenComponentAttribute.cs
     startLine: 21
@@ -120,7 +120,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Attributes/ZenComponentAttribute.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: StableId
     path: ../Packages/com.zenecs.core/Runtime/Attributes/ZenComponentAttribute.cs
     startLine: 28

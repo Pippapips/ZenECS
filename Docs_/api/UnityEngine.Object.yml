@@ -28,7 +28,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Object
     path: ../src/UnityStubs.cs
     startLine: 15
@@ -67,7 +67,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: name
     path: ../src/UnityStubs.cs
     startLine: 17
@@ -96,7 +96,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FindObjectOfType
     path: ../src/UnityStubs.cs
     startLine: 19
@@ -132,7 +132,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FindFirstObjectByType
     path: ../src/UnityStubs.cs
     startLine: 21
@@ -168,7 +168,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Destroy
     path: ../src/UnityStubs.cs
     startLine: 23
@@ -200,7 +200,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Destroy
     path: ../src/UnityStubs.cs
     startLine: 24
@@ -232,7 +232,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: DestroyImmediate
     path: ../src/UnityStubs.cs
     startLine: 25
@@ -264,7 +264,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: DestroyImmediate
     path: ../src/UnityStubs.cs
     startLine: 26
@@ -296,7 +296,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: DontDestroyOnLoad
     path: ../src/UnityStubs.cs
     startLine: 28
@@ -325,7 +325,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: DontDestroyOnLoad
     path: ../src/UnityStubs.cs
     startLine: 29
@@ -354,7 +354,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: op_LogicalNot
     path: ../src/UnityStubs.cs
     startLine: 32
@@ -388,7 +388,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: op_True
     path: ../src/UnityStubs.cs
     startLine: 33
@@ -422,7 +422,7 @@ items:
     remote:
       path: src/UnityStubs.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: op_False
     path: ../src/UnityStubs.cs
     startLine: 34

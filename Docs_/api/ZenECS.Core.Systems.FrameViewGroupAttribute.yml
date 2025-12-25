@@ -17,7 +17,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Systems/Attributes/SystemGroupAttributes.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: FrameViewGroupAttribute
     path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Attributes/SystemGroupAttributes.cs
     startLine: 227
@@ -118,7 +118,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Systems/Attributes/SystemGroupAttributes.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: .ctor
     path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Attributes/SystemGroupAttributes.cs
     startLine: 233

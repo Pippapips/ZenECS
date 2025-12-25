@@ -45,10 +45,10 @@ namespace ZenECS.Adapter.Unity.Blueprints
     /// At runtime, call <see cref="Spawn"/> with a target world to enqueue
     /// creation of the entity and application of the snapshot.
     /// </description></item>
-    /// <item><description>
-    /// Optionally use <paramref name="sharedContextResolver"/> to resolve
-    /// shared contexts when spawning.
-    /// </description></item>
+        /// <item><description>
+        /// Optionally use a shared context resolver to resolve
+        /// shared contexts when spawning.
+        /// </description></item>
     /// </list>
     /// </remarks>
     [CreateAssetMenu(menuName = "ZenECS/Entity Blueprint", fileName = "EntityBlueprint")]
@@ -109,8 +109,8 @@ namespace ZenECS.Adapter.Unity.Blueprints
         /// <list type="bullet">
         /// <item><description>
         /// <see cref="SharedContextAsset"/>: resolved via
-        /// <paramref name="sharedContextResolver"/> and registered using
-        /// <see cref="IWorld.RegisterContext(Entity, IContext)"/>.
+        /// a shared context resolver and registered using
+        /// <see cref="IWorldContextApi.RegisterContext(Entity, IContext)"/>.
         /// </description></item>
         /// <item><description>
         /// <see cref="PerEntityContextAsset"/>: creates a fresh context and

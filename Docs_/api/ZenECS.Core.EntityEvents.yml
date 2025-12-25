@@ -19,7 +19,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Events/EntityEvents.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: EntityEvents
     path: ../Packages/com.zenecs.core/Runtime/Events/EntityEvents.cs
     startLine: 53
@@ -87,7 +87,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Events/EntityEvents.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: EntityCreated
     path: ../Packages/com.zenecs.core/Runtime/Events/EntityEvents.cs
     startLine: 63
@@ -122,7 +122,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Events/EntityEvents.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: EntityDestroyRequested
     path: ../Packages/com.zenecs.core/Runtime/Events/EntityEvents.cs
     startLine: 73
@@ -157,7 +157,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Events/EntityEvents.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: EntityDestroy
     path: ../Packages/com.zenecs.core/Runtime/Events/EntityEvents.cs
     startLine: 82

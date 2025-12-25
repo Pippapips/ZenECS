@@ -21,7 +21,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: PostLoadMigrationRegistry
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
     startLine: 22
@@ -58,7 +58,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Register
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
     startLine: 32
@@ -93,7 +93,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IsRegistered
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
     startLine: 46
@@ -128,7 +128,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: EnsureRegistered
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
     startLine: 52
@@ -166,7 +166,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RunAll
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
     startLine: 63
@@ -198,7 +198,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Clear
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Registry/PostLoadMigrationRegistry.cs
     startLine: 78

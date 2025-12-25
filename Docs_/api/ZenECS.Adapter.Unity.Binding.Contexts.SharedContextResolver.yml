@@ -22,7 +22,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/SharedContextResolver.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SharedContextResolver
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/SharedContextResolver.cs
     startLine: 50
@@ -43,7 +43,7 @@ items:
 
     <b>Zenject mode</b> (<code>ZENECS_ZENJECT</code> defined): contexts are
 
-    resolved from a DiContainer; lifecycle is entirely
+    resolved from a Zenject DiContainer; lifecycle is entirely
 
     managed by Zenject. <xref href="ZenECS.Adapter.Unity.Binding.Contexts.SharedContextResolver.AddContext(ZenECS.Core.Binding.IContext)" data-throw-if-not-resolved="false"></xref>,
 
@@ -92,7 +92,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/SharedContextResolver.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: .ctor
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/SharedContextResolver.cs
     startLine: 80
@@ -133,7 +133,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/SharedContextResolver.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Resolve
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/SharedContextResolver.cs
     startLine: 86
@@ -180,7 +180,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/SharedContextResolver.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Resolve
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/SharedContextResolver.cs
     startLine: 101
@@ -222,7 +222,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/SharedContextResolver.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AddContext
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/SharedContextResolver.cs
     startLine: 115
@@ -274,7 +274,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/SharedContextResolver.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RemoveContext
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/SharedContextResolver.cs
     startLine: 124
@@ -324,7 +324,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/SharedContextResolver.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RemoveAllContexts
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/SharedContextResolver.cs
     startLine: 133

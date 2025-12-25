@@ -21,7 +21,7 @@ namespace ZenECS.Core
     /// <remarks>
     /// <para>
     /// Queries are strongly typed on the component tuple they require
-    /// (<typeparamref name="T1"/> … <typeparamref name="T8"/>). Each
+    /// (T1 through T8). Each
     /// <c>Query&lt;…&gt;(Filter)</c> call builds a <c>QueryEnumerable&lt;…&gt;</c>
     /// that can be iterated without allocating managed enumerators.
     /// </para>

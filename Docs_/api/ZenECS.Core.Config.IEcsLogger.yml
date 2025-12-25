@@ -19,7 +19,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Config/IEcsLogger.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IEcsLogger
     path: ../Packages/com.zenecs.core/Runtime/Core/Config/IEcsLogger.cs
     startLine: 30
@@ -64,7 +64,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Config/IEcsLogger.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Info
     path: ../Packages/com.zenecs.core/Runtime/Core/Config/IEcsLogger.cs
     startLine: 38
@@ -99,7 +99,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Config/IEcsLogger.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Warn
     path: ../Packages/com.zenecs.core/Runtime/Core/Config/IEcsLogger.cs
     startLine: 47
@@ -137,7 +137,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Config/IEcsLogger.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Error
     path: ../Packages/com.zenecs.core/Runtime/Core/Config/IEcsLogger.cs
     startLine: 56

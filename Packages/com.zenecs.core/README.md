@@ -75,7 +75,7 @@
 1. Open **Package Manager** → **Add package from git URL…**
 2. Enter the following URL:
    ```
-   https://github.com/Pippapips/ZenECS_deprecated.git?path=Packages/com.zenecs.core#v1.0.0
+   https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.core#v1.0.0
    ```
 
 #### Local Development
@@ -85,7 +85,7 @@ Place the repository under your project and reference via `file:` URL or add an 
 ```json
 {
   "dependencies": {
-    "com.zenecs.core": "file:../../ZenECS_deprecated/Packages/com.zenecs.core"
+    "com.zenecs.core": "file:../../ZenECS/Packages/com.zenecs.core"
   }
 }
 ```

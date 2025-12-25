@@ -23,7 +23,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IContextLookup
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
     startLine: 29
@@ -53,7 +53,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: TryGet
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
     startLine: 46
@@ -109,7 +109,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Get
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
     startLine: 60
@@ -163,7 +163,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Has
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
     startLine: 73
@@ -213,7 +213,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Has
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
     startLine: 89
@@ -265,7 +265,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Has
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
     startLine: 111
@@ -326,7 +326,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: GetAllContextList
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
     startLine: 123
@@ -370,7 +370,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: GetAllContexts
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IContext.cs
     startLine: 136

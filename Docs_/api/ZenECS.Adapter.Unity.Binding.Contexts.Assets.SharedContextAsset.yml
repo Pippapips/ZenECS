@@ -17,7 +17,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/Assets/Shared/SharedContextAsset.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SharedContextAsset
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/Assets/Shared/SharedContextAsset.cs
     startLine: 40
@@ -93,7 +93,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/Assets/Shared/SharedContextAsset.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ContextType
     path: ../Packages/com.zenecs.adapter.unity/Runtime/Binding/Contexts/Assets/Shared/SharedContextAsset.cs
     startLine: 53

@@ -16,7 +16,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IWorldSingletonComponent
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldComponentApi.cs
     startLine: 36

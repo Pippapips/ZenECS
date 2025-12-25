@@ -17,7 +17,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Systems/Utils/SystemUtil.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SystemUtil
     path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Utils/SystemUtil.cs
     startLine: 27
@@ -64,7 +64,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Systems/Utils/SystemUtil.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ResolveGroup
     path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Utils/SystemUtil.cs
     startLine: 53

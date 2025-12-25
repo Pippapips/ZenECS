@@ -18,7 +18,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/IPostLoadMigration.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IPostLoadMigration
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/IPostLoadMigration.cs
     startLine: 24
@@ -52,7 +52,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/IPostLoadMigration.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Order
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/IPostLoadMigration.cs
     startLine: 27
@@ -83,7 +83,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/IPostLoadMigration.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Run
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/IPostLoadMigration.cs
     startLine: 33

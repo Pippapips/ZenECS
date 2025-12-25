@@ -17,7 +17,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IBind
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
     startLine: 87
@@ -50,7 +50,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: OnDelta
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBind.cs
     startLine: 93

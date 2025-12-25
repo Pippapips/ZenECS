@@ -17,7 +17,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldResetApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IWorldResetApi
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldResetApi.cs
     startLine: 20
@@ -47,7 +47,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldResetApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Reset
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldResetApi.cs
     startLine: 29

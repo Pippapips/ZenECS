@@ -24,7 +24,7 @@ namespace ZenECS.Core.Messaging.Internal
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Each message type <typeparamref name="T"/> gets its own <c>Topic&lt;T&gt;</c>
+    /// Each message type gets its own <c>Topic&lt;T&gt;</c>
     /// instance containing a concurrent queue and a list of subscribers.
     /// </para>
     /// <para>

@@ -28,7 +28,7 @@ namespace ZenECS.Core.Config
 
         /// <summary>
         /// Gets or sets the current logger instance used by the core.
-        /// Defaults to a no-op logger (<see cref="NullLogger"/>).
+        /// Defaults to a no-op logger (<see cref="Internal.NullLogger"/>).
         /// </summary>
         /// <remarks>
         /// Replace this during startup to surface core diagnostics to your logging system.

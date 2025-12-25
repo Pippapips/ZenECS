@@ -22,7 +22,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IWorldContextApi
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
     startLine: 34
@@ -71,7 +71,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RegisterContext
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
     startLine: 52
@@ -124,7 +124,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: HasContext
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
     startLine: 63
@@ -168,7 +168,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: HasContext
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
     startLine: 74
@@ -212,7 +212,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: GetAllContexts
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
     startLine: 86
@@ -254,7 +254,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RemoveContext
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
     startLine: 101
@@ -299,7 +299,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ReinitializeContext
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldContextApi.cs
     startLine: 122

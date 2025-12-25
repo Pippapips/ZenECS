@@ -19,7 +19,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeFilterAttribute.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SystemTypeFilterAttribute
     path: ../Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeFilterAttribute.cs
     startLine: 46
@@ -143,7 +143,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeFilterAttribute.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: BaseType
     path: ../Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeFilterAttribute.cs
     startLine: 52
@@ -174,7 +174,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeFilterAttribute.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AllowAbstract
     path: ../Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeFilterAttribute.cs
     startLine: 58
@@ -208,7 +208,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeFilterAttribute.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: .ctor
     path: ../Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/SystemTypeFilterAttribute.cs
     startLine: 73

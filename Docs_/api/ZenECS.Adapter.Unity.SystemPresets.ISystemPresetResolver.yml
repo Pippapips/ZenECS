@@ -17,7 +17,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/ISystemPresetResolver.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ISystemPresetResolver
     path: ../Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/ISystemPresetResolver.cs
     startLine: 50
@@ -88,7 +88,7 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/ISystemPresetResolver.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: InstantiateSystems
     path: ../Packages/com.zenecs.adapter.unity/Runtime/SystemPresets/ISystemPresetResolver.cs
     startLine: 83

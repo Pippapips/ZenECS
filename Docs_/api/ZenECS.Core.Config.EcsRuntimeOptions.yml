@@ -20,7 +20,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: EcsRuntimeOptions
     path: ../Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
     startLine: 24
@@ -61,7 +61,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Log
     path: ../Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
     startLine: 35
@@ -71,7 +71,7 @@ items:
   summary: >-
     Gets or sets the current logger instance used by the core.
 
-    Defaults to a no-op logger (NullLogger).
+    Defaults to a no-op logger (<xref href="ZenECS.Core.Config.Internal.NullLogger" data-throw-if-not-resolved="false"></xref>).
   remarks: Replace this during startup to surface core diagnostics to your logging system.
   example: []
   syntax:
@@ -96,7 +96,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: WritePolicy
     path: ../Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
     startLine: 68
@@ -131,7 +131,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: OnUnhandledError
     path: ../Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
     startLine: 75
@@ -162,7 +162,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Report
     path: ../Packages/com.zenecs.core/Runtime/Core/Config/EcsRuntimeOptions.cs
     startLine: 83
@@ -456,6 +456,11 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: ZenECS.Core.Config.Internal.NullLogger
+  commentId: T:ZenECS.Core.Config.Internal.NullLogger
+  name: NullLogger
+  nameWithType: NullLogger
+  fullName: ZenECS.Core.Config.Internal.NullLogger
 - uid: ZenECS.Core.Config.EcsRuntimeOptions.Log*
   commentId: Overload:ZenECS.Core.Config.EcsRuntimeOptions.Log
   href: ZenECS.Core.Config.EcsRuntimeOptions.html#ZenECS_Core_Config_EcsRuntimeOptions_Log

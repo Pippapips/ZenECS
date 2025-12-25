@@ -9,7 +9,7 @@
 //   • Apply immediately via EndWrite(cb)
 //   • Use Kernel loop (Pump + LateFrame) with Simulation/Presentation split
 //
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

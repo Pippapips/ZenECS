@@ -19,7 +19,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/IComponentFormatter.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IComponentFormatter
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/IComponentFormatter.cs
     startLine: 22
@@ -51,7 +51,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/IComponentFormatter.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ComponentType
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/IComponentFormatter.cs
     startLine: 25
@@ -82,7 +82,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/IComponentFormatter.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Write
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/IComponentFormatter.cs
     startLine: 32
@@ -120,7 +120,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Serialization/Api/IComponentFormatter.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Read
     path: ../Packages/com.zenecs.core/Runtime/Serialization/Api/IComponentFormatter.cs
     startLine: 39

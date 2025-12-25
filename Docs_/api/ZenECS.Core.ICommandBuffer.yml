@@ -30,7 +30,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ICommandBuffer
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
     startLine: 37
@@ -89,7 +89,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: EndWrite
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
     startLine: 52
@@ -133,7 +133,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: CreateEntity
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
     startLine: 68
@@ -168,7 +168,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: DestroyEntity
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
     startLine: 79
@@ -206,7 +206,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AddComponent
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
     startLine: 95
@@ -251,7 +251,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AddComponentBoxed
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
     startLine: 109
@@ -295,7 +295,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ReplaceComponent
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
     startLine: 121
@@ -340,7 +340,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ReplaceComponentBoxed
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
     startLine: 135
@@ -384,7 +384,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RemoveComponent
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
     startLine: 145
@@ -423,7 +423,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RemoveComponentTyped
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
     startLine: 155
@@ -459,7 +459,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SetSingleton
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
     startLine: 173
@@ -507,7 +507,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SetSingletonTyped
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
     startLine: 187
@@ -551,7 +551,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RemoveSingleton
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
     startLine: 196
@@ -586,7 +586,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RemoveSingletonTyped
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
     startLine: 205
@@ -619,7 +619,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: DestroyAllEntities
     path: ../Packages/com.zenecs.core/Runtime/Deterministic/ICommandBuffer.cs
     startLine: 214

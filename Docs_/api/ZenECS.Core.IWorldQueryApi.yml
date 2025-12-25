@@ -24,7 +24,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IWorldQueryApi
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
     startLine: 33
@@ -40,7 +40,7 @@ items:
 
     Queries are strongly typed on the component tuple they require
 
-    (<code class="typeparamref">T1</code> … <code class="typeparamref">T8</code>). Each
+    (T1 through T8). Each
 
     <code>Query&lt;…&gt;(Filter)</code> call builds a <code>QueryEnumerable&lt;…&gt;</code>
 
@@ -76,7 +76,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Query
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
     startLine: 47
@@ -123,7 +123,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Query
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
     startLine: 63
@@ -174,7 +174,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Query
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
     startLine: 81
@@ -227,7 +227,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Query
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
     startLine: 99
@@ -280,7 +280,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Query
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
     startLine: 118
@@ -335,7 +335,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Query
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
     startLine: 138
@@ -392,7 +392,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Query
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
     startLine: 160
@@ -454,7 +454,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Query
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldQueryApi.cs
     startLine: 183

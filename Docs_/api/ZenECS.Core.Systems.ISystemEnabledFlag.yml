@@ -17,7 +17,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ISystemEnabledFlag
     path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
     startLine: 29
@@ -60,7 +60,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Enabled
     path: ../Packages/com.zenecs.core/Runtime/Execution/Systems/Abstractions/ISystem.cs
     startLine: 38

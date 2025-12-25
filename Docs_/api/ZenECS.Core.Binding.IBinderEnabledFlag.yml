@@ -17,7 +17,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IBinderEnabledFlag
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 42
@@ -44,7 +44,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Enabled
     path: ../Packages/com.zenecs.core/Runtime/Binding/Api/IBinder.cs
     startLine: 48

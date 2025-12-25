@@ -9,7 +9,7 @@
 //   • Simulation system does the reset demo once
 //   • Presentation system stays read-only (Late)
 //
-// Copyright (c) 2025 Pippapips Limited
+// Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
 // ──────────────────────────────────────────────────────────────────────────────

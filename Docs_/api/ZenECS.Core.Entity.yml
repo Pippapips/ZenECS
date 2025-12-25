@@ -34,7 +34,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Entity
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 24
@@ -71,7 +71,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: None
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 26
@@ -98,7 +98,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Handle
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 29
@@ -127,7 +127,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: GenShift
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 32
@@ -156,7 +156,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IdMask
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 35
@@ -185,7 +185,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: GenMask
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 38
@@ -214,7 +214,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Id
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 41
@@ -245,7 +245,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Gen
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 44
@@ -276,7 +276,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: .ctor
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 47
@@ -312,7 +312,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Pack
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 50
@@ -350,7 +350,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Unpack
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 54
@@ -386,7 +386,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Equals
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 58
@@ -423,7 +423,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Equals
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 61
@@ -462,7 +462,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: GetHashCode
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 64
@@ -494,7 +494,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ToString
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 67
@@ -525,7 +525,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: op_Explicit
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 70
@@ -561,7 +561,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: op_Explicit
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 73
@@ -597,7 +597,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IsNone
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 78
@@ -628,7 +628,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IsValid
     path: ../Packages/com.zenecs.core/Runtime/Core/Primitives/Entity.cs
     startLine: 84

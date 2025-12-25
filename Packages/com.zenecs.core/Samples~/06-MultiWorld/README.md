@@ -154,4 +154,4 @@ Created 3 worlds:
 
 ## License
 
-MIT © 2025 Pippapips Limited.
+MIT © 2026 Pippapips Limited.

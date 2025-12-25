@@ -59,10 +59,8 @@ jobs:
           REPO_NAME: ${{ github.event.repository.name }}
         run: |
           cd Docs_
-          # Set base path based on repository name
-          # Currently: ZenECS_deprecated → will be ZenECS
-          REPO_BASE_PATH=$(echo "$REPO_NAME" | sed 's/_deprecated$//')
-          echo "Building docs with base path: /$REPO_BASE_PATH/"
+          # Build documentation with base path /ZenECS/
+          # Base path is configured in docfx.json
           docfx docfx.json
       
       - name: Setup Pages

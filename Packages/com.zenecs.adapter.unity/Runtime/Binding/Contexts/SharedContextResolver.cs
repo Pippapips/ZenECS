@@ -35,7 +35,7 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts
     /// <list type="bullet">
     /// <item><description>
     /// <b>Zenject mode</b> (<c>ZENECS_ZENJECT</c> defined): contexts are
-    /// resolved from a <see cref="DiContainer"/>; lifecycle is entirely
+    /// resolved from a Zenject DiContainer; lifecycle is entirely
     /// managed by Zenject. <see cref="AddContext"/>,
     /// <see cref="RemoveContext"/>, and <see cref="RemoveAllContexts"/> are
     /// implemented as no-ops.

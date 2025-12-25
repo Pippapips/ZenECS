@@ -251,12 +251,12 @@ namespace ZenECS.Core.Internal
         /// This method:
         /// </para>
         /// <list type="number">
-        ///   <item><description>Raises <see cref="EntityEvents.DestroyRequested"/>.</description></item>
+        ///   <item><description>Raises <see cref="EntityEvents.EntityDestroyRequested"/>.</description></item>
         ///   <item><description>Clears associated singleton index entries.</description></item>
         ///   <item><description>Notifies binders and contexts for teardown.</description></item>
         ///   <item><description>Removes all components from the entity.</description></item>
         ///   <item><description>Marks the slot as free and increments generation.</description></item>
-        ///   <item><description>Raises <see cref="EntityEvents.Destroyed"/>.</description></item>
+        ///   <item><description>Raises <see cref="EntityEvents.EntityDestroy"/>.</description></item>
         /// </list>
         /// <para>
         /// Calling this with a non-alive entity is a no-op.

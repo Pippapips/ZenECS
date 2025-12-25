@@ -16,10 +16,10 @@ items:
     remote:
       path: Packages/com.zenecs.adapter.unity/Runtime/DI/ProjectInstaller.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ProjectInstaller
     path: ../Packages/com.zenecs.adapter.unity/Runtime/DI/ProjectInstaller.cs
-    startLine: 58
+    startLine: 56
   assemblies:
   - ZenECS.Adapter.Unity
   namespace: ZenECS.Adapter.Unity.DI
@@ -29,9 +29,7 @@ items:
 
     When the <code>ZENECS_ZENJECT</code> scripting define is enabled, this
 
-    <xref href="ZenECS.Adapter.Unity.DI.ProjectInstaller" data-throw-if-not-resolved="false"></xref> is used as a Zenject
-
-    MonoInstaller to:
+    <xref href="ZenECS.Adapter.Unity.DI.ProjectInstaller" data-throw-if-not-resolved="false"></xref> is used as a Zenject MonoInstaller to:
 
     </p>
 
@@ -39,13 +37,11 @@ items:
 
     Create the global <xref href="ZenECS.Core.IKernel" data-throw-if-not-resolved="false"></xref> via
 
-    KernelLocator.CreateEcsDriverWithKernel(KernelOptions).
+    <xref href="ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions%2cSystem.Boolean)" data-throw-if-not-resolved="false"></xref>.
 
     </li><li>
 
-    Bind the kernel and shared service resolvers into the Zenject
-
-    DiContainer.
+    Bind the kernel and shared service resolvers into the Zenject container.
 
     </li><li>
 
@@ -106,6 +102,46 @@ references:
   name: IKernel
   nameWithType: IKernel
   fullName: ZenECS.Core.IKernel
+- uid: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions,System.Boolean)
+  commentId: M:ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions,System.Boolean)
+  isExternal: true
+  href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_CreateEcsDriverWithKernel_ZenECS_Core_KernelOptions_System_Boolean_
+  name: CreateEcsDriverWithKernel(KernelOptions, bool)
+  nameWithType: KernelLocator.CreateEcsDriverWithKernel(KernelOptions, bool)
+  fullName: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions, bool)
+  nameWithType.vb: KernelLocator.CreateEcsDriverWithKernel(KernelOptions, Boolean)
+  fullName.vb: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions, Boolean)
+  name.vb: CreateEcsDriverWithKernel(KernelOptions, Boolean)
+  spec.csharp:
+  - uid: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions,System.Boolean)
+    name: CreateEcsDriverWithKernel
+    href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_CreateEcsDriverWithKernel_ZenECS_Core_KernelOptions_System_Boolean_
+  - name: (
+  - uid: ZenECS.Core.KernelOptions
+    name: KernelOptions
+    href: ZenECS.Core.KernelOptions.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: ZenECS.Adapter.Unity.KernelLocator.CreateEcsDriverWithKernel(ZenECS.Core.KernelOptions,System.Boolean)
+    name: CreateEcsDriverWithKernel
+    href: ZenECS.Adapter.Unity.KernelLocator.html#ZenECS_Adapter_Unity_KernelLocator_CreateEcsDriverWithKernel_ZenECS_Core_KernelOptions_System_Boolean_
+  - name: (
+  - uid: ZenECS.Core.KernelOptions
+    name: KernelOptions
+    href: ZenECS.Core.KernelOptions.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: ZenECS.Adapter.Unity.ZenEcsUnityBridge
   commentId: T:ZenECS.Adapter.Unity.ZenEcsUnityBridge
   href: ZenECS.Adapter.Unity.ZenEcsUnityBridge.html

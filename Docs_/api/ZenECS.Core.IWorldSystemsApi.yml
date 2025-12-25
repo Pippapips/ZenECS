@@ -26,7 +26,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IWorldSystemsApi
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
     startLine: 24
@@ -58,7 +58,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AddSystem
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
     startLine: 27
@@ -89,7 +89,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AddSystems
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
     startLine: 30
@@ -123,7 +123,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RemoveSystem
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
     startLine: 33
@@ -156,7 +156,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: RemoveSystem
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
     startLine: 36
@@ -187,7 +187,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: TryGetSystem
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
     startLine: 41
@@ -225,7 +225,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: TryGetSystem
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
     startLine: 55
@@ -272,7 +272,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: GetAllSystems
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
     startLine: 64
@@ -306,7 +306,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: SetEnabledSystem
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
     startLine: 81
@@ -354,7 +354,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IsEnabledSystem
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
     startLine: 95
@@ -398,7 +398,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IsEnabledSystem
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldSystemsApi.cs
     startLine: 109

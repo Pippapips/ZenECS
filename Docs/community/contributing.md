@@ -46,8 +46,8 @@ Documentation improvements are always welcome!
 
 1. **Clone repository**
    ```bash
-   git clone https://github.com/Pippapips/ZenECS_deprecated.git
-   cd ZenECS_deprecated
+   git clone https://github.com/Pippapips/ZenECS.git
+   cd ZenECS
    ```
 
 2. **Build Core**

@@ -20,7 +20,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldEntityApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IWorldEntityApi
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldEntityApi.cs
     startLine: 36
@@ -75,7 +75,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldEntityApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: AliveCount
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldEntityApi.cs
     startLine: 51
@@ -122,7 +122,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldEntityApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IsAlive
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldEntityApi.cs
     startLine: 69
@@ -172,7 +172,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldEntityApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: IsAlive
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldEntityApi.cs
     startLine: 88
@@ -228,7 +228,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/World/Api/IWorldEntityApi.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: GetAllEntities
     path: ../Packages/com.zenecs.core/Runtime/World/Api/IWorldEntityApi.cs
     startLine: 109

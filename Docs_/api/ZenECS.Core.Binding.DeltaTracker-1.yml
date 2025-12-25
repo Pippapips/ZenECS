@@ -26,7 +26,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: DeltaTracker
     path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
     startLine: 23
@@ -69,7 +69,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Has
     path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
     startLine: 29
@@ -103,7 +103,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Dirty
     path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
     startLine: 35
@@ -137,7 +137,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Removed
     path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
     startLine: 42
@@ -173,7 +173,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Last
     path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
     startLine: 48
@@ -207,7 +207,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: NeedsApply
     path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
     startLine: 54
@@ -243,7 +243,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Reset
     path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
     startLine: 60
@@ -276,7 +276,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: Set
     path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
     startLine: 77
@@ -320,7 +320,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: MarkRemoved
     path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
     startLine: 94
@@ -358,7 +358,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ClearDirty
     path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
     startLine: 107
@@ -391,7 +391,7 @@ items:
     remote:
       path: Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
       branch: main
-      repo: https://github.com/Pippapips/ZenECS_deprecated.git
+      repo: https://github.com/Pippapips/ZenECS.git
     id: ApplyDelta
     path: ../Packages/com.zenecs.core/Runtime/Binding/Utils/DeltaTracker.cs
     startLine: 124
