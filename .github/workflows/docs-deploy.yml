@@ -81,6 +81,9 @@ jobs:
           # Copy built documentation to docs folder
           cp -r Docs_/_site/* docs/
           
+          # Create .nojekyll file to disable Jekyll processing
+          touch docs/.nojekyll
+          
           # Restore .gitkeep if it existed
           if [ -f "docs/.gitkeep.bak" ]; then
             mv docs/.gitkeep.bak docs/.gitkeep
