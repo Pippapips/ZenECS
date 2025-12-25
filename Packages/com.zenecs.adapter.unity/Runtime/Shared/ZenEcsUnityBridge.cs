@@ -125,6 +125,16 @@ namespace ZenECS.Adapter.Unity
         /// </remarks>
         public static IKernel? Kernel { get; set; }
 
+        /// <summary>
+        /// Clears all registered services from the bridge.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This method resets <see cref="Kernel"/>, <see cref="SharedContextResolver"/>,
+        /// and <see cref="SystemPresetResolver"/> to <c>null</c>. It is typically
+        /// called during cleanup or when switching between different kernel instances.
+        /// </para>
+        /// </remarks>
         internal static void Clear()
         {
             Kernel = null;

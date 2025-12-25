@@ -68,6 +68,16 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts
 #endif
         private readonly Dictionary<Type, IContext> _contexts = new();
         
+        /// <summary>
+        /// Initializes a new resolver in manual mode (non-Zenject).
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// In this configuration, contexts are stored in an internal dictionary
+        /// and must be registered via <see cref="AddContext"/> before they can
+        /// be resolved.
+        /// </para>
+        /// </remarks>
         public SharedContextResolver()
         {
             

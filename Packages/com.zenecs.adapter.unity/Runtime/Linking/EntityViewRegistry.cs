@@ -229,20 +229,34 @@ namespace ZenECS.Adapter.Unity.Linking
                 _map.TryGetValue(e, out var link) && link != null && link.IsAlive;
 
             /// <summary>
-            /// Enumerates all alive entity-link pairs registered in this registry.
+            /// Enumerates all entity-link pairs registered in this registry.
             /// </summary>
+            /// <param name="aliveOnly">
+            /// If <c>true</c>, only includes links where <see cref="EntityLink.IsAlive"/>
+            /// is <c>true</c>. If <c>false</c>, includes all non-null links regardless
+            /// of their alive status.
+            /// </param>
             /// <returns>
             /// An enumerable sequence of tuples containing the <see cref="Entity"/>
-            /// and its associated <see cref="EntityLink"/>. Only links that are
-            /// non-null and report <see cref="EntityLink.IsAlive"/> as <c>true</c>
-            /// are included in the enumeration.
+            /// and its associated <see cref="EntityLink"/>. The filtering behavior
+            /// depends on <paramref name="aliveOnly"/>.
             /// </returns>
             /// <remarks>
             /// <para>
             /// This method iterates through all entries in the internal dictionary
-            /// and filters out any entries where the link is <c>null</c> or not alive.
-            /// This ensures that only valid, active links are returned.
+            /// and filters out entries based on <paramref name="aliveOnly"/>:
             /// </para>
+            /// <list type="bullet">
+            /// <item><description>
+            /// When <paramref name="aliveOnly"/> is <c>true</c>, only links that are
+            /// non-null and report <see cref="EntityLink.IsAlive"/> as <c>true</c>
+            /// are included.
+            /// </description></item>
+            /// <item><description>
+            /// When <paramref name="aliveOnly"/> is <c>false</c>, all non-null links
+            /// are included regardless of their alive status.
+            /// </description></item>
+            /// </list>
             /// <para>
             /// The enumeration is performed lazily, so modifications to the registry
             /// during enumeration may affect the results. It is recommended to avoid
@@ -253,7 +267,7 @@ namespace ZenECS.Adapter.Unity.Linking
             /// </para>
             /// <code>
             /// var registry = EntityViewRegistry.For(world);
-            /// foreach (var (entity, link) in registry.EnumerateViews())
+            /// foreach (var (entity, link) in registry.EnumerateViews(aliveOnly: true))
             /// {
             ///     Debug.Log($"Entity {entity.Id} → {link.gameObject.name}");
             /// }
