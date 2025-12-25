@@ -48,6 +48,13 @@
         ],
         "src": "../Docs",
         "dest": "docs"
+      },
+      {
+        "files": [
+          "**/README.md"
+        ],
+        "src": "../Packages",
+        "dest": "Packages"
       }
     ],
     "resource": [
@@ -56,6 +63,13 @@
           "favicon.ico",
           "logo.svg"
         ]
+      },
+      {
+        "files": [
+          "**/README.md"
+        ],
+        "src": "../Packages",
+        "dest": "Packages"
       }
     ],
     "output": "_site",
