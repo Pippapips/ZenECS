@@ -62,7 +62,8 @@
       "_appFooter": "MIT © Pippapips Limited",
       "_enableSearch": true,
       "_enableNewTab": true,
-      "pdf": true
+      "pdf": true,
+      "_appRootPath": "/ZenECS/"
     },
     "fileMetadata": {
       "priority": {

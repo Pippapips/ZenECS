@@ -63,11 +63,11 @@ ZenECS Core is a pure .NET library, perfect for server-side logic, simulations, 
 
 This documentation site includes:
 
-- **[Getting Started](getting-started/)** — Installation, setup, and quick start guides
-- **[Core Concepts](core/)** — Entities, components, systems, worlds, and messaging
-- **[Unity Adapter](adapter-unity/)** — Unity integration guides and tutorials
-- **[Guides](guides/)** — Advanced topics and best practices
-- **[Samples](samples/)** — Code examples and tutorials
+- **[Getting Started](docs/getting-started/)** — Installation, setup, and quick start guides
+- **[Core Concepts](docs/core/)** — Entities, components, systems, worlds, and messaging
+- **[Unity Adapter](docs/adapter-unity/)** — Unity integration guides and tutorials
+- **[Guides](docs/guides/)** — Advanced topics and best practices
+- **[Samples](docs/samples/)** — Code examples and tutorials
 - **[API Reference](api/)** — Complete API documentation
 
 ## Packages Overview

@@ -1,68 +1,68 @@
 ### YamlMime:TableOfContent
 - name: Home
-  href: index.md
+  href: index.html
 - name: Getting Started
-  href: ../README.md
+  href: README.html
 - name: Documentation
   items:
     - name: Overview
-      href: ../Docs/overview/zenecs-at-a-glance.md
+      href: docs/overview/zenecs-at-a-glance.html
     - name: Architecture
-      href: ../Docs/overview/architecture.md
+      href: docs/overview/architecture.html
     - name: Getting Started
       items:
         - name: Quick Start
-          href: ../Docs/getting-started/quickstart-basic.md
+          href: docs/getting-started/quickstart-basic.html
         - name: Installation
           items:
             - name: Unity (UPM)
-              href: ../Docs/getting-started/install-upm.md
+              href: docs/getting-started/install-upm.html
             - name: .NET (NuGet)
-              href: ../Docs/getting-started/install-nuget.md
+              href: docs/getting-started/install-nuget.html
         - name: Project Setup
-          href: ../Docs/getting-started/project-setup-unity.md
+          href: docs/getting-started/project-setup-unity.html
     - name: Core Concepts
       items:
         - name: Entities & Components
-          href: ../Docs/core/entities.md
+          href: docs/core/entities.html
         - name: Systems
-          href: ../Docs/core/systems.md
+          href: docs/core/systems.html
         - name: Worlds
-          href: ../Docs/core/world.md
+          href: docs/core/world.html
         - name: Message Bus
-          href: ../Docs/core/message-bus.md
+          href: docs/core/message-bus.html
         - name: Binding
-          href: ../Docs/core/binding.md
+          href: docs/core/binding.html
     - name: Unity Adapter
       items:
         - name: Overview
-          href: ../Docs/adapter-unity/overview.md
+          href: docs/adapter-unity/overview.html
         - name: Setup
-          href: ../Docs/adapter-unity/setup.md
+          href: docs/adapter-unity/setup.html
         - name: View Binder
-          href: ../Docs/adapter-unity/view-binder.md
+          href: docs/adapter-unity/view-binder.html
         - name: DI & UniRx
-          href: ../Docs/adapter-unity/unity-di-unirx.md
+          href: docs/adapter-unity/unity-di-unirx.html
     - name: Guides
-      href: ../Docs/guides/
+      href: docs/guides/
     - name: Samples
-      href: ../Docs/samples/
+      href: docs/samples/
     - name: API Reference
       href: api/
       homepage: api/index.html
     - name: References
       items:
         - name: Documentation Guidelines
-          href: ../Docs/references/documentation-guidelines.md
+          href: docs/references/documentation-guidelines.html
         - name: Writing Manual
-          href: ../Docs/references/writing-manual.md
+          href: docs/references/writing-manual.html
         - name: DocFX Integration Guide
-          href: ../Docs/references/docfx-integration-guide.md
+          href: docs/references/docfx-integration-guide.html
         - name: Documentation Index
-          href: ../Docs/references/documentation-index.md
+          href: docs/references/documentation-index.html
         - name: API Index
-          href: ../Docs/references/api-index.md
+          href: docs/references/api-index.html
         - name: Schema
-          href: ../Docs/references/schema.md
+          href: docs/references/schema.html
         - name: Repository Structure
-          href: ../Docs/references/repo-structure.md
+          href: docs/references/repo-structure.html

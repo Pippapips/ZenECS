@@ -55,8 +55,14 @@ jobs:
           dotnet build ZenECS.Adapter.Unity.csproj -c Release /p:GenerateDocumentationFile=true
       
       - name: Build DocFX documentation
+        env:
+          REPO_NAME: ${{ github.event.repository.name }}
         run: |
           cd Docs_
+          # Set base path based on repository name
+          # Currently: ZenECS_deprecated → will be ZenECS
+          REPO_BASE_PATH=$(echo "$REPO_NAME" | sed 's/_deprecated$//')
+          echo "Building docs with base path: /$REPO_BASE_PATH/"
           docfx docfx.json
       
       - name: Setup Pages
