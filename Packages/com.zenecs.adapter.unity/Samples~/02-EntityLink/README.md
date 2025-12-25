@@ -1,55 +1,64 @@
-# ZenECS Adapter Unity — Sample 02: EntityLink (GameObject ↔ Entity 연결)
+# ZenECS Adapter Unity — Sample 02: EntityLink (GameObject ↔ Entity Connection)
 
-Unity **GameObject**와 ZenECS **Entity**를 연결하는 **EntityLink** 컴포넌트 사용법을 보여주는 샘플입니다.
+This sample demonstrates how to use the **EntityLink** component to connect Unity **GameObject** and ZenECS **Entity**.
 
-* **EntityLink** — GameObject와 Entity를 연결하는 MonoBehaviour
-* **EntityViewRegistry** — World별 뷰 레지스트리 관리
-* 런타임 및 에디터에서 링크 생성/제거
-
----
-
-## 이 샘플이 보여주는 것
-
-1. **EntityLink 생성**
-   `CreateEntityLink()` 확장 메서드를 사용하여 GameObject에 EntityLink를 추가하고 Entity와 연결합니다.
-
-2. **뷰 레지스트리 자동 관리**
-   `EntityLink`가 자동으로 `EntityViewRegistry`에 등록/해제되어 World별로 뷰를 관리합니다.
-
-3. **링크 생명주기**
-   GameObject가 파괴되면 자동으로 링크가 해제되고 레지스트리에서 제거됩니다.
+* **EntityLink** — MonoBehaviour that connects GameObject and Entity
+* **EntityViewRegistry** — View registry management per World
+* Link creation/removal at runtime and in editor
 
 ---
 
-## TL;DR 흐름
+## What This Sample Shows
+
+1. **EntityLink Creation**
+   Use `CreateEntityLink()` extension method to add EntityLink to GameObject and connect it to Entity.
+
+2. **Automatic View Registry Management**
+   `EntityLink` automatically registers/unregisters with `EntityViewRegistry` to manage views per World.
+
+3. **Link Lifecycle**
+   When GameObject is destroyed, the link is automatically detached and removed from registry.
+
+4. **View System Integration**
+   Demonstrates `PositionViewSystem` that reads Position components and applies them to Transform via EntityLink.
+
+5. **Circular Spawn Pattern**
+   Shows how to spawn entities in a circular pattern and link them to GameObjects.
+
+---
+
+## TL;DR Flow
 
 ```
 [GameObject]
-  └─ EntityLink 컴포넌트
+  └─ EntityLink component
       └─ Attach(world, entity)
           └─ EntityViewRegistry.For(world).Register(entity, link)
 
 [EntityViewRegistry]
-  └─ World별 뷰 맵 관리
-      └─ entity → EntityLink 매핑
+  └─ View map management per World
+      └─ entity → EntityLink mapping
 ```
 
 ---
 
-## 파일 구조
+## File Structure
 
 ```
 02-EntityLink/
 ├── README.md
-├── EntityLinkSample.cs          # 샘플 스크립트
-└── PositionView.cs             # Position 컴포넌트를 Transform에 반영하는 뷰
+├── EntityLinkSample.cs          # Sample script
+│   ├── Position component
+│   └── PositionViewSystem (FrameViewGroup)
+├── Cube.prefab                  # Optional prefab for spawned entities
+└── 02 - EntityLink.unity        # Sample scene
 ```
 
 ---
 
-## 사용 방법
+## Usage
 
-### 1. 기본 링크 생성
+### 1. Basic Link Creation
 
 ```csharp
 using UnityEngine;
@@ -64,7 +73,7 @@ public class EntityLinkSample : MonoBehaviour
         var world = KernelLocator.CurrentWorld;
         if (world == null) return;
 
-        // Entity 생성
+        // Create Entity
         Entity entity;
         using (var cmd = world.BeginWrite())
         {
@@ -72,68 +81,68 @@ public class EntityLinkSample : MonoBehaviour
             cmd.AddComponent(entity, new Position(0, 0, 0));
         }
 
-        // GameObject와 Entity 연결
+        // Connect GameObject and Entity
         var link = gameObject.CreateEntityLink(world, entity);
-        Debug.Log($"Entity {entity.Id}가 {gameObject.name}에 연결되었습니다.");
+        Debug.Log($"Entity {entity.Id} linked to {gameObject.name}.");
     }
 }
 ```
 
-### 2. EntityViewRegistry를 통한 뷰 조회
+### 2. View Lookup via EntityViewRegistry
 
 ```csharp
 var world = KernelLocator.CurrentWorld;
 var registry = EntityViewRegistry.For(world);
 
-// Entity로 링크 찾기
+// Find link by Entity
 if (registry.TryGetView(entity, out var link))
 {
-    Debug.Log($"Entity {entity.Id}의 GameObject: {link.gameObject.name}");
+    Debug.Log($"Entity {entity.Id}'s GameObject: {link.gameObject.name}");
 }
 
-// 모든 뷰 순회
+// Iterate all views
 foreach (var (e, view) in registry.EnumerateViews())
 {
     Debug.Log($"Entity {e.Id} → {view.gameObject.name}");
 }
 ```
 
-### 3. 링크 해제
+### 3. Link Detachment
 
 ```csharp
-// 수동 해제
+// Manual detachment
 var link = GetComponent<EntityLink>();
 if (link != null)
 {
     link.Detach();
 }
 
-// 또는 GameObject 파괴 시 자동 해제됨
+// Or automatically detached when GameObject is destroyed
 Destroy(gameObject);
 ```
 
 ---
 
-## 주요 API
+## Key APIs
 
-* **EntityLink**: GameObject와 Entity를 연결하는 MonoBehaviour
-* **EntityLink.Attach(world, entity)**: 링크를 특정 World와 Entity에 연결
-* **EntityLink.Detach()**: 링크 해제
-* **EntityLink.IsAlive**: Entity가 살아있는지 확인
-* **EntityViewRegistry.For(world)**: World별 뷰 레지스트리 가져오기
-* **GameObject.CreateEntityLink()**: 편의 확장 메서드 (에디터 전용)
-
----
-
-## 주의사항 및 모범 사례
-
-* `EntityLink`는 GameObject당 **하나만** 존재할 수 있습니다 (`DisallowMultipleComponent`).
-* GameObject가 파괴되면 자동으로 링크가 해제됩니다.
-* `EntityViewRegistry`는 World별로 관리되며, World가 파괴되면 자동으로 정리됩니다.
-* 에디터에서 `CreateEntityLink()`는 에디터 전용이며, 런타임에서는 직접 `EntityLink` 컴포넌트를 추가해야 합니다.
+* **EntityLink**: MonoBehaviour that connects GameObject and Entity
+* **EntityLink.Attach(world, entity)**: Connect link to specific World and Entity
+* **EntityLink.Detach()**: Detach link
+* **EntityLink.IsAlive**: Check if Entity is alive
+* **EntityViewRegistry.For(world)**: Get view registry per World
+* **GameObject.CreateEntityLink()**: Convenience extension method (editor only)
 
 ---
 
-## 라이선스
+## Notes and Best Practices
+
+* `EntityLink` can exist **only one per GameObject** (`DisallowMultipleComponent`).
+* Link is automatically detached when GameObject is destroyed.
+* `EntityViewRegistry` is managed per World, and automatically cleaned up when World is destroyed.
+* `CreateEntityLink()` in editor is editor-only; at runtime, you must add `EntityLink` component directly.
+
+---
+
+## License
 
 MIT © 2026 Pippapips Limited.

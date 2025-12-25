@@ -1,12 +1,11 @@
 // ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Adapter Unity Samples 03 - EntityBlueprint
 // File: EntityBlueprintSample.cs
-// Purpose: EntityBlueprint를 사용한 엔티티 스폰 예제
+// Purpose: Example of entity spawning using EntityBlueprint
 // Key concepts:
-//   • ScriptableObject 기반 엔티티 블루프린트
-//   • 컴포넌트 스냅샷 저장 및 적용
-//   • Context Assets와 Binders 설정
-//
+//   • ScriptableObject-based entity blueprint
+//   • Component snapshot storage and application
+//   • Context Assets and Binders setup
 // Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
@@ -20,7 +19,7 @@ using ZenECS.Core;
 namespace ZenEcsAdapterUnitySamples.EntityBlueprint
 {
     /// <summary>
-    /// Health 컴포넌트 - 엔티티의 체력을 저장합니다.
+    /// Health component - stores entity health.
     /// </summary>
     [ZenComponent]
     public readonly struct Health
@@ -32,7 +31,7 @@ namespace ZenEcsAdapterUnitySamples.EntityBlueprint
     }
 
     /// <summary>
-    /// Position 컴포넌트 - 엔티티의 위치를 저장합니다.
+    /// Position component - stores entity position.
     /// </summary>
     [ZenComponent]
     public readonly struct Position
@@ -41,6 +40,9 @@ namespace ZenEcsAdapterUnitySamples.EntityBlueprint
         public Position(float x, float y, float z) { X = x; Y = y; Z = z; }
     }
 
+    /// <summary>
+    /// Rotation component - stores entity rotation.
+    /// </summary>
     [ZenComponent]
     public readonly struct Rotation
     {
@@ -49,7 +51,7 @@ namespace ZenEcsAdapterUnitySamples.EntityBlueprint
     }
     
     /// <summary>
-    /// EntityBlueprint 샘플 - ScriptableObject 기반 엔티티 스폰을 보여줍니다.
+    /// EntityBlueprint sample - demonstrates ScriptableObject-based entity spawning.
     /// </summary>
     public sealed class EntityBlueprintSample : MonoBehaviour
     {
@@ -67,16 +69,16 @@ namespace ZenEcsAdapterUnitySamples.EntityBlueprint
             var kernel = KernelLocator.Current;
             if (kernel == null)
             {
-                Debug.LogError("[EntityBlueprintSample] Kernel을 찾을 수 없습니다.");
+                Debug.LogError("[EntityBlueprintSample] Kernel not found.");
                 return;
             }
 
             _world = kernel.CreateWorld(null, "BlueprintWorld", setAsCurrent: true);
-            Debug.Log("[EntityBlueprintSample] World 생성 완료");
+            Debug.Log("[EntityBlueprintSample] World created");
 
             if (_blueprint == null)
             {
-                Debug.LogWarning("[EntityBlueprintSample] Blueprint가 할당되지 않았습니다. Inspector에서 할당해주세요.");
+                Debug.LogWarning("[EntityBlueprintSample] Blueprint not assigned. Please assign it in Inspector.");
             }
         }
 
@@ -92,19 +94,22 @@ namespace ZenEcsAdapterUnitySamples.EntityBlueprint
             }
         }
 
+        /// <summary>
+        /// Spawns an entity from the EntityBlueprint asset.
+        /// </summary>
         private void SpawnFromBlueprint()
         {
             if (_world == null || _blueprint == null) return;
 
-            // Blueprint로 엔티티 스폰
+            // Spawn entity from Blueprint
             _blueprint.Spawn(
                 _world,
                 ZenEcsUnityBridge.SharedContextResolver,
                 onCreated: entity =>
                 {
-                    Debug.Log($"[EntityBlueprintSample] Entity {entity.Id}가 Blueprint에서 스폰되었습니다.");
+                    Debug.Log($"[EntityBlueprintSample] Entity {entity.Id} spawned from Blueprint.");
 
-                    // 스폰된 엔티티의 컴포넌트 확인
+                    // Check spawned entity components
                     if (_world.HasComponent<Health>(entity))
                     {
                         var health = _world.ReadComponent<Health>(entity);

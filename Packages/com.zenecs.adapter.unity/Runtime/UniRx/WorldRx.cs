@@ -130,6 +130,44 @@ namespace ZenECS.Adapter.Unity.UniRx
         public static IDisposable PublishFrom<T>(this IWorld w, IObservable<T> stream)
             where T : struct, IMessage
             => stream.Subscribe(m => w.Publish(m));
+
+        /// <summary>
+        /// Publishes all values from the observable stream into the world's
+        /// message bus. This overload allows fluent chaining from observables.
+        /// </summary>
+        /// <typeparam name="T">
+        /// Message type carried by the stream. Must be a value type that
+        /// implements <see cref="IMessage"/>.
+        /// </typeparam>
+        /// <param name="stream">
+        /// The source observable whose values will be forwarded as messages.
+        /// </param>
+        /// <param name="w">The ECS world that will receive the messages.</param>
+        /// <returns>
+        /// A disposable representing the active subscription from
+        /// <paramref name="stream"/> to <paramref name="w"/>. Disposing it
+        /// stops forwarding messages.
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// This is equivalent to:
+        /// </para>
+        /// <code>
+        /// stream.Subscribe(m =&gt; w.Publish(m));
+        /// </code>
+        /// <para>
+        /// This overload enables fluent chaining in observable pipelines:
+        /// </para>
+        /// <code>
+        /// observable
+        ///     .Select(x =&gt; new Message(x))
+        ///     .PublishFrom(world)
+        ///     .AddTo(disposables);
+        /// </code>
+        /// </remarks>
+        public static IDisposable PublishFrom<T>(this IObservable<T> stream, IWorld w)
+            where T : struct, IMessage
+            => stream.Subscribe(m => w.Publish(m));
     }
 }
 #endif

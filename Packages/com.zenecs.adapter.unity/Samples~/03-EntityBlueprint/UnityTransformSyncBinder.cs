@@ -1,15 +1,29 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// ZenECS Adapter Unity Samples 03 - EntityBlueprint
+// File: UnityTransformSyncBinder.cs
+// Purpose: Example Binder that synchronizes Unity Transform with ECS Position/Rotation components
+// Key concepts:
+//   • Binder implementation inheriting from BaseBinder
+//   • Component delta reception via IBind<T>
+//   • State tracking using DeltaTracker
+//   • Unity GameObject reference via Context
+// Copyright (c) 2026 Pippapips Limited
+// License: MIT (https://opensource.org/licenses/MIT)
+// SPDX-License-Identifier: MIT
+// ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 using System;
-using BountyBang.Contexts;
 using UnityEngine;
 using ZenECS.Core;
 using ZenECS.Core.Binding;
-using ZenECS.Physics.Unity.Simulation.Components;
 
 namespace ZenEcsAdapterUnitySamples.EntityBlueprint
 {
+    /// <summary>
+    /// Binder that synchronizes Unity Transform with ECS Position and Rotation components.
+    /// </summary>
     [Serializable]
-    public class UnityTransformSyncBinder :
+    public sealed class UnityTransformSyncBinder :
         BaseBinder,
         IBind<Position>,
         IBind<Rotation>
@@ -17,12 +31,13 @@ namespace ZenEcsAdapterUnitySamples.EntityBlueprint
         private DeltaTracker<Position> _pos;
         private DeltaTracker<Rotation> _rot;
         private UnityTransformContext? _unityTransformContext;
-        private bool _wasDead;
 
+        /// <inheritdoc />
         protected override void OnBind(Entity e)
         {
         }
 
+        /// <inheritdoc />
         protected override void OnContextAttached(IContext context)
         {
             switch (context)
@@ -33,6 +48,7 @@ namespace ZenEcsAdapterUnitySamples.EntityBlueprint
             }
         }
 
+        /// <inheritdoc />
         protected override void OnContextDetached(IContext context)
         {
             switch (context)
@@ -43,25 +59,25 @@ namespace ZenEcsAdapterUnitySamples.EntityBlueprint
             }
         }
 
+        /// <inheritdoc />
         protected override void OnUnbind()
         {
             _unityTransformContext = null;
-
-            var w = this.World;
-            if (w == null) return;
-            Debug.Log($"<color=#339900>Unbind 2D Sync Binder</color> F:{w.Kernel.FrameCount} T:{w.Kernel.FixedFrameCount}");
         }
 
+        /// <inheritdoc />
         public void OnDelta(in ComponentDelta<Position> delta)
         {
             _pos.ApplyDelta(delta);
         }
 
+        /// <inheritdoc />
         public void OnDelta(in ComponentDelta<Rotation> delta)
         {
             _rot.ApplyDelta(delta);
         }
 
+        /// <inheritdoc />
         protected override void OnApply(IWorld w, Entity e)
         {
             var t = _unityTransformContext?.Root;

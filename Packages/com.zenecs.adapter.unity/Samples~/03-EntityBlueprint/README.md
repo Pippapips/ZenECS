@@ -1,69 +1,83 @@
-# ZenECS Adapter Unity — Sample 03: EntityBlueprint (엔티티 스폰)
+# ZenECS Adapter Unity — Sample 03: EntityBlueprint (Entity Spawning)
 
-**EntityBlueprint**를 사용하여 ScriptableObject 기반으로 엔티티를 스폰하는 방법을 보여주는 샘플입니다.
+This sample demonstrates how to spawn entities using **EntityBlueprint** based on ScriptableObject.
 
-* **EntityBlueprint** — ScriptableObject 기반 엔티티 블루프린트
-* **EntityBlueprintData** — 컴포넌트 스냅샷 저장
-* **Context Assets** — Shared/Per-Entity Context 설정
-* **Binders** — 엔티티별 Binder 설정
-
----
-
-## 이 샘플이 보여주는 것
-
-1. **Blueprint 생성**
-   Unity 에디터에서 EntityBlueprint 에셋을 생성하고 컴포넌트 데이터를 설정합니다.
-
-2. **런타임 스폰**
-   `EntityBlueprint.Spawn()`을 호출하여 블루프린트에 정의된 엔티티를 생성합니다.
-
-3. **Context 및 Binder 적용**
-   블루프린트에 설정된 Context Assets와 Binders가 자동으로 엔티티에 적용됩니다.
+* **EntityBlueprint** — ScriptableObject-based entity blueprint
+* **EntityBlueprintData** — Component snapshot storage
+* **Context Assets** — Shared/Per-Entity Context setup
+* **Binders** — Per-entity Binder setup
 
 ---
 
-## TL;DR 흐름
+## What This Sample Shows
+
+1. **Blueprint Creation**
+   Create EntityBlueprint asset in Unity editor and set component data.
+
+2. **Runtime Spawning**
+   Call `EntityBlueprint.Spawn()` to create entities defined in the blueprint.
+
+3. **Context and Binder Application**
+   Context Assets and Binders set in the blueprint are automatically applied to entities.
+
+4. **Periodic Spawning**
+   Demonstrates spawning entities periodically using `Update()` loop with configurable spawn interval.
+
+5. **Component Verification**
+   Shows how to verify spawned entity components after creation.
+
+6. **OnGUI Display**
+   Simple GUI display showing Blueprint name and World information.
+
+---
+
+## TL;DR Flow
 
 ```
 [EntityBlueprint ScriptableObject]
-  ├─ EntityBlueprintData (컴포넌트 스냅샷)
+  ├─ EntityBlueprintData (component snapshot)
   ├─ ContextAssets (Shared/Per-Entity)
-  └─ Binders (관리 참조)
+  └─ Binders (managed references)
 
 [Runtime]
   └─ blueprint.Spawn(world, contextResolver)
       └─ ExternalCommand.CreateEntity
-          ├─ ApplyComponents (스냅샷 적용)
-          ├─ ApplyContexts (Context 등록)
-          └─ ApplyBinders (Binder 연결)
+          ├─ ApplyComponents (apply snapshot)
+          ├─ ApplyContexts (register Context)
+          └─ ApplyBinders (connect Binder)
 ```
 
 ---
 
-## 파일 구조
+## File Structure
 
 ```
 03-EntityBlueprint/
 ├── README.md
-├── EntityBlueprintSample.cs    # 샘플 스크립트
-├── HealthComponent.cs          # 예제 컴포넌트
-└── HealthBinder.cs             # 예제 Binder
+├── EntityBlueprintSample.cs    # Sample script (contains Health, Position, Rotation components)
+├── EntityBlueprint.asset        # Example EntityBlueprint asset
+├── UnityTransformContext.cs     # Example Context
+├── UnityTransformContextAsset.cs
+├── UnityTransformSyncBinder.cs  # Example Binder
+├── UnityTransformSyncBinderAsset.cs
+├── Cube.prefab                  # Optional prefab
+└── 03 - EntityBlueprint.unity   # Sample scene
 ```
 
 ---
 
-## 사용 방법
+## Usage
 
-### 1. EntityBlueprint 에셋 생성
+### 1. Create EntityBlueprint Asset
 
-1. Unity 에디터에서 **Project 창** → 우클릭 → **Create** → **ZenECS** → **Entity Blueprint**
-2. 생성된 Blueprint 에셋을 선택
-3. Inspector에서 컴포넌트 데이터 추가:
-   - **Components (snapshot)** 섹션에서 컴포넌트 추가
-   - **Contexts** 섹션에서 Context Assets 추가 (선택)
-   - **Binders** 섹션에서 Binder 추가 (선택)
+1. In Unity editor: **Project window** → Right-click → **Create** → **ZenECS** → **Entity Blueprint**
+2. Select the created Blueprint asset
+3. Add component data in Inspector:
+   - Add components in **Components (snapshot)** section
+   - Add Context Assets in **Contexts** section (optional)
+   - Add Binders in **Binders** section (optional)
 
-### 2. 런타임에서 스폰
+### 2. Spawn at Runtime
 
 ```csharp
 using UnityEngine;
@@ -74,51 +88,83 @@ using ZenECS.Core;
 public class EntityBlueprintSample : MonoBehaviour
 {
     [SerializeField] private EntityBlueprint _blueprint;
+    [SerializeField] private float _spawnInterval = 1f;
+
+    private IWorld? _world;
+    private float _spawnTimer;
 
     private void Start()
     {
-        var world = KernelLocator.CurrentWorld;
-        if (world == null || _blueprint == null) return;
+        var kernel = KernelLocator.Current;
+        if (kernel == null) return;
 
-        // Blueprint로 엔티티 스폰
+        _world = kernel.CreateWorld(null, "BlueprintWorld", setAsCurrent: true);
+    }
+
+    private void Update()
+    {
+        if (_world == null || _blueprint == null) return;
+
+        _spawnTimer += Time.deltaTime;
+        if (_spawnTimer >= _spawnInterval)
+        {
+            _spawnTimer = 0f;
+            SpawnFromBlueprint();
+        }
+    }
+
+    private void SpawnFromBlueprint()
+    {
+        if (_world == null || _blueprint == null) return;
+
+        // Spawn entity from Blueprint
         _blueprint.Spawn(
-            world,
+            _world,
             ZenEcsUnityBridge.SharedContextResolver,
-            onCreated: entity => Debug.Log($"Entity {entity.Id} 스폰 완료!")
+            onCreated: entity =>
+            {
+                Debug.Log($"Entity {entity.Id} spawned!");
+                // Verify components
+                if (_world.HasComponent<Health>(entity))
+                {
+                    var health = _world.ReadComponent<Health>(entity);
+                    Debug.Log($"Health: {health.Current}/{health.Max}");
+                }
+            }
         );
     }
 }
 ```
 
-### 3. 컴포넌트 스냅샷 설정
+### 3. Component Snapshot Setup
 
-Blueprint Inspector에서 컴포넌트를 추가하려면:
-1. **Components (snapshot)** 섹션 확장
-2. **Add Component** 버튼 클릭
-3. 컴포넌트 타입 선택 및 값 입력
-
----
-
-## 주요 API
-
-* **EntityBlueprint**: ScriptableObject 기반 엔티티 블루프린트
-* **EntityBlueprint.Spawn()**: 블루프린트로 엔티티 스폰
-* **EntityBlueprintData**: 컴포넌트 스냅샷 데이터
-* **SharedContextAsset**: 공유 Context 마커
-* **PerEntityContextAsset**: 엔티티별 Context 팩토리
-* **IBinder**: 뷰 바인딩 인터페이스
+To add components in Blueprint Inspector:
+1. Expand **Components (snapshot)** section
+2. Click **Add Component** button
+3. Select component type and enter values
 
 ---
 
-## 주의사항 및 모범 사례
+## Key APIs
 
-* Blueprint는 **ExternalCommand**를 사용하여 안전하게 엔티티를 생성합니다.
-* Binder는 **shallow-clone**되어 각 엔티티마다 독립적인 인스턴스가 생성됩니다.
-* Shared Context는 `ISharedContextResolver`를 통해 해석되어야 합니다.
-* Blueprint의 컴포넌트 데이터는 JSON으로 직렬화되므로 직렬화 가능한 타입만 사용할 수 있습니다.
+* **EntityBlueprint**: ScriptableObject-based entity blueprint
+* **EntityBlueprint.Spawn()**: Spawn entity from blueprint
+* **EntityBlueprintData**: Component snapshot data
+* **SharedContextAsset**: Shared Context marker
+* **PerEntityContextAsset**: Per-entity Context factory
+* **IBinder**: View binding interface
 
 ---
 
-## 라이선스
+## Notes and Best Practices
+
+* Blueprint uses **ExternalCommand** to safely create entities.
+* Binders are **shallow-cloned** to create independent instances per entity.
+* Shared Context must be resolved via `ISharedContextResolver`.
+* Blueprint component data is serialized as JSON, so only serializable types can be used.
+
+---
+
+## License
 
 MIT © 2026 Pippapips Limited.

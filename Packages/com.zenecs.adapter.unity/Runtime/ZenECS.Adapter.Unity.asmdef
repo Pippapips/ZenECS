@@ -17,11 +17,6 @@
     "defineConstraints": [],
     "versionDefines": [
         {
-            "name": "com.svermeulen.extenject",
-            "expression": "0.0.1",
-            "define": "ZENECS_ZENJECT"
-        },
-        {
             "name": "com.neuecc.unirx",
             "expression": "7.1.0",
             "define": "ZENECS_UNIRX"

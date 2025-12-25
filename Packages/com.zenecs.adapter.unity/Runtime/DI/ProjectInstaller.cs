@@ -29,7 +29,6 @@ using UnityEngine;
 
 namespace ZenECS.Adapter.Unity.DI
 {
-#if ZENECS_ZENJECT
     /// <summary>
     /// Zenject-based project installer for ZenECS.
     /// </summary>
@@ -54,8 +53,14 @@ namespace ZenECS.Adapter.Unity.DI
     /// </description></item>
     /// </list>
     /// </remarks>
+#if ZENECS_ZENJECT
     public sealed class ProjectInstaller : MonoInstaller
+#else
+    [DefaultExecutionOrder(-32001)]
+    public sealed class ProjectInstaller : MonoBehaviour
+#endif
     {
+#if ZENECS_ZENJECT
         /// <summary>
         /// Configures Zenject bindings for ZenECS kernel and resolvers.
         /// </summary>
@@ -108,60 +113,7 @@ namespace ZenECS.Adapter.Unity.DI
             ZenEcsUnityBridge.SharedContextResolver = Container.Resolve<ISharedContextResolver>();
             ZenEcsUnityBridge.SystemPresetResolver = Container.Resolve<ISystemPresetResolver>();
         }
-    }
 #else
-    /// <summary>
-    /// Minimal project-level bootstrap for ZenECS without Zenject.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// When <c>ZENECS_ZENJECT</c> is <b>not</b> defined, this
-    /// <see cref="MonoBehaviour"/> takes the role of a lightweight installer.
-    /// In <see cref="Awake"/>, it:
-    /// </para>
-    /// <list type="number">
-    /// <item><description>
-    /// Creates the global <see cref="IKernel"/> via
-    /// <see cref="KernelLocator.CreateEcsDriverWithKernel(KernelOptions)"/>.
-    /// </description></item>
-    /// <item><description>
-    /// Assigns the kernel and default resolver implementations to
-    /// <see cref="ZenEcsUnityBridge"/>.
-    /// </description></item>
-    /// </list>
-    /// <para>
-    /// The <see cref="DefaultExecutionOrderAttribute"/> ensures that the
-    /// kernel is created very early in the frame, before most other
-    /// MonoBehaviours.
-    /// </para>
-    /// </remarks>
-    [DefaultExecutionOrder(-32001)]
-    public sealed class ProjectInstaller : MonoBehaviour
-    {
-        /// <summary>
-        /// Unity lifecycle callback that initializes the ZenECS kernel and
-        /// default resolvers.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// This method:
-        /// </para>
-        /// <list type="bullet">
-        /// <item><description>
-        /// Creates the kernel and assigns it to
-        /// <see cref="ZenEcsUnityBridge.Kernel"/>.
-        /// </description></item>
-        /// <item><description>
-        /// Instantiates <see cref="SharedContextResolver"/> and
-        /// <see cref="SystemPresetResolver"/> and exposes them via
-        /// <see cref="ZenEcsUnityBridge"/>.
-        /// </description></item>
-        /// </list>
-        /// <para>
-        /// It is safe to have a single <see cref="ProjectInstaller"/> per
-        /// project (for example, in the initial bootstrap scene).
-        /// </para>
-        /// </remarks>
         private void Awake()
         {
             ZenEcsUnityBridge.Kernel = KernelLocator.CreateEcsDriverWithKernel(
@@ -174,6 +126,6 @@ namespace ZenECS.Adapter.Unity.DI
             ZenEcsUnityBridge.SharedContextResolver = new SharedContextResolver();
             ZenEcsUnityBridge.SystemPresetResolver = new SystemPresetResolver();
         }
-    }
 #endif
+    }
 }

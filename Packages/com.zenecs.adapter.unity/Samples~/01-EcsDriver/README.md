@@ -1,66 +1,76 @@
-# ZenECS Adapter Unity — Sample 01: EcsDriver 기본 설정
+# ZenECS Adapter Unity — Sample 01: EcsDriver Basic Setup
 
-Unity에서 **EcsDriver**를 사용하여 ZenECS Kernel을 초기화하고 Unity의 생명주기와 연동하는 방법을 보여주는 샘플입니다.
+This sample demonstrates how to initialize ZenECS Kernel using **EcsDriver** and integrate it with Unity's lifecycle.
 
-* **EcsDriver** — MonoBehaviour 기반 Kernel 생명주기 관리
-* **KernelLocator** — 전역 Kernel 접근
-* Unity 프레임 콜백과 ECS 프레임 구조 연동
-
----
-
-## 이 샘플이 보여주는 것
-
-1. **EcsDriver 설정**
-   씬에 `EcsDriver` 컴포넌트를 추가하여 Kernel을 자동으로 생성하고 관리합니다.
-
-2. **World 생성 및 시스템 등록**
-   `KernelLocator.Current`를 통해 Kernel에 접근하고, World를 생성하여 시스템을 등록합니다.
-
-3. **Unity 생명주기 연동**
-   `EcsDriver`가 Unity의 `Update`, `FixedUpdate`, `LateUpdate`를 ECS의 `BeginFrame`, `FixedStep`, `LateFrame`으로 자동 변환합니다.
+* **EcsDriver** — MonoBehaviour-based Kernel lifecycle management
+* **KernelLocator** — Global Kernel access
+* Unity frame callbacks and ECS frame structure integration
 
 ---
 
-## TL;DR 흐름
+## What This Sample Shows
+
+1. **EcsDriver Setup**
+   Add `EcsDriver` component to the scene to automatically create and manage Kernel.
+
+2. **World Creation and System Registration**
+   Access Kernel via `KernelLocator.Current`, create World, and register systems.
+
+3. **Unity Lifecycle Integration**
+   `EcsDriver` automatically converts Unity's `Update`, `FixedUpdate`, `LateUpdate` to ECS's `BeginFrame`, `FixedStep`, `LateFrame`.
+
+4. **System Groups**
+   Demonstrates both `FixedGroup` (MovementSystem) and `FrameViewGroup` (PrintPositionSystem) systems.
+
+5. **Test Entity Creation**
+   Shows how to create test entities with components using `ExternalCommand`.
+
+---
+
+## TL;DR Flow
 
 ```
 [Unity Scene]
   └─ EcsDriver (MonoBehaviour)
-      └─ Kernel 생성 및 KernelLocator에 등록
+      └─ Kernel creation and registration to KernelLocator
           └─ Update() → BeginFrame()
           └─ FixedUpdate() → FixedStep()
           └─ LateUpdate() → LateFrame()
 
 [Bootstrap Script]
-  └─ KernelLocator.Current로 Kernel 접근
-      └─ CreateWorld()로 World 생성
-      └─ AddSystems()로 시스템 등록
+  └─ KernelLocator.Current to access Kernel
+      └─ CreateWorld() to create World
+      └─ AddSystems() to register systems
 ```
 
 ---
 
-## 파일 구조
+## File Structure
 
 ```
 01-EcsDriver/
 ├── README.md
-├── EcsDriverSample.cs          # Bootstrap 스크립트
-└── MovementSystem.cs            # 예제 시스템
+├── EcsDriverSample.cs          # Bootstrap script (contains all components and systems)
+│   ├── Position component
+│   ├── Velocity component
+│   ├── MovementSystem (FixedGroup)
+│   └── PrintPositionSystem (FrameViewGroup)
+└── 01 - EcsDriver.unity        # Sample scene
 ```
 
 ---
 
-## 사용 방법
+## Usage
 
-### 1. 씬 설정
+### 1. Scene Setup
 
-1. Unity 씬을 엽니다.
-2. 빈 GameObject를 생성하고 이름을 "EcsDriver"로 설정합니다.
-3. `EcsDriver` 컴포넌트를 추가합니다 (자동으로 추가되거나 수동으로 추가).
+1. Open Unity scene.
+2. Create an empty GameObject and name it "EcsDriver".
+3. Add `EcsDriver` component (automatically added or manually).
 
-### 2. Bootstrap 스크립트 추가
+### 2. Add Bootstrap Script
 
-새 GameObject를 생성하고 `EcsDriverSample` 스크립트를 추가합니다:
+Create a new GameObject and add `EcsDriverSample` script:
 
 ```csharp
 using UnityEngine;
@@ -71,21 +81,25 @@ public class EcsDriverSample : MonoBehaviour
 {
     private void Awake()
     {
-        // Kernel은 EcsDriver가 자동으로 생성합니다
+        // Kernel is automatically created by EcsDriver
         var kernel = KernelLocator.Current;
         if (kernel == null)
         {
-            Debug.LogError("EcsDriver가 씬에 없습니다!");
+            Debug.LogError("EcsDriver not found in scene!");
             return;
         }
 
-        // World 생성
-        var world = kernel.CreateWorld("GameWorld", setAsCurrent: true);
+        // Create World
+        var world = kernel.CreateWorld(null, "GameWorld", setAsCurrent: true);
         
-        // 시스템 등록
-        world.AddSystems([new MovementSystem()]);
+        // Register systems
+        world.AddSystems(new List<ISystem>
+        {
+            new MovementSystem(),
+            new PrintPositionSystem()
+        }.AsReadOnly());
         
-        // 테스트 엔티티 생성
+        // Create test entities
         using (var cmd = world.BeginWrite())
         {
             var entity = cmd.CreateEntity();
@@ -93,36 +107,36 @@ public class EcsDriverSample : MonoBehaviour
             cmd.AddComponent(entity, new Velocity(1, 0));
         }
         
-        Debug.Log("EcsDriver 샘플이 초기화되었습니다!");
+        Debug.Log("EcsDriver sample initialized!");
     }
 }
 ```
 
-### 3. 실행
+### 3. Run
 
-씬을 실행하면 `EcsDriver`가 자동으로 Kernel을 생성하고, Unity의 프레임 콜백이 ECS 프레임 구조로 변환됩니다.
-
----
-
-## 주요 API
-
-* **EcsDriver**: Unity MonoBehaviour 기반 Kernel 드라이버
-* **KernelLocator.Current**: 전역 Kernel 인스턴스 접근
-* **KernelLocator.CurrentWorld**: 현재 활성화된 World 접근
-* **IKernel.CreateWorld()**: 새 World 생성
-* **IWorld.AddSystems()**: 시스템 등록
+When you run the scene, `EcsDriver` automatically creates Kernel, and Unity's frame callbacks are converted to ECS frame structure.
 
 ---
 
-## 주의사항 및 모범 사례
+## Key APIs
 
-* 씬에는 **하나의 EcsDriver만** 존재해야 합니다 (중복 시 자동으로 제거됨).
-* `EcsDriver`는 `DefaultExecutionOrder(-32000)`으로 설정되어 다른 스크립트보다 먼저 실행됩니다.
-* Kernel은 `EcsDriver`의 생명주기에 따라 자동으로 생성/소멸됩니다.
-* World 생성은 일반적으로 `Awake()` 또는 `Start()`에서 수행합니다.
+* **EcsDriver**: Unity MonoBehaviour-based Kernel driver
+* **KernelLocator.Current**: Access global Kernel instance
+* **KernelLocator.CurrentWorld**: Access currently active World
+* **IKernel.CreateWorld()**: Create new World
+* **IWorld.AddSystems()**: Register systems
 
 ---
 
-## 라이선스
+## Notes and Best Practices
+
+* There should be **only one EcsDriver** in the scene (duplicates are automatically removed).
+* `EcsDriver` is set to `DefaultExecutionOrder(-32000)` to run before other scripts.
+* Kernel is automatically created/destroyed according to `EcsDriver` lifecycle.
+* World creation is typically performed in `Awake()` or `Start()`.
+
+---
+
+## License
 
 MIT © 2026 Pippapips Limited.

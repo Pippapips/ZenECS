@@ -12,54 +12,44 @@
   },
   "samples": [
     {
-      "displayName": "01 - EcsDriver 기본 설정",
-      "description": "EcsDriver를 사용한 기본 Kernel 초기화 및 Unity 생명주기 연동",
+      "displayName": "01 - EcsDriver Basic Setup",
+      "description": "Basic Kernel initialization and Unity lifecycle integration using EcsDriver",
       "path": "Samples~/01-EcsDriver"
     },
     {
       "displayName": "02 - EntityLink (GameObject ↔ Entity)",
-      "description": "GameObject와 Entity를 연결하는 EntityLink 사용법",
+      "description": "Using EntityLink to connect GameObject and Entity",
       "path": "Samples~/02-EntityLink"
     },
     {
-      "displayName": "03 - EntityBlueprint (엔티티 스폰)",
-      "description": "ScriptableObject 기반으로 엔티티를 스폰하는 방법",
+      "displayName": "03 - EntityBlueprint (Entity Spawning)",
+      "description": "ScriptableObject-based entity spawning (includes Context Binding)",
       "path": "Samples~/03-EntityBlueprint"
     },
     {
-      "displayName": "04 - Context Binding 시스템",
-      "description": "Shared Context와 Per-Entity Context 관리",
-      "path": "Samples~/04-ContextBinding"
+      "displayName": "04 - System Presets",
+      "description": "ScriptableObject-based system setup and management",
+      "path": "Samples~/04-SystemPresets"
     },
     {
-      "displayName": "05 - System Presets",
-      "description": "ScriptableObject 기반 시스템 설정 및 관리",
-      "path": "Samples~/05-SystemPresets"
+      "displayName": "05 - Input → Intent Pattern",
+      "description": "Converting Unity Input to ECS Intent components",
+      "path": "Samples~/05-InputIntent"
     },
     {
-      "displayName": "06 - View Binder 패턴",
-      "description": "ECS 데이터를 Unity 뷰에 바인딩하는 방법",
-      "path": "Samples~/06-ViewBinder"
+      "displayName": "06 - FixedStep vs Update",
+      "description": "Comparing Unity Update/FixedUpdate with ECS BeginFrame/FixedStep/LateFrame",
+      "path": "Samples~/06-FixedStepUpdate"
     },
     {
-      "displayName": "07 - Input → Intent 패턴",
-      "description": "Unity Input을 ECS Intent 컴포넌트로 변환",
-      "path": "Samples~/07-InputIntent"
+      "displayName": "07 - UniRx Integration",
+      "description": "ECS message stream conversion using UniRx (requires ZENECS_UNIRX)",
+      "path": "Samples~/07-UniRx"
     },
     {
-      "displayName": "08 - FixedStep vs Update",
-      "description": "Unity Update/FixedUpdate와 ECS BeginFrame/FixedStep/LateFrame 비교",
-      "path": "Samples~/08-FixedStepUpdate"
-    },
-    {
-      "displayName": "09 - UniRx 통합",
-      "description": "UniRx를 사용한 ECS 메시지 스트림 변환 (ZENECS_UNIRX 필요)",
-      "path": "Samples~/09-UniRx"
-    },
-    {
-      "displayName": "10 - Zenject 통합",
-      "description": "Zenject를 사용한 의존성 주입 (ZENECS_ZENJECT 필요)",
-      "path": "Samples~/10-Zenject"
+      "displayName": "08 - Zenject Integration",
+      "description": "Dependency injection using Zenject (requires ZENECS_ZENJECT)",
+      "path": "Samples~/08-Zenject"
     }
   ]
 }

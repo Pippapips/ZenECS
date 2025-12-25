@@ -251,8 +251,8 @@ namespace ZenECS.Adapter.Unity
             }
 
             // Prefer the central SystemPresetResolver if available.
-            var instances = _worldPresetResolver?.InstantiateSystems(types) ?? InstantiateSystemsActivator(types);
-            if (instances.Count > 0)
+            var instances = _worldPresetResolver?.InstantiateSystems(types);
+            if (instances?.Count > 0)
             {
                 // Systems will be activated on the next BeginFrame.
                 _world.AddSystems(instances);
@@ -361,44 +361,6 @@ namespace ZenECS.Adapter.Unity
             if (string.IsNullOrEmpty(key)) return;
             if (visited.Add(key))
                 dst.Add(t);
-        }
-
-        // ───────────────────────────────── System instantiation ─────────────────────────────────
-
-        /// <summary>
-        /// Instantiates system instances using <see cref="Activator"/>.
-        /// </summary>
-        /// <param name="types">List of system types to instantiate.</param>
-        /// <returns>
-        /// A list of successfully created <see cref="ISystem"/> instances.
-        /// </returns>
-        /// <remarks>
-        /// <para>
-        /// Types that fail to construct or do not implement
-        /// <see cref="ISystem"/> are skipped, with a warning logged to the
-        /// Unity console.
-        /// </para>
-        /// </remarks>
-        private static List<ISystem> InstantiateSystemsActivator(List<Type> types)
-        {
-            var list = new List<ISystem>(types.Count);
-            foreach (var t in types)
-            {
-                try
-                {
-                    if (t == null || t.IsAbstract) continue;
-                    var inst = Activator.CreateInstance(t);
-                    if (inst is ISystem s)
-                        list.Add(s);
-                    else
-                        Debug.LogWarning($"[WorldSystemInstaller] Type '{t.FullName}' is not an ISystem.");
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogWarning($"[WorldSystemInstaller] new() failed: {t?.Name} — {ex.Message}");
-                }
-            }
-            return list;
         }
     }
 }

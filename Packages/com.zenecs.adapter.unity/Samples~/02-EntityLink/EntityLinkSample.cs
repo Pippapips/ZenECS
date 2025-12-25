@@ -1,12 +1,11 @@
 // ──────────────────────────────────────────────────────────────────────────────
 // ZenECS Adapter Unity Samples 02 - EntityLink
 // File: EntityLinkSample.cs
-// Purpose: GameObject와 Entity를 연결하는 EntityLink 사용 예제
+// Purpose: Example of using EntityLink to connect GameObject and Entity
 // Key concepts:
-//   • EntityLink를 통한 GameObject ↔ Entity 연결
-//   • EntityViewRegistry를 통한 뷰 관리
-//   • 링크 생명주기 관리
-//
+//   • GameObject ↔ Entity connection via EntityLink
+//   • View management via EntityViewRegistry
+//   • Link lifecycle management
 // Copyright (c) 2026 Pippapips Limited
 // License: MIT (https://opensource.org/licenses/MIT)
 // SPDX-License-Identifier: MIT
@@ -22,7 +21,7 @@ using ZenECS.Core.Systems;
 namespace ZenEcsAdapterUnitySamples.EntityLink
 {
     /// <summary>
-    /// Position 컴포넌트 - 3D 위치를 저장합니다.
+    /// Position component - stores 3D position.
     /// </summary>
     [ZenComponent]
     public readonly struct Position
@@ -33,7 +32,7 @@ namespace ZenEcsAdapterUnitySamples.EntityLink
     }
 
     /// <summary>
-    /// Position을 Transform에 반영하는 시스템 (FrameViewGroup, 읽기 전용).
+    /// System that applies Position to Transform (FrameViewGroup, read-only).
     /// </summary>
     [FrameViewGroup]
     [ZenSystemWatch(typeof(Position))]
@@ -53,7 +52,7 @@ namespace ZenEcsAdapterUnitySamples.EntityLink
     }
 
     /// <summary>
-    /// EntityLink 샘플 - GameObject와 Entity를 연결하는 방법을 보여줍니다.
+    /// EntityLink sample - demonstrates how to connect GameObject and Entity.
     /// </summary>
     public sealed class EntityLinkSample : MonoBehaviour
     {
@@ -69,18 +68,21 @@ namespace ZenEcsAdapterUnitySamples.EntityLink
             var kernel = KernelLocator.Current;
             if (kernel == null)
             {
-                Debug.LogError("[EntityLinkSample] Kernel을 찾을 수 없습니다. EcsDriver를 추가해주세요.");
+                Debug.LogError("[EntityLinkSample] Kernel not found. Please add EcsDriver.");
                 return;
             }
 
             _world = kernel.CreateWorld(null, "EntityLinkWorld", setAsCurrent: true);
             _world.AddSystems(new List<ISystem> { new PositionViewSystem() }.AsReadOnly());
 
-            Debug.Log("[EntityLinkSample] World 생성 완료. 엔티티를 생성합니다...");
+            Debug.Log("[EntityLinkSample] World created. Creating entities...");
 
             SpawnEntities();
         }
 
+        /// <summary>
+        /// Spawns entities in a circular pattern and links them to GameObjects.
+        /// </summary>
         private void SpawnEntities()
         {
             if (_world == null) return;
@@ -89,7 +91,7 @@ namespace ZenEcsAdapterUnitySamples.EntityLink
 
             for (int i = 0; i < _spawnCount; i++)
             {
-                // Entity 생성
+                // Create Entity
                 Entity entity;
                 using (var cmd = _world.BeginWrite())
                 {
@@ -100,7 +102,7 @@ namespace ZenEcsAdapterUnitySamples.EntityLink
                     cmd.AddComponent(entity, new Position(x, 0, z));
                 }
 
-                // GameObject 생성 및 링크
+                // Create GameObject and link
                 GameObject go;
                 if (_prefab != null)
                 {
@@ -114,38 +116,38 @@ namespace ZenEcsAdapterUnitySamples.EntityLink
                 go.name = $"Entity_{entity.Id}";
 
 #if UNITY_EDITOR
-                // 에디터에서는 확장 메서드 사용
+                // Use extension method in editor
                 var link = go.CreateEntityLink(_world, entity);
 #else
-                // 런타임에서는 직접 컴포넌트 추가
+                // Add component directly at runtime
                 var link = go.AddComponent<EntityLink>();
                 link.Attach(_world, entity);
 #endif
 
-                Debug.Log($"[EntityLinkSample] Entity {entity.Id}가 {go.name}에 연결되었습니다.");
+                Debug.Log($"[EntityLinkSample] Entity {entity.Id} linked to {go.name}.");
 
-                // 레지스트리 확인
+                // Verify registry
                 if (registry.TryGet(entity, out var registeredLink))
                 {
-                    Debug.Log($"[EntityLinkSample] 레지스트리 확인: Entity {entity.Id} → {registeredLink?.gameObject.name}");
+                    Debug.Log($"[EntityLinkSample] Registry check: Entity {entity.Id} → {registeredLink?.gameObject.name}");
                 }
             }
 
-            // 모든 뷰 나열
-            Debug.Log($"[EntityLinkSample] 총 {_spawnCount}개의 EntityLink가 생성되었습니다.");
+            // List all views
+            Debug.Log($"[EntityLinkSample] Total {_spawnCount} EntityLinks created.");
             int count = 0;
             foreach (var (e, view) in registry.EnumerateViews())
             {
                 count++;
             }
-            Debug.Log($"[EntityLinkSample] 레지스트리에 등록된 뷰: {count}개");
+            Debug.Log($"[EntityLinkSample] Views registered in registry: {count}");
         }
 
         private void OnDestroy()
         {
             if (_world != null)
             {
-                Debug.Log("[EntityLinkSample] 샘플 종료. World 정리 중...");
+                Debug.Log("[EntityLinkSample] Sample terminated. Cleaning up World...");
             }
         }
     }

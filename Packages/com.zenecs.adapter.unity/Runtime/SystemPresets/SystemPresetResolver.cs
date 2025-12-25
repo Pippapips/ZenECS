@@ -128,13 +128,35 @@ namespace ZenECS.Adapter.Unity.SystemPresets
         /// </remarks>
         public List<ISystem> InstantiateSystems(List<Type> types)
         {
+#if ZENECS_ZENJECT
             if (_container == null)
             {
                 return InstantiateSystemsInternal(types, t => (ISystem)Activator.CreateInstance(t));
             }
             return InstantiateSystemsInternal(types, t => (ISystem)_container.Instantiate(t));
+#else
+            var list = new List<ISystem>(types.Count);
+            foreach (var t in types)
+            {
+                try
+                {
+                    if (t == null || t.IsAbstract) continue;
+                    var inst = Activator.CreateInstance(t);
+                    if (inst is ISystem s)
+                        list.Add(s);
+                    else
+                        Debug.LogWarning($"[WorldSystemInstaller] Type '{t.FullName}' is not an ISystem.");
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogWarning($"[WorldSystemInstaller] new() failed: {t?.Name} — {ex.Message}");
+                }
+            }
+            return list;
+#endif
         }
 
+#if ZENECS_ZENJECT
         /// <summary>
         /// Internal helper that instantiates systems using the provided factory function.
         /// </summary>
@@ -167,5 +189,6 @@ namespace ZenECS.Adapter.Unity.SystemPresets
 
             return list;
         }
+#endif
     }
 }
