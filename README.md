@@ -133,7 +133,7 @@ while (running)
 
 This repository contains two packages:
 
-### [ZenECS Core](../Packages/com.zenecs.core/README.md)
+### [ZenECS Core](Packages/com.zenecs.core/README.md)
 The engine-agnostic ECS runtime. Works with Unity, Godot, or standalone .NET applications.
 
 **Key Features:**
@@ -142,8 +142,19 @@ The engine-agnostic ECS runtime. Works with Unity, Godot, or standalone .NET app
 - ComponentDelta bindings for reactive views
 - Command buffers for thread-safe batching
 - Snapshot I/O with migrations
+- Zero dependencies (.NET Standard 2.1)
 
-### [ZenECS Adapter Unity](../Packages/com.zenecs.adapter.unity/README.md)
+**Samples:**
+- Basic usage and movement system
+- Message bus and pub/sub patterns
+- Command buffer usage
+- Snapshot I/O and migrations
+- World reset patterns
+- Write hooks and validators
+- Component change bindings
+- System runner and ordering
+
+### [ZenECS Adapter Unity](Packages/com.zenecs.adapter.unity/README.md)
 Optional Unity integration layer. Bridges ZenECS with Unity's lifecycle and editor tools.
 
 **Key Features:**
@@ -152,14 +163,28 @@ Optional Unity integration layer. Bridges ZenECS with Unity's lifecycle and edit
 - `EntityBlueprint` for ScriptableObject-based entity spawning
 - Editor tools (ECS Explorer, custom inspectors)
 - UniRx and Zenject integration
+- Input-to-Intent pattern
+- FixedStep vs Update separation
+
+**Samples:**
+- EcsDriver basic setup
+- EntityLink (GameObject ↔ Entity)
+- EntityBlueprint (entity spawning)
+- System Presets
+- Input → Intent pattern
+- FixedStep vs Update comparison
+- UniRx integration
+- Zenject integration
 
 ---
 
 ## 📚 Documentation
 
-- **[Core Documentation](../Packages/com.zenecs.core/README.md)** — Complete API reference and concepts
-- **[Unity Adapter Documentation](../Packages/com.zenecs.adapter.unity/README.md)** — Unity-specific integration guide
-- **[Full Documentation](../Docs/README.md)** — Comprehensive guides and tutorials
+- **[Getting Started Guide](Docs/getting-started/quickstart-basic.md)** — 5-minute quickstart tutorial
+- **[Core Documentation](Packages/com.zenecs.core/README.md)** — Complete API reference and concepts
+- **[Unity Adapter Documentation](Packages/com.zenecs.adapter.unity/README.md)** — Unity-specific integration guide
+- **[Full Documentation Index](Docs/README.md)** — Comprehensive guides and tutorials
+- **[API Reference](Docs/references/api-index.md)** — Auto-generated API documentation
 
 ---
 
@@ -184,10 +209,14 @@ Optional Unity integration layer. Bridges ZenECS with Unity's lifecycle and edit
 
 ## 🔗 Quick Links
 
-- **[Core README](../Packages/com.zenecs.core/README.md)** — Detailed Core documentation
-- **[Adapter Unity README](../Packages/com.zenecs.adapter.unity/README.md)** — Unity integration guide
-- **[Documentation Index](../Docs/README.md)** — Full documentation
-- **[Samples](../Packages/com.zenecs.core/Samples~)** — Example projects
+- **[Quick Start Guide](Docs/getting-started/quickstart-basic.md)** — Get started in 5 minutes
+- **[Core README](Packages/com.zenecs.core/README.md)** — Detailed Core documentation
+- **[Adapter Unity README](Packages/com.zenecs.adapter.unity/README.md)** — Unity integration guide
+- **[Documentation Index](Docs/README.md)** — Full documentation
+- **[Core Samples](Packages/com.zenecs.core/Samples~)** — Core example projects
+- **[Unity Samples](Packages/com.zenecs.adapter.unity/Samples~)** — Unity integration examples
+- **[Changelog](Docs/release/changelog.md)** — Version history
+- **[FAQ](Docs/overview/faq.md)** — Frequently asked questions
 
 ---
 
@@ -199,8 +228,28 @@ MIT © Pippapips Limited
 
 ## 🚦 Status
 
-**Release Candidate** — 1.0 APIs are locked. Documentation and samples are being finalized.
+**Release Candidate (1.0.0)** — APIs are locked. Documentation and samples are being finalized.
+
+**Current Version:** 1.0.0  
+**Target Framework:** .NET Standard 2.1  
+**Unity Support:** 2021.3 or higher  
+**License:** MIT
 
 ---
 
-**Ready to build better architectures?** Start with the [Core README](../Packages/com.zenecs.core/README.md) or [Unity Adapter README](../Packages/com.zenecs.adapter.unity/README.md) for detailed guides.
+## 🤝 Contributing
+
+We welcome contributions! Please see:
+- **[Contributing Guidelines](Docs/community/contributing.md)** — How to contribute
+- **[Code of Conduct](Docs/community/code-of-conduct.md)** — Community standards
+- **[Governance](Docs/community/governance.md)** — Project governance
+
+## 📞 Support
+
+- **[FAQ](Docs/overview/faq.md)** — Common questions and answers
+- **[Support Guide](Docs/community/support.md)** — How to get help
+- **[GitHub Issues](https://github.com/Pippapips/ZenECS/issues)** — Report bugs or request features
+
+---
+
+**Ready to build better architectures?** Start with the [Quick Start Guide](Docs/getting-started/quickstart-basic.md) or explore the [Core README](Packages/com.zenecs.core/README.md) and [Unity Adapter README](Packages/com.zenecs.adapter.unity/README.md) for detailed guides.
