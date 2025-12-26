@@ -41,7 +41,8 @@ jobs:
           if [[ -n "$(git status --porcelain)" ]]; then
             git add -A
             git commit -m "chore(release): sync package CHANGELOG"
-            git push
+            # Push to main branch (tag triggers run in detached HEAD state)
+            git push origin HEAD:main
           fi
 
       - name: Extract release notes from changelog
