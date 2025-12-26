@@ -1,0 +1,114 @@
+name: UPM Release & Tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      packages_to_release:
+        description: 'Which packages to release?'
+        required: true
+        type: choice
+        options:
+          - 'both'
+          - 'core-only'
+          - 'adapter-only'
+      core_version:
+        description: 'Core version (e.g., 1.0.0). Leave blank to auto-read from package.json. Ignored if packages_to_release is adapter-only.'
+        required: false
+      adapter_version:
+        description: 'Adapter version (e.g., 1.0.0). Leave blank to auto-read from package.json. Ignored if packages_to_release is core-only.'
+        required: false
+
+permissions:
+  contents: write   # ← 태그/브랜치 푸시 허용
+
+jobs:
+  split:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Resolve versions
+        id: versions
+        shell: bash
+        run: |
+          set -e
+          CORE_JSON="Packages/com.zenecs.core/package.json"
+          ADAPT_JSON="Packages/com.zenecs.adapter.unity/package.json"
+          
+          RELEASE_MODE="${{ github.event.inputs.packages_to_release }}"
+          
+          # Core version resolution
+          if [ "$RELEASE_MODE" = "core-only" ] || [ "$RELEASE_MODE" = "both" ]; then
+            core_v="${{ github.event.inputs.core_version }}"
+            if [ -z "$core_v" ]; then
+              core_v=$(jq -r '.version' "$CORE_JSON")
+            fi
+            echo "core=$core_v" >> $GITHUB_OUTPUT
+            echo "Core version: $core_v"
+          else
+            echo "core=" >> $GITHUB_OUTPUT
+            echo "Skipping Core (adapter-only mode)"
+          fi
+          
+          # Adapter version resolution
+          if [ "$RELEASE_MODE" = "adapter-only" ] || [ "$RELEASE_MODE" = "both" ]; then
+            adapt_v="${{ github.event.inputs.adapter_version }}"
+            if [ -z "$adapt_v" ]; then
+              adapt_v=$(jq -r '.version' "$ADAPT_JSON")
+            fi
+            echo "adapter=$adapt_v" >> $GITHUB_OUTPUT
+            echo "Adapter version: $adapt_v"
+          else
+            echo "adapter=" >> $GITHUB_OUTPUT
+            echo "Skipping Adapter (core-only mode)"
+          fi
+          
+          echo "Release mode: $RELEASE_MODE"
+
+      - name: Validate package paths
+        run: |
+          test -d Packages/com.zenecs.core || (echo "Missing: Packages/com.zenecs.core" && exit 1)
+          test -d Packages/com.zenecs.adapter.unity || (echo "Missing: Packages/com.zenecs.adapter.unity" && exit 1)
+
+      - name: Split Core and create tag
+        if: ${{ steps.versions.outputs.core != '' }}
+        shell: bash
+        run: |
+          set -e
+          CORE_SPLIT_COMMIT=$(git subtree split --prefix=Packages/com.zenecs.core)
+          echo "Core split at $CORE_SPLIT_COMMIT"
+          git tag -a "upm-core-${{ steps.versions.outputs.core }}" -m "UPM Core v${{ steps.versions.outputs.core }}" "$CORE_SPLIT_COMMIT"
+          git push origin "refs/tags/upm-core-${{ steps.versions.outputs.core }}"
+          echo "✅ Created tag: upm-core-${{ steps.versions.outputs.core }}"
+
+      - name: Split Adapter and create tag
+        if: ${{ steps.versions.outputs.adapter != '' }}
+        shell: bash
+        run: |
+          set -e
+          ADAPT_SPLIT_COMMIT=$(git subtree split --prefix=Packages/com.zenecs.adapter.unity)
+          echo "Adapter split at $ADAPT_SPLIT_COMMIT"
+          git tag -a "upm-adapter-${{ steps.versions.outputs.adapter }}" -m "UPM Adapter v${{ steps.versions.outputs.adapter }}" "$ADAPT_SPLIT_COMMIT"
+          git push origin "refs/tags/upm-adapter-${{ steps.versions.outputs.adapter }}"
+          echo "✅ Created tag: upm-adapter-${{ steps.versions.outputs.adapter }}"
+
+      - name: Summary
+        run: |
+          echo "## Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ steps.versions.outputs.core }}" ]; then
+            echo "✅ Core: upm-core-${{ steps.versions.outputs.core }}" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ -n "${{ steps.versions.outputs.adapter }}" ]; then
+            echo "✅ Adapter: upm-adapter-${{ steps.versions.outputs.adapter }}" >> $GITHUB_STEP_SUMMARY
+          fi
+
