@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PKG_JSON="com.zenecs.core/package.json"
+PKG_JSON="Packages/com.zenecs.core/package.json"
 TAG="${GITHUB_REF_NAME:-}"
 if [[ -z "$TAG" ]]; then
   echo "❌ GITHUB_REF_NAME is empty (are you running on tag push?)"

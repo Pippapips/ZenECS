@@ -1,16 +1,34 @@
-name: release
+name: Release
+
 on:
   push:
     tags:
       - 'v*.*.*'
 
+permissions:
+  contents: write   # GitHub Release 및 태그 푸시
+
 jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: true
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          VER="${GITHUB_REF_NAME#v}"
+          echo "version=$VER" >> $GITHUB_OUTPUT
+          echo "Release version: $VER"
 
       - name: Verify package.json version == tag
         run: bash scripts/verify-version.sh
@@ -21,8 +39,6 @@ jobs:
       - name: Commit sync (if needed)
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then
-            git config user.name "zenecs-bot"
-            git config user.email "bot@pippapips.com"
             git add -A
             git commit -m "chore(release): sync package CHANGELOG"
             git push
@@ -31,7 +47,7 @@ jobs:
       - name: Extract release notes from changelog
         id: notes
         run: |
-          VER="${GITHUB_REF_NAME#v}"
+          VER="${{ steps.version.outputs.version }}"
           awk -v ver="$VER" '
             BEGIN{p=0}
             /^## \[/{ if(p==1) exit }
@@ -47,3 +63,92 @@ jobs:
           tag_name: ${{ github.ref_name }}
           body_path: /tmp/notes.md
           generate_release_notes: false
+
+  upm-tags:
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          VER="${GITHUB_REF_NAME#v}"
+          echo "version=$VER" >> $GITHUB_OUTPUT
+          echo "UPM tag version: $VER"
+
+      - name: Read package versions
+        id: packages
+        run: |
+          set -e
+          CORE_JSON="Packages/com.zenecs.core/package.json"
+          ADAPT_JSON="Packages/com.zenecs.adapter.unity/package.json"
+          
+          if ! command -v jq >/dev/null 2>&1; then
+            echo "Installing jq..."
+            sudo apt-get update -y && sudo apt-get install -y jq
+          fi
+          
+          core_v=$(jq -r '.version' "$CORE_JSON")
+          adapt_v=$(jq -r '.version' "$ADAPT_JSON")
+          
+          echo "core=$core_v" >> $GITHUB_OUTPUT
+          echo "adapter=$adapt_v" >> $GITHUB_OUTPUT
+          
+          echo "Core version: $core_v"
+          echo "Adapter version: $adapt_v"
+          
+          # Verify versions match release tag
+          RELEASE_VER="${{ steps.version.outputs.version }}"
+          if [ "$core_v" != "$RELEASE_VER" ]; then
+            echo "⚠️ Warning: Core version ($core_v) != Release version ($RELEASE_VER)"
+          fi
+          if [ "$adapt_v" != "$RELEASE_VER" ]; then
+            echo "⚠️ Warning: Adapter version ($adapt_v) != Release version ($RELEASE_VER)"
+          fi
+
+      - name: Create UPM Core tag
+        if: ${{ steps.packages.outputs.core != '' }}
+        run: |
+          set -e
+          CORE_SPLIT_COMMIT=$(git subtree split --prefix=Packages/com.zenecs.core)
+          echo "Core split at $CORE_SPLIT_COMMIT"
+          git tag -a "upm-core-${{ steps.packages.outputs.core }}" \
+            -m "UPM Core v${{ steps.packages.outputs.core }} (from release ${{ github.ref_name }})" \
+            "$CORE_SPLIT_COMMIT"
+          git push origin "refs/tags/upm-core-${{ steps.packages.outputs.core }}"
+          echo "✅ Created tag: upm-core-${{ steps.packages.outputs.core }}"
+
+      - name: Create UPM Adapter tag
+        if: ${{ steps.packages.outputs.adapter != '' }}
+        run: |
+          set -e
+          ADAPT_SPLIT_COMMIT=$(git subtree split --prefix=Packages/com.zenecs.adapter.unity)
+          echo "Adapter split at $ADAPT_SPLIT_COMMIT"
+          git tag -a "upm-adapter-${{ steps.packages.outputs.adapter }}" \
+            -m "UPM Adapter v${{ steps.packages.outputs.adapter }} (from release ${{ github.ref_name }})" \
+            "$ADAPT_SPLIT_COMMIT"
+          git push origin "refs/tags/upm-adapter-${{ steps.packages.outputs.adapter }}"
+          echo "✅ Created tag: upm-adapter-${{ steps.packages.outputs.adapter }}"
+
+      - name: Summary
+        run: |
+          echo "## UPM Tags Created" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ steps.packages.outputs.core }}" ]; then
+            echo "✅ Core: \`upm-core-${{ steps.packages.outputs.core }}\`" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ -n "${{ steps.packages.outputs.adapter }}" ]; then
+            echo "✅ Adapter: \`upm-adapter-${{ steps.packages.outputs.adapter }}\`" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "These tags are used for Unity Package Manager (UPM) installation." >> $GITHUB_STEP_SUMMARY

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SOT="Docs/release/changelog.md"
-PKG="com.zenecs.core/CHANGELOG.md"
+PKG="Packages/com.zenecs.core/CHANGELOG.md"
 
 if [[ ! -f "$SOT" ]]; then
   echo "❌ Missing $SOT"
