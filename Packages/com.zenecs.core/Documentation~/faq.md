@@ -73,6 +73,15 @@ using (var cmd = world.BeginWrite())
 }
 ```
 
+Or with command buffer:
+
+```csharp
+using (var cmd = world.BeginWrite())
+{
+    var entity = cmd.CreateEntity();
+}
+```
+
 ### How do I add components?
 
 ```csharp

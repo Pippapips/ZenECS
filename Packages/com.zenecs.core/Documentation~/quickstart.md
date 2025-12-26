@@ -74,10 +74,9 @@ Entities are unique IDs. Attach components to give them data:
 
 ```csharp
 // Create entity and add components using command buffer
-Entity entity;
 using (var cmd = world.BeginWrite())
 {
-    entity = cmd.CreateEntity();
+    var entity = cmd.CreateEntity();
     cmd.AddComponent(entity, new Position(0, 0));
     cmd.AddComponent(entity, new Velocity(1, 0));
 }
