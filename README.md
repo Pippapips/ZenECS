@@ -75,7 +75,7 @@ Unlike traditional OOP architectures, ZenECS enforces **unidirectional data flow
    
    // Kernel is automatically created
    var kernel = KernelLocator.Current;
-   var world = kernel.CreateWorld("GameWorld", setAsCurrent: true);
+   var world = kernel.CreateWorld(null, "GameWorld", setAsCurrent: true);
    ```
 
 3. **Create a system:**
@@ -114,7 +114,7 @@ using ZenECS.Core;
 
 // Create kernel and world
 var kernel = new Kernel();
-var world = kernel.CreateWorld("Game");
+var world = kernel.CreateWorld(null, "Game");
 
 // Register systems
 world.AddSystems([new MoveSystem()]);

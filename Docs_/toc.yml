@@ -2,7 +2,7 @@
 - name: Home
   href: index.html
 - name: Getting Started
-  href: README.html
+  href: docs/getting-started/quickstart-basic.html
 - name: Documentation
   items:
     - name: Overview
@@ -10,6 +10,7 @@
     - name: Architecture
       href: docs/overview/architecture.html
     - name: Getting Started
+      href: docs/getting-started/quickstart-basic.html
       items:
         - name: Quick Start
           href: docs/getting-started/quickstart-basic.html
@@ -22,6 +23,7 @@
         - name: Project Setup
           href: docs/getting-started/project-setup-unity.html
     - name: Core Concepts
+      href: docs/core/world.html
       items:
         - name: Entities & Components
           href: docs/core/entities.html
@@ -34,6 +36,7 @@
         - name: Binding
           href: docs/core/binding.html
     - name: Unity Adapter
+      href: docs/adapter-unity/overview.html
       items:
         - name: Overview
           href: docs/adapter-unity/overview.html
@@ -44,25 +47,8 @@
         - name: DI & UniRx
           href: docs/adapter-unity/unity-di-unirx.html
     - name: Guides
-      href: docs/guides/
+      href: docs/guides/advanced-topics.html
     - name: Samples
-      href: docs/samples/
+      href: docs/samples/01-basic.html
     - name: API Reference
-      href: api/
-      homepage: api/index.html
-    - name: References
-      items:
-        - name: Documentation Guidelines
-          href: docs/references/documentation-guidelines.html
-        - name: Writing Manual
-          href: docs/references/writing-manual.html
-        - name: DocFX Integration Guide
-          href: docs/references/docfx-integration-guide.html
-        - name: Documentation Index
-          href: docs/references/documentation-index.html
-        - name: API Index
-          href: docs/references/api-index.html
-        - name: Schema
-          href: docs/references/schema.html
-        - name: Repository Structure
-          href: docs/references/repo-structure.html
+      href: api/index.html

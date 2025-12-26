@@ -355,7 +355,7 @@ In Find Mode, the Explorer displays all systems that watch the found entity, mak
 **Cause:** The Kernel has no current world selected.
 
 **Solution:**
-- Create a world: `kernel.CreateWorld("MyWorld", setAsCurrent: true)`
+- Create a world: `kernel.CreateWorld(null, "MyWorld", setAsCurrent: true)`
 - Or set an existing world as current: `kernel.SetCurrentWorld(myWorld)`
 
 ### No Entities Shown

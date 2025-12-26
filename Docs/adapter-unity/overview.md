@@ -23,7 +23,7 @@ MonoBehaviour that manages kernel lifecycle and bridges Unity's frame callbacks:
 ```csharp
 // Automatically created when EcsDriver exists in scene
 var kernel = KernelLocator.Current;
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 ```
 
 #### EntityLink
@@ -162,7 +162,7 @@ public class GameBootstrap : MonoBehaviour
     {
         // Kernel is automatically created by EcsDriver
         var kernel = KernelLocator.Current;
-        var world = kernel.CreateWorld("GameWorld", setAsCurrent: true);
+        var world = kernel.CreateWorld(null, "GameWorld", setAsCurrent: true);
         
         // Register systems
         world.AddSystems([new MovementSystem(), new HealthSystem()]);
@@ -178,8 +178,12 @@ using ZenECS.Core;
 
 // Create entity
 var world = KernelLocator.CurrentWorld;
-var entity = world.CreateEntity();
-world.AddComponent(entity, new Position(0, 0));
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();
+    cmd.AddComponent(entity, new Position(0, 0));
+}
 
 // Link GameObject
 var link = gameObject.AddComponent<EntityLink>();

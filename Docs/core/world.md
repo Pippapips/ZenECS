@@ -30,7 +30,7 @@ Worlds are created via the Kernel:
 
 ```csharp
 var kernel = new Kernel();
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 ```
 
 **Parameters:**
@@ -54,21 +54,31 @@ Create → Use → (Reset) → Dispose
 ### Entity Management
 
 ```csharp
-// Create entity
-var entity = world.CreateEntity();
+// Create entity using command buffer
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();
+}
 
 // Check if alive
 bool isAlive = world.IsAlive(entity);
 
-// Destroy entity
-world.DestroyEntity(entity);
+// Destroy entity using command buffer
+using (var cmd = world.BeginWrite())
+{
+    cmd.DestroyEntity(entity);
+}
 ```
 
 ### Component Management
 
 ```csharp
-// Add component
-world.AddComponent(entity, new Position(0, 0));
+// Add component using command buffer
+using (var cmd = world.BeginWrite())
+{
+    cmd.AddComponent(entity, new Position(0, 0));
+}
 
 // Get component (by value)
 var pos = world.Get<Position>(entity);
@@ -156,12 +166,16 @@ using ZenECS.Core;
 
 // Create kernel and world
 var kernel = new Kernel();
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 
-// Create entity with components
-var entity = world.CreateEntity();
-world.AddComponent(entity, new Position(0, 0));
-world.AddComponent(entity, new Velocity(1, 0));
+// Create entity with components using command buffer
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();
+    cmd.AddComponent(entity, new Position(0, 0));
+    cmd.AddComponent(entity, new Velocity(1, 0));
+}
 
 // Query and process
 foreach (var (e, pos, vel) in world.Query<Position, Velocity>())
@@ -182,9 +196,9 @@ kernel.Dispose();
 var kernel = new Kernel();
 
 // Create multiple worlds
-var gameWorld = kernel.CreateWorld("Game");
-var uiWorld = kernel.CreateWorld("UI");
-var serverWorld = kernel.CreateWorld("Server");
+var gameWorld = kernel.CreateWorld(null, "Game");
+var uiWorld = kernel.CreateWorld(null, "UI");
+var serverWorld = kernel.CreateWorld(null, "Server");
 
 // Each world is isolated
 gameWorld.AddSystems([new GameSystem()]);

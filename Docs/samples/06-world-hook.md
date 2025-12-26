@@ -64,7 +64,7 @@ world.Hooks.AddValidator<Health>(health =>
 ```csharp
 using ZenECS.Core;
 
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 
 // Add write permission hook
 world.Hooks.AddWritePermission((entity, componentType) =>
@@ -85,9 +85,13 @@ world.Hooks.AddValidator<Health>(health =>
 });
 
 // Try to modify health
-var entity = world.CreateEntity();
-world.AddComponent(entity, new Player());
-world.AddComponent(entity, new Health(100, 100));
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();
+    cmd.AddComponent(entity, new Player());
+    cmd.AddComponent(entity, new Health(100, 100));
+}
 
 // This will be validated
 world.ReplaceComponent(entity, new Health(150, 100));  // Clamped to 100

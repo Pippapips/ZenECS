@@ -129,9 +129,9 @@ namespace ZenEcsCoreSamples.MultiWorld
             var kernel = new Kernel(null, logger: new EcsLogger());
             
             // Create multiple worlds with different names and tags
-            var world1 = kernel.CreateWorld(name: "GameWorld", tags: new[] { "game", "main" });
-            var world2 = kernel.CreateWorld(name: "UISimulation", tags: new[] { "ui", "overlay" });
-            var world3 = kernel.CreateWorld(name: "Background", tags: new[] { "background" });
+            var world1 = kernel.CreateWorld(null, name: "GameWorld", tags: new[] { "game", "main" });
+            var world2 = kernel.CreateWorld(null, name: "UISimulation", tags: new[] { "ui", "overlay" });
+            var world3 = kernel.CreateWorld(null, name: "Background", tags: new[] { "background" });
 
             // Set first world as current
             kernel.SetCurrentWorld(world1);

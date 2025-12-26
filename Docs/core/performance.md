@@ -50,7 +50,7 @@ foreach (var (entity, health) in world.Query<Health>()
 **Pre-allocate pools**:
 
 ```csharp
-var world = kernel.CreateWorld("GameWorld", new WorldConfig
+var world = kernel.CreateWorld(new WorldConfig
 {
     InitialPoolBuckets = new Dictionary<Type, int>
     {

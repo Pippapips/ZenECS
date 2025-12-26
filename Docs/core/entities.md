@@ -42,9 +42,9 @@ public readonly struct Entity
 Create → Use → (Recycle) → Destroy
 ```
 
-1. **Create**: `var entity = world.CreateEntity()`
+1. **Create**: `var entity = cmd.CreateEntity()` (using command buffer)
 2. **Use**: Attach components, query in systems
-3. **Destroy**: `world.DestroyEntity(entity)`
+3. **Destroy**: `cmd.DestroyEntity(entity)` (using command buffer)
 4. **Recycle**: ID becomes available for reuse
 
 ## API Surface
@@ -52,13 +52,11 @@ Create → Use → (Recycle) → Destroy
 ### Creating Entities
 
 ```csharp
-// Direct creation
-var entity = world.CreateEntity();
-
-// With command buffer (recommended)
+// Create entity using command buffer
+Entity entity;
 using (var cmd = world.BeginWrite())
 {
-    var entity = cmd.CreateEntity();
+    entity = cmd.CreateEntity();
 }
 ```
 
@@ -78,10 +76,11 @@ if (world.IsAlive(entity))
 ### Destroying Entities
 
 ```csharp
-// Direct destruction
-world.DestroyEntity(entity);
-
-// With command buffer (recommended)
+// Destroy entity using command buffer
+using (var cmd = world.BeginWrite())
+{
+    cmd.DestroyEntity(entity);
+}
 using (var cmd = world.BeginWrite())
 {
     cmd.DestroyEntity(entity);
@@ -95,34 +94,47 @@ using (var cmd = world.BeginWrite())
 ```csharp
 using ZenECS.Core;
 
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 
-// Create entity
-var entity = world.CreateEntity();
-
-// Add components
-world.AddComponent(entity, new Position(0, 0));
-world.AddComponent(entity, new Velocity(1, 0));
+// Create entity and add components using command buffer
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();
+    cmd.AddComponent(entity, new Position(0, 0));
+    cmd.AddComponent(entity, new Velocity(1, 0));
+}
 
 // Check if alive
 if (world.IsAlive(entity))
 {
-    var pos = world.Get<Position>(entity);
+    var pos = world.ReadComponent<Position>(entity);
 }
 
-// Destroy entity
-world.DestroyEntity(entity);
+// Destroy entity using command buffer
+using (var cmd = world.BeginWrite())
+{
+    cmd.DestroyEntity(entity);
+}
 ```
 
 ### Entity Recycling
 
 ```csharp
 // Create entity
-var entity1 = world.CreateEntity();  // ID: 0
-world.DestroyEntity(entity1);
+Entity entity1;
+using (var cmd = world.BeginWrite())
+{
+    entity1 = cmd.CreateEntity();  // ID: 0
+    cmd.DestroyEntity(entity1);
+}
 
 // Create another (may reuse ID)
-var entity2 = world.CreateEntity();  // ID: 0 (recycled)
+Entity entity2;
+using (var cmd = world.BeginWrite())
+{
+    entity2 = cmd.CreateEntity();  // ID: 0 (recycled)
+}
 
 // Generation prevents confusion
 if (entity1.Id == entity2.Id)

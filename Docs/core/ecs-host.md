@@ -22,7 +22,7 @@ Use `EcsDriver` for automatic lifecycle:
 ```csharp
 // EcsDriver handles kernel lifecycle
 var kernel = KernelLocator.Current;
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 ```
 
 ### Standalone .NET Hosting
@@ -31,7 +31,7 @@ Manual kernel management:
 
 ```csharp
 var kernel = new Kernel();
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 
 // Game loop
 while (running)
@@ -48,7 +48,7 @@ For game servers:
 
 ```csharp
 var kernel = new Kernel();
-var serverWorld = kernel.CreateWorld("Server", tags: new[] { "server" });
+var serverWorld = kernel.CreateWorld(null, "Server", tags: new[] { "server" });
 
 // Server loop
 while (serverRunning)
@@ -70,7 +70,7 @@ For unit tests:
 public void TestSystem()
 {
     var kernel = new Kernel();
-    var world = kernel.CreateWorld("Test");
+    var world = kernel.CreateWorld(null, "Test");
     
     // Test setup
     world.AddSystems([new TestSystem()]);
@@ -109,7 +109,7 @@ Manage kernel lifecycle:
 ```csharp
 // Initialize
 var kernel = new Kernel();
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 
 // Run
 kernel.PumpAndLateFrame(dt, fixedDelta, maxSubStepsPerFrame: 4);

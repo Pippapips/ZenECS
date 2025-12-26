@@ -165,7 +165,7 @@ public class GodotEcsDriver : Node
     public override void _Ready()
     {
         _kernel = new Kernel();
-        var world = _kernel.CreateWorld("GameWorld");
+        var world = _kernel.CreateWorld(null, "GameWorld");
         world.AddSystems([new MovementSystem()]);
     }
     

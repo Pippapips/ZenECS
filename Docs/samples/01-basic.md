@@ -97,7 +97,7 @@ using ZenECS.Core;
 var kernel = new Kernel();
 
 // Create world
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 
 // Register system
 world.AddSystems([new MovementSystem()]);
@@ -177,7 +177,7 @@ class Program
     {
         // Setup
         var kernel = new Kernel();
-        var world = kernel.CreateWorld("GameWorld");
+        var world = kernel.CreateWorld(null, "GameWorld");
         world.AddSystems([new MovementSystem()]);
         
         // Create entities

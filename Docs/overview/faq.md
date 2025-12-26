@@ -66,7 +66,11 @@ See [Installation Guide](../getting-started/install-upm.md) for details.
 ### How do I create an entity?
 
 ```csharp
-var entity = world.CreateEntity();
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();
+}
 ```
 
 Or with command buffer:
@@ -81,7 +85,10 @@ using (var cmd = world.BeginWrite())
 ### How do I add components?
 
 ```csharp
-world.AddComponent(entity, new Position(0, 0));
+using (var cmd = world.BeginWrite())
+{
+    cmd.AddComponent(entity, new Position(0, 0));
+}
 ```
 
 Or with command buffer:

@@ -87,7 +87,11 @@ public class PositionBinder : IBinder<Position>
 
 ```csharp
 var world = KernelLocator.CurrentWorld;
-var entity = world.CreateEntity();
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();
+}
 var link = gameObject.AddComponent<EntityLink>();
 link.Attach(world, entity);
 

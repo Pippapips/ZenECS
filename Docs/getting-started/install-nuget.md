@@ -76,7 +76,7 @@ class Program
     static void Main()
     {
         var kernel = new Kernel();
-        var world = kernel.CreateWorld("TestWorld");
+        var world = kernel.CreateWorld(null, "TestWorld");
         Console.WriteLine("ZenECS Core: OK");
     }
 }

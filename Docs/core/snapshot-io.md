@@ -72,12 +72,16 @@ world.Load(stream, migrations: myMigrations);
 ```csharp
 using ZenECS.Core;
 
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 
-// Create entities
-var player = world.CreateEntity();
-world.AddComponent(player, new Position(0, 0));
-world.AddComponent(player, new Health(100, 100));
+// Create entities using command buffer
+Entity player;
+using (var cmd = world.BeginWrite())
+{
+    player = cmd.CreateEntity();
+    cmd.AddComponent(player, new Position(0, 0));
+    cmd.AddComponent(player, new Health(100, 100));
+}
 
 // Save
 using (var stream = File.Create("save.dat"))

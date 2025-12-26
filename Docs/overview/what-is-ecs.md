@@ -59,7 +59,12 @@ public class MovementSystem : ISystem
 **Entities** are unique identifiers that represent game objects. They have no data or behavior—they're just IDs.
 
 ```csharp
-var entity = world.CreateEntity();  // Just an ID
+// Create entity using command buffer
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();  // Just an ID
+}
 ```
 
 #### 2. Components
@@ -77,9 +82,12 @@ public struct Velocity
     public float X, Y, Z;
 }
 
-// Attach components to entities
-world.AddComponent(entity, new Position(0, 0, 0));
-world.AddComponent(entity, new Velocity(1, 0, 0));
+// Attach components to entities using command buffer
+using (var cmd = world.BeginWrite())
+{
+    cmd.AddComponent(entity, new Position(0, 0, 0));
+    cmd.AddComponent(entity, new Velocity(1, 0, 0));
+}
 ```
 
 #### 3. Systems
@@ -133,18 +141,26 @@ public class MovementSystem : ISystem
 
 **World**: A container for entities, components, and systems
 ```csharp
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 ```
 
 **Entity**: A unique identifier
 ```csharp
-var entity = world.CreateEntity();
+// Create entity using command buffer
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();
+}
 ```
 
 **Component**: Pure data structure
 ```csharp
 public struct Position { public float X, Y, Z; }
-world.AddComponent(entity, new Position(0, 0, 0));
+using (var cmd = world.BeginWrite())
+{
+    cmd.AddComponent(entity, new Position(0, 0, 0));
+}
 ```
 
 **System**: Logic that processes entities
@@ -173,7 +189,7 @@ using ZenECS.Core;
 
 // 1. Create world
 var kernel = new Kernel();
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 
 // 2. Define components
 public struct Position { public float X, Y; }
@@ -237,12 +253,19 @@ public class HealthSystem : ISystem
         {
             if (world.HasComponent<Health>(msg.Target))
             {
-                ref var health = ref world.Ref<Health>(msg.Target);
-                health.Current -= msg.Amount;
+                var health = world.ReadComponent<Health>(msg.Target);
+                var newHealth = new Health(health.Current - msg.Amount, health.Max);
                 
-                if (health.Current <= 0)
+                using (var cmd = world.BeginWrite())
                 {
-                    world.DestroyEntity(msg.Target);
+                    if (newHealth.Current <= 0)
+                    {
+                        cmd.DestroyEntity(msg.Target);
+                    }
+                    else
+                    {
+                        cmd.ReplaceComponent(msg.Target, newHealth);
+                    }
                 }
             }
         }

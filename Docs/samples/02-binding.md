@@ -54,8 +54,12 @@ using ZenECS.Core;
 
 // Create entity
 var world = KernelLocator.CurrentWorld;
-var entity = world.CreateEntity();
-world.AddComponent(entity, new Position(0, 0, 0));
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();
+    cmd.AddComponent(entity, new Position(0, 0, 0));
+}
 
 // Link GameObject
 var link = gameObject.AddComponent<EntityLink>();
@@ -93,11 +97,14 @@ public class BindingExample : MonoBehaviour
     {
         // Setup
         var kernel = KernelLocator.Current;
-        _world = kernel.CreateWorld("GameWorld", setAsCurrent: true);
+        _world = kernel.CreateWorld(null, "GameWorld", setAsCurrent: true);
         
         // Create entity
-        _entity = _world.CreateEntity();
-        _world.AddComponent(_entity, new Position(0, 0, 0));
+        using (var cmd = _world.BeginWrite())
+        {
+            _entity = cmd.CreateEntity();
+            cmd.AddComponent(_entity, new Position(0, 0, 0));
+        }
         
         // Link GameObject
         var link = gameObject.AddComponent<EntityLink>();

@@ -107,7 +107,7 @@ You can also control frames manually without using `EcsDriver`:
 
 ```csharp
 var kernel = new Kernel();
-var world = kernel.CreateWorld();
+var world = kernel.CreateWorld(null);
 
 // Manual frame control
 kernel.BeginFrame(Time.deltaTime);

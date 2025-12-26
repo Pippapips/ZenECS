@@ -94,7 +94,7 @@ public class ZenECSTest : MonoBehaviour
     {
         // Test Core
         var kernel = new Kernel();
-        var world = kernel.CreateWorld("TestWorld");
+        var world = kernel.CreateWorld(null, "TestWorld");
         Debug.Log("ZenECS Core: OK");
         
         // Test Adapter (if installed)

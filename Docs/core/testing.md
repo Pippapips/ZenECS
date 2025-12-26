@@ -23,13 +23,17 @@ public void MovementSystem_MovesEntities()
 {
     // Arrange
     var kernel = new Kernel();
-    var world = kernel.CreateWorld("Test");
+    var world = kernel.CreateWorld(null, "Test");
     var system = new MovementSystem();
     world.AddSystems([system]);
     
-    var entity = world.CreateEntity();
-    world.AddComponent(entity, new Position(0, 0));
-    world.AddComponent(entity, new Velocity(1, 0));
+    Entity entity;
+    using (var cmd = world.BeginWrite())
+    {
+        entity = cmd.CreateEntity();
+        cmd.AddComponent(entity, new Position(0, 0));
+        cmd.AddComponent(entity, new Velocity(1, 0));
+    }
     
     // Act
     system.Run(world, 1f);
@@ -49,11 +53,12 @@ public void MovementSystem_MovesEntities()
 [Test]
 public void Component_AddRemove()
 {
-    var world = kernel.CreateWorld("Test");
-    var entity = world.CreateEntity();
-    
-    // Add component
-    world.AddComponent(entity, new Position(0, 0));
+    var world = kernel.CreateWorld(null, "Test");
+    Entity entity;
+    using (var cmd = world.BeginWrite())
+    {
+        entity = cmd.CreateEntity();
+        cmd.AddComponent(entity, new Position(0, 0));
     Assert.IsTrue(world.HasComponent<Position>(entity));
     
     // Remove component
@@ -71,13 +76,17 @@ public void Component_AddRemove()
 public void World_CompleteGameplayLoop()
 {
     var kernel = new Kernel();
-    var world = kernel.CreateWorld("Test");
+    var world = kernel.CreateWorld(null, "Test");
     
     // Setup
     world.AddSystems([new MovementSystem(), new HealthSystem()]);
-    var player = world.CreateEntity();
-    world.AddComponent(player, new Position(0, 0));
-    world.AddComponent(player, new Health(100, 100));
+    Entity player;
+    using (var cmd = world.BeginWrite())
+    {
+        player = cmd.CreateEntity();
+        cmd.AddComponent(player, new Position(0, 0));
+        cmd.AddComponent(player, new Health(100, 100));
+    }
     
     // Execute
     kernel.PumpAndLateFrame(1f, 1f / 60f, maxSubStepsPerFrame: 4);

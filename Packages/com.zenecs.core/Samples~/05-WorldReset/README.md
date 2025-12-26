@@ -47,7 +47,7 @@ Key excerpts:
 
 ```csharp
 var kernel = new Kernel();
-var world = kernel.CreateWorld();
+var world = kernel.CreateWorld(null);
 kernel.SetCurrentWorld(world);
 
 // Seed initial entities

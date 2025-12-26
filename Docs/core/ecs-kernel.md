@@ -35,7 +35,7 @@ var kernel = new Kernel(options);
 
 ```csharp
 // Create world
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 
 // Find world
 var world = kernel.FindWorld("GameWorld");
@@ -113,7 +113,7 @@ using ZenECS.Core;
 var kernel = new Kernel();
 
 // Create world
-var world = kernel.CreateWorld("GameWorld", setAsCurrent: true);
+var world = kernel.CreateWorld(null, "GameWorld", setAsCurrent: true);
 
 // Register systems
 world.AddSystems([new MovementSystem()]);
@@ -136,9 +136,9 @@ kernel.Dispose();
 var kernel = new Kernel();
 
 // Create multiple worlds
-var gameWorld = kernel.CreateWorld("Game");
-var uiWorld = kernel.CreateWorld("UI");
-var serverWorld = kernel.CreateWorld("Server", tags: new[] { "server" });
+var gameWorld = kernel.CreateWorld(null, "Game");
+var uiWorld = kernel.CreateWorld(null, "UI");
+var serverWorld = kernel.CreateWorld(null, "Server", tags: new[] { "server" });
 
 // Step all worlds
 kernel.PumpAndLateFrame(dt, fixedDelta, maxSubStepsPerFrame: 4);

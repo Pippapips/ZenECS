@@ -11,7 +11,11 @@ Terminology reference for ZenECS concepts and APIs.
 A unique identifier representing a game object. Entities have no data or behavior—they're just IDs that can have components attached.
 
 ```csharp
-var entity = world.CreateEntity();  // Just an ID
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();  // Just an ID
+}
 ```
 
 **Related**: [Entities](../core/entities.md)
@@ -44,7 +48,7 @@ public class MovementSystem : ISystem
 A container for entities, components, and systems. Represents an isolated simulation space.
 
 ```csharp
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 ```
 
 **Related**: [World](../core/world.md)

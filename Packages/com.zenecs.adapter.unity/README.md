@@ -84,7 +84,7 @@ public class Bootstrap : MonoBehaviour
     {
         // Kernel is automatically created if EcsDriver exists in the scene
         var kernel = KernelLocator.Current;
-        var world = kernel.CreateWorld("GameWorld", setAsCurrent: true);
+        var world = kernel.CreateWorld(null, "GameWorld", setAsCurrent: true);
         
         // Register systems
         world.AddSystems([new MovementSystem()]);
@@ -100,13 +100,15 @@ using ZenECS.Adapter.Unity.Linking;
 using ZenECS.Core;
 
 var world = KernelLocator.CurrentWorld;
-var entity = world.CreateEntity();
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();
+    cmd.AddComponent(entity, new Position(0, 0, 0));
+}
 
 // Link GameObject to Entity
 var link = gameObject.CreateEntityLink(world, entity);
-
-// Add components
-world.AddComponent(entity, new Position(0, 0, 0));
 ```
 
 ### 3. Spawning Entities with EntityBlueprint

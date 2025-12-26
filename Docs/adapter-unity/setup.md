@@ -79,7 +79,7 @@ public class GameBootstrap : MonoBehaviour
     private void Awake()
     {
         var kernel = KernelLocator.Current;
-        var world = kernel.CreateWorld("GameWorld", setAsCurrent: true);
+        var world = kernel.CreateWorld(null, "GameWorld", setAsCurrent: true);
         
         // Register systems
         world.AddSystems([

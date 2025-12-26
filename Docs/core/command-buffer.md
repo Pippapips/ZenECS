@@ -91,7 +91,7 @@ cmd.AddOrReplaceComponent(entity, new Position(2, 2));
 ```csharp
 using ZenECS.Core;
 
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 
 // Create entities with command buffer
 using (var cmd = world.BeginWrite())

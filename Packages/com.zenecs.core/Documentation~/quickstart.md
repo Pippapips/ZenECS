@@ -21,7 +21,7 @@ using ZenECS.Core;
 var kernel = new Kernel();
 
 // Create a world
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 ```
 
 **In Unity**, use `EcsDriver`:
@@ -32,7 +32,7 @@ using ZenECS.Core;
 
 // Kernel is automatically created by EcsDriver
 var kernel = KernelLocator.Current;
-var world = kernel.CreateWorld("GameWorld", setAsCurrent: true);
+var world = kernel.CreateWorld(null, "GameWorld", setAsCurrent: true);
 ```
 
 ## Define Components
@@ -73,12 +73,14 @@ public struct Velocity
 Entities are unique IDs. Attach components to give them data:
 
 ```csharp
-// Create entity
-var entity = world.CreateEntity();
-
-// Add components
-world.AddComponent(entity, new Position(0, 0));
-world.AddComponent(entity, new Velocity(1, 0));
+// Create entity and add components using command buffer
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();
+    cmd.AddComponent(entity, new Position(0, 0));
+    cmd.AddComponent(entity, new Velocity(1, 0));
+}
 ```
 
 **Using Command Buffer** (recommended for structural changes):
@@ -162,7 +164,7 @@ using ZenECS.Core.Systems;
 
 // 1. Create kernel and world
 var kernel = new Kernel();
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 
 // 2. Define components
 public struct Position { public float X, Y; }

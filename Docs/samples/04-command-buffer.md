@@ -133,7 +133,7 @@ public sealed class CleanupSystem : ISystem
 }
 
 // Usage
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 world.AddSystems([new SpawnSystem(), new CleanupSystem()]);
 
 // Request spawn

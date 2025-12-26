@@ -50,7 +50,7 @@ Common issues and solutions for ZenECS Unity Adapter.
    ```csharp
    var world = KernelLocator.CurrentWorld;
    if (world == null)
-       world = kernel.CreateWorld("GameWorld", setAsCurrent: true);
+       world = kernel.CreateWorld(null, "GameWorld", setAsCurrent: true);
    ```
 2. Check shared context resolver:
    ```csharp
@@ -125,7 +125,10 @@ Common issues and solutions for ZenECS Unity Adapter.
 **Solutions:**
 1. Destroy entities properly:
    ```csharp
-   world.DestroyEntity(entity);
+   using (var cmd = world.BeginWrite())
+   {
+       cmd.DestroyEntity(entity);
+   }
    ```
 2. Unregister binders:
    ```csharp

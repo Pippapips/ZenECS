@@ -98,7 +98,7 @@ public sealed class RenderSystem : ISystem
 }
 
 // Register systems (order doesn't matter, attributes control execution)
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 world.AddSystems([
     new RenderSystem(),    // Registered first
     new InputSystem(),      // Registered second

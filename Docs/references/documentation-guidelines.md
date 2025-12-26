@@ -191,8 +191,12 @@ All public APIs must have XML documentation comments:
 /// </remarks>
 /// <example>
 /// <code>
-/// var entity = world.CreateEntity();
-/// world.AddComponent(entity, new Position(0, 0));
+/// Entity entity;
+/// using (var cmd = world.BeginWrite())
+/// {
+///     entity = cmd.CreateEntity();
+///     cmd.AddComponent(entity, new Position(0, 0));
+/// }
 /// </code>
 /// </example>
 public Entity CreateEntity(IWorld world) { }
@@ -235,10 +239,14 @@ using ZenECS.Core;
 var world = new World("GameWorld");
 world.AddSystems([new MovementSystem()]);
 
-// Create an entity with components
-var entity = world.CreateEntity();
-world.AddComponent(entity, new Position(0, 0));
-world.AddComponent(entity, new Velocity(1, 0));
+// Create an entity with components using command buffer
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();
+    cmd.AddComponent(entity, new Position(0, 0));
+    cmd.AddComponent(entity, new Velocity(1, 0));
+}
 
 // Run the simulation
 world.Step(0.016f); // 60 FPS

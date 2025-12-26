@@ -62,10 +62,11 @@ World
 ### Adding Components
 
 ```csharp
-// Add component
-world.AddComponent(entity, new Position(0, 0, 0));
-
-// With command buffer (recommended)
+// Add component using command buffer
+using (var cmd = world.BeginWrite())
+{
+    cmd.AddComponent(entity, new Position(0, 0, 0));
+}
 using (var cmd = world.BeginWrite())
 {
     cmd.AddComponent(entity, new Position(0, 0, 0));
@@ -130,18 +131,20 @@ if (world.HasComponent<Position>(entity) &&
 ```csharp
 using ZenECS.Core;
 
-var world = kernel.CreateWorld("GameWorld");
-var entity = world.CreateEntity();
-
-// Add components
-world.AddComponent(entity, new Position(0, 0, 0));
-world.AddComponent(entity, new Velocity(1, 0, 0));
-world.AddComponent(entity, new Health(100, 100));
+var world = kernel.CreateWorld(null, "GameWorld");
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();
+    cmd.AddComponent(entity, new Position(0, 0, 0));
+    cmd.AddComponent(entity, new Velocity(1, 0, 0));
+    cmd.AddComponent(entity, new Health(100, 100));
+}
 
 // Read components
-var pos = world.Get<Position>(entity);
-var vel = world.Get<Velocity>(entity);
-var health = world.Get<Health>(entity);
+var pos = world.ReadComponent<Position>(entity);
+var vel = world.ReadComponent<Velocity>(entity);
+var health = world.ReadComponent<Health>(entity);
 
 // Modify components
 world.ReplaceComponent(entity, new Position(1, 0, 0));

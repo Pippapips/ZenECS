@@ -42,7 +42,7 @@ namespace ZenEcsCoreSamples.WorldReset
             Console.WriteLine("=== ZenECS Core Sample - World Reset (Kernel) ===");
 
             var kernel = new Kernel();
-            var world = kernel.CreateWorld();
+            var world = kernel.CreateWorld(null);
             kernel.SetCurrentWorld(world);
             
             Console.WriteLine("=== World.Reset demo (keepCapacity vs hard reset) ===");

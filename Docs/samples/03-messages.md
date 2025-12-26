@@ -127,11 +127,15 @@ public sealed class HealthSystem : ISystem
 }
 
 // Usage
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 world.AddSystems([new HealthSystem()]);
 
-var entity = world.CreateEntity();
-world.AddComponent(entity, new Health { Current = 100, Max = 100 });
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();
+    cmd.AddComponent(entity, new Health { Current = 100, Max = 100 });
+}
 
 // Publish damage
 world.Publish(new DamageMessage { Target = entity, Amount = 25 });

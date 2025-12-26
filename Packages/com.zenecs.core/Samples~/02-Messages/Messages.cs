@@ -111,7 +111,7 @@ namespace ZenEcsCoreSamples.Messages
             Console.WriteLine("=== ZenECS Core Sample - View→Data via MessageBus (Kernel) ===");
 
             var kernel = new Kernel();
-            var world = kernel.CreateWorld();
+            var world = kernel.CreateWorld(null);
             kernel.SetCurrentWorld(world);
 
             world.AddSystems([

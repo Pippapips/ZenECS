@@ -110,7 +110,7 @@ var kernel = new Kernel(new KernelOptions
 
 ```csharp
 // 월드 생성
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 
 // 현재 월드 설정
 kernel.SetCurrentWorld(world);
@@ -122,7 +122,11 @@ kernel.SetCurrentWorld(world);
 
 ```csharp
 // 엔티티 생성
-var player = world.CreateEntity();
+Entity player;
+using (var cmd = world.BeginWrite())
+{
+    player = cmd.CreateEntity();
+}
 
 // 엔티티가 살아있는지 확인
 if (world.IsAlive(player))
@@ -131,7 +135,10 @@ if (world.IsAlive(player))
 }
 
 // 엔티티 삭제
-world.DestroyEntity(player);
+using (var cmd = world.BeginWrite())
+{
+    cmd.DestroyEntity(player);
+}
 ```
 
 ### 4. Component (컴포넌트)
@@ -292,7 +299,7 @@ class Program
 
         // 1. 커널 및 월드 생성
         var kernel = new Kernel();
-        var world = kernel.CreateWorld("GameWorld");
+        var world = kernel.CreateWorld(null, "GameWorld");
         kernel.SetCurrentWorld(world);
 
         // 2. 시스템 등록
@@ -302,13 +309,17 @@ class Program
         ]);
 
         // 3. 엔티티 및 컴포넌트 생성
-        var entity1 = world.CreateEntity();
-        world.AddComponent(entity1, new Position(0, 0));
-        world.AddComponent(entity1, new Velocity(1, 0)); // X축으로 초당 1 이동
-
-        var entity2 = world.CreateEntity();
-        world.AddComponent(entity2, new Position(2, 1));
-        world.AddComponent(entity2, new Velocity(0, -0.5f)); // Y축으로 초당 -0.5 이동
+        Entity entity1, entity2;
+        using (var cmd = world.BeginWrite())
+        {
+            entity1 = cmd.CreateEntity();
+            cmd.AddComponent(entity1, new Position(0, 0));
+            cmd.AddComponent(entity1, new Velocity(1, 0)); // X축으로 초당 1 이동
+            
+            entity2 = cmd.CreateEntity();
+            cmd.AddComponent(entity2, new Position(2, 1));
+            cmd.AddComponent(entity2, new Velocity(0, -0.5f)); // Y축으로 초당 -0.5 이동
+        }
 
         // 4. 게임 루프
         const float fixedDelta = 1f / 60f; // 60Hz 시뮬레이션
@@ -408,13 +419,19 @@ public sealed class DamageSystem : IFixedRunSystem
             if (world.IsAlive(message.Target) && 
                 world.HasComponent<Health>(message.Target))
             {
-                var currentHealth = world.Get<Health>(message.Target);
+                var currentHealth = world.ReadComponent<Health>(message.Target);
                 var newHealth = currentHealth.TakeDamage(message.Amount);
-                world.SetComponent(message.Target, newHealth);
+                using (var cmd = world.BeginWrite())
+                {
+                    cmd.ReplaceComponent(message.Target, newHealth);
+                }
 
                 if (newHealth.Current <= 0)
                 {
-                    world.DestroyEntity(message.Target);
+                    using (var cmd = world.BeginWrite())
+                    {
+                        cmd.DestroyEntity(message.Target);
+                    }
                     Console.WriteLine($"Entity {message.Target.Id} destroyed!");
                 }
             }
@@ -423,9 +440,16 @@ public sealed class DamageSystem : IFixedRunSystem
 }
 
 // 사용 예시
-var player = world.CreateEntity();
-world.AddComponent(player, new Health(100, 100));
-world.AddComponent(player, new Player());
+Entity player;
+using (var cmd = world.BeginWrite())
+{
+    player = cmd.CreateEntity();
+}
+using (var cmd = world.BeginWrite())
+{
+    cmd.AddComponent(player, new Health(100, 100));
+    cmd.AddComponent(player, new Player());
+}
 
 // 데미지 주기
 world.Publish(new DamageMessage(player, 25));
@@ -504,7 +528,7 @@ public sealed class MoveSystem : IFixedRunSystem
 world.Reset();
 
 // 또는 완전히 새로운 월드 생성
-var newWorld = kernel.CreateWorld("NewGameWorld");
+var newWorld = kernel.CreateWorld(null, "NewGameWorld");
 ```
 
 ### 3. 스냅샷 저장/로드
@@ -613,7 +637,7 @@ public sealed class EverythingSystem : IFixedRunSystem
 // 커널과 월드는 사용 후 반드시 Dispose
 using (var kernel = new Kernel())
 {
-    var world = kernel.CreateWorld("Test");
+    var world = kernel.CreateWorld(null, "Test");
     // ... 작업 ...
 } // 자동으로 정리됨
 ```
@@ -636,7 +660,10 @@ ref var pos = ref world.Ref<Position>(entity);
 pos = new Position(pos.X + 1, pos.Y);
 
 // 또는
-world.SetComponent(entity, new Position(pos.X + 1, pos.Y));
+using (var cmd = world.BeginWrite())
+{
+    cmd.ReplaceComponent(entity, new Position(pos.X + 1, pos.Y));
+}
 ```
 
 ### Q: 시스템이 실행되지 않습니다.

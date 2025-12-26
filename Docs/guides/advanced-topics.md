@@ -66,7 +66,7 @@ foreach (var (entity, health) in world.Query<Health>())
 **Pre-allocate pools** for known component types:
 
 ```csharp
-var world = kernel.CreateWorld("GameWorld", new WorldConfig
+var world = kernel.CreateWorld(new WorldConfig
 {
     InitialPoolBuckets = new Dictionary<Type, int>
     {
@@ -95,8 +95,8 @@ public class MovementSystem : ISystem { }
 var kernel = new Kernel();
 
 // Create separate worlds for each player
-var player1World = kernel.CreateWorld("Player1", tags: new[] { "player1" });
-var player2World = kernel.CreateWorld("Player2", tags: new[] { "player2" });
+var player1World = kernel.CreateWorld(null, "Player1", tags: new[] { "player1" });
+var player2World = kernel.CreateWorld(null, "Player2", tags: new[] { "player2" });
 
 // Step worlds independently
 kernel.PumpAndLateFrame(dt, fixedDelta, maxSubStepsPerFrame: 4);
@@ -106,10 +106,10 @@ kernel.PumpAndLateFrame(dt, fixedDelta, maxSubStepsPerFrame: 4);
 
 ```csharp
 // Server world (authoritative)
-var serverWorld = kernel.CreateWorld("Server", tags: new[] { "server" });
+var serverWorld = kernel.CreateWorld(null, "Server", tags: new[] { "server" });
 
 // Client world (prediction)
-var clientWorld = kernel.CreateWorld("Client", tags: new[] { "client" });
+var clientWorld = kernel.CreateWorld(null, "Client", tags: new[] { "client" });
 
 // Sync server state to client
 SyncWorlds(serverWorld, clientWorld);
@@ -119,10 +119,10 @@ SyncWorlds(serverWorld, clientWorld);
 
 ```csharp
 // Menu world
-var menuWorld = kernel.CreateWorld("Menu");
+var menuWorld = kernel.CreateWorld(null, "Menu");
 
 // Gameplay world
-var gameplayWorld = kernel.CreateWorld("Gameplay");
+var gameplayWorld = kernel.CreateWorld(null, "Gameplay");
 
 // Switch between worlds
 kernel.SetCurrentWorld(menuWorld);  // Show menu
@@ -260,9 +260,13 @@ public void MovementSystem_MovesEntities()
     // Arrange
     var world = new World(/* ... */);
     var system = new MovementSystem();
-    var entity = world.CreateEntity();
-    world.AddComponent(entity, new Position(0, 0));
-    world.AddComponent(entity, new Velocity(1, 0));
+    Entity entity;
+    using (var cmd = world.BeginWrite())
+    {
+        entity = cmd.CreateEntity();
+        cmd.AddComponent(entity, new Position(0, 0));
+        cmd.AddComponent(entity, new Velocity(1, 0));
+    }
     
     // Act
     system.Run(world, 1f);
@@ -283,13 +287,17 @@ Test full world scenarios:
 public void World_CompleteGameplayLoop()
 {
     var kernel = new Kernel();
-    var world = kernel.CreateWorld("Test");
+    var world = kernel.CreateWorld(null, "Test");
     
     // Setup
     world.AddSystems([new MovementSystem(), new HealthSystem()]);
-    var player = world.CreateEntity();
-    world.AddComponent(player, new Position(0, 0));
-    world.AddComponent(player, new Health(100));
+    Entity player;
+    using (var cmd = world.BeginWrite())
+    {
+        player = cmd.CreateEntity();
+        cmd.AddComponent(player, new Position(0, 0));
+        cmd.AddComponent(player, new Health(100));
+    }
     
     // Execute
     kernel.PumpAndLateFrame(1f, 1f / 60f, maxSubStepsPerFrame: 4);

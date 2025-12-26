@@ -33,8 +33,12 @@ public void RestartGame()
     world.Reset();
     
     // Reinitialize
-    var player = world.CreateEntity();
-    world.AddComponent(player, new Position(0, 0));
+    Entity player;
+    using (var cmd = world.BeginWrite())
+    {
+        player = cmd.CreateEntity();
+        cmd.AddComponent(player, new Position(0, 0));
+    }
 }
 ```
 

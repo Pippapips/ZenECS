@@ -18,8 +18,12 @@ ZenECS prioritizes readable, maintainable code over clever optimizations.
 
 ```csharp
 // Clear and explicit
-var entity = world.CreateEntity();
-world.AddComponent(entity, new Position(0, 0));
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();
+    cmd.AddComponent(entity, new Position(0, 0));
+}
 
 // Not: world << Position(0, 0)  // Too clever
 ```

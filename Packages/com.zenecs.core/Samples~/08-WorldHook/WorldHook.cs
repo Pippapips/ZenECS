@@ -210,7 +210,7 @@ namespace ZenEcsCoreSamples.WorldHook
             Console.WriteLine("=== ZenECS Core Sample - World Hook (Kernel) ===");
 
             var kernel = new Kernel(null, logger: new EcsLogger());
-            var world = kernel.CreateWorld();
+            var world = kernel.CreateWorld(null);
             kernel.SetCurrentWorld(world);
 
             world.AddSystems([

@@ -56,7 +56,7 @@ world.TraceAllMessages(enabled: true);
 ### Basic Tracing
 
 ```csharp
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 
 // Enable tracing
 world.TraceSystem<MovementSystem>(enabled: true);

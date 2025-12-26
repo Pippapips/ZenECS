@@ -102,7 +102,7 @@ public sealed class PrintPositionsSystem : ISystem
 
 ```csharp
 var kernel = new Kernel(null, logger: new EcsLogger());
-var world = kernel.CreateWorld();
+var world = kernel.CreateWorld(null);
 kernel.SetCurrentWorld(world);
 
 world.AddSystems([

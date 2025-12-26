@@ -198,7 +198,7 @@ public class ZenjectSample : MonoBehaviour
 
 ```csharp
 var kernel = KernelLocator.Current;
-var world = kernel.CreateWorld("GameWorld", setAsCurrent: true);
+var world = kernel.CreateWorld(null, "GameWorld", setAsCurrent: true);
 
 // SystemPresetResolver is automatically injected via Zenject
 var presetResolver = ZenEcsUnityBridge.SystemPresetResolver;

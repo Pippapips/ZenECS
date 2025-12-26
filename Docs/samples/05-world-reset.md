@@ -33,12 +33,16 @@ Reset clears all entities and components but keeps systems:
 
 ```csharp
 // Setup world with systems
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 world.AddSystems([new MovementSystem(), new HealthSystem()]);
 
 // Create entities
-var player = world.CreateEntity();
-world.AddComponent(player, new Position(0, 0));
+Entity player;
+using (var cmd = world.BeginWrite())
+{
+    player = cmd.CreateEntity();
+    cmd.AddComponent(player, new Position(0, 0));
+}
 
 // Reset world (entities destroyed, systems remain)
 world.Reset();
@@ -64,7 +68,7 @@ public sealed class GameSystem : ISystem
 
 // Setup
 var kernel = new Kernel();
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 world.AddSystems([new GameSystem()]);
 
 // Game loop
@@ -97,9 +101,13 @@ public void RestartGame()
     world.Reset();
     
     // Reinitialize game state
-    var player = world.CreateEntity();
-    world.AddComponent(player, new Position(0, 0));
-    world.AddComponent(player, new Health(100, 100));
+    Entity player;
+    using (var cmd = world.BeginWrite())
+    {
+        player = cmd.CreateEntity();
+        cmd.AddComponent(player, new Position(0, 0));
+        cmd.AddComponent(player, new Health(100, 100));
+    }
 }
 ```
 

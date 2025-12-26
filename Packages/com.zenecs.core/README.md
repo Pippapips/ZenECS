@@ -112,7 +112,7 @@ using ZenECS.Core.Systems;
 
 // 1. Create kernel and world
 var kernel = new Kernel();
-var world = kernel.CreateWorld("Game");
+var world = kernel.CreateWorld(null, "Game");
 kernel.SetCurrentWorld(world);
 
 // 2. Define components
@@ -282,8 +282,8 @@ var kernel = new Kernel(new KernelOptions
 });
 
 // Create worlds
-var world1 = kernel.CreateWorld("World1");
-var world2 = kernel.CreateWorld("World2");
+var world1 = kernel.CreateWorld(null, "World1");
+var world2 = kernel.CreateWorld(null, "World2");
 
 // Set current world
 kernel.SetCurrentWorld(world1);
@@ -353,24 +353,28 @@ Configuration options for the kernel.
 
 ```csharp
 // Create world (via kernel)
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 
-// Create entity
-var entity = world.CreateEntity();
+// Create entity and add components using command buffer
+using (var cmd = world.BeginWrite())
+{
+    var entity = cmd.CreateEntity();
+    cmd.AddComponent(entity, new Position { X = 0, Y = 0 });
+    cmd.AddComponent(entity, new Velocity { X = 1, Y = 0 });
+}
 
-// Add components
-world.AddComponent(entity, new Position { X = 0, Y = 0 });
-world.AddComponent(entity, new Velocity { X = 1, Y = 0 });
-
-// Read/write components
-ref var pos = ref world.Ref<Position>(entity);  // Modify by reference
-var vel = world.Get<Velocity>(entity);          // Read by value
+// Read components
+var pos = world.ReadComponent<Position>(entity);  // Read by value
+var vel = world.ReadComponent<Velocity>(entity);   // Read by value
 
 // Check component
 bool hasPos = world.HasComponent<Position>(entity);
 
-// Destroy entity
-world.DestroyEntity(entity);
+// Destroy entity using command buffer
+using (var cmd = world.BeginWrite())
+{
+    cmd.DestroyEntity(entity);
+}
 ```
 
 **Aggregated APIs:**
@@ -417,9 +421,13 @@ static (int id, int gen) Unpack(ulong handle);
 **Usage Example:**
 
 ```csharp
-// Create entities
-var player = world.CreateEntity();
-var enemy = world.CreateEntity();
+// Create entities using command buffer
+Entity player, enemy;
+using (var cmd = world.BeginWrite())
+{
+    player = cmd.CreateEntity();
+    enemy = cmd.CreateEntity();
+}
 
 // Check if entity is alive
 if (world.IsAlive(player))
@@ -443,7 +451,7 @@ Stable, value-type identifier for a `IWorld`. Wraps a `Guid` to provide strong t
 **Usage:**
 ```csharp
 var worldId = new WorldId(Guid.NewGuid());
-var world = kernel.CreateWorld(presetId: worldId);
+var world = kernel.CreateWorld(null, presetId: worldId);
 ```
 
 ### WorldHandle
@@ -500,24 +508,26 @@ public readonly struct Paused { }
 **Component Operations:**
 
 ```csharp
-// Add
-world.AddComponent(entity, new Position(0, 0));
+// Add (using command buffer)
+using (var cmd = world.BeginWrite())
+{
+    cmd.AddComponent(entity, new Position(0, 0));
+}
 
 // Read (by value)
-var pos = world.Get<Position>(entity);
-
-// Read (read-only)
 var pos = world.ReadComponent<Position>(entity);
 
-// Modify (by reference)
-ref var pos = ref world.Ref<Position>(entity);
-pos = new Position(pos.X + 1, pos.Y);
+// Replace (using command buffer)
+using (var cmd = world.BeginWrite())
+{
+    cmd.ReplaceComponent(entity, new Position(10, 20));
+}
 
-// Set
-world.SetComponent(entity, new Position(10, 20));
-
-// Remove
-world.RemoveComponent<Velocity>(entity);
+// Remove (using command buffer)
+using (var cmd = world.BeginWrite())
+{
+    cmd.RemoveComponent<Velocity>(entity);
+}
 
 // Check
 bool hasPos = world.HasComponent<Position>(entity);
@@ -812,9 +822,12 @@ var subscription = world.Subscribe<Damage>(damage =>
     // Handle damage
     if (world.IsAlive(damage.Target) && world.HasComponent<Health>(damage.Target))
     {
-        var health = world.Get<Health>(damage.Target);
+        var health = world.ReadComponent<Health>(damage.Target);
         var newHealth = new Health(health.Value - damage.Amount);
-        world.SetComponent(damage.Target, newHealth);
+        using (var cmd = world.BeginWrite())
+        {
+            cmd.ReplaceComponent(damage.Target, newHealth);
+        }
     }
 });
 
@@ -915,10 +928,16 @@ world.Hooks.AddValidator<Health>(health =>
 
 ```csharp
 // Attempt to set invalid value (validation fails)
-world.SetComponent(entity, new Health { Value = -10 }); // Throws exception on validation failure
+using (var cmd = world.BeginWrite())
+{
+    cmd.ReplaceComponent(entity, new Health { Value = -10 }); // Throws exception on validation failure
+}
 
 // Attempt to set component without permission
-world.AddComponent(entity, new GodMode()); // Throws exception on permission check failure
+using (var cmd = world.BeginWrite())
+{
+    cmd.AddComponent(entity, new GodMode()); // Throws exception on permission check failure
+}
 ```
 
 **IWorldHookApi:** Write hooks and validators for a world.
@@ -971,11 +990,13 @@ public class V1ToV2Migration : IPostLoadMigration
     public void Migrate(IWorld world)
     {
         // Convert old version data to new version
-        foreach (var entity in world.Query<OldComponent>())
+        using (var cmd = world.BeginWrite())
         {
-            var old = world.Get<OldComponent>(entity);
-            world.RemoveComponent<OldComponent>(entity);
-            world.AddComponent(entity, new NewComponent(old.Data));
+            foreach (var (entity, old) in world.Query<OldComponent>())
+            {
+                cmd.RemoveComponent<OldComponent>(entity);
+                cmd.AddComponent(entity, new NewComponent(old.Data));
+            }
         }
     }
 }

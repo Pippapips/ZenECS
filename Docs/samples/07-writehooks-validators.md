@@ -62,7 +62,7 @@ world.Hooks.AddValidator<Health>(health =>
 ```csharp
 using ZenECS.Core;
 
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 
 // Permission hook: Only admins can modify admin components
 world.Hooks.AddWritePermission((entity, componentType) =>
@@ -87,8 +87,12 @@ world.Hooks.AddValidator<Health>(health =>
 });
 
 // Test permissions
-var player = world.CreateEntity();
-world.AddComponent(player, new Health(100, 100));
+Entity player;
+using (var cmd = world.BeginWrite())
+{
+    player = cmd.CreateEntity();
+    cmd.AddComponent(player, new Health(100, 100));
+}
 
 // This will be validated
 world.ReplaceComponent(player, new Health(150, 100));  // Invalid: exceeds max

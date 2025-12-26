@@ -124,9 +124,13 @@ public class PositionBinder : IBinder<Position>
 }
 
 // Usage
-var world = kernel.CreateWorld("GameWorld");
-var entity = world.CreateEntity();
-world.AddComponent(entity, new Position(0, 0, 0));
+var world = kernel.CreateWorld(null, "GameWorld");
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();
+    cmd.AddComponent(entity, new Position(0, 0, 0));
+}
 
 var binder = new PositionBinder(transform);
 world.RegisterBinder(entity, binder);

@@ -119,7 +119,7 @@ namespace ZenEcsCoreSamples.CommandBuffer
             Console.WriteLine("=== ZenECS Core Sample - CommandBuffer (Kernel) ===");
 
             var kernel = new Kernel(null, logger: new EcsLogger());
-            var world = kernel.CreateWorld();
+            var world = kernel.CreateWorld(null);
             kernel.SetCurrentWorld(world);
             
             world.AddSystems([

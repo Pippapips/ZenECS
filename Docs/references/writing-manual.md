@@ -188,10 +188,14 @@ var world = new World("GameWorld");
 // Add a movement system
 world.AddSystems([new MovementSystem()]);
 
-// Create a player entity with position and velocity
-var player = world.CreateEntity();
-world.AddComponent(player, new Position(0, 0));
-world.AddComponent(player, new Velocity(1, 0));
+// Create a player entity with position and velocity using command buffer
+Entity player;
+using (var cmd = world.BeginWrite())
+{
+    player = cmd.CreateEntity();
+    cmd.AddComponent(player, new Position(0, 0));
+    cmd.AddComponent(player, new Velocity(1, 0));
+}
 
 // Run one frame of simulation (60 FPS)
 world.Step(0.016f);
@@ -223,9 +227,13 @@ var world = new World("GameWorld");
 // Step 2: Register systems
 world.AddSystems([new MovementSystem()]);
 
-// Step 3: Create entities with components
-var entity = world.CreateEntity();
-world.AddComponent(entity, new Position(0, 0));
+// Step 3: Create entities with components using command buffer
+Entity entity;
+using (var cmd = world.BeginWrite())
+{
+    entity = cmd.CreateEntity();
+    cmd.AddComponent(entity, new Position(0, 0));
+}
 ```
 
 ## Cross-References

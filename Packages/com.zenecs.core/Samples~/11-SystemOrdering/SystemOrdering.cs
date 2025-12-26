@@ -159,7 +159,7 @@ namespace ZenEcsCoreSamples.SystemOrdering
             Console.WriteLine("=== ZenECS Core Sample - System Ordering (Kernel) ===");
 
             var kernel = new Kernel(null, logger: new EcsLogger());
-            var world = kernel.CreateWorld();
+            var world = kernel.CreateWorld(null);
             kernel.SetCurrentWorld(world);
 
             // Add systems - order doesn't matter, attributes control execution

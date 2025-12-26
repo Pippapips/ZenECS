@@ -95,7 +95,7 @@ public class GameplaySystem : ISystem { }
 ### Basic System Execution
 
 ```csharp
-var world = kernel.CreateWorld("GameWorld");
+var world = kernel.CreateWorld(null, "GameWorld");
 
 // Register systems
 world.AddSystems([
