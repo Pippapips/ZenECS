@@ -119,26 +119,26 @@ jobs:
         if: steps.notes.outputs.has_notes == 'true'
         run: |
           VER="${{ steps.version.outputs.version }}"
-          cat >> /tmp/notes.md << EOF
-
----
-
-## 📦 Installation
-
-### Unity Package Manager (Recommended)
-
-**Core:**
-\`\`\`
-https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.core#upm-core-${VER}
-\`\`\`
-
-**Adapter:**
-\`\`\`
-https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.adapter.unity#upm-adapter-${VER}
-\`\`\`
-
-See [Installation Guide](https://github.com/Pippapips/ZenECS/blob/main/Docs/getting-started/install-upm.md) for details.
-EOF
+          {
+            echo ""
+            echo "---"
+            echo ""
+            echo "## 📦 Installation"
+            echo ""
+            echo "### Unity Package Manager (Recommended)"
+            echo ""
+            echo "**Core:**"
+            echo "\`\`\`"
+            echo "https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.core#upm-core-${VER}"
+            echo "\`\`\`"
+            echo ""
+            echo "**Adapter:**"
+            echo "\`\`\`"
+            echo "https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.adapter.unity#upm-adapter-${VER}"
+            echo "\`\`\`"
+            echo ""
+            echo "See [Installation Guide](https://github.com/Pippapips/ZenECS/blob/main/Docs/getting-started/install-upm.md) for details."
+          } >> /tmp/notes.md
 
       - name: Create GitHub Release (with custom notes)
         if: steps.notes.outputs.has_notes == 'true'
@@ -220,7 +220,7 @@ EOF
           CORE_SPLIT_COMMIT=$(git subtree split --prefix=Packages/com.zenecs.core)
           echo "Core split at $CORE_SPLIT_COMMIT"
           git tag -a "upm-core-${{ steps.packages.outputs.core }}" \
-            -m "UPM Core v${{ steps.packages.outputs.core }} (from release ${{ github.ref_name }})" \
+            -m "UPM Core v${{ steps.packages.outputs.core }} (from release ${{ needs.prepare.outputs.tag_name }})" \
             "$CORE_SPLIT_COMMIT"
           git push origin "refs/tags/upm-core-${{ steps.packages.outputs.core }}"
           echo "✅ Created tag: upm-core-${{ steps.packages.outputs.core }}"
@@ -232,7 +232,7 @@ EOF
           ADAPT_SPLIT_COMMIT=$(git subtree split --prefix=Packages/com.zenecs.adapter.unity)
           echo "Adapter split at $ADAPT_SPLIT_COMMIT"
           git tag -a "upm-adapter-${{ steps.packages.outputs.adapter }}" \
-            -m "UPM Adapter v${{ steps.packages.outputs.adapter }} (from release ${{ github.ref_name }})" \
+            -m "UPM Adapter v${{ steps.packages.outputs.adapter }} (from release ${{ needs.prepare.outputs.tag_name }})" \
             "$ADAPT_SPLIT_COMMIT"
           git push origin "refs/tags/upm-adapter-${{ steps.packages.outputs.adapter }}"
           echo "✅ Created tag: upm-adapter-${{ steps.packages.outputs.adapter }}"
