@@ -55,8 +55,6 @@ jobs:
           echo "Release version: $VER (from tag: $TAG_NAME)"
 
       - name: Verify package.json version == tag
-        env:
-          TAG: ${{ steps.version.outputs.tag_name }}
         run: |
           bash scripts/verify-version.sh "${{ steps.version.outputs.tag_name }}"
 

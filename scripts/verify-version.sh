@@ -2,10 +2,20 @@
 set -euo pipefail
 
 PKG_JSON="Packages/com.zenecs.core/package.json"
-# Accept tag as argument, or fall back to GITHUB_REF_NAME, or TAG env var
-TAG="${1:-${GITHUB_REF_NAME:-${TAG:-}}}"
+
+# Accept tag as first argument (highest priority)
+# If no argument provided, fall back to GITHUB_REF_NAME (for tag push events)
+if [[ -n "${1:-}" ]]; then
+  TAG="$1"
+elif [[ -n "${GITHUB_REF_NAME:-}" ]]; then
+  TAG="${GITHUB_REF_NAME}"
+else
+  echo "❌ Tag is empty. Usage: $0 <tag> or set GITHUB_REF_NAME env var"
+  exit 1
+fi
+
 if [[ -z "$TAG" ]]; then
-  echo "❌ Tag is empty. Usage: $0 <tag> or set GITHUB_REF_NAME/TAG env var"
+  echo "❌ Tag is empty. Usage: $0 <tag> or set GITHUB_REF_NAME env var"
   exit 1
 fi
 
