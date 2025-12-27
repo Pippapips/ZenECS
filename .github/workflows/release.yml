@@ -21,9 +21,22 @@ jobs:
       version: ${{ steps.version.outputs.version }}
       tag_name: ${{ steps.version.outputs.tag_name }}
     steps:
+      - name: Extract tag name
+        id: tag_extract
+        run: |
+          # For workflow_dispatch, use the input tag_name; otherwise use GITHUB_REF_NAME
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG_NAME="${{ github.event.inputs.tag_name }}"
+          else
+            TAG_NAME="${GITHUB_REF_NAME}"
+          fi
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "Tag name: $TAG_NAME"
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          ref: ${{ steps.tag_extract.outputs.tag_name }}
           fetch-depth: 0
           persist-credentials: true
 
@@ -35,12 +48,7 @@ jobs:
       - name: Extract version from tag
         id: version
         run: |
-          # For workflow_dispatch, use the input tag_name; otherwise use GITHUB_REF_NAME
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            TAG_NAME="${{ github.event.inputs.tag_name }}"
-          else
-            TAG_NAME="${GITHUB_REF_NAME}"
-          fi
+          TAG_NAME="${{ steps.tag_extract.outputs.tag_name }}"
           VER="${TAG_NAME#v}"
           echo "version=$VER" >> $GITHUB_OUTPUT
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
