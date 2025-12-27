@@ -48,22 +48,97 @@ jobs:
       - name: Extract release notes from changelog
         id: notes
         run: |
+          set -e
           VER="${{ steps.version.outputs.version }}"
-          awk -v ver="$VER" '
-            BEGIN{p=0}
-            /^## \[/{ if(p==1) exit }
-            $0 ~ "^## \["ver"\]" { p=1 }
-            p==1 { print }
-          ' Docs/release/changelog.md > /tmp/notes.md
-          echo "Release notes:"
-          cat /tmp/notes.md
+          CHANGELOG="Docs/release/changelog.md"
+          
+          # Escape version for regex (e.g., 1.0.0 -> 1\.0\.0)
+          VER_ESC=$(echo "$VER" | sed 's/\./\\./g')
+          
+          # Extract section from changelog using awk
+          # Match pattern: ## [version] or ## [version] - date
+          awk -v ver="$VER" -v ver_esc="$VER_ESC" '
+            BEGIN {
+              p=0
+              found=0
+            }
+            /^## \[/ {
+              if (p==1) exit
+              # Match: ## [version] or ## [version] - anything
+              if ($0 ~ "^## \\[" ver_esc "\\]") {
+                p=1
+                found=1
+              }
+            }
+            p==1 {
+              print
+            }
+            END {
+              if (found==0) {
+                print "Error: Version " ver " not found in changelog" > "/dev/stderr"
+                exit 1
+              }
+            }
+          ' "$CHANGELOG" > /tmp/notes.md
+          
+          # Check if file has meaningful content (at least 50 bytes)
+          NOTES_SIZE=$(wc -c < /tmp/notes.md | tr -d ' ')
+          if [ "$NOTES_SIZE" -lt 50 ]; then
+            echo "⚠️ Warning: Extracted release notes are too short ($NOTES_SIZE bytes)"
+            echo "Fallback: Will use GitHub auto-generated release notes"
+            echo "has_notes=false" >> $GITHUB_OUTPUT
+          else
+            echo "✅ Release notes extracted successfully ($NOTES_SIZE bytes)"
+            echo "has_notes=true" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "Release notes preview:"
+          echo "---"
+          head -30 /tmp/notes.md || true
+          echo "---"
 
-      - name: Create GitHub Release
+      - name: Add UPM installation info to release notes
+        if: steps.notes.outputs.has_notes == 'true'
+        run: |
+          VER="${{ steps.version.outputs.version }}"
+          cat >> /tmp/notes.md << EOF
+
+---
+
+## 📦 Installation
+
+### Unity Package Manager (Recommended)
+
+**Core:**
+\`\`\`
+https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.core#upm-core-${VER}
+\`\`\`
+
+**Adapter:**
+\`\`\`
+https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.adapter.unity#upm-adapter-${VER}
+\`\`\`
+
+See [Installation Guide](https://github.com/Pippapips/ZenECS/blob/main/Docs/getting-started/install-upm.md) for details.
+EOF
+
+      - name: Create GitHub Release (with custom notes)
+        if: steps.notes.outputs.has_notes == 'true'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           body_path: /tmp/notes.md
-          generate_release_notes: false
+          draft: false
+          prerelease: false
+
+      - name: Create GitHub Release (auto-generated notes)
+        if: steps.notes.outputs.has_notes != 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          draft: false
+          prerelease: false
 
   upm-tags:
     runs-on: ubuntu-latest
