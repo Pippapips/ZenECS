@@ -56,8 +56,9 @@ jobs:
 
       - name: Verify package.json version == tag
         env:
-          GITHUB_REF_NAME: ${{ steps.version.outputs.tag_name }}
-        run: bash scripts/verify-version.sh
+          TAG: ${{ steps.version.outputs.tag_name }}
+        run: |
+          bash scripts/verify-version.sh "${{ steps.version.outputs.tag_name }}"
 
       - name: Sync changelog to package
         run: bash scripts/sync-changelog.sh

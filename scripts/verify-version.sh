@@ -2,9 +2,10 @@
 set -euo pipefail
 
 PKG_JSON="Packages/com.zenecs.core/package.json"
-TAG="${GITHUB_REF_NAME:-}"
+# Accept tag as argument, or fall back to GITHUB_REF_NAME, or TAG env var
+TAG="${1:-${GITHUB_REF_NAME:-${TAG:-}}}"
 if [[ -z "$TAG" ]]; then
-  echo "❌ GITHUB_REF_NAME is empty (are you running on tag push?)"
+  echo "❌ Tag is empty. Usage: $0 <tag> or set GITHUB_REF_NAME/TAG env var"
   exit 1
 fi
 
