@@ -4,6 +4,12 @@ on:
   push:
     tags:
       - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag name (e.g., v1.0.0)'
+        required: true
+        type: string
 
 permissions:
   contents: write   # GitHub Release 및 태그 푸시
@@ -11,6 +17,9 @@ permissions:
 jobs:
   prepare:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      tag_name: ${{ steps.version.outputs.tag_name }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -26,11 +35,20 @@ jobs:
       - name: Extract version from tag
         id: version
         run: |
-          VER="${GITHUB_REF_NAME#v}"
+          # For workflow_dispatch, use the input tag_name; otherwise use GITHUB_REF_NAME
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG_NAME="${{ github.event.inputs.tag_name }}"
+          else
+            TAG_NAME="${GITHUB_REF_NAME}"
+          fi
+          VER="${TAG_NAME#v}"
           echo "version=$VER" >> $GITHUB_OUTPUT
-          echo "Release version: $VER"
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "Release version: $VER (from tag: $TAG_NAME)"
 
       - name: Verify package.json version == tag
+        env:
+          GITHUB_REF_NAME: ${{ steps.version.outputs.tag_name }}
         run: bash scripts/verify-version.sh
 
       - name: Sync changelog to package
@@ -126,7 +144,7 @@ EOF
         if: steps.notes.outputs.has_notes == 'true'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_name }}
+          tag_name: ${{ steps.version.outputs.tag_name }}
           body_path: /tmp/notes.md
           draft: false
           prerelease: false
@@ -135,7 +153,7 @@ EOF
         if: steps.notes.outputs.has_notes != 'true'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_name }}
+          tag_name: ${{ steps.version.outputs.tag_name }}
           generate_release_notes: true
           draft: false
           prerelease: false
@@ -158,9 +176,12 @@ EOF
       - name: Extract version from tag
         id: version
         run: |
-          VER="${GITHUB_REF_NAME#v}"
+          # Use the same tag name from prepare job
+          VER="${{ needs.prepare.outputs.version }}"
+          TAG_NAME="${{ needs.prepare.outputs.tag_name }}"
           echo "version=$VER" >> $GITHUB_OUTPUT
-          echo "UPM tag version: $VER"
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "UPM tag version: $VER (from tag: $TAG_NAME)"
 
       - name: Read package versions
         id: packages
@@ -184,7 +205,7 @@ EOF
           echo "Adapter version: $adapt_v"
           
           # Verify versions match release tag
-          RELEASE_VER="${{ steps.version.outputs.version }}"
+          RELEASE_VER="${{ needs.prepare.outputs.version }}"
           if [ "$core_v" != "$RELEASE_VER" ]; then
             echo "⚠️ Warning: Core version ($core_v) != Release version ($RELEASE_VER)"
           fi
