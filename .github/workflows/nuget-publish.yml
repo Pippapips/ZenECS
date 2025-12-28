@@ -15,6 +15,7 @@ on:
 permissions:
   contents: read
   packages: write   # GitHub Package Registry에 푸시 권한
+  id-token: write   # OIDC 인증을 위한 권한
 
 jobs:
   publish:
@@ -61,10 +62,12 @@ jobs:
           echo "📦 Publishing ZenECS.Core version: $VER"
 
       - name: Configure NuGet for GitHub Packages
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           dotnet nuget add source https://nuget.pkg.github.com/Pippapips/index.json \
             --name github \
-            --username Pippapips \
+            --username ${{ github.repository_owner }} \
             --password ${{ secrets.GITHUB_TOKEN }} \
             --store-password-in-clear-text
 
@@ -111,12 +114,14 @@ jobs:
           echo "✅ Package file exists and is ready for publishing"
 
       - name: Publish to GitHub Packages
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd src/nupkg
           PACKAGE_FILE=$(ls ZenECS.Core.*.nupkg | head -1)
           echo "🚀 Publishing $PACKAGE_FILE to GitHub Packages..."
           dotnet nuget push "$PACKAGE_FILE" \
-            --source github \
+            --source https://nuget.pkg.github.com/Pippapips/index.json \
             --skip-duplicate \
             --api-key ${{ secrets.GITHUB_TOKEN }}
 
