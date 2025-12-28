@@ -62,21 +62,30 @@ jobs:
           echo "📦 Publishing ZenECS.Core version: $VER"
 
       - name: Configure NuGet for GitHub Packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # 기존 소스 제거 (있다면)
           dotnet nuget remove source github 2>/dev/null || true
           
           # NuGet 소스 추가 (인증 정보 포함)
           # GitHub Packages NuGet API는 소유자 이름을 사용자 이름으로 사용
-          dotnet nuget add source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json \
+          PACKAGE_SOURCE="https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+          echo "📋 Adding NuGet source: $PACKAGE_SOURCE"
+          
+          dotnet nuget add source "$PACKAGE_SOURCE" \
             --name github \
             --username ${{ github.repository_owner }} \
-            --password ${{ secrets.GITHUB_TOKEN }} \
+            --password "$GITHUB_TOKEN" \
             --store-password-in-clear-text
           
           # 소스 목록 확인
           echo "📋 Configured NuGet sources:"
           dotnet nuget list source
+          
+          # 소스 상세 정보 확인
+          echo "📋 Verifying source configuration:"
+          dotnet nuget list source | grep -A 5 "github" || echo "⚠️  GitHub source not found in list"
 
       - name: Update version in csproj
         if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version != '' }}
@@ -148,17 +157,27 @@ jobs:
           echo "📋 Repository: ${{ github.repository }}"
           echo "📋 Package file: $PACKAGE_FILE"
           
-          # GitHub Packages NuGet API URL (끝에 슬래시 없음)
+          # GitHub Packages NuGet API URL (반드시 /index.json 포함)
           PACKAGE_SOURCE="https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
           echo "📋 Package source URL: $PACKAGE_SOURCE"
+          echo "📋 Using API key: ${GITHUB_TOKEN:0:10}... (masked)"
           
-          # 직접 URL과 API 키를 사용하여 푸시
+          # 방법 1: 전체 URL과 API 키를 직접 사용
+          echo "🔄 Attempting push with full URL..."
           dotnet nuget push "$PACKAGE_FILE" \
             --source "$PACKAGE_SOURCE" \
-            --api-key "${{ secrets.GITHUB_TOKEN }}" \
+            --api-key "$GITHUB_TOKEN" \
             --skip-duplicate \
             --no-symbols \
-            --verbosity detailed
+            --verbosity detailed || {
+              echo "❌ Push with full URL failed, trying alternative method..."
+              # 방법 2: 소스 이름 사용 (이미 인증 정보가 설정되어 있음)
+              dotnet nuget push "$PACKAGE_FILE" \
+                --source github \
+                --skip-duplicate \
+                --no-symbols \
+                --verbosity detailed
+            }
 
       - name: Summary
         run: |
