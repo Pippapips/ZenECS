@@ -63,15 +63,20 @@ jobs:
 
       - name: Configure NuGet for GitHub Packages
         run: |
+          # 기존 소스 제거 (있다면)
+          dotnet nuget remove source github 2>/dev/null || true
+          
           # NuGet 소스 추가 (인증 정보 포함)
+          # GitHub Packages NuGet API는 소유자 이름을 사용자 이름으로 사용
           dotnet nuget add source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json \
             --name github \
             --username ${{ github.repository_owner }} \
             --password ${{ secrets.GITHUB_TOKEN }} \
             --store-password-in-clear-text
           
-          # 인증 확인
-          echo "✅ NuGet source configured for GitHub Packages"
+          # 소스 목록 확인
+          echo "📋 Configured NuGet sources:"
+          dotnet nuget list source
 
       - name: Update version in csproj
         if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version != '' }}
@@ -115,21 +120,45 @@ jobs:
           echo "📏 Package size: $(du -h "$PACKAGE_FILE" | cut -f1)"
           echo "✅ Package file exists and is ready for publishing"
 
+      - name: Debug - Check permissions
+        run: |
+          echo "🔍 Debugging information:"
+          echo "Repository: ${{ github.repository }}"
+          echo "Repository owner: ${{ github.repository_owner }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "Event: ${{ github.event_name }}"
+          echo "Ref: ${{ github.ref }}"
+          echo ""
+          echo "📋 Checking GITHUB_TOKEN availability..."
+          if [ -z "${{ secrets.GITHUB_TOKEN }}" ]; then
+            echo "❌ GITHUB_TOKEN is empty!"
+          else
+            echo "✅ GITHUB_TOKEN is set (length: ${#GITHUB_TOKEN})"
+          fi
+
       - name: Publish to GitHub Packages
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd src/nupkg
           PACKAGE_FILE=$(ls ZenECS.Core.*.nupkg | head -1)
           echo "🚀 Publishing $PACKAGE_FILE to GitHub Packages..."
-          echo "📋 Using source: github"
           echo "📋 Repository owner: ${{ github.repository_owner }}"
+          echo "📋 Repository: ${{ github.repository }}"
+          echo "📋 Package file: $PACKAGE_FILE"
           
-          # 소스 이름을 사용하여 푸시 (이미 인증 정보가 설정되어 있음)
+          # GitHub Packages NuGet API URL (끝에 슬래시 없음)
+          PACKAGE_SOURCE="https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+          echo "📋 Package source URL: $PACKAGE_SOURCE"
+          
+          # 직접 URL과 API 키를 사용하여 푸시
           dotnet nuget push "$PACKAGE_FILE" \
-            --source github \
+            --source "$PACKAGE_SOURCE" \
+            --api-key "${{ secrets.GITHUB_TOKEN }}" \
             --skip-duplicate \
-            --api-key ${{ secrets.GITHUB_TOKEN }}
+            --no-symbols \
+            --verbosity detailed
 
       - name: Summary
         run: |
