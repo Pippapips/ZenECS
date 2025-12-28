@@ -14,8 +14,8 @@ on:
 
 permissions:
   contents: read
-  packages: write   # GitHub Package Registry에 푸시 권한
-  id-token: write   # OIDC 인증을 위한 권한
+  packages: write   # Permission to push to GitHub Package Registry
+  id-token: write   # Permission for OIDC authentication
 
 jobs:
   publish:
@@ -65,11 +65,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # 기존 소스 제거 (있다면)
+          # Remove existing source (if any)
           dotnet nuget remove source github 2>/dev/null || true
           
-          # NuGet 소스 추가 (인증 정보 포함)
-          # GitHub Packages NuGet API는 소유자 이름을 사용자 이름으로 사용
+          # Add NuGet source (with authentication)
+          # GitHub Packages NuGet API uses owner name as username
           PACKAGE_SOURCE="https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
           echo "📋 Adding NuGet source: $PACKAGE_SOURCE"
           
@@ -79,11 +79,11 @@ jobs:
             --password "$GITHUB_TOKEN" \
             --store-password-in-clear-text
           
-          # 소스 목록 확인
+          # List configured sources
           echo "📋 Configured NuGet sources:"
           dotnet nuget list source
           
-          # 소스 상세 정보 확인
+          # Verify source configuration
           echo "📋 Verifying source configuration:"
           dotnet nuget list source | grep -A 5 "github" || echo "⚠️  GitHub source not found in list"
 
@@ -145,6 +145,27 @@ jobs:
             echo "✅ GITHUB_TOKEN is set (length: ${#GITHUB_TOKEN})"
           fi
 
+      - name: Check for existing package
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VER="${{ steps.version.outputs.version }}"
+          PACKAGE_NAME="ZenECS.Core"
+          echo "🔍 Checking if package $PACKAGE_NAME version $VER already exists..."
+          
+          # Check if package exists using GitHub API
+          RESPONSE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/user/packages?package_type=nuget" || echo "[]")
+          
+          if echo "$RESPONSE" | grep -q "\"name\":\"$PACKAGE_NAME\""; then
+            echo "⚠️  Package $PACKAGE_NAME exists in your account"
+            echo "📋 If you get a conflict error, you may need to:"
+            echo "   1. Delete the old package from: https://github.com/${{ github.repository_owner }}?tab=packages"
+            echo "   2. Or use a different version number"
+          else
+            echo "✅ Package $PACKAGE_NAME not found in your account (or API access issue)"
+          fi
+
       - name: Publish to GitHub Packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -157,12 +178,12 @@ jobs:
           echo "📋 Repository: ${{ github.repository }}"
           echo "📋 Package file: $PACKAGE_FILE"
           
-          # GitHub Packages NuGet API URL (반드시 /index.json 포함)
+          # GitHub Packages NuGet API URL (must include /index.json)
           PACKAGE_SOURCE="https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
           echo "📋 Package source URL: $PACKAGE_SOURCE"
           echo "📋 Using API key: ${GITHUB_TOKEN:0:10}... (masked)"
           
-          # 방법 1: 전체 URL과 API 키를 직접 사용
+          # Method 1: Use full URL with API key directly
           echo "🔄 Attempting push with full URL..."
           dotnet nuget push "$PACKAGE_FILE" \
             --source "$PACKAGE_SOURCE" \
@@ -170,13 +191,29 @@ jobs:
             --skip-duplicate \
             --no-symbols \
             --verbosity detailed || {
-              echo "❌ Push with full URL failed, trying alternative method..."
-              # 방법 2: 소스 이름 사용 (이미 인증 정보가 설정되어 있음)
+              EXIT_CODE=$?
+              echo "❌ Push failed with exit code: $EXIT_CODE"
+              
+              # Check if it's a duplicate package error
+              if [ $EXIT_CODE -ne 0 ]; then
+                echo ""
+                echo "⚠️  If you see a 'package already exists' error:"
+                echo "   1. Check existing packages: https://github.com/${{ github.repository_owner }}?tab=packages"
+                echo "   2. Delete the old package if it's from a deleted repository"
+                echo "   3. Or use a different version number"
+                echo ""
+              fi
+              
+              echo "🔄 Trying alternative method with source name..."
+              # Method 2: Use source name (authentication already configured)
               dotnet nuget push "$PACKAGE_FILE" \
                 --source github \
                 --skip-duplicate \
                 --no-symbols \
-                --verbosity detailed
+                --verbosity detailed || {
+                  echo "❌ All push methods failed"
+                  exit $EXIT_CODE
+                }
             }
 
       - name: Summary
