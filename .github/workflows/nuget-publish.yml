@@ -62,14 +62,16 @@ jobs:
           echo "📦 Publishing ZenECS.Core version: $VER"
 
       - name: Configure NuGet for GitHub Packages
-        env:
-          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          dotnet nuget add source https://nuget.pkg.github.com/Pippapips/index.json \
+          # NuGet 소스 추가 (인증 정보 포함)
+          dotnet nuget add source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json \
             --name github \
             --username ${{ github.repository_owner }} \
             --password ${{ secrets.GITHUB_TOKEN }} \
             --store-password-in-clear-text
+          
+          # 인증 확인
+          echo "✅ NuGet source configured for GitHub Packages"
 
       - name: Update version in csproj
         if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version != '' }}
@@ -120,8 +122,12 @@ jobs:
           cd src/nupkg
           PACKAGE_FILE=$(ls ZenECS.Core.*.nupkg | head -1)
           echo "🚀 Publishing $PACKAGE_FILE to GitHub Packages..."
+          echo "📋 Using source: github"
+          echo "📋 Repository owner: ${{ github.repository_owner }}"
+          
+          # 소스 이름을 사용하여 푸시 (이미 인증 정보가 설정되어 있음)
           dotnet nuget push "$PACKAGE_FILE" \
-            --source https://nuget.pkg.github.com/Pippapips/index.json \
+            --source github \
             --skip-duplicate \
             --api-key ${{ secrets.GITHUB_TOKEN }}
 
