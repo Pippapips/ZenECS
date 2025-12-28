@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <!-- Reference the Core runtime in your repo -->
+  <ItemGroup><!-- Option A: project reference if you have a Core .csproj -->
+    <!-- <ProjectReference Include="..\..\Runtime\ZenECS.Core.csproj" /> -->
+
+    <!-- Option B: assembly reference built from Runtime (Unity asmdef build) -->
+    <!-- <Reference Include="ZenECS.Core">
+         <HintPath>..\..\artifacts\ZenECS.Core.dll</HintPath>
+       </Reference> -->
+  
+    <ProjectReference Include="..\..\..\..\src\ZenECS.Core.csproj" />
+  </ItemGroup>
+</Project>

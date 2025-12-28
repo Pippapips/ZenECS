@@ -1,0 +1,43 @@
+### YamlMime:ManagedReference
+apiRules:
+  # Exclude internal namespaces
+  - exclude:
+      uidRegex: ^ZenECS\.Core\.Internal
+      type: Namespace
+  - exclude:
+      uidRegex: ^ZenECS\.Core\.Infrastructure\.Internal
+      type: Namespace
+  - exclude:
+      uidRegex: ^ZenECS\.Core\.Binding\.Internal
+      type: Namespace
+  - exclude:
+      uidRegex: ^ZenECS\.Core\.ComponentPooling\.Internal
+      type: Namespace
+  - exclude:
+      uidRegex: ^ZenECS\.Core\.Hooking\.Internal
+      type: Namespace
+  - exclude:
+      uidRegex: ^ZenECS\.Core\.Messaging\.Internal
+      type: Namespace
+  - exclude:
+      uidRegex: ^ZenECS\.Core\.Scheduling\.Internal
+      type: Namespace
+  - exclude:
+      uidRegex: ^ZenECS\.Core\.Systems\.Internal
+      type: Namespace
+  - exclude:
+      uidRegex: ^ZenECS\.Core\.Serialization\.Internal
+      type: Namespace
+  - exclude:
+      uidRegex: ^ZenECS\.Core\.Deterministic\.Internal
+      type: Namespace
+  - exclude:
+      uidRegex: ^ZenECS\.Adapter\.Unity\.Editor
+      type: Namespace
+  # Include public APIs
+  - include:
+      uidRegex: ^ZenECS\.Core
+      type: Namespace
+  - include:
+      uidRegex: ^ZenECS\.Adapter\.Unity
+      type: Namespace

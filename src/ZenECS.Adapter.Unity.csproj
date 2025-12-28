@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+        <DocumentationFile>bin\Release\netstandard2.1\ZenECS.Adapter.Unity.xml</DocumentationFile>
+        <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)obj\</BaseIntermediateOutputPath>
+        <OutputPath>$(MSBuildThisFileDirectory)bin\$(Configuration)\</OutputPath>
+        <IsPackable>false</IsPackable>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    </PropertyGroup>
+    
+    <!-- Include Runtime sources -->
+    <ItemGroup>
+        <Compile Include="..\Packages\com.zenecs.adapter.unity\Runtime\**\*.cs" Exclude="..\Packages\com.zenecs.adapter.unity\Runtime\**\*.gen.cs" />
+        <None Remove="..\Packages\com.zenecs.adapter.unity\**\*.meta" />
+        <None Remove="..\Packages\com.zenecs.adapter.unity\Runtime\**\*.asmdef" />
+        <Compile Remove="obj/**" />
+        <None Remove="obj/**" />
+    </ItemGroup>
+    
+    <!-- Include Editor sources (conditional) -->
+    <ItemGroup Condition="'$(IncludeEditor)' == 'true'">
+        <Compile Include="..\Packages\com.zenecs.adapter.unity\Editor\**\*.cs" Exclude="..\Packages\com.zenecs.adapter.unity\Editor\**\*.gen.cs" />
+    </ItemGroup>
+    
+    <!-- References -->
+    <ItemGroup>
+        <ProjectReference Include="$(MSBuildThisFileDirectory)ZenECS.Core.csproj" />
+    </ItemGroup>
+    
+    <!-- Define Constants -->
+    <!-- Define UNITY so Unity-specific code compiles -->
+    <!-- However, since Unity assemblies are not available, code using Unity types must be conditionally compiled -->
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);ZENECS_ADAPTER_UNITY;UNITY</DefineConstants>
+    </PropertyGroup>
+    
+    <!-- Unity assembly stubs (for DocFX build) -->
+    <!-- Provide stub types so compilation works in environments without Unity installed -->
+    <ItemGroup>
+        <Compile Include="$(MSBuildThisFileDirectory)UnityStubs.cs" />
+    </ItemGroup>
+</Project>

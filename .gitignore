@@ -1,0 +1,30 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vs/
+.idea/
+.cursor/
+*.suo
+*.user
+_ReSharper.Caches/
+
+# Build artifacts (generic)
+bin/
+obj/
+TestResults/
+*.nupkg
+
+# DocFX build output
+Docs_/_site/
+Docs_/api/
+
+# GitHub Pages documentation (built files)
+# Note: docs/ directory itself is tracked, but build artifacts in subdirectories may be ignored
+docs/_site/
+docs/api/
+docs/obj/
+
+# Logs
+*.log

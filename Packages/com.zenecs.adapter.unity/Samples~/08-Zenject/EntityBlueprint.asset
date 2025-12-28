@@ -1,0 +1,299 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c5940398cd451ba7a3a9e2bff38247, type: 3}
+  m_Name: EntityBlueprint
+  m_EditorClassIdentifier: ZenECS.Adapter.Unity::ZenECS.Adapter.Unity.Blueprints.EntityBlueprint
+  _data:
+    entries:
+    - typeName: ZenEcsAdapterUnitySamples.Zenject.Health, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      json: "{\n    \"typeName\": \"ZenEcsAdapterUnitySamples.Zenject.Health, Assembly-CSharp,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n    \"fields\":
+        [\n        {\n            \"name\": \"Max\",\n            \"kind\": \"int\",\n           
+        \"i\": 0,\n            \"f\": 0.0,\n            \"b\": false,\n           
+        \"s\": \"\",\n            \"v2\": {\n                \"x\": 0.0,\n               
+        \"y\": 0.0\n            },\n            \"v3\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0\n           
+        },\n            \"v4\": {\n                \"x\": 0.0,\n                \"y\":
+        0.0,\n                \"z\": 0.0,\n                \"w\": 0.0\n           
+        },\n            \"q\": {\n                \"x\": 0.0,\n                \"y\":
+        0.0,\n                \"z\": 0.0,\n                \"w\": 0.0\n           
+        },\n            \"color\": {\n                \"r\": 0.0,\n               
+        \"g\": 0.0,\n                \"b\": 0.0,\n                \"a\": 0.0\n           
+        },\n            \"f2m\": {\n                \"x\": 0.0,\n               
+        \"y\": 0.0\n            },\n            \"f3m\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0\n           
+        },\n            \"f4m\": {\n                \"x\": 0.0,\n               
+        \"y\": 0.0,\n                \"z\": 0.0,\n                \"w\": 0.0\n           
+        },\n            \"i2m\": {\n                \"x\": 0,\n                \"y\":
+        0\n            },\n            \"i3m\": {\n                \"x\": 0,\n               
+        \"y\": 0,\n                \"z\": 0\n            },\n            \"i4m\":
+        {\n                \"x\": 0,\n                \"y\": 0,\n               
+        \"z\": 0,\n                \"w\": 0\n            },\n            \"u2m\":
+        {\n                \"x\": 0,\n                \"y\": 0\n            },\n           
+        \"u3m\": {\n                \"x\": 0,\n                \"y\": 0,\n               
+        \"z\": 0\n            },\n            \"u4m\": {\n                \"x\":
+        0,\n                \"y\": 0,\n                \"z\": 0,\n               
+        \"w\": 0\n            },\n            \"b2m\": {\n                \"x\":
+        false,\n                \"y\": false\n            },\n            \"b3m\":
+        {\n                \"x\": false,\n                \"y\": false,\n               
+        \"z\": false\n            },\n            \"b4m\": {\n                \"x\":
+        false,\n                \"y\": false,\n                \"z\": false,\n               
+        \"w\": false\n            },\n            \"q4m\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0,\n               
+        \"w\": 0.0\n            },\n            \"go\": {\n                \"instanceID\":
+        0\n            }\n        },\n        {\n            \"name\": \"Current\",\n           
+        \"kind\": \"int\",\n            \"i\": 0,\n            \"f\": 0.0,\n           
+        \"b\": false,\n            \"s\": \"\",\n            \"v2\": {\n               
+        \"x\": 0.0,\n                \"y\": 0.0\n            },\n            \"v3\":
+        {\n                \"x\": 0.0,\n                \"y\": 0.0,\n               
+        \"z\": 0.0\n            },\n            \"v4\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0,\n               
+        \"w\": 0.0\n            },\n            \"q\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0,\n               
+        \"w\": 0.0\n            },\n            \"color\": {\n                \"r\":
+        0.0,\n                \"g\": 0.0,\n                \"b\": 0.0,\n               
+        \"a\": 0.0\n            },\n            \"f2m\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0\n            },\n            \"f3m\": {\n               
+        \"x\": 0.0,\n                \"y\": 0.0,\n                \"z\": 0.0\n           
+        },\n            \"f4m\": {\n                \"x\": 0.0,\n               
+        \"y\": 0.0,\n                \"z\": 0.0,\n                \"w\": 0.0\n           
+        },\n            \"i2m\": {\n                \"x\": 0,\n                \"y\":
+        0\n            },\n            \"i3m\": {\n                \"x\": 0,\n               
+        \"y\": 0,\n                \"z\": 0\n            },\n            \"i4m\":
+        {\n                \"x\": 0,\n                \"y\": 0,\n               
+        \"z\": 0,\n                \"w\": 0\n            },\n            \"u2m\":
+        {\n                \"x\": 0,\n                \"y\": 0\n            },\n           
+        \"u3m\": {\n                \"x\": 0,\n                \"y\": 0,\n               
+        \"z\": 0\n            },\n            \"u4m\": {\n                \"x\":
+        0,\n                \"y\": 0,\n                \"z\": 0,\n               
+        \"w\": 0\n            },\n            \"b2m\": {\n                \"x\":
+        false,\n                \"y\": false\n            },\n            \"b3m\":
+        {\n                \"x\": false,\n                \"y\": false,\n               
+        \"z\": false\n            },\n            \"b4m\": {\n                \"x\":
+        false,\n                \"y\": false,\n                \"z\": false,\n               
+        \"w\": false\n            },\n            \"q4m\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0,\n               
+        \"w\": 0.0\n            },\n            \"go\": {\n                \"instanceID\":
+        0\n            }\n        }\n    ]\n}"
+    - typeName: ZenEcsAdapterUnitySamples.Zenject.Position, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      json: "{\n    \"typeName\": \"ZenEcsAdapterUnitySamples.Zenject.Position, Assembly-CSharp,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n    \"fields\":
+        [\n        {\n            \"name\": \"X\",\n            \"kind\": \"float\",\n           
+        \"i\": 0,\n            \"f\": 0.0,\n            \"b\": false,\n           
+        \"s\": \"\",\n            \"v2\": {\n                \"x\": 0.0,\n               
+        \"y\": 0.0\n            },\n            \"v3\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0\n           
+        },\n            \"v4\": {\n                \"x\": 0.0,\n                \"y\":
+        0.0,\n                \"z\": 0.0,\n                \"w\": 0.0\n           
+        },\n            \"q\": {\n                \"x\": 0.0,\n                \"y\":
+        0.0,\n                \"z\": 0.0,\n                \"w\": 0.0\n           
+        },\n            \"color\": {\n                \"r\": 0.0,\n               
+        \"g\": 0.0,\n                \"b\": 0.0,\n                \"a\": 0.0\n           
+        },\n            \"f2m\": {\n                \"x\": 0.0,\n               
+        \"y\": 0.0\n            },\n            \"f3m\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0\n           
+        },\n            \"f4m\": {\n                \"x\": 0.0,\n               
+        \"y\": 0.0,\n                \"z\": 0.0,\n                \"w\": 0.0\n           
+        },\n            \"i2m\": {\n                \"x\": 0,\n                \"y\":
+        0\n            },\n            \"i3m\": {\n                \"x\": 0,\n               
+        \"y\": 0,\n                \"z\": 0\n            },\n            \"i4m\":
+        {\n                \"x\": 0,\n                \"y\": 0,\n               
+        \"z\": 0,\n                \"w\": 0\n            },\n            \"u2m\":
+        {\n                \"x\": 0,\n                \"y\": 0\n            },\n           
+        \"u3m\": {\n                \"x\": 0,\n                \"y\": 0,\n               
+        \"z\": 0\n            },\n            \"u4m\": {\n                \"x\":
+        0,\n                \"y\": 0,\n                \"z\": 0,\n               
+        \"w\": 0\n            },\n            \"b2m\": {\n                \"x\":
+        false,\n                \"y\": false\n            },\n            \"b3m\":
+        {\n                \"x\": false,\n                \"y\": false,\n               
+        \"z\": false\n            },\n            \"b4m\": {\n                \"x\":
+        false,\n                \"y\": false,\n                \"z\": false,\n               
+        \"w\": false\n            },\n            \"q4m\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0,\n               
+        \"w\": 0.0\n            },\n            \"go\": {\n                \"instanceID\":
+        0\n            }\n        },\n        {\n            \"name\": \"Y\",\n           
+        \"kind\": \"float\",\n            \"i\": 0,\n            \"f\": 0.0,\n           
+        \"b\": false,\n            \"s\": \"\",\n            \"v2\": {\n               
+        \"x\": 0.0,\n                \"y\": 0.0\n            },\n            \"v3\":
+        {\n                \"x\": 0.0,\n                \"y\": 0.0,\n               
+        \"z\": 0.0\n            },\n            \"v4\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0,\n               
+        \"w\": 0.0\n            },\n            \"q\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0,\n               
+        \"w\": 0.0\n            },\n            \"color\": {\n                \"r\":
+        0.0,\n                \"g\": 0.0,\n                \"b\": 0.0,\n               
+        \"a\": 0.0\n            },\n            \"f2m\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0\n            },\n            \"f3m\": {\n               
+        \"x\": 0.0,\n                \"y\": 0.0,\n                \"z\": 0.0\n           
+        },\n            \"f4m\": {\n                \"x\": 0.0,\n               
+        \"y\": 0.0,\n                \"z\": 0.0,\n                \"w\": 0.0\n           
+        },\n            \"i2m\": {\n                \"x\": 0,\n                \"y\":
+        0\n            },\n            \"i3m\": {\n                \"x\": 0,\n               
+        \"y\": 0,\n                \"z\": 0\n            },\n            \"i4m\":
+        {\n                \"x\": 0,\n                \"y\": 0,\n               
+        \"z\": 0,\n                \"w\": 0\n            },\n            \"u2m\":
+        {\n                \"x\": 0,\n                \"y\": 0\n            },\n           
+        \"u3m\": {\n                \"x\": 0,\n                \"y\": 0,\n               
+        \"z\": 0\n            },\n            \"u4m\": {\n                \"x\":
+        0,\n                \"y\": 0,\n                \"z\": 0,\n               
+        \"w\": 0\n            },\n            \"b2m\": {\n                \"x\":
+        false,\n                \"y\": false\n            },\n            \"b3m\":
+        {\n                \"x\": false,\n                \"y\": false,\n               
+        \"z\": false\n            },\n            \"b4m\": {\n                \"x\":
+        false,\n                \"y\": false,\n                \"z\": false,\n               
+        \"w\": false\n            },\n            \"q4m\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0,\n               
+        \"w\": 0.0\n            },\n            \"go\": {\n                \"instanceID\":
+        0\n            }\n        },\n        {\n            \"name\": \"Z\",\n           
+        \"kind\": \"float\",\n            \"i\": 0,\n            \"f\": 0.0,\n           
+        \"b\": false,\n            \"s\": \"\",\n            \"v2\": {\n               
+        \"x\": 0.0,\n                \"y\": 0.0\n            },\n            \"v3\":
+        {\n                \"x\": 0.0,\n                \"y\": 0.0,\n               
+        \"z\": 0.0\n            },\n            \"v4\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0,\n               
+        \"w\": 0.0\n            },\n            \"q\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0,\n               
+        \"w\": 0.0\n            },\n            \"color\": {\n                \"r\":
+        0.0,\n                \"g\": 0.0,\n                \"b\": 0.0,\n               
+        \"a\": 0.0\n            },\n            \"f2m\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0\n            },\n            \"f3m\": {\n               
+        \"x\": 0.0,\n                \"y\": 0.0,\n                \"z\": 0.0\n           
+        },\n            \"f4m\": {\n                \"x\": 0.0,\n               
+        \"y\": 0.0,\n                \"z\": 0.0,\n                \"w\": 0.0\n           
+        },\n            \"i2m\": {\n                \"x\": 0,\n                \"y\":
+        0\n            },\n            \"i3m\": {\n                \"x\": 0,\n               
+        \"y\": 0,\n                \"z\": 0\n            },\n            \"i4m\":
+        {\n                \"x\": 0,\n                \"y\": 0,\n               
+        \"z\": 0,\n                \"w\": 0\n            },\n            \"u2m\":
+        {\n                \"x\": 0,\n                \"y\": 0\n            },\n           
+        \"u3m\": {\n                \"x\": 0,\n                \"y\": 0,\n               
+        \"z\": 0\n            },\n            \"u4m\": {\n                \"x\":
+        0,\n                \"y\": 0,\n                \"z\": 0,\n               
+        \"w\": 0\n            },\n            \"b2m\": {\n                \"x\":
+        false,\n                \"y\": false\n            },\n            \"b3m\":
+        {\n                \"x\": false,\n                \"y\": false,\n               
+        \"z\": false\n            },\n            \"b4m\": {\n                \"x\":
+        false,\n                \"y\": false,\n                \"z\": false,\n               
+        \"w\": false\n            },\n            \"q4m\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0,\n               
+        \"w\": 0.0\n            },\n            \"go\": {\n                \"instanceID\":
+        0\n            }\n        }\n    ]\n}"
+    - typeName: ZenEcsAdapterUnitySamples.Zenject.Rotation, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      json: "{\n    \"typeName\": \"ZenEcsAdapterUnitySamples.Zenject.Rotation, Assembly-CSharp,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n    \"fields\":
+        [\n        {\n            \"name\": \"X\",\n            \"kind\": \"float\",\n           
+        \"i\": 0,\n            \"f\": 0.0,\n            \"b\": false,\n           
+        \"s\": \"\",\n            \"v2\": {\n                \"x\": 0.0,\n               
+        \"y\": 0.0\n            },\n            \"v3\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0\n           
+        },\n            \"v4\": {\n                \"x\": 0.0,\n                \"y\":
+        0.0,\n                \"z\": 0.0,\n                \"w\": 0.0\n           
+        },\n            \"q\": {\n                \"x\": 0.0,\n                \"y\":
+        0.0,\n                \"z\": 0.0,\n                \"w\": 0.0\n           
+        },\n            \"color\": {\n                \"r\": 0.0,\n               
+        \"g\": 0.0,\n                \"b\": 0.0,\n                \"a\": 0.0\n           
+        },\n            \"f2m\": {\n                \"x\": 0.0,\n               
+        \"y\": 0.0\n            },\n            \"f3m\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0\n           
+        },\n            \"f4m\": {\n                \"x\": 0.0,\n               
+        \"y\": 0.0,\n                \"z\": 0.0,\n                \"w\": 0.0\n           
+        },\n            \"i2m\": {\n                \"x\": 0,\n                \"y\":
+        0\n            },\n            \"i3m\": {\n                \"x\": 0,\n               
+        \"y\": 0,\n                \"z\": 0\n            },\n            \"i4m\":
+        {\n                \"x\": 0,\n                \"y\": 0,\n               
+        \"z\": 0,\n                \"w\": 0\n            },\n            \"u2m\":
+        {\n                \"x\": 0,\n                \"y\": 0\n            },\n           
+        \"u3m\": {\n                \"x\": 0,\n                \"y\": 0,\n               
+        \"z\": 0\n            },\n            \"u4m\": {\n                \"x\":
+        0,\n                \"y\": 0,\n                \"z\": 0,\n               
+        \"w\": 0\n            },\n            \"b2m\": {\n                \"x\":
+        false,\n                \"y\": false\n            },\n            \"b3m\":
+        {\n                \"x\": false,\n                \"y\": false,\n               
+        \"z\": false\n            },\n            \"b4m\": {\n                \"x\":
+        false,\n                \"y\": false,\n                \"z\": false,\n               
+        \"w\": false\n            },\n            \"q4m\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0,\n               
+        \"w\": 0.0\n            },\n            \"go\": {\n                \"instanceID\":
+        0\n            }\n        },\n        {\n            \"name\": \"Y\",\n           
+        \"kind\": \"float\",\n            \"i\": 0,\n            \"f\": 0.0,\n           
+        \"b\": false,\n            \"s\": \"\",\n            \"v2\": {\n               
+        \"x\": 0.0,\n                \"y\": 0.0\n            },\n            \"v3\":
+        {\n                \"x\": 0.0,\n                \"y\": 0.0,\n               
+        \"z\": 0.0\n            },\n            \"v4\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0,\n               
+        \"w\": 0.0\n            },\n            \"q\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0,\n               
+        \"w\": 0.0\n            },\n            \"color\": {\n                \"r\":
+        0.0,\n                \"g\": 0.0,\n                \"b\": 0.0,\n               
+        \"a\": 0.0\n            },\n            \"f2m\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0\n            },\n            \"f3m\": {\n               
+        \"x\": 0.0,\n                \"y\": 0.0,\n                \"z\": 0.0\n           
+        },\n            \"f4m\": {\n                \"x\": 0.0,\n               
+        \"y\": 0.0,\n                \"z\": 0.0,\n                \"w\": 0.0\n           
+        },\n            \"i2m\": {\n                \"x\": 0,\n                \"y\":
+        0\n            },\n            \"i3m\": {\n                \"x\": 0,\n               
+        \"y\": 0,\n                \"z\": 0\n            },\n            \"i4m\":
+        {\n                \"x\": 0,\n                \"y\": 0,\n               
+        \"z\": 0,\n                \"w\": 0\n            },\n            \"u2m\":
+        {\n                \"x\": 0,\n                \"y\": 0\n            },\n           
+        \"u3m\": {\n                \"x\": 0,\n                \"y\": 0,\n               
+        \"z\": 0\n            },\n            \"u4m\": {\n                \"x\":
+        0,\n                \"y\": 0,\n                \"z\": 0,\n               
+        \"w\": 0\n            },\n            \"b2m\": {\n                \"x\":
+        false,\n                \"y\": false\n            },\n            \"b3m\":
+        {\n                \"x\": false,\n                \"y\": false,\n               
+        \"z\": false\n            },\n            \"b4m\": {\n                \"x\":
+        false,\n                \"y\": false,\n                \"z\": false,\n               
+        \"w\": false\n            },\n            \"q4m\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0,\n               
+        \"w\": 0.0\n            },\n            \"go\": {\n                \"instanceID\":
+        0\n            }\n        },\n        {\n            \"name\": \"Z\",\n           
+        \"kind\": \"float\",\n            \"i\": 0,\n            \"f\": 0.0,\n           
+        \"b\": false,\n            \"s\": \"\",\n            \"v2\": {\n               
+        \"x\": 0.0,\n                \"y\": 0.0\n            },\n            \"v3\":
+        {\n                \"x\": 0.0,\n                \"y\": 0.0,\n               
+        \"z\": 0.0\n            },\n            \"v4\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0,\n               
+        \"w\": 0.0\n            },\n            \"q\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0,\n               
+        \"w\": 0.0\n            },\n            \"color\": {\n                \"r\":
+        0.0,\n                \"g\": 0.0,\n                \"b\": 0.0,\n               
+        \"a\": 0.0\n            },\n            \"f2m\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0\n            },\n            \"f3m\": {\n               
+        \"x\": 0.0,\n                \"y\": 0.0,\n                \"z\": 0.0\n           
+        },\n            \"f4m\": {\n                \"x\": 0.0,\n               
+        \"y\": 0.0,\n                \"z\": 0.0,\n                \"w\": 0.0\n           
+        },\n            \"i2m\": {\n                \"x\": 0,\n                \"y\":
+        0\n            },\n            \"i3m\": {\n                \"x\": 0,\n               
+        \"y\": 0,\n                \"z\": 0\n            },\n            \"i4m\":
+        {\n                \"x\": 0,\n                \"y\": 0,\n               
+        \"z\": 0,\n                \"w\": 0\n            },\n            \"u2m\":
+        {\n                \"x\": 0,\n                \"y\": 0\n            },\n           
+        \"u3m\": {\n                \"x\": 0,\n                \"y\": 0,\n               
+        \"z\": 0\n            },\n            \"u4m\": {\n                \"x\":
+        0,\n                \"y\": 0,\n                \"z\": 0,\n               
+        \"w\": 0\n            },\n            \"b2m\": {\n                \"x\":
+        false,\n                \"y\": false\n            },\n            \"b3m\":
+        {\n                \"x\": false,\n                \"y\": false,\n               
+        \"z\": false\n            },\n            \"b4m\": {\n                \"x\":
+        false,\n                \"y\": false,\n                \"z\": false,\n               
+        \"w\": false\n            },\n            \"q4m\": {\n                \"x\":
+        0.0,\n                \"y\": 0.0,\n                \"z\": 0.0,\n               
+        \"w\": 0.0\n            },\n            \"go\": {\n                \"instanceID\":
+        0\n            }\n        }\n    ]\n}"
+  _contextAssets:
+  - {fileID: 11400000, guid: b4d9947496fa07e44ad046f6a0337210, type: 2}
+  _binderAssets:
+  - {fileID: 11400000, guid: 8bcd1ad0f1a225b4c9190fc1f86a4bc2, type: 2}

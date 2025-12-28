@@ -1,0 +1,26 @@
+{
+    "name": "ZenECS.Adapter.Unity",
+    "rootNamespace": "ZenECS.Adapter.Unity",
+    "references": [
+        "ZenECS.Core",
+        "UniRx",
+        "Zenject",
+        "Unity.Mathematics",
+        "Unity.Collections"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.neuecc.unirx",
+            "expression": "7.1.0",
+            "define": "ZENECS_UNIRX"
+        }
+    ],
+    "noEngineReferences": false
+}

@@ -1,0 +1,58 @@
+{
+  "name": "com.zenecs.adapter.unity",
+  "displayName": "ZenECS Adapter for Unity",
+  "version": "1.0.0",
+  "description": "Adapter for using ZenECS Core in Unity. Unity integration layer providing seamless ECS integration with Unity's GameObject lifecycle and editor workflows. Includes EcsDriver for automatic kernel initialization, EntityLink for bidirectional GameObject-Entity binding, EntityBlueprint for ScriptableObject-based entity spawning, and Context Binding for shared/per-entity data management. Also features View Binder patterns for data-driven UI, Input-to-Intent conversion pipelines, and optional integrations with UniRx and Zenject for reactive and dependency injection workflows.",
+  "unity": "2021.3",
+  "documentationUrl": "https://github.com/Pippapips/ZenECS/blob/main/Packages/com.zenecs.adapter.unity/Documentation%7E/index.md",
+  "changelogUrl": "https://github.com/Pippapips/ZenECS/releases",
+  "licensesUrl": "https://github.com/Pippapips/ZenECS/blob/main/LICENSE",
+  "dependencies": {
+    "com.zenecs.core": "1.0.0"
+  },
+  "author": {
+    "name": "Pippapips Limited"
+  },
+  "samples": [
+    {
+      "displayName": "01 - EcsDriver Basic Setup",
+      "description": "Basic Kernel initialization and Unity lifecycle integration using EcsDriver",
+      "path": "Samples~/01-EcsDriver"
+    },
+    {
+      "displayName": "02 - EntityLink (GameObject ↔ Entity)",
+      "description": "Using EntityLink to connect GameObject and Entity",
+      "path": "Samples~/02-EntityLink"
+    },
+    {
+      "displayName": "03 - EntityBlueprint (Entity Spawning)",
+      "description": "ScriptableObject-based entity spawning (includes Context Binding)",
+      "path": "Samples~/03-EntityBlueprint"
+    },
+    {
+      "displayName": "04 - System Presets",
+      "description": "ScriptableObject-based system setup and management",
+      "path": "Samples~/04-SystemPresets"
+    },
+    {
+      "displayName": "05 - Input → Intent Pattern",
+      "description": "Converting Unity Input to ECS Intent components",
+      "path": "Samples~/05-InputIntent"
+    },
+    {
+      "displayName": "06 - FixedStep vs Update",
+      "description": "Comparing Unity Update/FixedUpdate with ECS BeginFrame/FixedStep/LateFrame",
+      "path": "Samples~/06-FixedStepUpdate"
+    },
+    {
+      "displayName": "07 - UniRx Integration",
+      "description": "ECS message stream conversion using UniRx (requires ZENECS_UNIRX)",
+      "path": "Samples~/07-UniRx"
+    },
+    {
+      "displayName": "08 - Zenject Integration",
+      "description": "Dependency injection using Zenject (requires ZENECS_ZENJECT)",
+      "path": "Samples~/08-Zenject"
+    }
+  ]
+}

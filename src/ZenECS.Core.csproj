@@ -1,0 +1,44 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <!-- Keep multi-target -->
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <!-- Disable automatic AssemblyInfo generation -->
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+        <DocumentationFile>bin\Release\netstandard2.1\ZenECS.Core.xml</DocumentationFile>
+        <!-- Build output location -->
+        <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)obj\</BaseIntermediateOutputPath>
+        <OutputPath>$(MSBuildThisFileDirectory)bin\$(Configuration)\</OutputPath>
+        <IsPackable>true</IsPackable>
+        <PackageId>ZenECS.Core</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>CK</Authors>
+        <Company>Pippapips Limited</Company>
+        <Product>ZenECS Core</Product>
+        <RepositoryUrl>https://github.com/Pippapips/ZenECS</RepositoryUrl>
+        <Description>Pure C# ECS core (engine-agnostic). Unity UPM + .NET friendly.</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    </PropertyGroup>
+    <!-- Include only runtime sources -->
+    <ItemGroup>
+        <Compile Include="..\Packages\com.zenecs.core\Runtime\**\*.cs" Exclude="..\Packages\com.zenecs.core\Runtime\**\*.gen.cs" />
+        <None Remove="..\Packages\com.zenecs.core\**\*.meta" />
+        <None Remove="..\Packages\com.zenecs.core\Runtime\**\*.asmdef" />
+        <!-- Explicitly exclude obj/** files -->
+        <Compile Remove="obj/**" />
+        <None Remove="obj/**" />
+        <Compile Update="..\Packages\com.zenecs.core\Runtime\Serialization\Internal\StreamSnapshotBackend.cs">
+          <Link>Serialization\Internal\StreamSnapshotBackend.cs</Link>
+        </Compile>
+    </ItemGroup>
+    <!-- Optionally add platform-specific Defines -->
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);ZENECS_CORE;NO_UNITY</DefineConstants>
+    </PropertyGroup>
+</Project>

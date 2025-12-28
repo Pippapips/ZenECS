@@ -1,0 +1,499 @@
+name: UPM Release & Tag
+
+on:
+  push:
+    tags:
+      - 'upm-core-*'
+      - 'upm-adapter-unity-*'
+  workflow_dispatch:
+    inputs:
+      packages_to_release:
+        description: 'Which packages to release?'
+        required: true
+        type: choice
+        options:
+          - 'both'
+          - 'core-only'
+          - 'adapter-only'
+      core_version:
+        description: 'Core version (e.g., 1.0.0). Leave blank to auto-read from package.json. Ignored if packages_to_release is adapter-only.'
+        required: false
+      adapter_version:
+        description: 'Adapter version (e.g., 1.0.0). Leave blank to auto-read from package.json. Ignored if packages_to_release is core-only.'
+        required: false
+
+permissions:
+  contents: write   # ← 태그/브랜치 푸시 허용
+
+jobs:
+  split:
+    runs-on: ubuntu-latest
+    outputs:
+      core: ${{ steps.versions.outputs.core }}
+      adapter: ${{ steps.versions.outputs.adapter }}
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Resolve versions
+        id: versions
+        shell: bash
+        run: |
+          set -e
+          CORE_JSON="Packages/com.zenecs.core/package.json"
+          ADAPT_JSON="Packages/com.zenecs.adapter.unity/package.json"
+          
+          # Check if triggered by tag push
+          if [ "${{ github.event_name }}" = "push" ] && [ -n "${GITHUB_REF_NAME}" ]; then
+            TAG_NAME="${GITHUB_REF_NAME}"
+            echo "Tag push detected: $TAG_NAME"
+            
+            # Extract package type and version from tag
+            if [[ "$TAG_NAME" =~ ^upm-core-(.+)$ ]]; then
+              core_v="${BASH_REMATCH[1]}"
+              echo "core=$core_v" >> $GITHUB_OUTPUT
+              echo "adapter=" >> $GITHUB_OUTPUT
+              echo "Core version from tag: $core_v"
+            elif [[ "$TAG_NAME" =~ ^upm-adapter-unity-(.+)$ ]]; then
+              adapt_v="${BASH_REMATCH[1]}"
+              echo "core=" >> $GITHUB_OUTPUT
+              echo "adapter=$adapt_v" >> $GITHUB_OUTPUT
+              echo "Adapter Unity version from tag: $adapt_v"
+            else
+              echo "❌ Unknown tag format: $TAG_NAME"
+              exit 1
+            fi
+          else
+            # Manual workflow dispatch
+          RELEASE_MODE="${{ github.event.inputs.packages_to_release }}"
+          
+          # Core version resolution
+          if [ "$RELEASE_MODE" = "core-only" ] || [ "$RELEASE_MODE" = "both" ]; then
+            core_v="${{ github.event.inputs.core_version }}"
+            if [ -z "$core_v" ]; then
+              core_v=$(jq -r '.version' "$CORE_JSON")
+            fi
+            echo "core=$core_v" >> $GITHUB_OUTPUT
+            echo "Core version: $core_v"
+          else
+            echo "core=" >> $GITHUB_OUTPUT
+            echo "Skipping Core (adapter-only mode)"
+          fi
+          
+          # Adapter version resolution
+          if [ "$RELEASE_MODE" = "adapter-only" ] || [ "$RELEASE_MODE" = "both" ]; then
+            adapt_v="${{ github.event.inputs.adapter_version }}"
+            if [ -z "$adapt_v" ]; then
+              adapt_v=$(jq -r '.version' "$ADAPT_JSON")
+            fi
+            echo "adapter=$adapt_v" >> $GITHUB_OUTPUT
+            echo "Adapter version: $adapt_v"
+          else
+            echo "adapter=" >> $GITHUB_OUTPUT
+            echo "Skipping Adapter (core-only mode)"
+          fi
+          
+          echo "Release mode: $RELEASE_MODE"
+          fi
+
+      - name: Validate package paths
+        run: |
+          test -d Packages/com.zenecs.core || (echo "Missing: Packages/com.zenecs.core" && exit 1)
+          test -d Packages/com.zenecs.adapter.unity || (echo "Missing: Packages/com.zenecs.adapter.unity" && exit 1)
+
+      - name: Split Core and create tag
+        if: ${{ steps.versions.outputs.core != '' && github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        run: |
+          set -e
+          CORE_SPLIT_COMMIT=$(git subtree split --prefix=Packages/com.zenecs.core)
+          echo "Core split at $CORE_SPLIT_COMMIT"
+          git tag -a "upm-core-${{ steps.versions.outputs.core }}" -m "UPM Core v${{ steps.versions.outputs.core }}" "$CORE_SPLIT_COMMIT"
+          git push origin "refs/tags/upm-core-${{ steps.versions.outputs.core }}"
+          echo "✅ Created tag: upm-core-${{ steps.versions.outputs.core }}"
+
+      - name: Split Adapter and create tag
+        if: ${{ steps.versions.outputs.adapter != '' && github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        run: |
+          set -e
+          ADAPT_SPLIT_COMMIT=$(git subtree split --prefix=Packages/com.zenecs.adapter.unity)
+          echo "Adapter split at $ADAPT_SPLIT_COMMIT"
+          git tag -a "upm-adapter-unity-${{ steps.versions.outputs.adapter }}" -m "UPM Adapter Unity v${{ steps.versions.outputs.adapter }}" "$ADAPT_SPLIT_COMMIT"
+          git push origin "refs/tags/upm-adapter-unity-${{ steps.versions.outputs.adapter }}"
+          echo "✅ Created tag: upm-adapter-unity-${{ steps.versions.outputs.adapter }}"
+      
+      - name: Tag already exists (tag push)
+        if: github.event_name == 'push'
+        run: |
+          echo "Tag ${GITHUB_REF_NAME} already exists, skipping tag creation"
+          echo "Will create Release for existing tag"
+
+  release-core:
+    runs-on: ubuntu-latest
+    needs: split
+    if: needs.split.outputs.core != ''
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get release date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      - name: Extract Core changelog
+        id: changelog_core
+        run: |
+          set -e
+          VER="${{ needs.split.outputs.core }}"
+          CHANGELOG="Packages/com.zenecs.core/CHANGELOG.md"
+          
+          if [ ! -f "$CHANGELOG" ]; then
+            echo "has_changelog=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Changelog not found"
+            exit 0
+          fi
+          
+          VER_ESC=$(echo "$VER" | sed 's/\./\\./g')
+          
+          # Extract version section from package CHANGELOG
+          # Exclude Security section, handle empty Links
+          awk -v ver_esc="$VER_ESC" '
+            BEGIN {
+              in_version=0
+              in_links=0
+              skip_security=0
+              found_version=0
+              has_links=0
+            }
+            /^## \[/ {
+              if (in_version == 1) exit
+              if ($0 ~ "^## \\[" ver_esc "\\]") {
+                in_version=1
+                found_version=1
+                print $0
+                next
+              }
+            }
+            /^## Links$/ {
+              if (in_version == 1) {
+                in_links=1
+                next
+              }
+            }
+            /^## Upgrade Notes$/ {
+              if (in_version == 1) {
+                if (in_links == 1 && has_links == 0) {
+                  print "For version history and detailed changes, see the [Package Changelog](https://github.com/Pippapips/ZenECS/blob/main/Packages/com.zenecs.core/CHANGELOG.md)."
+                }
+                exit
+              }
+            }
+            /^### Security$/ {
+              if (in_version == 1) {
+                skip_security=1
+                next
+              }
+            }
+            /^### [A-Z]/ {
+              if (in_version == 1) {
+                if (skip_security == 1 && $0 !~ "^### Security$") {
+                  skip_security=0
+                }
+                if ($0 ~ "^### Security$") {
+                  next
+                }
+              }
+            }
+            in_links == 1 && /^- \[/ {
+              has_links=1
+            }
+            in_version == 1 && skip_security == 0 && in_links == 0 {
+              print $0
+            }
+            END {
+              if (found_version == 0) {
+                print "Error: Version " ver_esc " not found" > "/dev/stderr"
+                exit 1
+              }
+              if (in_links == 1 && has_links == 0) {
+                print "For version history and detailed changes, see the [Package Changelog](https://github.com/Pippapips/ZenECS/blob/main/Packages/com.zenecs.core/CHANGELOG.md)."
+              }
+            }
+          ' "$CHANGELOG" > /tmp/core_changelog.md || {
+            echo "has_changelog=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Failed to extract changelog"
+            exit 0
+          }
+          
+          CHANGELOG_SIZE=$(wc -c < /tmp/core_changelog.md | tr -d ' ')
+          if [ "$CHANGELOG_SIZE" -lt 50 ]; then
+            echo "has_changelog=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Changelog too short"
+          else
+            echo "has_changelog=true" >> $GITHUB_OUTPUT
+            echo "✅ Extracted Core changelog ($CHANGELOG_SIZE bytes)"
+          fi
+
+      - name: Prepare Core Release Body
+        run: |
+          set -e
+          VER="${{ needs.split.outputs.core }}"
+          DATE="${{ steps.date.outputs.date }}"
+          
+          {
+            echo "## ZenECS Core v${VER}"
+            echo ""
+            echo "**Release Date:** ${DATE}"
+            echo ""
+            
+            echo "### 📝 Changes"
+            echo ""
+            if [ "${{ steps.changelog_core.outputs.has_changelog }}" = "true" ]; then
+              cat /tmp/core_changelog.md
+              echo ""
+            else
+              echo "For detailed changelog, see the [Package Changelog](https://github.com/Pippapips/ZenECS/blob/main/Packages/com.zenecs.core/CHANGELOG.md)."
+              echo ""
+            fi
+            
+            echo "### 📦 Installation"
+            echo ""
+            echo "**Unity Package Manager:**"
+            echo "\`\`\`"
+            echo "https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.core#upm-core-${VER}"
+            echo "\`\`\`"
+            echo ""
+            echo "### 📚 Resources"
+            echo ""
+            echo "- [Package README](https://github.com/Pippapips/ZenECS/blob/main/Packages/com.zenecs.core/README.md)"
+            echo "- [Installation Guide](https://github.com/Pippapips/ZenECS/blob/main/Docs/getting-started/install-upm.md)"
+            echo "- [Package Changelog](https://github.com/Pippapips/ZenECS/blob/main/Packages/com.zenecs.core/CHANGELOG.md)"
+            echo "- [API Documentation](https://github.com/Pippapips/ZenECS/blob/main/Packages/com.zenecs.core/Documentation%7E/index.md)"
+            echo ""
+            echo "### 🔗 Related Links"
+            echo ""
+            echo "- [All Releases](https://github.com/Pippapips/ZenECS/releases)"
+            echo "- [Documentation](https://github.com/Pippapips/ZenECS/tree/main/Docs)"
+            echo "- [Repository](https://github.com/Pippapips/ZenECS)"
+          } > /tmp/core_release_body.md
+
+      - name: Create Core Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: upm-core-${{ needs.split.outputs.core }}
+          name: ZenECS Core v${{ needs.split.outputs.core }}
+          body_path: /tmp/core_release_body.md
+          draft: false
+          prerelease: false
+
+  release-adapter:
+    runs-on: ubuntu-latest
+    needs: split
+    if: needs.split.outputs.adapter != ''
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get Core dependency version
+        id: core_dep
+        run: |
+          if ! command -v jq >/dev/null 2>&1; then
+            echo "Installing jq..."
+            sudo apt-get update -y && sudo apt-get install -y jq
+          fi
+          ADAPT_JSON="Packages/com.zenecs.adapter.unity/package.json"
+          core_dep_v=$(jq -r '.dependencies."com.zenecs.core" // "latest"' "$ADAPT_JSON")
+          echo "version=$core_dep_v" >> $GITHUB_OUTPUT
+          echo "Core dependency version: $core_dep_v"
+
+      - name: Get release date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      - name: Extract Adapter Unity changelog
+        id: changelog_adapter
+        run: |
+          set -e
+          VER="${{ needs.split.outputs.adapter }}"
+          CHANGELOG="Packages/com.zenecs.adapter.unity/CHANGELOG.md"
+          
+          if [ ! -f "$CHANGELOG" ]; then
+            echo "has_changelog=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Changelog not found"
+            exit 0
+          fi
+          
+          VER_ESC=$(echo "$VER" | sed 's/\./\\./g')
+          
+          # Extract version section from package CHANGELOG
+          # Exclude Security section, handle empty Links
+          awk -v ver_esc="$VER_ESC" '
+            BEGIN {
+              in_version=0
+              in_links=0
+              skip_security=0
+              found_version=0
+              has_links=0
+            }
+            /^## \[/ {
+              if (in_version == 1) exit
+              if ($0 ~ "^## \\[" ver_esc "\\]") {
+                in_version=1
+                found_version=1
+                print $0
+                next
+              }
+            }
+            /^## Links$/ {
+              if (in_version == 1) {
+                in_links=1
+                next
+              }
+            }
+            /^## Upgrade Notes$/ {
+              if (in_version == 1) {
+                if (in_links == 1 && has_links == 0) {
+                  print "For version history and detailed changes, see the [Package Changelog](https://github.com/Pippapips/ZenECS/blob/main/Packages/com.zenecs.adapter.unity/CHANGELOG.md)."
+                }
+                exit
+              }
+            }
+            /^### Security$/ {
+              if (in_version == 1) {
+                skip_security=1
+                next
+              }
+            }
+            /^### [A-Z]/ {
+              if (in_version == 1) {
+                if (skip_security == 1 && $0 !~ "^### Security$") {
+                  skip_security=0
+                }
+                if ($0 ~ "^### Security$") {
+                  next
+                }
+              }
+            }
+            in_links == 1 && /^- \[/ {
+              has_links=1
+            }
+            in_version == 1 && skip_security == 0 && in_links == 0 {
+              print $0
+            }
+            END {
+              if (found_version == 0) {
+                print "Error: Version " ver_esc " not found" > "/dev/stderr"
+                exit 1
+              }
+              if (in_links == 1 && has_links == 0) {
+                print "For version history and detailed changes, see the [Package Changelog](https://github.com/Pippapips/ZenECS/blob/main/Packages/com.zenecs.adapter.unity/CHANGELOG.md)."
+              }
+            }
+          ' "$CHANGELOG" > /tmp/adapter_changelog.md || {
+            echo "has_changelog=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Failed to extract changelog"
+            exit 0
+          }
+          
+          CHANGELOG_SIZE=$(wc -c < /tmp/adapter_changelog.md | tr -d ' ')
+          if [ "$CHANGELOG_SIZE" -lt 50 ]; then
+            echo "has_changelog=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Changelog too short"
+          else
+            echo "has_changelog=true" >> $GITHUB_OUTPUT
+            echo "✅ Extracted Adapter Unity changelog ($CHANGELOG_SIZE bytes)"
+          fi
+
+      - name: Prepare Adapter Unity Release Body
+        run: |
+          set -e
+          VER="${{ needs.split.outputs.adapter }}"
+          DATE="${{ steps.date.outputs.date }}"
+          CORE_VER="${{ steps.core_dep.outputs.version }}"
+          
+          {
+            echo "## ZenECS Adapter Unity v${VER}"
+            echo ""
+            echo "**Release Date:** ${DATE}"
+            echo ""
+            
+            echo "### 📝 Changes"
+            echo ""
+            if [ "${{ steps.changelog_adapter.outputs.has_changelog }}" = "true" ]; then
+              cat /tmp/adapter_changelog.md
+              echo ""
+            else
+              echo "For detailed changelog, see the [Package Changelog](https://github.com/Pippapips/ZenECS/blob/main/Packages/com.zenecs.adapter.unity/CHANGELOG.md)."
+              echo ""
+            fi
+            
+            echo "### 📦 Installation"
+            echo ""
+            echo "**Unity Package Manager:**"
+            echo "\`\`\`"
+            echo "https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.adapter.unity#upm-adapter-unity-${VER}"
+            echo "\`\`\`"
+            echo ""
+            echo "**Note:** This package requires \`com.zenecs.core\` as a dependency."
+            echo ""
+            echo "### 📚 Resources"
+            echo ""
+            echo "- [Package README](https://github.com/Pippapips/ZenECS/blob/main/Packages/com.zenecs.adapter.unity/README.md)"
+            echo "- [Installation Guide](https://github.com/Pippapips/ZenECS/blob/main/Docs/getting-started/install-upm.md)"
+            echo "- [Unity Adapter Documentation](https://github.com/Pippapips/ZenECS/tree/main/Docs/adapter-unity)"
+            echo "- [Package Changelog](https://github.com/Pippapips/ZenECS/blob/main/Packages/com.zenecs.adapter.unity/CHANGELOG.md)"
+            echo ""
+            echo "### 🔗 Related Links"
+            echo ""
+            echo "- [All Releases](https://github.com/Pippapips/ZenECS/releases)"
+            if [ -n "${CORE_VER}" ] && [ "${CORE_VER}" != "latest" ]; then
+              echo "- [ZenECS Core v${CORE_VER}](https://github.com/Pippapips/ZenECS/releases/tag/upm-core-${CORE_VER})"
+            else
+              echo "- [ZenECS Core Releases](https://github.com/Pippapips/ZenECS/releases?q=upm-core-)"
+            fi
+            echo "- [Documentation](https://github.com/Pippapips/ZenECS/tree/main/Docs)"
+            echo "- [Repository](https://github.com/Pippapips/ZenECS)"
+          } > /tmp/adapter_release_body.md
+
+      - name: Create Adapter Unity Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: upm-adapter-unity-${{ needs.split.outputs.adapter }}
+          name: ZenECS Adapter Unity v${{ needs.split.outputs.adapter }}
+          body_path: /tmp/adapter_release_body.md
+          draft: false
+          prerelease: false
+
+  summary:
+    runs-on: ubuntu-latest
+    needs: split
+    if: always()
+    steps:
+      - name: Summary
+        run: |
+          echo "## Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ needs.split.outputs.core }}" ]; then
+            echo "✅ Core: upm-core-${{ needs.split.outputs.core }}" >> $GITHUB_STEP_SUMMARY
+            echo "   - Tag: \`upm-core-${{ needs.split.outputs.core }}\`" >> $GITHUB_STEP_SUMMARY
+            echo "   - Release: [ZenECS Core v${{ needs.split.outputs.core }}](https://github.com/${{ github.repository }}/releases/tag/upm-core-${{ needs.split.outputs.core }})" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ -n "${{ needs.split.outputs.adapter }}" ]; then
+            echo "✅ Adapter Unity: upm-adapter-unity-${{ needs.split.outputs.adapter }}" >> $GITHUB_STEP_SUMMARY
+            echo "   - Tag: \`upm-adapter-unity-${{ needs.split.outputs.adapter }}\`" >> $GITHUB_STEP_SUMMARY
+            echo "   - Release: [ZenECS Adapter Unity v${{ needs.split.outputs.adapter }}](https://github.com/${{ github.repository }}/releases/tag/upm-adapter-unity-${{ needs.split.outputs.adapter }})" >> $GITHUB_STEP_SUMMARY
+          fi
+

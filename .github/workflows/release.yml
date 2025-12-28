@@ -1,0 +1,225 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag name (e.g., v1.0.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write   # GitHub Release 및 태그 푸시
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      tag_name: ${{ steps.version.outputs.tag_name }}
+    steps:
+      - name: Extract tag name
+        id: tag_extract
+        run: |
+          # For workflow_dispatch, use the input tag_name; otherwise use GITHUB_REF_NAME
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG_NAME="${{ github.event.inputs.tag_name }}"
+          else
+            TAG_NAME="${GITHUB_REF_NAME}"
+          fi
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "Tag name: $TAG_NAME"
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.tag_extract.outputs.tag_name }}
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          TAG_NAME="${{ steps.tag_extract.outputs.tag_name }}"
+          VER="${TAG_NAME#v}"
+          echo "version=$VER" >> $GITHUB_OUTPUT
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "Release version: $VER (from tag: $TAG_NAME)"
+
+      - name: Read package versions
+        id: pkg_versions_prep
+        run: |
+          set -e
+          CORE_JSON="Packages/com.zenecs.core/package.json"
+          ADAPT_JSON="Packages/com.zenecs.adapter.unity/package.json"
+          
+          if ! command -v jq >/dev/null 2>&1; then
+            echo "Installing jq..."
+            sudo apt-get update -y && sudo apt-get install -y jq
+          fi
+          
+          core_v=$(jq -r '.version' "$CORE_JSON")
+          adapt_v=$(jq -r '.version' "$ADAPT_JSON")
+          
+          echo "core=$core_v" >> $GITHUB_OUTPUT
+          echo "adapter=$adapt_v" >> $GITHUB_OUTPUT
+          
+          echo "Core version: $core_v"
+          echo "Adapter Unity version: $adapt_v"
+          echo "Note: Packages are versioned independently"
+
+      - name: Prepare release notes
+        id: notes
+        run: |
+          echo "has_notes=false" >> $GITHUB_OUTPUT
+          echo "⚠️ Using auto-generated release notes (changelog.md removed)"
+
+      - name: Read package versions for release notes
+        id: pkg_versions_auto
+        run: |
+          set -e
+          CORE_JSON="Packages/com.zenecs.core/package.json"
+          ADAPT_JSON="Packages/com.zenecs.adapter.unity/package.json"
+          
+          if ! command -v jq >/dev/null 2>&1; then
+            echo "Installing jq..."
+            sudo apt-get update -y && sudo apt-get install -y jq
+          fi
+          
+          core_v=$(jq -r '.version' "$CORE_JSON")
+          adapt_v=$(jq -r '.version' "$ADAPT_JSON")
+          
+          echo "core=$core_v" >> $GITHUB_OUTPUT
+          echo "adapter=$adapt_v" >> $GITHUB_OUTPUT
+          
+          echo "Core version: $core_v"
+          echo "Adapter Unity version: $adapt_v"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag_name }}
+          body: |
+            ## 📦 Package Versions
+            
+            This release includes the following package versions:
+            
+            - **ZenECS Core**: `${{ steps.pkg_versions_auto.outputs.core }}`
+            - **ZenECS Adapter Unity**: `${{ steps.pkg_versions_auto.outputs.adapter }}`
+            
+            ## 📥 Installation
+            
+            ### Unity Package Manager (Recommended)
+            
+            **Core:**
+            ```
+            https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.core#upm-core-${{ steps.pkg_versions_auto.outputs.core }}
+            ```
+            
+            **Adapter Unity:**
+            ```
+            https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.adapter.unity#upm-adapter-unity-${{ steps.pkg_versions_auto.outputs.adapter }}
+            ```
+            
+            See [Installation Guide](https://github.com/Pippapips/ZenECS/blob/main/Docs/getting-started/install-upm.md) for details.
+            
+            ## 📝 Changelog
+            
+            For detailed changelog, see individual package changelogs:
+            - [Core Changelog](https://github.com/Pippapips/ZenECS/blob/main/Packages/com.zenecs.core/CHANGELOG.md)
+            - [Adapter Unity Changelog](https://github.com/Pippapips/ZenECS/blob/main/Packages/com.zenecs.adapter.unity/CHANGELOG.md)
+          draft: false
+          prerelease: false
+
+  upm-tags:
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          # Use the same tag name from prepare job
+          VER="${{ needs.prepare.outputs.version }}"
+          TAG_NAME="${{ needs.prepare.outputs.tag_name }}"
+          echo "version=$VER" >> $GITHUB_OUTPUT
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "UPM tag version: $VER (from tag: $TAG_NAME)"
+
+      - name: Read package versions
+        id: packages
+        run: |
+          set -e
+          CORE_JSON="Packages/com.zenecs.core/package.json"
+          ADAPT_JSON="Packages/com.zenecs.adapter.unity/package.json"
+          
+          if ! command -v jq >/dev/null 2>&1; then
+            echo "Installing jq..."
+            sudo apt-get update -y && sudo apt-get install -y jq
+          fi
+          
+          core_v=$(jq -r '.version' "$CORE_JSON")
+          adapt_v=$(jq -r '.version' "$ADAPT_JSON")
+          
+          echo "core=$core_v" >> $GITHUB_OUTPUT
+          echo "adapter=$adapt_v" >> $GITHUB_OUTPUT
+          
+          echo "Core version: $core_v"
+          echo "Adapter Unity version: $adapt_v"
+          
+          # Note: Packages are versioned independently, so no version matching check needed
+
+      - name: Create UPM Core tag
+        if: ${{ steps.packages.outputs.core != '' }}
+        run: |
+          set -e
+          CORE_SPLIT_COMMIT=$(git subtree split --prefix=Packages/com.zenecs.core)
+          echo "Core split at $CORE_SPLIT_COMMIT"
+          git tag -a "upm-core-${{ steps.packages.outputs.core }}" \
+            -m "UPM Core v${{ steps.packages.outputs.core }} (from release ${{ needs.prepare.outputs.tag_name }})" \
+            "$CORE_SPLIT_COMMIT"
+          git push origin "refs/tags/upm-core-${{ steps.packages.outputs.core }}"
+          echo "✅ Created tag: upm-core-${{ steps.packages.outputs.core }}"
+
+      - name: Create UPM Adapter Unity tag
+        if: ${{ steps.packages.outputs.adapter != '' }}
+        run: |
+          set -e
+          ADAPT_SPLIT_COMMIT=$(git subtree split --prefix=Packages/com.zenecs.adapter.unity)
+          echo "Adapter Unity split at $ADAPT_SPLIT_COMMIT"
+          git tag -a "upm-adapter-unity-${{ steps.packages.outputs.adapter }}" \
+            -m "UPM Adapter Unity v${{ steps.packages.outputs.adapter }} (from release ${{ needs.prepare.outputs.tag_name }})" \
+            "$ADAPT_SPLIT_COMMIT"
+          git push origin "refs/tags/upm-adapter-unity-${{ steps.packages.outputs.adapter }}"
+          echo "✅ Created tag: upm-adapter-unity-${{ steps.packages.outputs.adapter }}"
+
+      - name: Summary
+        run: |
+          echo "## UPM Tags Created" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ steps.packages.outputs.core }}" ]; then
+            echo "✅ Core: \`upm-core-${{ steps.packages.outputs.core }}\`" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ -n "${{ steps.packages.outputs.adapter }}" ]; then
+            echo "✅ Adapter Unity: \`upm-adapter-unity-${{ steps.packages.outputs.adapter }}\`" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "These tags are used for Unity Package Manager (UPM) installation." >> $GITHUB_STEP_SUMMARY
