@@ -16,47 +16,47 @@ Performance benchmarks for ZenECS Core operations using BenchmarkDotNet.
 cd Packages/com.zenecs.core/Benchmarks~
 dotnet run -c Release
 ```
-⏱️ **예상 실행 시간: 5-10분** (22개 벤치마크, 각각 15-20회 반복)
+⏱️ **Estimated execution time: 5-10 minutes** (22 benchmarks, 15-20 iterations each)
 
-**Quick Mode (빠른 테스트용):**
+**Quick Mode (for quick testing):**
 ```bash
 dotnet run -c Release -- --quick
-# 또는
+# or
 dotnet run -c Release -- -q
 ```
-⏱️ **예상 실행 시간: 1-2분** (반복 횟수 감소, 정확도는 낮을 수 있음)
+⏱️ **Estimated execution time: 1-2 minutes** (reduced iterations, may be less accurate)
 
 ### Run Specific Benchmark
 
-특정 벤치마크 클래스만 실행 (시간 단축):
+Run specific benchmark class only (time-saving):
 ```bash
-# Entity/Component 벤치마크만 실행 (~2-3분)
+# Run Entity/Component benchmarks only (~2-3 minutes)
 dotnet run -c Release -- --filter EntityComponentBenchmarks
 
-# Query 벤치마크만 실행 (~2-3분)
+# Run Query benchmarks only (~2-3 minutes)
 dotnet run -c Release -- --filter QueryBenchmarks
 
-# System 벤치마크만 실행 (~1-2분)
+# Run System benchmarks only (~1-2 minutes)
 dotnet run -c Release -- --filter SystemBenchmarks
 
-# Message Bus 벤치마크만 실행 (~1분)
+# Run Message Bus benchmarks only (~1 minute)
 dotnet run -c Release -- --filter MessageBusBenchmarks
 ```
 
-### 실행 시간 안내
+### Execution Time Guide
 
-BenchmarkDotNet은 정확한 결과를 위해 각 벤치마크를 여러 번 반복 실행합니다:
+BenchmarkDotNet runs each benchmark multiple times for accurate results:
 
-- **Full Mode**: 각 벤치마크당 약 15-20회 반복 (정확한 결과)
-- **Quick Mode**: 각 벤치마크당 약 3회 반복 (빠른 테스트용)
+- **Full Mode**: Approximately 15-20 iterations per benchmark (accurate results)
+- **Quick Mode**: Approximately 3 iterations per benchmark (for quick testing)
 
-**총 벤치마크 수**: 22개 메서드
-- EntityComponentBenchmarks: 9개
-- QueryBenchmarks: 7개
-- SystemBenchmarks: 4개
-- MessageBusBenchmarks: 2개
+**Total benchmarks**: 22 methods
+- EntityComponentBenchmarks: 9 methods
+- QueryBenchmarks: 7 methods
+- SystemBenchmarks: 4 methods
+- MessageBusBenchmarks: 2 methods
 
-**실행 중단**: `Ctrl+C`로 언제든지 중단 가능합니다.
+**Interrupt execution**: You can interrupt at any time with `Ctrl+C`.
 
 ## Benchmark Categories
 
