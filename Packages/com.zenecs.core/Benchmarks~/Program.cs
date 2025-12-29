@@ -51,10 +51,10 @@ namespace ZenECS.Core.Benchmarks
             }
             
             // Run benchmarks
-            var summary = BenchmarkRunner.Run(typeof(Program).Assembly, config);
+            var summaries = BenchmarkRunner.Run(typeof(Program).Assembly, config);
             
             // Display summary
-            if (summary.HasCriticalValidationErrors)
+            if (summaries.Length > 0 && summaries.Any(s => s.HasCriticalValidationErrors))
             {
                 Console.WriteLine("\n❌ Benchmark validation failed!");
                 Environment.Exit(1);
