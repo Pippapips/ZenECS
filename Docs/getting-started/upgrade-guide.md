@@ -36,7 +36,7 @@ Before upgrading:
 
 **Unity (UPM):**
 ```
-https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.core#v1.0.0
+https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.core
 ```
 
 **NuGet:**

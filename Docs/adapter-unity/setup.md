@@ -21,12 +21,12 @@ See [Install via UPM](../getting-started/install-upm.md) for detailed instructio
 
 **Quick install:**
 1. Package Manager → **+** → **Add package from git URL**
-2. Enter: `https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.core#v1.0.0`
+2. Enter: `https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.core`
 
 ### Step 2: Install Unity Adapter
 
 1. Package Manager → **+** → **Add package from git URL**
-2. Enter: `https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.adapter.unity#v1.0.0`
+2. Enter: `https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.adapter.unity`
 
 ### Step 3: Verify Installation
 

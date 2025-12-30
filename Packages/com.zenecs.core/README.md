@@ -75,7 +75,7 @@
 1. Open **Package Manager** → **Add package from git URL…**
 2. Enter the following URL:
    ```
-   https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.core#v1.0.0
+   https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.core
    ```
 
 #### Local Development

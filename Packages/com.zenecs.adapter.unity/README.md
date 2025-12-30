@@ -41,7 +41,7 @@
 1. Open **Package Manager** → **Add package from git URL…**
 2. Enter the following URL:
    ```
-   https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.adapter.unity#v1.0.0
+   https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.adapter.unity
    ```
 
 #### Local Development
@@ -51,7 +51,7 @@ Place the repository under your project and reference via `file:` URL or add an 
 ```json
 {
   "dependencies": {
-    "com.zenecs.core": "https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.core#v1.0.0",
+    "com.zenecs.core": "https://github.com/Pippapips/ZenECS.git?path=Packages/com.zenecs.core",
     "com.zenecs.adapter.unity": "file:../../ZenECS/Packages/com.zenecs.adapter.unity"
   }
 }
