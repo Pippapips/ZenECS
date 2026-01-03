@@ -97,6 +97,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
             // Directory path where current asset is located
             var blueprintPath = AssetDatabase.GetAssetPath(blueprint);
+            if (string.IsNullOrEmpty(blueprintPath)) return;
             var blueprintDir = System.IO.Path.GetDirectoryName(blueprintPath).Replace('\\', '/');
 
             serializedObject.Update();
@@ -287,6 +288,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
             // Directory path where current asset is located
             var blueprintPath = AssetDatabase.GetAssetPath(blueprint);
+            if (string.IsNullOrEmpty(blueprintPath)) return;
             var blueprintDir = System.IO.Path.GetDirectoryName(blueprintPath).Replace('\\', '/');
 
             serializedObject.Update();
