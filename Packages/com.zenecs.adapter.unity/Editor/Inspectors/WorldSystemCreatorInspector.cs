@@ -404,7 +404,7 @@ namespace ZenECS.Adapter.Unity.Editor.Inspectors
 
             EditorGUILayout.Space(4);
 
-            _list!.DoLayoutList();
+            if (_list != null) _list.DoLayoutList();
         }
 
         private void DrawPresetList()
