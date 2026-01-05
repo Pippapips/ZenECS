@@ -1,7 +1,7 @@
 # ZenECS
 
 [![ZenECS Core](https://img.shields.io/badge/ZenECS%20Core-1.1.0-orange.svg)](https://github.com/Pippapips/ZenECS/releases/tag/upm-core-1.1.0)
-[![ZenECS Adapter Unity](https://img.shields.io/badge/ZenECS%20Adapter%20Unity-1.0.0-orange.svg)](https://github.com/Pippapips/ZenECS/releases/tag/upm-adapter-unity-1.0.0)
+[![ZenECS Adapter Unity](https://img.shields.io/badge/ZenECS%20Adapter%20Unity-1.0.2-orange.svg)](https://github.com/Pippapips/ZenECS/releases/tag/upm-adapter-unity-1.0.2)
 [![NuGet Package](https://img.shields.io/badge/NuGet-1.1.0-blue.svg?logo=nuget)](https://github.com/Pippapips/ZenECS/packages?package_type=nuget)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![.NET Standard](https://img.shields.io/badge/.NET-Standard%202.1-blue.svg)](https://docs.microsoft.com/en-us/dotnet/standard/net-standard)
