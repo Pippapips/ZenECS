@@ -189,8 +189,7 @@ jobs:
             --source "$PACKAGE_SOURCE" \
             --api-key "$GITHUB_TOKEN" \
             --skip-duplicate \
-            --no-symbols \
-            --verbosity detailed || {
+            --no-symbols || {
               EXIT_CODE=$?
               echo "❌ Push failed with exit code: $EXIT_CODE"
               
@@ -209,8 +208,7 @@ jobs:
               dotnet nuget push "$PACKAGE_FILE" \
                 --source github \
                 --skip-duplicate \
-                --no-symbols \
-                --verbosity detailed || {
+                --no-symbols || {
                   echo "❌ All push methods failed"
                   exit $EXIT_CODE
                 }

@@ -657,23 +657,14 @@ namespace ZenECS.Core.Internal
         }
 
         /// <summary>
-        /// Tries to get the singleton entity for component type <typeparamref name="T"/>.
-        /// </summary>
-        /// <typeparam name="T">Singleton component value type.</typeparam>
-        /// <param name="entity">
-        /// When this method returns, contains the owning entity if it exists;
-        /// otherwise the default value.
-        /// </param>
-        /// <returns>
-        /// <see langword="true"/> if a singleton entity exists; otherwise
-        /// <see langword="false"/>.
-        /// </returns>
-        /// <summary>
         /// Tries to get the singleton entity for a given type.
         /// </summary>
         /// <param name="type">Singleton component type.</param>
         /// <param name="entity">Output entity if found.</param>
-        /// <returns>True if singleton entity exists.</returns>
+        /// <returns>
+        /// <see langword="true"/> if a singleton entity exists; otherwise
+        /// <see langword="false"/>.
+        /// </returns>
         internal bool TryGetSingletonEntityInternalTyped(Type type, out Entity entity)
         {
             return _singletonIndex.TryGetValue(type, out entity);
