@@ -668,6 +668,17 @@ namespace ZenECS.Core.Internal
         /// <see langword="true"/> if a singleton entity exists; otherwise
         /// <see langword="false"/>.
         /// </returns>
+        /// <summary>
+        /// Tries to get the singleton entity for a given type.
+        /// </summary>
+        /// <param name="type">Singleton component type.</param>
+        /// <param name="entity">Output entity if found.</param>
+        /// <returns>True if singleton entity exists.</returns>
+        internal bool TryGetSingletonEntityInternalTyped(Type type, out Entity entity)
+        {
+            return _singletonIndex.TryGetValue(type, out entity);
+        }
+
         internal bool TryGetSingletonEntityInternal<T>(out Entity entity) where T : struct
         {
             var e = EnsureSingletonConsistency<T>(out bool has);
@@ -689,20 +700,25 @@ namespace ZenECS.Core.Internal
         /// Component value type implementing <see cref="IWorldSingletonComponent"/>.
         /// </typeparam>
         /// <param name="value">Singleton component value.</param>
-        internal void SetSingleton<T>(in T value) where T : struct, IWorldSingletonComponent
+        /// <returns>
+        /// The entity handle for the singleton. If a singleton already exists,
+        /// returns the existing entity. Otherwise, returns a newly created entity.
+        /// </returns>
+        internal Entity SetSingleton<T>(in T value) where T : struct, IWorldSingletonComponent
         {
             // Check if exists
             if (TryGetSingletonEntityInternal<T>(out var e))
             {
                 ReplaceComponent(e, value);
                 _singletonIndex[typeof(T)] = e;
-                return;
+                return e;
             }
 
             // Create new
             var newEntity = CreateEntity();
             AddComponent(newEntity, value);
             _singletonIndex[typeof(T)] = newEntity;
+            return newEntity;
         }
 
         /// <summary>
@@ -861,21 +877,27 @@ namespace ZenECS.Core.Internal
         /// </summary>
         /// <param name="singletonType">Component value type marked as singleton.</param>
         /// <param name="boxed">Boxed component value.</param>
-        internal void SetSingletonTyped(Type? singletonType, object? boxed)
+        /// <returns>
+        /// The entity handle for the singleton. If a singleton already exists,
+        /// returns the existing entity. Otherwise, returns a newly created entity.
+        /// If <paramref name="singletonType"/> is null, returns an invalid entity.
+        /// </returns>
+        internal Entity SetSingletonTyped(Type? singletonType, object? boxed)
         {
-            if (singletonType == null) return;
+            if (singletonType == null) return default;
  
             if (_singletonIndex.TryGetValue(singletonType, out var owner))
             {
                 ReplaceComponentBoxed(owner, boxed);
                 _singletonIndex[singletonType] = owner;
-                return;
+                return owner;
             }
             
             // Create new
             var newEntity = CreateEntity();
             AddComponentBoxed(newEntity, boxed);
             _singletonIndex[singletonType] = newEntity;
+            return newEntity;
         }
 
         /// <summary>

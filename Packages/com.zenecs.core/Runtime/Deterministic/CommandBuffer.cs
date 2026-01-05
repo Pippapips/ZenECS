@@ -130,16 +130,55 @@ namespace ZenECS.Core.Internal
         // ──────────────────────────────────────────────────────────────────
 
         /// <inheritdoc/>
-        public void SetSingleton<T>(in T value)
+        public Entity SetSingleton<T>(in T value)
             where T : struct, IWorldSingletonComponent
         {
-            _q.Enqueue(new SetSingletonOp<T>(value));
+            // World is an internal sealed partial and lives in the same assembly,
+            // so we can downcast to access the internal singleton APIs.
+            if (_world is not World world)
+                throw new InvalidOperationException("CommandBuffer expects a World instance.");
+
+            // Check if singleton entity already exists
+            Entity entity;
+            if (world.TryGetSingletonEntityInternal<T>(out var existingEntity))
+            {
+                entity = existingEntity;
+            }
+            else
+            {
+                // Reserve a new entity for the singleton
+                entity = world.ReserveEntity();
+            }
+
+            _q.Enqueue(new SetSingletonOp<T>(value, entity));
+            return entity;
         }
 
         /// <inheritdoc/>
-        public void SetSingletonTyped(Type type, object? boxed)
+        public Entity SetSingletonTyped(Type type, object? boxed)
         {
-            _q.Enqueue(new SetSingletonTypedOp(type, boxed));
+            if (boxed == null)
+                return default; // Invalid entity
+
+            // World is an internal sealed partial and lives in the same assembly,
+            // so we can downcast to access the internal singleton APIs.
+            if (_world is not World world)
+                throw new InvalidOperationException("CommandBuffer expects a World instance.");
+
+            // Check if singleton entity already exists
+            Entity entity;
+            if (world.TryGetSingletonEntityInternalTyped(type, out var existingEntity))
+            {
+                entity = existingEntity;
+            }
+            else
+            {
+                // Reserve a new entity for the singleton
+                entity = world.ReserveEntity();
+            }
+
+            _q.Enqueue(new SetSingletonTypedOp(type, boxed, entity));
+            return entity;
         }
 
         /// <inheritdoc/>
@@ -431,14 +470,17 @@ namespace ZenECS.Core.Internal
             where T : struct, IWorldSingletonComponent
         {
             private readonly T _value;
+            private readonly Entity _entity;
 
             /// <summary>
             /// Creates a new singleton-set command.
             /// </summary>
             /// <param name="value">Singleton value to assign.</param>
-            public SetSingletonOp(in T value)
+            /// <param name="entity">Entity handle for the singleton (reserved or existing).</param>
+            public SetSingletonOp(in T value, Entity entity)
             {
                 _value = value;
+                _entity = entity;
             }
 
             /// <inheritdoc/>
@@ -446,10 +488,20 @@ namespace ZenECS.Core.Internal
             {
                 if (w is not World world) return;
 
-                // Internal SetSingleton implementation is expected to:
-                //  • Replace value if singleton exists.
-                //  • Otherwise create a dedicated entity and attach the singleton.
-                world.SetSingleton(_value);
+                // Check if entity is already alive (existing singleton)
+                if (w.IsAlive(_entity))
+                {
+                    // Replace existing singleton value
+                    world.ReplaceComponent(_entity, _value);
+                    // Singleton index is updated by ReplaceComponent via addSingletonIndex
+                }
+                else
+                {
+                    // Create new singleton entity
+                    world.CreateReserved(_entity);
+                    world.AddComponent(_entity, _value);
+                    // Singleton index is updated by AddComponent via addSingletonIndex
+                }
             }
         }
 
@@ -460,24 +512,41 @@ namespace ZenECS.Core.Internal
         {
             private readonly Type _type;
             private readonly object? _boxed;
+            private readonly Entity _entity;
 
             /// <summary>
             /// Creates a new typed singleton-set command.
             /// </summary>
             /// <param name="type">Singleton component type.</param>
             /// <param name="boxed">Boxed singleton value.</param>
-            public SetSingletonTypedOp(Type type, object? boxed)
+            /// <param name="entity">Entity handle for the singleton (reserved or existing).</param>
+            public SetSingletonTypedOp(Type type, object? boxed, Entity entity)
             {
                 _type = type;
                 _boxed = boxed;
+                _entity = entity;
             }
 
             /// <inheritdoc/>
             public void Apply(IWorld w)
             {
                 if (w is not World world) return;
+                if (_boxed == null) return;
 
-                world.SetSingletonTyped(_type, _boxed);
+                // Check if entity is already alive (existing singleton)
+                if (w.IsAlive(_entity))
+                {
+                    // Replace existing singleton value
+                    world.ReplaceComponentBoxed(_entity, _boxed);
+                    // Singleton index is updated by ReplaceComponentBoxed via addSingletonIndex
+                }
+                else
+                {
+                    // Create new singleton entity
+                    world.CreateReserved(_entity);
+                    world.AddComponentBoxed(_entity, _boxed);
+                    // Singleton index is updated by AddComponentBoxed via addSingletonIndex
+                }
             }
         }
 

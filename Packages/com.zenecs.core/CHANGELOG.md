@@ -15,6 +15,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] - 2025-01-XX
+
+### Changed
+
+#### API Improvements
+- **ICommandBuffer.SetSingleton**: Now returns `Entity` instead of `void`, matching the behavior of `CreateEntity()`. This allows callers to obtain a reference to the singleton entity immediately after setting it, enabling further operations on the singleton entity within the same command buffer scope.
+  - `Entity SetSingleton<T>(in T value)` - Returns the singleton entity (existing or newly created)
+  - `Entity SetSingletonTyped(Type type, object? boxed)` - Returns the singleton entity (existing or newly created)
+  - **Internal**: `World.SetSingleton<T>()` and `World.SetSingletonTyped()` now also return `Entity` for consistency
+
+### Migration Guide
+
+If you're using `SetSingleton` in your code, you can now capture the returned entity:
+
+```csharp
+// Before (1.0.0)
+using var cmd = world.BeginWrite();
+cmd.SetSingleton(new MySingletonComponent());
+
+// After (1.1.0) - Optional: capture the entity
+using var cmd = world.BeginWrite();
+var singletonEntity = cmd.SetSingleton(new MySingletonComponent());
+// Now you can use singletonEntity for additional operations
+```
+
+**Note**: This is a non-breaking change. Existing code will continue to work, but you can now optionally use the returned entity value.
+
+---
+
 ## [1.0.0] - 2025-12-27
 
 ### Added
@@ -77,7 +106,8 @@ If upgrading from pre-1.0 versions:
 
 ## Links
 
-- [Unreleased]: https://github.com/Pippapips/ZenECS/compare/1.0.0...HEAD
+- [Unreleased]: https://github.com/Pippapips/ZenECS/compare/1.1.0...HEAD
+- [1.1.0]: https://github.com/Pippapips/ZenECS/releases/tag/v1.1.0
 - [1.0.0]: https://github.com/Pippapips/ZenECS/releases/tag/v1.0.0
 
 ---

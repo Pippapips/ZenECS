@@ -164,14 +164,22 @@ namespace ZenECS.Core
         /// </summary>
         /// <typeparam name="T">Singleton component type.</typeparam>
         /// <param name="value">New singleton value.</param>
+        /// <returns>
+        /// An <see cref="Entity"/> handle for the singleton entity. If a singleton
+        /// of type <typeparamref name="T"/> already exists, returns the existing
+        /// entity. Otherwise, returns a newly created entity.
+        /// </returns>
         /// <remarks>
         /// <para>
         /// If a singleton of type <typeparamref name="T"/> already exists,
         /// its value is replaced. Otherwise, a dedicated singleton entity is
         /// created to hold the new value.
         /// </para>
+        /// <para>
+        /// The entity becomes alive only when the buffer is applied at a barrier.
+        /// </para>
         /// </remarks>
-        void SetSingleton<T>(in T value) where T : struct, IWorldSingletonComponent;
+        Entity SetSingleton<T>(in T value) where T : struct, IWorldSingletonComponent;
 
         /// <summary>
         /// Records setting a singleton component using a boxed value.
@@ -180,12 +188,18 @@ namespace ZenECS.Core
         /// <param name="boxed">
         /// Boxed singleton value; must be assignable to <paramref name="type"/>.
         /// </param>
+        /// <returns>
+        /// An <see cref="Entity"/> handle for the singleton entity. If a singleton
+        /// of the specified type already exists, returns the existing entity.
+        /// Otherwise, returns a newly created entity. If <paramref name="boxed"/>
+        /// is <see langword="null"/>, returns an invalid entity.
+        /// </returns>
         /// <remarks>
         /// If a singleton of the specified type already exists, its value is replaced.
         /// Otherwise, a dedicated singleton entity is created. If
         /// <paramref name="boxed"/> is <see langword="null"/>, the operation is ignored.
         /// </remarks>
-        void SetSingletonTyped(Type type, object? boxed);
+        Entity SetSingletonTyped(Type type, object? boxed);
 
         /// <summary>
         /// Records removal of a singleton component and its dedicated entity.
