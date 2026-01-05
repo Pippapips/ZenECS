@@ -1,0 +1,107 @@
+name: Update README Badges
+
+on:
+  push:
+    tags:
+      - 'upm-core-*'
+      - 'upm-adapter-unity-*'
+      - 'nuget-core-*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-badges:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Extract versions from package.json
+        id: versions
+        run: |
+          if ! command -v jq >/dev/null 2>&1; then
+            echo "Installing jq..."
+            sudo apt-get update -y && sudo apt-get install -y jq
+          fi
+          
+          CORE_JSON="Packages/com.zenecs.core/package.json"
+          ADAPT_JSON="Packages/com.zenecs.adapter.unity/package.json"
+          
+          CORE_VER=$(jq -r '.version' "$CORE_JSON")
+          ADAPT_VER=$(jq -r '.version' "$ADAPT_JSON")
+          
+          # Extract NuGet version from tag if exists
+          if [[ "${{ github.ref_name }}" =~ ^nuget-core-(.+)$ ]]; then
+            NUGET_VER="${BASH_REMATCH[1]}"
+          else
+            # Try to get from csproj
+            if [ -f "src/ZenECS.Core.csproj" ]; then
+              NUGET_VER=$(grep -oP '<Version>\K[^<]+' src/ZenECS.Core.csproj | head -1 || echo "$CORE_VER")
+            else
+              NUGET_VER="$CORE_VER"
+            fi
+          fi
+          
+          echo "core=$CORE_VER" >> $GITHUB_OUTPUT
+          echo "adapter=$ADAPT_VER" >> $GITHUB_OUTPUT
+          echo "nuget=$NUGET_VER" >> $GITHUB_OUTPUT
+          
+          echo "Core version: $CORE_VER"
+          echo "Adapter Unity version: $ADAPT_VER"
+          echo "NuGet version: $NUGET_VER"
+
+      - name: Update README badges
+        run: |
+          CORE_VER="${{ steps.versions.outputs.core }}"
+          ADAPT_VER="${{ steps.versions.outputs.adapter }}"
+          NUGET_VER="${{ steps.versions.outputs.nuget }}"
+          
+          # Update Core badge
+          sed -i "s|\[!\[ZenECS Core\](https://img.shields.io/badge/ZenECS%20Core-[^)]*)|[![ZenECS Core](https://img.shields.io/badge/ZenECS%20Core-${CORE_VER}-orange.svg)|g" README.md
+          sed -i "s|/releases/tag/upm-core-[^)]*|/releases/tag/upm-core-${CORE_VER})|g" README.md
+          
+          # Update Adapter Unity badge
+          sed -i "s|\[!\[ZenECS Adapter Unity\](https://img.shields.io/badge/ZenECS%20Adapter%20Unity-[^)]*)|[![ZenECS Adapter Unity](https://img.shields.io/badge/ZenECS%20Adapter%20Unity-${ADAPT_VER}-orange.svg)|g" README.md
+          sed -i "s|/releases/tag/upm-adapter-unity-[^)]*|/releases/tag/upm-adapter-unity-${ADAPT_VER})|g" README.md
+          
+          # Update NuGet badge
+          sed -i "s|\[!\[NuGet Package\](https://img.shields.io/badge/NuGet-[^)]*)|[![NuGet Package](https://img.shields.io/badge/NuGet-${NUGET_VER}-blue.svg?logo=nuget)|g" README.md
+          
+          echo "✅ Updated README badges"
+          echo "Core: $CORE_VER"
+          echo "Adapter Unity: $ADAPT_VER"
+          echo "NuGet: $NUGET_VER"
+
+      - name: Check for changes
+        id: check
+        run: |
+          if git diff --quiet README.md; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes to README.md"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "README.md has been updated"
+            git diff README.md
+          fi
+
+      - name: Commit and push changes
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          git add README.md
+          git commit -m "chore: Update README badges to latest versions
+
+          - Core: ${{ steps.versions.outputs.core }}
+          - Adapter Unity: ${{ steps.versions.outputs.adapter }}
+          - NuGet: ${{ steps.versions.outputs.nuget }}"
+          git push
+
