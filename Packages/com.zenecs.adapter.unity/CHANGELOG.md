@@ -14,6 +14,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.0] - 2026-04-03
+
+### Added
+
+- **EntityBlueprint**: Added `SpawnToBuffer(IWorld world, ICommandBuffer cmd, ISharedContextResolver? sharedContextResolver, Action<Entity>? onCreated = null)` to support command-buffer-based blueprint spawning.
+- Enables deterministic fixed-step pipelines to spawn blueprint entities and apply runtime components (for example, indexing) in the same simulation command path.
+
+### Changed
+
+- Clarified blueprint spawn paths: `Spawn(...)` remains deferred via the external command queue, while `SpawnToBuffer(...)` records creation directly into the active command buffer.
+
+---
+
 ## [1.1.0] - 2026-04-02
 
 ### Fixed

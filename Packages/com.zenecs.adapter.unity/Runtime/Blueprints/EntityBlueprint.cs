@@ -143,6 +143,36 @@ namespace ZenECS.Adapter.Unity.Blueprints
         }
 
         /// <summary>
+        /// Spawns an entity into the provided command buffer immediately (record-time),
+        /// applying blueprint components/contexts/binders in the same call.
+        /// </summary>
+        /// <param name="world">Target world.</param>
+        /// <param name="cmd">Command buffer to record entity creation and components.</param>
+        /// <param name="sharedContextResolver">Optional shared context resolver.</param>
+        /// <param name="onCreated">Optional callback invoked after blueprint application.</param>
+        /// <returns>
+        /// Reserved entity handle created by <see cref="ICommandBuffer.CreateEntity"/>.
+        /// Note: entity becomes alive when the command buffer is applied at barrier.
+        /// </returns>
+        public Entity SpawnToBuffer(
+            IWorld world,
+            ICommandBuffer cmd,
+            ISharedContextResolver? sharedContextResolver,
+            Action<Entity>? onCreated = null)
+        {
+            if (world == null) throw new ArgumentNullException(nameof(world));
+            if (cmd == null) throw new ArgumentNullException(nameof(cmd));
+            var e = cmd.CreateEntity();
+            // 1) Record component snapshot into same command buffer
+            ApplyComponents(world, e, cmd);
+            // 2) Contexts and binders are attached with existing world APIs
+            ApplyContexts(world, e, sharedContextResolver);
+            ApplyBinders(world, e);
+            onCreated?.Invoke(e);
+            return e;
+        }
+        
+        /// <summary>
         /// Applies component snapshot to the entity.
         /// </summary>
         private void ApplyComponents(IWorld world, Entity e, ICommandBuffer cmd)
