@@ -14,6 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] - 2026-04-02
+
+### Fixed
+
+- `SharedContextResolver` constructor now correctly branches based on Zenject usage, ensuring `Container` is injected when Zenject integration is enabled.
+
+---
+
 ## [1.0.0] - 2025-12-27
 
 ### Added

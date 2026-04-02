@@ -50,6 +50,8 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts
     /// </remarks>
     public sealed class SharedContextResolver : ISharedContextResolver
     {
+        private readonly Dictionary<Type, IContext> _contexts = new();
+        
 #if ZENECS_ZENJECT
         private readonly DiContainer? _container;
 
@@ -65,9 +67,7 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts
         {
             _container = container;
         }
-#endif
-        private readonly Dictionary<Type, IContext> _contexts = new();
-        
+#else
         /// <summary>
         /// Initializes a new resolver in manual mode (non-Zenject).
         /// </summary>
@@ -82,6 +82,7 @@ namespace ZenECS.Adapter.Unity.Binding.Contexts
         {
             
         }
+#endif
         
         /// <inheritdoc />
         public IContext? Resolve(SharedContextAsset marker)
