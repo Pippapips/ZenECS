@@ -16,7 +16,6 @@
 // ──────────────────────────────────────────────────────────────────────────────
 #nullable enable
 
-using System;
 using ZenECS.Adapter.Unity.Binding.Contexts;
 using ZenECS.Adapter.Unity.SystemPresets;
 using ZenECS.Core;
@@ -30,26 +29,19 @@ using UnityEngine;
 namespace ZenECS.Adapter.Unity.DI
 {
     /// <summary>
-    /// Zenject-based project installer for ZenECS.
+    /// Scene-level bootstrap for the ZenECS kernel and shared resolvers.
     /// </summary>
     /// <remarks>
     /// <para>
     /// When the <c>ZENECS_ZENJECT</c> scripting define is enabled, this
-    /// <see cref="ProjectInstaller"/> is used as a Zenject MonoInstaller to:
+    /// <see cref="ProjectInstaller"/> is used as a Zenject
+    /// <see cref="MonoInstaller"/> to create the kernel, bind shared services,
+    /// and publish them to <see cref="ZenEcsUnityBridge"/> during install.
     /// </para>
-    /// <list type="number">
-    /// <item><description>
-    /// Create the global <see cref="IKernel"/> via
-    /// <see cref="KernelLocator.CreateEcsDriverWithKernel(KernelOptions?, bool)"/>.
-    /// </description></item>
-        /// <item><description>
-        /// Bind the kernel and shared service resolvers into the Zenject container.
-        /// </description></item>
-    /// <item><description>
-    /// Expose the resolved services through <see cref="ZenEcsUnityBridge"/>
-    /// for convenient access by editor tooling and runtime code.
-    /// </description></item>
-    /// </list>
+    /// <para>
+    /// When Zenject is not available, the same services are assigned to the
+    /// bridge directly from <see cref="Awake"/>.
+    /// </para>
     /// </remarks>
 #if ZENECS_ZENJECT
     public sealed class ProjectInstaller : MonoInstaller
@@ -58,69 +50,81 @@ namespace ZenECS.Adapter.Unity.DI
     public sealed class ProjectInstaller : MonoBehaviour
 #endif
     {
+        /// <summary>
+        /// Default kernel options used when bootstrapping from this installer.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Both <see cref="KernelOptions.AutoSelectNewWorld"/> and
+        /// <see cref="KernelOptions.StepOnlyCurrentWhenSelected"/> are disabled
+        /// so that game code retains explicit control over world selection and
+        /// stepping.
+        /// </para>
+        /// </remarks>
+        static KernelOptions DefaultKernelOptions => new()
+        {
+            AutoSelectNewWorld = false,
+            StepOnlyCurrentWhenSelected = false,
+        };
+
 #if ZENECS_ZENJECT
         /// <summary>
-        /// Configures Zenject bindings for ZenECS kernel and resolvers.
+        /// Configures Zenject bindings for the ZenECS kernel and resolvers.
         /// </summary>
         /// <remarks>
         /// <para>
         /// This method:
         /// </para>
-        /// <list type="bullet">
+        /// <list type="number">
         /// <item><description>
-        /// Creates the kernel and assigns it to
-        /// <see cref="ZenEcsUnityBridge.Kernel"/>.
+        /// Creates the global <see cref="IKernel"/> via
+        /// <see cref="KernelLocator.CreateEcsDriverWithKernel(KernelOptions?, bool)"/>
+        /// and assigns it to <see cref="ZenEcsUnityBridge.Kernel"/>.
         /// </description></item>
         /// <item><description>
-        /// Binds the kernel instance into the container.
+        /// Binds the kernel instance into the Zenject container.
         /// </description></item>
         /// <item><description>
         /// Registers <see cref="ISharedContextResolver"/> and
-        /// <see cref="ISystemPresetResolver"/> as singletons.
+        /// <see cref="ISystemPresetResolver"/> as non-lazy singletons and
+        /// publishes each instance to <see cref="ZenEcsUnityBridge"/> through
+        /// <c>OnInstantiated</c> callbacks during install.
         /// </description></item>
         /// </list>
         /// </remarks>
         public override void InstallBindings()
         {
-            ZenEcsUnityBridge.Kernel = KernelLocator.CreateEcsDriverWithKernel(
-                new KernelOptions
-                {
-                    AutoSelectNewWorld = false,
-                    StepOnlyCurrentWhenSelected = false,
-                });
-
+            ZenEcsUnityBridge.Kernel = KernelLocator.CreateEcsDriverWithKernel(DefaultKernelOptions);
             Container.BindInstance(ZenEcsUnityBridge.Kernel);
-            Container.Bind<ISharedContextResolver>().To<SharedContextResolver>().AsSingle();
-            Container.Bind<ISystemPresetResolver>().To<SystemPresetResolver>().AsSingle();
-        }
 
+            Container.Bind<ISharedContextResolver>()
+                .To<SharedContextResolver>()
+                .AsSingle()
+                .OnInstantiated<ISharedContextResolver>((_, resolver) =>
+                    ZenEcsUnityBridge.SharedContextResolver = resolver)
+                .NonLazy();
+
+            Container.Bind<ISystemPresetResolver>()
+                .To<SystemPresetResolver>()
+                .AsSingle()
+                .OnInstantiated<ISystemPresetResolver>((_, resolver) =>
+                    ZenEcsUnityBridge.SystemPresetResolver = resolver)
+                .NonLazy();
+        }
+#else
         /// <summary>
-        /// Unity lifecycle callback used to export resolved services to
-        /// <see cref="ZenEcsUnityBridge"/>.
+        /// Unity lifecycle callback used to bootstrap ZenECS without Zenject.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// After Zenject has created and bound all services, this method
-        /// resolves the shared context and system preset resolvers and assigns
-        /// them to <see cref="ZenEcsUnityBridge"/> so that non-DI code and
-        /// editor tools can access them.
+        /// Creates the kernel and resolver instances, then assigns them to
+        /// <see cref="ZenEcsUnityBridge"/> so that non-DI code and editor tools
+        /// can access them.
         /// </para>
         /// </remarks>
         private void Awake()
         {
-            ZenEcsUnityBridge.SharedContextResolver = Container.Resolve<ISharedContextResolver>();
-            ZenEcsUnityBridge.SystemPresetResolver = Container.Resolve<ISystemPresetResolver>();
-        }
-#else
-        private void Awake()
-        {
-            ZenEcsUnityBridge.Kernel = KernelLocator.CreateEcsDriverWithKernel(
-                new KernelOptions
-                {
-                    AutoSelectNewWorld = false,
-                    StepOnlyCurrentWhenSelected = false,
-                });
-
+            ZenEcsUnityBridge.Kernel = KernelLocator.CreateEcsDriverWithKernel(DefaultKernelOptions);
             ZenEcsUnityBridge.SharedContextResolver = new SharedContextResolver();
             ZenEcsUnityBridge.SystemPresetResolver = new SystemPresetResolver();
         }
